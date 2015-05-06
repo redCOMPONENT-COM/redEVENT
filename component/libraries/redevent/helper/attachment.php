@@ -56,7 +56,11 @@ class RedeventHelperAttachment extends JObject
 			return false;
 		}
 
-		$allowed = explode(",", $params->get('attachments_types', 'txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz'));
+		$allowed = explode(",",
+			$params->get(
+				'attachments_types', 'txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz'
+			)
+		);
 		array_walk($allowed, 'trim');
 
 		$maxsize = $params->get('attachments_maxsize', 1000) * 1000;
@@ -254,7 +258,6 @@ class RedeventHelperAttachment extends JObject
 
 		return $path;
 	}
-
 
 	/**
 	 * remove attachment for objects

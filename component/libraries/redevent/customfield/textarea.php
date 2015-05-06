@@ -16,19 +16,18 @@ defined('JPATH_BASE') or die();
  */
 class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 {
-
 	/**
 	 * Element name
 	 *
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'textbox';
+	protected $name = 'textbox';
 
 	/**
 	 * returns the html code for the form element
 	 *
-	 * @param array $attributes
+	 * @param   array  $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -58,11 +57,21 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 		{
 			$value = $this->default_value;
 		}
+
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<textarea name="' . 'jform[' . $this->fieldname . ']' . '" id="' . $this->fieldid . '" ' . $this->attributesToString($attributes) . '>' . $value . '</textarea>';
+		return '<textarea name="' . 'jform[' . $this->fieldname . ']' . '" id="' . $this->fieldid . '" '
+			. $this->attributesToString($attributes) . '>' . $value . '</textarea>';
 	}
 
+	/**
+	 * returns form field for filtering
+	 *
+	 * @param   array  $attributes  attributes
+	 * @param   mixed  $selected    selected value
+	 *
+	 * @return html string
+	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
 		$app = JFactory::getApplication();
@@ -78,6 +87,7 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<input type="text" name="filtercustom[' . $this->id . ']" id="filtercustom[' . $this->id . ']" value="' . $value . '" ' . $this->attributesToString($attributes) . '/>';
+		return '<input type="text" name="filtercustom[' . $this->id . ']" id="filtercustom[' . $this->id . ']" value="'
+			. $value . '" ' . $this->attributesToString($attributes) . '/>';
 	}
 }

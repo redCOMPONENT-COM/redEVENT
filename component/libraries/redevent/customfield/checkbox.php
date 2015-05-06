@@ -16,19 +16,18 @@ defined('JPATH_BASE') or die();
  */
 class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 {
-
 	/**
 	 * Element name
 	 *
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'checkbox';
+	protected $name = 'checkbox';
 
 	/**
 	 * returns the html code for the form element
 	 *
-	 * @param array $attributes
+	 * @param   array  $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -65,13 +64,23 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 			foreach ($options as $opt)
 			{
 				$option = $this->getOptionLabelValue($opt);
-				$html .= '<input type="checkbox" name="jform[' . $this->fieldname . '][]" value="' . $option->value . '"' . (in_array($option->value, $selected) ? ' checked="checked"' : '') . ' ' . $this->attributesToString($attributes) . '/>' . $option->label;
+				$html .= '<input type="checkbox" name="jform[' . $this->fieldname . '][]" value="' . $option->value . '"'
+					. (in_array($option->value, $selected) ? ' checked="checked"' : '') . ' ' . $this->attributesToString($attributes) . '/>'
+					. $option->label;
 			}
 		}
 
 		return $html;
 	}
 
+	/**
+	 * returns form field for filtering
+	 *
+	 * @param   array  $attributes  attributes
+	 * @param   mixed  $selected    selected value
+	 *
+	 * @return html string
+	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
 		$app = JFactory::getApplication();
@@ -93,7 +102,8 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 			foreach ($options as $opt)
 			{
 				$option = $this->getOptionLabelValue($opt);
-				$html .= '<input type="checkbox" name="filtercustom[' . $this->id . '][]" value="' . $option->value . '"' . (in_array($option->value, $value) ? ' checked="checked"' : '')
+				$html .= '<input type="checkbox" name="filtercustom[' . $this->id . '][]" value="' . $option->value . '"'
+					. (in_array($option->value, $value) ? ' checked="checked"' : '')
 					. ' ' . $this->attributesToString($attributes) . '/>' . $option->label;
 			}
 		}

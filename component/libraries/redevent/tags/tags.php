@@ -18,34 +18,50 @@ require_once JPATH_SITE . '/components/com_redevent/models/eventhelper.php';
  */
 class RedeventTags
 {
-	private $_xref;
-	private $_eventid;
-	private $_venueid;
-	private $_submitkey;
-	private $_maxattendees;
-	private $_maxwaitinglist;
-	private $_published;
-	protected $_eventlinks = null;
-	private $_libraryTags = null;
-	private $_customfields = null;
-	private $_xrefcustomfields = null;
-	private $_answers = null;
-	private $_options = null;
+	private $xref;
 
-	private $_canregister = null;
+	private $eventid;
+
+	private $venueid;
+
+	private $submitkey;
+
+	private $maxattendees;
+
+	private $maxwaitinglist;
+
+	private $published;
+
+	protected $eventlinks = null;
+
+	private $libraryTags = null;
+
+	private $customfields = null;
+
+	private $xrefcustomfields = null;
+
+	private $answers = null;
+
+	private $options = null;
+
+	private $canregister = null;
 
 	/**
 	 * event model
 	 * @var object
 	 */
-	private $_event = null;
+	private $event = null;
+
 	/**
 	 * instance of rfcore
 	 * @var object
 	 */
-	private $_rfcore = null;
+	private $rfcore = null;
 
-	private $_db;
+	/**
+	 * @var JDatabaseDriver
+	 */
+	private $db;
 
 	/**
 	 * constuctor
@@ -61,11 +77,11 @@ class RedeventTags
 
 		if ($this->getOption('db'))
 		{
-			$this->_db = $this->getOption('db');
+			$this->db = $this->getOption('db');
 		}
 		else
 		{
-			$this->_db = JFactory::getDbo();
+			$this->db = JFactory::getDbo();
 		}
 
 		$eventid = JRequest::getVar('id', 0, 'request', 'int');
@@ -75,20 +91,20 @@ class RedeventTags
 		$this->setXref($xref);
 
 		// If no xref specified. try to get one associated to the event id, published if possible !
-		if (!$this->_xref)
+		if (!$this->xref)
 		{
-			$this->_initXref();
+			$this->initXref();
 		}
 
-		if ($this->_xref)
+		if ($this->xref)
 		{
-			$db = $this->_db;
+			$db = $this->db;
 			$query = $db->getQuery(true)
 				->select('eventid, venueid, maxattendees, maxwaitinglist, published')
 				->from('#__redevent_event_venue_xref')
-				->where('id = ' . $this->_xref);
+				->where('id = ' . $this->xref);
 			$db->setQuery($query);
-			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist, $this->_published) = $db->loadRow();
+			list($this->eventid, $this->venueid, $this->maxattendees, $this->maxwaitinglist, $this->published) = $db->loadRow();
 		}
 	}
 
@@ -101,7 +117,7 @@ class RedeventTags
 	 */
 	public function setEventId($id)
 	{
-		$this->_eventid = intval($id);
+		$this->eventid = intval($id);
 	}
 
 	/**
@@ -113,7 +129,7 @@ class RedeventTags
 	 */
 	public function setEventObject($object)
 	{
-		$this->_event = $object;
+		$this->event = $object;
 	}
 
 	/**
@@ -125,11 +141,11 @@ class RedeventTags
 	 */
 	public function setXref($xref)
 	{
-		if (($this->_xref !== $xref) && intval($xref))
+		if (($this->xref !== $xref) && intval($xref))
 		{
-			$this->_xref = intval($xref);
-			$this->_customfields = null;
-			$this->_xrefcustomfields = null;
+			$this->xref = intval($xref);
+			$this->customfields = null;
+			$this->xrefcustomfields = null;
 		}
 	}
 
@@ -140,12 +156,12 @@ class RedeventTags
 	 */
 	public function getXref()
 	{
-		if (!$this->_xref)
+		if (!$this->xref)
 		{
-			$this->_initXref();
+			$this->initXref();
 		}
 
-		return $this->_xref;
+		return $this->xref;
 	}
 
 	/**
@@ -157,7 +173,7 @@ class RedeventTags
 	 */
 	public function setSubmitkey($string)
 	{
-		$this->_submitkey = $string;
+		$this->submitkey = $string;
 	}
 
 	/**
@@ -171,13 +187,13 @@ class RedeventTags
 	{
 		if (is_array($options))
 		{
-			if (!empty($this->_options))
+			if (!empty($this->options))
 			{
-				$this->_options = array_merge($this->_options, $options);
+				$this->options = array_merge($this->options, $options);
 			}
 			else
 			{
-				$this->_options = $options;
+				$this->options = $options;
 			}
 		}
 	}
@@ -192,9 +208,9 @@ class RedeventTags
 	 */
 	public function getOption($name, $default = null)
 	{
-		if (isset($this->_options) && isset($this->_options[$name]))
+		if (isset($this->options) && isset($this->options[$name]))
 		{
-			return $this->_options[$name];
+			return $this->options[$name];
 		}
 		else
 		{
@@ -239,7 +255,7 @@ class RedeventTags
 	{
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
-		$rfcore = $this->_getRFCore();
+		$rfcore = $this->getRFCore();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 
 		if ($options)
@@ -248,14 +264,14 @@ class RedeventTags
 		}
 
 		$elsettings = RedeventHelper::config();
-		$this->_submitkey = $this->_submitkey ? $this->_submitkey : JRequest::getVar('submit_key');
+		$this->submitkey = $this->submitkey ? $this->submitkey : JRequest::getVar('submit_key');
 
-		$text = $this->_replace($text);
+		$text = $this->replace($text);
 
 		/* Include redFORM */
 		if (strstr($text, '[redform]') && $this->getEvent()->getData()->redform_id > 0)
 		{
-			$status = RedeventHelper::canRegister($this->_xref);
+			$status = RedeventHelper::canRegister($this->xref);
 
 			if ($status->canregister)
 			{
@@ -279,23 +295,23 @@ class RedeventTags
 	 *
 	 * @return object
 	 */
-	private function _initXref()
+	private function initXref()
 	{
-		$eventid = $this->_eventid;
+		$eventid = $this->eventid;
 
 		if ($eventid)
 		{
-			$query = $this->_db->getQuery(true);
+			$query = $this->db->getQuery(true);
 
 			$query->select('x.id')
-				->from($this->_db->qn('#__redevent_event_venue_xref', 'x'))
+				->from($this->db->qn('#__redevent_event_venue_xref', 'x'))
 				->join('INNER', '#__redevent_events AS e ON e.id = x.eventid')
 				->where('x.published = 1')
-				->where('x.eventid = ' . $this->_db->Quote($eventid))
+				->where('x.eventid = ' . $this->db->Quote($eventid))
 				->order('x.dates ASC');
 
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadResult();
+			$this->db->setQuery($query);
+			$res = $this->db->loadResult();
 
 			if ($res)
 			{
@@ -313,7 +329,7 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	protected function _replace($text)
+	protected function replace($text)
 	{
 		// Check if tags where replaced, in which case we should run it again
 		$replaced = false;
@@ -346,12 +362,12 @@ class RedeventTags
 					continue;
 				}
 
-				if ($this->_submitkey && strpos($tag_obj->getName(), 'attending_') === 0)
+				if ($this->submitkey && strpos($tag_obj->getName(), 'attending_') === 0)
 				{
 					// Replace with rest of tag if attending
 					$search[] = $tag_obj->getFull();
 
-					if ($this->_hasAttending())
+					if ($this->hasAttending())
 					{
 						$replace[] = '[' . substr($tag_obj->getName(), 10) . ']';
 						$replaced = true;
@@ -361,12 +377,12 @@ class RedeventTags
 						$replace[] = '';
 					}
 				}
-				elseif ($this->_submitkey && strpos($tag_obj->getName(), 'waiting_') === 0)
+				elseif ($this->submitkey && strpos($tag_obj->getName(), 'waiting_') === 0)
 				{
 					// Replace with rest of tag if not attending
 					$search[] = $tag_obj->getFull();
 
-					if ($this->_hasAttending())
+					if ($this->hasAttending())
 					{
 						$replace[] = '';
 					}
@@ -376,14 +392,14 @@ class RedeventTags
 						$replaced = true;
 					}
 				}
-				elseif ($this->_replaceLibraryTag($tag_obj->getName()) !== false)
+				elseif ($this->replaceLibraryTag($tag_obj->getName()) !== false)
 				{
 					$search[] = $tag_obj->getFull();
-					$replace[] = $this->_replaceLibraryTag($tag_obj->getName());
+					$replace[] = $this->replaceLibraryTag($tag_obj->getName());
 				}
 				else
 				{
-					$func = '_getTag_' . strtolower($tag_obj->getName());
+					$func = 'getTag_' . strtolower($tag_obj->getName());
 
 					if (method_exists($this, $func))
 					{
@@ -421,7 +437,7 @@ class RedeventTags
 		/* Load redform fields */
 		if ($alltags)
 		{
-			$redformfields = $this->_getFieldsTags();
+			$redformfields = $this->getFieldsTags();
 
 			if ($redformfields && count($redformfields))
 			{
@@ -430,7 +446,12 @@ class RedeventTags
 					if (stripos($tag[1], 'answer_') === 0)
 					{
 						$search[] = '[' . $tag[1] . ']';
-						$replace[] = $this->_getFieldAnswer(substr($tag[1], 7));
+						$replace[] = $this->getFormFieldAnswer(substr($tag[1], 7));
+					}
+					elseif (stripos($tag[1], 'field_') === 0)
+					{
+						$search[] = '[' . $tag[1] . ']';
+						$replace[] = $this->getFieldAnswer(substr($tag[1], 6));
 					}
 				}
 
@@ -445,7 +466,7 @@ class RedeventTags
 
 		if ($replaced)
 		{
-			$text = $this->_replace($text);
+			$text = $this->replace($text);
 		}
 
 		return $text;
@@ -458,14 +479,14 @@ class RedeventTags
 	 */
 	private function getEvent()
 	{
-		if (empty($this->_event))
+		if (empty($this->event))
 		{
-			$this->_event = RModel::getFrontInstance('Eventhelper');
-			$this->_event->setId($this->_eventid);
-			$this->_event->setXref($this->_xref);
+			$this->event = RModel::getFrontInstance('Eventhelper');
+			$this->event->setId($this->eventid);
+			$this->event->setXref($this->xref);
 		}
 
-		return $this->_event;
+		return $this->event;
 	}
 
 	/**
@@ -475,15 +496,15 @@ class RedeventTags
 	 */
 	private function SignUpLinks()
 	{
-		if (!$this->_xref)
+		if (!$this->xref)
 		{
 			return false;
 		}
 
-		if (!$this->_eventid)
+		if (!$this->eventid)
 		{
 			$session = $this->getEvent()->getData();
-			$this->_eventid = $session->eventid;
+			$this->eventid = $session->eventid;
 		}
 
 		$app = JFactory::getApplication();
@@ -495,7 +516,7 @@ class RedeventTags
 		$this->lists = $lists;
 
 		$uri = JFactory::getURI('index.php?option=com_redevent');
-		$this->action = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_eventid, $this->_xref));
+		$this->action = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->eventid, $this->xref));
 
 		$this->customs = $this->getXrefCustomFields();
 
@@ -530,13 +551,12 @@ class RedeventTags
 		return $contents;
 	}
 
-
 	/**
 	 * Load the HTML for attachements
 	 *
 	 * @return string
 	 */
-	private function _attachmentsHTML()
+	private function attachmentsHTML()
 	{
 		$app = JFactory::getApplication();
 		$template_path = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/com_redevent';
@@ -570,7 +590,7 @@ class RedeventTags
 	 */
 	private function getEventLinks()
 	{
-		if (empty($this->_eventlinks))
+		if (empty($this->eventlinks))
 		{
 			// TODO: should be moved to a model
 			$xcustoms = $this->getXrefCustomFields();
@@ -613,7 +633,7 @@ class RedeventTags
 			$query->join('LEFT', '#__users AS u ON u.id = e.created_by');
 
 			$query->where('x.published = ' . $db->Quote($this->getEvent()->getData()->published));
-			$query->where('e.id = ' . $this->_eventid);
+			$query->where('e.id = ' . $this->eventid);
 
 			$query->group('x.id');
 
@@ -634,14 +654,14 @@ class RedeventTags
 			$query->order($ordering);
 
 			$db->setQuery($query);
-			$this->_eventlinks = $db->loadObjectList();
-			$this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
-			$this->_eventlinks = $this->_getCategories($this->_eventlinks);
-			$this->_eventlinks = $this->_getUserRegistrations($this->_eventlinks);
-			$this->_eventlinks = $this->_getPrices($this->_eventlinks);
+			$this->eventlinks = $db->loadObjectList();
+			$this->eventlinks = $this->getPlacesLeft($this->eventlinks);
+			$this->eventlinks = $this->getCategories($this->eventlinks);
+			$this->eventlinks = $this->getUserRegistrations($this->eventlinks);
+			$this->eventlinks = $this->getPrices($this->eventlinks);
 		}
 
-		return $this->_eventlinks;
+		return $this->eventlinks;
 	}
 
 	/**
@@ -651,13 +671,12 @@ class RedeventTags
 	 *
 	 * @return mixed
 	 */
-	private function _getCategories($rows)
+	private function getCategories($rows)
 	{
-		$db = $this->_db;
+		$db = $this->db;
 
 		foreach ($rows as $k => $r)
 		{
-			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('c.id, c.name AS catname, c.image')
@@ -681,13 +700,12 @@ class RedeventTags
 	 *
 	 * @return array
 	 */
-	private function _getPlacesLeft($rows)
+	private function getPlacesLeft($rows)
 	{
-		$db = JFactory::getDBO();
+		$db = $this->db;
 
 		foreach ($rows as $k => $r)
 		{
-			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('r.waitinglist, COUNT(r.id) AS total')
@@ -713,16 +731,15 @@ class RedeventTags
 	 *
 	 * @return array
 	 */
-	private function _getUserRegistrations($rows)
+	private function getUserRegistrations($rows)
 	{
-		$db = $this->_db;
+		$db = $this->db;
 		$user = JFactory::getUser();
 
 		foreach ($rows as $k => $r)
 		{
 			if ($user->get('id'))
 			{
-				$db = JFactory::getDbo();
 				$query = $db->getQuery(true);
 
 				$query->select('COUNT(r.id) AS total')
@@ -751,14 +768,14 @@ class RedeventTags
 	 *
 	 * @return array
 	 */
-	private function _getPrices($rows)
+	private function getPrices($rows)
 	{
 		if (!count($rows))
 		{
 			return $rows;
 		}
 
-		$db = $this->_db;
+		$db = $this->db;
 		$ids = array();
 
 		foreach ($rows as $k => $r)
@@ -766,7 +783,6 @@ class RedeventTags
 			$ids[$r->xref] = $k;
 		}
 
-		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('sp.*, p.name, p.alias, p.image, p.tooltip, f.currency AS form_currency');
@@ -823,7 +839,7 @@ class RedeventTags
 	 */
 	public function replaceLibraryTags($text)
 	{
-		$tags = $this->_getLibraryTags();
+		$tags = $this->getLibraryTags();
 
 		$search = array();
 		$replace = array();
@@ -853,9 +869,9 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _replaceLibraryTag($tag)
+	private function replaceLibraryTag($tag)
 	{
-		$tags = $this->_getLibraryTags();
+		$tags = $this->getLibraryTags();
 
 		if (isset($tags[$tag]))
 		{
@@ -870,19 +886,22 @@ class RedeventTags
 	 *
 	 * @return array (objects: text_name, text_field)
 	 */
-	private function _getLibraryTags()
+	private function getLibraryTags()
 	{
-		if (empty($this->_libraryTags))
+		if (empty($this->libraryTags))
 		{
-			$db = JFactory::getDBO();
-			$q = "SELECT text_name, text_field
-  			FROM #__redevent_textlibrary WHERE CHAR_LENGTH(text_name) > 0";
-			$db->setQuery($q);
+			$db = $this->db;
+			$query = $db->getQuery(true);
 
-			$this->_libraryTags = $db->loadObjectList('text_name');
+			$query->select('text_name, text_field')
+				->from('#__redevent_textlibrary')
+				->where('CHAR_LENGTH(text_name) > 0');
+
+			$db->setQuery($query);
+			$this->libraryTags = $db->loadObjectList('text_name');
 		}
 
-		return $this->_libraryTags;
+		return $this->libraryTags;
 	}
 
 	/**
@@ -892,7 +911,7 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _getComments($event)
+	private function getComments($event)
 	{
 		$app = JFactory::getApplication();
 		$template_path = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/com_redevent';
@@ -928,7 +947,7 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _getFormalOffer($event)
+	private function getFormalOffer($event)
 	{
 		ob_start();
 		?>
@@ -956,7 +975,7 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _getEmailSubmission($event)
+	private function getEmailSubmission($event)
 	{
 		ob_start();
 		?>
@@ -984,15 +1003,18 @@ class RedeventTags
 	 */
 	private function getCustomfields()
 	{
-		if (empty($this->_customfields))
+		if (empty($this->customfields))
 		{
 			$details = $this->getEvent()->getData();
 
-			$db = JFactory::getDBO();
-			$query = ' SELECT f.* '
-				. ' FROM #__redevent_fields AS f '
-				. ' WHERE f.published = 1 '
-				. ' AND CHAR_LENGTH(f.tag) > 0 ';
+			$db = $this->db;
+			$query = $db->getQuery(true);
+
+			$query->select('f.*')
+				->from('#__redevent_fields AS f')
+				->where('f.published = 1')
+				->where('CHAR_LENGTH(f.tag) > 0');
+
 			$db->setQuery($query);
 			$fields = $db->loadObjectList();
 
@@ -1020,10 +1042,10 @@ class RedeventTags
 				$replace[$field->tag] = $obj;
 			}
 
-			$this->_customfields = $replace;
+			$this->customfields = $replace;
 		}
 
-		return $this->_customfields;
+		return $this->customfields;
 	}
 
 	/**
@@ -1033,24 +1055,34 @@ class RedeventTags
 	 */
 	private function getXrefCustomFields()
 	{
-		if (empty($this->_xrefcustomfields))
+		if (empty($this->xrefcustomfields))
 		{
-			$db = JFactory::getDBO();
-			$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
-				. ' FROM #__redevent_fields AS f'
-				. ' WHERE f.published = 1'
-				. '   AND f.object_key = ' . $db->Quote('redevent.xref')
-				. ' ORDER BY f.ordering ASC ';
+			$db = $this->db;
+			$query = $db->getQuery(true);
+
+			$query->select('f.id, f.name, f.in_lists, f.searchable, f.ordering')
+				->from('#__redevent_fields AS f')
+				->where('f.published = 1')
+				->where('f.object_key = ' . $db->Quote('redevent.xref'))
+				->order('f.ordering ASC');
+
 			$db->setQuery($query);
-			$this->_xrefcustomfields = $db->loadObjectList();
+			$this->xrefcustomfields = $db->loadObjectList();
 		}
 
-		return $this->_xrefcustomfields;
+		return $this->xrefcustomfields;
 	}
 
+	/**
+	 * Get submission user
+	 *
+	 * @param   string  $submit_key  submit key
+	 *
+	 * @return bool|JUser
+	 */
 	protected function getSubmissionUser($submit_key)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->db;
 		$query = $db->getQuery(true);
 
 		$query->select('uid');
@@ -1069,14 +1101,24 @@ class RedeventTags
 		return false;
 	}
 
+	/**
+	 * Get unique id for attendee
+	 *
+	 * @param   string  $submit_key  submit key
+	 *
+	 * @return string
+	 */
 	private function getAttendeeUniqueId($submit_key)
 	{
-		$db = JFactory::getDBO();
-		$query = ' SELECT e.title, e.alias, e.course_code, r.xref, r.id '
-			. ' FROM #__redevent_register AS r '
-			. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
-			. ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-			. ' WHERE r.submit_key = ' . $db->Quote($submit_key);
+		$db = $this->db;
+		$query = $db->getQuery(true);
+
+		$query->select('e.title, e.alias, e.course_code, r.xref, r.id')
+			->from('#__redevent_register AS r')
+			->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref')
+			->join('INNER', '#__redevent_events AS e ON e.id = x.eventid')
+			->where('r.submit_key = ' . $db->Quote($submit_key));
+
 		$db->setQuery($query, 0, 1);
 		$obj = $db->loadObject();
 
@@ -1095,13 +1137,11 @@ class RedeventTags
 	/**
 	 * return answers as html text
 	 *
-	 * @param   string  $submit_key  submit key
-	 *
 	 * @return string html
 	 */
-	private function _answersToHtml()
+	private function answersToHtml()
 	{
-		$answers = $this->_getAnswers();
+		$answers = $this->getAnswers();
 
 		if (!$answers)
 		{
@@ -1133,7 +1173,7 @@ class RedeventTags
 	 *
 	 * @return array
 	 */
-	private function _getAnswers()
+	private function getAnswers()
 	{
 		if (!$this->getEvent()->getData())
 		{
@@ -1144,51 +1184,68 @@ class RedeventTags
 
 		if (!$sids = $this->getOption('sids'))
 		{
-			if (!$this->_submitkey)
+			if (!$this->submitkey)
 			{
 				return false;
 			}
 
-			$db = JFactory::getDBO();
-			$query = ' SELECT r.sid '
-				. ' FROM #__redevent_register AS r '
-				. ' WHERE r.submit_key = ' . $db->quote($this->_submitkey);
+			$db = $this->db;
+			$query = $db->getQuery(true);
+
+			$query->select('r.sid')
+				->from('#__redevent_register AS r')
+				->where('r.submit_key = ' . $db->quote($this->submitkey));
+
 			$db->setQuery($query);
 			$sids = $db->loadColumn();
 		}
 
-		$rfcore = $this->_getRFCore();
+		$rfcore = $this->getRFCore();
 
 		return $rfcore->getAnswers($sids);
 	}
 
-	private function _getSubmissionTotalPrice()
+	/**
+	 * Get submission price
+	 *
+	 * @return bool|mixed
+	 */
+	private function getSubmissionTotalPrice()
 	{
-		if (!$this->_submitkey)
+		if (!$this->submitkey)
 		{
 			return false;
 		}
 
-		$db = JFactory::getDBO();
-		$query = ' SELECT SUM(s.price) '
-			. ' FROM #__rwf_submitters AS s '
-			. ' WHERE s.submit_key = ' . $db->quote($this->_submitkey)
-			. ' GROUP BY s.submit_key ';
+		$db = $this->db;
+		$query = $db->getQuery(true);
+
+		$query->select('SUM(s.price + s.vat)')
+			->from('#__rwf_submitters AS s')
+			->where('s.submit_key = ' . $db->quote($this->submitkey))
+			->group('s.submit_key');
+
 		$db->setQuery($query);
 		$res = $db->loadResult();
 
 		return $res;
 	}
 
-	private function _getFieldsTags()
+	/**
+	 * Get form fields tags
+	 *
+	 * @return array|bool
+	 */
+	private function getFieldsTags()
 	{
 		if (!$this->getEvent()->getData())
 		{
 			JError::raiseWarning(0, JText::_('COM_REDEVENT_Error_missing_data'));
+
 			return false;
 		}
 
-		$rfcore = $this->_getRFCore();
+		$rfcore = $this->getRFCore();
 
 		$fields = $rfcore->getFields($this->getEvent()->getData()->redform_id);
 
@@ -1198,16 +1255,53 @@ class RedeventTags
 		{
 			foreach ((array) $fields as $f)
 			{
-				$tags[$f->id] = 'answer_' . $f->id;
+				$tags[$f->field_id] = 'field_' . $f->field_id;
 			}
 		}
 
 		return $tags;
 	}
 
-	private function _getFieldAnswer($id)
+	/**
+	 * Get field answer
+	 *
+	 * @param   int  $id  redform field id (not the same as 'form field' id...)
+	 *
+	 * @return array|bool
+	 */
+	private function getFieldAnswer($id)
 	{
-		$answers = $this->_getAnswers();
+		$answers = $this->getAnswers();
+
+		if (!$answers)
+		{
+			return '';
+		}
+
+		// Only take first answer...
+		$fields = reset($answers);
+
+		foreach ($fields as $f)
+		{
+			if ($f->field_id == $id)
+			{
+				return $f->answer;
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Get form field answer
+	 *
+	 * @param   int  $id  redform form field id
+	 *
+	 * @return array|bool
+	 */
+	private function getFormFieldAnswer($id)
+	{
+		$answers = $this->getAnswers();
 
 		if (!$answers)
 		{
@@ -1228,14 +1322,19 @@ class RedeventTags
 		return '';
 	}
 
-	private function _getRFCore()
+	/**
+	 * Get RdfCore object
+	 *
+	 * @return RdfCore
+	 */
+	private function getRFCore()
 	{
-		if (empty($this->_rfcore))
+		if (empty($this->rfcore))
 		{
-			$this->_rfcore = RdfCore::getInstance();
+			$this->rfcore = RdfCore::getInstance();
 		}
 
-		return $this->_rfcore;
+		return $this->rfcore;
 	}
 
 	/**
@@ -1301,7 +1400,6 @@ class RedeventTags
 			if (!$prefix)
 			{
 				$prefix = $uri->toString(array('host', 'port'));
-				//$prefix .= JURI::base(true);
 			}
 
 			// Determine which scheme we want
@@ -1325,6 +1423,13 @@ class RedeventTags
 		return $url;
 	}
 
+	/**
+	 * format prices
+	 *
+	 * @param   array  $prices  prices
+	 *
+	 * @return string|void
+	 */
 	private function formatPrices($prices)
 	{
 		if (!is_array($prices))
@@ -1352,26 +1457,29 @@ class RedeventTags
 	 *
 	 * @return boolean
 	 */
-	private function _hasAttending()
+	private function hasAttending()
 	{
-		$db = JFactory::getDBO();
-		// get how many registrations are associated to submit key, and how manyn on waiting list
-		$query = ' SELECT COUNT(*) as total, SUM(r.waitinglist) as waiting '
-			. ' FROM #__redevent_register AS r '
-			. ' WHERE r.submit_key = ' . $db->Quote($this->_submitkey)
-			. ' GROUP BY r.submit_key ';
+		// Get how many registrations are associated to submit key, and how many on waiting list
+		$db = $this->db;
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*) as total, SUM(r.waitinglist) as waiting')
+			->from('#__redevent_register AS r')
+			->where('r.submit_key = ' . $db->Quote($this->submitkey))
+			->group('r.submit_key');
+
 		$db->setQuery($query);
 		$res = $db->loadObject();
 
 		if (!$res || !$res->total)
 		{
-			// no attendee at all for submit key... no display...
+			// No attendee at all for submit key... no display...
 			return false;
 		}
 
 		if ($res->total != $res->waiting)
 		{
-			// not all registrations are on wl
+			// Not all registrations are on wl
 			return true;
 		}
 		else
@@ -1380,20 +1488,25 @@ class RedeventTags
 		}
 	}
 
-	private function _canRegister()
+	/**
+	 * Is user allowed to register
+	 *
+	 * @return null|object
+	 */
+	private function canRegister()
 	{
-		if ($this->_canregister === null)
+		if ($this->canregister === null)
 		{
-			$this->_canregister = RedeventHelper::canRegister($this->getXref());
+			$this->canregister = RedeventHelper::canRegister($this->getXref());
 		}
 
-		return $this->_canregister;
+		return $this->canregister;
 	}
 
 	/*************************************************************************
 	 * tags functions
 	 *
-	 * name must be _getTag_xxxxx_yyy
+	 * name must be getTag_xxxxx_yyy
 	 *
 	 */
 
@@ -1404,7 +1517,7 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _getTag_event_description()
+	private function getTag_event_description()
 	{
 		/* Fix the tags of the event description */
 		$findcourse = array('[venues]', '[price]', '[credits]', '[code]');
@@ -1419,54 +1532,105 @@ class RedeventTags
 		return $res;
 	}
 
-	private function _getTag_event_info_text()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_event_info_text()
 	{
-		return $this->_getTag_event_description();
+		return $this->getTag_event_description();
 	}
 
-	private function _getTag_event_title()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_event_title()
 	{
 		return $this->getEvent()->getData()->title;
 	}
 
-	private function _getTag_event_full_title()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_event_full_title()
 	{
 		return RedeventHelper::getSessionFullTitle($this->getEvent()->getData());
 	}
 
-	private function _getTag_session_code()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_session_code()
 	{
 		return $this->getEvent()->getData()->session_code;
 	}
 
-	private function _getTag_price()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_price()
 	{
 		return $this->formatPrices($this->getEvent()->getPrices());
 	}
 
-	private function _getTag_credits()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_credits()
 	{
 		return $this->getEvent()->getData()->course_credit;
 	}
 
-	private function _getTag_code()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_code()
 	{
 		return $this->getEvent()->getData()->course_code;
 	}
 
-	private function _getTag_date()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_date()
 	{
 		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 	}
 
-	private function _getTag_enddate()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_enddate()
 	{
 		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 	}
 
-	private function _getTag_time()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_time()
 	{
 		$tmp = "";
+
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
 			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
@@ -1476,105 +1640,181 @@ class RedeventTags
 				$tmp .= ' - ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 			}
 		}
+
 		return $tmp;
 	}
 
-	private function _getTag_starttime()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_starttime()
 	{
 		$tmp = "";
+
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
 			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
+
 		return $tmp;
 	}
 
-	private function _getTag_endtime()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_endtime()
 	{
 		$tmp = "";
+
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
 			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
+
 		return $tmp;
 	}
 
-	private function _getTag_startenddatetime()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_startenddatetime()
 	{
 		$tmp = RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
 			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
+
 		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
 		{
 			$tmp .= ' - ' . RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
+
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
 			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
 		}
+
 		return $tmp;
 	}
 
-	private function _getTag_duration()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_duration()
 	{
 		return RedeventHelper::getEventDuration($this->getEvent()->getData());
 	}
 
-	private function _getTag_event_image()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_event_image()
 	{
 		$eventimage = '';
+
 		if ($this->getEvent()->getData()->datimage)
 		{
-			$eventimage = JHTML::image(JURI::root() . $this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title, array('title' => $this->getEvent()->getData()->title));
+			$eventimage = JHTML::image(
+				JURI::root() . $this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title,
+				array('title' => $this->getEvent()->getData()->title)
+			);
 		}
+
 		return $eventimage;
 	}
 
-	private function _getTag_eventimage()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_eventimage()
 	{
-		return $this->_getTag_event_image();
+		return $this->getTag_event_image();
 	}
 
-	private function _getTag_event_thumb()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_event_thumb()
 	{
 		$eventimage = RedeventImage::modalimage($this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title);
+
 		return $eventimage;
 	}
 
-	private function _getTag_category_image()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_category_image()
 	{
 		$cats_images = array();
+
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
 			$cats_images[] = RedeventImage::getCategoryImage($c, false);
 		}
-		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">' . implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
+
+		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'
+			. implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
 
 		return $categoryimage;
 	}
 
-	private function _getTag_categoryimage()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_categoryimage()
 	{
-		return $this->_getTag_category_image;
+		return $this->getTag_category_image;
 	}
 
-	private function _getTag_category_thumb()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_category_thumb()
 	{
 		$cats_images = array();
+
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
 			$cats_images[] = RedeventImage::getCategoryImage($c);
 		}
-		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">' . implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
+
+		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'
+			. implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
 
 		return $categoryimage;
 	}
 
-	private function _getTag_info()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_info()
 	{
-		// check that there is no loop with the tag inclusion
+		// Check that there is no loop with the tag inclusion
 		if (strpos($this->getEvent()->getData()->details, '[info]') === false)
 		{
 			$info = $this->ReplaceTags($this->getEvent()->getData()->details);
@@ -1584,40 +1824,72 @@ class RedeventTags
 			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XREF_DETAILS'));
 			$info = '';
 		}
+
 		return $info;
 	}
 
-	private function _getTag_category()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_category()
 	{
-		// categories
+		// Categories
 		$cats = array();
+
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
 			$cats[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
 		}
+
 		return '<span class="details-categories">' . implode(', ', $cats) . '</span>';
 	}
 
-	private function _getTag_eventcomments()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_eventcomments()
 	{
-		return $this->_getComments($this->getEvent()->getData());
+		return $this->getComments($this->getEvent()->getData());
 	}
 
-	private function _getTag_permanentlink()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_permanentlink()
 	{
-		$link = JHTML::link($this->absoluteUrls(
+		$link = JHTML::link(
+			$this->absoluteUrls(
 				RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug),
-				false)
-			, JText::_('COM_REDEVENT_Permanent_link'), 'class="permalink"');
+				false
+			),
+			JText::_('COM_REDEVENT_Permanent_link'), 'class="permalink"'
+		);
+
 		return $link;
 	}
 
-	private function _getTag_datelink()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_datelink()
 	{
-		$link = JHTML::link($this->absoluteUrls(
-				RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug,
-					$this->_xref), false),
-			JText::_('COM_REDEVENT_Event_details'), 'class="datelink"');
+		$link = JHTML::link(
+			$this->absoluteUrls(
+				RedeventHelperRoute::getDetailsRoute(
+					$this->getEvent()->getData()->slug,
+					$this->xref
+				), false
+			),
+			JText::_('COM_REDEVENT_Event_details'), 'class="datelink"'
+		);
 
 		return $link;
 	}
@@ -1625,36 +1897,46 @@ class RedeventTags
 	/**
 	 * Parses tag ical_url
 	 * returns link to session ical export
+	 *
 	 * @return string
 	 */
-	private function _getTag_ical()
+	private function getTag_ical()
 	{
 		$ttext = JText::_('COM_REDEVENT_EXPORT_ICS');
-		$res = JHTML::link($this->_getTag_ical_url(),
-			$ttext, array('class' => 'event-ics'));
+		$res = JHTML::link(
+			$this->getTag_ical_url(),
+			$ttext, array('class' => 'event-ics')
+		);
+
 		return $res;
 	}
 
 	/**
 	 * Parses tag ical_url
 	 * returns url to session ical export
+	 *
 	 * @return string
 	 */
-	private function _getTag_ical_url()
+	private function getTag_ical_url()
 	{
 		$res = $this->absoluteUrls(
-			RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug,
-				$this->getEvent()->getData()->xslug) . '&format=raw&layout=ics',
-			false);
+			RedeventHelperRoute::getDetailsRoute(
+				$this->getEvent()->getData()->slug,
+				$this->getEvent()->getData()->xslug
+			) . '&format=raw&layout=ics',
+			false
+		);
+
 		return $res;
 	}
 
 	/**
 	 * Parses tag summary
 	 * returns event summary
+	 *
 	 * @return string
 	 */
-	private function _getTag_summary()
+	private function getTag_summary()
 	{
 		return $this->getEvent()->getData()->summary;
 	}
@@ -1662,223 +1944,384 @@ class RedeventTags
 	/**
 	 * Parses tag moreinfo
 	 * returns list of attachments
+	 *
 	 * @return string
 	 */
-	private function _getTag_attachments()
+	private function getTag_attachments()
 	{
-		return $this->_attachmentsHTML();
+		return $this->attachmentsHTML();
 	}
 
 	/**
 	 * Parses tag moreinfo
 	 * generates a modal link to a more info form for the session
+	 *
 	 * @return string
 	 */
-	private function _getTag_moreinfo()
+	private function getTag_moreinfo()
 	{
 		JHTML::_('behavior.modal', 'a.moreinfo');
-		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($this->getEvent()->getData()->xslug,
-			array('tmpl' => 'component')));
+		$link = JRoute::_(
+			RedeventHelperRoute::getMoreInfoRoute(
+				$this->getEvent()->getData()->xslug,
+				array('tmpl' => 'component')
+			)
+		);
 		$text = '<a class="moreinfo" title="' . JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
 			. '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
 			. JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
 			. ' </a>';
+
 		return $text;
 	}
 
 	/**
 	 * returns event creator name
+	 *
 	 * @return string
 	 */
-	private function _getTag_author_name()
+	private function getTag_author_name()
 	{
 		return $this->getEvent()->getData()->creator_name;
 	}
 
 	/**
 	 * returns event creator email
+	 *
 	 * @return string
 	 */
-	private function _getTag_author_email()
+	private function getTag_author_email()
 	{
 		return $this->getEvent()->getData()->creator_email;
 	}
 
 	/**************  venue tags ******************/
 
-	private function _getTag_venue()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue()
 	{
 		return $this->getEvent()->getData()->venue;
 	}
 
-	private function _getTag_venue_title()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_title()
 	{
-		return $this->_getTag_venue();
+		return $this->getTag_venue();
 	}
 
-	private function _getTag_venue_code()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_code()
 	{
 		return $this->getEvent()->getData()->venue_code;
 	}
 
-	private function _getTag_venue_company()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_company()
 	{
 		return $this->getEvent()->getData()->venue_company;
 	}
 
-	private function _getTag_city()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_city()
 	{
 		return $this->getEvent()->getData()->location;
 	}
 
-	private function _getTag_venue_city()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_city()
 	{
-		return $this->_getTag_city();
+		return $this->getTag_city();
 	}
 
-	private function _getTag_venues($tag)
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venues()
 	{
 		return $this->SignUpLinks();
 	}
 
-	private function _getTag_venue_street()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_street()
 	{
 		return $this->getEvent()->getData()->street;
 	}
 
-	private function _getTag_venue_zip()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_zip()
 	{
 		return $this->getEvent()->getData()->plz;
 	}
 
-	private function _getTag_venue_state()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_state()
 	{
 		return $this->getEvent()->getData()->state;
 	}
 
-	private function _getTag_venue_link()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_link()
 	{
 		$link = JHTML::link(
-			$this->absoluteUrls(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)),
-			$this->getEvent()->getData()->venue);
+			$this->absoluteUrls(
+				RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)
+			),
+			$this->getEvent()->getData()->venue
+		);
+
 		return $link;
 	}
 
-	private function _getTag_venue_website()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_website()
 	{
 		$res = '';
+
 		if (!empty($this->getEvent()->getData()->venueurl))
 		{
-			$res = JHTML::link($this->absoluteUrls(($this->getEvent()->getData()->venueurl)),
-				JText::_('COM_REDEVENT_Venue_website'));
+			$res = JHTML::link(
+				$this->absoluteUrls(($this->getEvent()->getData()->venueurl)),
+				JText::_('COM_REDEVENT_Venue_website')
+			);
 		}
+
 		return $res;
 	}
 
-	private function _getTag_venueimage()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venueimage()
 	{
 		if (!$this->getEvent()->getData()->locimage)
 		{
 			return '';
 		}
-		$venueimage = JHTML::image(JURI::root() . $this->getEvent()->getData()->locimage,
+
+		$venueimage = JHTML::image(
+			JURI::root() . $this->getEvent()->getData()->locimage,
 			$this->getEvent()->getData()->venue,
-			array('title' => $this->getEvent()->getData()->venue));
-		$venueimage = JHTML::link($this->absoluteUrls(
-				RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)),
-			$venueimage);
+			array('title' => $this->getEvent()->getData()->venue)
+		);
+		$venuelink = JHTML::link(
+			$this->absoluteUrls(
+				RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)
+			),
+			$venueimage
+		);
+
+		return $venuelink;
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_image()
+	{
+		return $this->getTag_venueimage();
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_thumb()
+	{
+		$venueimage = RedeventImage::modalimage($this->getEvent()->getData()->locimage, $this->getEvent()->getData()->venue);
+
 		return $venueimage;
 	}
 
-	private function _getTag_venue_image()
-	{
-		return $this->_getTag_venueimage();
-	}
-
-	private function _getTag_venue_thumb()
-	{
-		$venueimage = RedeventImage::modalimage($this->getEvent()->getData()->locimage,
-			$this->getEvent()->getData()->venue);
-		return $venueimage;
-	}
-
-	private function _getTag_venue_description()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_description()
 	{
 		return $this->getEvent()->getData()->venue_description;
 	}
 
-	private function _getTag_venue_country()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_country()
 	{
 		return RedeventHelperCountries::getCountryName($this->getEvent()->getData()->country);
 	}
 
-	private function _getTag_venue_countryflag()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_countryflag()
 	{
 		return RedeventHelperCountries::getCountryFlag($this->getEvent()->getData()->country);
 	}
 
-	private function _getTag_venue_mapicon()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_mapicon()
 	{
 		return RedeventHelperOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
 	}
 
-	private function _getTag_venue_map()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_venue_map()
 	{
 		return RedeventHelperOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
 	}
 
 	/**************  registration tags ******************/
 
-	private function _getTag_redform_title()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_redform_title()
 	{
 		return $this->getEvent()->getData()->formname;
 	}
 
-	private function _getTag_inputname()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_inputname()
 	{
 		$text = '<div id="divsubemailname">'
 			. '<div class="divsubemailnametext">' . JText::_('COM_REDEVENT_NAME') . '</div>'
 			. '<div class="divsubemailnameinput"><input type="text" name="subemailname" /></div>'
 			. '</div>';
+
 		return $text;
 	}
 
-	private function _getTag_inputemail()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_inputemail()
 	{
 		$text = '<div id="divsubemailaddress">'
 			. '<div class="divsubemailaddresstext">' . JText::_('COM_REDEVENT_EMAIL') . '</div>'
 			. '<div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div>'
 			. '</div>';
+
 		return $text;
 	}
 
-	private function _getTag_submit()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_submit()
 	{
 		$text = '<div id="disubemailsubmit"><input type="submit" value="' . JText::_('COM_REDEVENT_SUBMIT') . '" /></div>';
+
 		return $text;
 	}
 
-	private function _getTag_registrationend()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_registrationend()
 	{
 		$res = '';
+
 		if (strtotime($this->getEvent()->getData()->registrationend))
 		{
 			$elsettings = RedeventHelper::config();
-			$res = strftime($elsettings->get('formatdate', '%d.%m.%Y') . ' ' . $elsettings->get('formattime', '%H:%M'),
-				strtotime($this->getEvent()->getData()->registrationend));
+			$res = strftime(
+				$elsettings->get('formatdate', '%d.%m.%Y') . ' ' . $elsettings->get('formattime', '%H:%M'),
+				strtotime($this->getEvent()->getData()->registrationend)
+			);
 		}
+
 		return $res;
 	}
 
-	private function _getTag_username()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_username()
 	{
-		if ($user = $this->getSubmissionUser($this->_submitkey))
+		if ($user = $this->getSubmissionUser($this->submitkey))
 		{
 			return $user->get('username');
 		}
 
 		$res = '';
-		$email = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, false);
+		$email = $this->getRFCore()->getSubmissionContactEmail($this->submitkey, false);
 
 		if ($email)
 		{
@@ -1888,15 +2331,20 @@ class RedeventTags
 		return $res;
 	}
 
-	private function _getTag_useremail()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_useremail()
 	{
-		if ($user = $this->getSubmissionUser($this->_submitkey))
+		if ($user = $this->getSubmissionUser($this->submitkey))
 		{
 			return $user->get('email');
 		}
 
 		$res = '';
-		$email = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
+		$email = $this->getRFCore()->getSubmissionContactEmail($this->submitkey, true);
 
 		if ($email)
 		{
@@ -1906,140 +2354,227 @@ class RedeventTags
 		return $res;
 	}
 
-	private function _getTag_userfullname()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_userfullname()
 	{
-		if ($user = $this->getSubmissionUser($this->_submitkey))
+		if ($user = $this->getSubmissionUser($this->submitkey))
 		{
 			return $user->get('name');
 		}
 
 		$res = '';
-		$email = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
+		$email = $this->getRFCore()->getSubmissionContactEmail($this->submitkey, true);
 
 		if ($email)
 		{
 			$res = isset($email['fullname']) ? $email['fullname'] : '';
 		}
+
 		return $res;
 	}
 
 	/**
 	 * Parses tag answers
 	 * returns attendee answers to registration form
+	 *
 	 * @return string
 	 */
-	private function _getTag_answers()
+	private function getTag_answers()
 	{
-		return $this->_answersToHtml();
+		return $this->answersToHtml();
 	}
 
-	private function _getTag_eventplaces()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_eventplaces()
 	{
-		return $this->_maxattendees;
+		return $this->maxattendees;
 	}
 
-	private function _getTag_waitinglistplaces()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_waitinglistplaces()
 	{
-		return $this->_maxwaitinglist;
+		return $this->maxwaitinglist;
 	}
 
-	private function _getTag_eventplacesleft($params)
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_eventplacesleft()
 	{
 		return $this->getEvent()->getPlacesLeft();
 	}
 
-	private function _getTag_waitinglistplacesleft()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_waitinglistplacesleft()
 	{
 		return $this->getEvent()->getWaitingPlacesLeft();
 	}
 
-	private function _getTag_webformsignup()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_webformsignup()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
+
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink webform">'
-			. JHTML::_('link',
-				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform',
-					$this->getEvent()->getData()->slug,
-					$this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_webform_img', 'form_icon.gif'),
-					JText::_($elsettings->get('signup_webform_text'))))
+			. JHTML::_(
+				'link',
+				$this->absoluteUrls(
+					RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)
+				),
+				JHTML::_(
+					'image', $iconspath . $elsettings->get('signup_webform_img', 'form_icon.gif'),
+					JText::_($elsettings->get('signup_webform_text'))
+				)
+			)
 			. '</span> ';
+
 		return $text;
 	}
 
-	private function _getTag_emailsignup()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_emailsignup()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
+
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink email">'
-			. JHTML::_('link',
-				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_email_img', 'email_icon.gif'),
+			. JHTML::_(
+				'link',
+				$this->absoluteUrls(
+					RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)
+				),
+				JHTML::_(
+					'image', $iconspath . $elsettings->get('signup_email_img', 'email_icon.gif'),
 					JText::_($elsettings->get('signup_email_text')),
-					'width="24px" height="24px"'))
+					'width="24px" height="24px"'
+				)
+			)
 			. '</span> ';
+
 		return $text;
 	}
 
-	private function _getTag_formalsignup()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_formalsignup()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
+
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink formaloffer">'
-			. JHTML::_('link',
-				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_formal_offer_img', 'formal_icon.gif'),
+			. JHTML::_(
+				'link',
+				$this->absoluteUrls(
+					RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)
+				),
+				JHTML::_(
+					'image', $iconspath . $elsettings->get('signup_formal_offer_img', 'formal_icon.gif'),
 					JText::_($elsettings->get('signup_formal_offer_text')),
-					'width="24px" height="24px"'))
+					'width="24px" height="24px"'
+				)
+			)
 			. '</span> ';
+
 		return $text;
 	}
 
-	private function _getTag_externalsignup()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_externalsignup()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
+
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
+
 		if (!empty($this->getEvent()->getData()->external_registration_url))
 		{
 			$link = $this->getEvent()->getData()->external_registration_url;
@@ -2048,51 +2583,84 @@ class RedeventTags
 		{
 			$link = $this->getEvent()->getData()->submission_type_external;
 		}
+
 		$text = '<span class="vlink external">'
-			. JHTML::_('link',
+			. JHTML::_(
+				'link',
 				$link,
-				JHTML::_('image', $iconspath . $elsettings->get('signup_external_img', 'external_icon.gif'),
-					$elsettings->get('signup_external_text')),
-				'target="_blank"')
+				JHTML::_(
+					'image', $iconspath . $elsettings->get('signup_external_img', 'external_icon.gif'),
+					$elsettings->get('signup_external_text')
+				),
+				'target="_blank"'
+			)
 			. '</span> ';
+
 		return $text;
 	}
 
-	private function _getTag_phonesignup()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_phonesignup()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
+
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink phone">'
-			. JHTML::_('link',
-				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_phone_img', 'phone_icon.gif'),
+			. JHTML::_(
+				'link',
+				$this->absoluteUrls(
+					RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)
+				),
+				JHTML::_(
+					'image', $iconspath . $elsettings->get('signup_phone_img', 'phone_icon.gif'),
 					JText::_($elsettings->get('signup_phone_text')),
-					'width="24px" height="24px"'))
+					'width="24px" height="24px"'
+				)
+			)
 			. '</span> ';
+
 		return $text;
 	}
 
-	private function _getTag_webformsignuppage()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_webformsignuppage()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
-		// check that there is no loop with the tag inclusion
+
+		// Check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_webform) == 0)
 		{
 			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_webform);
@@ -2102,43 +2670,65 @@ class RedeventTags
 			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
+
 		return $text;
 	}
 
-	private function _getTag_formalsignuppage()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_formalsignuppage()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
-		// check that there is no loop with the tag inclusion
+
+		// Check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_formal_offer) == 0)
 		{
-			$text = $this->_getFormalOffer($this->getEvent()->getData());
+			$text = $this->getFormalOffer($this->getEvent()->getData());
 		}
 		else
 		{
 			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
+
 		return $text;
 	}
 
-	private function _getTag_phonesignuppage()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_phonesignuppage()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
-		// check that there is no loop with the tag inclusion
+
+		// Check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_phone) == 0)
 		{
 			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_phone);
@@ -2148,36 +2738,53 @@ class RedeventTags
 			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
+
 		return $text;
 	}
 
-	private function _getTag_emailsignuppage()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_emailsignuppage()
 	{
-		$registration_status = $this->_canRegister();
+		$registration_status = $this->canregister();
+
 		if (!$registration_status->canregister)
 		{
-			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+			$img = JHTML::_(
+				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status));
+				array('class' => 'hasTip', 'title' => $registration_status->status)
+			);
+
 			return $img;
 		}
-		// check that there is no loop with the tag inclusion
+
+		// Check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_email) == 0)
 		{
-			$text = $this->_getEmailSubmission($this->getEvent()->getData());
+			$text = $this->getEmailSubmission($this->getEvent()->getData());
 		}
 		else
 		{
 			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
+
 		return $text;
 	}
 
-	private function _getTag_paymentrequest()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_paymentrequest()
 	{
 		$text = '';
-		$link = $this->_getTag_paymentrequestlink();
+		$link = $this->getTag_paymentrequestlink();
 
 		if (!empty($link))
 		{
@@ -2187,20 +2794,29 @@ class RedeventTags
 		return $text;
 	}
 
-	private function _getTag_paymentrequestlink()
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
+	private function getTag_paymentrequestlink()
 	{
 		$app = JFactory::getApplication();
 		$lang = $app->input->get('lang');
 		$link = '';
 
-		if (!empty($this->_submitkey))
+		if (!empty($this->submitkey))
 		{
-			$title = urlencode($this->getEvent()->getData()->title
+			$title = urlencode(
+				$this->getEvent()->getData()->title
 				. ' '
-				. RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates,
-					$this->getEvent()->getData()->times));
+				. RedeventHelperOutput::formatdate(
+					$this->getEvent()->getData()->dates,
+					$this->getEvent()->getData()->times
+				)
+			);
 			$link = 'index.php?option=com_redform&task=payment.select&source=redevent&key='
-				. $this->_submitkey . '&paymenttitle=' . $title;
+				. $this->submitkey . '&paymenttitle=' . $title;
 
 			if ($lang)
 			{
@@ -2219,13 +2835,15 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _getTag_registrationid()
+	private function getTag_registrationid()
 	{
 		$text = '';
-		if (!empty($this->_submitkey))
+
+		if (!empty($this->submitkey))
 		{
-			$text = $this->getAttendeeUniqueId($this->_submitkey);
+			$text = $this->getAttendeeUniqueId($this->submitkey);
 		}
+
 		return $text;
 	}
 
@@ -2235,9 +2853,9 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _getTag_total_price()
+	private function getTag_total_price()
 	{
-		return $this->_getSubmissionTotalPrice();
+		return $this->getSubmissionTotalPrice();
 	}
 
 	/**
@@ -2245,13 +2863,15 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	private function _getTag_latlong()
+	private function getTag_latlong()
 	{
 		$session = $this->getEvent()->getData();
+
 		if ($session->latitude || $session->longitude)
 		{
 			return $session->latitude . ',' . $session->longitude;
 		}
+
 		return '';
 	}
 }

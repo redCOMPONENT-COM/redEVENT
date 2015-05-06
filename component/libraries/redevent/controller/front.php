@@ -1,37 +1,34 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved.
- * @license can be read in this package of software in the file license.txt or
- * read on http://redcomponent.com/license.txt
- * Developed by email@recomponent.com - redCOMPONENT.com
+ * @package    Redevent.library
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
 /**
  * Redevent Component Controller
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since 0.9
-*/
+ * @package  Redevent.library
+ * @since    0.9
+ */
 class RedeventControllerFront extends JControllerLegacy
 {
-
 	/**
 	 * Typical view method for MVC based architecture
 	 *
 	 * This function is provide as a default implementation, in most cases
 	 * you will need to override it in your own controllers.
 	 *
-	 * @param   boolean $cachable  If true, the view output will be cached
-	 * @param   array   $urlparams An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  JController  A JController object to support chaining.
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
 		// If filter is set, put the filter values as get variable so that the user can go back without warning
 		$this->checkfilter();
@@ -77,15 +74,19 @@ class RedeventControllerFront extends JControllerLegacy
 	 */
 	protected function checkfilter()
 	{
-		$post = $this->input->post->getArray();
-		$uri = Jfactory::getUri();
+		$post = $_POST;
+		$filter = JFilterInput::getInstance();
+
+		$uri = JFactory::getUri();
 
 		// Do not modify it if not proper view...
-		$myuri = clone($uri);
+		$myuri = clone $uri;
 		$vars = 0;
 
 		foreach ($post as $filter => $v)
 		{
+			$v = $filter->clean($v, 'cmd');
+
 			switch ($filter)
 			{
 				case 'filter_category':

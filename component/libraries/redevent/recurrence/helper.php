@@ -88,18 +88,22 @@ class RedeventRecurrenceHelper
 					{
 						preg_match('/([-]*)([0-9]*)([A-Z]*)/', $d, $res);
 						$revert = ($res[1] == '-');
+
 						if ($res[2] && $res[3])
-						{ // has number and day
+						{
+							// Has number and day
 							if ($rule->type == 'MONTHLY')
 							{
 								$rule->monthtype = 'byday';
 							}
+
 							if ($revert)
 							{
 								if (!in_array($res[2], $rule->rweeks))
 								{
 									$rule->rweeks[] = $res[2];
 								}
+
 								if (!in_array($res[3], $rule->rweekdays))
 								{
 									$rule->rweekdays[] = $res[3];
@@ -111,30 +115,36 @@ class RedeventRecurrenceHelper
 								{
 									$rule->weeks[] = $res[2];
 								}
+
 								if (!in_array($res[3], $rule->weekdays))
 								{
 									$rule->weekdays[] = $res[3];
 								}
 							}
 						}
-						else if ($res[2])
-						{ // only number
+						elseif ($res[2])
+						{
+							// Only number
 							$rule->bydays[] = $res[2];
+
 							if ($rule->type == 'MONTHLY')
 							{
 								$rule->monthtype = 'bymonthdays';
 							}
+
 							if ($revert)
 							{
 								$rule->reverse_bydays = 1;
 							}
 						}
-						else if ($res[3])
-						{ // only day
+						elseif ($res[3])
+						{
+							// Only day
 							if ($rule->type == 'MONTHLY')
 							{
 								$rule->monthtype = 'byday';
 							}
+
 							if ($revert)
 							{
 								if (!in_array($res[3], $rule->rweekdays))
@@ -160,7 +170,6 @@ class RedeventRecurrenceHelper
 		return $rule;
 	}
 
-
 	/**
 	 * adds xref repeats to the database.
 	 *
@@ -174,26 +183,27 @@ class RedeventRecurrenceHelper
 	{
 		$db = JFactory::getDBO();
 
-		// generate until limit
+		// Generate until limit
 		$params = $this->params;
 		$limit = $params->get('recurrence_limit', 30);
-		$limit_date_int = time() + $limit*3600*24;
+		$limit_date_int = time() + $limit * 3600 * 24;
 
-		// get active recurrences
-		$query = ' SELECT MAX(rp.xref_id) as xref_id, r.rrule, r.id as recurrence_id '
-			. ' FROM #__redevent_repeats AS rp '
-			. ' INNER JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-			. ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = rp.xref_id ' // make sure there are still events associated...
-			. ' WHERE r.ended = 0 '
-			. '   AND x.dates > 0 '
-		;
+		$query = $db->getQuery(true);
+
+		$query->select('MAX(rp.xref_id) as xref_id, r.rrule, r.id as recurrence_id')
+			->from('#__redevent_repeats AS rp')
+			->join('INNER', '#__redevent_recurrences AS r on r.id = rp.recurrence_id')
+			->join('INNER', '#__redevent_event_venue_xref AS x on x.id = rp.xref_id') /* make sure there are still events associated...*/
+			->where('r.ended = 0')
+			->where('x.dates > 0');
 
 		if ($recurrence_id)
 		{
-			$query .= ' AND r.id = '. $db->Quote($recurrence_id);
+			$query->where('r.id = ' . $db->Quote($recurrence_id));
 		}
 
-		$query .= ' GROUP BY rp.recurrence_id ';
+		$query->group('rp.recurrence_id');
+
 		$db->setQuery($query);
 		$recurrences = $db->loadObjectList();
 
@@ -202,7 +212,7 @@ class RedeventRecurrenceHelper
 			return true;
 		}
 
-		// get corresponding xrefs
+		// Get corresponding xrefs
 		$rids = array();
 
 		foreach ($recurrences as $r)
@@ -210,11 +220,12 @@ class RedeventRecurrenceHelper
 			$rids[] = $r->xref_id;
 		}
 
-		$query = ' SELECT x.*, rp.count '
-			. ' FROM #__redevent_event_venue_xref AS x '
-			. ' INNER JOIN #__redevent_repeats AS rp ON rp.xref_id = x.id '
-			. ' WHERE x.id IN ('. implode(",", $rids) .')'
-		;
+		$query = $db->getQuery(true);
+		$query->select('x.*, rp.count')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('INNER', '#__redevent_repeats AS rp ON rp.xref_id = x.id')
+			->where('x.id IN (' . implode(",", $rids) . ')');
+
 		$db->setQuery($query);
 		$xrefs = $db->loadObjectList('id');
 
@@ -222,7 +233,7 @@ class RedeventRecurrenceHelper
 		$rule = $recurrenceHelper->getRule($r->rrule);
 		$nextHelper = new RedeventRecurrenceNext($rule);
 
-		// now, do the job...
+		// Now, do the job...
 		foreach ($recurrences as $r)
 		{
 			$next = $nextHelper->getNext($xrefs[$r->xref_id]);
@@ -234,52 +245,51 @@ class RedeventRecurrenceHelper
 					break;
 				}
 
-				//record xref
+				// Record xref
 				$object = RTable::getAdminInstance('Session');
 				$object->bind(get_object_vars($next));
 
 				if ($object->store())
 				{
-					// copy the roles
+					// Copy the roles
 					$query = ' INSERT INTO #__redevent_sessions_roles (xref, role_id, user_id) '
-						. ' SELECT '.$object->id.', role_id, user_id '
+						. ' SELECT ' . $object->id . ', role_id, user_id '
 						. ' FROM #__redevent_sessions_roles '
 						. ' WHERE xref = ' . $db->Quote($r->xref_id);
 					$db->setQuery($query);
 
 					if (!$db->execute())
 					{
-						RedeventHelperLog::simpleLog('recurrence copying roles error: '.$db->getErrorMsg());
+						RedeventHelperLog::simpleLog('recurrence copying roles error: ' . $db->getErrorMsg());
 					}
 
-					// copy the prices
+					// Copy the prices
 					$query = ' INSERT INTO #__redevent_sessions_pricegroups (xref, pricegroup_id, price, currency) '
-						. ' SELECT '.$object->id.', pricegroup_id, price, currency '
+						. ' SELECT ' . $object->id . ', pricegroup_id, price, currency '
 						. ' FROM #__redevent_sessions_pricegroups '
 						. ' WHERE xref = ' . $db->Quote($r->xref_id);
 					$db->setQuery($query);
 
 					if (!$db->execute())
 					{
-						RedeventHelperLog::simpleLog('recurrence copying prices error: '.$db->getErrorMsg());
+						RedeventHelperLog::simpleLog('recurrence copying prices error: ' . $db->getErrorMsg());
 					}
 
-					// update repeats table
+					// Update repeats table
 					$query = ' INSERT INTO #__redevent_repeats '
-						. ' SET xref_id = '. $db->Quote($object->id)
-						. '   , recurrence_id = '. $db->Quote($r->recurrence_id)
-						. '   , count = '. $db->Quote($next->count)
-					;
+						. ' SET xref_id = ' . $db->Quote($object->id)
+						. '   , recurrence_id = ' . $db->Quote($r->recurrence_id)
+						. '   , count = ' . $db->Quote($next->count);
 					$db->setQuery($query);
 
 					if (!$db->execute())
 					{
-						RedeventHelperLog::simpleLog('saving repeat error: '.$db->getErrorMsg());
+						RedeventHelperLog::simpleLog('saving repeat error: ' . $db->getErrorMsg());
 					}
 				}
 				else
 				{
-					RedeventHelperLog::simpleLog('saving recurrence xref error: '.$db->getErrorMsg());
+					RedeventHelperLog::simpleLog('saving recurrence xref error: ' . $db->getErrorMsg());
 				}
 
 				$next = $nextHelper->getNext($next);
@@ -287,8 +297,8 @@ class RedeventRecurrenceHelper
 
 			if (!$next)
 			{
-				// no more events to generate, we can disable the rule
-				$query = ' UPDATE #__redevent_recurrences SET ended = 1 WHERE id = '. $db->Quote($r->recurrence_id);
+				// No more events to generate, we can disable the rule
+				$query = ' UPDATE #__redevent_recurrences SET ended = 1 WHERE id = ' . $db->Quote($r->recurrence_id);
 				$db->setQuery($query);
 				$db->execute();
 			}
@@ -297,11 +307,19 @@ class RedeventRecurrenceHelper
 		return true;
 	}
 
+	/**
+	 * Convert ical date to time
+	 *
+	 * @param   string  $date  date in ical format
+	 *
+	 * @return bool|string
+	 */
 	private function icalDatetotime($date)
 	{
 		if (preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})(Z?)/', $date, $res))
 		{
 			$res = mktime($res[4], $res[5], $res[6], $res[2], $res[3], $res[1]);
+
 			return strftime('%Y-%m-%d %H:%M:%S', $res);
 		}
 		else

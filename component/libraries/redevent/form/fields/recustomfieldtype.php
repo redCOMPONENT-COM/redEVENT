@@ -10,8 +10,8 @@ JFormHelper::loadFieldClass('list');
 /**
  * custom types field
  *
- * @package    Redevent.library
- * @since       2.5
+ * @package  Redevent.library
+ * @since    2.5
  */
 class JFormFieldRECustomFieldType extends JFormFieldList
 {
@@ -22,8 +22,9 @@ class JFormFieldRECustomFieldType extends JFormFieldList
 	protected $type = 'recustomfieldtype';
 
 	/**
-	 * (non-PHPdoc)
-	 * @see JFormFieldList::getOptions()
+	 * Method to get the field options.
+	 *
+	 * @return  array  The field option objects.
 	 */
 	protected function getOptions()
 	{

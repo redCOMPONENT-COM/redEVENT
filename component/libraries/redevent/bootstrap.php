@@ -58,7 +58,7 @@ class RedeventBootstrap
 			JFormHelper::addRulePath(JPATH_LIBRARIES . '/redevent/form/rules');
 
 			// Use bootstrap3
-//			RHtmlMedia::setFramework('bootstrap3');
+			/* RHtmlMedia::setFramework('bootstrap3'); */
 		}
 	}
 }

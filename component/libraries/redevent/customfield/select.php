@@ -22,12 +22,12 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'select';
+	protected $name = 'select';
 
 	/**
 	 * returns the html code for the form element
 	 *
-	 * @param array $attributes
+	 * @param   array  $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -57,9 +57,20 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 			$selected = $this->default_value;
 		}
 
-		return JHTML::_('select.genericlist', $option_list, 'jform[' . $this->fieldname . ']', $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid);
+		return JHTML::_(
+			'select.genericlist', $option_list, 'jform[' . $this->fieldname . ']',
+			$this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid
+		);
 	}
 
+	/**
+	 * returns form field for filtering
+	 *
+	 * @param   array  $attributes  attributes
+	 * @param   mixed  $selected    selected value
+	 *
+	 * @return html string
+	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
 		$app = JFactory::getApplication();
@@ -77,7 +88,10 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 
 		$attributes['multiple'] = 'multiple';
 
-		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . '][]', $this->attributesToString($attributes), 'value', 'text', $value);
+		return JHTML::_(
+			'select.genericlist', $option_list, 'filtercustom[' . $this->id . '][]',
+			$this->attributesToString($attributes), 'value', 'text', $value
+		);
 	}
 
 	/**

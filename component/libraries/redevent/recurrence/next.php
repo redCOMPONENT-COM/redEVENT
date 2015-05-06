@@ -71,7 +71,10 @@ class RedeventRecurrenceNext
 			return false;
 		}
 
-		$days_name = array('SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday', 'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday');
+		$days_name = array(
+			'SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday',
+			'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday'
+		);
 		$xref_start = strtotime($last_xref->dates);
 
 		// Get the next start timestamp
@@ -110,66 +113,77 @@ class RedeventRecurrenceNext
 					}
 					elseif ($days_number[$d] == $current)
 					{
-						// same day, look in next intervall, after this day
+						// Same day, look in next intervall, after this day
 						$next[] = strtotime('+' . $rule->interval . ' ' . $days_name[$d], strtotime($last_xref->dates) + 3600 * 24);
 					}
 					else
 					{
-						// in next intervall
+						// In next intervall
 						$next[] = strtotime('+' . $rule->interval . ' ' . $days_name[$d], strtotime($last_xref->dates));
 					}
 				}
 
-				// the next one is the lowest value
+				// The next one is the lowest value
 				$next_start = min($next);
 				break;
 
 			case 'MONTHLY':
 				if ($rule->monthtype == 'byday')
 				{
-					// first day of this month
+					// First day of this month
 					$first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
-					// last day of this month
+
+					// Last day of this month
 					$last_this = mktime(0, 0, 0, strftime('%m', $xref_start) + 1, 0, strftime('%Y', $xref_start));
-					// first day of +interval month
+
+					// First day of +interval month
 					$first_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + $rule->interval, 1, strftime('%Y', $xref_start));
-					// last day of this month
+
+					// Last day of this month
 					$last_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + 1 + $rule->interval, 0, strftime('%Y', $xref_start));
 
 					$days = array();
-					//          print_r($rule);
+
 					foreach ($rule->weeks as $week)
 					{
 						foreach ($rule->weekdays as $day)
 						{
 							$int_day = strtotime($week . ' ' . $days_name[$day], $first_this);
+
 							if ($int_day > $xref_start && $int_day <= $last_this)
 							{
 								$days[] = $int_day;
 							}
+
 							$int_day = strtotime($week . ' ' . $days_name[$day], $first_next_interval);
+
 							if ($int_day > $xref_start && $int_day <= $last_next_interval)
 							{
 								$days[] = $int_day;
 							}
 						}
 					}
+
 					foreach ($rule->rweeks as $week)
 					{
 						foreach ($rule->rweekdays as $day)
 						{
 							$int_day = strtotime('-' . $week . ' ' . $days_name[$day], $last_this + 24 * 3600);
+
 							if ($int_day > $xref_start && $int_day >= $first_this)
 							{
 								$days[] = $int_day;
 							}
+
 							$int_day = strtotime('-' . $week . ' ' . $days_name[$day], $last_next_interval + 24 * 3600);
+
 							if ($int_day > $xref_start && $int_day >= $first_next_interval)
 							{
 								$days[] = $int_day;
 							}
 						}
 					}
+
 					$next_start = min($days);
 				}
 				else
@@ -177,7 +191,8 @@ class RedeventRecurrenceNext
 					$current = strftime('%d', strtotime($last_xref->dates));
 
 					if (!$rule->bydays || !count($rule->bydays))
-					{ // force to the day of previous session
+					{
+						// Force to the day of previous session
 						$rule->bydays = array(date('d', strtotime($last_xref->dates)));
 					}
 
@@ -185,6 +200,7 @@ class RedeventRecurrenceNext
 					{
 						sort($rule->bydays);
 						$next_day = null;
+
 						foreach ($rule->bydays as $day)
 						{
 							if ($day > $current)
@@ -194,9 +210,12 @@ class RedeventRecurrenceNext
 							}
 						}
 
-						if ($next_day == null) // not this month => this month + interval month!
+						if ($next_day == null)
 						{
-							$year_month = strftime('%Y-%m', strtotime(date("Y-m-1", strtotime($last_xref->dates)) . ' + ' . $rule->interval . " months"));
+							// Not this month => this month + interval month!
+							$year_month = strftime(
+								'%Y-%m', strtotime(date("Y-m-1", strtotime($last_xref->dates)) . ' + ' . $rule->interval . " months")
+							);
 							$next_start = strtotime($year_month . '-' . $rule->bydays[0]);
 						}
 						else
@@ -212,29 +231,38 @@ class RedeventRecurrenceNext
 
 						foreach ($rule->bydays as $day)
 						{
-							// we need to check the dates for this month, and the +interval month
+							// We need to check the dates for this month, and the +interval month
 							$dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) . ' + 1 months -' . $day . ' day');
+
 							if ($dd > $current_sec)
 							{
 								$next[] = $dd;
 							}
-							$dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) . ' +' . (1 + $rule->interval) . ' months -' . $day . ' days', strtotime($last_xref->dates));
+
+							$dd = strtotime(
+								date("Y-m-1", strtotime($last_xref->dates)) . ' +'
+								. (1 + $rule->interval) . ' months -' . $day . ' days', strtotime($last_xref->dates)
+							);
+
 							if ($dd > $current_sec)
 							{
 								$next[] = $dd;
 							}
 						}
-						// the next is the closest, lower value
+
+						// The next is the closest, lower value
 						$next_start = min($next);
 					}
 				}
+
 				break;
 
 			case 'YEARLY':
 				$current = strtotime($last_xref->dates);
 
-				if (empty($rule->bydays)) // in that case, use current date, plus a year
+				if (empty($rule->bydays))
 				{
+					// In that case, use current date, plus a year
 					$next_start = mktime(0, 0, 0, strftime('%m', $current), strftime('%d', $current), strftime('%Y', $current) + $rule->interval);
 				}
 				else
@@ -243,6 +271,7 @@ class RedeventRecurrenceNext
 					{
 						sort($rule->bydays);
 						$next_day = $rule->bydays[0];
+
 						foreach ($rule->bydays as $day)
 						{
 							if ($day > $current)
@@ -251,8 +280,10 @@ class RedeventRecurrenceNext
 								break;
 							}
 						}
-						if ($next_day == $rule->bydays[0]) // not this year => this year + interval year!
+
+						if ($next_day == $rule->bydays[0])
 						{
+							// Not this year => this year + interval year!
 							$next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)) + 1);
 						}
 						else
@@ -262,17 +293,20 @@ class RedeventRecurrenceNext
 					}
 					else
 					{
-						// total days in this year
+						// Total days in this year
 						$total = strftime('%j', mktime(0, 0, 0, 1, 0, strftime('%Y', strtotime($last_xref->dates)) + 1));
 						$rev_days = array();
-						// get number in proper order
+
+						// Get number in proper order
 						rsort($rule->bydays);
+
 						foreach ($rule->bydays as $day)
 						{
 							$rev_days[] = $total - $day + 1;
 						}
 
 						$next_day = null;
+
 						foreach ($rev_days as $day)
 						{
 							if ($day > $current)
@@ -282,8 +316,9 @@ class RedeventRecurrenceNext
 							}
 						}
 
-						if ($next_day == null) // not this year => this year + interval year!
+						if ($next_day == null)
 						{
+							// Not this year => this year + interval year!
 							$next_start = mktime(0, 0, 0, 1, -$rule->bydays[0], strftime('%Y', strtotime($last_xref->dates)) + 1 + $rule->interval);
 						}
 						else
@@ -304,8 +339,9 @@ class RedeventRecurrenceNext
 			return false;
 		}
 
-		// check the until rule
-		if ($rule->repeat_type == 'until' && strtotime(strftime('%Y-%m-%d', $next_start) . ' ' . $last_xref->times) > strtotime($rule->repeat_until_date))
+		// Check the until rule
+		if ($rule->repeat_type == 'until'
+			&& strtotime(strftime('%Y-%m-%d', $next_start) . ' ' . $last_xref->times) > strtotime($rule->repeat_until_date))
 		{
 			return false;
 		}
@@ -314,11 +350,11 @@ class RedeventRecurrenceNext
 
 		if (!$delta)
 		{
-			// no delta, so same session...
+			// No delta, so same session...
 			return false;
 		}
 
-		// return the new occurence
+		// Return the new occurence
 		$new = clone $last_xref;
 
 		unset($new->id);

@@ -28,7 +28,6 @@ abstract class RedeventAbstractCustomfield extends JObject
 	 *
 	 * @var string
 	 */
-
 	public $name;
 
 	public $fieldid;

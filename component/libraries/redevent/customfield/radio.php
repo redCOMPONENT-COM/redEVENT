@@ -16,19 +16,18 @@ defined('JPATH_BASE') or die();
  */
 class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 {
-
 	/**
 	 * Element name
 	 *
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'select';
+	protected $name = 'select';
 
 	/**
 	 * returns the html code for the form element
 	 *
-	 * @param array $attributes
+	 * @param   array  $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -55,9 +54,21 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 		{
 			$selected = trim($this->default_value);
 		}
-		return JHTML::_('select.radiolist', $option_list, 'jform[' . $this->fieldname . ']', $this->attributesToString($attributes), 'value', 'text', $selected);
+
+		return JHTML::_(
+			'select.radiolist', $option_list, 'jform[' . $this->fieldname
+			. ']', $this->attributesToString($attributes), 'value', 'text', $selected
+		);
 	}
 
+	/**
+	 * returns form field for filtering
+	 *
+	 * @param   array  $attributes  attributes
+	 * @param   mixed  $selected    selected value
+	 *
+	 * @return html string
+	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
 		$app = JFactory::getApplication();
@@ -86,6 +97,9 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 
 		$attributes['multiple'] = 'multiple';
 
-		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . '][]', $this->attributesToString($attributes), 'value', 'text', $value);
+		return JHTML::_(
+			'select.genericlist', $option_list, 'filtercustom[' . $this->id . '][]',
+			$this->attributesToString($attributes), 'value', 'text', $value
+		);
 	}
 }

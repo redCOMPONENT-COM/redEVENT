@@ -16,19 +16,18 @@ defined('JPATH_BASE') or die();
  */
 class RedeventCustomfieldWysiwyg extends RedeventAbstractCustomfield
 {
-
 	/**
 	 * Element name
 	 *
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'wysiwyg';
+	protected $name = 'wysiwyg';
 
 	/**
 	 * returns the html code for the form element
 	 *
-	 * @param array $attributes
+	 * @param   array  $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -58,14 +57,24 @@ class RedeventCustomfieldWysiwyg extends RedeventAbstractCustomfield
 		{
 			$value = $this->default_value;
 		}
+
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
 		$editor = JFactory::getEditor();
 
 		$html = $editor->display('jform[' . $this->fieldname . ']', $value, '100%;', '350', '75', '20', array('pagebreak', 'readmore'));
+
 		return $html;
 	}
 
+	/**
+	 * returns form field for filtering
+	 *
+	 * @param   array  $attributes  attributes
+	 * @param   mixed  $selected    selected value
+	 *
+	 * @return html string
+	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
 		$app = JFactory::getApplication();
@@ -81,6 +90,7 @@ class RedeventCustomfieldWysiwyg extends RedeventAbstractCustomfield
 
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<input type="text" name="filtercustom[' . $this->id . ']" id="filtercustom[' . $this->id . ']" value="' . $value . '" ' . $this->attributesToString($attributes) . '/>';
+		return '<input type="text" name="filtercustom[' . $this->id . ']" id="filtercustom[' . $this->id . ']" value="'
+			. $value . '" ' . $this->attributesToString($attributes) . '/>';
 	}
 }

@@ -9,27 +9,25 @@
 defined('JPATH_BASE') or die();
 
 /**
- * Renders a Textbox Custom field
+ * Renders a select multiple Custom field
  *
- * @package        redEVENT
- * @since          2.0
+ * @package  Redevent.Library
+ * @since    2.0
  */
-
 class RedeventCustomfieldSelectmultiple extends RedeventCustomfieldSelect
 {
-
 	/**
 	 * Element name
 	 *
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'selectmultiple';
+	protected $name = 'selectmultiple';
 
 	/**
 	 * returns the html code for the form element
 	 *
-	 * @param array $attributes
+	 * @param   array  $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -49,19 +47,22 @@ class RedeventCustomfieldSelectmultiple extends RedeventCustomfieldSelect
 
 		$options = $this->getOptions();
 
-		// selected options
+		// Selected options
 		$values = explode("\n", $this->value);
 		$default_values = explode("\n", $this->default_value);
 
 		$default = array();
+
 		foreach ($default_values as $d)
 		{
 			$d = trim($d);
+
 			if (!empty($d))
 			{
 				$default[] = $d;
 			}
 		}
+
 		if (!is_null($this->value))
 		{
 			$selected = $values;
@@ -71,9 +72,20 @@ class RedeventCustomfieldSelectmultiple extends RedeventCustomfieldSelect
 			$selected = $default;
 		}
 
-		return JHTML::_('select.genericlist', $options, 'jform[' . $this->fieldname . ']' . '[]', 'multiple="multiple" size="' . min(10, count($options)) . '" ' . $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid);
+		return JHTML::_(
+			'select.genericlist', $options, 'jform[' . $this->fieldname . ']' . '[]', 'multiple="multiple" size="'
+			. min(10, count($options)) . '" ' . $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid
+		);
 	}
 
+	/**
+	 * returns form field for filtering
+	 *
+	 * @param   array  $attributes  attributes
+	 * @param   mixed  $selected    selected value
+	 *
+	 * @return html string
+	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
 		if ($selected)
@@ -89,6 +101,8 @@ class RedeventCustomfieldSelectmultiple extends RedeventCustomfieldSelect
 
 		$attributes['multiple'] = 'multiple';
 
-		return JHTML::_('select.genericlist', $options, 'filtercustom[' . $this->id . '][]', $this->attributesToString($attributes), 'value', 'text', $value);
+		return JHTML::_('select.genericlist', $options, 'filtercustom[' . $this->id
+			. '][]', $this->attributesToString($attributes), 'value', 'text', $value
+		);
 	}
 }

@@ -27,14 +27,14 @@ class RedeventTagsFormForm
 	private $model;
 
 	/**
-	 * @var JInput|\Joomla\Input\Input
+	 * @var JInput
 	 */
 	private $input;
 
 	/**
 	 * @var JDatabaseDriver
 	 */
-	private $_db;
+	protected $db;
 
 	/**
 	 * Constructor
@@ -46,7 +46,7 @@ class RedeventTagsFormForm
 		$this->rfcore = RdfCore::getInstance();
 		$this->model = $dataModel;
 		$this->input = JFactory::getApplication()->input;
-		$this->_db = JFactory::getDbo();
+		$this->db = JFactory::getDbo();
 	}
 
 	/**
@@ -164,7 +164,6 @@ class RedeventTagsFormForm
 		}
 
 		return $html;
-
 	}
 
 	/**
@@ -180,7 +179,7 @@ class RedeventTagsFormForm
 		$single = $this->input->getInt('single', 0);
 		$max = $this->model->getData()->max_multi_signup;
 
-		if ($max && !$single &JFactory::getUser()->get('id'))
+		if ($max && !$single && JFactory::getUser()->get('id'))
 		{
 			// We must substract current registrations of this user !
 			$nbregs = $this->getUserActiveRegistrationsCount();
@@ -214,7 +213,7 @@ class RedeventTagsFormForm
 			JError::raiseError(403, 'NO_AUTH');
 		}
 
-		$query = $this->_db->getQuery(true);
+		$query = $this->db->getQuery(true);
 
 		$query->select('COUNT(id)')
 			->from('#__redevent_register')
@@ -222,8 +221,8 @@ class RedeventTagsFormForm
 			->where('cancelled = 0')
 			->where('xref = ' . $this->model->getData()->xref);
 
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResult();
+		$this->db->setQuery($query);
+		$res = $this->db->loadResult();
 
 		return $res;
 	}

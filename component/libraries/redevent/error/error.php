@@ -8,26 +8,58 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RedeventError extends JError
+/**
+ * Class RedeventError
+ *
+ * @package  Redevent.Library
+ * @since    2.5
+ */
+class RedeventError
 {
-	public static function raiseError($code, $msg, $info = null)
+	/**
+	 * Throw an exception after logging
+	 *
+	 * @param   int     $code  error code
+	 * @param   string  $msg   message
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public static function raiseError($code, $msg)
 	{
 		RedeventHelperLog::simplelog("Error $code: $msg");
 
-		return parent::raiseError($code, $msg, $info = null);
+		throw new Exception($msg, $code);
 	}
 
-	public static function raiseNotice($code, $msg, $info = null)
+	/**
+	 * display notice after logging
+	 *
+	 * @param   int     $code  error code
+	 * @param   string  $msg   message
+	 *
+	 * @return void
+	 */
+	public static function raiseNotice($code, $msg)
 	{
 		RedeventHelperLog::simplelog("Notice $code: $msg");
 
-		return parent::raiseNotice($code, $msg, $info = null);
+		JFactory::getApplication()->enqueueMessage($msg, 'notice');
 	}
 
-	public static function raiseWarning($code, $msg, $info = null)
+	/**
+	 * display warning after logging
+	 *
+	 * @param   int     $code  error code
+	 * @param   string  $msg   message
+	 *
+	 * @return void
+	 */
+	public static function raiseWarning($code, $msg)
 	{
-		RedeventHelperLog::simplelog("Notice $code: $msg");
+		RedeventHelperLog::simplelog("Warning $code: $msg");
 
-		return parent::raiseWarning($code, $msg, $info = null);
+		JFactory::getApplication()->enqueueMessage($msg, 'warning');
 	}
 }

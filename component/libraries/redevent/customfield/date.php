@@ -16,19 +16,18 @@ defined('JPATH_BASE') or die();
  */
 class RedeventCustomfieldDate extends RedeventAbstractCustomfield
 {
-
 	/**
 	 * Element name
 	 *
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'date';
+	protected $name = 'date';
 
 	/**
 	 * returns the html code for the form element
 	 *
-	 * @param array $attributes
+	 * @param   array  $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -54,6 +53,10 @@ class RedeventCustomfieldDate extends RedeventAbstractCustomfield
 		{
 			$selected = $this->default_value;
 		}
-		return JHTML::calendar($selected, 'jform[' . $this->fieldname . ']', $this->fieldid, '%Y-%m-%d', $this->attributesToString($attributes));
+
+		return JHTML::calendar(
+			$selected, 'jform[' . $this->fieldname . ']', $this->fieldid,
+			'%Y-%m-%d', $this->attributesToString($attributes)
+		);
 	}
 }
