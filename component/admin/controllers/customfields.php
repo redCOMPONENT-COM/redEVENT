@@ -44,17 +44,14 @@ class RedeventControllerCustomfields extends RControllerAdmin
 		header('Content-Disposition: attachment; filename=customfields.csv');
 		header('Pragma: no-cache');
 
-		$k = 0;
 		$export = '';
-		$col = array();
 
 		if (count($rows))
 		{
 			$header = current($rows);
 			$export .= RedeventHelper::writecsvrow(array_keys($header));
 
-			$current = 0; // current event
-			foreach($rows as $data)
+			foreach ($rows as $data)
 			{
 				$export .= RedeventHelper::writecsvrow($data);
 			}
@@ -75,70 +72,92 @@ class RedeventControllerCustomfields extends RControllerAdmin
 		$replace = JRequest::getVar('replace', 0, 'post', 'int');
 
 		$msg = '';
-		if ( $file = JRequest::getVar( 'import', null, 'files', 'array' ) )
+
+		if ($file = JRequest::getVar('import', null, 'files', 'array'))
 		{
-			$handle = fopen($file['tmp_name'],'r');
-			if(!$handle)
+			$handle = fopen($file['tmp_name'], 'r');
+
+			if (!$handle)
 			{
 				$msg = JText::_('COM_REDEVENT_Cannot_open_uploaded_file.');
-				$this->setRedirect( 'index.php?option=com_redevent&view=customfields&task=import', $msg, 'error' );
+				$this->setRedirect('index.php?option=com_redevent&view=customfields&task=import', $msg, 'error');
+
 				return;
 			}
 
-			// get fields, on first row of the file
+			// Get fields, on first row of the file
 			$fields = array();
-			if ( ($data = fgetcsv($handle, 0, ',', '"')) !== FALSE )
+
+			if (($data = fgetcsv($handle, 0, ',', '"')) !== false)
 			{
 				$numfields = count($data);
-				for ($c=0; $c < $numfields; $c++)
+
+				for ($c = 0; $c < $numfields; $c++)
 				{
-					$fields[$c]=$data[$c];
+					$fields[$c] = $data[$c];
 				}
 			}
+
 			// If there is no validated fields, there is a problem...
-			if ( !count($fields) ) {
-				$msg .= "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />try to export first to get an example of formatting</p>\n";
-				$this->setRedirect( 'index.php?option=com_redevent&view=customfields&task=import', $msg, 'error' );
+			if (!count($fields))
+			{
+				$msg .= "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />";
+				$msg .= "try to export first to get an example of formatting</p>\n";
+				$this->setRedirect('index.php?option=com_redevent&view=customfields&task=import', $msg, 'error');
+
 				return;
 			}
-			else {
-				$msg .= "<p>".$numfields." fields found in first row</p>\n";
-				$msg .= "<p>".count($fields)." fields were kept</p>\n";
+			else
+			{
+				$msg .= "<p>" . $numfields . " fields found in first row</p>\n";
+				$msg .= "<p>" . count($fields) . " fields were kept</p>\n";
 			}
+
 			// Now get the records, meaning the rest of the rows.
 			$records = array();
 			$row = 1;
-			while ( ($data = fgetcsv($handle, 0, ',', '"')) !== FALSE )
+
+			while (($data = fgetcsv($handle, 0, ',', '"')) !== false)
 			{
 				$num = count($data);
-				if ($numfields != $num) {
+
+				if ($numfields != $num)
+				{
 					$msg .= "<p>Wrong number of fields ($num) record $row<br /></p>\n";
 				}
-				else {
-					$r = new stdclass();
-					// only extract columns with validated header, from previous step.
-					foreach ($fields as $k => $v) {
-						$r->$v = $data[$k];
+				else
+				{
+					$r = arrat();
+
+					// Only extract columns with validated header, from previous step.
+					foreach ($fields as $k => $v)
+					{
+						$r[$v] = $data[$k];
 					}
+
 					$records[] = $r;
 				}
+
 				$row++;
 			}
-			fclose($handle);
-			$msg .= "<p>total records found: ".count($records)."<br /></p>\n";
 
-			// database update
+			fclose($handle);
+			$msg .= "<p>total records found: " . count($records) . "<br /></p>\n";
+
+			// Database update
 			if (count($records))
 			{
 				$model = $this->getModel('customfields');
 				$result = $model->import($records, $replace);
-				$msg .= "<p>total added records: ".$result['added']."<br /></p>\n";
-				$msg .= "<p>total updated records: ".$result['updated']."<br /></p>\n";
+				$msg .= "<p>total added records: " . $result['added'] . "<br /></p>\n";
+				$msg .= "<p>total updated records: " . $result['updated'] . "<br /></p>\n";
 			}
-			$this->setRedirect( 'index.php?option=com_redevent&view=customfields&task=import', $msg );
+
+			$this->setRedirect('index.php?option=com_redevent&view=customfields&task=import', $msg);
 		}
-		else {
-			$this->setRedirect( 'index.php?option=com_redevent&view=customfields&task=import' );
+		else
+		{
+			$this->setRedirect('index.php?option=com_redevent&view=customfields&task=import');
 		}
 	}
 }

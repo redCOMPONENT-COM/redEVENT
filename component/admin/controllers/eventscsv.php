@@ -131,7 +131,6 @@ class RedeventControllerEventscsv extends RControllerForm
 		$this->setRedirect('index.php?option=com_redevent&view=eventscsv', $msg);
 	}
 
-
 	/**
 	 * handle specific fields conversion if needed
 	 *

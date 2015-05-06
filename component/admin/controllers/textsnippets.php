@@ -65,7 +65,8 @@ class RedeventControllerTextsnippets extends RControllerAdmin
 				// If there is no validated fields, there is a problem...
 				if (!count($fields))
 				{
-					$msg = "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />try to export first to get an example of formatting</p>\n";
+					$msg = "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />";
+					$msg .= "try to export first to get an example of formatting</p>\n";
 					throw new Exception($msg);
 				}
 

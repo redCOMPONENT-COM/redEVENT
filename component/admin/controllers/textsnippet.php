@@ -15,5 +15,4 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerTextsnippet extends RControllerForm
 {
-
 }

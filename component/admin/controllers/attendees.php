@@ -39,50 +39,53 @@ class RedeventControllerAttendees extends RControllerAdmin
 	}
 
 	/**
-	 * Delete attendees
+	 * Move attendees
+	 *
+	 * @TODO: reimplement for 3.x
 	 *
 	 * @return true on sucess
-	 * @access private
-	 * @since 0.9
 	 */
-	function move($cid = array())
+	public function move()
 	{
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$xref 	= JRequest::getInt('xref');
-		$dest 	= JRequest::getInt('dest');
-		$total 	= count( $cid );
+		$cid = JRequest::getVar('cid', array(), 'post', 'array');
+		$xref = JRequest::getInt('xref');
+		$dest = JRequest::getInt('dest');
+		$total = count($cid);
 		$formid = JRequest::getInt('form_id');
 
 		/* Check if anything is selected */
-		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_attendee_to_move' ) );
+		if (!is_array($cid) || count($cid) < 1)
+		{
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_attendee_to_move'));
 		}
 
-
-		if (!$dest) // display the form to chose destination
+		if (!$dest)
 		{
+			// Display the form to chose destination
 			/* Create the view object */
 			$view = $this->getView('attendees', 'html');
 
 			/* Standard model */
-			$view->setModel( $this->getModel( 'attendees', 'RedeventModel' ), true );
+			$view->setModel($this->getModel('attendees', 'RedeventModel'), true);
 			/* set layout */
 			$view->setLayout('move');
 
 			/* Now display the view */
 			$view->display();
+
 			return;
 		}
 
 		/* Get all submitter ID's */
 		$model = $this->getModel('attendees');
 
-		if(!$model->move($cid, $dest)) {
-      RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_ATTENDEES_CANT_MOVE_REGISTRATIONS" ) . ': ' . $model->getError() );
-			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		if (!$model->move($cid, $dest))
+		{
+			RedEventError::raiseWarning(0, JText::_("COM_REDEVENT_ATTENDEES_CANT_MOVE_REGISTRATIONS") . ': ' . $model->getError());
+			echo "<script> alert('" . $model->getError() . "'); window.history.go(-1); </script>\n";
 		}
 
-		foreach($cid as $attendee_id)
+		foreach ($cid as $attendee_id)
 		{
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
@@ -100,9 +103,9 @@ class RedeventControllerAttendees extends RControllerAdmin
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
-		$msg = $total.' '.JText::_( 'COM_REDEVENT_ATTENDEES_MOVED');
+		$msg = $total . ' ' . JText::_('COM_REDEVENT_ATTENDEES_MOVED');
 
-		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$dest, $msg );
+		$this->setRedirect('index.php?option=com_redevent&view=attendees&xref=' . $dest, $msg);
 	}
 
 	/**

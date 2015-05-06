@@ -1075,33 +1075,6 @@ class RedeventHelper
 	}
 
 	/**
-	 * returns html for user selector
-	 *
-	 * @param string $field_name
-	 * @param int $selected
-	 * @return string
-	 */
-	public static function getUserSelector($field_name, $selected)
-	{
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
-		$db = JFactory::getDBO();
-		$user = JFactory::getUser($selected);
-
-		JHTML::_('behavior.framework');
-		$document->addScript(JURI::base().'components/com_redevent/assets/js/selectuser.js');
-		//		echo '<pre>';print_r(JURI::base().'components/com_redevent/assets/selectuser.js'); echo '</pre>';exit;
-
-		$link = 'index.php?option=com_redevent&amp;task=selectuser&amp;tmpl=component&field='.$field_name;
-
-		$field  = '<input type="text" readonly="readonly" name="'.$field_name.'_name" id="'.$field_name.'_name" value="'.$user->get('username').'"/>';
-		$field .= '<input type="hidden" name="'.$field_name.'" id="'.$field_name.'" value="'.$user->get('id').'"/>';
-		$field .= "<a class=\"modal\" class=\"re-selectuserbutton\" title=\"".JText::_('COM_REDEVENT_SELECT_USER')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 500}}\">".JText::_('COM_REDEVENT_SELECT_USER')."</a>\n";
-
-		return $field;
-	}
-
-	/**
 	 * return the valid columns for frontend display
 	 *
 	 * @param   array    $columns  columns to filter

@@ -132,7 +132,7 @@ class RedeventControllerRegistrations extends RControllerAdmin
 	{
 		if (!(is_array($cid) && count($cid)))
 		{
-			return false;
+			return;
 		}
 
 		foreach ($cid as $attendee_id)

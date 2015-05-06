@@ -19,7 +19,7 @@ class RedeventControllerVenue extends RControllerForm
 	 * Function that allows child controller access to model data
 	 * after the data has been saved.
 	 *
-	 * @param   object  &$model     The data model object.
+	 * @param   object  $model      The data model object.
 	 * @param   array   $validData  The validated data.
 	 *
 	 * @return  void

@@ -35,7 +35,12 @@ class RedeventControllerTools extends RControllerAdmin
 		}
 		else
 		{
-			$msg = JText::sprintf('COM_REDEVENT_EVENTLIST_IMPORT_SUCCESS_D_EVENTS_D_CATEGORIES_D_VENUES', $result['events'], $result['categories'], $result['venues']);
+			$msg = JText::sprintf(
+				'COM_REDEVENT_EVENTLIST_IMPORT_SUCCESS_D_EVENTS_D_CATEGORIES_D_VENUES',
+				$result['events'],
+				$result['categories'],
+				$result['venues']
+			);
 			$this->setRedirect($link, $msg);
 		}
 	}
