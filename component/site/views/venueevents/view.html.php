@@ -65,8 +65,6 @@ class RedeventViewVenueevents extends RViewSite
 
 		// add js
 		JHTML::_('behavior.framework');
-		// for filter hint
-		$document->addScript($this->baseurl . '/components/com_redevent/assets/js/eventslist.js');
 
 		// Request variables
 		$limitstart = JRequest::getInt('limitstart');
@@ -206,6 +204,7 @@ class RedeventViewVenueevents extends RViewSite
 		$this->assignRef('list_link', $list_link);
 		$this->assignRef('customsfilters', $customsfilters);
 		$this->assign('filter_customs', $filter_customs);
+		$this->assign('state', $this->get('state'));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);

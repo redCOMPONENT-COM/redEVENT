@@ -50,12 +50,6 @@ class RedeventViewSimpleList extends RViewSite
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		// Add js
-		JHTML::_('behavior.framework');
-
-		// For filter hint
-		$document->addScript($this->baseurl . '/components/com_redevent/assets/js/eventslist.js');
-
 		// Get variables
 		$task = JRequest::getWord('task');
 		$pop = JRequest::getBool('pop');
@@ -127,6 +121,7 @@ class RedeventViewSimpleList extends RViewSite
 		$this->assignRef('thumb_link', $thumb_link);
 		$this->assignRef('list_link', $list_link);
 		$this->assign('filter_customs', $filter_customs);
+		$this->assign('state', $this->get('state'));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);

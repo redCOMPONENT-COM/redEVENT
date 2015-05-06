@@ -61,11 +61,6 @@ class RedeventViewDay extends RViewSite
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-    // add js
-    JHTML::_('behavior.framework');
-    // for filter hint
-    $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventslist.js');
-
 		// get variables
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
 		$limit		= JRequest::getVar('limit', $params->get('display_num'), '', 'int');
@@ -138,6 +133,7 @@ class RedeventViewDay extends RViewSite
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('lists' , 					$lists);
 		$this->assignRef('daydate' , 				$daydate);
+		$this->assign('state', $this->get('state'));
 		$this->assign('action',   JRoute::_(RedeventHelperRoute::getDayRoute(JRequest::getInt('id'))));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));

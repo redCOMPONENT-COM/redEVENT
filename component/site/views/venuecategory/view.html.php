@@ -70,11 +70,6 @@ class RedeventViewVenuecategory extends RViewSite
 		}
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		// add js
-		JHTML::_('behavior.framework');
-		// for filter hint
-		$document->addScript($this->baseurl . '/components/com_redevent/assets/js/eventslist.js');
-
 		// Request variables
 		$limitstart = JRequest::getInt('limitstart');
 		$limit = $mainframe->getUserStateFromRequest('com_redevent.venuecategory.limit', 'limit', $params->def('display_num', 0), 'int');
@@ -174,6 +169,7 @@ class RedeventViewVenuecategory extends RViewSite
 		$this->assignRef('pageNav', $pageNav);
 		$this->assignRef('elsettings', $elsettings);
 		$this->assignRef('item', $item);
+		$this->assign('state', $this->get('state'));
 
 		$this->order = $state->get('filter_order');
 		$this->orderDir = $state->get('filter_order_Dir');

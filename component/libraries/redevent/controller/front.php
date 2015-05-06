@@ -100,6 +100,8 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'filter_date':
 				case 'layout':
 				case 'task':
+				case 'limit':
+				case 'showfilters':
 					if ($v)
 					{
 						$myuri->setVar($filter, $v);

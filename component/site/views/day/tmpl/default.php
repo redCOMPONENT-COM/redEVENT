@@ -21,29 +21,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
-<?php if ($this->params->get('filter_text',1) || $this->params->get('display_limit_select')) : ?>
-<div id="el_filter" class="floattext">
-		<?php if ($this->params->get('filter_text',1)) : ?>
-		<div class="el_fleft">
-			<?php
-			echo '<label for="filter_type">'.JText::_('COM_REDEVENT_Filter').'</label>&nbsp;';
-			echo $this->lists['filter_types'].'&nbsp;';
-			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="text_area" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('COM_REDEVENT_EVENTS_FILTER_HINT'); ?>"/>
-			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
-		</div>
-		<?php endif; ?>
-		<?php if ($this->params->get('display_limit_select')) : ?>
-		<div class="el_fright">
-			<?php
-			echo '<label for="limit">'.JText::_('COM_REDEVENT_Display_Num').'</label>&nbsp;';
-			echo $this->pageNav->getLimitBox();
-			?>
-		</div>
-		<?php endif; ?>
-</div>
-<?php endif; ?>
+	<!-- filters  -->
+	<?php echo RLayoutHelper::render(
+		'sessionlist.filters',
+		$this
+	); ?>
+	<!-- end filters -->
 <!--table-->
 
 <?php echo $this->loadTemplate('table'); ?>

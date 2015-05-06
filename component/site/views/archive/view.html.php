@@ -110,14 +110,13 @@ class RedeventViewArchive extends RViewSite
 		$this->assignRef('noevents', $noevents);
 		$this->assignRef('print_link', $print_link);
 		$this->assignRef('params', $params);
-		$this->assignRef('dellink', $dellink);
 		$this->assignRef('pageNav', $pagination);
 		$this->assignRef('elsettings', $elsettings);
 		$this->assignRef('pagetitle', $pagetitle);
 		$this->assignRef('config', $elsettings);
-		$this->assignRef('thumb_link', $thumb_link);
 		$this->assignRef('list_link', $list_link);
 		$this->assign('filter_customs', $filter_customs);
+		$this->assign('state', $this->get('state'));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);

@@ -218,6 +218,7 @@ class RedeventViewSearch extends RViewSite
 		$this->assign('filter_date_from',    $filter_date_from);
 		$this->assign('filter_date_to',      $filter_date_to);
 		$this->assign('filter_customs',      $filter_customs);
+		$this->assign('state', $this->get('state'));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);

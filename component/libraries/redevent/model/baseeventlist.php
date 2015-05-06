@@ -355,29 +355,17 @@ class RedeventModelBaseeventlist extends RModel
 			if ($filter)
 			{
 				// Clean filter variables
-				$filter 		= JString::strtolower($filter);
-				$filter			= $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
-				$filter_type 	= JString::strtolower($filter_type);
+				$filter = JString::strtolower($filter);
+				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
 
-				switch ($filter_type)
-				{
-					case 'venue' :
-						$query->where(' LOWER( l.venue ) LIKE ' . $filter);
-						break;
+				$filterOr = array();
+				$filterOr[] = 'LOWER(l.venue) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(l.city) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(c.name) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(a.title) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(x.title) LIKE ' . $filter;
 
-					case 'city' :
-						$query->where(' LOWER( l.city ) LIKE ' . $filter);
-						break;
-
-					case 'type' :
-						$query->where('  LOWER( c.name ) LIKE ' . $filter);
-						break;
-
-					case 'title' :
-					default:
-						$query->where('(LOWER( a.title ) LIKE ' . $filter . ' OR LOWER( x.title ) LIKE ' . $filter . ')');
-						break;
-				}
+				$query->where(implode(' OR ', $filterOr));
 			}
 		}
 
