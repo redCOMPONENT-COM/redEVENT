@@ -36,20 +36,27 @@ class RedEventViewAttendees extends JView {
 
 	function display($tpl = null)
 	{
+		$app = JFactory::getApplication();
+
 		jimport('joomla.filesystem.file');
-		
+
 		$model = $this->getModel();
+		$model->setState('getAllFormFields', true);
+		$model->setState('unlimited', true);
 		$event     = $this->get('Event');
 		$fields    = $model->getFields();
-		$registers = $model->getRegisters(true, true);		
-//		echo '<pre>';print_r($registers); echo '</pre>';exit;
+		$registers = $model->getData();
+
 		$text = "";
-		foreach ($fields AS $f) {
+
+		foreach ($fields AS $f)
+		{
 			$cols[] = $f->field_header;
 		}
-		$stdcols = array( JText::_('COM_REDEVENT_REGDATE'),  
-		               JText::_('COM_REDEVENT_IP_ADDRESS'), 
-		               JText::_('COM_REDEVENT_UNIQUE_ID'), 
+
+		$stdcols = array( JText::_('COM_REDEVENT_REGDATE'),
+		               JText::_('COM_REDEVENT_IP_ADDRESS'),
+		               JText::_('COM_REDEVENT_UNIQUE_ID'),
 		               JText::_('COM_REDEVENT_USERNAME'),
 		               JText::_('COM_REDEVENT_ACTIVATED'),
 		               JText::_('COM_REDEVENT_CANCELLED'),
@@ -60,28 +67,34 @@ class RedEventViewAttendees extends JView {
 		               );
 		$cols = array_merge($cols, $stdcols);
 		$text .= $this->writecsvrow($cols);
-		
+
 		if (count($registers))
 		{
-			foreach((array) $registers as $r) 
+			foreach((array) $registers as $r)
 			{
 				$data = array();
+
 				foreach ($fields AS $f)
 				{
 					$cleanfield = 'field_'.$f->id;
-					if (isset($r->answers->$cleanfield))
+
+					if (isset($r->$cleanfield))
 					{
-						$val = $r->answers->$cleanfield;
-						if (stristr($val, '~~~')) {
+						$val = $r->$cleanfield;
+
+						if (stristr($val, '~~~'))
+						{
 							$val = str_replace('~~~', '\n', $val);
 						}
+
 						$data[] = $val;
 					}
-					else {
+					else
+					{
 						$data[] = '';
 					}
 				}
-				
+
 				$svals = array( $r->uregdate,
 				               $r->uip,
 				               $event->course_code .'-'. $event->xref .'-'. $r->id,
@@ -89,26 +102,28 @@ class RedEventViewAttendees extends JView {
 				               $r->confirmed,
 				               $r->cancelled,
 				               $r->waitinglist,
-				               $r->answers->price,
+				               $r->price,
 				               $r->pricegroup,
-				               ($r->answers->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID').' / '.$r->answers->status : JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID').' / '.$r->answers->status),
+				               ($r->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID').' / '.$r->status : JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID').' / '.$r->status),
 				             );
 				$data = array_merge($data, $svals);
 				$text .= $this->writecsvrow($data);
 			}
 		}
-		else {
-			//$text = "no attendees";
-		}
-		$event->dates = redEVENTHelper::isValidDate($event->dates) ? $event->dates : JText::_('COM_REDEVENT_OPEN_DATE');
+
+		$event->dates = RedeventHelper::isValidDate($event->dates) ? $event->dates : JText::_('COM_REDEVENT_OPEN_DATE');
 		$title = JFile::makeSafe($event->title .'_'. $event->dates .'_'. $event->venue .'.csv');
-		$doc =& JFactory::getDocument();
+
+		$doc = JFactory::getDocument();
 		$doc->setMimeEncoding('text/csv');
 		header('Content-Disposition: attachment; filename="'.$title.'"');
+
 		echo $text;
+
+		$app->close();
 	}
-		
-	function writecsvrow($fields, $delimiter = ',', $enclosure = '"') 
+
+	public function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
 	{
     $delimiter_esc = preg_quote($delimiter, '/');
     $enclosure_esc = preg_quote($enclosure, '/');
@@ -121,5 +136,5 @@ class RedEventViewAttendees extends JView {
     }
 
     return join($delimiter, $output) . "\n";
-	} 
+	}
 }

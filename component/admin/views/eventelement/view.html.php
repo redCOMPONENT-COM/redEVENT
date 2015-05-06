@@ -36,32 +36,32 @@ class RedEventViewEventelement extends JView {
 
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		//initialise variables
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$elsettings = JComponentHelper::getParams('com_redevent');
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
-		
+
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
 
 		//get var
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.eventelement.filter_order', 'filter_order', 'x.dates', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.eventelement.filter_order_Dir', 'filter_order_Dir', '', 'word' );
-		$filter 			= $mainframe->getUserStateFromRequest( $option.'.eventelement.filter', 'filter', '', 'int' );
-		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.eventelement.filter_state', 'filter_state', '*', 'word' );
-		$search 			= $mainframe->getUserStateFromRequest( $option.'.eventelement.search', 'search', '', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
-		$template 			= $mainframe->getTemplate();
+		$filter_order		= $app->getUserStateFromRequest( $option.'.eventelement.filter_order', 'filter_order', 'x.dates', 'cmd' );
+		$filter_order_Dir	= $app->getUserStateFromRequest( $option.'.eventelement.filter_order_Dir', 'filter_order_Dir', '', 'word' );
+		$filter 			= $app->getUserStateFromRequest( $option.'.eventelement.filter', 'filter', '', 'int' );
+		$filter_state 		= $app->getUserStateFromRequest( $option.'.eventelement.filter_state', 'filter_state', '*', 'word' );
+		$search 			= $app->getUserStateFromRequest( $option.'.eventelement.search', 'search', '', 'string' );
+		$search 			= $db->escape( trim(JString::strtolower( $search ) ) );
+		$template 			= $app->getTemplate();
 
 		//prepare the document
 		$document->setTitle(JText::_('COM_REDEVENT_SELECTEVENT' ));
 		$document->addStyleSheet('templates/'.$template.'/css/general.css');
 
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		RHelperAsset::load('backend.css');
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');
@@ -91,70 +91,8 @@ class RedEventViewEventelement extends JView {
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('pageNav' 		, $pageNav);
 		$this->assignRef('elsettings'	, $elsettings);
-		$this->assign('field',          $fieldname);
+		$this->assign('function',  $app->input->getCmd('function'));
 
 		parent::display($tpl);
 	}
-	
- /**
-	* Renders pagebreak options
-	*
-	*/
-	function insertElement()
-	{
-		$eName	= JRequest::getVar('e_name');
-		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		?>
-		<script type="text/javascript">
-			function insertPagebreak()
-			{
-				// Get the pagebreak title
-				var title = document.getElementById("title").value;
-				if (title != '') {
-					title = "title=\""+title+"\" ";
-				}
-
-				// Get the pagebreak toc alias -- not inserting for now
-				// don't know which attribute to use...
-				var alt = document.getElementById("alt").value;
-				if (alt != '') {
-					alt = "alt=\""+alt+"\" ";
-				}
-
-				var tag = "<hr class=\"system-pagebreak\" "+title+" "+alt+"/>";
-
-				window.parent.jInsertEditorText(tag, '<?php echo $eName; ?>');
-				window.parent.document.getElementById('sbox-window').close();
-				return false;
-			}
-		</script>
-
-		<form>
-		<table width="100%" align="center">
-			<tr width="40%">
-				<td class="key" align="right">
-					<label for="title">
-						<?php echo JText::_('COM_REDEVENT_PGB_PAGE_TITLE' ); ?>
-					</label>
-				</td>
-				<td>
-					<input type="text" id="title" name="title" />
-				</td>
-			</tr>
-			<tr width="60%">
-				<td class="key" align="right">
-					<label for="alias">
-						<?php echo JText::_('COM_REDEVENT_PGB_TOC_ALIAS_PROMPT' ); ?>
-					</label>
-				</td>
-				<td>
-					<input type="text" id="alt" name="alt" />
-				</td>
-			</tr>
-		</table>
-		</form>
-		<button onclick="insertPagebreak();"><?php echo JText::_('COM_REDEVENT_PGB_INS_PAGEBRK' ); ?></button>
-		<?php
-	}
-
-}//end class
+}

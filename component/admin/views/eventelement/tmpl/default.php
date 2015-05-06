@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<form action="index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&field=<?php echo $this->field; ?>" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_redevent&amp;view=eventelement&tmpl=component&function=<?php echo $this->function; ?>" method="post" name="adminForm" id="adminForm">
 
 <table class="adminform">
 	<tr>
@@ -45,11 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<th width="5">#</th>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'], 'eventelement' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'], 'eventelement' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_Start', 'a.times', $this->lists['order_Dir'], $this->lists['order'], 'eventelement' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_VENUE', 'loc.venue', $this->lists['order_Dir'], $this->lists['order'], 'eventelement' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CITY', 'loc.city', $this->lists['order_Dir'], $this->lists['order'], 'eventelement' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'cat.catname', $this->lists['order_Dir'], $this->lists['order'], 'eventelement' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'cat.name', $this->lists['order_Dir'], $this->lists['order'], 'eventelement' ); ?></th>
 		    <th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
 		</tr>
 	</thead>
@@ -72,41 +68,13 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td>
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->title; ?>">
-				<a style="cursor:pointer" onclick="window.parent.elSelectEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo $this->field; ?>');">
-					<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8'); ?>
-				</a></span>
+				<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($this->function);?>('<?php echo $row->id; ?>', '<?php echo $this->escape(addslashes($row->title)); ?>');"><?php echo $this->escape($row->title); ?></a>
+				</span>
 			</td>
-			<td>
-				<?php
-					//Format date
-					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
-					if ( !redEVENTHelper::isValidDate($row->enddates) ) {
-						$displaydate = $date;
-					} else {
-						$enddate 	= strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
-						$displaydate = $date.' - '.$enddate;
-					}
 
-					echo $displaydate;
-				?>
-			</td>
-			<td>
-				<?php
-					//Prepare time
-					if (!$row->times) {
-						$displaytime = '-';
-					} else {
-						$time = strftime( $this->elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
-						$displaytime = $time;
-					}
-					echo $displaytime;
-				?>
-			</td>
-			<td><?php echo $row->venue ? htmlspecialchars($row->venue, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
-			<td><?php echo $row->city ? htmlspecialchars($row->city, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td><?php echo $row->catname ? htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td align="center">
-				<?php $img = $row->published ? 'tick.png' : 'publish_x.png'; 
+				<?php $img = $row->published ? 'tick.png' : 'publish_x.png';
 				$alt = $row->published ? 'Published' : 'Unpublished';
 				echo JHTML::_('image', 'admin/'.$img, $alt, '', true);
 				?>

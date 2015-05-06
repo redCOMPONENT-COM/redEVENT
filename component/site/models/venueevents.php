@@ -1,10 +1,9 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
+ * @package     Joomla
+ * @subpackage  redEVENT
+ * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license     GNU/GPL, see LICENSE.php
  * redEVENT is based on EventList made by Christoph Lukes from schlu.net
  * redEVENT can be downloaded from www.redcomponent.com
  * redEVENT is free software; you can redistribute it and/or
@@ -21,68 +20,80 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once('baseeventslist.php');
-
 /**
- * EventList Component Venueevents Model
+ * Redevent Model Venue events
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package     Joomla
+ * @subpackage  redEVENT
+ * @since       0.9
  */
-class RedeventModelVenueevents extends RedeventModelBaseEventList
+class RedeventModelVenueevents extends RedeventModelBaseeventlist
 {
+	/**
+	 * venue id
+	 *
+	 * @var int
+	 */
+	protected $_id = 0;
+
 	/**
 	 * venue data array
 	 *
 	 * @var array
 	 */
-	var $_venue = null;
+	protected $_venue = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$id = JRequest::getInt('id');
-		$this->setId((int)$id);
+		$this->setId((int) $id);
 
-		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams('com_redevent');
+		$params    = $mainframe->getParams('com_redevent');
 
-		//get the number of events from database
-		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.venueevents.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart		= JRequest::getInt('limitstart');
+		if ($params->exists('results_type'))
+		{
+			$results_type = $params->get('results_type', $params->get('default_categoryevents_results_type', 1));
+		}
+		else
+		{
+			$results_type = $params->get('default_categoryevents_results_type', 1);
+		}
 
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
+		// If searching for events
+		if ($results_type == 0)
+		{
+			// Get the filter request variables
+			$this->setState('filter_order',     JRequest::getCmd('filter_order', 'a.title'));
+			$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+		}
 
-		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
-
-    $customs      = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_customs', 'filtercustom', array(), 'array');
-		$this->setState('filter_customs', $customs);
+		$this->setState('results_type', $results_type);
 	}
 
 	/**
 	 * Method to set the venue id
 	 *
+	 * @param   int  $id  venue ID number
+	 *
+	 * @return void
+	 *
 	 * @access	public
-	 * @param	int	venue ID number
 	 */
-	function setId($id)
+	public function setId($id)
 	{
 		// Set new venue ID and wipe data
 		$this->_id			= $id;
@@ -90,103 +101,51 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	}
 
 	/**
-	 * Method to build the WHERE clause
-	 *
-	 * @access private
-	 * @return array
+	 * override to take into account search type
+	 * @see RedeventModelBaseeventlist::getData()
 	 */
-	function _buildWhere( )
+	public function getData()
 	{
-		$mainframe = &JFactory::getApplication();
-
-		$user		=& JFactory::getUser();
-		$gid		= (int) max($user->getAuthorisedViewLevels());
-
-		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams('com_redevent');
-
-		$task 		= JRequest::getWord('task');
-
-		$where = array();
-
-		// First thing we need to do is to select only the published events
-		if ($task == 'archive')
+		if ($this->getState('results_type', 1) == 1)
 		{
-			$where[] = ' x.published = -1 ';
-			$where[] = ' a.published <> 0 ';
+			return parent::getData();
 		}
-		else
+
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_data))
 		{
-			$where[] = ' x.published = 1 ';
-			$where[] = ' a.published <> 0 ';
+			$query = $this->_buildQuery();
+
+			$pagination = $this->getPagination();
+			$this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->_data = $this->_categories($this->_data);
+			$this->_data = $this->_getSessions($this->_data);
 		}
+
+		return $this->_data;
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see RedeventModelBaseeventlist::_buildWhere()
+	 */
+	protected function _buildWhere($query)
+	{
+		$query = parent::_buildWhere($query);
 
 		/* Check if a venue ID is set */
-		if ($this->_id > 0) $where[] = ' x.venueid = '.$this->_id;
-
-		// Second is to only select events assigned to category the user has access to
-		$where[] = ' c.access <= '.$gid;
-
-		/*
-		 * If we have a filter, and this is enabled... lets tack the AND clause
-		 * for the filter onto the WHERE clause of the content item query.
-		 */
-		if ($params->get('filter_text'))
+		if ($this->_id > 0)
 		{
-			$filter 		  = $this->getState('filter');
-			$filter_type 	= $this->getState('filter_type');
-
-			if ($filter)
-			{
-				// clean filter variables
-				$filter 		= JString::strtolower($filter);
-				$filter			= $this->_db->Quote( '%'.$this->_db->getEscaped( $filter, true ).'%', false );
-				$filter_type 	= JString::strtolower($filter_type);
-
-				switch ($filter_type)
-				{
-					case 'title' :
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
-						break;
-
-					case 'type' :
-						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
-						break;
-				}
-			}
+			$query->where('x.venueid = ' . $this->_id);
 		}
 
-		if ($ev = $this->getState('filter_event'))
+		if ($this->getState('results_type') == 0)
 		{
-			$where[] = 'a.id = '.$this->_db->Quote($ev);
+			$query->clear('group');
+			$query->group('a.id');
 		}
 
-    if ($filter_venue = $this->getState('filter_venue'))
-    {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);
-    }
-
-		if ($cat = $this->getState('filter_category'))
-		{
-    	$category = $this->getCategory((int) $cat);
-    	if ($category) {
-				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    	}
-		}
-
-    $customs = $this->getState('filter_customs');
-    foreach ((array) $customs as $key => $custom)
-    {
-      if ($custom != '')
-      {
-      	if (is_array($custom)) {
-      		$custom = implode("/n", $custom);
-      	}
-        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
-      }
-    }
-
-		return ' WHERE ' . implode(' AND ', $where);
+		return $query;
 	}
 
 	/**
@@ -195,28 +154,74 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return array
 	 */
-	function getVenue( )
+	public function getVenue()
 	{
-		$user		= & JFactory::getUser();
-		//Location holen
-		$query = 'SELECT *, v.id AS venueid, '
-        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
-				. ' FROM #__redevent_venues AS v'
-				. ' WHERE v.id = '.$this->_id;
+		$user		= JFactory::getUser();
+		$gids = $user->getAuthorisedViewLevels();
+		$gids = implode(',', $gids);
 
-		$this->_db->setQuery( $query );
-		$_venue = $this->_db->loadObject();
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		if ($_venue->private)
+		$query->select('*, id AS venueid');
+		$query->select('CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug');
+		$query->from('#__redevent_venues');
+		$query->where('id = ' . $this->_id);
+		$query->where('access IN (' . $gids . ')');
+
+		$db->setQuery($query);
+		$venue = $db->loadObject();
+
+		if ($venue)
 		{
-			$acl = &UserAcl::getInstance();
-			$cats = $acl->getManagedVenues();
-			if (!is_array($cats) || !in_array($_venue->id, $cats)) {
-				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
+			$helper = new RedeventHelperAttachment;
+			$venue->attachments = $helper->getAttachments('venue' . $venue->id, $user->getAuthorisedViewLevels());
+		}
+
+		return $venue;
+	}
+
+	/**
+	 * get Sessions associated to events data
+	 *
+	 * @param   array  $data  event data objects
+	 *
+	 * @return array
+	 */
+	protected function _getSessions($data)
+	{
+		if (!$data || ! count($data))
+		{
+			return $data;
+		}
+
+		$event_ids = array();
+
+		foreach ($data as $k => $ev)
+		{
+			$event_ids[] = $ev->id;
+			$map[$ev->id] = $k;
+		}
+
+		$query = parent::_buildQuery();
+		$query->clear('order');
+		$query->where('a.id IN (' . implode(",", $event_ids) . ')');
+
+		$this->_db->setQuery($query);
+		$sessions = $this->_db->loadObjectList();
+
+		foreach ($sessions as $s)
+		{
+			if (!isset($data[$map[$s->id]]))
+			{
+				$data[$map[$s->id]]->sessions = array($s);
+			}
+			else
+			{
+				$data[$map[$s->id]]->sessions[] = $s;
 			}
 		}
-		$_venue->attachments = REAttach::getAttachments('venue'.$_venue->id, max($user->getAuthorisedViewLevels()));
 
-		return $_venue;
+		return $data;
 	}
 }

@@ -25,7 +25,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="redevent" class="el_eventlist print">
 <p class="buttons">
-	<?php	echo REOutput::printbutton( $this->print_link, $this->params ); ?>
+	<?php	echo RedeventHelperOutput::printbutton( $this->print_link, $this->params ); ?>
 </p>
 
   <h1 class="componentheading">
@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
 <div id="el_filter" class="floattext">
-   
+
   <?php if ($this->params->get('display_limit_select')) : ?>
 	<div class="el_fright">
 		<?php	echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		?>
 	</div>
   <?php endif; ?>
-  
+
 </div>
 
 
@@ -68,7 +68,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

@@ -1,0 +1,11 @@
+/**
+ * Backend css for redevent
+ */
+
+.redcore .table tr.cancelled td {
+	background-color: darkorange;
+}
+
+.redcore .table-striped tbody > tr.cancelled:nth-child(2n+1) > td {
+  background-color: orange;
+}

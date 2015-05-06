@@ -1,367 +1,311 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * EventList Component registrations Model
+ * redEVENT Component registrations Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedEventModelRegistrations extends JModel
+class RedeventModelRegistrations extends RModelList
 {
 	/**
-	 * Events data array
+	 * Name of the filter form to load
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	var $_data = null;
+	protected $filterFormName = 'filter_registrations';
 
 	/**
-	 * Events total
+	 * Limitstart field used by the pagination
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	var $_total = null;
+	protected $limitField = 'registrations_limit';
 
 	/**
-	 * Events total
+	 * Limitstart field used by the pagination
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	var $_event = null;
+	protected $limitstartField = 'auto';
 
 	/**
-	 * Pagination object
+	 * Constructor.
 	 *
-	 * @var object
-	 */
-	var $_pagination = null;
-
-	/**
-	 * Constructor
+	 * @param   array  $config  Configs
 	 *
-	 * @since 0.9
+	 * @see     JController
 	 */
-	function __construct()
+	public function __construct($config = array())
 	{
-		parent::__construct();
-
-		$mainframe = &JFactory::getApplication();
-
-		$option = JRequest::getCmd('option');
-
-		$limit		  = $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-				
-		$filter_order		  = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_order', 'filter_order', 'r.uregdate', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.registrations.filter_order_Dir',	'filter_order_Dir',	'desc', 'word' );
-		
-		$filter_confirmed = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_confirmed', 'filter_confirmed', 0, 'int' );
-		$filter_waiting   = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_waiting',   'filter_waiting'  , 0, 'int' );
-		$filter_cancelled = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_cancelled', 'filter_cancelled', 0, 'int' );
-
-		
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-		$this->setState('filter_order', $filter_order);
-		$this->setState('filter_order_Dir',   $filter_order_Dir);
-		$this->setState('filter_confirmed', $filter_confirmed);
-		$this->setState('filter_waiting',   $filter_waiting);
-		$this->setState('filter_cancelled', $filter_cancelled);
-
-		//set unlimited if export or print action | task=export or task=print
-		$this->setState('unlimited', JRequest::getString('task'));
-	}
-
-	/**
-	 * Method to get categories item data
-	 *
-	 * @access public
-	 * @return array
-	 */
-	function getData() 
-	{
-		// Lets load the content if it doesn't already exist
-		$query = $this->_buildQuery();
-
-		if ($this->getState('unlimited') == '') {
-			$this->_db->setQuery($query, $this->getState('limitstart'), $this->getState('limit'));
-			$this->_data = $this->_db->loadObjectList();
-		} else {
-			$this->_db->setQuery($query);
-			$this->_data = $this->_db->loadObjectList();
-		}
-		return $this->_data;
-	}
-	
-	/**
-	 * Method to get the total nr of the attendees
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getTotal() 
-	{
-		// Lets load the content if it doesn't already exist
-		$query = $this->_buildQuery();
-		$this->_total = $this->_getListCount($query);
-		
-		return $this->_total;
-	}
-
-	/**
-	 * Method to get a pagination object for the events
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
+		if (empty($config['filter_fields']))
 		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$config['filter_fields'] = array(
+				'r.id', 'r.xref', 'r.eventid', 'r.uregdate',
+				'r.confirmed', 'r.waiting', 'r.cancelled'
+			);
 		}
 
-		return $this->_pagination;
+		parent::__construct($config);
 	}
 
 	/**
-	 * Method to build the query for the attendees
+	 * Method to get a store id based on model configuration state.
 	 *
-	 * @access private
-	 * @return integer
-	 * @since 0.9
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
 	 */
-	function _buildQuery()
-	{		
-		// Get the ORDER BY clause for the query
-		$orderby	= $this->_buildContentOrderBy();
-		$where		= $this->_buildContentWhere();
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.xref');
+		$id	.= ':' . $this->getState('filter.confirmed');
+		$id .= ':' . $this->getState('filter.waiting');
+		$id	.= ':' . $this->getState('filter.cancelled');
 
-		$query = ' SELECT r.*, r.id as attendee_id, u.username, u.name, e.id AS eventid, u.email '
-		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, pg.name as pricegroup, fo.activatepayment, p.paid, p.status '
-		       . ', e.course_code, e.title, x.dates, x.times, v.venue, x.maxattendees '
-		       . ', auth.username AS creator '
-		       . ' FROM #__redevent_register AS r '
-		       . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
-		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
-		       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '
-		       . ' LEFT JOIN #__redevent_events AS e ON x.eventid = e.id '
-		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
-		       . ' LEFT JOIN #__users AS auth ON auth.id = e.created_by '
-		       . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
-		       . ' LEFT JOIN #__rwf_forms AS fo ON fo.id = s.form_id '
-		       . ' LEFT JOIN (SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key'
-		       . ' LEFT JOIN #__rwf_payment AS p ON p.id = latest_payment.id '
-		       . $where
-		       . ' GROUP BY r.id '
-		       . $orderby;
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Method to get an array of data items.
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   11.1
+	 */
+	public function getItems()
+	{
+		$items = parent::getItems();
+
+		$items = $this->addPaymentInfo($items);
+
+		// Get the storage key.
+		$store = $this->getStoreId();
+
+		// Add back the items to the internal cache.
+		$this->cache[$store] = $items;
+
+		return $this->cache[$store];
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  object  Query object
+	 */
+	protected function getListQuery()
+	{
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('r.*, r.id as attendee_id');
+		$query->select('s.answer_id, s.id AS submitter_id, s.price, s.vat, s.currency');
+		$query->select('u.username, u.name, u.email');
+		$query->select('pg.name as pricegroup');
+		$query->select('fo.activatepayment');
+		$query->select('x.dates, x.times, x.maxattendees');
+		$query->select('e.id AS eventid, e.course_code, e.title');
+		$query->select('v.venue');
+		$query->select('auth.username AS creator');
+		$query->from('#__redevent_register AS r');
+		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
+		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
+		$query->join('LEFT', '#__redevent_event_venue_xref AS x ON r.xref = x.id');
+		$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
+		$query->join('LEFT', '#__redevent_events AS e ON x.eventid = e.id');
+		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
+		$query->join('LEFT', '#__users AS auth ON auth.id = e.created_by');
+		$query->join('LEFT', '#__rwf_submitters AS s ON r.sid = s.id');
+		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
+
+		$this->buildWhere($query);
+
+		$query->order($this->_db->escape($this->getState('list.ordering', 'r.uregdate')) . ' ' . $this->_db->escape($this->getState('list.direction', 'DESC')));
+
 		return $query;
 	}
-	
-	/**
-	 * Method to build the orderby clause of the query for the attendees
-	 *
-	 * @access private
-	 * @return integer
-	 * @since 0.9
-	 */
-	function _buildContentOrderBy() 
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		
-		$filter_order		  = $this->getState('filter_order');
-		$filter_order_Dir	= $this->getState('filter_order_Dir');
-		switch ($filter_order)
-		{
-			case 'e.title':
-				return ' ORDER BY CONCAT(e.title, x.title) '.$filter_order_Dir.', r.uregdate DESC';
-			default:
-				return ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', r.confirmdate DESC';
-		}
-		
-	}
-	
-	/**
-	 * Method to build the where clause of the query for the attendees
-	 *
-	 * @access private
-	 * @return string
-	 * @since 0.9
-	 */
-	function _buildContentWhere()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
 
-		$where = array();
-	
-		switch ($this->getState('filter_confirmed', 0))
-		{
-			case 1:
-				$where[] = ' r.confirmed = 1 ';
-				break;
-			case 2:
-				$where[] = ' r.confirmed = 0 ';
-				break;
-		}
-		switch ($this->getState('filter_waiting', 0))
-		{
-			case 1:
-				$where[] = ' r.waitinglist = 0 ';
-				break;
-			case 2:
-				$where[] = ' r.waitinglist = 1 ';
-				break;
-		}
-		switch ($this->getState('filter_cancelled', 0))
-		{
-			case 0:
-				$where[] = ' r.cancelled = 0 ';
-				break;
-			case 1:
-				$where[] = ' r.cancelled = 1 ';
-				break;
-		}
-
-		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		
-		return $where;
-	}
-	
-	
 	/**
-	 * Delete registered users
+	 * Add where part from filters
 	 *
-	 * @access public
-	 * @return true on success
-	 * @since 2.5
+	 * @param   JDatabaseQuery  &$query  query
+	 *
+	 * @return JDatabaseQuery
 	 */
-	public function remove($cid = array())
+	private function buildWhere(&$query)
 	{
-		if (!count($cid)) {
-			return true;
-		}
-		/**
-		 * track xrefs attendees are being cancelled from
-		 * @var array
-		 */
-		$xrefs = array();
-		foreach ($cid as $register_id)
+		if (is_numeric($this->getState('filter.confirmed')))
 		{
-			$db = &JFactory::getDbo();
-			$query = $db->getQuery(true);
-			
-			$query->select('e.redform_id,r.xref AS xref_id');
-			$query->from('#__redevent_register AS r');
-			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
-			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-			$query->where('r.id = '.(int) $register_id);
-			$db->setQuery($query);
-			$res = $db->loadObject();
-			$xrefs[] = $res->xref_id;
-	
-			$query = ' DELETE s, f, r '
-			. ' FROM #__redevent_register AS r '
-			. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
-			. ' LEFT JOIN #__rwf_forms_'.$res->redform_id .' AS f ON f.id = s.answer_id '
-			. ' WHERE r.id = '.$register_id
-			. '   AND r.cancelled = 1 ';
-			;
-			$this->_db->setQuery( $query );
-				
-			if (!$this->_db->query()) {
-				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-				return false;
+			switch ($this->getState('filter.confirmed'))
+			{
+				case 0:
+					$query->where('r.confirmed = 0');
+					break;
+				case 1:
+					$query->where('r.confirmed = 1');
+					break;
 			}
 		}
-		// now update waiting list for all updated sessions
-		foreach ($xrefs as $xref)
-		{			
-			$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
-			$model_wait->setXrefId($xref);
-			if (!$model_wait->UpdateWaitingList()) {
-				$this->setError($model_wait->getError());
-				return false;
+
+		if (is_numeric($this->getState('filter.waiting')))
+		{
+			switch ($this->getState('filter.waiting'))
+			{
+				case 1:
+					$query->where('r.waitinglist = 0');
+					break;
+				case 2:
+					$query->where('r.waitinglist = 1');
+					break;
 			}
 		}
-		return true;
+
+		if (is_numeric($this->getState('filter.cancelled')))
+		{
+			switch ($this->getState('filter.cancelled'))
+			{
+				case 0:
+					$query->where('r.cancelled = 0');
+					break;
+				case 1:
+					$query->where('r.cancelled = 1');
+					break;
+			}
+		}
+
+		if ($this->getState('filter.search'))
+		{
+			$query->where('(u.name LIKE "%' . $this->getState('filter.search') . '%"'
+				. ' OR u.username LIKE "%' . $this->getState('filter.search') . '%"'
+				. ' OR u.email LIKE "%' . $this->getState('filter.search') . '%"'
+			. ')');
+		}
+
+		if ($this->getState('filter.session'))
+		{
+			$query->where('r.xref = ' . $this->getState('filter.session'));
+		}
+
+		return $query;
 	}
-	
+
 	/**
 	 * toggle registrations on and off the wainting list
-	 * @param array $cid register_ids
-	 * @param boolean $on set true to put on waiting list, false to take off
+	 *
+	 * @param   array    $cid  register_ids
+	 * @param   boolean  $on   set true to put on waiting list, false to take off
+	 *
+	 * @return boolean
 	 */
 	public function togglewaiting($cid, $on)
 	{
-		if (!count($cid)) {
+		if (!count($cid))
+		{
 			return true;
 		}
-		// we need to group by xref
-		$db = &JFactory::getDbo();
+
+		// We need to group by xref
+		$db = $this->_db;
 		$query = $db->getQuery(true);
-		
+
 		$query->select('r.id AS rid, e.redform_id,r.xref AS xref_id');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-		$query->where('r.id IN ('.implode(',', $cid).')');
+		$query->where('r.id IN (' . implode(',', $cid) . ')');
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
-		
-		// let's group
+
+		// Let's group
 		$xrefs = array();
-		foreach ($res as $r) {
+
+		foreach ($res as $r)
+		{
 			@$xrefs[$r->xref_id][] = $r->rid;
 		}
-		// let's do the thing	
+
+		// Now call the waiting list model per session
 		foreach ($xrefs as $xref => $rids)
-		{	
-			$model = JModel::getInstance('waitinglist', 'RedeventModel');
+		{
+			$model = RModel::getAdminInstance('waitinglist');
 			$model->setXrefId($xref);
+
 			if ($on)
 			{
 				$res = $model->putOnWaitingList($rids);
 			}
 			else
 			{
-				$res = $model->putOffWaitingList($rids);				
+				$res = $model->putOffWaitingList($rids);
 			}
-			if (!$res) {
+
+			if (!$res)
+			{
 				$this->setError($model->getError());
+
 				return false;
 			}
 		}
+
 		return true;
+	}
+
+	/**
+	 * Add payment info to items
+	 *
+	 * @param   array  $items  items
+	 *
+	 * @return array
+	 */
+	protected function addPaymentInfo($items)
+	{
+		if (!$items)
+		{
+			return $items;
+		}
+
+		$sids = array();
+
+		foreach ($items as $item)
+		{
+			$sids[] = $item->sid;
+		}
+
+		$paymentRequests = RdfCore::getSubmissionsPaymentRequests($sids);
+
+		foreach ($items as &$item)
+		{
+			$item->paid = 1;
+
+			if (isset($paymentRequests[$item->sid]))
+			{
+				$item->paymentRequests = $paymentRequests[$item->sid];
+
+				foreach ($paymentRequests[$item->sid] as $pr)
+				{
+					if ($pr->paid == 0)
+					{
+						$item->paid = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				$item->paymentRequests = false;
+			}
+		}
+
+		return $items;
 	}
 }

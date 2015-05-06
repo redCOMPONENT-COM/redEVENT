@@ -36,13 +36,13 @@ class RedEventViewVenuecategoryelement extends JView {
 
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		//initialise variables
-		$document	= & JFactory::getDocument();
-		$db			= & JFactory::getDBO();
-		
+		$document	= JFactory::getDocument();
+		$db			= JFactory::getDBO();
+
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
 
@@ -51,7 +51,7 @@ class RedEventViewVenuecategoryelement extends JView {
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.filter_state', 'filter_state', '*', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.search', 'search', '', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $db->escape( trim(JString::strtolower( $search ) ) );
 		$template 			= $mainframe->getTemplate();
 
 		//prepare document

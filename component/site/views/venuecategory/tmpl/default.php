@@ -28,10 +28,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 		endif;
-		echo REOutput::mailbutton( $this->category->slug, 'venuecategory', $this->params );
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::mailbutton( $this->category->slug, 'venuecategory', $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 
@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="floattext">
 <div class="catimg">
 	<?php if ($this->category->image): ?>
-	<?php echo redEVENTImage::modalimage($this->category->image, $this->category->name); ?>
+	<?php echo RedeventImage::modalimage($this->category->image, $this->category->name); ?>
 	<?php else: ?>
 	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->name); ?>
 	<?php endif; ?>
@@ -60,35 +60,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
-<?php if ($this->params->get('filter_text',1) || $this->params->get('display_limit_select')) : ?>
-<div id="el_filter" class="floattext">
-		<?php if ($this->params->get('filter_text',1)) : ?>
-		<div class="el_fleft">
-			<?php
-			echo '<label for="filter_type">'.JText::_('COM_REDEVENT_FILTER').'</label>&nbsp;';
-			echo $this->lists['filter_type'].'&nbsp;';
-			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="text_area" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('COM_REDEVENT_EVENTS_FILTER_HINT'); ?>"/>
-			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
-		</div>
-		<?php endif; ?>
-		<?php if ($this->params->get('display_limit_select')) : ?>
-		<div class="el_fright">
-			<?php
-			echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
-			echo $this->pageNav->getLimitBox();
-			?>
-		</div>
-		<?php endif; ?>
-</div>
-<?php endif; ?>
+	<!-- filters  -->
+	<?php echo RLayoutHelper::render(
+		'sessionlist.filters',
+		$this
+	); ?>
+	<!-- end filters -->
 
 <?php echo $this->loadTemplate('table'); ?>
 <p>
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->orderDir; ?>" />
 <input type="hidden" name="view" value="venuecategory" />
 <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
@@ -105,7 +88,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

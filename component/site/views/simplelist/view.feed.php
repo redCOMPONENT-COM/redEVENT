@@ -20,7 +20,7 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -35,7 +35,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewSimpleList extends JView
+class RedeventViewSimpleList extends RViewSite
 {
 	/**
 	 * Creates the Event Feed
@@ -44,14 +44,14 @@ class RedeventViewSimpleList extends JView
 	 */
 	function display( )
 	{
-		$mainframe = &JFactory::getApplication();
-	
+		$mainframe = JFactory::getApplication();
+
 		if ($this->getLayout() == 'rsscal') {
 			return $this->_displayRssCal();
 		}
-		
-		$doc 		= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+
+		$doc 		= JFactory::getDocument();
+		$elsettings = RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
@@ -60,28 +60,28 @@ class RedeventViewSimpleList extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( $row->full_title );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 		  // handle categories
-      if (!empty($row->categories)) 
+      if (!empty($row->categories))
       {
         $category = array();
         foreach ($row->categories AS $cat) {
-          $category[] = $cat->catname;
+          $category[] = $cat->name;
         }
         $category = $this->escape( implode(', ', $category) );
-        $category = html_entity_decode( $category );        
+        $category = html_entity_decode( $category );
       }
       else {
         $category = '';
       }
 
 			//Format date
-			if (redEVENTHelper::isValidDate($row->dates))
+			if (RedeventHelper::isValidDate($row->dates))
 			{
 				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
-				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
+				if (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 				} else {
 					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
@@ -129,42 +129,42 @@ class RedeventViewSimpleList extends JView
 			$doc->addItem( $item );
 		}
 	}
-	
+
 	function _displayRssCal()
 	{
-		define( 'CACHE', './cache' ); 
-		
-		$mainframe  = &JFactory::getApplication();		
-		$elsettings = redEVENTHelper::config();
-				
+		define( 'CACHE', './cache' );
+
+		$mainframe  = JFactory::getApplication();
+		$elsettings = RedeventHelper::config();
+
 		$offset = (float) $mainframe->getCfg('offset');
 		$hours = ($offset >= 0) ? floor($offset) : ceil($offset);
 		$mins = abs($offset - $hours) * 60;
 		$utcoffset = sprintf('%+03d:%02d', $hours, $mins);
-		
+
 		$feed = new rsscalCreator( 'redEVENT feed', JURI::base(), 'Test feed' );
-		$feed->setFilename( CACHE, 'events.rss' ); 
-		
+		$feed->setFilename( CACHE, 'events.rss' );
+
 		// get data
 		$model = $this->getModel();
 		$model->setLimit($elsettings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
 		$rows = & $this->get('Data');
 		foreach ( $rows as $row )
-		{			
+		{
 			// strip html from feed item title
-			$title = $this->escape( $row->full_title );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
-			if (!empty($row->categories)) 
+			if (!empty($row->categories))
 			{
 				$category = array();
 				foreach ($row->categories AS $cat) {
-					$category[] = $cat->catname;
+					$category[] = $cat->name;
 				}
 				$category = $this->escape( implode(', ', $category) );
-				$category = html_entity_decode( $category );				
+				$category = html_entity_decode( $category );
 			}
 			else {
 				$category = '';
@@ -172,14 +172,14 @@ class RedeventViewSimpleList extends JView
 
 			//Format date
 			//Format date
-			if (redEVENTHelper::isValidDate($row->dates))
+			if (RedeventHelper::isValidDate($row->dates))
 			{
 				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 				$rssstartdate = $row->dates;
-				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
+				if (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 					$rssenddate = $row->dates;
-				} 
+				}
 				else {
 					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 					$rssenddate = $row->enddates;
@@ -194,29 +194,29 @@ class RedeventViewSimpleList extends JView
 			if ($row->times) {
 				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
 				$displaytime = $time;
-				$rssstartdate .= 'T'.$row->times.$utcoffset;	
+				$rssstartdate .= 'T'.$row->times.$utcoffset;
 			}
 			if ($row->endtimes) {
 				$endtime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
-				$rssenddate .= 'T'.$row->endtimes.$utcoffset;	
+				$rssenddate .= 'T'.$row->endtimes.$utcoffset;
 			}
 
 			// url link to event
 			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
-			
-			$item = new rsscalItem($row->full_title, $link);
+
+			$item = new rsscalItem(RedeventHelper::getSessionFullTitle($row), $link);
 			$item->addElement( 'ev:type',      $category );
 //			$item->addElement( 'ev:organizer', "" );
 			$item->addElement( 'ev:location',  $row->venue );
 			$item->addElement( 'ev:startdate', $rssstartdate );
 			$item->addElement( 'ev:enddate',   $rssenddate );
-			$item->addElement( 'dc:subject',   $row->full_title );
-			
+			$item->addElement( 'dc:subject',   RedeventHelper::getSessionFullTitle($row) );
+
 			$feed->addItem( $item );
-		}		
-		
-		$feed->returnRSS( CACHE ); 
+		}
+
+		$feed->returnRSS( CACHE );
 	}
 }

@@ -1,53 +1,34 @@
 <?php
 /**
- * @version 2.0
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * View class for the EventList Settings screen
+ * View class for tags list
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.5
  */
-class RedEventViewTags extends JView {
+class RedeventViewTags extends RViewBase
+{
 
-	function display($tpl = null) 
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	public function display($tpl = null)
 	{
-		$document	= & JFactory::getDocument();
-		
-		jimport('joomla.html.pane');
-		$tabs =& JPane::getInstance('tabs', array('startOffset'=> 0));
-		
-		$document->addStyleSheet('administrator/components/com_redevent/assets/css/redeventbackend.css');
-		
-		$tags = $this->get('Data');
-		
-		$this->assignRef('tags',   $tags);
-		$this->assignRef('tabs',   $tabs);
-		
-		parent::display();
+		$user = JFactory::getUser();
+
+		$this->items = $this->get('Items');
+
+		parent::display($tpl);
 	}
 }

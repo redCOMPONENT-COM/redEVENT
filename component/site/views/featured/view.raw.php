@@ -44,27 +44,27 @@ class RedeventViewFeatured extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
-    		
-		$settings = redEVENTHelper::config();
-		
+		$mainframe = JFactory::getApplication();
+
+		$settings = RedeventHelper::config();
+
 		// Get data from the model
 		$model = $this->getModel();
 		$model->setLimit($settings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
 		$rows = & $model->getData();
-				
+
     // initiate new CALENDAR
-		$vcal = redEVENTHelper::getCalendarTool();
+		$vcal = RedeventHelper::getCalendarTool();
 		$vcal->setProperty('unique_id', 'allevents@'.$mainframe->getCfg('sitename'));
 		$vcal->setConfig( "filename", "events.ics" );
-		
+
 		foreach ( $rows as $row )
-		{				
-			redEVENTHelper::icalAddEvent($vcal, $row);	
+		{
+			RedeventHelper::icalAddEvent($vcal, $row);
 		}
 		$vcal->returnCalendar();                       // generate and redirect output to user browser
 //		echo $vcal->createCalendar(); // debug
-		$mainframe->close();		
+		$mainframe->close();
 	}
 }

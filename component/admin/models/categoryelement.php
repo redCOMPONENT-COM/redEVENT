@@ -65,7 +65,7 @@ class RedEventModelCategoryelement extends JModel
 	{
 		parent::__construct();
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$option = JRequest::getCmd('option');
 
@@ -162,7 +162,7 @@ class RedEventModelCategoryelement extends JModel
 	 */
 	function _buildContentOrderBy()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.categoryelement.filter_order', 'filter_order', 'c.ordering', 'cmd' );
@@ -182,12 +182,12 @@ class RedEventModelCategoryelement extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.categoryelement.filter_state', 'filter_state', '', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.categoryelement.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $this->_db->escape( trim(JString::strtolower( $search ) ) );
 
 		$where = array();
 
@@ -200,7 +200,7 @@ class RedEventModelCategoryelement extends JModel
 		}
 
 		if ($search) {
-			$where[] = ' LOWER(c.catname) LIKE \'%'.$search.'%\' ';
+			$where[] = ' LOWER(c.name) LIKE \'%'.$search.'%\' ';
 		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );

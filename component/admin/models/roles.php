@@ -1,193 +1,122 @@
 <?php
 /**
- * @version 1.0 $Id: cleanup.php 298 2009-06-24 07:42:35Z julien $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
-
-jimport('joomla.application.component.model');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Joomla Redevent Component Model
+ * redEVENT Component Roles Model
  *
- * @package		Redevent
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedeventModelRoles extends JModel 
+class RedeventModelRoles extends RModelList
 {
-   /**
-   * list data array
-   *
-   * @var array
-   */
-  var $_data = null;
+	/**
+	 * Name of the filter form to load
+	 *
+	 * @var  string
+	 */
+	protected $filterFormName = 'filter_roles';
 
-  /**
-   * total
-   *
-   * @var integer
-   */
-  var $_total = null;
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitField = 'roles_limit';
 
-  /**
-   * Pagination object
-   *
-   * @var object
-   */
-  var $_pagination = null;
-  
-  /**
-   * Constructor
-   *
-   * @since 0.1
-   */
-  function __construct()
-  {
-    parent::__construct();
-    $mainframe = &JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitstartField = 'auto';
 
-    // Get the pagination request variables
-    $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-    $limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-
-    $this->setState('limit', $limit);
-    $this->setState('limitstart', $limitstart);
-    
-    // filters and ordering
-    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.roles.filter_order', 'filter_order', 'obj.ordering', 'cmd' );
-    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.roles.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-    $search           = $mainframe->getUserStateFromRequest( 'com_redevent.roles.search', 'search', '', 'string' );
-
-    $this->setState('filter_order', $filter_order);
-    $this->setState('filter_order_Dir', $filter_order_Dir);
-    $this->setState('search', strtolower($search));        
-  }
-  
-  /**
-   * Method to get List data
-   *
-   * @access public
-   * @return array
-   */
-  function getData()
-  {
-    // Lets load the content if it doesn't already exist
-    if (empty($this->_data))
-    {
-      $query = $this->_buildQuery();
-      $pagination = $this->getPagination();
-      if (!$this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit))
-      echo $this->_db->getErrorMsg();
-    }
-    
-    return $this->_data;
-  }
-  
-	function _buildQuery()
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
+	 */
+	public function __construct($config = array())
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'name', 'obj.name',
+				'id', 'obj.id',
+				'language', 'obj.language',
+				'ordering', 'obj.ordering',
+			);
+		}
 
-		$query = ' SELECT obj.*, u.name AS editor '
-			. ' FROM #__redevent_roles AS obj '
-			. ' LEFT JOIN #__users AS u ON u.id = obj.checked_out '
-			. $where
-			. $orderby
-		;
+		parent::__construct($config);
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.language');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  object  Query object
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select($this->getState('list.select', 'obj.*'));
+		$query->from($db->qn('#__redevent_roles', 'obj'));
+
+
+		// Filter by language
+		$language = $this->getState('filter.language');
+
+		if ($language && $language != '*')
+		{
+			$query->where($db->qn('obj.language') . ' = ' . $db->quote($language));
+		}
+
+		// Filter: like / search
+		$search = $this->getState('filter.search', '');
+
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('obj.id = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$query->where('obj.name LIKE ' . $search);
+			}
+		}
+
+		// Add the list ordering clause.
+		$query->order($db->escape($this->getState('list.ordering', 'obj.name')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 
 		return $query;
 	}
-
-	function _buildContentOrderBy()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_order		  = $this->getState('filter_order');
-		$filter_order_Dir	= $this->getState('filter_order_Dir');
-
-		if ($filter_order == 'obj.ordering'){
-			$orderby 	= ' ORDER BY obj.ordering '.$filter_order_Dir;
-		} else {
-			$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.' , obj.ordering ';
-		}
-
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$search				= $this->getState('search');
-
-		$where = array();
-
-		if ($search) {
-			$where[] = 'LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-		}
-
-		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
-
-		return $where;
-	}
-	
-  /**
-   * Method to get a pagination object
-   *
-   * @access public
-   * @return integer
-   */
-  function getPagination()
-  {
-    // Lets load the content if it doesn't already exist
-    if (empty($this->_pagination))
-    {
-      jimport('joomla.html.pagination');
-      $this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-    }
-
-    return $this->_pagination;
-  }
-  
-
-  /**
-   * Total nr of items
-   *
-   * @access public
-   * @return integer
-   */
-  function getTotal()
-  {
-    // Lets load the total nr if it doesn't already exist
-    if (empty($this->_total))
-    {
-      $query = $this->_buildQuery();
-      $this->_total = $this->_getListCount($query);
-    }
-
-    return $this->_total;
-  }
 }

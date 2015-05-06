@@ -23,15 +23,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'log.php');
-
 /**
  * Holds the logic for image manipulation
  *
  * @package Joomla
  * @subpackage redEVENT
  */
-class redEVENTImage
+class RedeventImage
 {
 	/**
 	* Creates a Thumbnail of an image
@@ -195,7 +193,7 @@ class redEVENTImage
 	*/
 	public static function flyercreator($image)
 	{
-		$settings = & redEVENTHelper::config();
+		$settings = RedeventHelper::config();
 
 		jimport('joomla.filesystem.file');
 
@@ -252,7 +250,7 @@ class redEVENTImage
 	public static function modalimage($path, $alt, $maxdim = null, $attribs = array())
 	{
 		jimport('joomla.filesystem.file');
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if (empty($path)) {
 			return false;
@@ -289,8 +287,8 @@ class redEVENTImage
 	public static function getThumbUrl($path, $maxdim = null)
 	{
 		jimport('joomla.filesystem.file');
-		$app = &JFactory::getApplication();
-		$settings = redEVENTHelper::config();
+		$app = JFactory::getApplication();
+		$settings = RedeventHelper::config();
 
 		if ($maxdim)
 		{
@@ -327,7 +325,7 @@ class redEVENTImage
 				RedeventHelperLog::simpleLog(sprintf('Can\'t create path for thumbnail: %s',dirname($thumb_path)));
 				return false;
 			}
-			if (redEVENTImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
+			if (RedeventImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
 				return $thumb_uri;
 			}
 		}
@@ -431,14 +429,14 @@ class redEVENTImage
 	 */
 	public static function getCategoryImage($category, $modal = true, $attribs = null)
 	{
-		$image_attribs = array('title' => $category->catname);
+		$image_attribs = array('title' => $category->name);
 
 		if ($attribs && is_array($attribs)) {
 			$image_attribs = array_merge( $image_attribs, $attribs);
 		}
 		if ($category->image) {
-		  return self::modalimage($category->image, $category->catname, null, $image_attribs);
+		  return self::modalimage($category->image, $category->name, null, $image_attribs);
 		}
-		else return $category->catname;
+		else return $category->name;
 	}
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_REDEVENT_FRONTEND_ADMIN_Default_Layout">
+		<message>
+			<![CDATA[COM_REDEVENT_FRONTEND_ADMIN_LAYOUT_DESC]]>
+		</message>
+	</layout>
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+		</fieldset>
+	</fields>
+</metadata>

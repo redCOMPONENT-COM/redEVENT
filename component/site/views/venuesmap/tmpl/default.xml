@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_REDEVENT_Venues_map_Layout">
+	<layout title="COM_REDEVENT_VENUES_MAP_LAYOUT">
 		<message>
-			<![CDATA[COM_REDEVENT_VENUESMAP_LAYOUT_DESC]]>
+			<![CDATA[COM_REDEVENT_VENUES_MAP_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	
+
 	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-		<field name="introtext" 
-		       type="editor" 
-		       default="" 
+		<field name="introtext"
+		       type="editor"
+		       default=""
 		       label="COM_REDEVENT_INTROTEXT_FIELD"
 		       description="COM_REDEVENT_INTROTEXT_FIELD_TIP"
 		       filter="safehtml"/>

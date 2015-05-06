@@ -35,34 +35,34 @@ jimport('joomla.application.component.model');
  */
 class RedEventModelcsvtool extends JModel
 {
-	
+
 	/**
 	 * Return forms asssigned to redevents as options
-	 * 
+	 *
 	 * @return array
 	 */
 	function getFormOptions()
 	{
-		$query = ' SELECT DISTINCT f.id AS value, f.formname AS text ' 
-		       . ' FROM #__redevent_events AS e ' 
-		       . ' INNER JOIN #__rwf_forms AS f ON f.id = e.redform_id ' 
+		$query = ' SELECT DISTINCT f.id AS value, f.formname AS text '
+		       . ' FROM #__redevent_events AS e '
+		       . ' INNER JOIN #__rwf_forms AS f ON f.id = e.redform_id '
 		       . ' ORDER BY f.formname ASC '
 		       ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 		return $res;
 	}
-	
+
 	/**
 	 * get events as options according to filters
-	 * 
+	 *
 	 * @param int category_id
 	 * @param int venue_id
 	 * @return array
 	 */
 	function getEventOptions($category_id = 0, $venue_id = 0)
 	{
-		$query = ' SELECT e.id, e.title ' 
+		$query = ' SELECT e.id, e.title '
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
 		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
@@ -70,31 +70,31 @@ class RedEventModelcsvtool extends JModel
 		$where = array();
 		$where[] = ' e.published > -1 ';
 		$where[] = ' x.published > -1 ';
-		
+
 		if ($category_id)	{
 			$where[] = ' xcat.category_id = '.$category_id;
 		}
 		if ($venue_id)	{
 			$where[] = ' x.venueid = '.$venue_id;
 		}
-		
+
 		$query .= ' WHERE '.implode(' AND ', $where);
-		
+
 		$query .= ' GROUP BY e.id ';
 		$query .= ' ORDER BY e.title ';
-		
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
-		
+
 		return $res;
 	}
-		
+
 	function getFields($form_id)
 	{
-		$rfcore = new RedFormCore();
-		return $rfcore->getFields($form_id); 
+		$rfcore = RdfCore::getInstance();
+		return $rfcore->getFields($form_id);
 	}
-	
+
 
 /**
 	 * Method to get the registered users
@@ -105,24 +105,25 @@ class RedEventModelcsvtool extends JModel
 	 * @todo Complete CB integration
 	 */
 	function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = 0, $filter_attending = 0)
-	{	  
-		// first, get all submissions			
+	{
+		// first, get all submissions
 		$query = ' SELECT e.title, e.course_code, x.id as xref, x.dates, v.venue, '
-		        . ' r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name, pg.name as pricegroup '
-						. ' FROM #__redevent_register AS r '
-						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
-						. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
-						. ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-						. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-						. ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid '
-		        . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
-						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
-						;
+			. ' r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name, pg.name as pricegroup '
+			. ' FROM #__redevent_register AS r '
+			. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
+			. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
+			. ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+			. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+			. ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid '
+			. ' LEFT JOIN #__redevent_sessions_pricegroups AS spg ON pg.id = r.sessionpricegroup_id '
+			. ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id '
+			. ' LEFT JOIN #__users AS u ON r.uid = u.id '
+			;
 		$where = array();
 		$where[] = ' r.confirmed = 1 ';
 		$where[] = ' r.cancelled = 0 ';
 		$where[] = ' s.form_id = '.$form_id;
-		
+
 		if ($events && count($events)) {
 			$where[] = 'e.id in ('.implode(',', $events).')';
 		}
@@ -135,55 +136,51 @@ class RedEventModelcsvtool extends JModel
 		switch ($state_filter)
 		{
 			case 0:
-				$where[] = ' x.published = 1 ';				
+				$where[] = ' x.published = 1 ';
 				break;
 			case 1:
-				$where[] = ' x.published = -1 ';				
+				$where[] = ' x.published = -1 ';
 				break;
 			case 2:
-				$where[] = ' x.published <> 0 ';				
+				$where[] = ' x.published <> 0 ';
 				break;
 		}
 		switch ($filter_attending)
 		{
 			case 1:
-				$where[] = ' r.waitinglist = 0 ';				
+				$where[] = ' r.waitinglist = 0 ';
 				break;
 			case 2:
-				$where[] = ' r.waitinglist = 1 ';				
+				$where[] = ' r.waitinglist = 1 ';
 				break;
 		}
 		$query .= ' WHERE '.implode(' AND ', $where);
-		
+
 		$query .= ' GROUP BY r.id ';
 		$query .= ' ORDER BY e.title, x.dates ';
-		
+
 		$this->_db->setQuery($query);
 		$submitters = $this->_db->loadObjectList();
-		
+
 		// get answers
 		$sids = array();
-		if (count($submitters)) 
+		if (count($submitters))
 		{
-			foreach ($submitters as $s) 
+			foreach ($submitters as $s)
 			{
 				$sids[] = $s->sid;
 			}
 		}
-		
-		$rfcore = new RedFormCore();
-		$answers = $rfcore->getSidsAnswers($sids);
-		
+
+		$rfcore = RdfCore::getInstance();
+		$answers = $rfcore->getAnswers($sids);
+
 		// add answers to registers
 		foreach ($submitters as $k => $s)
 		{
-			if (isset($answers[$s->sid])) {
-				$submitters[$k]->answers = $answers[$s->sid];
-			}
-			else {
-				$submitters[$k]->answers = null;
-			}
+			$submitters[$k]->answers = $answers->getSubmissionBySid($s->sid);
 		}
+
 		return $submitters;
 	}
 }

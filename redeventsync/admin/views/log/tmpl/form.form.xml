@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	lessfiles="media://com_redeventsync/css/backend.less||media://com_redeventsync/css/backend.css"
+>
+	<fieldset name="basic_configuration"
+		label="COM_redeventsync_ITEMS_GROUP_BASIC"
+		description="COM_redeventsync_ITEMS_GROUP_BASIC_DESC"
+		class="span6"
+	>
+		<field name="date" type="calendar"
+			class="inputbox"
+			label="COM_REDEVENTSYNC_LOGS_FIELD_REQUEST_DATE"
+			labelclass="redeventsync-label redeventsync-label-main"
+			required="true"
+		 />
+
+		<field name="transactionid" type="text"
+			   class="inputbox"
+			   label="COM_REDEVENTSYNC_LOGS_TRANSACTIONID"
+			   labelclass="redeventsync-label"
+				/>
+
+		<field name="direction" type="list"
+			   class="inputbox"
+			   label="COM_REDEVENTSYNC_LOGS_DIRECTION"
+			   labelclass="redeventsync-label"
+				>
+			<option value="0">COM_REDEVENTSYNC_LOGS_DIRECTION_RECEIVED</option>
+			<option value="1">COM_REDEVENTSYNC_LOGS_DIRECTION_SENT</option>
+		</field>
+
+		<field name="type" type="text"
+			   class="inputbox"
+			   label="COM_REDEVENTSYNC_LOGS_TYPE"
+			   labelclass="redeventsync-label"
+				/>
+
+		<field name="message" type="textarea"
+			class="inputbox"
+			label="COM_REDEVENTSYNC_LOGS_FIELD_REQUEST_MESSAGE"
+			labelclass="redeventsync-label"
+			rows="15"
+			cols="80"
+		 />
+
+		<field name="status" type="text"
+			class="inputbox"
+			label="COM_REDEVENTSYNC_LOGS_FIELD_STATUS"
+			labelclass="redeventsync-label"
+		 />
+
+		<field name="debug" type="textarea"
+			class="inputbox"
+			label="COM_REDEVENTSYNC_LOGS_FIELD_DEBUG"
+			labelclass="redeventsync-label"
+			rows="15"
+			cols="80"
+		 />
+	</fieldset>
+</form>

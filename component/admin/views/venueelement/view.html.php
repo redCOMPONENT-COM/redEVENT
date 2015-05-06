@@ -36,14 +36,14 @@ class RedEventViewVenueelement extends JView {
 
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		//initialise variables
-		$db			= & JFactory::getDBO();
-		$document	= & JFactory::getDocument();
+		$db			= JFactory::getDBO();
+		$document	= JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
-		
+
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
 
@@ -53,7 +53,7 @@ class RedEventViewVenueelement extends JView {
 		$filter 			= $mainframe->getUserStateFromRequest( $option.'.venueelement.filter', 'filter', '', 'int' );
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.venueelement.filter_state', 'filter_state', '*', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.venueelement.search', 'search', '', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $db->escape( trim(JString::strtolower( $search ) ) );
 		$template 			= $mainframe->getTemplate();
 
 		//prepare document

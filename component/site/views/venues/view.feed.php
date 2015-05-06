@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewVenues extends JView
+class RedeventViewVenues extends RViewSite
 {
 	/**
 	 * Creates the Event Feed of the Venue
@@ -42,9 +42,9 @@ class RedeventViewVenues extends JView
 	 */
 	function display( )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$doc 	= & JFactory::getDocument();
+		$doc 	= JFactory::getDocument();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));

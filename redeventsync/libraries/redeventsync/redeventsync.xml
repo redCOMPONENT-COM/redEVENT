@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="2.5">
+    <name>redEVENT Sync - Libraries</name>
+    <libraryname>redeventsync</libraryname>
+    <creationDate>##DATE##</creationDate>
+    <author>redCOMPONENT</author>
+    <authorEmail>email@redcomponent.com</authorEmail>
+    <authorUrl>www.redcomponent.com</authorUrl>
+    <copyright>Copyright (C) 2012 - 2013 redCOMPONENT.com. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later, see LICENSE.</license>
+    <version>##VERSION##</version>
+    <description>redEVENT Sync library</description>
+    <files>
+        <folder>exception</folder>
+        <folder>helper</folder>
+		<folder>logger</folder>
+    </files>
+</extension>

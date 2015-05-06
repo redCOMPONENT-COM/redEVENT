@@ -1,0 +1,27 @@
+.icon-48-redeventsync { background: transparent url(../../com_redeventsync/images/icon-48-redeventsync.png) no-repeat !important; }
+
+div.xxxx-clear { clear: left; }
+.joomla-version-25 label.xxxx-label { min-width: 250px; background-color: rgba(0,0,0,0.1); padding: 2px; margin-right: 10px; }
+.joomla-version-25 label.xxxx-label-main { font-weight: bold; font-size: 120%; }
+
+.xxxx-title-field { display: block; font-size: x-large; font-weight: bold; border-bottom: thin solid gray; }
+
+.spinner {
+    position: absolute;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    z-index: 999;
+    background: #fff;
+    }
+
+.spinner-msg {
+    text-align: center;
+    font-weight: bold;
+}
+
+.spinner-img {
+    background: url(../images/spinner.gif) no-repeat;
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+}

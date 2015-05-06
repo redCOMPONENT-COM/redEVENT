@@ -30,9 +30,9 @@ if ($this->row->venueid != 0) {
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
-		<?php echo REOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
+		<?php echo RedeventHelperOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
 
-		<?php echo REOutput::printbutton( $this->print_link, $this->params ); ?>
+		<?php echo RedeventHelperOutput::printbutton( $this->print_link, $this->params ); ?>
 
 		<?php if ($this->params->get('event_ics', 1)): ?>
 			<?php $img = JHTML::image(JURI::base().'components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
@@ -50,13 +50,13 @@ if ($this->row->venueid != 0) {
 <!-- Details EVENT -->
 	<h2 class="redevent">
 		<?php
-    	echo $this->row->full_title;
-    	echo '&nbsp;'.REOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
+		echo Jtext::_('COM_REDEVENT_VIEW_DETAILS_FIXED_SUMMARY_SECTION_TITLE');
+    	echo '&nbsp;'.RedeventHelperOutput::editbutton($this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
     	?>
 	</h2>
 
 	<?php //flyer
-	$eventimage = redEVENTImage::modalimage($this->row->datimage, $this->row->title);
+	$eventimage = RedeventImage::modalimage($this->row->datimage, $this->row->title);
 	echo $eventimage;
 	?>
 
@@ -68,16 +68,16 @@ if ($this->row->venueid != 0) {
   	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
-			$tmp = REOutput::formatdate($this->row->dates, $this->row->times);
+			$tmp = RedeventHelperOutput::formatdate($this->row->dates, $this->row->times);
 			if (!empty($this->row->times) && strcasecmp('00:00:00', $this->row->times)) {
-				$tmp .= ' ' .REOutput::formattime($this->row->dates, $this->row->times);
+				$tmp .= ' ' .RedeventHelperOutput::formattime($this->row->dates, $this->row->times);
 			}
 			if (!empty($this->row->enddates) && $this->row->enddates != $this->row->dates)
 			{
-				$tmp .= ' - ' .REOutput::formatdate($this->row->enddates, $this->row->endtimes);
+				$tmp .= ' - ' .RedeventHelperOutput::formatdate($this->row->enddates, $this->row->endtimes);
 			}
 			if (!empty($this->row->endtimes) && strcasecmp('00:00:00', $this->row->endtimes)) {
-				$tmp .= ' ' .REOutput::formattime($this->row->dates, $this->row->endtimes);
+				$tmp .= ' ' .RedeventHelperOutput::formattime($this->row->dates, $this->row->endtimes);
 			}
 			echo $tmp;
 			?>
@@ -107,7 +107,7 @@ if ($this->row->venueid != 0) {
     			<?php
 				$i = 0;
     			foreach ($this->row->categories as $category) :
-    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->catname));
+    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
 						$i++;
 						if ($i != $n) :
 							echo ',';
@@ -173,8 +173,8 @@ if ($this->row->venueid != 0) {
 		</h2>
 
 		<?php //flyer
-		echo redEVENTImage::modalimage($this->row->locimage, $this->row->venue);
-		echo REOutput::mapicon($this->row, array('class' => 'event-map'));
+		echo RedeventImage::modalimage($this->row->locimage, $this->row->venue);
+		echo RedeventHelperOutput::mapicon($this->row, array('class' => 'event-map'));
 		?>
 
 		<dl class="location floattext">
@@ -218,7 +218,7 @@ if ($this->row->venueid != 0) {
 				<?php if ( $this->row->country ) : ?>
 				<dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></dt>
     			<dd class="venue_country">
-    				<?php echo redEVENTHelperCountries::getCountryFlag( $this->row->country ); ?>
+    				<?php echo RedeventHelperCountries::getCountryFlag($this->row->country); ?>
     			</dd>
     		<?php endif; ?>
 		</dl>
@@ -233,31 +233,31 @@ if ($this->row->venueid != 0) {
 
 	<?php if ($this->row->registra): ?>
 		<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_Registration' ); ?></h2>
-		<?php if (redEVENTHelper::isValidDate($this->row->registrationend)): ?>
+		<?php if (RedeventHelper::isValidDate($this->row->registrationend)): ?>
 			<?php echo strftime('%F', strtotime($this->row->registrationend)); ?>
 		<?php endif; ?>
-		<?php $registration_status = redEVENTHelper::canRegister($this->row->xref); ?>
+		<?php $registration_status = RedeventHelper::canRegister($this->row->xref); ?>
 		<div class="event-registration">
 		<?php
 		if (!$registration_status->canregister):
-			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+			$imgpath = 'media/com_redevent/images/'.$registration_status->error.'.png';
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo REOutput::moreInfoIcon($this->row->xslug, $img, $registration_status->status);
+			echo RedeventHelperOutput::moreInfoIcon($this->row->xslug, $img, $registration_status->status);
 		else : ?>
 		<?php $venues_html = '';
 		/* Get the different submission types */
 		$submissiontypes = explode(',', $this->row->submission_types);
-		$imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
+		$imagepath = JURI::base() . 'media/com_redevent/images/';
 		foreach ($submissiontypes as $key => $subtype)
 		{
 			switch ($subtype) {
 				case 'email':
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_email_img'),  JText::_($this->elsettings->get('signup_email_text')), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_email_img', 'email_icon.gif'),  JText::_($this->elsettings->get('signup_email_text')), 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'phone':
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_phone_img'),  JText::_($this->elsettings->get('signup_phone_text')), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_phone_img', 'phone_icon.gif'),  JText::_($this->elsettings->get('signup_phone_text')), 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'external':
 		      if (!empty($this->row->external_registration_url)) {
@@ -266,7 +266,7 @@ if ($this->row->venueid != 0) {
 		      else {
 		      	$link = $this->row->submission_type_external;
 		      }
-					$venues_html .= '<div class="registration_method hasTip" title="::'.$this->elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->get('signup_external_img'),  $this->elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
+					$venues_html .= '<div class="registration_method hasTip" title="::'.$this->elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->get('signup_external_img', 'external_icon.gif'),  $this->elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
 					if ($this->prices && count($this->prices))
@@ -274,7 +274,7 @@ if ($this->row->venueid != 0) {
 						foreach ($this->prices as $p)
 						{
 							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
-							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img'),  JText::_($p->name))
+							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($p->name))
 							                        : JHTML::_('image', JURI::root().$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug, $p->slug));
 
@@ -283,11 +283,11 @@ if ($this->row->venueid != 0) {
 						}
 					}
 					else {
-						$venues_html .= '<div class="registration_method webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img'),  JText::_($this->elsettings->get('signup_webform_text')))).'</div> ';
+						$venues_html .= '<div class="registration_method webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($this->elsettings->get('signup_webform_text')))).'</div> ';
 					}
 					break;
 				case 'formaloffer':
-					$venues_html .= '<div class="registration_methodr">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_formal_offer_img'),  JText::_($this->elsettings->get('signup_formal_offer_text')), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_methodr">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_formal_offer_img', 'formal_icon.gif'),  JText::_($this->elsettings->get('signup_formal_offer_text')), 'width="24px" height="24px"')).'</div> ';
 					break;
 			}
 		}

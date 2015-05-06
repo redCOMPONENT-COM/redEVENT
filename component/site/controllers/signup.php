@@ -32,28 +32,28 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventControllerSignup extends RedEventController
+class RedeventControllerSignup extends RedeventController
 {
 	/**
 	 * Constructor
 	 *
 	 * @since 0.9
 	 */
-	function __construct() 
+	function __construct()
 	{
 		parent::__construct();
-		$this->registerTask( 'signup', 'display' );
-		$this->registerTask( 'sendsignupemail', 'display' );
-		$this->registerTask( 'manageredit', 'edit' );
+		$this->registerTask('signup', 'display');
+		$this->registerTask('sendsignupemail', 'display');
+		$this->registerTask('manageredit', 'edit');
 	}
-	
-	function Createpdfemail() 
+
+	function Createpdfemail()
 	{
 		parent::display();
 	}
-	
+
 	function edit()
-	{		
+	{
 		JRequest::setvar('layout', 'edit');
 		parent::display();
 	}

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	lessfiles="media://com_redevent/css/backend.less||media://com_redevent/css/backend.css"
+	validate="true"
+>
+	<fieldset name="basic_configuration"
+		label="COM_REDEVENT_CUSTOM_FIELD"
+		description="COM_REDEVENT_CUSTOM_FIELD"
+		class="span6"
+		addfieldpath="/libraries/redevent/form/fields"
+	>
+		<field
+			name="name"
+			type="text"
+			default=""
+			label="COM_REDEVENT_Name"
+			labelclass="redevent-label redevent-label-main"
+			description ="COM_REDEVENT_Name"
+			required="true"
+			class="inputbox" />
+
+		<field
+			name="tag"
+			type="text"
+			default=""
+			label="COM_REDEVENT_Custom_field_Tag"
+			labelclass="redevent-label redevent-label-main"
+			description ="COM_REDEVENT_Custom_field_Tag"
+			required="true"
+			class="inputbox" />
+
+		<field
+			name="language"
+			type="contentlanguage"
+			label="JFIELD_LANGUAGE_LABEL"
+			labelclass="redevent-label redevent-label-main"
+			description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
+			class="inputbox">
+			<option value="*">JALL</option>
+		</field>
+
+		<field
+			name="object_key"
+			type="list"
+			class="inputbox"
+			default="redevent.event"
+			size="1"
+			label="COM_REDEVENT_Field_for"
+			labelclass="redevent-label redevent-label-main"
+			description="COM_REDEVENT_Field_for_tip">
+			<option	value="redevent.event">COM_REDEVENT_EVENT</option>
+			<option	value="redevent.xref">COM_REDEVENT_SESSION</option>
+		</field>
+
+		<field
+			name="type"
+			type="recustomfieldtype"
+			class="inputbox"
+			size="1"
+			label="COM_REDEVENT_custom_field_type"
+			labelclass="redevent-label redevent-label-main"
+			description="COM_REDEVENT_custom_field_type_tip">
+		</field>
+
+		<field
+			name="published"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			labelclass="redevent-label redevent-label-main"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+	<!-- 	<option
+				value="-1">
+				JARCHIVED</option> -->
+		</field>
+
+		<field
+			name="tips"
+			type="textarea"
+			label="COM_REDEVENT_Custom_field_Tooltip"
+			labelclass="redevent-label redevent-label-main"
+			description ="COM_REDEVENT_Custom_field_Tooltip_tip"
+			class="inputbox">
+		</field>
+
+		<field
+			name="searchable"
+			type="list"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_Custom_field_Searchable"
+			labelclass="redevent-label redevent-label-main"
+			description="COM_REDEVENT_Custom_field_Searchable_tip">
+			<option
+				value="0">
+				JNO</option>
+			<option
+				value="1">
+				JYES</option>
+		</field>
+
+		<field
+			name="in_lists"
+			type="list"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_Show_in_lists"
+			labelclass="redevent-label redevent-label-main"
+			description="COM_REDEVENT_Show_in_lists_tip">
+			<option
+				value="0">
+				JNO</option>
+			<option
+				value="1">
+				JYES</option>
+		</field>
+
+		<field
+			name="frontend_edit"
+			type="list"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_Frontend_edit"
+			labelclass="redevent-label redevent-label-main"
+			description="COM_REDEVENT_Frontend_edit_tip">
+			<option
+				value="0">
+				JNO</option>
+			<option
+				value="1">
+				JYES</option>
+		</field>
+
+		<field
+			name="required"
+			type="list"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_Custom_field_Required"
+			labelclass="redevent-label redevent-label-main"
+			description="COM_REDEVENT_Custom_field_Required_tip">
+			<option
+				value="0">
+				JNO</option>
+			<option
+				value="1">
+				JYES</option>
+		</field>
+
+
+		<field
+			name="min"
+			type="text"
+			default=""
+			label="COM_REDEVENT_Min_characters"
+			labelclass="redevent-label redevent-label-main"
+			description ="COM_REDEVENT_Min_characters_tip"
+			class="inputbox" />
+
+		<field
+			name="max"
+			type="text"
+			default=""
+			label="COM_REDEVENT_Max_characters"
+			labelclass="redevent-label redevent-label-main"
+			description ="COM_REDEVENT_Max_characters_tip"
+			class="inputbox" />
+
+		<field
+			name="options"
+			type="textarea"
+			label="COM_REDEVENT_CUSTOM_FIELD_OPTIONS"
+			labelclass="redevent-label redevent-label-main"
+			description ="COM_REDEVENT_CUSTOM_FIELD_OPTIONS_DESC"
+			class="inputbox">
+		</field>
+
+		<field
+			name="default_value"
+			type="textarea"
+			label="COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL"
+			labelclass="redevent-label redevent-label-main"
+			description ="COM_REDEVENT_CUSTOM_FIELD_DEFAULT_DESC"
+			class="inputbox">
+		</field>
+
+	</fieldset>
+</form>

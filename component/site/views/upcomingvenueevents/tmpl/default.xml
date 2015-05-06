@@ -6,9 +6,9 @@
 		</message>
 	</layout>
 
-	<fields name="request" addfieldpath="/administrator/components/com_redevent/models/fields">
+	<fields name="request" addfieldpath="/libraries/redevent/form/fields">
    	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-      <field name="id" type="revenue" default="0" required="true" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE" />
+      <field name="id" type="revenuelist" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE" />
     </fieldset>
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 
@@ -30,7 +30,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			
+
    	</fieldset>
 	</fields>
 </metadata>

@@ -28,12 +28,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php
 switch ($this->elsettings->get('commentsystem')) {
-	
+
 	//jcomments integration
 	case 1:
 		if (file_exists(JPATH_SITE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php')) :
 			require_once(JPATH_SITE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php');
-			echo JComments::showComments($this->row->did, 'com_redevent', $this->row->full_title);
+			echo JComments::showComments($this->row->did, 'com_redevent', RedeventHelper::getSessionFullTitle($this->row));
 		endif;
 	break;
 

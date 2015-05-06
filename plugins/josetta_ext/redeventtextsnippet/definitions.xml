@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<context>redevent_textsnippet</context>
+	<name>Redevent textsnippet</name>
+	<table>#__redevent_textlibrary</table>
+	<reference>
+		<id>
+			<column>id</column>
+			<type>int</type>
+			<size>10</size>
+		</id>
+		<title>
+			<column>text_name</column>
+			<type>josettatext</type>
+			<size>100</size>
+		</title>
+	</reference>
+		
+</josetta>

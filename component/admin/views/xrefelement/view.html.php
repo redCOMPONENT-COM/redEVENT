@@ -36,15 +36,15 @@ class RedEventViewxrefelement extends JView {
 
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		//initialise variables
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$params   = &JComponentHelper::getParams('com_redevent');
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
-		
+
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
 
@@ -54,14 +54,14 @@ class RedEventViewxrefelement extends JView {
 		$filter 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter', 'filter', '', 'int' );
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter_state', 'filter_state', '*', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.search', 'search', '', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $db->escape( trim(JString::strtolower( $search ) ) );
 		$template 			= $mainframe->getTemplate();
 
 		//prepare the document
-		$document->setTitle(JText::_('COM_REDEVENT_SELECTEVENT' ));
+		$document->setTitle(JText::_('COM_REDEVENT_SELECT_SESSION' ));
 		$document->addStyleSheet('templates/'.$template.'/css/general.css');
 
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		RHelperAsset::load('backend.css');
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');

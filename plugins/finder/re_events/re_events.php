@@ -54,7 +54,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	 * @since  2.5
 	 */
 	protected $type_title = 'Event';
-	
+
 	/**
 	 * The table name.
 	 *
@@ -62,7 +62,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	 * @since  2.5
 	 */
 	protected $table = '#__redevent_events';
-	
+
 	protected $state_field = 'published';
 
 	/**
@@ -250,7 +250,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		{
 			return;
 		}
-		
+
 		// Build the necessary route and path information.
 		$item->url = RedeventHelperRoute::getDetailsRoute($item->slug);
 		$item->route = RedeventHelperRoute::getDetailsRoute($item->slug);
@@ -269,7 +269,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 
 		// Add the language taxonomy data.
 		//$item->addTaxonomy('Language', $item->language);
-		
+
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
 
@@ -311,7 +311,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$sql->select('a.meta_keywords AS metakey, a.meta_description AS metadesc');
 		$sql->select('a.created_by, a.modified, a.modified_by');
 		$sql->select('a.published AS state, a.created AS start_date');
-		
+
 		// FIXME: it's not right, but the adapter itself does the same !
 		$sql->select('MAX(c.access) AS access, a.created AS start_date');
 
@@ -324,23 +324,20 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$case_when_item_alias .= ' ELSE ';
 		$case_when_item_alias .= $a_id.' END as slug';
 		$sql->select($case_when_item_alias);
-		
+
 		$sql->select('u.name AS author');
-		
-		// do not list if belonging only to private categories
-		$sql->where('c.private = 0');
-		
+
 		$sql->from('#__redevent_events AS a');
 		$sql->join('LEFT', '#__users AS u ON u.id = a.created_by');
 		$sql->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$sql->join('INNER', '#__redevent_categories AS c ON c.id = xcat.category_id');
-		
+
 		$sql->group('a.id');
 
 		return $sql;
 	}
-	
-	
+
+
 	/**
 	 * Method to check the existing access level for items
 	 *
@@ -351,11 +348,11 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	 * @since   2.5
 	 */
 	protected function checkItemAccess($row)
-	{	
+	{
 		// Store the access level to determine if it changes
 		$this->old_access = $row->access;
 	}
-	
+
 	protected function checkCategoryAccess($row)
 	{
 		$query = $this->db->getQuery(true);
@@ -367,7 +364,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		// Store the access level to determine if it changes
 		$this->old_cataccess = $this->db->loadResult();
 	}
-		
+
 	/**
 	 * Method to get a SQL query to load the published and access states for
 	 * an event and category.
@@ -389,13 +386,13 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$sql->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$sql->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
 		$sql->group('a.id');
-	
+
 		return $sql;
 	}
-	
-	
+
+
 	/**
-	 * Method to get a content item to index. 
+	 * Method to get a content item to index.
 	 * we need to override this method due to multiple categories in redevent
 	 *
 	 * @param   integer  $id  The id of the content item.
@@ -408,34 +405,34 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	protected function getItem($id)
 	{
 		JLog::add('FinderIndexerAdapter::getItem', JLog::INFO);
-	
+
 		// Get the list query and add the extra WHERE clause.
 		$sql = $this->getListQuery();
 		$sql->where('a.' . $this->db->quoteName('id') . ' = ' . (int) $id);
-	
+
 		// Get the item to index.
 		$this->db->setQuery($sql);
 		$row = $this->db->loadAssoc();
-	
+
 		// Check for a database error.
 		if ($this->db->getErrorNum())
 		{
 			// Throw database error exception.
 			throw new Exception($this->db->getErrorMsg(), 500);
 		}
-	
+
 		// Convert the item to a result object.
 		$item = JArrayHelper::toObject($row, 'FinderIndexerResult');
-	
+
 		// Set the item type.
 		$item->type_id = $this->type_id;
-	
+
 		// Set the item layout.
 		$item->layout = $this->layout;
-	
+
 		return $item;
 	}
-	
+
 	/**
 	 * Method to get a list of content items to index.
 	 * we need to override this method due to multiple categories in redevent
@@ -452,76 +449,76 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	protected function getItems($offset, $limit, $sql = null)
 	{
 		JLog::add('FinderIndexerAdapter::getItems', JLog::INFO);
-	
+
 		$items = array();
-	
+
 		// Get the content items to index.
 		$this->db->setQuery($this->getListQuery($sql), $offset, $limit);
 		$rows = $this->db->loadAssocList();
-	
+
 		// Check for a database error.
 		if ($this->db->getErrorNum())
 		{
 			// Throw database error exception.
 			throw new Exception($this->db->getErrorMsg(), 500);
 		}
-	
+
 		// Convert the items to result objects.
 		foreach ($rows as $row)
-		{						
+		{
 			// Convert the item to a result object.
 			$item = JArrayHelper::toObject($row, 'FinderIndexerResult');
-	
+
 			// Set the item type.
 			$item->type_id = $this->type_id;
-	
+
 			// Set the mime type.
 			$item->mime = $this->mime;
-	
+
 			// Set the item layout.
 			$item->layout = $this->layout;
-	
+
 			// Set the extension if present
 			if (isset($row->extension))
 			{
 				$item->extension = $row->extension;
 			}
-	
+
 			// Add the item to the stack.
 			$items[] = $item;
 		}
-	
+
 		return $items;
 	}
-	
+
 	/**
 	 * get categories associated to row
-	 * 
+	 *
 	 * @param object $row
 	 * @return object
 	 */
 	protected function addCategoriesTaxonomy(FinderIndexerResult &$item)
 	{
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
-		$query->select('c.catname, c.access, c.private, c.published AS state');
+
+		$query->select('c.name, c.access, c.published AS state');
 		$query->from('#__redevent_categories AS c');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id');
 		$query->where('xcat.event_id = '.$item->id);
 		$db->setQuery($query);
 		$cats = $db->loadObjectList();
-		
+
 		if ($cats)
 		{
 			foreach ($cats as $c) {
-				$item->addTaxonomy('Category', $c->catname, $c->state, $c->access);				
+				$item->addTaxonomy('Category', $c->catname, $c->state, $c->access);
 			}
 		}
-		
+
 		return $item;
 	}
-	
+
 	/**
 	 * Method to update index data on category access level changes
 	 *
@@ -535,20 +532,20 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	{
 		$sql = clone($this->getStateQuery());
 		$sql->where('c.id = ' . (int) $row->id);
-	
+
 		// Get the access level.
 		$this->db->setQuery($sql);
 		$items = $this->db->loadObjectList();
-	
+
 		// Adjust the access level for each item within the category.
 		foreach ($items as $item)
 		{
 			// Set the access level.
 			$temp = max($item->access, $row->access);
-	
+
 			// Update the item.
 			$this->change((int) $item->id, 'access', $temp);
-	
+
 			// Reindex the item
 			$this->reindex($item->id);
 		}

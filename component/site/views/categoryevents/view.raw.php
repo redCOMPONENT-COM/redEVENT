@@ -35,7 +35,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventViewCategoryEvents extends JView
+class RedeventViewCategoryEvents extends RViewSite
 {
 	/**
 	 * Creates the output for the details view
@@ -43,29 +43,29 @@ class RedeventViewCategoryEvents extends JView
  	 * @since 2.0
 	 */
 	function display($tpl = null)
-	{		
-		$mainframe = &JFactory::getApplication();
-    		
-		$settings = redEVENTHelper::config();
-		
+	{
+		$mainframe = JFactory::getApplication();
+
+		$settings = RedeventHelper::config();
+
 		// Get data from the model
 		$model = $this->getModel();
 		$model->setLimit($settings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
-		$rows = & $model->getData();
-				
+		$rows = $model->getSessions();
+
     // initiate new CALENDAR
-		$vcal = redEVENTHelper::getCalendarTool();
-		$catid = JRequest::getInt('id');		
+		$vcal = RedeventHelper::getCalendarTool();
+		$catid = JRequest::getInt('id');
 		$vcal->setProperty('unique_id', 'category'.$catid.'@'.$mainframe->getCfg('sitename'));
 		$vcal->setConfig( "filename", "category".$catid.".ics" );
-		
+
 		foreach ( $rows as $row )
-		{				
-			redEVENTHelper::icalAddEvent($vcal, $row);	
+		{
+			RedeventHelper::icalAddEvent($vcal, $row);
 		}
 		$vcal->returnCalendar();                       // generate and redirect output to user browser
 //		echo $vcal->createCalendar(); // debug
-		$mainframe->close();					
+		$mainframe->close();
 	}
 }

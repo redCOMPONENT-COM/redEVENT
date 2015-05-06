@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<context>redevent_session</context>
+	<name>Redevent session</name>
+	<table>#__redevent_event_venue_xref</table>
+	<reference>
+		<id>
+			<column>id</column>
+			<type>int</type>
+			<size>10</size>
+		</id>
+		<title>
+			<column>dates</column>
+			<type>josettatext</type>
+			<size>100</size>
+		</title>
+		<title>
+			<column>title</column>
+			<type>josettatext</type>
+			<size>100</size>
+		</title>
+		<published>
+			<column>published</column>
+			<type>int</type>
+			<size>10</size>
+		</published>
+		
+	</reference>
+	
+	<filters>
+		<filter>
+			<type>reevent</type>
+			<id>filter_event</id>
+			<table>#__redevent_events</table>
+			<column>eventid</column>
+			<default>0</default>
+		</filter>
+	</filters>
+		
+</josetta>

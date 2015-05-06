@@ -28,16 +28,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="el_webformsignup">
 	<p class="buttons">
 	  <?php
-	    echo REOutput::printbutton( $this->print_link, $this->params );
+	    echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	  ?>
 	</p>
-	
+
 	<?php if ($this->params->get('show_page_title', true)) : ?>
-	
+
 	<h1 class="componentheading">
 	<?php echo $this->escape($this->pagetitle); ?>
 	</h1>
-	
+
 	<?php endif; ?>
 <?php endif; ?>
 <?php

@@ -65,7 +65,7 @@ class RedEventModelVenuecategoryelement extends JModel
 	{
 		parent::__construct();
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$option = JRequest::getCmd('option');
 
@@ -162,7 +162,7 @@ class RedEventModelVenuecategoryelement extends JModel
 	 */
 	function _buildContentOrderBy()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.filter_order', 'filter_order', 'c.ordering', 'cmd' );
@@ -182,12 +182,12 @@ class RedEventModelVenuecategoryelement extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.filter_state', 'filter_state', '', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $this->_db->escape( trim(JString::strtolower( $search ) ) );
 
 		$where = array();
 

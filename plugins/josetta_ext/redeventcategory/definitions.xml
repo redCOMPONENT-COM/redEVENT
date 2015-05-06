@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<context>redevent_category</context>
+	<name>Redevent category</name>
+	<table>#__redevent_categories</table>
+	<reference>
+		<id>
+			<column>id</column>
+			<type>int</type>
+			<size>10</size>
+		</id>
+		<title>
+			<column>catname</column>
+			<type>josettatext</type>
+			<size>100</size>
+		</title>
+		<published>
+			<column>published</column>
+			<type>int</type>
+			<size>10</size>
+		</published>
+	</reference>
+		
+</josetta>

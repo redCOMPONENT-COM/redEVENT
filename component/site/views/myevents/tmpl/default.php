@@ -33,13 +33,38 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php endif; ?>
 
-<!--table-->
+<?php if ($this->hasManagedEvents) :	?>
 
-<?php echo $this->loadTemplate('events'); ?>
+	<h2><?php echo JText::_('COM_REDEVENT_Manage_Events'); ?></h2>
+	<?php echo $this->loadTemplate('events'); ?>
 
-<?php echo $this->loadTemplate('venues'); ?>
+<?php endif; ?>
 
-<?php echo $this->loadTemplate('attending'); ?>
+<?php if ($this->canAddXref): ?>
+	<div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
+<?php endif; ?>
 
-<?php echo $this->loadTemplate('groups'); ?>
+<?php if ($this->canAddEvent): ?>
+	<div><?php echo JHTML::link(RedeventHelperRoute::getEditEventRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
+<?php endif; ?>
+
+<?php if (count((array)$this->venues)) : ?>
+	<h2><?php echo JText::_('COM_REDEVENT_Manage_Venues'); ?></h2>
+	<?php echo $this->loadTemplate('venues'); ?>
+<?php endif; ?>
+
+<?php if ($this->canAddVenue): ?>
+	<div><?php echo JHTML::link(RedeventHelperRoute::getEditVenueRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
+<?php endif; ?>
+
+<?php if (count((array)$this->attending)) : ?>
+	<h2><?php echo JText::_('COM_REDEVENT_ATTENDING'); ?></h2>
+	<?php echo $this->loadTemplate('attending'); ?>
+<?php endif; ?>
+
+<?php if (count((array)$this->attended)) : ?>
+	<h2><?php echo JText::_('COM_REDEVENT_BOOKING_HISTORY'); ?></h2>
+	<?php echo $this->loadTemplate('attended'); ?>
+<?php endif; ?>
+
 </div>

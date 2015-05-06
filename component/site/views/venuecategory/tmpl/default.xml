@@ -5,10 +5,12 @@
 			<![CDATA[COM_REDEVENT_VENUECATEGORY_DEFAULT_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	
-	<fields name="request" addfieldpath="/administrator/components/com_redevent/models/fields">
+
+	<fields name="request" addfieldpath="/libraries/redevent/form/fields">
    	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-			<field name="id" type="revenuecategory" default="0" required="true" label="COM_REDEVENT_SELECT_VENUE_CATEGORY" description="COM_REDEVENT_SELECT_VENUE_CATEGORY_DESC" />
+			<field name="id" type="revenuecategorylist" label="COM_REDEVENT_SELECT_VENUE_CATEGORY" description="COM_REDEVENT_SELECT_VENUE_CATEGORY_DESC">
+                <option value="0">JSelect</option>
+            </field>
 		</fieldset>
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 
@@ -30,7 +32,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			
+
    	</fieldset>
 	</fields>
 </metadata>

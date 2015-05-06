@@ -1,232 +1,173 @@
 <?php
 /**
- * @version 1.0 $Id: cleanup.php 298 2009-06-24 07:42:35Z julien $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
-
-jimport('joomla.application.component.model');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Joomla Redevent Component Model
+ * redEVENT Component Custom fields Model
  *
- * @package		Redevent
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedeventModelCustomfields extends JModel 
+class RedeventModelCustomfields extends RModelList
 {
-   /**
-   * list data array
-   *
-   * @var array
-   */
-  var $_data = null;
+	/**
+	 * Name of the filter form to load
+	 *
+	 * @var  string
+	 */
+	protected $filterFormName = 'filter_customfields';
 
-  /**
-   * total
-   *
-   * @var integer
-   */
-  var $_total = null;
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitField = 'customfields_limit';
 
-  /**
-   * Pagination object
-   *
-   * @var object
-   */
-  var $_pagination = null;
-  
-  /**
-   * Constructor
-   *
-   * @since 0.1
-   */
-  function __construct()
-  {
-    parent::__construct();
-    $mainframe = &JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitstartField = 'auto';
 
-    // Get the pagination request variables
-    $limit    = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-    $limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-
-    $this->setState('limit', $limit);
-    $this->setState('limitstart', $limitstart);
-  }
-  
-  /**
-   * Method to get List data
-   *
-   * @access public
-   * @return array
-   */
-  function getData()
-  {
-    // Lets load the content if it doesn't already exist
-    if (empty($this->_data))
-    {
-      $query = $this->_buildQuery();
-      if (!$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit')))
-      echo $this->_db->getErrorMsg();
-    }
-    
-    return $this->_data;
-  }
-  
-	function _buildQuery()
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
+	 */
+	public function __construct($config = array())
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'name', 'obj.name',
+				'id', 'obj.id',
+				'language', 'obj.language',
+				'ordering', 'obj.ordering',
+				'type', 'obj.type',
+			);
+		}
 
-		$query = ' SELECT obj.*, u.name AS editor '
-			. ' FROM #__redevent_fields AS obj '
-			. ' LEFT JOIN #__users AS u ON u.id = obj.checked_out '
-			. $where
-			. $orderby
-		;
+		parent::__construct($config);
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.language');
+		$id	.= ':' . $this->getState('filter.type');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  object  Query object
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select($this->getState('list.select', 'obj.*'));
+		$query->from($db->qn('#__redevent_fields', 'obj'));
+
+		// Filter by language
+		$language = $this->getState('filter.language');
+
+		if ($language && $language != '*')
+		{
+			$query->where($db->qn('obj.language') . ' = ' . $db->quote($language));
+		}
+
+		// Filter by type
+		$type = $this->getState('filter.type');
+
+		if ($type)
+		{
+			$query->where($db->qn('obj.type') . ' = ' . $db->quote($type));
+		}
+
+		// Filter: like / search
+		$search = $this->getState('filter.search', '');
+
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('obj.id = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$query->where('obj.name LIKE ' . $search);
+			}
+		}
+
+		// Add the list ordering clause.
+		$query->order($db->escape($this->getState('list.ordering', 'obj.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 
 		return $query;
 	}
 
-	function _buildContentOrderBy()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.customfields.filter_order',		'filter_order',		'obj.ordering',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.customfields.filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-
-		if ($filter_order == 'obj.ordering'){
-			$orderby 	= ' ORDER BY obj.ordering '.$filter_order_Dir;
-		} else {
-			$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.' , obj.ordering ';
-		}
-
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_state		= $mainframe->getUserStateFromRequest( $option.'.customfields.filter_state',		'filter_state',		'',				'word' );
-		$search				= $mainframe->getUserStateFromRequest( $option.'.customfields.search',			'search',			'',				'string' );
-		$search				= JString::strtolower( $search );
-
-		$where = array();
-
-		if ($search) {
-			$where[] = 'LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%');
-		}
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
-				$where[] = 'obj.published = 1';
-			} else if ($filter_state == 'U' ) {
-				$where[] = 'obj.published = 0';
-			}
-		}
-
-		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
-
-		return $where;
-	}
-	
-  /**
-   * Method to get a pagination object
-   *
-   * @access public
-   * @return integer
-   */
-  function getPagination()
-  {
-    // Lets load the content if it doesn't already exist
-    if (empty($this->_pagination))
-    {
-      jimport('joomla.html.pagination');
-      $this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-    }
-
-    return $this->_pagination;
-  }
-  
-
-  /**
-   * Total nr of items
-   *
-   * @access public
-   * @return integer
-   */
-  function getTotal()
-  {
-    // Lets load the total nr if it doesn't already exist
-    if (empty($this->_total))
-    {
-      $query = $this->_buildQuery();
-      $this->_total = $this->_getListCount($query);
-    }
-
-    return $this->_total;
-  }
-  
-
 	/**
-	 * export 
-   *
+	 * export
+	 *
 	 * @return array
 	 */
 	public function export()
-	{				
-		$query = ' SELECT t.id, t.name, t.tag, t.type, t.tips, t.searchable, '
-		       . ' t.in_lists, t.frontend_edit, t.required, t.object_key, '
-		       . ' t.options, t.min, t.max, t.ordering, t.published  '
-		       . ' FROM #__redevent_fields AS t '
-		       ;
-    $this->_db->setQuery($query);
-    
-    $results = $this->_db->loadAssocList();
-    
-    return $results;
+	{
+		$db = &$this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('t.id, t.name, t.tag, t.type, t.tips, t.searchable');
+		$query->select('t.in_lists, t.frontend_edit, t.required, t.object_key');
+		$query->select('t.options, t.min, t.max, t.ordering, t.published, t.language');
+		$query->from('#__redevent_fields AS t');
+		$db->setQuery($query);
+		$res = $db->loadAssocList();
+
+		return $res;
 	}
-	
-  /**
+
+	/**
 	 * import in database
-	 * 
-	 * @param array $records
-	 * @param boolean $replace existing events with same id
-	 * @return boolean true on success
+	 *
+	 * @param   array  $records records
+	 * @param   bool   $replace existing events with same id
+	 *
+	 * @return int count
 	 */
-	public function import($records, $replace = 0)
+	public function import($records, $replace = false)
 	{
 		$count = array('added' => 0, 'updated' => 0);
-		
-	  $tables = $this->_db->getTableFields(array('#__redevent_events', '#__redevent_event_venue_xref'), false);
-	    
+
+		$tables = $this->_db->getTableFields(array('#__redevent_events', '#__redevent_event_venue_xref'), false);
+
 		$current = null; // current event for sessions
+
 		foreach ($records as $r)
-		{			
-			$row = Jtable::getInstance('Redevent_customfield', '');	
+		{
+			$row = $this->getTable();
 			$row->bind($r);
 			if (!$replace) {
 				$row->id = null;
@@ -244,35 +185,35 @@ class RedeventModelCustomfields extends JModel
 				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$row->getError());
 				continue;
 			}
-		
-	    // add the field to the object table
-	    switch ($row->object_key)
-	    {
-	    	case 'redevent.event':
-	    		$table = '#__redevent_events';
-	    		break;
-	    	case 'redevent.xref':
-	    		$table = '#__redevent_event_venue_xref';
-	    		break;
-	    	default:
-	    		JError::raiseWarning(0, 'undefined custom field object_key');
-	    		break;
-	    }
-	    $cols = $tables[$table];
-	    
-	    if (!array_key_exists('custom'.$row->id, $cols))
-	    {
-	    	switch ($row->type)
-	    	{
-	    		default: // for now, let's not restrict the type...
-	    			$columntype = 'TEXT';
-	    	}
-	    	$q = 'ALTER IGNORE TABLE '.$table.' ADD COLUMN custom'.$row->id.' '.$columntype;
+
+			// add the field to the object table
+			switch ($row->object_key)
+			{
+				case 'redevent.event':
+					$table = '#__redevent_events';
+					break;
+				case 'redevent.xref':
+					$table = '#__redevent_event_venue_xref';
+					break;
+				default:
+					JError::raiseWarning(0, 'undefined custom field object_key');
+					break;
+			}
+			$cols = $tables[$table];
+
+			if (!array_key_exists('custom'.$row->id, $cols))
+			{
+				switch ($row->type)
+				{
+					default: // for now, let's not restrict the type...
+						$columntype = 'TEXT';
+				}
+				$q = 'ALTER IGNORE TABLE '.$table.' ADD COLUMN custom'.$row->id.' '.$columntype;
 				$this->_db->setQuery($q);
 				if (!$this->_db->query()) {
-	    		JError::raiseWarning(0, 'failed adding custom field to table');
+					JError::raiseWarning(0, 'failed adding custom field to table');
 				}
-	    }
+			}
 		}
 		return $count;
 	}

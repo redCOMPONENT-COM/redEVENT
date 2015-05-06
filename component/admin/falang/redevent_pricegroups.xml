@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<falang type="contentelement">
+	<name>redEVENT - Price groups</name>
+	<author>redCOMPONENT</author>
+	<version>##VERSION##</version>
+	<description>Definition for redEVENT component, "Price groups" section</description>
+	<reference>
+		<table name="redevent_pricegroups">
+			<field type="referenceid" name="id" translate="0">ID</field>
+			<field type="titletext" name="name" translate="1">Name</field>
+			<field type="htmltext" name="tooltip" translate="1">Tooltip</field>
+		</table>
+	</reference>
+</falang>

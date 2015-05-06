@@ -65,7 +65,7 @@ class RedEventModelEventelement extends JModel
 	{
 		parent::__construct();
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$option = JRequest::getCmd('option');
 
@@ -142,7 +142,7 @@ class RedEventModelEventelement extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = 'SELECT a.*, x.dates, x.enddates, x.times, x.endtimes, x.id as xref, loc.venue, loc.city, cat.catname, '
+		$query = 'SELECT a.*, x.dates, x.enddates, x.times, x.endtimes, x.id as xref, loc.venue, loc.city, cat.name AS catname, '
           .  ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug '
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
@@ -164,7 +164,7 @@ class RedEventModelEventelement extends JModel
 	 */
 	function _buildContentOrderBy()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.eventelement.filter_order', 'filter_order', 'x.dates', 'cmd' );
@@ -183,13 +183,13 @@ class RedEventModelEventelement extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.eventelement.filter_state', 'filter_state', '', 'word' );
 		$filter 			= $mainframe->getUserStateFromRequest( $option.'.eventelement.filter', 'filter', '', 'int' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.eventelement.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $this->_db->escape( trim(JString::strtolower( $search ) ) );
 
 		$where = array();
 
@@ -216,7 +216,7 @@ class RedEventModelEventelement extends JModel
 		}
 
 		if ($search && $filter == 4) {
-			$where[] = ' LOWER(cat.catname) LIKE \'%'.$search.'%\' ';
+			$where[] = ' LOWER(cat.name) LIKE \'%'.$search.'%\' ';
 		}
 
 

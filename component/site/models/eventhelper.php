@@ -1,56 +1,41 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Site
+ * @subpackage  Models
+ *
+ * @copyright   Copyright (C) 2008 - 2013 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * redEVENT Component Eventhelper Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		2.0
+ * @package     Redevent.Site
+ * @subpackage  Models
+ * @since       2.0
  */
-class RedeventModelEventhelper extends JModel
+class RedeventModelEventhelper extends RModel
 {
 	/**
 	 * event data caching
 	 *
 	 * @var array
 	 */
-	protected $_event = null;
+	protected $event = null;
+
 	/**
 	 * event id
 	 * @var int
 	 */
-	protected $_id   = null;
+	protected $id   = null;
+
 	/**
 	 * session id xref
 	 * @var int
 	 */
-	protected $_xref = null;
+	protected $xref = null;
 
 	/**
 	 * Constructor
@@ -63,217 +48,262 @@ class RedeventModelEventhelper extends JModel
 	}
 
 	/**
-	 * Method to set the details id
+	 * Method to set the session event id
 	 *
-	 * @access	public
-	 * @param	int	details ID number
+	 * @param   int  $id  event id
+	 *
+	 * @return void
 	 */
-
 	public function setId($id)
 	{
 		// Set new details ID and wipe data
-		$this->_id			= $id;
-		$this->_event		= null;
+		$this->id    = $id;
+		$this->event = null;
 	}
-	
+
 	/**
-	 * Method to set the details id
+	 * Method to set the session id
 	 *
-	 * @access	public
-	 * @param	int	details ID number
+	 * @param   int  $xref  session id
+	 *
+	 * @return void
 	 */
 	public function setXref($xref)
 	{
 		// Set new details ID and wipe data
-		$this->_xref  = $xref;
-		$this->_event = null;
+		$this->xref  = $xref;
+		$this->event = null;
 	}
 
 	/**
-	 * Method to get event data for the Detailsview
+	 * Method to get event data
 	 *
-	 * @access public
 	 * @return array
-	 * @since 0.9
 	 */
 	public function getData()
 	{
 		/*
 		 * Load the Category data
 		 */
-		if ($this->_loadDetails())
+		if ($this->loadDetails())
 		{
-			$user	= & JFactory::getUser();
+			$user	= JFactory::getUser();
 
 			// Is the category published?
-			if (!count($this->_event->categories))
+			if (!count($this->event->categories))
 			{
-				RedeventError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
+				RedeventError::raiseError(404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED"));
 			}
 
 			// Do we have access to any category ?
 			$access = false;
-			foreach ($this->_details->categories as $cat)
+
+			foreach ($this->event->categories as $cat)
 			{
-				if ($cat->access <= max($user->getAuthorisedViewLevels()))
+				if (in_array($cat->access, $user->getAuthorisedViewLevels()))
 				{
 					$access = true;
 					break;
 				}
 			}
-			if (!$access) {
+
+			if (!$access)
+			{
 				JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
 			}
 		}
 
-		return $this->_event;
+		return $this->event;
 	}
 
 	/**
 	 * Method to load required data
 	 *
-	 * @access	private
-	 * @return	array
-	 * @since	0.9
+	 * @return array
+	 *
+	 * @since 0.9
 	 */
-	protected function _loadDetails()
+	protected function loadDetails()
 	{
-		if (empty($this->_event))
+		if (empty($this->event))
 		{
-			$user	= & JFactory::getUser();
-			// Get the WHERE clause
-			$where	= $this->_buildDetailsWhere();
+			$user  = JFactory::getUser();
 
-			$query = 'SELECT x.*, a.*, a.id AS did, x.id AS xref, a.title, a.datdescription, '
-			    . ' a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, '
-			    . ' x.title as session_title, ' 
-          . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
-					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
-					. ' v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state, v.locdescription as venue_description, v.map, v.url as venueurl,'
-					. ' v.city, v.latitude, v.longitude, v.company AS venue_company, '
-					. ' u.name AS creator_name, u.email AS creator_email, '
-					. ' f.formname, '
-					. " a.confirmation_message, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.access,"
-	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-          . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug, '
-	        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
-					. ' FROM #__redevent_events AS a'
-					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
-	        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-	        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-	        . ' LEFT JOIN #__rwf_forms AS f ON f.id = a.redform_id '
-					. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
-					. $where
-					;
-    	$this->_db->setQuery($query);
-			$this->_event = $this->_db->loadObject();
-			if ($this->_event) {
-        $this->_details = $this->_getEventCategories($this->_event);			
-				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, max($user->getAuthorisedViewLevels()));		
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('x.*, x.id AS xref, x.title as session_title');
+			$query->select('a.*, a.id AS did');
+			$query->select('v.id AS venue_id, v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state, v.locdescription as venue_description, v.map, v.url as venueurl');
+			$query->select('v.city, v.latitude, v.longitude, v.company AS venue_company, v.venue_code');
+			$query->select('u.name AS creator_name, u.email AS creator_email');
+			$query->select('f.formname, f.currency');
+			$query->select('IF (x.course_credit = 0, "", x.course_credit) AS course_credit');
+			$query->select('c.name AS catname, c.access');
+			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
+			$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
+			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
+			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
+			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug');
+
+			$query->from('#__redevent_events AS a');
+			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
+			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
+			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
+			$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
+			$query->join('LEFT', '#__rwf_forms AS f ON f.id = a.redform_id');
+			$query->join('LEFT', '#__users AS u ON a.created_by = u.id');
+
+			$this->buildDetailsWhere($query);
+
+			$db->setQuery($query);
+			$this->event = $db->loadObject();
+
+			if ($this->event)
+			{
+				$this->event = $this->_getEventCategories($this->event);
+				$helper = new RedeventHelperAttachment;
+				$this->event->attachments = $helper->getAttachments('event' . $this->event->did, $user->getAuthorisedViewLevels());
 			}
-			return (boolean) $this->_event;
+
+			return (boolean) $this->event;
 		}
+
 		return true;
-	}	
- 
+	}
+
 	/**
 	 * Method to build the WHERE clause of the query to select the details
 	 *
-	 * @access	private
-	 * @return	string	WHERE clause
-	 * @since	0.9
+	 * @param   JDatabaseQuery  $query  query
+	 *
+	 * @return  JDatabaseQuery
 	 */
-	protected function _buildDetailsWhere()
+	protected function buildDetailsWhere(JDatabaseQuery $query)
 	{
-		$where = '';
-		if ($this->_xref) $where = ' WHERE x.id = '.$this->_xref;
-		else if ($this->_id) $where = ' WHERE x.eventid = '.$this->_id;
+		if ($this->xref)
+		{
+			$query->where('x.id = ' . $this->xref);
+		}
+		elseif ($this->id)
+		{
+			$query->where('x.eventid = ' . $this->id);
+		}
 
-		return $where;
+		return $query;
 	}
-	
-  /**
-   * adds categories property to event row
-   *
-   * @param object event
-   * @return object
-   */
-  protected function _getEventCategories($row)
-  {
-  	$query =  ' SELECT c.id, c.catname, c.access, c.image, '
-			  	. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
-			  	. ' FROM #__redevent_categories as c '
-			  	. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-			  	. ' WHERE c.published = 1 '
-			  	. '   AND x.event_id = ' . $this->_db->Quote($row->did)
-			  	. ' ORDER BY c.ordering'
-			  	;
-  	$this->_db->setQuery( $query );
 
-  	$row->categories = $this->_db->loadObjectList();
+	/**
+	 * Adds categories property to event row
+	 *
+	 * @param   object  $row  event data
+	 *
+	 * @return object
+	 */
+	protected function _getEventCategories($row)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-    return $row;   
-  }
-  
-  public function getPlacesLeft()
-  {
-  	$session = &$this->getData();
-  	if ($session->maxattendees == 0) {
-  		return '-';
-  	}
-		$q = ' SELECT COUNT(r.id) AS total '
-		   . ' FROM #__redevent_register AS r '
-		   . ' WHERE r.xref = '. $this->_db->Quote($this->_xref)
-		   . '   AND r.confirmed = 1 '
-		   . '   AND r.cancelled = 0 '
-		   . '   AND r.waitinglist = 0 '
-		   . ' GROUP BY r.waitinglist '
-		   ;
-    $this->_db->setQuery($q);
-    $res = $this->_db->loadResult();
-    $left = $session->maxattendees - $res;
-    return ($left > 0 ? $left : 0);
-  }
-  
-  public function getWaitingPlacesLeft()
-  {
-  	$session = &$this->getData();
-		$q = ' SELECT COUNT(r.id) AS total '
-		   . ' FROM #__redevent_register AS r '
-		   . ' WHERE r.xref = '. $this->_db->Quote($this->_xref)
-		   . '   AND r.confirmed = 1 '
-		   . '   AND r.cancelled = 0 '
-		   . '   AND r.waitinglist = 1 '
-		   . ' GROUP BY r.waitinglist '
-		   ;
-    $this->_db->setQuery($q);
-    $res = $this->_db->loadResult();
-    $left = $session->maxwaitinglist - $res;
-    return ($left > 0 ? $left : 0);  	
-  }
+		$query->select('c.id, c.name AS catname, c.access, c.image');
+		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
+		$query->from('#__redevent_categories as c');
+		$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
+		$query->where('c.published = 1');
+		$query->where('x.event_id = ' . $db->quote($row->did));
+		$query->order('c.ordering');
 
-  /**
-   * get current session prices
-   * 
-   * @return array
-   */
-  public function getPrices()
-  {
-  	$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
-	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
-  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
-  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
-  	       . ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
-  	       . ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
-  	       . ' LEFT JOIN #__rwf_forms AS f on e.redform_id = f.id '
-  	       . ' WHERE sp.xref = ' . $this->_db->Quote($this->_xref)
-  	       . ' ORDER BY p.ordering ASC '
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();   	
-  	return $res;
-  }
+		$db->setQuery($query);
+		$row->categories = $db->loadObjectList();
+
+		return $row;
+	}
+
+	/**
+	 * return places left for session
+	 *
+	 * @return int
+	 */
+	public function getPlacesLeft()
+	{
+		$session = $this->getData();
+
+		if ($session->maxattendees == 0)
+		{
+			return '-';
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(r.id) AS total');
+		$query->from('#__redevent_register AS r');
+		$query->where('r.xref = ' . $db->quote($this->xref));
+		$query->where('r.confirmed = 1');
+		$query->where('r.cancelled = 0');
+		$query->where('r.waitinglist = 0');
+		$query->group('r.waitinglist');
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		$left = $session->maxattendees - $res;
+
+		return ($left > 0 ? $left : 0);
+	}
+
+	/**
+	 * return places left on waiting list for session
+	 *
+	 * @return int
+	 */
+	public function getWaitingPlacesLeft()
+	{
+		$session = $this->getData();
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(r.id) AS total');
+		$query->from('#__redevent_register AS r');
+		$query->where('r.xref = ' . $db->quote($this->xref));
+		$query->where('r.confirmed = 1');
+		$query->where('r.cancelled = 0');
+		$query->where('r.waitinglist = 1');
+		$query->group('r.waitinglist');
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		$left = $session->maxwaitinglist - $res;
+
+		return ($left > 0 ? $left : 0);
+	}
+
+	/**
+	 * get current session prices
+	 *
+	 * @return array
+	 */
+	public function getPrices()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('sp.*, p.name, p.alias, p.image, p.tooltip, f.currency AS form_currency');
+		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', sp.id, p.alias) ELSE sp.id END as slug');
+		$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
+		$query->from('#__redevent_sessions_pricegroups AS sp');
+		$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
+		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
+		$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
+		$query->where('sp.xref = ' . $db->quote($this->xref));
+		$query->order('p.ordering ASC');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
+	}
 }
