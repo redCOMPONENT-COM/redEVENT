@@ -15,5 +15,4 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventModelCustomfield extends RModelAdmin
 {
-
 }

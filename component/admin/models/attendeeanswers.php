@@ -20,7 +20,7 @@ class RedEventModelAttendeeanswers extends RModel
 	 *
 	 * @var int
 	 */
-	var $id = null;
+	protected $id = null;
 
 	/**
 	 * Constructor

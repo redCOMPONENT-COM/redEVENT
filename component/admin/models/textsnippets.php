@@ -88,7 +88,6 @@ class RedeventModelTextsnippets extends RModelList
 		$query->select($this->getState('list.select', 'obj.*'));
 		$query->from($db->qn('#__redevent_textlibrary', 'obj'));
 
-
 		// Filter by language
 		$language = $this->getState('filter.language');
 

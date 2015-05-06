@@ -28,6 +28,11 @@ class RedeventModelAttendee extends RModelAdmin
 
 	private $id;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  Configuration array
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -46,11 +51,23 @@ class RedeventModelAttendee extends RModelAdmin
 		}
 	}
 
+	/**
+	 * Set session if
+	 *
+	 * @param   int  $id  id
+	 *
+	 * @return void
+	 */
 	public function setSessionId($id)
 	{
 		$this->sessionId = (int) $id;
 	}
 
+	/**
+	 * Get session id
+	 *
+	 * @return mixed
+	 */
 	public function getSessionId()
 	{
 		if ((!$this->sessionId) && $this->id)
@@ -63,6 +80,11 @@ class RedeventModelAttendee extends RModelAdmin
 		return $this->sessionId;
 	}
 
+	/**
+	 * Get session
+	 *
+	 * @return mixed
+	 */
 	public function getSession()
 	{
 		$model = RModel::getAdminInstance('Session', array('ignore_request' => true));
@@ -74,6 +96,7 @@ class RedeventModelAttendee extends RModelAdmin
 	/**
 	 * Logic for the Group edit screen
 	 *
+	 * @return object
 	 */
 	public function getData()
 	{
@@ -85,6 +108,11 @@ class RedeventModelAttendee extends RModelAdmin
 		return $this->data;
 	}
 
+	/**
+	 * Init data
+	 *
+	 * @return bool
+	 */
 	private function initData()
 	{
 		$obj = RTable::getAdminInstance('Attendee');
@@ -205,7 +233,7 @@ class RedeventModelAttendee extends RModelAdmin
 		if (!$result)
 		{
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
-			$this->setError($msg.' - '.$rfcore->getError());
+			$this->setError($msg . ' - ' . $rfcore->getError());
 
 			return false;
 		}

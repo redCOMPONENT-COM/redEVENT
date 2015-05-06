@@ -19,7 +19,7 @@ class RedeventModelWaitinglist extends RModel
 
 	private $eventid = null;
 
-	var $event_data = null;
+	private $event_data = null;
 
 	private $move_on = null;
 
@@ -104,7 +104,6 @@ class RedeventModelWaitinglist extends RModel
 
 		return true;
 	}
-
 
 	/**
 	 * Process waitinglist

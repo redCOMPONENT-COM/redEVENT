@@ -14,7 +14,7 @@ jimport('joomla.form.formfield');
  *
  * @package  Redevent.admin
  * @since    2.0
-*/
+ */
 class JFormFieldSession extends JFormField
 {
 	/**

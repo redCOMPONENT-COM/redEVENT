@@ -67,7 +67,8 @@ class RedeventModelEventscsv extends RModelAdmin
 			->select('e.paymentprocessing, e.enable_ical')
 			->select('x.title as session_title, x.alias as session_alias, x.id AS xref')
 			->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend')
-			->select('x.note AS session_note, x.details AS session_details, x.icaldetails AS session_icaldetails, x.maxattendees, x.maxwaitinglist, x.course_credit')
+			->select('x.note AS session_note, x.details AS session_details, x.icaldetails AS session_icaldetails')
+			->select('x.maxattendees, x.maxwaitinglist, x.course_credit')
 			->select('x.featured, x.external_registration_url, x.published as session_published')
 			->select('u.name as creator_name, u.email AS creator_email')
 			->select('v.venue, v.city')
@@ -148,7 +149,6 @@ class RedeventModelEventscsv extends RModelAdmin
 		}
 
 		return $results;
-
 	}
 
 	/**
@@ -232,6 +232,15 @@ class RedeventModelEventscsv extends RModelAdmin
 		return $pgs;
 	}
 
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
+	 */
 	protected function populateState()
 	{
 		$filters = JFactory::getApplication()->input->get('jform', array(), 'array');

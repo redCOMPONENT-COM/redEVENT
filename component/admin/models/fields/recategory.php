@@ -30,10 +30,10 @@ class JFormFieldRECategory extends JFormField
 	protected $reset;
 
 	/**
-	* Method to get the field input markup
+	 * Method to get the field input markup
 	 *
 	 * @return string
-	*/
+	 */
 	protected function getInput()
 	{
 		// Load modal behavior

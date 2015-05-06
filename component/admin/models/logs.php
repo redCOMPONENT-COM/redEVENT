@@ -35,7 +35,7 @@ class RedEventModelLogs extends RModelList
 
 			if (!$handle)
 			{
-				$app->enqueueMessage('error opening: '. $file, 'warning');
+				$app->enqueueMessage('error opening: ' . $file, 'warning');
 
 				return false;
 			}

@@ -89,7 +89,6 @@ class RedeventModelPricegroups extends RModelList
 		$query->select($this->getState('list.select', 'obj.*'));
 		$query->from($db->qn('#__redevent_pricegroups', 'obj'));
 
-
 		// Filter by language
 		$language = $this->getState('filter.language');
 

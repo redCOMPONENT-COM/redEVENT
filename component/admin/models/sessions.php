@@ -125,7 +125,10 @@ class RedeventModelSessions extends RModelList
 		$this->buildContentWhere($query);
 
 		// Add the list ordering clause.
-		$query->order($this->_db->escape($this->getState('list.ordering', 'obj.dates')) . ' ' . $this->_db->escape($this->getState('list.direction', 'ASC')));
+		$query->order(
+			$this->_db->escape($this->getState('list.ordering', 'obj.dates')) . ' '
+			. $this->_db->escape($this->getState('list.direction', 'ASC'))
+		);
 
 		return $query;
 	}
@@ -260,7 +263,7 @@ class RedeventModelSessions extends RModelList
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList('id');
 
-		$noreg = new stdclass();
+		$noreg = new stdclass;
 		$noreg->total = 0;
 		$noreg->waiting = 0;
 		$noreg->attending = 0;
@@ -283,28 +286,27 @@ class RedeventModelSessions extends RModelList
 	/**
 	 * Method to (un)feature
 	 *
-	 * @access    public
+	 * @param   array  $cid       ids to modify
+	 * @param   int    $featured  set featured on or off
+	 *
 	 * @return    boolean    True on success
-	 * @since     0.9
 	 */
-	function featured($cid = array(), $featured = 1)
+	public function featured($cid = array(), $featured = 1)
 	{
-		$user = JFactory::getUser();
-
 		if (count($cid))
 		{
 			$cids = implode(',', $cid);
 
-			$query = 'UPDATE #__redevent_event_venue_xref'
-				. ' SET featured = ' . (int) $featured
-				. ' WHERE id IN (' . $cids . ')';
+			$query = $this->_db->getQuery(true);
+
+			$query->update('__redevent_event_venue_xref')
+				->set('featured = ' . (int) $featured)
+				->where('id IN (' . $cids . ')');
+
 			$this->_db->setQuery($query);
-			if (!$this->_db->query())
-			{
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
+			$this->_db->execute();
 		}
+
 		return true;
 	}
 

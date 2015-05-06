@@ -31,14 +31,16 @@ class JFormFieldREVenueCategory extends JFormField
 	protected $reset;
 
 	/**
-	* Method to get the field input markup
-	*/
+	 * Method to get the field input markup.
+	 *
+	 * @return  string  The field input markup.
+	 */
 	protected function getInput()
 	{
 		// Load modal behavior
 		JHtml::_('behavior.modal', 'a.modal_' . $this->id);
 
-		$size = $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : ' size="35"';
+		$size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : ' size="35"';
 		$reset = (string) $this->element['reset'];
 		$reset = ($reset == 'true' || $reset == '1');
 
@@ -66,8 +68,7 @@ class JFormFieldREVenueCategory extends JFormField
 		// Setup variables for display
 		$html = array();
 		$link = 'index.php?option=com_redevent&amp;view=venuescategories&amp;layout=element&amp;tmpl=component'
-			. '&amp;function=jSelectVenueCategory_'.$this->id;
-
+			. '&amp;function=jSelectVenueCategory_' . $this->id;
 
 		$tmp = RTable::getInstance('Venuescategory', 'RedeventTable');
 		$category = clone $tmp;

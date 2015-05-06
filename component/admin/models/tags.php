@@ -128,6 +128,7 @@ class RedeventModelTags extends RModel
 		$tags[] = new RedeventTagsTag('paymentrequestlink', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
 		$tags[] = new RedeventTagsTag('registrationid', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REGISTRATIONID'), 'payment');
 		$tags[] = new RedeventTagsTag('total_price', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_TOTAL_PRICE_DESC'), 'payment');
+
 		return $tags;
 	}
 

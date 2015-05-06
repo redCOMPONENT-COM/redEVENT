@@ -175,7 +175,6 @@ class RedeventModelVenues extends RModelList
 		$count = count($rows);
 		$db = $this->_db;
 
-
 		for ($i = 0, $n = $count; $i < $n; $i++)
 		{
 			$query = $db->getQuery(true);

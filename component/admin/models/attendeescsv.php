@@ -72,7 +72,10 @@ class RedeventModelAttendeescsv extends RModelAdmin
 			->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id')
 			->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id')
 			->join('LEFT', '#__users AS u ON r.uid = u.id')
-			->join('LEFT', '(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key')
+			->join(
+				'LEFT',
+				'(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key'
+			)
 			->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id')
 			->where('r.confirmed = 1')
 			->where('r.cancelled = 0')
@@ -199,6 +202,11 @@ class RedeventModelAttendeescsv extends RModelAdmin
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Stock method to auto-populate the model state.
+	 *
+	 * @return  void
+	 */
 	protected function populateState()
 	{
 		$filters = JFactory::getApplication()->input->get('jform', array(), 'array');

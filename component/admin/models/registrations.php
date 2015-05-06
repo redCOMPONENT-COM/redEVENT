@@ -130,7 +130,10 @@ class RedeventModelRegistrations extends RModelList
 
 		$this->buildWhere($query);
 
-		$query->order($this->_db->escape($this->getState('list.ordering', 'r.uregdate')) . ' ' . $this->_db->escape($this->getState('list.direction', 'DESC')));
+		$query->order(
+			$this->_db->escape($this->getState('list.ordering', 'r.uregdate'))
+			. ' ' . $this->_db->escape($this->getState('list.direction', 'DESC'))
+		);
 
 		return $query;
 	}

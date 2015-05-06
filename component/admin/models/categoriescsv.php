@@ -69,6 +69,15 @@ class RedeventModelCategoriescsv extends RModelAdmin
 		return $results;
 	}
 
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
+	 */
 	protected function populateState()
 	{
 		$filters = JFactory::getApplication()->input->get('jform', array(), 'array');

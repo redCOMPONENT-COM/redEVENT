@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package  Redevent.admin
  * @since    0.9
-*/
+ */
 class RedeventModelCategories extends RModelList
 {
 	/**
@@ -250,6 +250,7 @@ class RedeventModelCategories extends RModelList
 	 */
 	public function populateState($ordering = 'c.lft', $direction = 'asc')
 	{
+		// Forcing default values
 		parent::populateState($ordering, $direction);
 	}
 }

@@ -401,7 +401,6 @@ class RedeventModelEventscsvimport extends RModel
 		return $this->categories;
 	}
 
-
 	/**
 	 * Return venue id matching name, creating if needed
 	 *

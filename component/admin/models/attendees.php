@@ -41,14 +41,14 @@ class RedeventModelAttendees extends RModelList
 	 *
 	 * @var object
 	 */
-	var $session = null;
+	protected $session = null;
 
 	/**
 	 * redform fields
 	 *
 	 * @var array
 	 */
-	var $redformFields = null;
+	protected $redformFields = null;
 
 	/**
 	 * Constructor.
@@ -151,7 +151,10 @@ class RedeventModelAttendees extends RModelList
 		// Get the WHERE clause for the query
 		$query = $this->buildContentWhere($query);
 
-		$query->order($this->_db->escape($this->getState('list.ordering', 'r.confirmdate')) . ' ' . $this->_db->escape($this->getState('list.direction', 'DESC')));
+		$query->order(
+			$this->_db->escape($this->getState('list.ordering', 'r.confirmdate'))
+			. ' ' . $this->_db->escape($this->getState('list.direction', 'DESC'))
+		);
 
 		return $query;
 	}
@@ -305,30 +308,26 @@ class RedeventModelAttendees extends RModelList
 	/**
 	 * Cancel registrations
 	 *
-	 * @access public
+	 * @param   array  $cid  cids
+	 *
 	 * @return true on success
-	 * @since 0.9
 	 */
 	public function cancelreg($cid = array())
 	{
-		if (count( $cid ))
+		if (count($cid))
 		{
-			$ids = implode(',', $cid);
+			$query = $this->_db->getQuery(true);
 
-			$query = ' UPDATE #__redevent_register AS r '
-             . '   SET r.cancelled = 1, r.waitinglist = 1 '
-             . ' WHERE r.id IN ('.implode(', ', $cid).')'
-             ;
-			$this->_db->setQuery( $query );
+			$query->update('#__redevent_register AS r')
+				->set('r.cancelled = 1')
+				->set('r.waitinglist = 1')
+				->where('r.id IN (' . implode(', ', $cid) . ')');
+			$this->_db->setQuery($query);
 
-			if (!$this->_db->query())
-			{
-				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-				return false;
-			}
+			$this->_db->execute();
 
 			// Upate waiting list for all cancelled regs
-			$db      = $this->_db;
+			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('xref');
@@ -340,7 +339,7 @@ class RedeventModelAttendees extends RModelList
 
 			$xrefs = array_unique($xrefs);
 
-			// now update waiting list for all updated sessions
+			// Now update waiting list for all updated sessions
 			foreach ($xrefs as $xref)
 			{
 				$model_wait = RModel::getAdminInstance('Waitinglist');
@@ -361,28 +360,25 @@ class RedeventModelAttendees extends RModelList
 	/**
 	 * Un-cancel registration
 	 *
-	 * @access public
+	 * @param   array  $cid  cids
+	 *
 	 * @return true on success
-	 * @since 0.9
 	 */
 	public function uncancelreg($cid = array())
 	{
-		if (count( $cid ))
+		if (count($cid))
 		{
-			$ids = implode(',', $cid);
+			$query = $this->_db->getQuery(true);
 
-			$query = ' UPDATE #__redevent_register AS r '
-             . '   SET r.cancelled = 0, r.waitinglist = 1 ' // We put user on waiting list, to make sure they won't take back places from no cancelled attendees
-             . ' WHERE r.id IN ('.implode(', ', $cid).')'
-             ;
-			$this->_db->setQuery( $query );
+			$query->update('#__redevent_register AS r')
+				->set('r.cancelled = 0')
+				->set('r.waitinglist = 1') // We put user on waiting list, to make sure they won't take back places from no cancelled attendees
+				->where('r.id IN (' . implode(', ', $cid) . ')');
+			$this->_db->setQuery($query);
 
-			if (!$this->_db->query()) {
-				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-				return false;
-			}
+			$this->_db->execute();
 
-			// Upate waiting list for all un-cancelled regs
+			// Update waiting list for all un-cancelled regs
 			$db      = $this->_db;
 			$query = $db->getQuery(true);
 
@@ -409,6 +405,7 @@ class RedeventModelAttendees extends RModelList
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -484,81 +481,84 @@ class RedeventModelAttendees extends RModelList
 	}
 
 	/**
-	 * Delete registered users
+	 * Move registered users
 	 *
-	 * @access public
-	 * @param array int attendee ids
-	 * @param int id of xref destination
+	 * @param   array  $cid   int attendee ids
+	 * @param   int    $dest  id of session destination
+	 *
 	 * @return true on success
-	 * @since 2.0
 	 */
-	function move($cid, $dest)
+	public function move($cid, $dest)
 	{
-		if (count( $cid ))
+		if (count($cid))
 		{
-			$ids = implode(',', $cid);
-			$form = $this->getForm();
+			$query = $this->_db->getQuery(true);
 
-			$query = ' UPDATE #__redevent_register SET xref = '.$dest
-			       . ' WHERE id IN ('.implode(', ', $cid).')'
-			       ;
-			$this->_db->setQuery( $query );
+			$query->update('#__redevent_register')
+				->set('xref = ' . $dest)
+				->where('r.id IN (' . implode(', ', $cid) . ')');
 
-			if (!$this->_db->query()) {
-				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-				return false;
-			}
+			$this->_db->setQuery($query);
+
+			$this->_db->execute();
 		}
+
 		return true;
 	}
 
 	/**
 	 * confirm attendees
 	 *
-	 * @param $cid array of attendees id to confirm
+	 * @param   array  $cid  array of attendees id to confirm
+	 *
 	 * @return boolean true on success
 	 */
-	function confirmattendees($cid = array())
-  {
-    if (count( $cid ))
-    {
-      $ids = implode(',', $cid);
-      $date = JFactory::getDate();
+	public function confirmattendees($cid = array())
+	{
+		if (count($cid))
+		{
+			$date = JFactory::getDate();
 
-      $query = 'UPDATE #__redevent_register SET confirmed = 1, confirmdate = '.$this->_db->Quote($date->toSql()).' WHERE id IN ('. $ids .') ';
-      $this->_db->setQuery( $query );
+			$query = $this->_db->getQuery(true);
 
-      if (!$this->_db->query()) {
-        RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-        return false;
-      }
-    }
-    return true;
-  }
+			$query->update('#__redevent_register')
+				->set('confirmed = 1')
+				->set('confirmdate = ' . $this->_db->Quote($date->toSql()))
+				->where('id IN (' . implode(', ', $cid) . ')');
 
+			$this->_db->setQuery($query);
 
-  /**
-   * unconfirm attendees
-   *
-   * @param $cid array of attendees id to unconfirm
-   * @return boolean true on success
-   */
-  function unconfirmattendees($cid = array())
-  {
-    if (count( $cid ))
-    {
-      $ids = implode(',', $cid);
+			$this->_db->execute();
+		}
 
-      $query = 'UPDATE #__redevent_register SET confirmed = 0 WHERE id IN ('. $ids .') ';
-      $this->_db->setQuery( $query );
+		return true;
+	}
 
-      if (!$this->_db->query()) {
-        RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-        return false;
-      }
-    }
-    return true;
-  }
+	/**
+	 * unconfirm attendees
+	 *
+	 * @param   array  $cid  array of attendees id to unconfirm
+	 *
+	 * @return boolean true on success
+	 */
+	public function unconfirmattendees($cid = array())
+	{
+		if (count($cid))
+		{
+			$ids = implode(',', $cid);
+
+			$query = $this->_db->getQuery(true);
+
+			$query->update('#__redevent_register')
+				->set('confirmed = 0')
+				->where('id IN (' . implode(', ', $cid) . ')');
+
+			$this->_db->setQuery($query);
+			$this->_db->execute();
+		}
+
+		return true;
+	}
 
 	/**
 	 * returns redform fields
