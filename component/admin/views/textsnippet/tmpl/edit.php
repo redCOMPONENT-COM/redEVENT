@@ -54,9 +54,7 @@ JHtml::_('rjquery.chosen', 'select');
 				<?php echo $this->form->getLabel('text_field'); ?>
 			</div>
 			<div class="controls">
-				<div class="tagsdiv">
-					<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component', JText::_('COM_REDEVENT_TAGS'), 'class="modal" rel="{handler: \'iframe\'}"'); ?>
-				</div>
+				<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_webform'); ?></div>
 				<?php echo $this->form->getInput('text_field'); ?>
 			</div>
 		</div>

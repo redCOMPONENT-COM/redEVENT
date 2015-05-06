@@ -32,7 +32,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewEventelement extends JView {
+class RedeventViewEventelement extends JView {
 
 	function display($tpl = null)
 	{

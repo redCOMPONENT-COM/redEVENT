@@ -15,11 +15,25 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerEventscsv extends RControllerForm
 {
+	/**
+	 * Method to edit an existing record.
+	 *
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key
+	 * (sometimes required to avoid router collisions).
+	 *
+	 * @return  boolean  True if access level check and checkout passes, false otherwise.
+	 */
 	public function edit($key = null, $urlVar = null)
 	{
 		$this->setRedirect('index.php?option=com_redevent&view=eventscsv');
 	}
 
+	/**
+	 * Import data
+	 *
+	 * @return void
+	 */
 	public function import()
 	{
 		$jformFiles = JFactory::getApplication()->input->files->get('jform');

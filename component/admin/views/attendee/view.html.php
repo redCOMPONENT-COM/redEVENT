@@ -30,7 +30,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redEvent
  * @since       2.0
  */
-class RedEventViewAttendee extends RedeventViewAdmin
+class RedeventViewAttendee extends RedeventViewAdmin
 {
 	/**
 	 * Display

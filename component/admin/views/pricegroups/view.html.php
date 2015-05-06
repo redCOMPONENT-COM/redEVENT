@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    2.5
  */
-class RedEventViewPricegroups extends RedeventViewAdmin
+class RedeventViewPricegroups extends RedeventViewAdmin
 {
 	/**
 	 * Execute and display a template script.

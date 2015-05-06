@@ -50,7 +50,7 @@ class RedeventTableTextsnippet extends RedeventTable
 
 		if ($this->checkTagExists())
 		{
-			$this->setError(JText::_('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS'));
+			$this->setError(JText::_('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS') . ': ' . $this->text_name);
 
 			return false;
 		}

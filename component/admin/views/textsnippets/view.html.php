@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    2.5
  */
-class RedEventViewTextsnippets extends RedeventViewAdmin
+class RedeventViewTextsnippets extends RedeventViewAdmin
 {
 	/**
 	 * Execute and display a template script.
@@ -24,11 +24,6 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 	 */
 	public function display($tpl = null)
 	{
-		if ($this->getLayout() == 'import')
-		{
-			return $this->_displayImport($tpl);
-		}
-
 		$user = JFactory::getUser();
 
 		$this->items = $this->get('Items');
@@ -83,13 +78,14 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
 			$edit = RToolbarBuilder::createEditButton('textsnippet.edit');
-			$secondGroup->addButton($edit);
+			$firstGroup->addButton($edit);
 
-//			$export = RToolbarBuilder::createStandardButton('textsnippet.export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-//			$secondGroup->addButton($export);
-//
-//			$import = RToolbarBuilder::createStandardButton('textsnippet.import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
-//			$secondGroup->addButton($import);
+			$export = RToolbarBuilder::createCsvButton();
+			$secondGroup->addButton($export);
+
+
+			$import = RToolbarBuilder::createStandardButton('textsnippets.import', JText::_('COM_REDEVENT_BUTTON_IMPORT'), '', 'icon-table', false);
+			$secondGroup->addButton($import);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))
@@ -102,30 +98,5 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
 
 		return $toolbar;
-	}
-
-	protected function _displayImport($tpl = null)
-	{
-		$document	= JFactory::getDocument();
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT'));
-		//add css to document
-		RHelperAsset::load('backend.css');
-
-		//Create Submenu
-		ELAdmin::setMenu();
-
-		JHTML::_('behavior.tooltip');
-
-		//create the toolbar
-		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT' ), 'events' );
-
-		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_redevent&view=textsnippets');
-
-		$lists = array();
-
-		//assign data to template
-		$this->assignRef('lists'      	, $lists);
-
-		parent::display($tpl);
 	}
 }

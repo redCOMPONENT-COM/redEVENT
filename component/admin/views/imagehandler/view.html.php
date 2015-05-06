@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewImagehandler extends JView  {
+class RedeventViewImagehandler extends JView  {
 
 	/**
 	 * Image selection List

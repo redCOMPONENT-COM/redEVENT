@@ -32,7 +32,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewLogs extends RedeventViewAdmin
+class RedeventViewLogs extends RedeventViewAdmin
 {
 	/**
 	 * Execute and display a template script.
