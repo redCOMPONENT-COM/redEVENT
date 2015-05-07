@@ -34,7 +34,7 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 {
 	protected $_week;
 
-	protected $_data;
+	protected $data;
 
 	/**
 	 * contructor
@@ -105,17 +105,17 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			$query = $this->_buildQuery();
 
-			$this->_data = $this->_getList($query);
-			$this->_data = $this->_categories($this->_data);
-			$this->_data = $this->_getPlacesLeft($this->_data);
-			$this->_data = $this->_getPrices($this->_data);
+			$this->data = $this->_getList($query);
+			$this->data = $this->_categories($this->data);
+			$this->data = $this->_getPlacesLeft($this->data);
+			$this->data = $this->_getPrices($this->data);
 		}
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**

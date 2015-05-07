@@ -74,7 +74,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseeventlist
 	{
 		// Set new category ID and wipe data
 		$this->_id			= $id;
-		$this->_data		= null;
+		$this->data		= null;
 	}
 
 	/**

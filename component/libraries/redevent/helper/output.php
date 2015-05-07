@@ -346,7 +346,8 @@ class RedeventHelperOutput
 				$overlib = JText::_('COM_REDEVENT_PRINT_TIP');
 				$text = JText::_('COM_REDEVENT_Print');
 
-				$output = '<a href="' . JRoute::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\'' . $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+				$output = '<a href="' . JRoute::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''
+					. $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 			}
 
 			return $output;
@@ -387,7 +388,8 @@ class RedeventHelperOutput
 			$overlib = JText::_('COM_REDEVENT_EMAIL_TIP');
 			$text = JText::_('COM_REDEVENT_Email');
 
-			$output = '<a href="' . JRoute::_($url) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\'' . $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+			$output = '<a href="' . JRoute::_($url) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''
+				. $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 
 			return $output;
 		}
@@ -622,8 +624,7 @@ class RedeventHelperOutput
 			if ($showend & RedeventHelper::isValidDate($event->enddates))
 			{
 				if (strtotime($event->enddates . ' -1 day') != strtotime($event->dates)
-					&& strtotime($event->enddates) != strtotime($event->dates)
-				)
+					&& strtotime($event->enddates) != strtotime($event->dates))
 				{
 					// All day is written as midnight to midnight, so remove last day
 					$date_end = self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates . ' -1 day')), $event->endtimes);
@@ -762,17 +763,23 @@ class RedeventHelperOutput
 		{
 			case 'decimals':
 				// Format price
-				$formatprice = number_format($price, 2, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
+				$formatprice = number_format(
+					$price, 2, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')
+				);
 				break;
 
 			case 'comma':
 				// Format price
-				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')) . ',-';
+				$formatprice = number_format(
+						$price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')
+					) . ',-';
 				break;
 
 			case 'none':
 				// Format price
-				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
+				$formatprice = number_format(
+					$price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')
+				);
 				break;
 		}
 
@@ -789,7 +796,8 @@ class RedeventHelperOutput
 	/**
 	 * Format prices as string separated by separator
 	 *
-	 * @param   array  $prices  prices
+	 * @param   array   $prices     prices
+	 * @param   string  $separator  separator
 	 *
 	 * @return string|void
 	 */

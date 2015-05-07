@@ -1,29 +1,12 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Library
+ * @copyright  Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * Base class foe events lists models
@@ -39,35 +22,35 @@ class RedeventModelBaseeventlist extends RModel
 	 *
 	 * @var array
 	 */
-	protected $_data = null;
+	protected $data = null;
 
 	/**
 	 * custom fields data array
 	 *
 	 * @var array
 	 */
-	protected $_customfields = null;
+	protected $customfields = null;
 
 	/**
 	 * xref custom fields data array
 	 *
 	 * @var array
 	 */
-	protected $_xrefcustomfields = null;
+	protected $xrefcustomfields = null;
 
 	/**
 	 * Events total
 	 *
 	 * @var integer
 	 */
-	protected $_total = null;
+	protected $total = null;
 
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
-	protected $_pagination = null;
+	protected $pagination = null;
 
 	/**
 	 * Constructor
@@ -152,7 +135,7 @@ class RedeventModelBaseeventlist extends RModel
 		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			$query = $this->_buildQuery();
 
@@ -163,13 +146,13 @@ class RedeventModelBaseeventlist extends RModel
 			}
 
 			$pagination = $this->getPagination();
-			$this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			$this->_data = $this->_categories($this->_data);
-			$this->_data = $this->_getPlacesLeft($this->_data);
-			$this->_data = $this->_getPrices($this->_data);
+			$this->data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->data = $this->_categories($this->data);
+			$this->data = $this->_getPlacesLeft($this->data);
+			$this->data = $this->_getPrices($this->data);
 		}
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**
@@ -181,13 +164,13 @@ class RedeventModelBaseeventlist extends RModel
 	public function getTotal()
 	{
 		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total))
+		if (empty($this->total))
 		{
 			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			$this->total = $this->_getListCount($query);
 		}
 
-		return $this->_total;
+		return $this->total;
 	}
 
 	/**
@@ -199,7 +182,7 @@ class RedeventModelBaseeventlist extends RModel
 	public function getPagination()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
+		if (empty($this->pagination))
 		{
 			jimport('joomla.html.pagination');
 			$total = $this->getTotal();
@@ -212,16 +195,15 @@ class RedeventModelBaseeventlist extends RModel
 				$this->setState('limitstart', $limitstart);
 			}
 
-			$this->_pagination = new JPagination($total, $limitstart, $limit);
+			$this->pagination = new JPagination($total, $limitstart, $limit);
 		}
 
-		return $this->_pagination;
+		return $this->pagination;
 	}
 
 	/**
 	 * Build the query
 	 *
-	 * @access private
 	 * @return string
 	 */
 	protected function _buildQuery()
@@ -369,7 +351,6 @@ class RedeventModelBaseeventlist extends RModel
 			}
 		}
 
-
 		if ($filter_venuecategory = $this->getState('filter_venuecategory'))
 		{
 			$query->where('vc.id = ' . $filter_venuecategory);
@@ -448,7 +429,6 @@ class RedeventModelBaseeventlist extends RModel
 
 		$customs = $this->getState('filter_customs');
 
-//		echo '<pre>'; echo print_r($customs, true); echo '</pre>'; exit;
 		foreach ((array) $customs as $key => $custom)
 		{
 			if ($custom)
@@ -473,8 +453,14 @@ class RedeventModelBaseeventlist extends RModel
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
-			$query->where('(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR c.language IS NULL)');
+			$query->where(
+				'(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)'
+			);
+			$query->where(
+				'(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR c.language IS NULL)'
+			);
 		}
 
 		return $query;
@@ -509,6 +495,7 @@ class RedeventModelBaseeventlist extends RModel
 		{
 			$where[] = ' x.published = 1 ';
 		}
+
 		$where[] = ' a.published <> 0';
 
 		/*
@@ -559,7 +546,8 @@ class RedeventModelBaseeventlist extends RModel
 
 			if ($category)
 			{
-				$where[] = '(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+				$where[] = '(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft)
+					. ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 			}
 		}
 
@@ -724,7 +712,7 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getCustomFields()
 	{
-		if (empty($this->_customfields))
+		if (empty($this->customfields))
 		{
 			$db      = JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -741,10 +729,10 @@ class RedeventModelBaseeventlist extends RModel
 			}
 
 			$db->setQuery($query);
-			$this->_customfields = $db->loadObjectList();
+			$this->customfields = $db->loadObjectList();
 		}
 
-		return $this->_customfields;
+		return $this->customfields;
 	}
 
 	/**
@@ -754,7 +742,7 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getXrefCustomFields()
 	{
-		if (empty($this->_xrefcustomfields))
+		if (empty($this->xrefcustomfields))
 		{
 			$db      = JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -771,10 +759,10 @@ class RedeventModelBaseeventlist extends RModel
 			}
 
 			$db->setQuery($query);
-			$this->_xrefcustomfields = $db->loadObjectList();
+			$this->xrefcustomfields = $db->loadObjectList();
 		}
 
-		return $this->_xrefcustomfields;
+		return $this->xrefcustomfields;
 	}
 
 	/**
@@ -901,13 +889,15 @@ class RedeventModelBaseeventlist extends RModel
 		{
 			$where[] = ' x.published = 1';
 		}
+
 		$where[] = ' a.published <> 0 ';
 
 		// Filter category
 		if ($filter_venuecategory)
 		{
 			$category = $this->getVenueCategory((int) $filter_venuecategory);
-			$where[] = '(vc.id = ' . $this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+			$where[] = '(vc.id = ' . $this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft)
+				. ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 		}
 
 		if ($filter_venue)
@@ -958,7 +948,8 @@ class RedeventModelBaseeventlist extends RModel
 		if ($vcat)
 		{
 			$category = $this->getVenueCategory($vcat);
-			$where[] = ' (vcat.id = ' . $this->_db->Quote($category->id) . ' OR (vcat.lft > ' . $this->_db->Quote($category->lft) . ' AND vcat.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+			$where[] = ' (vcat.id = ' . $this->_db->Quote($category->id) . ' OR (vcat.lft > ' . $this->_db->Quote($category->lft)
+				. ' AND vcat.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 		}
 
 		if ($city)

@@ -22,7 +22,7 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 	 * @access protected
 	 * @var    string
 	 */
-	protected $name = 'checkbox';
+	public $name = 'checkbox';
 
 	/**
 	 * returns the html code for the form element

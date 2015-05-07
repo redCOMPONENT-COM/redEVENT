@@ -75,7 +75,7 @@ class RedeventControllerFront extends JControllerLegacy
 	protected function checkfilter()
 	{
 		$post = $_POST;
-		$filter = JFilterInput::getInstance();
+		$filterInput = JFilterInput::getInstance();
 
 		$uri = JFactory::getUri();
 
@@ -85,7 +85,7 @@ class RedeventControllerFront extends JControllerLegacy
 
 		foreach ($post as $filter => $v)
 		{
-			$v = $filter->clean($v, 'cmd');
+			$v = $filterInput->clean($v, 'cmd');
 
 			switch ($filter)
 			{

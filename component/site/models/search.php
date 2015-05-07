@@ -111,17 +111,17 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		}
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			$query = $this->_buildQuery();
 
 			$pagination = $this->getPagination();
-			$this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			$this->_data = $this->_categories($this->_data);
-			$this->_data = $this->_getSessions($this->_data);
+			$this->data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->data = $this->_categories($this->data);
+			$this->data = $this->_getSessions($this->data);
 		}
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**

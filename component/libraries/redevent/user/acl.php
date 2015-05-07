@@ -15,11 +15,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventUserAcl
 {
-	protected $_userid = 0;
+	protected $userid = 0;
 
 	protected $user = null;
 
-	protected $_db = null;
+	protected $db = null;
 
 	/**
 	 * constructor
@@ -28,14 +28,15 @@ class RedeventUserAcl
 	 */
 	protected function __construct($userid = 0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->db = JFactory::getDBO();
 
 		if (!$userid)
 		{
-			$user = Jfactory::getUser();
+			$user = JFactory::getUser();
 			$userid = $user->get('id');
 		}
-		$this->_userid = $userid;
+
+		$this->userid = $userid;
 	}
 
 	/**
@@ -43,12 +44,11 @@ class RedeventUserAcl
 	 * doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 * 		<pre>  $useracl = UserAcl::getInstance($id);</pre>
+	 * <pre>  $useracl = RedeventUserAcl::getInstance($id);</pre>
 	 *
-	 * @access 	public
-	 * @param 	int 	$id 	The user to load - Can be an integer or string - If string, it is converted to ID automatically.
-	 * @return 	UserAcl		The User object.
-	 * @since 	1.5
+	 * @param   int  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
+	 *
+	 * @return RedeventUserAcl The User object.
 	 */
 	public static function &getInstance($id = 0)
 	{
@@ -60,7 +60,7 @@ class RedeventUserAcl
 		}
 
 		// Find the user id
-		if(!$id)
+		if (!$id)
 		{
 			$user = Jfactory::getUser();
 			$id = $user->get('id');
@@ -82,7 +82,7 @@ class RedeventUserAcl
 	 */
 	public function canAddEvent()
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -107,7 +107,7 @@ class RedeventUserAcl
 	 */
 	public function canAddVenue()
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -129,7 +129,7 @@ class RedeventUserAcl
 	 */
 	public function canEditEvent($eventid)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -156,10 +156,12 @@ class RedeventUserAcl
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->where('e.id = ' . (int) $eventid);
 		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+
 		if (!$canEdit)
 		{
-			$query->where('e.created_by = ' . $db->Quote($this->_userid));
+			$query->where('e.created_by = ' . $db->Quote($this->userid));
 		}
+
 		$db->setQuery($query);
 
 		return ($db->loadResult() ? true : false);
@@ -168,13 +170,13 @@ class RedeventUserAcl
 	/**
 	 * returns true if user can publish specified event
 	 *
-	 * @param   int $eventid  event id, or 0 for a new event
+	 * @param   int  $eventid  event id, or 0 for a new event
 	 *
 	 * @return boolean
 	 */
 	public function canPublishEvent($eventid = 0)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -207,10 +209,12 @@ class RedeventUserAcl
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->where('e.id = ' . $eventid);
 		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+
 		if (!$canPublishAny)
 		{
-			$query->where('e.created_by = ' . $db->Quote($this->_userid));
+			$query->where('e.created_by = ' . $db->Quote($this->userid));
 		}
+
 		$db->setQuery($query);
 
 		return ($db->loadResult() ? true : false);
@@ -225,7 +229,7 @@ class RedeventUserAcl
 	 */
 	public function canPublishXref($xref = 0)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -273,7 +277,7 @@ class RedeventUserAcl
 	 */
 	public function canEditXref($xref)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -320,7 +324,7 @@ class RedeventUserAcl
 
 		if (!$canEdit)
 		{
-			$query->where('e.created_by = ' . $db->Quote($this->_userid));
+			$query->where('e.created_by = ' . $db->Quote($this->userid));
 		}
 
 		$db->setQuery($query);
@@ -335,7 +339,7 @@ class RedeventUserAcl
 	 */
 	public function getCanEditEvents()
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return array();
 		}
@@ -373,7 +377,7 @@ class RedeventUserAcl
 	 */
 	public function getCanEditXrefs()
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return array();
 		}
@@ -417,7 +421,7 @@ class RedeventUserAcl
 
 			if (!$canEdit)
 			{
-				$query->where('e.created_by = ' . $db->Quote($this->_userid));
+				$query->where('e.created_by = ' . $db->Quote($this->userid));
 			}
 		}
 
@@ -427,7 +431,6 @@ class RedeventUserAcl
 		return $res;
 	}
 
-
 	/**
 	 * get array of all the xrefs the user can view attendees from
 	 *
@@ -435,7 +438,7 @@ class RedeventUserAcl
 	 */
 	private function getSessionsCanViewAttendees()
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return array();
 		}
@@ -443,7 +446,9 @@ class RedeventUserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $this->getUser()->authorise('re.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent');
+		$canViewAttendees = $this->getUser()->authorise(
+				're.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent'
+			);
 
 		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -482,7 +487,6 @@ class RedeventUserAcl
 
 		return $res;
 	}
-
 
 	/**
 	 * get array of all the events ids the user can view attendees from
@@ -528,7 +532,6 @@ class RedeventUserAcl
 		return $res;
 	}
 
-
 	/**
 	 * check if user is allowed to addxrefs
 	 *
@@ -548,7 +551,7 @@ class RedeventUserAcl
 	 */
 	public function canAddSession()
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -575,7 +578,7 @@ class RedeventUserAcl
 	 */
 	public function canManageAttendees($xref_id)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -628,10 +631,12 @@ class RedeventUserAcl
 	 * return true if current user can view attendees
 	 *
 	 * @param   int  $xref_id  xref_id
+	 *
+	 * @return bool
 	 */
 	public function canViewAttendees($xref_id)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -639,7 +644,9 @@ class RedeventUserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $this->getUser()->authorise('re.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent');
+		$canViewAttendees = $this->getUser()->authorise(
+				're.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent'
+			);
 
 		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -689,7 +696,7 @@ class RedeventUserAcl
 	 */
 	public function canEditVenue($id)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -716,15 +723,16 @@ class RedeventUserAcl
 		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
 		$query->where('v.id = ' . $id);
 		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+
 		if (!$canEdit)
 		{
-			$query->where('v.created_by = ' . $db->Quote($this->_userid));
+			$query->where('v.created_by = ' . $db->Quote($this->userid));
 		}
+
 		$db->setQuery($query);
 
 		return ($db->loadResult() ? true : false);
 	}
-
 
 	/**
 	 * returns true if user can publish specified venue
@@ -735,7 +743,7 @@ class RedeventUserAcl
 	 */
 	public function canPublishVenue($id = 0)
 	{
-		if (!$this->_userid)
+		if (!$this->userid)
 		{
 			return false;
 		}
@@ -768,10 +776,12 @@ class RedeventUserAcl
 		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
 		$query->where('v.id = ' . $id);
 		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+
 		if (!$canPublishAny)
 		{
-			$query->where('v.created_by = ' . $db->Quote($this->_userid));
+			$query->where('v.created_by = ' . $db->Quote($this->userid));
 		}
+
 		$db->setQuery($query);
 
 		return ($db->loadResult() ? true : false);
@@ -806,11 +816,11 @@ class RedeventUserAcl
 		$query->select('v.id');
 		$query->from('#__redevent_venues AS v');
 		$query->join('LEFT', '#__redevent_venue_category_xref as xcat ON xcat.venue_id = v.id');
-		$query->where('v.created_by = ' . $this->_userid, 'OR');
+		$query->where('v.created_by = ' . $this->userid, 'OR');
 
 		if ($cats && count($cats))
 		{
-			$query->where('xcat.category_id IN (' . implode($glue, $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode(", ", $cats) . ')');
 		}
 
 		$db->setQuery($query);
@@ -841,7 +851,8 @@ class RedeventUserAcl
 		$query->select('v.id');
 		$query->from('#__redevent_venues AS v');
 		$query->join('LEFT', '#__redevent_venue_category_xref as xcat ON xcat.venue_id = v.id');
-		$query->where('v.created_by = ' . $this->_userid, 'OR');
+		$query->where('v.created_by = ' . $this->userid, 'OR');
+
 		if ($cats && count($cats))
 		{
 			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
@@ -861,7 +872,7 @@ class RedeventUserAcl
 	 *
 	 * @return array
 	 */
-	function getManagedVenuesCategories()
+	public function getManagedVenuesCategories()
 	{
 		return $this->getAuthorisedVenuesCategories('re.managevenues');
 	}
@@ -870,7 +881,7 @@ class RedeventUserAcl
 	 * Checks if the user is a superuser
 	 * A superuser will allways have access if the feature is activated
 	 *
-	 * @since 0.9
+	 * @param   object  $user  user
 	 *
 	 * @return boolean True on success
 	 */
@@ -900,10 +911,10 @@ class RedeventUserAcl
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-		->select('c.id AS id, a.name AS asset_name')
-		->from('#__redevent_categories AS c')
-		->innerJoin('#__assets AS a ON c.asset_id = a.id')
-		->where('c.id = ' . $id);
+			->select('c.id AS id, a.name AS asset_name')
+			->from('#__redevent_categories AS c')
+			->innerJoin('#__assets AS a ON c.asset_id = a.id')
+			->where('c.id = ' . $id);
 		$db->setQuery($query);
 		$category = $db->loadObject();
 
@@ -923,9 +934,9 @@ class RedeventUserAcl
 		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-		->select('c.id AS id, a.name AS asset_name')
-		->from('#__redevent_categories AS c')
-		->innerJoin('#__assets AS a ON c.asset_id = a.id');
+			->select('c.id AS id, a.name AS asset_name')
+			->from('#__redevent_categories AS c')
+			->innerJoin('#__assets AS a ON c.asset_id = a.id');
 		$db->setQuery($query);
 		$allCategories = $db->loadObjectList('id');
 		$allowedCategories = array();
@@ -954,12 +965,13 @@ class RedeventUserAcl
 		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-		->select('c.id AS id, a.name AS asset_name')
-		->from('#__redevent_venues_categories AS c')
-		->innerJoin('#__assets AS a ON c.asset_id = a.id');
+			->select('c.id AS id, a.name AS asset_name')
+			->from('#__redevent_venues_categories AS c')
+			->innerJoin('#__assets AS a ON c.asset_id = a.id');
 		$db->setQuery($query);
 		$allCategories = $db->loadObjectList('id');
 		$allowedCategories = array();
+
 		foreach ($allCategories as $category)
 		{
 			if ($this->getUser()->authorise($action, $category->asset_name))
@@ -967,6 +979,7 @@ class RedeventUserAcl
 				$allowedCategories[] = (int) $category->id;
 			}
 		}
+
 		return $allowedCategories;
 	}
 
@@ -983,19 +996,21 @@ class RedeventUserAcl
 		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-		->select('c.id AS id, a.name AS asset_name, c.created_by')
-		->from('#__redevent_venues AS c')
-		->innerJoin('#__assets AS a ON c.asset_id = a.id');
+			->select('c.id AS id, a.name AS asset_name, c.created_by')
+			->from('#__redevent_venues AS c')
+			->innerJoin('#__assets AS a ON c.asset_id = a.id');
 		$db->setQuery($query);
 		$all = $db->loadObjectList('id');
 		$allowed = array();
+
 		foreach ($all as $item)
 		{
-			if ($item->created_by == $this->_userid || $this->getUser()->authorise($action, $item->asset_name))
+			if ($item->created_by == $this->userid || $this->getUser()->authorise($action, $item->asset_name))
 			{
 				$allowed[] = (int) $item->id;
 			}
 		}
+
 		return $allowed;
 	}
 
@@ -1008,7 +1023,7 @@ class RedeventUserAcl
 	{
 		if (empty($this->user))
 		{
-			$this->user = JFactory::getUser($this->_userid);
+			$this->user = JFactory::getUser($this->userid);
 		}
 
 		return $this->user;
@@ -1018,6 +1033,7 @@ class RedeventUserAcl
 	 * return array of groups ids allowed to perform the action
 	 *
 	 * @param   string  $action  the action
+	 * @param   string  $asset   the asset
 	 *
 	 * @return array
 	 */
@@ -1030,7 +1046,7 @@ class RedeventUserAcl
 			$asset = 'com_redevent';
 		}
 
-		// first get the groups
+		// First get the groups
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -1051,11 +1067,11 @@ class RedeventUserAcl
 		return $allowed;
 	}
 
-
 	/**
 	 * return array of users ids allowed to perform the action
 	 *
 	 * @param   string  $action  the action
+	 * @param   string  $asset   the asset
 	 *
 	 * @return array
 	 */
@@ -1089,7 +1105,7 @@ class RedeventUserAcl
 	 */
 	public static function getXrefRegistrationRecipients($xref)
 	{
-		// get all users globally allowed to receive notifications
+		// Get all users globally allowed to receive notifications
 		$rec_allowed = self::getAllowedUsers('re.receiveregistrations');
 
 		if (!$rec_allowed)

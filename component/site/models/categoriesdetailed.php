@@ -167,12 +167,12 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 
 		// Lets load the content
 		$query = $this->_buildDataQuery($category);
-		$this->_data = $this->_getList($query, 0, $params->get('detcat_nr'));
-		$this->_data = $this->_categories($this->_data);
-		$this->_data = $this->_getPlacesLeft($this->_data);
-		$this->_data = $this->_getPrices($this->_data);
+		$this->data = $this->_getList($query, 0, $params->get('detcat_nr'));
+		$this->data = $this->_categories($this->data);
+		$this->data = $this->_getPlacesLeft($this->data);
+		$this->data = $this->_getPrices($this->data);
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**

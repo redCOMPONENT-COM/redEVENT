@@ -22,7 +22,7 @@ class RedeventCustomfieldWysiwyg extends RedeventAbstractCustomfield
 	 * @access protected
 	 * @var    string
 	 */
-	protected $name = 'wysiwyg';
+	public $name = 'wysiwyg';
 
 	/**
 	 * returns the html code for the form element

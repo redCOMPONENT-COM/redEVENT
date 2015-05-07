@@ -22,7 +22,7 @@ class RedeventCustomfieldDate extends RedeventAbstractCustomfield
 	 * @access protected
 	 * @var    string
 	 */
-	protected $name = 'date';
+	public $name = 'date';
 
 	/**
 	 * returns the html code for the form element

@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die();
  *
  * @package  Redevent.Library
  * @since    2.5
-*/
+ */
 abstract class RedeventFactoryCustomfield
 {
 	/**

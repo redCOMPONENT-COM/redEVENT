@@ -329,7 +329,7 @@ class RedeventController extends RedeventControllerFront
 		header('Content-Description: File Transfer');
 
 		// Mime
-		$mime = RedeventHelper::getMimeType($path);
+		$mime = RedeventHelper::getMime($path);
 		$doc = JFactory::getDocument();
 		$doc->setMimeEncoding($mime);
 
@@ -390,7 +390,7 @@ class RedeventController extends RedeventControllerFront
 		exit;
 	}
 
-	function registrationexpiration()
+	public function registrationexpiration()
 	{
 		RedeventHelper::registrationexpiration();
 	}

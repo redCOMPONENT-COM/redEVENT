@@ -244,6 +244,11 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		return $name;
 	}
 
+	/**
+	 * Try to get a default value from integrations
+	 *
+	 * @return void
+	 */
 	public function lookupDefaultValue()
 	{
 		return $this->value;

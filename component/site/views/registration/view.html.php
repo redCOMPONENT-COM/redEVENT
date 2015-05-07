@@ -138,13 +138,20 @@ class RedeventViewRegistration extends JViewLegacy
 			return false;
 		}
 
-		$rfoptions = array();
-
 		$prices = $this->get('Pricegroups');
-		$field = array();
-		$field['label'] = '<label for="pricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
-		$field['field'] = RedeventHelper::getRfPricesSelect($prices, $registration->sessionpricegroup_id);
-		$rfoptions['extrafields'][] = $field;
+
+		$field = new RedeventRfieldSessionprice;
+		$field->setOptions($prices);
+		$field->setFormIndex(1);
+
+		if ($registration->sessionpricegroup_id)
+		{
+			$field->setValue($registration->sessionpricegroup_id);
+		}
+
+		$rfoptions = array();
+		$rfoptions['extrafields'] = array(1 => array($field));
+		$rfoptions['currency'] = $registration->currency;
 
 		$rfcore = RdfCore::getInstance();
 		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1, $rfoptions);

@@ -15,28 +15,28 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventAttendee extends JObject
 {
-	protected $_username;
+	protected $username;
 
-	protected $_fullname;
+	protected $fullname;
 
-	protected $_email;
+	protected $email;
 
-	protected $_id;
+	protected $id;
 
-	protected $_db;
+	protected $db;
 
 	/**
 	 * data from db
 	 * @var object
 	 */
-	protected $_data;
+	protected $data;
 
 	/**
 	 * redform answers
 	 *
 	 * @var array
 	 */
-	protected $_answers;
+	protected $answers;
 
 	/**
 	 * events data, caching for when several attendees are called
@@ -62,7 +62,7 @@ class RedeventAttendee extends JObject
 			$this->setId($id);
 		}
 
-		$this->_db = JFactory::getDbo();
+		$this->db = JFactory::getDbo();
 	}
 
 	/**
@@ -74,7 +74,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function setUsername($name)
 	{
-		$this->_username = $name;
+		$this->username = $name;
 	}
 
 	/**
@@ -84,7 +84,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function getUsername()
 	{
-		if (!$this->_username)
+		if (!$this->username)
 		{
 			$answers = $this->getAnswers();
 
@@ -92,22 +92,22 @@ class RedeventAttendee extends JObject
 			{
 				if ($a->fieldtype == 'username' && $a->answer)
 				{
-					$this->_username = $a->answer;
+					$this->username = $a->answer;
 
-					return $this->_username;
+					return $this->username;
 				}
 			}
 
 			// Still there... look for user ?
 			if ($this->load()->uid)
 			{
-				$this->_username = JFactory::getUser()->get('username');
+				$this->username = JFactory::getUser()->get('username');
 
-				return $this->_username;
+				return $this->username;
 			}
 		}
 
-		return $this->_username;
+		return $this->username;
 	}
 
 	/**
@@ -119,7 +119,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function setFullname($name)
 	{
-		if (!$this->_fullname)
+		if (!$this->fullname)
 		{
 			$answers = $this->getAnswers();
 
@@ -127,22 +127,22 @@ class RedeventAttendee extends JObject
 			{
 				if ($a->fieldtype == 'fullname' && $a->answer)
 				{
-					$this->_fullname = $a->answer;
+					$this->fullname = $a->answer;
 
-					return $this->_fullname;
+					return $this->fullname;
 				}
 			}
 
 			// Still there... look for user ?
 			if ($this->load()->uid)
 			{
-				$this->_fullname = JFactory::getUser()->get('name');
+				$this->fullname = JFactory::getUser()->get('name');
 
-				return $this->_fullname;
+				return $this->fullname;
 			}
 		}
 
-		$this->_fullname = $name;
+		$this->fullname = $name;
 	}
 
 	/**
@@ -152,7 +152,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function getFullname()
 	{
-		return $this->_fullname;
+		return $this->fullname;
 	}
 
 	/**
@@ -164,7 +164,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function setEmail($email)
 	{
-		$this->_email = $email;
+		$this->email = $email;
 	}
 
 	/**
@@ -174,7 +174,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function getEmail()
 	{
-		if (!$this->_email)
+		if (!$this->email)
 		{
 			$answers = $this->getAnswers();
 
@@ -182,22 +182,22 @@ class RedeventAttendee extends JObject
 			{
 				if ($a->fieldtype == 'email' && JMailHelper::isEmailAddress($a->getValue()))
 				{
-					$this->_email = $a->getValue();
+					$this->email = $a->getValue();
 
-					return $this->_email;
+					return $this->email;
 				}
 			}
 
 			// Still there... look for user ?
 			if ($this->load()->uid)
 			{
-				$this->_email = JFactory::getUser()->get('email');
+				$this->email = JFactory::getUser()->get('email');
 
-				return $this->_email;
+				return $this->email;
 			}
 		}
 
-		return $this->_email;
+		return $this->email;
 	}
 
 	/**
@@ -209,7 +209,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function setId($id)
 	{
-		$this->_id = (int) $id;
+		$this->id = (int) $id;
 	}
 
 	/**
@@ -219,7 +219,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function getId()
 	{
-		return $this->_id;
+		return $this->id;
 	}
 
 	/**
@@ -229,17 +229,17 @@ class RedeventAttendee extends JObject
 	 */
 	public function load()
 	{
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			$query = ' SELECT r.* '
 				. ' FROM #__redevent_register AS r '
-				. ' WHERE r.id = ' . $this->_db->Quote($this->_id);
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadObject();
-			$this->_data = $res;
+				. ' WHERE r.id = ' . $this->db->Quote($this->id);
+			$this->db->setQuery($query);
+			$res = $this->db->loadObject();
+			$this->data = $res;
 		}
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**
@@ -258,11 +258,11 @@ class RedeventAttendee extends JObject
 
 		// First, changed status to confirmed
 		$query = ' UPDATE #__redevent_register '
-			. ' SET confirmed = 1, confirmdate = ' . $this->_db->Quote(gmdate('Y-m-d H:i:s'))
-			. '   , paymentstart = ' . $this->_db->Quote(gmdate('Y-m-d H:i:s'))
-			. ' WHERE id = ' . $this->_id;
-		$this->_db->setQuery($query);
-		$res = $this->_db->query();
+			. ' SET confirmed = 1, confirmdate = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
+			. '   , paymentstart = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
+			. ' WHERE id = ' . $this->id;
+		$this->db->setQuery($query);
+		$res = $this->db->query();
 
 		if (!$res)
 		{
@@ -280,6 +280,7 @@ class RedeventAttendee extends JObject
 			// Send attending email
 			$this->sendWaitinglistStatusEmail(0);
 			$this->sendWLAdminNotification(0);
+
 			return true;
 		}
 
@@ -318,16 +319,16 @@ class RedeventAttendee extends JObject
 			$waiting = $data->waitinglist ? 0 : 1;
 		}
 
-		$query = $this->_db->getQuery(true);
+		$query = $this->db->getQuery(true);
 
 		$query->update('#__redevent_register')
 			->set('waitinglist = ' . $waiting)
 			->set('paymentstart = NOW()')
-			->where('id = ' . $this->_db->Quote($this->_id));
+			->where('id = ' . $this->db->Quote($this->id));
 
-		$this->_db->setQuery($query);
+		$this->db->setQuery($query);
 
-		if (!$this->_db->execute())
+		if (!$this->db->execute())
 		{
 			$this->setError(JText::_('COM_REDEVENT_FAILED_UPDATING_WAITINGLIST_STATUS'));
 
@@ -628,7 +629,7 @@ class RedeventAttendee extends JObject
 
 		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onGetRegistrationAdminEmails', array($this->_id, &$customrecipients));
+		$dispatcher->trigger('onGetRegistrationAdminEmails', array($this->id, &$customrecipients));
 
 		foreach ((array) $customrecipients as $r)
 		{
@@ -641,6 +642,13 @@ class RedeventAttendee extends JObject
 		return $recipients;
 	}
 
+	/**
+	 * Replace text tags
+	 *
+	 * @param   string  $text  text to replace
+	 *
+	 * @return string
+	 */
 	public function replaceTags($text)
 	{
 		$data = $this->load();
@@ -685,15 +693,15 @@ class RedeventAttendee extends JObject
 	 */
 	protected function getAnswers()
 	{
-		if (empty($this->_answers))
+		if (empty($this->answers))
 		{
 			$rfcore = RdfCore::getInstance();
 			$sid = $this->load()->sid;
 			$sidsanswers = $rfcore->getAnswers(array($sid));
-			$this->_answers = $sidsanswers->getSubmissionBySid($sid);
+			$this->answers = $sidsanswers->getSubmissionBySid($sid);
 		}
 
-		return $this->_answers;
+		return $this->answers;
 	}
 
 	/**
@@ -727,8 +735,8 @@ class RedeventAttendee extends JObject
 				. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
 				. ' WHERE x.id = ' . $xref;
-			$this->_db->setQuery($query);
-			self::$sessions[$xref] = $this->_db->loadObject();
+			$this->db->setQuery($query);
+			self::$sessions[$xref] = $this->db->loadObject();
 		}
 
 		return self::$sessions[$xref];
@@ -785,8 +793,8 @@ class RedeventAttendee extends JObject
 				. '   AND r.confirmed = 1 '
 				. '   AND r.cancelled = 0 '
 				. '   AND r.waitinglist = 0 ';
-			$this->_db->setQuery($query);
-			self::$attending[$this->getXref()] = $this->_db->loadColumn();
+			$this->db->setQuery($query);
+			self::$attending[$this->getXref()] = $this->db->loadColumn();
 		}
 
 		return self::$attending[$this->getXref()];
@@ -799,7 +807,7 @@ class RedeventAttendee extends JObject
 	 */
 	protected function addToAttending()
 	{
-		self::$attending[$this->getXref()][] = $this->_id;
+		self::$attending[$this->getXref()][] = $this->id;
 	}
 
 	/**
@@ -862,15 +870,19 @@ class RedeventAttendee extends JObject
 
 			/* build activation link */
 			// TODO: use the route helper !
-			$url = JRoute::_(JURI::root() . 'index.php?option=com_redevent&controller=registration&task=activate'
-				. '&confirmid=' . str_replace(".", "_", $this->_data->uip)
-				. 'x' . $this->_data->xref
-				. 'x' . $this->_data->uid
-				. 'x' . $this->_data->id
-				. 'x' . $this->_data->submit_key);
+			$url = JRoute::_(
+				JURI::root() . 'index.php?option=com_redevent&controller=registration&task=activate'
+				. '&confirmid=' . str_replace(".", "_", $this->data->uip)
+				. 'x' . $this->data->xref
+				. 'x' . $this->data->uid
+				. 'x' . $this->data->id
+				. 'x' . $this->data->submit_key
+			);
 			$activatelink = '<a href="' . $url . '">' . JText::_('COM_REDEVENT_Activate') . '</a>';
-			$cancellink = JRoute::_(JURI::root() . 'index.php?option=com_redevent&task=cancelreg'
-				. '&rid=' . $this->_data->id . '&xref=' . $this->_data->xref . '&submit_key=' . $this->_data->submit_key);
+			$cancellink = JRoute::_(
+				JURI::root() . 'index.php?option=com_redevent&task=cancelreg'
+				. '&rid=' . $this->data->id . '&xref=' . $this->data->xref . '&submit_key=' . $this->data->submit_key
+			);
 
 			/* Mail attendee */
 			$htmlmsg = '<html><head><title></title></title></head><body>';
@@ -1007,7 +1019,9 @@ class RedeventAttendee extends JObject
 			}
 		}
 
-		$mailer->setSubject($tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject')));
+		$mailer->setSubject(
+			$tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject'))
+		);
 		$mailer->MsgHTML($mail);
 
 		if (!$mailer->send())

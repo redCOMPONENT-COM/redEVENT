@@ -22,7 +22,7 @@ class RedeventCustomfieldSelectmultiple extends RedeventCustomfieldSelect
 	 * @access protected
 	 * @var    string
 	 */
-	protected $name = 'selectmultiple';
+	public $name = 'selectmultiple';
 
 	/**
 	 * returns the html code for the form element

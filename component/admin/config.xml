@@ -761,7 +761,7 @@
 			   default="redevent"/>
 		<field name="backend_formatdate" type="text" default="%d.%m.%Y" label="COM_REDEVENT_DATE_STRFTIME_BACKEND"
 			   description="COM_REDEVENT_DATE_STRFTIME_BACKEND_TIP"/>
-		<field name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL"
+		<field name="ical_timezone" type="timezone" default="Europe/London" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL"
 			   description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC"/>
 		<field name="ical_no_timezone" type="radio" default="0"
 			   class="btn-group"

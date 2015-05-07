@@ -22,7 +22,7 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 	 * @access protected
 	 * @var    string
 	 */
-	protected $name = 'textbox';
+	public $name = 'textbox';
 
 	/**
 	 * returns the html code for the form element

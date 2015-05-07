@@ -8,19 +8,19 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- *
  * Holds some usefull functions to keep the code a bit cleaner
+ *
+ * @TODO: split in more specialized classes !
  *
  * @package  Redevent.Library
  * @since    2.5
-*/
+ */
 class RedeventHelper
 {
 	/**
 	 * Pulls settings from database and stores in an static object
 	 *
 	 * @return object
-	 * @since 0.9
 	 */
 	public static function config()
 	{
@@ -200,52 +200,53 @@ class RedeventHelper
 	}
 
 	/**
-	 * transforms <br /> and <br> back to \r\n
+	 * returns formatted event duration.
 	 *
-	 * @param string $string
+	 * @param   object  $event  object having properties dates, enddates, times, endtimes
+	 *
 	 * @return string
-	 */
-	public static function br2break($string)
-	{
-		return preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\r\n", $string);
-	}
-
-	/**
-	 * returns formated event duration.
-	 *
-	 * @param $event object having properties dates, enddates, times, endtimes
 	 */
 	public static function getEventDuration($event)
 	{
-		if (!RedeventHelper::isValidDate($event->dates)) {
+		if (!static::isValidDate($event->dates))
+		{
 			return '-';
 		}
 
-		// all day events if start or end time is null or 00:00:00
+		// All day events if start or end time is null or 00:00:00
 		if (empty($event->times) || $event->times == '00:00:00' || empty($event->endtimes) || $event->endtimes == '00:00:00')
 		{
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates) // same day
+			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
 			{
+				// Same day
+
 				return '1' . ' ' . JText::_('COM_REDEVENT_Day');
 			}
 			else
 			{
 				$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
+
 				return $days . ' ' . JText::_('COM_REDEVENT_Days');
 			}
 		}
-		else // there is start and end times
+		else
 		{
-			$start = strtotime($event->dates. ' ' . $event->times);
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates) // same day, return hours and minutes
+			// There is start and end times
+			$start = strtotime($event->dates . ' ' . $event->times);
+
+			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
 			{
-				$end = strtotime($event->dates. ' ' . $event->endtimes);
+				// Same day, return hours and minutes
+				$end = strtotime($event->dates . ' ' . $event->endtimes);
 				$duration = $end - $start;
+
 				return floor($duration / 3600) . JText::_('COM_REDEVENT_LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
 			}
-			else // not same day, display in days
+			else
 			{
+				// Not same day, display in days
 				$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
+
 				return $days . ' ' . JText::_('COM_REDEVENT_Days');
 			}
 		}
@@ -254,156 +255,144 @@ class RedeventHelper
 	/**
 	 * returns indented event category options
 	 *
-	 * @param boolean show categories with no publish xref associated
-	 * @param boolean show unpublished categories
-	 * @param array   id of enabled categories
+	 * @param   bool  $show_empty        show categories with no publish xref associated
+	 * @param   bool  $show_unpublished  show unpublished categories
+	 * @param   bool  $enabled           id of enabled categories
+	 *
 	 * @return array
 	 */
 	public static function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false)
 	{
 		$app = JFactory::getApplication();
-		$db  = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if ($show_empty == false)
 		{
-			// select categories with events first
-			$query = ' SELECT c.id '
-			. ' FROM #__redevent_categories AS c '
-			. ' INNER JOIN #__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
-			. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = child.id '
-			. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id '
-			. ' WHERE x.published = 1 '
-			. ' GROUP BY c.id '
-			;
+			// Select categories with events first
+			$query = $db->getQuery(true);
+			$query->select('c.id')
+				->from('#__redevent_categories AS c')
+				->join('INNER', '#__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt')
+				->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = child.id')
+				->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id')
+				->where('x.published = 1')
+				->group('c.id');
+
 			$db->setQuery($query);
 
 			$notempty = $db->loadColumn();
-			if (empty($notempty)) {
+
+			if (empty($notempty))
+			{
 				return array();
 			}
 		}
 
-		$query =  ' SELECT c.id, c.name AS catname, (COUNT(parent.name) - 1) AS depth '
-		. ' FROM #__redevent_categories AS c '
-		. ' INNER JOIN #__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt '
-		;
-
-		$where = array();
+		$query = $db->getQuery(true);
+		$query->select('c.id, c.name AS catname, (COUNT(parent.name) - 1) AS depth')
+			->from('#__redevent_categories AS c')
+			->join('INNER', '#__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt')
+			->group('c.id')
+			->order('c.ordering, c.lft');
 
 		if ($show_empty == false)
 		{
-			$where[] = ' c.id IN (' . implode(', ', $notempty) . ')';
+			$query->where('c.id IN (' . implode(', ', $notempty) . ')');
 		}
 
-		if (!$show_unpublished) {
-			$where[] = ' c.published = 1 ';
+		if (!$show_unpublished)
+		{
+			$query->where('c.published = 1');
 		}
 
 		if ($app->getLanguageFilter())
 		{
-			$where[] = '(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)';
+			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
 		}
-
-
-		if (count($where)) {
-			$query .= ' WHERE ' . implode(' AND ', $where);
-		}
-
-		$query .= ' GROUP BY c.id ';
-		$query .= ' ORDER BY c.ordering, c.lft ';
 
 		$db->setQuery($query);
 
 		$results = $db->loadObjectList();
 
 		$options = array();
-		foreach((array) $results as $cat)
+
+		foreach ((array) $results as $cat)
 		{
-			$options[] = JHTML::_('select.option', $cat->id, str_repeat('&nbsp;', $cat->depth) . ' ' . $cat->catname, 'value', 'text', ($enabled ? !in_array($cat->id, $enabled) : false));
+			$options[] = JHTML::_(
+				'select.option',
+				$cat->id,
+				str_repeat('&nbsp;', $cat->depth) . ' ' . $cat->catname,
+				'value', 'text', ($enabled ? !in_array($cat->id, $enabled) : false)
+			);
 		}
+
 		return $options;
 	}
 
 	/**
 	 * returns indented venues category options
 	 *
-	 * @param boolean show venues categories with no published venue associated
-	 * @param boolean show unpublished venues categories
+	 * @param   boolean  $show_empty        show venues categories with no published venue associated
+	 * @param   boolean  $show_unpublished  show unpublished venues categories
+	 *
 	 * @return array
 	 */
 	public static function getVenuesCatOptions($show_empty = true, $show_unpublished = false)
 	{
 		$app = JFactory::getApplication();
-		$db  = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$gids = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
 		$gids = implode(',', $gids);
 
+		$query = $db->getQuery(true)
+			->select('c.id')
+			->from('#__redevent_venues_categories AS c')
+			->where('c.published = 1')
+			->where('c.access IN (' . $gids . ')')
+			->group('c.id');
+
 		if ($show_empty == false)
 		{
-			// select only categories with published venues
-			$query = ' SELECT c.id '
-			. ' FROM #__redevent_venues_categories AS c '
-			. ' INNER JOIN #__redevent_venues_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
-			. ' INNER JOIN #__redevent_venue_category_xref AS xcat ON xcat.category_id = child.id '
-			. ' INNER JOIN #__redevent_venues AS v ON v.id = xcat.venue_id '
-			. ' WHERE c.published = 1 '
-			. '   AND c.access IN (' . $gids . ')'
-			. ' GROUP BY c.id '
-			;
-			$db->setQuery($query);
-
-			$cats = $db->loadColumn();
+			// Select only categories with published venues
+			$query->join('INNER', '#__redevent_venues_categories AS child ON child.lft BETWEEN c.lft AND c.rgt')
+				->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.category_id = child.id')
+				->join('INNER', '#__redevent_venues AS v ON v.id = xcat.venue_id');
 		}
-		else
-		{
-			// select only categories with published venues
-			$query = ' SELECT c.id '
-			. ' FROM #__redevent_venues_categories AS c '
-			. ' WHERE c.access IN (' . $gids . ')'
-			. ' GROUP BY c.id '
-			;
-			$db->setQuery($query);
 
-			$cats = $db->loadColumn();
-		}
+		$db->setQuery($query);
+		$cats = $db->loadColumn();
 
 		if (empty($cats))
 		{
 			return array();
 		}
 
-		$query =  ' SELECT c.id, c.name, (COUNT(parent.id) - 1) AS depth '
-		. ' FROM #__redevent_venues_categories AS c '
-		. ' INNER JOIN #__redevent_venues_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt '
-		;
+		$query = $db->getQuery(true)
+			->select('c.id, c.name, (COUNT(parent.id) - 1) AS depth')
+			->from('#__redevent_venues_categories AS c')
+			->join('INNER', '#__redevent_venues_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt')
+			->where('c.id IN (' . implode(', ', $cats) . ')')
+			->group('c.id')
+			->order('c.lft');
 
-		$where = array();
-		$where[] = ' c.id IN (' . implode(', ', $cats) . ')';
-
-		if (!$show_unpublished) {
-			$where[] = ' c.published = 1 ';
+		if (!$show_unpublished)
+		{
+			$query->where('c.published = 1');
 		}
 
 		if ($app->getLanguageFilter())
 		{
-			$where[] = '(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)';
+			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
 		}
 
-		if (count($where)) {
-			$query .= ' WHERE ' . implode(' AND ', $where);
-		}
-
-		$query .= ' GROUP BY c.id '
-		. ' ORDER BY c.lft;'
-		;
 		$db->setQuery($query);
 
 		$results = $db->loadObjectList();
 
 		$options = array();
 
-		foreach((array) $results as $cat)
+		foreach ((array) $results as $cat)
 		{
 			$options[] = JHTML::_('select.option', $cat->id, str_repeat('&nbsp;', $cat->depth) . ' ' . $cat->name);
 		}
@@ -416,8 +405,9 @@ class RedeventHelper
 	 *
 	 * Returns an object with properties canregister and status
 	 *
-	 * @param $xref_id
-	 * @param $user_id
+	 * @param   int  $xref_id  session id
+	 * @param   int  $user_id  user id
+	 *
 	 * @return object (canregister, status)
 	 */
 	public static function canRegister($xref_id, $user_id = null)
@@ -451,7 +441,7 @@ class RedeventHelper
 		$query->select('x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra')
 			->from('#__redevent_event_venue_xref AS x')
 			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
-			->where('x.id = '. $db->Quote($xref_id));
+			->where('x.id = ' . $db->Quote($xref_id));
 
 		$db->setQuery($query);
 		$event = $db->loadObject();
@@ -464,15 +454,15 @@ class RedeventHelper
 
 		if (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00')
 		{
-			if ( strtotime($event->registrationend) < time() )
+			if (strtotime($event->registrationend) < time())
 			{
 				// REGISTRATION IS OVER
 				return false;
 			}
 		}
-		else if (RedeventHelper::isValidDate($event->dates) && strtotime($event->dates .' '. $event->times) < time())
+		elseif (static::isValidDate($event->dates) && strtotime($event->dates . ' ' . $event->times) < time())
 		{
-			// it's separated from previous case so that it is not checked if a registration end was set
+			// It's separated from previous case so that it is not checked if a registration end was set
 			// REGISTRATION IS OVER
 			return false;
 		}
@@ -485,26 +475,30 @@ class RedeventHelper
 	 *
 	 * it requires the input object to have the properties registra, registrationend, dates, times, maxattendees, registered
 	 *
-	 * @param object xref
+	 * @param   object  $xref  session data
+	 *
 	 * @return string
 	 */
 	public static function getRemainingPlaces($xref)
 	{
-		// only display for events were registrations still open
-		if (!$xref->registra) {
-			return '-';
-		}
-		if (    (RedeventHelper::isValidDate($xref->registrationend) && strtotime($xref->registrationend) < time())
-		|| strtotime($xref->dates . ' ' . $xref->times) < time() )
+		// Only display for events were registrations still open
+		if (!$xref->registra)
 		{
 			return '-';
 		}
 
-		// if there is no limit...
+		if ((static::isValidDate($xref->registrationend) && strtotime($xref->registrationend) < time())
+			|| strtotime($xref->dates . ' ' . $xref->times) < time())
+		{
+			return '-';
+		}
+
+		// If there is no limit...
 		if (!$xref->maxattendees)
 		{
 			return '-';
 		}
+
 		return $xref->maxattendees - $xref->registered;
 	}
 
@@ -512,220 +506,109 @@ class RedeventHelper
 	 * returns true if the event is over.
 	 * object in parameters must include properties
 	 *
-	 * @param object $event
-	 * @param boolean daycheck: if true, events are over only the next day, otherwise, use time too.
+	 * @param   object  $event      event data
+	 * @param   bool    $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
 	 */
 	public static function isOver($event, $day_check = true)
 	{
-		if (! (property_exists($event, 'dates') && property_exists($event, 'times')
-		&& property_exists($event, 'enddates') && property_exists($event, 'endtimes') ) ) {
+		if (!(property_exists($event, 'dates') && property_exists($event, 'times')
+			&& property_exists($event, 'enddates') && property_exists($event, 'endtimes')))
+		{
 			throw new Exception('Missing object properties');
 		}
-		if (!RedeventHelper::isValidDate($event->dates)) { // open dates
+
+		if (!static::isValidDate($event->dates))
+		{
+			// Open dates
 			return false;
 		}
 
-		$cmp = $day_check ? strtotime('today') : now();
+		$cmp = $day_check ? strtotime('today') : time();
 
-		if (RedeventHelper::isValidDate($event->enddates.' '.$event->endtimes)) {
-			return strtotime($event->enddates.' '.$event->endtimes) < $cmp;
+		if (static::isValidDate($event->enddates . ' ' . $event->endtimes))
+		{
+			return strtotime($event->enddates . ' ' . $event->endtimes) < $cmp;
 		}
-		else {
-			return strtotime($event->dates.' '.$event->times) < $cmp;
+		else
+		{
+			return strtotime($event->dates . ' ' . $event->times) < $cmp;
 		}
-	}
-
-	/**
-	 * returns array of timezones indexed by offset
-	 *
-	 * @return array
-	 */
-	public static function getTimeZones()
-	{
-		$timezones = array(
-				'-12'=>'Pacific/Kwajalein',
-				'-11'=>'Pacific/Samoa',
-				'-10'=>'Pacific/Honolulu',
-				'-9'=>'America/Juneau',
-				'-8'=>'America/Los_Angeles',
-				'-7'=>'America/Denver',
-				'-6'=>'America/Mexico_City',
-				'-5'=>'America/New_York',
-				'-4'=>'America/Caracas',
-				'-3.5'=>'America/St_Johns',
-				'-3'=>'America/Argentina/Buenos_Aires',
-				'-2'=>'Atlantic/Azores',// no cities here so just picking an hour ahead
-				'-1'=>'Atlantic/Azores',
-				'0'=>'Europe/London',
-				'1'=>'Europe/Paris',
-				'2'=>'Europe/Helsinki',
-				'3'=>'Europe/Moscow',
-				'3.5'=>'Asia/Tehran',
-				'4'=>'Asia/Baku',
-				'4.5'=>'Asia/Kabul',
-				'5'=>'Asia/Karachi',
-				'5.5'=>'Asia/Calcutta',
-				'6'=>'Asia/Colombo',
-				'7'=>'Asia/Bangkok',
-				'8'=>'Asia/Singapore',
-				'9'=>'Asia/Tokyo',
-				'9.5'=>'Australia/Darwin',
-				'10'=>'Pacific/Guam',
-				'11'=>'Asia/Magadan',
-				'12'=>'Asia/Kamchatka'
-		);
-		return $timezones;
-	}
-
-	/**
-	 * returns timezone name from offset
-	 * @param string $offset
-	 * @return string
-	 */
-	public static function getTimeZone($offset)
-	{
-		$tz = self::getTimeZones();
-		if (isset($tz[$offset])) {
-			return $tz[$offset];
-		}
-		return false;
 	}
 
 	/**
 	 * return true is a date is valid (not null, or 0000-00...)
 	 *
-	 * @param string $date
+	 * @param   string  $date  date string from db
+	 *
 	 * @return boolean
 	 */
 	public static function isValidDate($date)
 	{
-		if (is_null($date)) {
+		if (is_null($date))
+		{
 			return false;
 		}
-		if ($date == '0000-00-00' || $date == '0000-00-00 00:00:00') {
+
+		if ($date == '0000-00-00' || $date == '0000-00-00 00:00:00')
+		{
 			return false;
 		}
-		if (!strtotime($date)) {
+
+		if (!strtotime($date))
+		{
 			return false;
 		}
+
 		return true;
 	}
 
 	/**
 	 * return session code from object
-	 * @param object $session must contain xref, course_code
+	 *
+	 * @param   object  $session  must contain xref, course_code
+	 *
 	 * @return string
 	 */
 	public static function getSessioncode($session)
 	{
-		return $session->course_code.'-'.$session->xref;
+		return $session->course_code . '-' . $session->xref;
 	}
 
 	/**
-	 * Build the select list for access level
+	 * returns mime of a file
 	 *
-	 * @TODO: adapt for 1.7 acl
+	 * @param   string  $filename  file path
+	 *
+	 * @return string mime
 	 */
-	public static function getAccesslevelOptions()
+	public static function getMime($filename)
 	{
-		$db =JFactory::getDBO();
+		$finfo = finfo_open(FILEINFO_MIME);
+		$mimetype = finfo_file($finfo, $filename);
+		finfo_close($finfo);
 
-		$query = 'SELECT id AS value, title AS text'
-		. ' FROM #__usergroups'
-		. ' ORDER BY id'
-		;
-		$db->setQuery( $query );
-		$groups = $db->loadObjectList();
-
-		return $groups;
+		return $mimetype;
 	}
 
 	/**
 	 * returns mime type of a file
 	 *
-	 * @param string file path
+	 * @param   string  $filename  file path
+	 *
 	 * @return string mime type
 	 */
 	public static function getMimeType($filename)
 	{
-		if (function_exists('finfo_open')) {
-			$finfo = finfo_open(FILEINFO_MIME);
-			$mimetype = finfo_file($finfo, $filename);
-			finfo_close($finfo);
-			return $mimetype;
-		}
-		else if (function_exists('mime_content_type') && 0)
-		{
-			return mime_content_type($filename);
-		}
-		else
-		{
-			$mime_types = array(
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mimetype = finfo_file($finfo, $filename);
+		finfo_close($finfo);
 
-					'txt' => 'text/plain',
-					'htm' => 'text/html',
-					'html' => 'text/html',
-					'php' => 'text/html',
-					'css' => 'text/css',
-					'js' => 'application/javascript',
-					'json' => 'application/json',
-					'xml' => 'application/xml',
-					'swf' => 'application/x-shockwave-flash',
-					'flv' => 'video/x-flv',
-
-					// images
-					'png' => 'image/png',
-					'jpe' => 'image/jpeg',
-					'jpeg' => 'image/jpeg',
-					'jpg' => 'image/jpeg',
-					'gif' => 'image/gif',
-					'bmp' => 'image/bmp',
-					'ico' => 'image/vnd.microsoft.icon',
-					'tiff' => 'image/tiff',
-					'tif' => 'image/tiff',
-					'svg' => 'image/svg+xml',
-					'svgz' => 'image/svg+xml',
-
-					// archives
-					'zip' => 'application/zip',
-					'rar' => 'application/x-rar-compressed',
-					'exe' => 'application/x-msdownload',
-					'msi' => 'application/x-msdownload',
-					'cab' => 'application/vnd.ms-cab-compressed',
-
-					// audio/video
-					'mp3' => 'audio/mpeg',
-					'qt' => 'video/quicktime',
-					'mov' => 'video/quicktime',
-
-					// adobe
-					'pdf' => 'application/pdf',
-					'psd' => 'image/vnd.adobe.photoshop',
-					'ai' => 'application/postscript',
-					'eps' => 'application/postscript',
-					'ps' => 'application/postscript',
-
-					// ms office
-					'doc' => 'application/msword',
-					'rtf' => 'application/rtf',
-					'xls' => 'application/vnd.ms-excel',
-					'ppt' => 'application/vnd.ms-powerpoint',
-
-					// open office
-					'odt' => 'application/vnd.oasis.opendocument.text',
-					'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-			);
-
-			$ext = strtolower(array_pop(explode('.',$filename)));
-			if (array_key_exists($ext, $mime_types)) {
-				return $mime_types[$ext];
-			}
-			else {
-				return 'application/octet-stream';
-			}
-		}
+		return $mimetype;
 	}
-
 
 	/**
 	 * return initialized calendar tool class for ics export
@@ -734,277 +617,252 @@ class RedeventHelper
 	 */
 	public static function getCalendarTool()
 	{
-		require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalcreator.class.php';
+		require_once JPATH_SITE . '/components/com_redevent/classes/iCalcreator.class.php';
+
 		$mainframe = JFactory::getApplication();
+		$cachePath = JPATH_SITE . '/cache/com_redevent';
 
-		$offset = (float) $mainframe->getCfg('offset');
-		$timezone_name = self::getTimeZone($offset);
+		$timezone_name = $mainframe->getCfg('offset');
 
-		$vcal = new vcalendar();                          // initiate new CALENDAR
-		if (!file_exists(JPATH_SITE.DS.'cache'.DS.'com_redevent')) {
+		// Initiate new CALENDAR
+		$vcal = new vcalendar;
+
+		if (!file_exists($cachePath))
+		{
 			jimport('joomla.filesystem.folder');
-			JFolder::create(JPATH_SITE.DS.'cache'.DS.'com_redevent');
+			JFolder::create($cachePath);
 		}
-		$vcal->setConfig('directory', JPATH_SITE.DS.'cache'.DS.'com_redevent');
-		$vcal->setProperty('unique_id', 'events@'.$mainframe->getCfg('sitename'));
-		$vcal->setProperty( "calscale", "GREGORIAN" );
-		$vcal->setProperty( 'method', 'PUBLISH' );
-		if ($timezone_name) {
-			$vcal->setProperty( "X-WR-TIMEZONE", $timezone_name );
+
+		$vcal->setConfig('directory', $cachePath);
+		$vcal->setProperty('unique_id', 'events@' . $mainframe->getCfg('sitename'));
+		$vcal->setProperty("calscale", "GREGORIAN");
+		$vcal->setProperty('method', 'PUBLISH');
+
+		if ($timezone_name)
+		{
+			$vcal->setProperty("X-WR-TIMEZONE", $timezone_name);
 		}
+
 		return $vcal;
 	}
 
+	/**
+	 * Add event to ical
+	 *
+	 * @param   vcalendar  &$calendartool  calendar object
+	 * @param   object     $event          session data
+	 *
+	 * @return bool
+	 */
 	public static function icalAddEvent(&$calendartool, $event)
 	{
 		require_once JPATH_SITE . '/components/com_redevent/classes/iCalcreator.class.php';
+
 		$mainframe = JFactory::getApplication();
 		$params = $mainframe->getParams('com_redevent');
 
-		$offset = $params->get('ical_timezone', 1);
-		$timezone_name = self::getTimeZone($offset);
+		$timezone_name = $params->get('ical_timezone', 'Europe/London');
 
-		// get categories names
+		// Get categories names
 		$categories = array();
-		foreach ($event->categories as $c) {
+
+		foreach ($event->categories as $c)
+		{
 			$categories[] = $c->name;
 		}
 
-		if (!$event->dates || $event->dates == '0000-00-00') {
-			// no start date...
+		if (!static::isValidDate($event->dates))
+		{
+			// No start date...
 			return false;
 		}
-		// make end date same as start date if not set
-		if (!$event->enddates || $event->enddates == '0000-00-00') {
+
+		// Make end date same as start date if not set
+		if (!static::isValidDate($event->enddates))
+		{
 			$event->enddates = $event->dates;
 		}
 
-		// start
-		if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$event->dates, $start_date)) {
-			JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTDATE_FORMAT'));
+		// Start
+		if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $event->dates, $start_date))
+		{
+			throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTDATE_FORMAT'));
 		}
+
 		$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
 
-		// all day event if start time is not set
-		if ( !$event->times || $event->times == '00:00:00' ) // all day !
+		// All day event if start time is not set
+		if (!$event->times || $event->times == '00:00:00')
 		{
+			// All day !
 			$dateparam = array('VALUE' => 'DATE');
 
-			// for ical all day events, dtend must be send to the next day
-			$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates.' +1 day'));
+			// For ical all day events, dtend must be send to the next day
+			$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates . ' +1 day'));
 
-			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$event->enddates, $end_date)) {
-				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
+			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $event->enddates, $end_date))
+			{
+				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
 			}
+
 			$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
 			$dateendparam = array('VALUE' => 'DATE');
 		}
-		else // not all day events, there is a start time
+		else
 		{
-			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$event->times, $start_time)) {
-				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
+			// Not all day events, there is a start time
+			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/', $event->times, $start_time))
+			{
+				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
 			}
+
 			$date['hour'] = $start_time[1];
 			$date['min']  = $start_time[2];
 			$date['sec']  = $start_time[3];
 			$dateparam = array('VALUE' => 'DATE-TIME');
-			if (!$params->get('ical_no_timezone', 0)) {
+
+			if (!$params->get('ical_no_timezone', 0))
+			{
 				$dateparam['TZID'] = $timezone_name;
 			}
 
-			if ( !$event->endtimes || $event->endtimes == '00:00:00' )
+			if (!$event->endtimes || $event->endtimes == '00:00:00')
 			{
 				$event->endtimes = $event->times;
 			}
 
-			// if same day but end time < start time, change end date to +1 day
-			if ($event->enddates == $event->dates && strtotime($event->dates.' '.$event->endtimes) < strtotime($event->dates.' '.$event->times)) {
-				$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates.' +1 day'));
+			// If same day but end time < start time, change end date to +1 day
+			if ($event->enddates == $event->dates && strtotime($event->dates . ' ' . $event->endtimes) < strtotime($event->dates . ' ' . $event->times))
+			{
+				$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates . ' +1 day'));
 			}
 
-			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$event->enddates, $end_date)) {
-				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
+			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $event->enddates, $end_date))
+			{
+				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
 			}
+
 			$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
 
-			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$event->endtimes, $end_time)) {
-				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
+			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/', $event->endtimes, $end_time))
+			{
+				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
 			}
+
 			$date_end['hour'] = $end_time[1];
 			$date_end['min']  = $end_time[2];
 			$date_end['sec']  = $end_time[3];
 			$dateendparam = array('VALUE' => 'DATE-TIME');
-			if (!$params->get('ical_no_timezone', 0)) {
+
+			if (!$params->get('ical_no_timezone', 0))
+			{
 				$dateendparam['TZID'] = $timezone_name;
 			}
 		}
-		$title = RedeventHelper::getSessionFullTitle($event);
-		// item description text
-		$description = $title.'\\n';
-		$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '.implode(', ', $categories).'\\n';
-		//		if (isset($event->summary) && $event->summary) {
-		//			$description .= $event->summary.'\\n';
-		//		}
 
-		// url link to event
-		$link = JURI::base().RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref);
-		$link = JRoute::_( $link );
-		$description .= JText::_( 'COM_REDEVENT_ICS_LINK' ).': '.$link.'\\n';
-		if (!empty($event->icaldetails)) {
+		$title = static::getSessionFullTitle($event);
+
+		// Item description text
+		$description = $title . '\\n';
+		$description .= JText::_('COM_REDEVENT_CATEGORY') . ': ' . implode(', ', $categories) . '\\n';
+
+		// Url link to event
+		$link = JURI::base() . RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref);
+		$link = JRoute::_($link);
+		$description .= JText::_('COM_REDEVENT_ICS_LINK') . ': ' . $link . '\\n';
+
+		if (!empty($event->icaldetails))
+		{
 			$description .= $event->icaldetails;
 		}
 
-		// location
+		// Location
 		$location = array();
-		if (isset($event->icalvenue) && !empty($event->icalvenue)) {
+
+		if (isset($event->icalvenue) && !empty($event->icalvenue))
+		{
 			$location[] = $event->icalvenue;
 		}
-		else {
+		else
+		{
 			$location[] = $event->venue;
-			if (isset($event->street) && !empty($event->street)) {
+
+			if (isset($event->street) && !empty($event->street))
+			{
 				$location[] = $event->street;
 			}
-			if (isset($event->city) && !empty($event->city)) {
+
+			if (isset($event->city) && !empty($event->city))
+			{
 				$location[] = $event->city;
 			}
-			if (isset($event->countryname) && !empty($event->countryname)) {
-				$exp = explode(",",$event->countryname);
+
+			if (isset($event->countryname) && !empty($event->countryname))
+			{
+				$exp = explode(",", $event->countryname);
 				$location[] = $exp[0];
 			}
 		}
+
 		$location = implode(",", $location);
 
-		$e = new vevent();              // initiate a new EVENT
-		$e->setProperty( 'summary', $title );           // title
-		$e->setProperty( 'categories', implode(', ', $categories) );           // categorize
-		$e->setProperty( 'dtstart', $date, $dateparam );
-		if (count($date_end)) {
-			$e->setProperty( 'dtend', $date_end, $dateendparam );
+		// Initiate a new EVENT
+		$e = new vevent;
+		$e->setProperty('summary', $title);
+		$e->setProperty('categories', implode(', ', $categories));
+		$e->setProperty('dtstart', $date, $dateparam);
+
+		if (count($date_end))
+		{
+			$e->setProperty('dtend', $date_end, $dateendparam);
 		}
-		$e->setProperty( 'description', $description );    // describe the event
-		$e->setProperty( 'location', $location ); // locate the event
-		$e->setProperty( 'url', $link );
-		$e->setProperty( 'uid', 'event'.$event->id.'-'.$event->xref.'@'.$mainframe->getCfg('sitename') );
-		$calendartool->addComponent( $e );                    // add component to calendar
+
+		$e->setProperty('description', $description);
+		$e->setProperty('location', $location);
+		$e->setProperty('url', $link);
+		$e->setProperty('uid', 'event' . $event->id . '-' . $event->xref . '@' . $mainframe->getCfg('sitename'));
+		$calendartool->addComponent($e);
+
 		return true;
 	}
 
 	/**
 	 * Displays a calendar control field
 	 *
-	 * @param string  The date value
-	 * @param string  The name of the text field
-	 * @param string  The id of the text field
-	 * @param string  The date format
-	 * @param array Additional html attributes
+	 * @param   string  $value    The date value
+	 * @param   string  $name     The name of the text field
+	 * @param   string  $id       The id of the text field
+	 * @param   string  $format   The date format
+	 * @param   string  $onClose  on close code
+	 * @param   array   $attribs  Additional html attributes
+	 *
+	 * @return string
 	 */
 	public static function calendar($value, $name, $id, $format = '%Y-%m-%d', $onClose = null, $attribs = null)
 	{
-		JHTML::_('behavior.calendar'); //load the calendar behavior
+		// Load the calendar behavior
+		JHTML::_('behavior.calendar');
 
-		if (is_array($attribs)) {
-			$attribs = JArrayHelper::toString( $attribs );
+		if (is_array($attribs))
+		{
+			$attribs = JArrayHelper::toString($attribs);
 		}
-		$document =JFactory::getDocument();
-		$document->addScriptDeclaration('window.addEvent(\'domready\', function() {Calendar.setup({
-		inputField     :    "'.$id.'",     // id of the input field
-		ifFormat       :    "'.$format.'",      // format of the input field
-		button         :    "'.$id.'_img",  // trigger for the calendar (button ID)
-		align          :    "Tl",           // alignment (defaults to "Bl")
-		onClose        :    '.($onClose ? $onClose : 'null').',
-		singleClick    :    true
-	});});');
-
-		return '<input type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'.
-		'<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
-	}
-
-	/**
-	 * Generates the html for price group selection for redform
-	 *
-	 * @TODO doesn't work with multiple forms !!!
-	 *
-	 * @param   array  $sessionpricegroups  session pricegroups objects
-	 * @param   int    $selected            selected session_pricegroup id
-	 *
-	 * @return string html
-	 */
-	public static function getRfPricesSelect($sessionpricegroups, $selected = null)
-	{
-		$layout = JComponentHelper::getParams('com_redevent')->get('price_select_layout', 'select');
-		$html = array();
 
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::root() . 'media/com_redevent/js/updateformprice.js');
+		$document->addScriptDeclaration(
+			'window.addEvent(\'domready\', function() {Calendar.setup({
+			inputField     :    "' . $id . '",     // id of the input field
+			ifFormat       :    "' . $format . '",      // format of the input field
+			button         :    "' . $id . '_img",  // trigger for the calendar (button ID)
+			align          :    "Tl",           // alignment (defaults to "Bl")
+			onClose        :    ' . ($onClose ? $onClose : 'null') . ',
+			singleClick    :    true
+		});});'
+		);
 
-		if ($layout == 'radio')
-		{
-			$html[] = '<fieldset class="price-select">';
-
-			foreach ((array) $sessionpricegroups as $i => $p)
-			{
-				$selected = $selected == null ? $p->id : $selected; // force at least one radio to be selected
-				$html[] = '<input type="radio" name="sessionpricegroup_id" value="' . $p->id . '" price="' . $p->price . '"'
-				. ' currency="' . $p->currency . '"'
-				. ' id="sessionpricegroup_id' . $i . '"'
-				. ($p->id == $selected ? ' checked="checked"' : '')
-				. ' class="updateCurrency"'
-				. '/>';
-
-				$html[] = '<label for="sessionpricegroup_id' . $i . '">'
-					. $p->currency . ' ' . $p->price . ' (' . $p->name . ')' . '</label>';
-			}
-
-			$html[] = '</fieldset>';
-		}
-		else
-		{
-			$html[] = '<select name="sessionpricegroup_id" class="updateCurrency">';
-
-			foreach ((array) $sessionpricegroups as $p)
-			{
-				$price = self::convertPrice($p->price, $p->currency, $p->form_currency);
-
-				$html[] = '<option value="' . $p->id . '"
-					price="'  . $p->price . '"'
-					. ' currency="' . $p->currency . '"'
-					. ($p->id == $selected ? ' selected="selected"' : '') . '>'
-					. $p->currency . ' ' . $p->price . ' (' . $p->name . ')'
-					. '</option>';
-			}
-
-			$html[] = '</select>';
-		}
-
-		return implode($html);
-	}
-
-	/**
-	 * Get options array from session price groups
-	 *
-	 * @param   array  $sessionpricegroups  session pricegroups objects
-	 *
-	 * @return string html
-	 */
-	public static function getSessionpricegroupsOptions($sessionpricegroups)
-	{
-		$options = array();
-
-		foreach ((array) $sessionpricegroups as $i => $p)
-		{
-			$selected = $selected == null ? $p->id : $selected; // force at least one radio to be selected
-			$html[] = '<input type="radio" name="sessionpricegroup_id" value="' . $p->id . '" price="' . $p->price . '"'
-				. ' currency="' . $p->currency . '"'
-				. ' id="sessionpricegroup_id' . $i . '"'
-				. ($p->id == $selected ? ' checked="checked"' : '')
-				. ' class="updateCurrency"'
-				. '/>';
-
-			$html[] = '<label for="sessionpricegroup_id' . $i . '">'
-				. $p->currency . ' ' . $p->price . ' (' . $p->name . ')' . '</label>';
-		}
-
-		return implode($html);
+		return '<input type="text" name="' . $name . '" id="' . $id . '" value="'
+			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />' .
+			'<img class="calendar" src="' . JURI::root(true) . '/templates/system/images/calendar.png" alt="calendar" id="' . $id . '_img" />';
 	}
 
 	/**
@@ -1035,7 +893,7 @@ class RedeventHelper
 	/**
 	 * Get the price associated to a session price group in form currency
 	 *
-	 * @param   object   $pricegroup   the pricegroups object (price, currency, form_currency)
+	 * @param   object  $pricegroup  the pricegroups object (price, currency, form_currency)
 	 *
 	 * @return float converted price
 	 */
@@ -1047,28 +905,32 @@ class RedeventHelper
 	/**
 	 * writes a csv row
 	 *
-	 * @param array $fields
-	 * @param string $delimiter
-	 * @param string $enclosure
+	 * @param   array   $fields     fields to write
+	 * @param   string  $delimiter  delimiter
+	 * @param   string  $enclosure  enclosure
+	 *
 	 * @return string csv line
 	 */
 	public static function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
 	{
-		$params = &JComponentHelper::getParams('com_redevent');
+		$params = JComponentHelper::getParams('com_redevent');
 
 		$delimiter_esc = preg_quote($delimiter, '/');
 		$enclosure_esc = preg_quote($enclosure, '/');
 
 		$output = array();
+
 		foreach ($fields as $field)
 		{
-			if ($params->get('csv_export_strip_linebreaks', 0)) {
+			if ($params->get('csv_export_strip_linebreaks', 0))
+			{
 				$field = str_replace(array("\r\n"), "", $field);
 				$field = str_replace(array("\n"), "", $field);
 			}
+
 			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
-			$enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
-			) : $field;
+				$enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
+				) : $field;
 		}
 
 		return join($delimiter, $output) . "\n";
@@ -1085,8 +947,6 @@ class RedeventHelper
 	 */
 	public static function validateColumns($columns, $allowed = null, $customs = true)
 	{
-		$db = JFactory::getDBO();
-
 		$columns = array_map('strtolower', $columns);
 		$columns = array_map('trim', $columns);
 
@@ -1112,7 +972,12 @@ class RedeventHelper
 
 		if ($customs)
 		{
-			$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('CONCAT("custom", f.id)')
+				->from('#__redevent_fields AS f')
+				->where('f.published = 1');
+
 			$db->setQuery($query);
 
 			if ($res = $db->loadColumn())
@@ -1127,39 +992,23 @@ class RedeventHelper
 	/**
 	 * returns submit_key associated to attendee id
 	 *
-	 * @param int $attendee_id
+	 * @param   int  $attendee_id  attendee id
+	 *
 	 * @return string key
 	 */
 	public static function getAttendeeSubmitKey($attendee_id)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('submit_key')
+			->from('#__redevent_register')
+			->where('id = ' . $db->Quote($attendee_id));
 
-		$query = ' SELECT submit_key '
-		. ' FROM #__redevent_register '
-		. ' WHERE id = ' . $db->Quote($attendee_id);
 		$db->setQuery($query);
 		$res = $db->loadResult();
+
 		return $res;
 	}
-
-	/**
-	 * returns sid associated to attendee id
-	 *
-	 * @param int $attendee_id
-	 * @return int sid
-	 */
-	public static function getAttendeeSid($attendee_id)
-	{
-		$db = JFactory::getDBO();
-
-		$query = ' SELECT sid '
-		. ' FROM #__redevent_register '
-		. ' WHERE id = ' . $db->Quote($attendee_id);
-		$db->setQuery($query);
-		$res = $db->loadResult();
-		return $res;
-	}
-
 
 	/**
 	 * Check registration expiration delay, and cleans up registrations accordingly
@@ -1169,55 +1018,65 @@ class RedeventHelper
 	public static function registrationexpiration()
 	{
 		$settings = JComponentHelper::getParams('com_redevent');
-		if (!$settings->get('registration_expiration', 0)) {
-			// nothing to do
+
+		if (!$settings->get('registration_expiration', 0))
+		{
+			// Nothing to do
 			return true;
 		}
 
-		$db = JFactory::getDBO();
+		// Get expired registrations
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('r.id as attendee_id, r.xref, r.uregdate')
+			->from('#__redevent_register AS r')
+			->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
+			->join('LEFT', '#__rwf_payment_request AS pr ON pr.id = s.id AND pr.paid > 0')
+			->where('DATEDIFF(NOW(), r.paymentstart) >= ' . $settings->get('registration_expiration', 0))
+			->where('s.price > 0')
+			->where('r.confirmed = 1')
+			->where('r.cancelled = 0')
+			->where('r.waitinglist = 0')
+			->where('pr.id IS NULL')
+			->group('r.id');
 
-		// get expired registrations
-		$query = ' SELECT r.id as attendee_id, r.xref, r.uregdate '
-		. ' FROM #__redevent_register AS r '
-		. ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
-		. ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key AND p.paid > 0 '
-		. ' WHERE DATEDIFF(NOW(), r.paymentstart) >= '. $settings->get('registration_expiration', 0)
-		. '   AND s.price > 0 '
-		. '   AND r.confirmed = 1 AND r.cancelled = 0 AND r.waitinglist = 0 '
-		. '   AND p.id IS NULL '
-		. ' GROUP BY r.id '
-		// 		. ' ORDER BY r.uregdate DESC '
-		;
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 
-		if (!$res || !count($res)) {
+		if (!$res || !count($res))
+		{
 			return true;
 		}
 
 		$xrefs = array();
 		$exp_ids = array();
+
 		foreach ($res as $exp)
 		{
 			$xrefs[] = $exp->xref;
 			$exp_ids[] = $exp->attendee_id;
 		}
+
 		$xrefs = array_unique($xrefs);
 
-		// change registrations as cancelled
-		$query = ' UPDATE #__redevent_register AS r '
-		. '   SET r.cancelled = 1 '
-		. ' WHERE r.id IN ('.implode(', ', $exp_ids).')'
-		;
-		$db->setQuery( $query );
+		// Change registrations as cancelled
+		$query = $db->getQuery(true)
+			->update('#__redevent_register AS r')
+			->set('r.cancelled = 1')
+			->where('r.id IN (' . implode(', ', $exp_ids) . ')');
 
-		if (!$db->query()) {
+		$db->setQuery($query);
+
+		if (!$db->execute())
+		{
 			echo JText::_('COM_REDEVENT_CLEANUP_ERROR_CANCELLING_EXPIRED_REGISTRATION');
+
 			return false;
 		}
 
-		// then update waiting list of corresponding sessions
-		require_once(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models'.DS.'waitinglist.php');
+		// Then update waiting list of corresponding sessions
+		require_once JPATH_BASE . '/administrator/components/com_redevent/models/waitinglist.php';
+
 		foreach ($xrefs as $xref)
 		{
 			$model = JModel::getInstance('waitinglist', 'RedeventModel');
@@ -1242,7 +1101,7 @@ class RedeventHelper
 	 *
 	 * @since   11.1
 	 */
-	public static function ajaxSortColumn($title, $order, $direction = 'asc', $selected = 0, $task = null, $new_direction = 'asc')
+	public static function ajaxSortColumn($title, $order, $direction = 'asc', $selected = '', $task = null, $new_direction = 'asc')
 	{
 		$direction = strtolower($direction);
 		$index = intval($direction == 'desc');
@@ -1271,7 +1130,6 @@ class RedeventHelper
 		return $html;
 	}
 
-
 	/**
 	 * get attendee status icon
 	 *
@@ -1282,6 +1140,7 @@ class RedeventHelper
 	public static function getStatusIcon($status)
 	{
 		$status = (int) $status;
+
 		switch ($status)
 		{
 			case 1:
@@ -1324,7 +1183,7 @@ class RedeventHelper
 	 */
 	public static function getSessionFullTitle($object)
 	{
-		$config = RedeventHelper::config();
+		$config = static::config();
 
 		$event_title = isset($object->event_title) ? $object->event_title : $object->title;
 
@@ -1362,16 +1221,6 @@ class RedeventHelper
 			throw new InvalidArgumentException('Cannot generate registration unique id from data');
 		}
 
-		return $data->course_code .'-'. $data->xref .'-'. $data->attendee_id;
-	}
-
-	/**
-	 * Check if redMEMBER is installed
-	 *
-	 * @return bool
-	 */
-	public static function isInstalledRedmember()
-	{
-		return file_exists(JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php');
+		return $data->course_code . '-' . $data->xref . '-' . $data->attendee_id;
 	}
 }
