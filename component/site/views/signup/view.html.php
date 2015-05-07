@@ -1,25 +1,11 @@
 <?php
 /**
- * @version    1.0 $Id$
- * @package    Joomla
- * @subpackage redEVENT
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license    GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ *
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
@@ -27,22 +13,23 @@ jimport('joomla.application.component.view');
 /**
  * HTML Details View class of the EventList component
  *
- * @package    Joomla
- * @subpackage redEVENT
- * @since      0.9
+ * @package  Redevent.Site
+ * @since    0.9
  */
-class RedeventViewSignup extends JViewLegacy
+class RedeventViewSignup extends RViewSite
 {
 	/**
-	 * Creates the output for the details view
+	 * Execute and display a template script.
 	 *
-	 * @since 0.9
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		if (JRequest::getVar('layout') == 'edit')
+		if ($this->getLayout() == 'edit')
 		{
-			return $this->_displayEdit();
+			return $this->displayEdit();
 		}
 
 		$mainframe = JFactory::getApplication();
@@ -60,27 +47,34 @@ class RedeventViewSignup extends JViewLegacy
 		$pagetitle = $params->set('page_title', JText::_('COM_REDEVENT_SIGNUP_PAGE_TITLE'));
 		$document->setTitle($pagetitle);
 
-		//Print
+		// Print
 		$params->def('print', !$mainframe->getCfg('hidePrint'));
 		$params->def('icons', $mainframe->getCfg('icons'));
 
-		//add css file
+		// Add css file
 		if (!$params->get('custom_css'))
 		{
-			$document->addStyleSheet('media/com_redevent/css/redevent.css');
+			RHelperAsset::load('redevent.css');
 		}
 		else
 		{
 			$document->addStyleSheet($params->get('custom_css'));
 		}
+
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		$canRegister = $this->get('RegistrationStatus');
+
 		if ($canRegister->canregister == 0)
 		{
 			echo '<span class="registration_error">' . $canRegister->status . '</span>';
 			echo '<br/>';
-			echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref=' . JRequest::getInt('xref') . '&id=' . JRequest::getInt('id')), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'));
+			echo JHTML::_(
+				'link',
+				JRoute::_('index.php?option=com_redevent&view=details&xref=' . JRequest::getInt('xref') . '&id=' . JRequest::getInt('id')),
+				JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS')
+			);
+
 			return;
 		}
 
@@ -160,7 +154,10 @@ class RedeventViewSignup extends JViewLegacy
 				$review_txt = trim(strip_tags($course->review_message));
 
 				$page = $tags->ReplaceTags($course->submission_type_webform, array('hasreview' => (!empty($review_txt))));
-				$print_link = JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref=' . $this->tmp_xref . '&id=' . $this->tmp_id . '&pop=1&tmpl=component');
+				$print_link = JRoute::_(
+					'index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='
+					. $this->tmp_xref . '&id=' . $this->tmp_id . '&pop=1&tmpl=component'
+				);
 
 				$this->assign('page', $page);
 				$this->assign('print_link', $print_link);
@@ -180,15 +177,23 @@ class RedeventViewSignup extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	function _displayEdit($tpl = null)
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @throws RuntimeException
+	 */
+	public function  displayEdit($tpl = null)
 	{
 		$user = JFactory::getUser();
 		$submitter_id = JRequest::getInt('submitter_id', 0);
 
 		if (!$submitter_id)
 		{
-			JError::raise(0, 'Registration id required');
-			return false;
+			throw new RuntimeException('Registration id required');
 		}
 
 		$course = $this->get('Details');
@@ -198,9 +203,7 @@ class RedeventViewSignup extends JViewLegacy
 
 		if (!$registration)
 		{
-			JError::raise(0, $model->getError);
-
-			return false;
+			throw new RuntimeException($model->getError);
 		}
 
 		$rfcore = RdfCore::getInstance();
@@ -218,8 +221,7 @@ class RedeventViewSignup extends JViewLegacy
 		}
 		else
 		{
-			JError::raiseError(403, 'NOT AUTHORIZED');
-			return false;
+			throw new RuntimeException('NOT AUTHORIZED', 403);
 		}
 
 		parent::display($tpl);

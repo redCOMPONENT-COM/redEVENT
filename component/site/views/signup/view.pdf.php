@@ -1,91 +1,89 @@
 <?php
 /**
- * @version		$Id: view.raw.php 30 2009-05-08 10:22:21Z roland $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package    Redevent.Site
+ *
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * HTML Article View class for the Content component
  *
- * @package		Joomla
- * @subpackage	Content
- * @since 1.5
+ * @package  Redevent.Site
+ * @since    2.5
  */
 class RedeventViewSignup extends RViewSite
 {
-	function display($tpl = null)
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 */
+	public function display($tpl = null)
 	{
 		$mainframe = JFactory::getApplication();
 
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		/* Load the event details */
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
 
-    $pdf = new TCPDF("P", "mm", "A4", true);
-    $pdf->SetCreator($mainframe->getCfg('sitename'));
-    $pdf->SetAuthor($mainframe->getCfg('sitename'));
-    $pdf->SetTitle($course->title);
-    $pdf->SetSubject($course->title);
+		$pdf = new TCPDF("P", "mm", "A4", true);
+		$pdf->SetCreator($mainframe->getCfg('sitename'));
+		$pdf->SetAuthor($mainframe->getCfg('sitename'));
+		$pdf->SetTitle($course->title);
+		$pdf->SetSubject($course->title);
 
-    $pdf->setHeaderFont(Array('freesans', '', 8));
-    $pdf->setFooterFont(Array('freesans', '', 8));
-    $pdf->setFont('freesans');
+		$pdf->setHeaderFont(Array('freesans', '', 8));
+		$pdf->setFooterFont(Array('freesans', '', 8));
+		$pdf->setFont('freesans');
 
-    // disable header and footer
-    $pdf->setPrintHeader(false);
-    $pdf->setPrintFooter(true);
+		// Disable header and footer
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(true);
 
-    //set the display mode
-    $pdf->SetDisplayMode('default');
+		// Set the display mode
+		$pdf->SetDisplayMode('default');
 
-    //initialize document
-    $pdf->AliasNbPages();
+		// Initialize document
+		$pdf->AliasNbPages();
 
-    // add a page
-    $pdf->AddPage();
-    $pdf->SetFontSize(10);
+		// Add a page
+		$pdf->AddPage();
+		$pdf->SetFontSize(10);
 
-    /* This loads the tags replacer */
+		/* This loads the tags replacer */
 		$tags = new RedeventTags;
 		$tags->setXref(JRequest::getInt('xref'));
 
-    $message = $tags->ReplaceTags($course->submission_type_email_pdf);
+		$message = $tags->ReplaceTags($course->submission_type_email_pdf);
 
-		// convert urls
+		// Convert urls
 		$htmlmsg = RedeventHelperOutput::ImgRelAbs($message);
-    $pdf->WriteHTML($message, true);
+		$pdf->WriteHTML($message, true);
 
-    // add the form data if requested
-    if ($course->pdf_form_data)
-    {
-    	JRequest::setVar('pdfform', $pdf);
-    	JPluginHelper::importPlugin('content');
+		// Add the form data if requested
+		if ($course->pdf_form_data)
+		{
+			JRequest::setVar('pdfform', $pdf);
+			JPluginHelper::importPlugin('content');
 
-    	$form = new stdClass();
-    	$form->text = '{redform}'.$course->redform_id.',1{/redform}';
-    	$form->eventid = $course->did;
-    	$form->task = 'userregister';
-  		$results = $dispatcher->trigger('onPrepareEvent', array(& $form, array(), 0));
+			$form = new stdClass;
+			$form->text = '{redform}' . $course->redform_id . ',1{/redform}';
+			$form->eventid = $course->did;
+			$form->task = 'userregister';
+			$results = $dispatcher->trigger('onPrepareEvent', array(& $form, array(), 0));
 
-      $pdf->WriteHTML($form->text, true);
-    }
-    // output the file
-    $pdf->Output($course->title .".pdf", "I");
-    exit;
+			$pdf->WriteHTML($form->text, true);
+		}
+
+		// Output the file
+		$pdf->Output($course->title . ".pdf", "I");
+		$mainframe->close();
 	}
 }

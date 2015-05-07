@@ -52,9 +52,9 @@ class RedeventViewSimpleList extends RViewSite
 		$model = $this->getModel();
 		$model->setLimit($settings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
-		$rows = & $model->getData();
+		$rows = $model->getData();
 
-    // initiate new CALENDAR
+		// Initiate new CALENDAR
 		$vcal = RedeventHelper::getCalendarTool();
 		$vcal->setProperty('unique_id', 'allevents@'.$mainframe->getCfg('sitename'));
 		$vcal->setConfig( "filename", "events.ics" );
@@ -63,8 +63,9 @@ class RedeventViewSimpleList extends RViewSite
 		{
 			RedeventHelper::icalAddEvent($vcal, $row);
 		}
-		$vcal->returnCalendar();                       // generate and redirect output to user browser
-//		echo $vcal->createCalendar(); // debug
+
+		$vcal->returnCalendar();
+
 		$mainframe->close();
 	}
 }

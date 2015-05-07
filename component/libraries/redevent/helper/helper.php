@@ -567,6 +567,23 @@ class RedeventHelper
 	}
 
 	/**
+	 * return true is a date is valid (not null, or 0000-00...)
+	 *
+	 * @param   string  $time  time string from db
+	 *
+	 * @return boolean
+	 */
+	public static function isValidTime($time)
+	{
+		if (is_null($time))
+		{
+			return false;
+		}
+
+		return preg_match('/[0-2]*[0-9]:[0-5][0-9](:[0-5][0-9])*/', $time);
+	}
+
+	/**
 	 * return session code from object
 	 *
 	 * @param   object  $session  must contain xref, course_code

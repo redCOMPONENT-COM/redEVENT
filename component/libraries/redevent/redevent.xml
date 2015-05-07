@@ -18,8 +18,10 @@
 		<folder>customfield</folder>
 		<folder>error</folder>
 		<folder>factory</folder>
+		<folder>feed</folder>
 		<folder>form</folder>
 		<folder>helper</folder>
+		<folder>html</folder>
 		<folder>image</folder>
 		<folder>model</folder>
 		<folder>recurrence</folder>
