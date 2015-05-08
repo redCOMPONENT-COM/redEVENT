@@ -49,4 +49,28 @@ class RedeventControllerVenues extends RControllerAdmin
 			$dispatcher->trigger('onAfterVenueRemoved', array($cid));
 		}
 	}
+
+	/**
+	 * trigger save event for plugins
+	 *
+	 * @return void
+	 */
+	public function triggersave()
+	{
+		// Get items to publish from the request.
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+
+		JPluginHelper::importPlugin('content');
+		$dispatcher = JEventDispatcher::getInstance();
+
+		foreach ($cid as $id)
+		{
+			$table = RTable::getAdminInstance('Venue');
+			$table->load($id);
+			$dispatcher->trigger('onContentAfterSave', array('com_redevent.venue', $table, false));
+		}
+
+		// Set redirect
+		$this->setRedirect($this->getRedirectToListRoute());
+	}
 }

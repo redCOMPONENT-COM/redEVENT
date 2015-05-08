@@ -100,6 +100,9 @@ class RedeventViewSessions extends RedeventViewAdmin
 
 			$button = RToolbarBuilder::createStandardButton('sessions.unfeature', JText::_('COM_REDEVENT_UNFEATURE'), '', 'icon-star-empty', true);
 			$thirdGroup->addButton($button);
+
+			$trigger = RToolbarBuilder::createStandardButton('sessions.triggersave', JText::_('COM_REDEVENT_BUTTON_TRIGGER_SAVE_EVENT'), '', 'icon-refresh', false);
+			$thirdGroup->addButton($trigger);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))

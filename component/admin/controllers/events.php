@@ -69,6 +69,30 @@ class RedeventControllerEvents extends RControllerAdmin
 	}
 
 	/**
+	 * trigger save event for plugins
+	 *
+	 * @return void
+	 */
+	public function triggersave()
+	{
+		// Get items to publish from the request.
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+
+		JPluginHelper::importPlugin('content');
+		$dispatcher = JEventDispatcher::getInstance();
+
+		foreach ($cid as $id)
+		{
+			$table = RTable::getAdminInstance('Event');
+			$table->load($id);
+			$dispatcher->trigger('onContentAfterSave', array('com_redevent.event', $table, false));
+		}
+
+		// Set redirect
+		$this->setRedirect($this->getRedirectToListRoute());
+	}
+
+	/**
 	 * Override
 	 *
 	 * @param   RModelAdmin  $model  The data model object.

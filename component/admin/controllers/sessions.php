@@ -133,4 +133,28 @@ class RedeventControllerSessions extends RControllerAdmin
 		// Set redirect
 		$this->setRedirect($this->getRedirectToListRoute());
 	}
+
+	/**
+	 * trigger save event for plugins
+	 *
+	 * @return void
+	 */
+	public function triggersave()
+	{
+		// Get items to publish from the request.
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+
+		JPluginHelper::importPlugin('content');
+		$dispatcher = JEventDispatcher::getInstance();
+
+		foreach ($cid as $id)
+		{
+			$table = RTable::getAdminInstance('Session');
+			$table->load($id);
+			$dispatcher->trigger('onContentAfterSave', array('com_redevent.session', $table, false));
+		}
+
+		// Set redirect
+		$this->setRedirect($this->getRedirectToListRoute());
+	}
 }

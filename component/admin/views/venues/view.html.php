@@ -101,6 +101,9 @@ class RedeventViewVenues extends RedeventViewAdmin
 
 			$importExport = RToolbarBuilder::createStandardButton('venuescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false);
 			$secondGroup->addButton($importExport);
+
+			$trigger = RToolbarBuilder::createStandardButton('venues.triggersave', JText::_('COM_REDEVENT_BUTTON_TRIGGER_SAVE_EVENT'), '', 'icon-refresh', false);
+			$secondGroup->addButton($trigger);
 		}
 
 		if ($user->authorise('core.edit.state', 'com_redevent'))
