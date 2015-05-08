@@ -34,9 +34,17 @@ $paid = ($session->custom8 == 'yes' ? true : false);
 	</div>
 
 	<div class="link-full"><?php
-		echo JHtml::link(RedeventHelperRoute::getDetailsRoute($session->slug, $session->xslug),
-			JText::_('COM_REDEVENT_TIMELINE_READMORE')); ?></div>
+		echo JHtml::link(RedeventHelperRoute::getDetailsRoute($session->slug, $session->xslug), JText::_('COM_REDEVENT_TIMELINE_READMORE')); ?></div>
+
+	<div class="social-share">
+
+		<?php
+			$url_share = JUri::root() . JRoute::_(RedeventHelperRoute::getDetailsRoute($session->slug, $session->xslug));
+		?>
+		<div class="addthis_sharing_toolbox" data-url="<?php echo $url_share; ?>"></div>
+	</div>
 </div>
+
 <div class="session-right-infor">
 	<?php echo $session->details; ?>
 </div>

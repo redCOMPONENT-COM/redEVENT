@@ -197,6 +197,7 @@ RHtml::_('rjquery.ui');
 									<?php endfor; ?>
 								</div>
 								<?php $rowIndex = 0; ?>
+								<?php $venueIndex = 0; ?>
 								<?php foreach ($this->sortedRows as $venue): ?>
 									<?php foreach ($venue['rows'] as $sessions): ?>
 										<div class="time-venues-base" style="height: <?php echo $baseHeight; ?>px;">
@@ -222,7 +223,7 @@ RHtml::_('rjquery.ui');
 															<div class="timeline-session-time"><?php echo date('H:i', strtotime($session->times)) ?> - <?php echo date('H:i', strtotime($session->endtimes)) ?></div>
 															<div class="timeline-session-title"><?php echo $sessionTitle ?></div>
 														</div>
-														<div class="session-infor-hidden" id="session-infor-<?php echo $session->xref ?>" data-target="time-venues-session-infor-<?php echo $rowIndex ?>" data-row="<?php echo $rowIndex ?>">
+														<div class="session-infor-hidden" id="session-infor-<?php echo $session->xref ?>" data-target="time-venues-session-infor-<?php echo $venueIndex ?>" data-row="<?php echo $venueIndex ?>" data-row-session="<?php echo $rowIndex; ?>">
 															<?php
 															$displayData = array('session' => $session, 'itemId' => $itemId);
 															echo RLayoutHelper::render('timeline.session', $displayData, null, null);
@@ -231,9 +232,10 @@ RHtml::_('rjquery.ui');
 												<?php endforeach; ?>
 											</div>
 										</div>
-										<div class="time-venues-base-information" id="time-venues-session-infor-<?php echo $rowIndex ?>"></div>
 										<?php $rowIndex++; ?>
 									<?php endforeach; ?>
+									<div class="time-venues-base-information" id="time-venues-session-infor-<?php echo $venueIndex ?>"></div>
+									<?php $venueIndex++; ?>
 								<?php endforeach; ?>
 							</div>
 						</div>

@@ -542,7 +542,7 @@ jQuery(document).ready(function($){
 
     $(".btn-reset-filter-redvent").click(function() {
     	/* Act on the event */
-    	$('#filter_date').prop('selectedIndex',0);
+    	$('#filter_date').prop('selectedIndex',3);
     	$('#filter_venuecategory').prop('selectedIndex',0);
     	$('#filtercustom6').prop('selectedIndex',0);
     	$('#filtercustom7').prop('selectedIndex',0);
@@ -586,4 +586,29 @@ function pad(){
         }
     }
 
+
+	  function fixDiv() {
+	  	var w_win = $(window).width();
+    	var w = 926 - 40;
+    	var venue = (w_win - w)/2 - 18;
+	    var $cache = $('.redevent-timeline .scrollbar');
+	    if ($(window).scrollTop() > 350)
+	      $cache.css({
+	        'position': 'fixed',
+	        'z-index': '999',
+	        'left': venue,
+	        'padding-left': '0',
+	        'top': '0'
+	      });
+	    else
+	      $cache.css({
+	        'position': 'relative',
+	        'left': 'auto',
+	        'padding-left': '0',
+	        'top': 'auto'
+
+	      });
+	  }
+	  $(window).scroll(fixDiv);
+	  fixDiv();
 });
