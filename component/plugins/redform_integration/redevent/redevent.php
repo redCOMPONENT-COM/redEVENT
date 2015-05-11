@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 /**
  * Class plgRedform_integrationRedevent
