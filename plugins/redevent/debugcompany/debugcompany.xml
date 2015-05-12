@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="redevent" method="upgrade">
+	<name>PLG_REDEVENT_debugcompany</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2015 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>PLG_REDEVENT_debugcompany_XML_PLUGIN_DESC</description>
+
+	<files>
+		<filename plugin="debugcompany">debugcompany.php</filename>
+		<filename>index.html</filename>
+	</files>
+
+	<config>
+		<fields name="params">
+            <fieldset name="basic">
+            </fieldset>
+ 		</fields>
+	</config>
+
+</extension>
