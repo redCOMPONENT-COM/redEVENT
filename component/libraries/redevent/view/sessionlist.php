@@ -1,6 +1,6 @@
 <?php
 /**
- * @package    Redevent.Site
+ * @package    Redevent.Library
  *
  * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * HTML events list View class of the redEVENT component
  *
- * @package  Redevent.Site
+ * @package  Redevent.Library
  * @since    3.0
  */
 class RedeventViewSessionlist extends RViewSite

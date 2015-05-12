@@ -8,8 +8,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_SITE . DS . 'components' . DS . 'com_redevent' . DS . 'classes' . DS . 'iCalcreator.class.php';
-
 /**
  * ICS CategoryEvents View class of the redEVENT component
  *

@@ -25,21 +25,24 @@ class RedeventViewDetails extends RViewSite
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		if ($this->getLayout() == 'exportattendees')
 		{
-			return $this->_displayAttendees($tpl);
+			return $this->displayAttendees($tpl);
 		}
+
 		echo 'layout not found';
 	}
 
 	/**
-	 * Creates the attendees output for the details view
+	 * Execute and display a template script.
 	 *
-	 * @since 2.0
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
-	function _displayAttendees($tpl = null)
+	protected function displayAttendees($tpl = null)
 	{
 		jimport('joomla.filesystem.file');
 
@@ -54,37 +57,41 @@ class RedeventViewDetails extends RViewSite
 		$registers = $model->getRegisters(true, true);
 
 		$text = "";
+
 		if (count($registers))
 		{
 			$fields = array();
+
 			foreach ($registers[0]->fields AS $f)
 			{
 				$fields[] = $f;
 			}
+
 			$text .= RedeventHelper::writecsvrow($fields);
 
 			foreach ((array) $registers as $r)
 			{
 				$data = array();
+
 				foreach ($r->answers as $val)
 				{
 					if (stristr($val, '~~~'))
 					{
 						$val = str_replace('~~~', '\n', $val);
 					}
+
 					$data[] = $val;
 				}
+
 				$text .= RedeventHelper::writecsvrow($data);
 			}
 		}
-		else
-		{
-			//$text = "no attendees";
-		}
+
 		if (!RedeventHelper::isValidDate($event->dates))
 		{
 			$event->dates = JText::_('COM_REDEVENT_OPEN_DATE');
 		}
+
 		$title = JFile::makeSafe(RedeventHelper::getSessionFullTitle($event) . '_' . $event->dates . '_' . $event->venue . '.csv');
 
 		$doc = JFactory::getDocument();
@@ -92,6 +99,7 @@ class RedeventViewDetails extends RViewSite
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename="' . $title . '"');
 		header('Pragma: no-cache');
-		echo $text;
+
+		JFactory::getApplication()->close();
 	}
 }
