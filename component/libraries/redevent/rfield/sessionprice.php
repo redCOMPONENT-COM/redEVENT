@@ -142,7 +142,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		if (count($options))
 		{
 			$option = reset($options);
-			$price = $option->value;
+			$price = $option->price;
 		}
 		else
 		{
@@ -166,7 +166,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		$properties['name'] = $this->getFormElementName();
 		$properties['id'] = $this->getFormElementId();
 
-		$properties['class'] = 'rfprice';
+		$properties['class'] = 'eventprice';
 
 		if (trim($this->getParam('class')))
 		{
