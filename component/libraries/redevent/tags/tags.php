@@ -1110,16 +1110,16 @@ class RedeventTags
 
 		$res = '';
 
-		foreach ($answers as $a)
+		foreach ($answers->getSingleSubmissions() as $a)
 		{
 			$res .= '<table class="formanswers">';
 
-			foreach ($a as $field)
+			foreach ($a->getFields() as $field)
 			{
-				$res .= '<tr>';
-				$res .= '<th align="left">' . $field->field . '</th>';
-				$res .= '<td>' . str_replace('~~~', '<br/>', $field->getDatabaseValue()) . '</td>';
-				$res .= '</tr>';
+				$res .= '<tr>' . "\n";
+				$res .= '<th align="left">' . $field->field . '</th>' . "\n";
+				$res .= '<td>' . str_replace('~~~', '<br/>', $field->getDatabaseValue()) . '</td>' . "\n";
+				$res .= '</tr>' . "\n";
 			}
 
 			$res .= '</table>';
@@ -1131,7 +1131,7 @@ class RedeventTags
 	/**
 	 * returns answers as array of row arrays
 	 *
-	 * @return array
+	 * @return RdfCoreFormSubmission
 	 */
 	private function _getAnswers()
 	{

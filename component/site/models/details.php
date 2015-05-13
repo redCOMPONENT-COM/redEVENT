@@ -572,7 +572,7 @@ class RedeventModelDetails extends JModelLegacy
 		$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
 
 		// convert urls
-		$htmlmsg = '<html><body>'.$tags->ReplaceTags($params->get('registration_notification_body')).'</body></html>';
+		$htmlmsg = '<html><body>' . $tags->ReplaceTags($params->get('registration_notification_body')) . '</body></html>';
 		$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
 		$mailer->MsgHTML($htmlmsg);
 		if (!$mailer->send())

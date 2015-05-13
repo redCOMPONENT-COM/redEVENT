@@ -24,10 +24,11 @@ class RedeventControllerVenue extends RControllerForm
 	 *
 	 * @return  void
 	 */
-	protected function postSaveHook($model, $validData = array())
+	protected function postSaveHook(&$model, $validData = array())
 	{
 		parent::postSaveHook($model, $validData);
 
+		// It's in fact better to use onContentAfterSave event....
 		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterVenueSaved', array($model->getState($this->context . '.id')));

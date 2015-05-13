@@ -102,35 +102,39 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$details = $model->getSessionDetails();
 
 		// Get prices associated to pricegroups
-		$prices = array();
 		$currency = null;
 
+		$options = array();
 		$extrafields = array();
+
 		$i = 1;
 
-		foreach ($pricegroups as $p)
+		if ($model->getPricegroups())
 		{
-			$regPricegroup = $model->getRegistrationPrice($p);
-
-			if (!$regPricegroup)
+			foreach ($pricegroups as $p)
 			{
-				$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
-				$this->setRedirect('index.php', $msg, 'error');
+				$regPricegroup = $model->getRegistrationPrice($p);
 
-				return false;
+				if (!$regPricegroup)
+				{
+					$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
+					$this->setRedirect('index.php', $msg, 'error');
+
+					return false;
+				}
+
+				$field = new RedeventRfieldSessionprice;
+				$field->setOptions(array($regPricegroup));
+				$field->setValue($p);
+				$field->setFormIndex($i);
+
+				$extrafields[$i++] = array($field);
+				$currency = $regPricegroup->currency;
 			}
 
-			$field = new RedeventRfieldSessionprice;
-			$field->setOptions(array($regPricegroup));
-			$field->setValue($p);
-			$field->setFormIndex($i);
-
-			$extrafields[$i++] = array($field);
-			$currency = $regPricegroup->currency;
+			$options['extrafields'] = $extrafields;
+			$options['currency'] = $currency;
 		}
-
-		// First, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('extrafields' => $extrafields, 'currency' => $currency);
 
 		if ($review)
 		{

@@ -19,17 +19,19 @@ class RedeventControllerSession extends RControllerForm
 	 * Function that allows child controller access to model data
 	 * after the data has been saved.
 	 *
-	 * @param   RModelAdmin  &$model     The data model object.
-	 * @param   array        $validData  The validated data.
+	 * @param   JModelLegacy  &$model     The data model object.
+	 * @param   array         $validData  The validated data.
 	 *
 	 * @return  void
+	 *
+	 * @since   11.1
 	 */
-	protected function postSaveHook(RModelAdmin &$model, $validData = array())
+	protected function postSaveHook(JModelLegacy &$model, $validData = array())
 	{
 		parent::postSaveHook($model, $validData);
 
 		$input = JFactory::getApplication()->input;
-		$sessionId = $model->getState($this->getName() . '.id');
+		$sessionId = $model->getState($this->context . '.id');
 
 		if (!$sessionId)
 		{
