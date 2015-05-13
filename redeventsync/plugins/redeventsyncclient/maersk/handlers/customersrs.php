@@ -56,7 +56,15 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		$query->where('email = ' . $db->quote($data['email']));
 
 		$db->setQuery($query);
-		$user_id = $db->loadResult();
+
+		if ($user_id = $db->loadResult())
+		{
+			$rmUser = RedmemberLib::getUserData($user_id);
+		}
+		else
+		{
+			$rmUser = false;
+		}
 
 		// Fields should match the actual fields db_name from maersk redmember
 		$data['id'] = $user_id;
@@ -102,7 +110,19 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 
 		if ($orgId)
 		{
-			$options['assign_organization'] = $orgId;
+			if ($rmUser)
+			{
+				$currentUserOrganizations = array_keys($rmUser->organizations);
+
+				if (!in_array($orgId, $currentUserOrganizations))
+				{
+					$options['assign_organization'] = $orgId;
+				}
+			}
+			else
+			{
+				$options['assign_organization'] = $orgId;
+			}
 		}
 
 		try
