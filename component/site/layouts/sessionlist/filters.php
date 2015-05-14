@@ -26,6 +26,8 @@ if (!$showFiltersFieldValue)
 	}
 }
 
+$filter_customs = $view->state->get('filter_customs');
+
 RHelperAsset::load('eventslist.js');
 ?>
 <?php if ($toggle != 1 || $showFiltersFieldValue || $view->params->get('display_limit_select')) : ?>
@@ -65,7 +67,7 @@ RHelperAsset::load('eventslist.js');
 							<?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
 							<?php echo $custom->renderFilter(
 								array('class' => "inputbox dynfilter"),
-								isset($view->filter_customs[$custom->id]) ? $view->filter_customs[$custom->id] : null
+								isset($filter_customs[$custom->id]) ? $filter_customs[$custom->id] : null
 							); ?>
 						</div>
 					<?php endforeach; ?>

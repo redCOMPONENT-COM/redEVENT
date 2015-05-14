@@ -55,9 +55,12 @@ class RedeventModelBaseeventlist extends RModel
 	/**
 	 * Constructor
 	 *
-	 * @since 0.9
+	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 *
+	 * @since   12.2
+	 * @throws  Exception
 	 */
-	public function __construct()
+	public function __construct($config = array())
 	{
 		parent::__construct();
 
@@ -321,13 +324,13 @@ class RedeventModelBaseeventlist extends RModel
 		$params 	= $app->getParams();
 
 		// First thing we need to do is to select only needed events
-		if ($app->input->getCmd('task') == 'archive')
+		if ($filter_published = $this->getState('filter_published'))
 		{
-			$query->where(' x.published = -1');
+			$query->where('x.published = ' . (int) $filter_published);
 		}
 		else
 		{
-			$query->where(' x.published = 1');
+			$query->where('x.published = 1');
 		}
 
 		$query->where('a.published <> 0');

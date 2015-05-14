@@ -85,7 +85,14 @@ class RedeventControllerFront extends JControllerLegacy
 
 		foreach ($post as $filter => $v)
 		{
-			$v = $filterInput->clean($v, 'cmd');
+			if (is_array($v))
+			{
+				$v = $filterInput->clean($v, 'array');
+			}
+			else
+			{
+				$v = $filterInput->clean($v, 'cmd');
+			}
 
 			switch ($filter)
 			{
@@ -114,37 +121,25 @@ class RedeventControllerFront extends JControllerLegacy
 					break;
 
 				case 'filtercustom':
-					$filt = array();
 
 					foreach ((array) $v as $n => $val)
 					{
 						if (is_array($val))
 						{
-							$r = array();
-
-							foreach ($val as $sub)
+							foreach ($val as $k => $sub)
 							{
 								if ($sub)
 								{
-									$r[] = $sub;
+									$myuri->setVar("filtercustom[$n][$k]", $sub);
+									$vars++;
 								}
 							}
-
-							$myuri->setVar("filtercustom[$n]", $r);
 						}
-						else
+						elseif ($val)
 						{
-							if ($val)
-							{
-								$filt[$n] = $val;
-							}
+							$myuri->setVar("filtercustom[$n]", $val);
+							$vars++;
 						}
-					}
-
-					if (count($filt))
-					{
-						$myuri->setVar($filter, $filt);
-						$vars++;
 					}
 
 					break;
@@ -155,6 +150,7 @@ class RedeventControllerFront extends JControllerLegacy
 		{
 			switch ($this->input->get('view', ''))
 			{
+				case 'archive':
 				case 'categoryevents':
 				case 'day':
 				case 'featured':
