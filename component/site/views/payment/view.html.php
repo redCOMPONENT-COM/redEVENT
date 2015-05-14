@@ -1,42 +1,28 @@
 <?php
 /**
- * @package    Joomla
- * @subpackage redEVENT
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license    GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 /**
- * HTML payment View class of the redevent component
+ * HTML payment View class of the redEVENT component
  *
- * @package     Joomla
- * @subpackage  redevent
- * @since       2.0
+ * @package  Redevent.Site
+ * @since    2.0
  */
 class RedeventViewPayment extends RViewSite
 {
 	/**
-	 * Creates the output for the details view
+	 * Execute and display a template script.
 	 *
-	 * @since 0.9
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$mainframe = JFactory::getApplication();
 		$model = $this->getModel();
@@ -58,23 +44,27 @@ class RedeventViewPayment extends RViewSite
 		$tags->setXref($row->xref);
 		$tags->setSubmitkey($submit_key);
 
-		//get menu information
+		// Get menu information
 		$menu = $mainframe->getMenu();
 		$item = $menu->getActive();
-		if (!$item) $item = $menu->getDefault();
+
+		if (!$item)
+		{
+			$item = $menu->getDefault();
+		}
 
 		$params = $mainframe->getParams('com_redevent');
 
-		//Check if the id exists
+		// Check if the id exists
 		if ($row->eventid == 0)
 		{
 			return JError::raiseError(404, JText::sprintf('COM_REDEVENT_Event_d_not_found', $row->eventid));
 		}
 
-		//add css file
+		// Add css file
 		if (!$params->get('custom_css'))
 		{
-			$document->addStyleSheet('media/com_redevent/css/redevent.css');
+			RHelperAsset::load('redevent.css');
 		}
 		else
 		{
@@ -83,7 +73,7 @@ class RedeventViewPayment extends RViewSite
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		//Print
+		// Print
 		$pop = JRequest::getBool('pop');
 
 		$params->def('page_title', JText::_('COM_REDEVENT_DETAILS'));
@@ -95,10 +85,11 @@ class RedeventViewPayment extends RViewSite
 
 		$print_link = JRoute::_(htmlspecialchars($uri->toString()) . '&pop=1&tmpl=component');
 
-		//set page title and meta stuff
+		// Set page title and meta stuff
 		$document->setTitle($row->title . ' - ' . JText::_('COM_REDEVENT_Payment'));
 
 		$text = '';
+
 		switch ($state)
 		{
 			case 'processing':
@@ -160,10 +151,12 @@ class RedeventViewPayment extends RViewSite
 				. ($details->session_title ? ' / ' . $details->session_title : '');
 
 			$cats = array();
+
 			foreach ($details->categories as $c)
 			{
 				$cats[] = $c->name;
 			}
+
 			$options['category'] = implode(', ', $cats);
 
 			RdfHelperAnalytics::recordTrans($submit_key, $options);

@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Library
  * @since    3.0
  */
-abstract class RedeventViewSessionlist extends RViewSite
+abstract class RedeventViewSessionlist extends RedeventViewFront
 {
 	/**
 	 * Execute and display a template script.
@@ -38,44 +38,16 @@ abstract class RedeventViewSessionlist extends RViewSite
 	 */
 	protected function prepareView()
 	{
+		parent::prepareView();
+
 		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
-		$config = RedeventHelper::config();
 		$params = $app->getParams();
-
-		// Add css file
-		if (!$params->get('custom_css'))
-		{
-			RHelperAsset::load('redevent.css');
-		}
-		else
-		{
-			$document->addStyleSheet($params->get('custom_css'));
-		}
-
-		// Get variables
-		$task = $app->input->getWord('task');
-		$pop = $app->input->getBool('pop');
 
 		// Get data from model
 		$rows = $this->get('Data');
 		$pagination = $this->get('Pagination');
 		$customs = $this->get('ListCustomFields');
 		$customsfilters = $this->get('CustomFilters');
-
-		// Title
-		$pagetitle = $this->getTitle();
-		$this->document->setTitle($pagetitle);
-
-		if ($pop)
-		{
-			// If printpopup set true
-			$params->set('popup', 1);
-			$this->setLayout('print');
-		}
-
-		$params->def('print', !$app->getCfg('hidePrint'));
-		$print_link = JRoute::_('index.php?option=com_redevent&view=' . $this->getName() . '&tmpl=component&pop=1');
 
 		// Create select lists
 		$this->buildSortLists();
@@ -86,13 +58,7 @@ abstract class RedeventViewSessionlist extends RViewSite
 		$this->assignRef('rows', $rows);
 		$this->assignRef('customs', $customs);
 		$this->assignRef('customsfilters', $customsfilters);
-		$this->assignRef('task', $task);
-		$this->assignRef('print_link', $print_link);
-		$this->assignRef('params', $params);
 		$this->assignRef('pageNav', $pagination);
-		$this->assignRef('pagetitle', $pagetitle);
-		$this->assignRef('config', $config);
-		$this->assign('state', $this->get('state'));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);
@@ -150,27 +116,6 @@ abstract class RedeventViewSessionlist extends RViewSite
 	protected function getFeedLink()
 	{
 		return 'index.php?option=com_redevent&format=feed&view=' . $this->getName();
-	}
-
-	/**
-	 * Add feed links
-	 *
-	 * @return void
-	 */
-	protected function addFeedLinks()
-	{
-		if (!$link = $this->getFeedLink())
-		{
-			return;
-		}
-
-		$document = JFactory::getDocument();
-
-		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-		$document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
-
-		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-		$document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 	}
 
 	/**

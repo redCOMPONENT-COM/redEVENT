@@ -50,7 +50,6 @@ class RedeventViewEditevent extends RViewSite
 		parent::display($tpl);
 	}
 
-
 	/**
 	 * Get the view title.
 	 *

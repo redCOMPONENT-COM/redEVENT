@@ -1,108 +1,50 @@
 <?php
 /**
- * @version    1.0 $Id$
- * @package    Joomla
- * @subpackage redEVENT
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license    GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 /**
- * HTML View class for the Day View
+ * HTML events list week View class of the redEVENT component
  *
- * @package    Joomla
- * @subpackage Redevent
- * @since      2.0
+ * @package  Redevent.Site
+ * @since    2.0
  */
-class RedeventViewWeek extends RViewSite
+class RedeventViewWeek extends RedeventViewSessionlist
 {
 	/**
-	 * Creates the week View
+	 * Execute and display a template script.
 	 *
-	 * @since 2.0
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
+		$this->prepareView();
+
 		$application = JFactory::getApplication();
-
-		//initialize variables
-		$document = JFactory::getDocument();
-		$settings = RedeventHelper::config();
-		$menu = $application->getMenu();
-		$item = $menu->getActive();
 		$params = $application->getParams();
-		$uri = JFactory::getURI();
 
-		//add css file
+		// Add css file
 		if (!$params->get('custom_css'))
 		{
-			$document->addStyleSheet('media/com_redevent/css/redevent.css');
-			$document->addStyleSheet($this->baseurl . '/components/com_redevent/assets/css/week.css');
-		}
-		else
-		{
-			$document->addStyleSheet($params->get('custom_css'));
+			RHelperAsset::load('site/week.css');
 		}
 
-		// add js
-		JHTML::_('behavior.framework');
-
-		$pop = JRequest::getBool('pop');
+		// Pathway
 		$pathway = $application->getPathWay();
-
-		//get data from model
-		$rows = $this->get('Data');
-		$customs = $this->get('ListCustomFields');
-		$week = $this->get('Day');
-
-		//params
-		if ($item)
-		{
-			$title = $item->title;
-		}
-		else
-		{
-			$title = JText::sprintf('COM_REDEVENT_WEEK_HEADER', $this->get('weeknumber'), $this->get('year'));
-		}
-		$params->def('page_title', $title);
-
-		//pathway
 		$pathway->addItem(JText::sprintf('COM_REDEVENT_WEEK_HEADER', $this->get('weeknumber'), $this->get('year')));
 
-		//Set Page title
-		if ($item && !$item->title)
-		{
-			$document->setTitle($params->get('page_title'));
-			$document->setMetadata('keywords', $params->get('page_title'));
-		}
-
-		$this->assignRef('data', $rows);
-		$this->assignRef('title', $title);
-		$this->assignRef('params', $params);
 		$this->assign('week', $this->get('week'));
 		$this->assign('weeknumber', $this->get('weeknumber'));
 		$this->assign('year', $this->get('year'));
 		$this->assign('weekdays', $this->get('weekdays'));
 		$this->assign('next', $this->get('nextweek'));
 		$this->assign('previous', $this->get('previousweek'));
-		$this->customs = $customs;
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		array_unique($cols);
@@ -117,16 +59,46 @@ class RedeventViewWeek extends RViewSite
 		parent::display($tpl);
 	}
 
+	/**
+	 * Get the view title.
+	 *
+	 * @return  string  The view title.
+	 */
+	public function getTitle()
+	{
+		$app = JFactory::getApplication();
+		$menuItem = $app->getMenu()->getActive();
+		$params = $app->getParams();
+
+		if ($menuItem)
+		{
+			$title = $menuItem->title;
+		}
+		else
+		{
+			$title = JText::sprintf('COM_REDEVENT_WEEK_HEADER', $this->get('weeknumber'), $this->get('year'));
+		}
+
+		$params->def('page_title', $title);
+
+		return $params->get('page_title');
+	}
+
+	/**
+	 * Sort sessions by dau
+	 *
+	 * @return array
+	 */
 	public function sortByDay()
 	{
-		if (!$this->data)
+		if (!$this->rows)
 		{
 			return false;
 		}
 
 		$weekdays = $this->get('weekdays');
 
-		foreach ($this->data as $ev)
+		foreach ($this->rows as $ev)
 		{
 			$days[array_search($ev->dates, $weekdays)][] = $ev;
 		}
@@ -137,7 +109,7 @@ class RedeventViewWeek extends RViewSite
 	/**
 	 * get day name from number
 	 *
-	 * @param int $number
+	 * @param   int  $number  day number
 	 *
 	 * @return string
 	 */
@@ -145,6 +117,7 @@ class RedeventViewWeek extends RViewSite
 	{
 		$days = $this->get('WeekDays');
 		$day = $days[$number];
+
 		return date('l, j F Y', strtotime($day));
 	}
 }

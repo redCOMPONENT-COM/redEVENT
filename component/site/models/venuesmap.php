@@ -39,7 +39,7 @@ class RedeventModelVenuesmap extends RModel
 	 *
 	 * @var array
 	 */
-	protected $_data = null;
+	protected $data = null;
 
 	/**
 	 * Constructor
@@ -53,7 +53,10 @@ class RedeventModelVenuesmap extends RModel
 		$app = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params 	= $app->getParams('com_redevent');
+		$params = $app->getParams('com_redevent');
+
+		$this->setState('vcat',      $app->input->get('filter_venuecategory', $params->def('vcat', 0), 'string'));
+		$this->setState('cat', $app->input->get('filter_category', $params->def('cat', 0), 'string'));
 
 		$this->setState('filter.language', $app->getLanguageFilter());
 	}
@@ -67,20 +70,20 @@ class RedeventModelVenuesmap extends RModel
 	public function getData()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			$query = $this->_buildQuery();
 
 			// Get a reference to the global cache object.
 			$cache = JFactory::getCache('redevent');
 
-			$this->_data = $cache->call(array($this, '_getResultList'), $query);
+			$this->data = $cache->call(array($this, '_getResultList'), $query);
 
 			$k = 0;
 
-			for ($i = 0; $i < count($this->_data); $i++)
+			for ($i = 0; $i < count($this->data); $i++)
 			{
-				$venue =& $this->_data[$i];
+				$venue =& $this->data[$i];
 
 				// Create image information
 				$venue->limage = RedeventImage::flyercreator($venue->locimage);
@@ -121,7 +124,7 @@ class RedeventModelVenuesmap extends RModel
 			}
 		}
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**
@@ -133,8 +136,8 @@ class RedeventModelVenuesmap extends RModel
 	protected function _buildQuery()
 	{
 		$app = JFactory::getApplication();
-		$vcat = $app->getUserState('com_redevent.venuesmap.vcat');
-		$cat = $app->getUserState('com_redevent.venuesmap.cat');
+		$vcat = $this->getState('vcat');
+		$cat = $this->getState('cat');
 		$customs = $app->getUserState('com_redevent.venuesmap.filter_customs');
 
 		$params = $app->getParams();

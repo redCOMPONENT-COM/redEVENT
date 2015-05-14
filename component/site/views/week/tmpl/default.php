@@ -26,7 +26,7 @@ $days = $this->sortByDay();
 ?>
 <div id="redevent" class="weekview">
 	<h1 class="componentheading">
-		<?php echo $this->title; ?>
+		<?php echo $this->params->get('page_title'); ?>
 	</h1>
 	<div class="week-details"><?php echo date('l, j F Y',strtotime(reset($this->weekdays))).' - '.date('l, j F Y',strtotime(end($this->weekdays))); ?></div>
 	<table class="week-nav">

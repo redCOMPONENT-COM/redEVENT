@@ -22,20 +22,20 @@
 
 // Call the init function when the page has been loaded
 var mymap = {
-		
+
 	options: {
 		zoom: 16,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	},
-	
-	venue : null,
-	
-	map : null,
-	
-	init : function(venue, elementid) {
+
+	venue: null,
+
+	map: null,
+
+	init: function (venue, elementid) {
 		this.venue = venue;
 		this.map = new google.maps.Map(document.getElementById(elementid),
-			    this.options);
+			this.options);
 		if (this.venue.latitude) {
 			this.setmarker();
 		}
@@ -43,19 +43,19 @@ var mymap = {
 			this.codeadress();
 		}
 	},
-	
-	initajax : function(venueid, elementid) {
-		var url = basepath + 'index.php?option=com_redevent&view=venue&format=raw&id='+venueid;
+
+	initajax: function (venueid, elementid) {
+		var url = basepath + 'index.php?option=com_redevent&view=venue&format=raw&id=' + venueid;
 		var theAjax = new Request({
 			url: url,
 			method: 'post',
-			postBody : ''
-			});
-		
-		theAjax.addEvent('onSuccess', function(response) {
+			postBody: ''
+		});
+
+		theAjax.addEvent('onSuccess', function (response) {
 			this.venue = eval('(' + response + ')');
 			this.map = new google.maps.Map(document.getElementById(elementid),
-				    this.options);
+				this.options);
 			if (this.venue.latitude != "null") {
 				this.setmarker();
 			}
@@ -65,47 +65,49 @@ var mymap = {
 		}.bind(this));
 		theAjax.send();
 	},
-	
-	codeadress : function() {
+
+	codeadress: function () {
 		var geocoder = new google.maps.Geocoder();
-	    geocoder.geocode( { 'address': this.venue.address}, function(results, status) {
-	    	if (results[0]) {
-		    	this.venue.latitude = results[0].geometry.location.lat();
-		    	this.venue.longitude = results[0].geometry.location.lng();
-		    	this.setmarker();
-		    }
-	    }.bind(this));
+		geocoder.geocode({'address': this.venue.address}, function (results, status) {
+			if (results[0]) {
+				this.venue.latitude = results[0].geometry.location.lat();
+				this.venue.longitude = results[0].geometry.location.lng();
+				this.setmarker();
+			}
+		}.bind(this));
 	},
-	
-	setmarker : function() {
+
+	setmarker: function () {
 		var latlng = new google.maps.LatLng(this.venue.latitude, this.venue.longitude);
 		this.map.setCenter(latlng);
-        var marker = new google.maps.Marker({
-            map: this.map, 
-            position: latlng
-        });
-        
-        // set content of infowindow
-        var addressparts = this.venue.address.split(',');
-        var div = new Element('div');
-        var txt = '<strong>'+this.venue.name+'</strong><br/>';
-        for (var i = 0; i < addressparts.length; i++) {
-        	txt += addressparts[i]+'<br/>';
-        }
-        div.set('html', txt);
-        if (this.venue.address) {
-        	new Element('a', {href: 'http://maps.google.com/maps?daddr='+encodeURI(this.venue.address)+'@'+this.venue.latitude+','+this.venue.longitude, target: '_blank'}).set('html', Joomla.JText._('COM_REDEVENT_GET_DIRECTIONS')).injectInside(div);
-        }
-        var infowindow = new google.maps.InfoWindow();
-        infowindow.setContent(div);
-    	google.maps.event.addListener(marker, 'click', function() {
-    		infowindow.open(this.map, marker);
-    	}.bind(this));
-    	// only open on map display if map is big enough
-        var size = $(this.map.getDiv()).getSize();
-        if (size.x >= 350 && size.y >= 350) {
-        	infowindow.open(this.map, marker);
-        }
+		var marker = new google.maps.Marker({
+			map: this.map,
+			position: latlng
+		});
+
+		// set content of infowindow
+		var addressparts = this.venue.address.split(',');
+		var div = new Element('div');
+		var txt = '<strong>' + this.venue.name + '</strong><br/>';
+		for (var i = 0; i < addressparts.length; i++) {
+			txt += addressparts[i] + '<br/>';
+		}
+		div.set('html', txt);
+		if (this.venue.address) {
+			new Element('a', {
+				href: 'http://maps.google.com/maps?daddr=' + encodeURI(this.venue.address) + '@' + this.venue.latitude + ',' + this.venue.longitude,
+				target: '_blank'
+			}).set('html', Joomla.JText._('COM_REDEVENT_GET_DIRECTIONS')).injectInside(div);
+		}
+		var infowindow = new google.maps.InfoWindow();
+		infowindow.setContent(div);
+		google.maps.event.addListener(marker, 'click', function () {
+			infowindow.open(this.map, marker);
+		}.bind(this));
+		// only open on map display if map is big enough
+		var size = $(this.map.getDiv()).getSize();
+		if (size.x >= 350 && size.y >= 350) {
+			infowindow.open(this.map, marker);
+		}
 	}
 };
-

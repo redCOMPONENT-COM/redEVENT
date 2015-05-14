@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 var venueurl = '<?php echo JRoute::_($this->ajaxurl, false); ?>';
 var countries = new Array;
 <?php foreach ((array) $this->countries AS $row) : ?>
-<?php 
+<?php
 $obj = new stdclass();
 $obj->name = $row->name;
 $obj->lat  = $row->latitude;
@@ -45,7 +45,7 @@ countries.push(<?php echo json_encode($obj); ?>);
 
 var venues = new Array;
 <?php foreach ($this->rows AS $row) : ?>
-<?php 
+<?php
 $obj = new stdclass();
 $obj->id = $row->id;
 $obj->name = $row->venue;
@@ -55,27 +55,6 @@ $obj->lng  = $row->longitude;
 venues.push(<?php echo json_encode($obj); ?>);
 <?php endforeach; ?>
 
-window.addEvent('domready', function() {
-	if ($('vcat')) {
-		$('vcat').addEvent('change', function() {
-		  $('filter').value = 1;
-		  $('filterform').submit();
-		});
-	}
-  if ($('cat')) {
-	  $('cat').addEvent('change', function() {
-	    $('filter').value = 1;
-	    $('filterform').submit();
-	  });
-  }
-  
-  $$('.customfilter').each(function(element){
-    element.addEvent('change', function(){
-      $('filter').value = 1;
-      $('filterform').submit();
-	  });
-	});
-});
 </script>
 
 <?php if ($this->params->get('showintrotext')) : ?>
