@@ -26,10 +26,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="el_eventlist">
 <p class="buttons">
 	<?php
-		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
-		endif;
-
 		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
@@ -67,10 +63,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<?php if ($this->params->get('show_filter')) : ?>
 		  <tr>
 		    <td>
-			    <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER');  ?></label>
+			    <label for="filter"><?php echo JText::_('COM_REDEVENT_FILTER');  ?></label>
 			  </td>
 			  <td>
-				<?php echo  $this->lists['filter_types']; ?>
 	      <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 	      <button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
 	      <button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
@@ -87,7 +82,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         </td>
       </tr>
     	<?php endif; ?>
-	    <?php if ($this->params->get('show_filter_state') && (!$this->params->get('show_filter_country') || $this->filter_country)): ?>
+	    <?php if ($this->params->get('show_filter_state') && (!$this->params->get('show_filter_country') || $this->state->get('filter_country'))): ?>
       <tr>
         <td>
           <?php echo '<label for="filter_state">'.JText::_('COM_REDEVENT_State').'</label>&nbsp;';?>
@@ -97,8 +92,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         </td>
       </tr>
   		<?php endif; ?>
-	    <?php if ($this->params->get('show_filter_city') && (!$this->params->get('show_filter_country') || $this->filter_country)
-	    																								 && (!$this->params->get('show_filter_state')   || $this->filter_state)): ?>
+	    <?php if ($this->params->get('show_filter_city') && (!$this->params->get('show_filter_country') || $this->state->get('filter_country'))
+	    																								 && (!$this->params->get('show_filter_state')   || $this->state->get('filter_state'))): ?>
       <tr>
         <td>
           <?php echo '<label for="filter_city">'.JText::_('COM_REDEVENT_City').'</label>&nbsp;';?>
@@ -124,17 +119,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	        <?php echo '<label for="filter_venue">'.JText::_('COM_REDEVENT_Venue').'</label>&nbsp;'; ?>
 	      </td>
 	      <td>
-	        <?php echo $this->lists['venues']; ?>
+	        <?php echo $this->lists['venuefilter']; ?>
 	      </td>
 	    </tr>
     	<?php endif; ?>
-	    <?php if (isset($this->lists['categories']) && $this->params->get('show_filter_category')): ?>
+	    <?php if (isset($this->lists['categoryfilter']) && $this->params->get('show_filter_category')): ?>
 			<tr>
         <td>
 	        <?php echo '<label for="filter_category">'.JText::_('COM_REDEVENT_Category').'</label>&nbsp;'; ?>
 	      </td>
 	      <td>
-	        <?php echo $this->lists['categories']; ?>
+	        <?php echo $this->lists['categoryfilter']; ?>
 	      </td>
 	    </tr>
     	<?php endif; ?>
@@ -144,9 +139,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php echo '<label for="filter_date">'.JText::_('COM_REDEVENT_Date').'</label>&nbsp;'; ?>
         </td>
         <td>
-          <?php echo RedeventHelper::calendar($this->filter_date_from, 'filter_date_from', 'filter_date_from', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
+          <?php echo RedeventHelper::calendar($this->state->get('filter_date_from'), 'filter_date_from', 'filter_date_from', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
            <?php echo JText::_('COM_REDEVENT_DATE_TO'); ?>
-          <?php echo RedeventHelper::calendar($this->filter_date_to, 'filter_date_to', 'filter_date_to', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
+          <?php echo RedeventHelper::calendar($this->state->get('filter_date_to'), 'filter_date_to', 'filter_date_to', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
         </td>
       </tr>
     	<?php endif; ?>
@@ -192,8 +187,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php echo $this->loadTemplate('table'); ?>
 <?php endif; ?>
 <p>
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->orderDir; ?>" />
 </p>
 </form>
 

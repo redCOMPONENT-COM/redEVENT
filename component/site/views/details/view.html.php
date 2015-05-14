@@ -107,7 +107,8 @@ class RedeventViewDetails extends JViewLegacy
 			$params->set('popup', 1);
 		}
 
-		$print_link = JRoute::_('index.php?option=com_redevent&view=details&id=' . $row->slug . '&xref=' . JRequest::getInt('xref') . '&pop=1&tmpl=component');
+		$print_link = JRoute::_('index.php?option=com_redevent&view=details&id=' . $row->slug . '&xref=' . JRequest::getInt('xref')
+			. '&pop=1&tmpl=component');
 
 		// Pathway
 		$pathway = $mainframe->getPathWay();
@@ -366,7 +367,7 @@ class RedeventViewDetails extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	function showRoles()
+	public function showRoles()
 	{
 		if (file_exists(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redmember') && JComponentHelper::isEnabled('com_redmember'))
 		{

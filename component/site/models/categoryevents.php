@@ -39,7 +39,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	 *
 	 * @var array
 	 */
-	protected $_category = null;
+	protected $category = null;
 
 	/**
 	 * Constructor
@@ -120,7 +120,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	 */
 	public function getItem()
 	{
-		if (!$this->_category)
+		if (!$this->category)
 		{
 			$user		= JFactory::getUser();
 			$gids = $user->getAuthorisedViewLevels();
@@ -136,18 +136,18 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 			$query->where('access IN (' . $gids . ')');
 
 			$db->setQuery($query);
-			$this->_category = $db->loadObject();
+			$this->category = $db->loadObject();
 
-			if (!$this->_category)
+			if (!$this->category)
 			{
 				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 			}
 
 			$helper = new RedeventHelperAttachment;
-			$this->_category->attachments = $helper->getAttachments('category' . $this->_category->id, $user->getAuthorisedViewLevels());
+			$this->category->attachments = $helper->getAttachments('category' . $this->category->id, $user->getAuthorisedViewLevels());
 		}
 
-		return $this->_category;
+		return $this->category;
 	}
 
 	/**

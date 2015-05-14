@@ -8,8 +8,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 /**
  * CSV Details View class of the redEVENT component
  *
@@ -18,7 +16,7 @@ jimport('joomla.application.component.view');
  */
 class RedeventViewDetails extends RViewSite
 {
-	var $_eventlinks = null;
+	protected $eventlinks = null;
 
 	/**
 	 * Execute and display a template script.
@@ -27,15 +25,14 @@ class RedeventViewDetails extends RViewSite
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		$mainframe = JFactory::getApplication();
 		$document = JFactory::getDocument();
 
 		// Load event details
 		$row = $this->get('Details');
 		$xreflinks = $this->get('XrefLinks');
-		$this->_eventlinks = $xreflinks;
+		$this->eventlinks = $xreflinks;
 
 		$document->setTitle($this->escape(RedeventHelper::getSessionFullTitle($row)));
 		$document->setDescription('');
@@ -49,7 +46,7 @@ class RedeventViewDetails extends RViewSite
 		$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug));
 
 		// Load individual item creator class
-		$item = new JFeedItem();
+		$item = new JFeedItem;
 		$item->title = RedeventHelper::getSessionFullTitle($row);
 		$item->link = JRoute::_($link);
 		$item->description = $contents;

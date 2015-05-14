@@ -38,7 +38,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 <?php endif; ?>
 
 <!-- use form for filters and pagination -->
-<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="sessionsFilter">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
 <!-- filters  -->
 	<?php echo RLayoutHelper::render(

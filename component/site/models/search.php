@@ -55,30 +55,6 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		// Get the paramaters of the active menu item
 		$params    = $mainframe->getParams('com_redevent');
 
-		$filter_continent = $mainframe->getUserStateFromRequest('com_redevent.search.filter_continent', 'filter_continent', null, 'string');
-		$filter_country   = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country',   'filter_country', null, 'string');
-		$filter_state     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_state',     'filter_state', null, 'string');
-		$filter_city      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city',      'filter_city', null, 'string');
-		$filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue',     'filter_venue', null, 'int');
-
-		$filter_date_from     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date_from',          'filter_date_from',          '', 'string');
-		$filter_date_to       = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date_to',          'filter_date_to',          '', 'string');
-		$filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
-		$filter_category      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      $params->get('category', 0), 'int');
-		$filter_event         = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event',         'filter_event',         0, 'int');
-
-		// Saving state
-		$this->setState('filter_continent',     $filter_continent);
-		$this->setState('filter_country',       $filter_country);
-		$this->setState('filter_state',         $filter_state);
-		$this->setState('filter_city',          $filter_city);
-		$this->setState('filter_venue',         $filter_venue);
-		$this->setState('filter_date_from',     $filter_date_from);
-		$this->setState('filter_date_to',       $filter_date_to);
-		$this->setState('filter_venuecategory', $filter_venuecategory);
-		$this->setState('filter_category',      $filter_category);
-		$this->setState('filter_event',         $filter_event);
-
 		if ($params->exists('results_type'))
 		{
 			$results_type = $params->get('results_type', $params->get('default_search_results_type', 1));
@@ -114,7 +90,6 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		if (empty($this->data))
 		{
 			$query = $this->_buildQuery();
-
 			$pagination = $this->getPagination();
 			$this->data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			$this->data = $this->_categories($this->data);
@@ -149,31 +124,29 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	{
 		$app = JFactory::getApplication();
 
-		$user		= JFactory::getUser();
-		$gid		= max($user->getAuthorisedViewLevels());
-
 		// Get the paramaters of the active menu item
-		$params 	= $app->getParams();
+		$params = $app->getParams();
 
 		$query->where('x.published = 1');
 		$query->where('a.published <> 0');
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
-			$query->where('(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR c.language IS NULL)');
+			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR c.language IS NULL)');
 		}
 
 		$filter = $this->getFilter();
-		if ( $params->get('requires_filter', 0) && (!$filter || empty($filter)) )
+
+		if ($params->get('requires_filter', 0) && (!$filter || empty($filter)))
 		{
-			$filter = array('0'); // wil force query to return false...
+			// Will force query to return false...
+			$filter = array('0');
 		}
 
-		foreach ($filter as $f)
-		{
-			$query->where($filter);
-		}
+		$query->where($filter);
 
 		return $query;
 	}
@@ -213,32 +186,26 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 
 			if ($filter)
 			{
-				// clean filter variables
-				$filter 		= JString::strtolower($filter);
-				$filter			= $this->_db->Quote( '%'.$this->_db->escape( $filter, true ).'%', false );
-				$filter_type 	= JString::strtolower($filter_type);
+				// Clean filter variables
+				$filter = JString::strtolower($filter);
+				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
 
-				switch ($filter_type)
-				{
-					case 'venue' :
-						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
-						break;
+				$filterOr = array();
+				$filterOr[] = 'LOWER(l.venue) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(l.city) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(c.name) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(a.title) LIKE ' . $filter;
+				$filterOr[] = 'LOWER(x.title) LIKE ' . $filter;
 
-					case 'city' :
-						$where[] = ' LOWER( l.city ) LIKE '.$filter;
-						break;
-
-					case 'title' :
-					default:
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
-						break;
-				}
+				$where[] = implode(' OR ', $filterOr);
 			}
+
 			// filter date
 			if (strtotime($filter_date_from)) {
 				$date = $this->_db->Quote(strftime('%F', strtotime($filter_date_from)));
 				$where[] = " CASE WHEN (x.enddates) THEN $date <= x.enddates ELSE $date <= x.dates END ";
 			}
+
 			if (strtotime($filter_date_to)) {
 				$date = $this->_db->Quote(strftime('%F', strtotime($filter_date_to)));
 				$where[] = " $date >= x.dates ";
@@ -248,17 +215,21 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 			{
 				$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);
 			}
-			else if (!is_null($filter_city) && $filter_city != "0") {
+			elseif ($filter_city)
+			{
 				$where[] = ' l.city = ' . $this->_db->Quote($filter_city);
 			}
-			else if (!is_null($filter_state) && $filter_state != "0") {
+			elseif ($filter_state)
+			{
 				$where[] = ' l.state = ' . $this->_db->Quote($filter_state);
 			}
 			// filter country
-			else if (!is_null($filter_country) && $filter_country != "0") {
+			elseif ($filter_country)
+			{
 				$where[] = ' l.country = ' . $this->_db->Quote($filter_country);
 			}
-			else if (!is_null($filter_continent) && $filter_continent != "0") {
+			elseif ($filter_continent)
+			{
 				$where[] = ' c.continent = ' . $this->_db->Quote($filter_continent);
 			}
 
@@ -296,104 +267,9 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 
 			$this->_filter = $where;
 		}
+
 		return $this->_filter;
 	}
-
-	public function getCountryOptions()
-	{
-		$mainframe = JFactory::getApplication();
-		$filter_continent = $mainframe->getUserState('com_redevent.search.filter_continent');
-
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('DISTINCT c.iso2 as value, c.name as text');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->join('INNER', '#__redevent_countries as c ON c.iso2 = v.country');
-		$query->order('c.name');
-
-		if ($filter_continent) {
-			$query->where('c.continent = ' . $this->_db->Quote($filter_continent));
-		}
-
-		if ($this->getState('filter.language'))
-		{
-			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
-		}
-
-		$db->setQuery($query);
-
-		return $db->loadObjectList();
-	}
-
-	public function getStateOptions()
-	{
-		$mainframe = JFactory::getApplication();
-		$filter_country = $mainframe->getUserState('com_redevent.search.filter_country');
-
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('DISTINCT v.state as value, v.state as text');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->join('LEFT', '#__redevent_countries as c ON c.iso2 = v.country');
-		$query->order('v.state');
-
-		if ($this->getState('filter.language'))
-		{
-			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
-		}
-
-		if (!empty($filter_country))
-		{
-			$query->where('v.country = ' . $this->_db->Quote($filter_country));
-		}
-
-		$db->setQuery($query);
-
-		return $db->loadObjectList();
-	}
-
-	public function getCityOptions()
-	{
-		$mainframe = JFactory::getApplication();
-		$filter_country = $mainframe->getUserState('com_redevent.search.filter_country');
-		$state =   $mainframe->getUserState('com_redevent.search.filter_state');
-
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('DISTINCT v.city as value, v.city as text');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->join('LEFT', '#__redevent_countries as c ON c.iso2 = v.country');
-		$query->order('v.city');
-
-		if (!empty($filter_country))
-		{
-			$query->where('v.country = ' . $this->_db->Quote($filter_country));
-		}
-
-		if (!empty($state))
-		{
-			$query->where('v.state = ' . $this->_db->Quote($state));
-		}
-
-		if ($this->getState('filter.language'))
-		{
-			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
-		}
-
-		$db->setQuery($query);
-
-		return $db->loadObjectList();
-	}
-
 
 	/**
 	 * get list of events as options, according to category, venue, and venue category criteria
@@ -403,10 +279,9 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	{
 		$app = JFactory::getApplication();
 		$params = $app->getParams();
-		$filter_venuecategory = JRequest::getVar('filter_venuecategory');
-		$filter_category = JRequest::getVar('filter_category', $params->get('category', 0));
-		$filter_venue = JRequest::getVar('filter_venue');
-		$task 		= JRequest::getWord('task');
+		$filter_venuecategory = $this->state->get('filter_venuecategory');
+		$filter_category = $this->state->get('filter_category', $params->get('category', 0));
+		$filter_venue = $this->state->get('filter_venue');
 
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -420,25 +295,18 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$query->join('INNER', '#__redevent_categories AS c ON c.id = xcat.category_id');
 
-		// First thing we need to do is to select only needed events
-		if ($task == 'archive')
-		{
-			$query->where(' x.published = -1');
-		}
-		else
-		{
-			$query->where(' x.published = 1');
-		}
+		$query->where(' x.published = 1');
 
 		$where = array();
-		// filter category
+
+		// Filter category
 		if ($filter_category)
 		{
 			$category = $this->getCategory((int) $filter_category);
 			$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 		}
 
-		// filter venue category
+		// Filter venue category
 		if ($filter_venuecategory)
 		{
 			$category = $this->getVenueCategory((int) $filter_venuecategory);
@@ -457,6 +325,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 				$query->where($w);
 			}
 		}
+
 		$query->group('a.id');
 
 		$this->_db->setQuery($query);

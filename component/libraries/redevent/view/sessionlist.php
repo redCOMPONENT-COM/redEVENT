@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Library
  * @since    3.0
  */
-class RedeventViewSessionlist extends RViewSite
+abstract class RedeventViewSessionlist extends RViewSite
 {
 	/**
 	 * Execute and display a template script.
@@ -25,6 +25,18 @@ class RedeventViewSessionlist extends RViewSite
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
 	public function display($tpl = null)
+	{
+		$this->prepareView();
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * Prepare the view
+	 *
+	 * @return void
+	 */
+	protected function prepareView()
 	{
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
@@ -42,8 +54,8 @@ class RedeventViewSessionlist extends RViewSite
 		}
 
 		// Get variables
-		$task = JRequest::getWord('task');
-		$pop = JRequest::getBool('pop');
+		$task = $app->input->getWord('task');
+		$pop = $app->input->getBool('pop');
 
 		// Get data from model
 		$rows = $this->get('Data');
@@ -62,6 +74,7 @@ class RedeventViewSessionlist extends RViewSite
 			$this->setLayout('print');
 		}
 
+		$params->def('print', !$app->getCfg('hidePrint'));
 		$print_link = JRoute::_('index.php?option=com_redevent&view=' . $this->getName() . '&tmpl=component&pop=1');
 
 		// Create select lists
@@ -84,8 +97,6 @@ class RedeventViewSessionlist extends RViewSite
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns', $cols);
-
-		parent::display($tpl);
 	}
 
 	/**
@@ -115,10 +126,17 @@ class RedeventViewSessionlist extends RViewSite
 
 		// Remove previously set filter in get
 		$uri->delVar('filter');
+		$uri->delVar('filter_type');
 		$uri->delVar('filter_category');
 		$uri->delVar('filter_venuecategory');
 		$uri->delVar('filter_venue');
 		$uri->delVar('filter_event');
+		$uri->delVar('filter_continent');
+		$uri->delVar('filter_country');
+		$uri->delVar('filter_state');
+		$uri->delVar('filter_city');
+		$uri->delVar('filter_date_from');
+		$uri->delVar('filter_date_to');
 		$uri->delVar('filtercustom');
 
 		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=' . $this->getName()));
@@ -131,7 +149,7 @@ class RedeventViewSessionlist extends RViewSite
 	 */
 	protected function getFeedLink()
 	{
-		return false;
+		return 'index.php?option=com_redevent&format=feed&view=' . $this->getName();
 	}
 
 	/**
@@ -170,6 +188,11 @@ class RedeventViewSessionlist extends RViewSite
 		$filter_venue = $state->get('filter_venue');
 		$filter_event = $state->get('filter_event');
 		$filter_venuecategory = $state->get('filter_venuecategory');
+		$filter_country   = $state->get('filter_country');
+		$filter_city      = $state->get('filter_city');
+		$filter_state     = $state->get('filter_state');
+		$filter_date_from = $state->get('filter_date_from');
+		$filter_date_to   = $state->get('filter_date_to');
 
 		// Category filter
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY')));
@@ -188,6 +211,34 @@ class RedeventViewSessionlist extends RViewSite
 			$options = array_merge($options, $this->get('EventsOptions'));
 			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event);
 		}
+
+		$vcatoptions = array();
+		$vcatoptions[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_venue_category'));
+		$vcatoptions = array_merge($vcatoptions, RedeventHelper::getVenuesCatOptions());
+		$selectedcats = ($filter_venuecategory) ? array($filter_venuecategory) : array();
+		$lists['vcategories'] =  JHTML::_('select.genericlist', $vcatoptions, 'filter_venuecategory', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
+		unset($catoptions);
+
+		// Country filter
+		$countries = array();
+		$countries[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_country'));
+		$countries = array_merge($countries, $this->get('CountryOptions'));
+		$lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox"', 'value', 'text', $filter_country);
+		unset($countries);
+
+		// State filter
+		$states = array();
+		$states[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_state'));
+		$states = array_merge($states, $this->get('StateOptions'));
+		$lists['states'] = JHTML::_('select.genericlist', $states, 'filter_state', 'class="inputbox"', 'value', 'text', $filter_state);
+		unset($states);
+
+		// City filter
+		$cities = array();
+		$cities[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_city'));
+		$cities = array_merge($cities, $this->get('CityOptions'));
+		$lists['cities'] = JHTML::_('select.genericlist', $cities, 'filter_city', 'class="inputbox"', 'value', 'text', $filter_city);
+		unset($cities);
 
 		$lists['filter'] = $filter;
 

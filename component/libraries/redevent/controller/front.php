@@ -99,6 +99,9 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'filter_venue':
 				case 'filter_multivenue':
 				case 'filter_date':
+				case 'filter_date_from':
+				case 'filter_date_to':
+				case 'filter_country':
 				case 'layout':
 				case 'task':
 				case 'limit':
