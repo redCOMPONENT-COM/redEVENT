@@ -13,93 +13,48 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the Categoriesdetailed View
  *
- * @package    Joomla
- * @subpackage redEVENT
- * @since      0.9
+ * @package  Redevent.Site
+ * @since    0.9
  */
-class RedeventViewCategoriesdetailed extends RViewSite
+class RedeventViewCategoriesdetailed extends RedeventViewFront
 {
 	/**
-	 * Creates the Categoriesdetailed View
+	 * Execute and display a template script.
 	 *
-	 * @since 0.9
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
+		$this->prepareView();
+
 		$mainframe = JFactory::getApplication();
 
-		//initialise variables
-		$document = JFactory::getDocument();
-		$elsettings = RedeventHelper::config();
+		// Initialise variables
 		$model = $this->getModel();
-		$menu = $mainframe->getMenu();
-		$item = $menu->getActive();
 		$params = $mainframe->getParams();
 
-		//get vars
-		$pathway = $mainframe->getPathWay();
-		$pop = JRequest::getBool('pop');
-		$task = JRequest::getWord('task');
-
-		//Get data from the model
+		// Get data from the model
 		$categories = $this->get('Data');
 		$customs = $this->get('ListCustomFields');
 		$pageNav = $this->get('pagination');
 
-		//add css file
-		if (!$params->get('custom_css'))
-		{
-			$document->addStyleSheet('media/com_redevent/css/redevent.css');
-		}
-		else
-		{
-			$document->addStyleSheet($params->get('custom_css'));
-		}
-		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
+		$print_link = JRoute::_(RedeventHelperRoute::getCategoriesDetailedRoute() . '&pop=1&tmpl=component');
 
-		$params->def('page_title', $item->title);
-
-		if ($task == 'archive')
-		{
-			$pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE'), JRoute::_(RedeventHelperRoute::getCategoriesDetailedRoute(null, 'archive')));
-			$print_link = JRoute::_(RedeventHelperRoute::getCategoriesDetailedRoute(null, 'archive') . '&pop=1&tmpl=component');
-			$pagetitle = $params->get('page_title') . ' - ' . JText::_('COM_REDEVENT_ARCHIVE');
-		}
-		else
-		{
-			$print_link = JRoute::_(RedeventHelperRoute::getCategoriesDetailedRoute() . '&pop=1&tmpl=component');
-			$pagetitle = $params->get('page_title');
-		}
-		//set Page title
-		$this->document->setTitle($pagetitle);
-		$document->setMetadata('keywords', $pagetitle);
-
-		//Print
+		// Print
 		$params->def('print', !$mainframe->getCfg('hidePrint'));
 		$params->def('icons', $mainframe->getCfg('icons'));
 
-		if ($pop)
-		{
-			$params->set('popup', 1);
-		}
-
-		//Check if the user has access to the form
+		// Check if the user has access to the create form
 		$dellink = JFactory::getUser()->authorise('re.createevent');
-
-		// Create the pagination object
-		jimport('joomla.html.pagination');
 
 		$this->assignRef('categories', $categories);
 		$this->assignRef('customs', $customs);
 		$this->assignRef('print_link', $print_link);
-		$this->assignRef('params', $params);
 		$this->assignRef('dellink', $dellink);
-		$this->assignRef('item', $item);
 		$this->assignRef('model', $model);
 		$this->assignRef('pageNav', $pageNav);
-		$this->assignRef('elsettings', $elsettings);
-		$this->assignRef('task', $task);
-		$this->assignRef('pagetitle', $pagetitle);
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);
