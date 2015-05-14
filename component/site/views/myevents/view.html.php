@@ -1,38 +1,20 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 // No direct access
-defined('_JEXEC') or die ('Restricted access');
-
-jimport('joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * HTML View class for the my events View
  *
- * @package     Joomla
- * @subpackage  redevent
- * @since       2.0
-*/
-class RedeventViewMyevents extends RViewSite
+ * @package  Redevent.Site
+ * @since    2.0
+ */
+class RedeventViewMyevents extends RedeventViewFront
 {
 	/**
 	 * Creates the MyItems View
@@ -63,41 +45,10 @@ class RedeventViewMyevents extends RViewSite
 		$menu = $mainframe->getMenu();
 		$item = $menu->getActive();
 
-		// Add css file
-		if (!$params->get('custom_css'))
-		{
-			$document->addStyleSheet('media/com_redevent/css/redevent.css');
-		}
-		else
-		{
-			$document->addStyleSheet($params->get('custom_css'));
-		}
-
-		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-
-		JHTML::_('behavior.framework');
-
 		RHelperAsset::load('myevents.js');
 		RHelperAsset::load('ajaxnav.js');
+		JText::script("COM_REDEVENT_CONFIRM_DELETE_DATE");
 		JText::script("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING");
-
-		$js = "
-			window.addEvent('domready', function(){
-				$$('.deletelink').addEvent('click', function(event){
-					if (confirm('" . JText::_('COM_REDEVENT_CONFIRM_DELETE_DATE') . "')) {
-						return true;
-					}
-					else {
-						if (event.preventDefault) {
-							event.preventDefault();
-						} else {
-						event.returnValue = false;
-						}
-						return false;
-					}
-				});
-			}); ";
-		$document->addScriptDeclaration($js);
 
 		$state = $this->get('state');
 
@@ -173,9 +124,7 @@ class RedeventViewMyevents extends RViewSite
 		$this->assignRef('attending', $attending);
 		$this->assignRef('attended', $attended);
 		$this->assignRef('task', $task);
-		$this->assignRef('print_link', $print_link);
 		$this->assignRef('params', $params);
-		$this->assignRef('dellink', $dellink);
 		$this->assignRef('events_pageNav', $events_pageNav);
 		$this->assignRef('venues_pageNav', $venues_pageNav);
 		$this->assignRef('attending_pageNav', $attending_pageNav);

@@ -48,6 +48,20 @@
 				});
 			};
 		});
+
+		$('.deletelink').on('click', function(event){
+			if (confirm(Joomla.JText._('COM_REDEVENT_CONFIRM_DELETE_DATE'))) {
+				return true;
+			}
+			else {
+				if (event.preventDefault) {
+					event.preventDefault();
+				} else {
+					event.returnValue = false;
+				}
+				return false;
+			}
+		});
+
 	});
 })(jQuery);
-
