@@ -1,38 +1,21 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * RedEvent Component Week Model
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       2.0
+ * @package  Redevent.Site
+ * @since    2.0
  */
 class RedEventModelWeek extends RedeventModelBaseeventlist
 {
-	protected $_week;
+	protected $week;
 
 	protected $data;
 
@@ -70,11 +53,11 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	{
 		if (!$week)
 		{
-			$this->_week = date("Y-W");
+			$this->week = date("Y-W");
 		}
 		elseif (preg_match('/^([0-9]{4})([0-9]{2})$/', $week, $matches))
 		{
-			$this->_week = $matches[1] . '-' . $matches[2];
+			$this->week = $matches[1] . '-' . $matches[2];
 		}
 		else
 		{
@@ -97,8 +80,9 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see RedeventModelBaseeventlist::getData()
+	 * Method to get the data
+	 *
+	 * @return array
 	 */
 	public function getData()
 	{
@@ -119,8 +103,11 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see RedeventModelBaseeventlist::_buildWhere()
+	 * Build the where clause
+	 *
+	 * @param   object  $query  query
+	 *
+	 * @return object
 	 */
 	protected function _buildWhere($query)
 	{
@@ -130,7 +117,7 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 
 		$query = parent::_buildWhere($query);
 
-		if (!$this->_week)
+		if (!$this->week)
 		{
 			// Current week
 			$mode = $params->get('week_start') == 'MO' ? 1 : 0;
@@ -153,12 +140,12 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	 */
 	public function getWeek()
 	{
-		if (!$this->_week)
+		if (!$this->week)
 		{
 			$this->setWeek();
 		}
 
-		return $this->_week;
+		return $this->week;
 	}
 
 	/**
@@ -266,6 +253,7 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	public function getWeekMonday()
 	{
 		$days = $this->getWeekDays();
+
 		return $days[1];
 	}
 }

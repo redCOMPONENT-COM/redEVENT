@@ -1,36 +1,17 @@
- <?php
+<?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
-defined('_JEXEC') or die ('Restricted access');
-
-jimport('joomla.application.component.model');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * redevent Component calendar Model
  *
- * @package     Joomla
- * @subpackage  redevent
- * @since       0.9
+ * @package  Redevent.Site
+ * @since    0.9
  */
 class RedeventModelCalendar extends RModel
 {
@@ -39,30 +20,30 @@ class RedeventModelCalendar extends RModel
 	 *
 	 * @var array
 	 */
-	protected $_data = null;
+	protected $data = null;
 
 	/**
 	 * Tree categories data array
 	 *
 	 * @var array
 	 */
-	protected $_categories = null;
+	protected $categories = null;
 
-	protected $_topcat = null;
+	protected $topcat = null;
 
 	/**
 	 * Events total
 	 *
 	 * @var integer
 	 */
-	protected $_total = null;
+	protected $total = null;
 
 	/**
 	 * The reference date
 	 *
 	 * @var int unix timestamp
 	 */
-	protected $_date = 0;
+	protected $date = 0;
 
 	/**
 	 * Constructor
@@ -89,7 +70,7 @@ class RedeventModelCalendar extends RModel
 	 */
 	public function setdate($date)
 	{
-		$this->_date = $date;
+		$this->date = $date;
 	}
 
 	/**
@@ -101,15 +82,15 @@ class RedeventModelCalendar extends RModel
 	public function getData()
 	{
 		// Lets load the content if it doesn't already exist
-		if ( empty($this->_data))
+		if ( empty($this->data))
 		{
 			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query);
+			$this->data = $this->_getList($query);
 
 			// We have the events happening this month. We have to create occurences for each day for multiple day events.
 			$multi = array();
 
-			foreach ($this->_data AS $item)
+			foreach ($this->data AS $item)
 			{
 				$item->categories = $this->getCategories($item->id);
 
@@ -127,13 +108,13 @@ class RedeventModelCalendar extends RModel
 							$nextday = mktime(0, 0, 0, $item->start_month, $day, $item->start_year);
 
 							// Ensure we only generate days of current month in this loop
-							if (strftime('%m', $this->_date) == strftime('%m', $nextday))
+							if (strftime('%m', $this->date) == strftime('%m', $nextday))
 							{
 								$multi[$counter] = clone $item;
 								$multi[$counter]->dates = strftime('%Y-%m-%d', $nextday);
 
 								// Add generated days to data
-								$this->_data = array_merge($this->_data, $multi);
+								$this->data = array_merge($this->data, $multi);
 							}
 
 							// Unset temp array holding generated days before working on the next multiday event
@@ -150,14 +131,14 @@ class RedeventModelCalendar extends RModel
 				}
 
 				// Remove event with a start date from previous months
-				if ( strftime('%m', strtotime($item->dates)) != strftime('%m', $this->_date) )
+				if ( strftime('%m', strtotime($item->dates)) != strftime('%m', $this->date) )
 				{
-					array_shift($this->_data);
+					array_shift($this->data);
 				}
 			}
 		}
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**
@@ -192,8 +173,10 @@ class RedeventModelCalendar extends RModel
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
-			$query->where('(cat.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR cat.language IS NULL)');
+			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(cat.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR cat.language IS NULL)');
 		}
 
 		// Get the WHERE clauses for the query
@@ -229,14 +212,15 @@ class RedeventModelCalendar extends RModel
 		{
 			$query->where(' x.published = 1 ');
 		}
-        $query->where(' a.published <> 0 ');
+
+		$query->where(' a.published <> 0 ');
 
 		// Category must be published too
 		$query->where(' cat.published = 1 ');
 
 		// Only select events within specified dates. (chosen month)
-		$monthstart = mktime(0, 0, 1, strftime('%m', $this->_date), 1, strftime('%Y', $this->_date));
-		$monthend = mktime(0, 0, -1, strftime('%m', $this->_date) + 1, 1, strftime('%Y', $this->_date));
+		$monthstart = mktime(0, 0, 1, strftime('%m', $this->date), 1, strftime('%Y', $this->date));
+		$monthend = mktime(0, 0, -1, strftime('%m', $this->date) + 1, 1, strftime('%Y', $this->date));
 
 		$query->where(' ((x.dates BETWEEN (\'' . strftime('%Y-%m-%d', $monthstart) . '\') AND (\'' . strftime('%Y-%m-%d', $monthend) . '\'))'
 				. ' OR (x.enddates BETWEEN (\'' . strftime('%Y-%m-%d', $monthstart) . '\') AND (\'' . strftime('%Y-%m-%d', $monthend) . '\')))');

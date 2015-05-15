@@ -31,7 +31,6 @@ class RedeventController extends RedeventControllerFront
 		parent::__construct();
 
 		// Register extra tasks
-		$this->registerTask('ical', 'vcal');
 		$this->registerTask('unpublishxref', 'publishxref');
 		$this->registerTask('archivexref', 'publishxref');
 	}
@@ -66,80 +65,6 @@ class RedeventController extends RedeventControllerFront
 		JRequest::setVar('layout', 'selectvenue');
 
 		parent::display();
-	}
-
-	/**
-	 * offers the vcal/ical functonality
-	 *
-	 * @todo   Not yet working
-	 *
-	 * @author Lybegard Karl-Olof
-	 * @since  0.9
-	 */
-	function vcal()
-	{
-		$mainframe = JFactory::getApplication();
-
-		$task = JRequest::getWord('task');
-		$id = JRequest::getInt('id');
-		$user_offset = $mainframe->getCfg('offset_user');
-
-		//get Data from model
-		$model = &$this->getModel('Details', 'RedEventModel');
-		$model->setId((int) $id);
-
-		$row = $model->getDetails();
-
-		$Start = mktime(strftime('%H', strtotime($row->times)),
-			strftime('%M', strtotime($row->times)),
-			strftime('%S', strtotime($row->times)),
-			strftime('%m', strtotime($row->dates)),
-			strftime('%d', strtotime($row->dates)),
-			strftime('%Y', strtotime($row->dates)), 0);
-
-		$End = mktime(strftime('%H', strtotime($row->endtimes)),
-			strftime('%M', strtotime($row->endtimes)),
-			strftime('%S', strtotime($row->endtimes)),
-			strftime('%m', strtotime($row->enddates)),
-			strftime('%d', strtotime($row->enddates)),
-			strftime('%Y', strtotime($row->enddates)), 0);
-
-		require_once(JPATH_COMPONENT_SITE . DS . 'classes' . DS . 'vcal.class.php');
-
-		$v = new vCal();
-
-		$v->setTimeZone($user_offset);
-		$v->setSummary($row->venue . '-' . $row->name . '-' . RedeventHelper::getSessionFullTitle($row));
-		$v->setDescription($row->datdescription);
-		$v->setStartDate($Start);
-		$v->setEndDate($End);
-		$v->setLocation($row->street . ', ' . $row->plz . ', ' . $row->city . ', ' . $row->country);
-		$v->setFilename((int) $row->did);
-
-		if ($task == 'vcal')
-		{
-			$v->generateHTMLvCal();
-		}
-		else
-		{
-			$v->generateHTMLiCal();
-		}
-
-	}
-
-	/**
-	 * Initialise the mailer object to start sending mails
-	 */
-	private function Mailer()
-	{
-		$mainframe = JFactory::getApplication();
-		jimport('joomla.mail.helper');
-		/* Start the mailer object */
-		$this->mailer = JFactory::getMailer();
-		$this->mailer->isHTML(true);
-		$this->mailer->From = $mainframe->getCfg('mailfrom');
-		$this->mailer->FromName = $mainframe->getCfg('sitename');
-		$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 	}
 
 	/**

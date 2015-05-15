@@ -136,7 +136,6 @@ class RedeventModelBaseeventlist extends RModel
 	/**
 	 * Method to get the Events
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getData()

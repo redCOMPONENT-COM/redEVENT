@@ -17,7 +17,7 @@ jimport('joomla.application.component.model');
  * @package  Redevent.Site
  * @since    0.9
  */
-class RedeventModelDetails extends JModelLegacy
+class RedeventModelDetails extends RModel
 {
 	/**
 	 * Details data in details array
@@ -145,6 +145,8 @@ class RedeventModelDetails extends JModelLegacy
 			$query->select('a.created_by, a.redform_id, a.juser, a.show_names, a.showfields, a.enable_ical');
 			$query->select('a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message');
 			$query->select('a.confirmation_message, a.course_code, a.submission_types');
+			$query->select(' a.submission_type_webform, a.submission_type_formal_offer, '
+				. ' a.submission_type_email_pdf, a.submission_type_formal_offer_pdf, a.send_pdf_form, a.pdf_form_data');
 
 			$query->select('x.id AS xref, x.title as session_title');
 			$query->select('x.*');
@@ -480,8 +482,6 @@ class RedeventModelDetails extends JModelLegacy
 		$query = $this->_db->getQuery(true)
 			->select('x.*')
 			->from('#__redevent_event_venue_xref AS x')
-			->join('INNER', '#__')
-			->join('LEFT', '#__')
 			->where('x.eventid = ' . $this->_db->Quote($this->details->did))
 			->where('x.published = 1')
 			->order('x.dates ASC, x.times ASC');

@@ -1,36 +1,17 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * Redevent Model Venue events
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       0.9
+ * @package  Redevent.Site
+ * @since    0.9
  */
 class RedeventModelVenueevents extends RedeventModelBaseeventlist
 {
@@ -39,14 +20,14 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 	 *
 	 * @var int
 	 */
-	protected $_id = 0;
+	protected $id = 0;
 
 	/**
 	 * venue data array
 	 *
 	 * @var array
 	 */
-	protected $_venue = null;
+	protected $venue = null;
 
 	/**
 	 * Constructor
@@ -96,13 +77,14 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 	public function setId($id)
 	{
 		// Set new venue ID and wipe data
-		$this->_id			= $id;
+		$this->id			= $id;
 		$this->data		= null;
 	}
 
 	/**
-	 * override to take into account search type
-	 * @see RedeventModelBaseeventlist::getData()
+	 * Method to get the Events
+	 *
+	 * @return array
 	 */
 	public function getData()
 	{
@@ -126,17 +108,20 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see RedeventModelBaseeventlist::_buildWhere()
+	 * Build the where clause
+	 *
+	 * @param   object  $query  query
+	 *
+	 * @return object
 	 */
 	protected function _buildWhere($query)
 	{
 		$query = parent::_buildWhere($query);
 
 		/* Check if a venue ID is set */
-		if ($this->_id > 0)
+		if ($this->id > 0)
 		{
-			$query->where('x.venueid = ' . $this->_id);
+			$query->where('x.venueid = ' . $this->id);
 		}
 
 		if ($this->getState('results_type') == 0)
@@ -151,7 +136,6 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 	/**
 	 * Method to get the Venue
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getVenue()
@@ -166,7 +150,7 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 		$query->select('*, id AS venueid');
 		$query->select('CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug');
 		$query->from('#__redevent_venues');
-		$query->where('id = ' . $this->_id);
+		$query->where('id = ' . $this->id);
 		$query->where('access IN (' . $gids . ')');
 
 		$db->setQuery($query);

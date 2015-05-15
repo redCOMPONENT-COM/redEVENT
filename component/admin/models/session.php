@@ -448,42 +448,4 @@ class RedeventModelSession extends RModelAdmin
 
 		return $res;
 	}
-
-	/**
-	 * Return Roles types
-	 *
-	 * @return mixed
-	 */
-	public function getRolesOptions()
-	{
-		$query = $this->_db->getQuery(true);
-
-		$query->select('id AS value, name AS text')
-			->from('#__redevent_roles')
-			->order('ordering ASC');
-
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-
-		return $res;
-	}
-
-	/**
-	 * Return price groups names
-	 *
-	 * @return mixed
-	 */
-	public function getPricegroupsOptions()
-	{
-		$query = $this->_db->getQuery(true);
-
-		$query->select('id AS value, name AS text')
-			->from('#__redevent_pricegroups')
-			->order('ordering ASC');
-
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-
-		return $res;
-	}
 }

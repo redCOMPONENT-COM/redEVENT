@@ -1,65 +1,46 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * Redevent Model Venues
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       0.9
-*/
+ * @package  Redevent.Site
+ * @since    0.9
+ */
 class RedeventModelVenues extends RModel
 {
 	/**
 	 * limit venues to a certain category
 	 * @var object
 	 */
-	protected $_category;
+	protected $category;
 
 	/**
 	 * Venues data array
 	 *
 	 * @var array
 	 */
-	protected $_data = null;
+	protected $data = null;
 
 	/**
 	 * Venues total
 	 *
 	 * @var integer
 	 */
-	protected $_total = null;
+	protected $total = null;
 
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
-	protected $_pagination = null;
+	protected $pagination = null;
 
 	/**
 	 * Constructor
@@ -109,8 +90,8 @@ class RedeventModelVenues extends RModel
 		}
 		else
 		{
-			$this->_category = $obj;
-			$this->_data = null;
+			$this->category = $obj;
+			$this->data = null;
 		}
 
 		return true;
@@ -125,16 +106,16 @@ class RedeventModelVenues extends RModel
 	public function getData()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$this->data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 
 			$k = 0;
 
-			for ($i = 0; $i < count($this->_data); $i++)
+			for ($i = 0; $i < count($this->data); $i++)
 			{
-				$venue =& $this->_data[$i];
+				$venue =& $this->data[$i];
 
 				// Create image information
 				$venue->limage = RedeventImage::flyercreator($venue->locimage);
@@ -184,49 +165,46 @@ class RedeventModelVenues extends RModel
 			}
 		}
 
-		return $this->_data;
+		return $this->data;
 	}
 
 	/**
 	 * Total nr of Venues
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getTotal()
 	{
 		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total))
+		if (empty($this->total))
 		{
 			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			$this->total = $this->_getListCount($query);
 		}
 
-		return $this->_total;
+		return $this->total;
 	}
 
 	/**
 	 * Method to get a pagination object for the events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getPagination()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
+		if (empty($this->pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+			$this->pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
 		}
 
-		return $this->_pagination;
+		return $this->pagination;
 	}
 
 	/**
 	 * Build the query
 	 *
-	 * @access private
 	 * @return string
 	 */
 	protected function _buildQuery()
@@ -260,15 +238,17 @@ class RedeventModelVenues extends RModel
 			$query->where('x.eventid IS NOT NULL ');
 		}
 
-		if ($this->_category)
+		if ($this->category)
 		{
-			$query->where('c.lft BETWEEN ' . $this->_db->Quote($this->_category->lft) . ' AND ' . $this->_db->Quote($this->_category->rgt));
+			$query->where('c.lft BETWEEN ' . $this->_db->Quote($this->category->lft) . ' AND ' . $this->_db->Quote($this->category->rgt));
 		}
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
-			$query->where('(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR v.language IS NULL)');
+			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR v.language IS NULL)');
 		}
 
 		return $query;

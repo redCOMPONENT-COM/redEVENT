@@ -1240,4 +1240,46 @@ class RedeventHelper
 
 		return $data->course_code . '-' . $data->xref . '-' . $data->attendee_id;
 	}
+
+	/**
+	 * Return Roles types
+	 *
+	 * @return mixed
+	 */
+	public static function getRolesOptions()
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+
+		$query->select('id AS value, name AS text')
+			->from('#__redevent_roles')
+			->order('ordering ASC');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
+	}
+
+	/**
+	 * Return price groups names
+	 *
+	 * @return mixed
+	 */
+	public static function getPricegroupsOptions()
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+
+		$query->select('id AS value, name AS text')
+			->from('#__redevent_pricegroups')
+			->order('ordering ASC');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
+	}
 }

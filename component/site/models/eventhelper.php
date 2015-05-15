@@ -38,16 +38,6 @@ class RedeventModelEventhelper extends RModel
 	protected $xref = null;
 
 	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	/**
 	 * Method to set the session event id
 	 *
 	 * @param   int  $id  event id
@@ -79,6 +69,8 @@ class RedeventModelEventhelper extends RModel
 	 * Method to get event data
 	 *
 	 * @return array
+	 *
+	 * @throws RuntimeException
 	 */
 	public function getData()
 	{
@@ -109,7 +101,7 @@ class RedeventModelEventhelper extends RModel
 
 			if (!$access)
 			{
-				JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
+				throw new RuntimeException(JText::_("COM_REDEVENT_ALERTNOTAUTH"), 403);
 			}
 		}
 
@@ -134,7 +126,8 @@ class RedeventModelEventhelper extends RModel
 
 			$query->select('x.*, x.id AS xref, x.title as session_title');
 			$query->select('a.*, a.id AS did');
-			$query->select('v.id AS venue_id, v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state, v.locdescription as venue_description, v.map, v.url as venueurl');
+			$query->select('v.id AS venue_id, v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state');
+			$query->select('v.locdescription as venue_description, v.map, v.url as venueurl');
 			$query->select('v.city, v.latitude, v.longitude, v.company AS venue_company, v.venue_code');
 			$query->select('u.name AS creator_name, u.email AS creator_email');
 			$query->select('f.formname, f.currency');

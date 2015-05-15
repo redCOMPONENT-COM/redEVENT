@@ -38,10 +38,10 @@ class RedeventViewEditsession extends RViewSite
 		$this->canpublish = $acl->canPublishEvent($this->item->eventid);
 
 		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
-		$this->rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
+		$this->rolesoptions = array_merge($rolesoptions, RedeventHelper::getRolesOptions());
 
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
-		$this->pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
+		$this->pricegroupsoptions = array_merge($pricegroupsoptions, RedeventHelper::getPricegroupsOptions());
 
 		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
 		$this->currencyoptions = array_merge($currencyoptions, RHelperCurrency::getCurrencyOptions());

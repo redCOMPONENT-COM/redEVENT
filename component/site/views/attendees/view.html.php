@@ -210,8 +210,8 @@ class RedeventViewAttendees extends RViewSite
 		$this->assignRef('item', $item);
 		$this->assignRef('manage_attendees', $manage_attendees);
 		$this->assignRef('view_full_attendees', $view_full_attendees);
-		$this->assignRef('action', JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id=' . $session->slug));
-		$this->assignRef('lists', $lists);
+		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id=' . $session->slug));
+		$this->assign('lists', $lists);
 
 		parent::display($tpl);
 	}
@@ -223,7 +223,7 @@ class RedeventViewAttendees extends RViewSite
 	 */
 	public function showRoles()
 	{
-		if (file_exists(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redmember'))
+		if (file_exists(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redmember') && 0)
 		{
 			$layout = $this->getLayout();
 			$this->setLayout('default');
