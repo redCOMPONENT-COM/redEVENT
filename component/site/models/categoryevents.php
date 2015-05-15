@@ -1,37 +1,18 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * Redevent Model Category events
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       0.9
-*/
+ * @package  Redevent.Site
+ * @since    0.9
+ */
 class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 {
 	/**
@@ -50,15 +31,15 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	{
 		parent::__construct();
 
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
-		$id = JRequest::getInt('id');
+		$id = $app->input->getInt('id');
 		$this->setId((int) $id);
 
 		// For the toggles
 		$this->setState('filter_category', $this->_id);
 
-		$params    = $mainframe->getParams('com_redevent');
+		$params    = $app->getParams('com_redevent');
 
 		if ($params->exists('results_type'))
 		{
@@ -75,8 +56,8 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 		if ($results_type == 0)
 		{
 			// Get the filter request variables
-			$this->setState('filter_order',     JRequest::getCmd('filter_order', 'a.title'));
-			$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+			$this->setState('filter_order',     $app->input->getCmd('filter_order', 'a.title'));
+			$this->setState('filter_order_Dir', strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
 		}
 	}
 
@@ -97,7 +78,11 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * @see RedeventModelBaseeventlist::_buildWhere()
+	 * Build the where clause
+	 *
+	 * @param   object  $query  query
+	 *
+	 * @return object
 	 */
 	protected function _buildWhere($query)
 	{
@@ -115,18 +100,17 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	/**
 	 * Method to get the Category
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getItem()
 	{
 		if (!$this->category)
 		{
-			$user		= JFactory::getUser();
+			$user = JFactory::getUser();
 			$gids = $user->getAuthorisedViewLevels();
 			$gids = implode(',', $gids);
 
-			$db      = JFactory::getDbo();
+			$db      = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('*');
@@ -179,8 +163,9 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * override to take into account search type
-	 * @see RedeventModelBaseeventlist::_buildQuery()
+	 * Build the query
+	 *
+	 * @return string
 	 */
 	protected function _buildQuery()
 	{

@@ -1,28 +1,11 @@
 <?php
 /**
- * @package    RedEVENT
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license    GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.modellist');
 
 /**
  * Redevents Component events list Model
@@ -30,21 +13,18 @@ jimport('joomla.application.component.modellist');
  * @package  Redevent
  * @since    2.5
  */
-class RedeventModelAjaxeventssuggest extends JModelList
+class RedeventModelAjaxeventssuggest extends RModelList
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
-			$config['filter_fields'] = array(
-				'q',
-			);
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array('q');
 		}
 
 		parent::__construct($config);
@@ -53,10 +33,16 @@ class RedeventModelAjaxeventssuggest extends JModelList
 	/**
 	 * Method to auto-populate the model state.
 	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
 	 */
 	protected function populateState($ordering = 'e.title', $direction = 'ASC')
 	{
@@ -76,16 +62,15 @@ class RedeventModelAjaxeventssuggest extends JModelList
 	}
 
 	/**
-	 * Method to get a store id based on model configuration state.
+	 * Method to get a store id based on the model configuration state.
 	 *
 	 * This is necessary because the model is used by the component and
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param	string		$id	A prefix for the store id.
+	 * @param   string  $id  An identifier string to generate the store id.
 	 *
-	 * @return	string		A store id.
-	 * @since	1.6
+	 * @return  string  A store id.
 	 */
 	protected function getStoreId($id = '')
 	{
@@ -97,10 +82,9 @@ class RedeventModelAjaxeventssuggest extends JModelList
 	}
 
 	/**
-	 * Get the master query for retrieving a list of articles subject to the model state.
+	 * Method to get a JDatabaseQuery object for retrieving the data set from a database.
 	 *
-	 * @return	JDatabaseQuery
-	 * @since	1.6
+	 * @return  JDatabaseQuery   A JDatabaseQuery object to retrieve the data set.
 	 */
 	protected function getListQuery()
 	{
@@ -119,7 +103,8 @@ class RedeventModelAjaxeventssuggest extends JModelList
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(e.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR e.language IS NULL)');
+			$query->where('(e.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR e.language IS NULL)');
 		}
 
 		return $query;

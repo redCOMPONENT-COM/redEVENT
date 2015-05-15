@@ -1,45 +1,26 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * redEVENT Component search Model
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       2.0
+ * @package  Redevent.Site
+ * @since    2.0
  */
 class RedeventModelSearch extends RedeventModelBaseeventlist
 {
 	/**
 	 * the query
 	 */
-	protected $_query = null;
+	protected $query = null;
 
-	protected $_filter = null;
+	protected $filter = null;
 
 	/**
 	 * Constructor
@@ -76,8 +57,9 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * override to take into account search type
-	 * @see RedeventModelBaseeventlist::getData()
+	 * Method to get the Events
+	 *
+	 * @return array
 	 */
 	public function getData()
 	{
@@ -100,8 +82,9 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * override to take into account search type
-	 * @see RedeventModelBaseeventlist::_buildQuery()
+	 * Build the query
+	 *
+	 * @return string
 	 */
 	protected function _buildQuery()
 	{
@@ -117,8 +100,11 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see RedeventModelBaseeventlist::_buildWhere()
+	 * Build the where clause
+	 *
+	 * @param   object  $query  query
+	 *
+	 * @return object
 	 */
 	protected function _buildWhere($query)
 	{
@@ -158,7 +144,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	 */
 	public function getFilter()
 	{
-		if (empty($this->_filter))
+		if (empty($this->filter))
 		{
 			// Get the paramaters of the active menu item
 			$mainframe = JFactory::getApplication();
@@ -200,13 +186,15 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 				$where[] = implode(' OR ', $filterOr);
 			}
 
-			// filter date
-			if (strtotime($filter_date_from)) {
+			// Filter date
+			if (strtotime($filter_date_from))
+			{
 				$date = $this->_db->Quote(strftime('%F', strtotime($filter_date_from)));
 				$where[] = " CASE WHEN (x.enddates) THEN $date <= x.enddates ELSE $date <= x.dates END ";
 			}
 
-			if (strtotime($filter_date_to)) {
+			if (strtotime($filter_date_to))
+			{
 				$date = $this->_db->Quote(strftime('%F', strtotime($filter_date_to)));
 				$where[] = " $date >= x.dates ";
 			}
@@ -223,7 +211,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 			{
 				$where[] = ' l.state = ' . $this->_db->Quote($filter_state);
 			}
-			// filter country
+			// Filter country
 			elseif ($filter_country)
 			{
 				$where[] = ' l.country = ' . $this->_db->Quote($filter_country);
@@ -233,18 +221,27 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 				$where[] = ' c.continent = ' . $this->_db->Quote($filter_continent);
 			}
 
-			// filter category
-			if ($filter_category) {
+			// Filter category
+			if ($filter_category)
+			{
 				$category = $this->getCategory((int) $filter_category);
-				if ($category) {
-					$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+
+				if ($category)
+				{
+					$where[] = '(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft)
+						. ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 				}
 			}
-			// filter venue category
-			if ($filter_venuecategory) {
+
+			// Filter venue category
+			if ($filter_venuecategory)
+			{
 				$category = $this->getVenueCategory((int) $filter_venuecategory);
-				if ($category) {
-					$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+
+				if ($category)
+				{
+					$where[] = '(vc.id = ' . $this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft)
+						. ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 				}
 			}
 
@@ -253,27 +250,30 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 				$where[] = ' a.id = ' . $this->_db->Quote($filter_event);
 			}
 
-			//custom fields
+			// Custom fields
 			foreach ((array) $customs as $key => $custom)
 			{
 				if ($custom != '')
 				{
-					if (is_array($custom)) {
+					if (is_array($custom))
+					{
 						$custom = implode("/n", $custom);
 					}
-					$where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
+
+					$where[] = ' custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $custom . '%');
 				}
 			}
 
-			$this->_filter = $where;
+			$this->filter = $where;
 		}
 
-		return $this->_filter;
+		return $this->filter;
 	}
 
 	/**
 	 * get list of events as options, according to category, venue, and venue category criteria
-	 * @return unknown_type
+	 *
+	 * @return array
 	 */
 	public function getEventsOptions()
 	{
@@ -303,14 +303,16 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		if ($filter_category)
 		{
 			$category = $this->getCategory((int) $filter_category);
-			$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+			$where[] = '(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft)
+				. ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 		}
 
 		// Filter venue category
 		if ($filter_venuecategory)
 		{
 			$category = $this->getVenueCategory((int) $filter_venuecategory);
-			$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+			$where[] = '(vc.id = ' . $this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft)
+				. ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 		}
 
 		if ($filter_venue)
@@ -336,33 +338,37 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 
 	/**
 	 * get a category
-	 * @param int id
+	 *
+	 * @param   int  $id  id
+	 *
 	 * @return object
 	 */
 	public function getCategory($id)
 	{
 		$query = ' SELECT c.id, c.name AS catname, c.lft, c.rgt '
-		. ' FROM #__redevent_categories AS c '
-		. ' WHERE c.id = '. $this->_db->Quote($id)
-		;
+			. ' FROM #__redevent_categories AS c '
+			. ' WHERE c.id = ' . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObject();
+
 		return $res;
 	}
 
 	/**
 	 * get a venue category
-	 * @param int id
+	 *
+	 * @param   int  $id  id
+	 *
 	 * @return object
 	 */
 	public function getVenueCategory($id)
 	{
 		$query = ' SELECT vc.id, vc.name, vc.lft, vc.rgt '
-		. ' FROM #__redevent_venues_categories as vc '
-		. ' WHERE vc.id = '. $this->_db->Quote($id)
-		;
+			. ' FROM #__redevent_venues_categories as vc '
+			. ' WHERE vc.id = ' . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObject();
+
 		return $res;
 	}
 

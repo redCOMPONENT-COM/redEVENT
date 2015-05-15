@@ -1,37 +1,18 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * redEvent Component Venuesmap Model
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       0.9
-*/
+ * @package  Redevent.Site
+ * @since    0.9
+ */
 class RedeventModelVenuesmap extends RModel
 {
 	/**
@@ -55,7 +36,7 @@ class RedeventModelVenuesmap extends RModel
 		// Get the paramaters of the active menu item
 		$params = $app->getParams('com_redevent');
 
-		$this->setState('vcat',      $app->input->get('filter_venuecategory', $params->def('vcat', 0), 'string'));
+		$this->setState('vcat', $app->input->get('filter_venuecategory', $params->def('vcat', 0), 'string'));
 		$this->setState('cat', $app->input->get('filter_category', $params->def('cat', 0), 'string'));
 
 		$this->setState('filter.language', $app->getLanguageFilter());
@@ -64,7 +45,6 @@ class RedeventModelVenuesmap extends RModel
 	/**
 	 * Method to get the Venues
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getData()
@@ -114,7 +94,7 @@ class RedeventModelVenuesmap extends RModel
 				// Create flag
 				if ($venue->country)
 				{
-					$venue->countryimg = RedeventHelperCountries::getCountryFlag( $venue->country );
+					$venue->countryimg = RedeventHelperCountries::getCountryFlag($venue->country);
 				}
 
 				// Create target link
@@ -130,7 +110,6 @@ class RedeventModelVenuesmap extends RModel
 	/**
 	 * Build the query
 	 *
-	 * @access private
 	 * @return string
 	 */
 	protected function _buildQuery()
@@ -145,7 +124,7 @@ class RedeventModelVenuesmap extends RModel
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
-		$db      = JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('v.*, COUNT(x.id) AS assignedevents');
@@ -184,17 +163,21 @@ class RedeventModelVenuesmap extends RModel
 
 		foreach ((array) $customs as $key => $custom)
 		{
-			if ($custom != '' ) {
-				if (is_array($custom)) {
+			if ($custom != '')
+			{
+				if (is_array($custom))
+				{
 					$custom = implode("/n", $custom);
 				}
-				$query->where('custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%'));
+
+				$query->where('custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $custom . '%'));
 			}
 		}
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR v.language IS NULL)');
+			$query->where('(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR v.language IS NULL)');
 		}
 
 		$query->group('v.id');
@@ -221,16 +204,20 @@ class RedeventModelVenuesmap extends RModel
 
 	/**
 	 * get venues countries
+	 *
 	 * @return array
 	 */
-	function getCountries()
+	public function getCountries()
 	{
 		$venues = $this->getData();
 		$countries = array();
 
 		foreach ((array) $venues AS $v)
 		{
-			$countries[] = $v->country;
+			if (RedeventHelperCountries::isValid($v->country))
+			{
+				$countries[] = $v->country;
+			}
 		}
 
 		if (!count($countries))
@@ -240,17 +227,15 @@ class RedeventModelVenuesmap extends RModel
 
 		$countries = array_unique($countries);
 
-		$countrycoords = RedeventHelperCountries::getCountrycoordArray();
-
 		$res = array();
 
 		foreach ($countries as $c)
 		{
-			$country = new stdclass();
-			$country->name      = RedeventHelperCountries::getCountryName($c);
-			$country->flag      = RedeventHelperCountries::getCountryFlag($c);
-			$country->flagurl   = RedeventHelperCountries::getIsoFlag($c);
-			$country->latitude  = RedeventHelperCountries::getLatitude($c);
+			$country = new stdclass;
+			$country->name = RedeventHelperCountries::getCountryName($c);
+			$country->flag = RedeventHelperCountries::getCountryFlag($c);
+			$country->flagurl = RedeventHelperCountries::getIsoFlag($c);
+			$country->latitude = RedeventHelperCountries::getLatitude($c);
 			$country->longitude = RedeventHelperCountries::getLongitude($c);
 			$res[] = $country;
 		}
@@ -258,22 +243,28 @@ class RedeventModelVenuesmap extends RModel
 		return $res;
 	}
 
-	function getCustomFilters()
+	/**
+	 * Custom filters
+	 *
+	 * @return array
+	 */
+	public function getCustomFilters()
 	{
 		$query = ' SELECT f.* FROM #__redevent_fields AS f '
-		. ' WHERE f.published = 1 AND f.searchable = 1 AND f.object_key = '. $this->_db->Quote("redevent.event")
-		. ' ORDER BY f.ordering ASC '
-		;
+			. ' WHERE f.published = 1 AND f.searchable = 1 AND f.object_key = ' . $this->_db->Quote("redevent.event")
+			. ' ORDER BY f.ordering ASC ';
 		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
 
 		$filters = array();
-		foreach ($rows as $r) {
+
+		foreach ($rows as $r)
+		{
 			$field = RedeventFactoryCustomfield::getField($r->type);
 			$field->bind($r);
 			$filters[] = $field;
 		}
+
 		return $filters;
 	}
-
 }

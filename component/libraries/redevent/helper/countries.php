@@ -739,8 +739,6 @@ class RedeventHelperCountries
 		}
 		else
 		{
-			JError::raiseWarning(500, JText::_('COM_REDEVENT_COUNTRIES_ERROR_COUNTRY_NOT_FOUND'));
-
 			return false;
 		}
 	}
@@ -767,9 +765,31 @@ class RedeventHelperCountries
 		}
 		else
 		{
-			JError::raiseWarning(500, JText::_('COM_REDEVENT_COUNTRIES_ERROR_COUNTRY_NOT_FOUND'));
-
 			return false;
+		}
+	}
+
+	/**
+	 * Check if code is valid
+	 *
+	 * @param   string  $iso  iso code 2 or 3
+	 *
+	 * @return bool
+	 */
+	public static function isValid($iso)
+	{
+		if (!(strlen($iso) == 2 || strlen($iso) == 3))
+		{
+			return false;
+		}
+
+		if (strlen($iso) == 2)
+		{
+			return static::convertIso2to3($iso) ? true : false;
+		}
+		else
+		{
+			return static::convertIso3to2($iso) ? true : false;
 		}
 	}
 }
