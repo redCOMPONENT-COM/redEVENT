@@ -58,8 +58,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="moreinfospacer"></div>
 
 <input type="hidden" name="xref" value="<?php echo $this->xref?>"/>
-<input type="hidden" name="controller" value="moreinfo"/>
-<input type="hidden" name="task" value="submitinfo"/>
+<input type="hidden" name="task" value="moreinfo.submitinfo"/>
 <input type="hidden" name="uid" value="<?php echo $this->user->get('id'); ?>"/>
 </form>
 </div>

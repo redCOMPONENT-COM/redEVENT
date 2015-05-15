@@ -1,37 +1,18 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * redEVENT Component Registration Controller
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since 2.0
-*/
+ * @package  Redevent.Site
+ * @since    2.0
+ */
 class RedeventControllerRegistration extends RedeventControllerFront
 {
 	/**
@@ -52,6 +33,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	/**
 	 * handle registration
 	 *
+	 * @TODO: refactor, much too long
+	 *
 	 * @return void
 	 */
 	public function register()
@@ -66,9 +49,9 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		$app = JFactory::getApplication();
 
-		$xref        = $this->input->getInt('xref');
-		$review      = $this->input->getInt('hasreview', 0);
-		$isedit      = $this->input->getInt('isedit', 0);
+		$xref = $this->input->getInt('xref');
+		$review = $this->input->getInt('hasreview', 0);
+		$isedit = $this->input->getInt('isedit', 0);
 
 		$nbPosted = $this->input->getInt('nbactive', 1);
 		$pricegroups = array();
@@ -257,18 +240,18 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	/**
 	 * Deletes a registered user
 	 *
-	 * @since 0.7
+	 * @return void
 	 */
 	public function delreguser()
 	{
 		$app = JFactory::getApplication();
 
 		$msgtype = 'message';
-		$task    = $app->input->getCmd('task');
-		$id      = $app->input->getInt('id', 0);
-		$xref    = $app->input->getInt('xref', 0);
+		$task = $app->input->getCmd('task');
+		$id = $app->input->getInt('id', 0);
+		$xref = $app->input->getInt('xref', 0);
 
-		$params  = $app->getParams('com_redevent');
+		$params = $app->getParams('com_redevent');
 
 		if ($this->cancelRegistration())
 		{
@@ -296,16 +279,25 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		{
 			if ($params->get('details_attendees_layout', 0))
 			{
-				$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees&xref=' . $xref, false), $msg, $msgtype);
+				$this->setRedirect(
+					JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees&xref=' . $xref, false), $msg, $msgtype
+				);
 			}
 			else
 			{
-				$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees_table&xref=' . $xref, false), $msg, $msgtype);
+				$this->setRedirect(
+					JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees_table&xref=' . $xref, false), $msg, $msgtype
+				);
 			}
 		}
 	}
 
-	function cancelreg()
+	/**
+	 * Task handler
+	 *
+	 * @return void
+	 */
+	public function cancelreg()
 	{
 		$submit_key = $this->input->get('submit_key');
 		$xref = $this->input->getInt('xref');
@@ -319,6 +311,11 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
 	}
 
+	/**
+	 * Task handler
+	 *
+	 * @return void
+	 */
 	public function edit()
 	{
 		$this->input->set('view', 'registration');
@@ -327,7 +324,12 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		parent::display();
 	}
 
-	function manageattendees()
+	/**
+	 * Task handler
+	 *
+	 * @return void
+	 */
+	public function manageattendees()
 	{
 		$acl = RedeventUserAcl::getInstance();
 		$xref = $this->input->getInt('xref');
@@ -389,7 +391,6 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			$this->redirect();
 		}
 
-
 		$model = $this->getModel('registration');
 		$model->setXref($this->input->getInt('xref'));
 		$details = $model->getSessionDetails();
@@ -437,23 +438,33 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$this->redirect();
 	}
 
-	function confirm()
+	/**
+	 * Task handler
+	 *
+	 * @return void
+	 */
+	public function confirm()
 	{
-		if ($this->input->get('task') == 'review') {
+		if ($this->input->get('task') == 'review')
+		{
 			$this->input->set('layout', 'review');
 		}
-		else {
+		else
+		{
 			$this->input->set('layout', 'confirmed');
 		}
+
 		$this->input->set('view', 'registration');
+
 		parent::display();
 	}
 
-
 	/**
-	 * Confirms the users request
+	 * Task handler
+	 *
+	 * @return void
 	 */
-	function activate()
+	public function activate()
 	{
 		$mainframe = JFactory::getApplication();
 		$msgtype = 'message';
@@ -464,9 +475,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		/* Get the details out of the confirmid */
 		list($uip, $xref, $uid, $register_id, $submit_key) = explode("x", $confirmid);
 
-
 		/* Confirm sign up via mail */
-		$model = $this->getModel('Registration', 'RedEventModel');
+		$model = $this->getModel('Registration', 'RedeventModel');
 		$model->setXref($xref);
 		$eventdata = $model->getSessionDetails();
 
@@ -476,23 +486,13 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$tags->setXref($xref);
 		$tags->setSubmitkey($submit_key);
 
-		/* Check the db if this entry exists */
-		$db = JFactory::getDBO();
-		$q = ' SELECT r.confirmed '
-		. ' FROM #__redevent_register r '
-		. ' WHERE r.uid = '.$db->Quote($uid)
-		. ' AND r.submit_key = '.$db->Quote($submit_key)
-		. ' AND r.xref = '.$db->Quote($xref)
-		. ' AND r.id = '.$db->Quote($register_id)
-		;
-		$db->setQuery($q);
-		$regdata = $db->loadObject();
+		$regdata = $model->getRegistrationFromActivationLink($submit_key, $register_id, $uid, $xref);
 
 		if ($regdata && $regdata->confirmed == 0)
 		{
 			$model->confirm($register_id);
 
-			// send activation confirmation email if activated
+			// Send activation confirmation email if activated
 			if ($eventdata->enable_activation_confirmation)
 			{
 				$this->_Mailer();
@@ -513,17 +513,21 @@ class RedeventControllerRegistration extends RedeventControllerFront
 							$this->mailer->AddAddress($email['email']);
 
 							/* Mail submitter */
-							$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
-							// convert urls
+							$htmlmsg = '<html><head><title></title></title></head><body>'
+								. $tags->ReplaceTags($eventdata->notify_confirm_body)
+								. '</body></html>';
+
+							// Convert urls
 							$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
 
 							$this->mailer->setBody($htmlmsg);
 							$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
 
 							/* Send the mail */
-							if (!$this->mailer->Send()) {
+							if (!$this->mailer->Send())
+							{
 								$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
-								RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
+								RedeventHelperLog::simpleLog('Error sending confirm email' . ': ' . $this->mailer->error);
 							}
 
 							/* Clear the mail details */
@@ -532,17 +536,20 @@ class RedeventControllerRegistration extends RedeventControllerFront
 					}
 				}
 			}
+
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_ACTIVATION_SUCCESSFULL');
 
-			JPluginHelper::importPlugin( 'redevent' );
+			JPluginHelper::importPlugin('redevent');
 			$dispatcher =& JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onUserConfirmed', array($register_id));
 		}
-		else if ($regdata && $regdata->confirmed == 1) {
+		elseif ($regdata && $regdata->confirmed == 1)
+		{
 			$msg = JText::_('COM_REDEVENT_YOUR_SUBMISSION_HAS_ALREADY_BEEN_CONFIRMED');
 			$msgtype = 'error';
 		}
-		else {
+		else
+		{
 			$msg = JText::_('COM_REDEVENT_YOUR_SUBMISSION_CANNOT_BE_CONFIRMED');
 			$msgtype = 'error';
 		}
@@ -557,7 +564,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 */
 	public function ajaxcancelregistration()
 	{
-		$resp = new stdClass();
+		$resp = new stdClass;
 
 		if ($this->cancelRegistration())
 		{
@@ -575,6 +582,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 	/**
 	 * Initialise the mailer object to start sending mails
+	 *
+	 * @return JMail
 	 */
 	private function _Mailer()
 	{
@@ -589,6 +598,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			$this->mailer->FromName = $mainframe->getCfg('sitename');
 			$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 		}
+
 		return $this->mailer;
 	}
 
@@ -616,9 +626,10 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	/**
 	 * Create a Joomla user from form data
 	 *
-	 * @param   $sid
+	 * @param   int  $sid  submitter id
 	 *
 	 * @return bool|JUser
+	 *
 	 * @throws Exception
 	 */
 	protected function createJoomlaUser($sid)
@@ -630,7 +641,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		if (!$answers)
 		{
-			throw new Exception(JText::_('COM_REDEVENT_NO_ANSWERS_FOUND_FOR_SID').' '.$sid);
+			throw new Exception(JText::_('COM_REDEVENT_NO_ANSWERS_FOUND_FOR_SID') . ' ' . $sid);
 		}
 
 		$details = current($answers);
@@ -638,6 +649,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		if (!$details['email'])
 		{
 			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
+
 			return false;
 		}
 
@@ -648,7 +660,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		if (!$details['username'] && !$details['fullname'])
 		{
-			$username = 'redeventuser'.$sid;
+			$username = 'redeventuser' . $sid;
 			$details['fullname'] = $username;
 		}
 		else
@@ -662,8 +674,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		jimport('joomla.application.component.helper');
 
 		// Get required system objects
-		$user 		= clone(JFactory::getUser(0));
-		$password   = JUserHelper::genRandomPassword();
+		$user = clone JFactory::getUser(0);
+		$password = JUserHelper::genRandomPassword();
 
 		$config = JComponentHelper::getParams('com_users');
 
@@ -703,6 +715,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$db = JFactory::getDBO();
 
 		$i = 2;
+
 		while (true)
 		{
 			$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote($username);
@@ -710,8 +723,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 			if ($db->loadResult())
 			{
-				// username exists, add a suffix
-				$username = $username . '_' . $i++;
+				// Username exists, add a suffix
+				$username = $username . '_' . ($i++);
 			}
 			else
 			{
@@ -722,6 +735,13 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		return $username;
 	}
 
+	/**
+	 * Create redMEMBER user
+	 *
+	 * @param   int  $sid  submitter id
+	 *
+	 * @return bool|JUser
+	 */
 	protected function createRedmemberUser($sid)
 	{
 		$rfcore = RdfCore::getInstance();
@@ -802,32 +822,34 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	/**
 	 * inspired from com_user controller function
 	 *
-	 * @param   object  $user  user object
+	 * @param   object  $user      user object
 	 * @param   string  $password  user password
 	 *
 	 * @return void
+	 *
+	 * @TODO: refactor
 	 */
-	protected function _sendUserCreatedMail(&$user, $password)
+	protected function _sendUserCreatedMail($user, $password)
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('com_user');
 
 		$mainframe = JFactory::getApplication();
 
-		$db		= JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		$name 		= $user->get('name');
-		$email 		= $user->get('email');
-		$username 	= $user->get('username');
+		$name = $user->get('name');
+		$email = $user->get('email');
+		$username = $user->get('username');
 
-		$usersConfig 	= JComponentHelper::getParams( 'com_users' );
-		$sitename 		= $mainframe->getCfg( 'sitename' );
-		$mailfrom 		= $mainframe->getCfg( 'mailfrom' );
-		$fromname 		= $mainframe->getCfg( 'fromname' );
-		$siteURL		= JURI::base();
+		$usersConfig = JComponentHelper::getParams('com_users');
+		$sitename = $mainframe->getCfg('sitename');
+		$mailfrom = $mainframe->getCfg('mailfrom');
+		$fromname = $mainframe->getCfg('fromname');
+		$siteURL = JURI::base();
 
-		$subject 	= JText::sprintf('COM_REDEVENT_CREATED_ACCOUNT_EMAIL_SUBJECT', $name, $sitename);
-		$subject 	= html_entity_decode($subject, ENT_QUOTES);
+		$subject = JText::sprintf('COM_REDEVENT_CREATED_ACCOUNT_EMAIL_SUBJECT', $name, $sitename);
+		$subject = html_entity_decode($subject, ENT_QUOTES);
 
 		$message = JText::_('COM_REDEVENT_INFORM_USERNAME');
 		$message = str_replace('[fullname]', $name, $message);
@@ -838,13 +860,13 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		// Get all super administrator
 		$query = 'SELECT name, email, sendEmail' .
-		' FROM #__users' .
-		' WHERE LOWER( usertype ) = "super administrator"';
-		$db->setQuery( $query );
+			' FROM #__users' .
+			' WHERE LOWER( usertype ) = "super administrator"';
+		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
 		// Send email to user
-		if ( ! $mailfrom  || ! $fromname )
+		if (!$mailfrom || !$fromname)
 		{
 			$fromname = $rows[0]->name;
 			$mailfrom = $rows[0]->email;
@@ -856,12 +878,12 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$subject2 = JText::sprintf('COM_REDEVENT_CREATED_ACCOUNT_EMAIL_SUBJECT', $name, $sitename);
 		$subject2 = html_entity_decode($subject2, ENT_QUOTES);
 
-		// get superadministrators id
-		foreach ( $rows as $row )
+		// Get superadministrators id
+		foreach ($rows as $row)
 		{
 			if ($row->sendEmail)
 			{
-				$message2 = sprintf ( JText::_( 'SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
+				$message2 = sprintf(JText::_('SEND_MSG_ADMIN'), $row->name, $sitename, $name, $email, $username);
 				$message2 = html_entity_decode($message2, ENT_QUOTES);
 				JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
 			}
@@ -880,8 +902,9 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		// Initialize some variables
 		$db = JFactory::getDBO();
 
-		$query = 'SELECT id FROM #__users WHERE email = ' . $db->Quote( $email );
+		$query = 'SELECT id FROM #__users WHERE email = ' . $db->Quote($email);
 		$db->setQuery($query, 0, 1);
+
 		return $db->loadResult();
 	}
 
@@ -894,7 +917,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	{
 		$app = JFactory::getApplication();
 
-		$rid  = $app->input->getInt('rid', 0);
+		$rid = $app->input->getInt('rid', 0);
 		$xref = $app->input->getInt('xref', 0);
 
 		// Get/Create the model
@@ -904,12 +927,12 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		{
 			$msg = $model->getError();
 			$this->setError($msg);
+
 			return false;
 		}
 
 		/* Check if we have space on the waiting list */
-		$this->addModelPath(JPATH_BASE . '/administrator/components/com_redevent/models');
-		$model_wait = $this->getModel('waitinglist');
+		$model_wait = RModel::getAdminInstance('waitinglist');
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
 

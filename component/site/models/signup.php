@@ -148,7 +148,7 @@ class RedeventModelSignup extends RModel
 		if ($send_attachment)
 		{
 			$pdf = file_get_contents(
-				JURI::root() . 'index.php?option=com_redevent&view=signup&task=createpdfemail&format=pdf&xref='
+				JURI::root() . 'index.php?option=com_redevent&view=signup&task=signup.createpdfemail&format=pdf&xref='
 				. JRequest::getInt('xref') . '&id=' . JRequest::getInt('id')
 			);
 			$pdffile = JPATH_CACHE . '/signup.pdf';

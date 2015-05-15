@@ -161,6 +161,32 @@ class RedEventModelRegistration extends RModel
 	}
 
 	/**
+	 * Check confirm state from activation link parameters
+	 *
+	 * @param   string  $submit_key   submit key
+	 * @param   int     $register_id  registration id
+	 * @param   int     $uid          user id
+	 * @param   int     $xref         xref
+	 *
+	 * @return object
+	 */
+	public function getRegistrationFromActivationLink($submit_key, $register_id, $uid, $xref)
+	{
+		/* Check the db if this entry exists */
+		$query = $this->_db->getQuery(true)
+			->select('r.confirmed')
+			->from('#__redevent_register AS r')
+			->where('r.uid = ' . $this->_db->Quote($uid))
+			->where('r.submit_key = ' . $this->_db->Quote($submit_key))
+			->where('r.xref = ' . $this->_db->Quote($xref))
+			->where('r.id = ' . $this->_db->Quote($register_id));
+
+		$this->_db->setQuery($query);
+
+		return $this->_db->loadObject();
+	}
+
+	/**
 	 * Check if we should only confirm on payment
 	 *
 	 * @param   object  $registration  registration data
