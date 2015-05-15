@@ -1077,9 +1077,7 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getCountryOptions()
 	{
-		$mainframe = JFactory::getApplication();
-
-		$db      = JFactory::getDbo();
+		$db      = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT c.iso2 as value, c.name as text');
@@ -1112,9 +1110,7 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getStateOptions()
 	{
-		$mainframe = JFactory::getApplication();
-
-		$db      = JFactory::getDbo();
+		$db      = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT v.state as value, v.state as text');
@@ -1147,11 +1143,10 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getCityOptions()
 	{
-		$mainframe = JFactory::getApplication();
-		$filter_country = $mainframe->getUserState('com_redevent.search.filter_country');
-		$state =   $mainframe->getUserState('com_redevent.search.filter_state');
+		$filter_country = $this->getState('filter_country');
+		$state = $this->getState('filter_state');
 
-		$db      = JFactory::getDbo();
+		$db      = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT v.city as value, v.city as text');

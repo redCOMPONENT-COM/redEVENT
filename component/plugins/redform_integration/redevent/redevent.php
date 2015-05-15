@@ -19,7 +19,7 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
  * @package  Redevent.integration
  * @since    2.5
  */
-class PlgRedform_integrationRedevent extends JPlugin
+class PlgRedform_IntegrationRedevent extends JPlugin
 {
 	private $rfcore;
 
