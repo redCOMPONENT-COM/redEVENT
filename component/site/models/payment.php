@@ -34,14 +34,14 @@ class RedeventModelPayment extends JModelLegacy
 	 *
 	 * @var object
 	 */
-	protected  $_event = null;
+	protected  $event = null;
 
 	/**
 	 * Caching for submit key
 	 *
 	 * @var string
 	 */
-	protected $_submit_key = null;
+	protected $submit_key = null;
 
 	/**
 	 * Constructor
@@ -65,7 +65,7 @@ class RedeventModelPayment extends JModelLegacy
 	 */
 	public function setSubmitKey($key)
 	{
-		$this->_submit_key = $key;
+		$this->submit_key = $key;
 	}
 
 	/**
@@ -75,9 +75,9 @@ class RedeventModelPayment extends JModelLegacy
 	 */
 	public function getEvent()
 	{
-		if (empty($this->_event))
+		if (empty($this->event))
 		{
-			if (empty($this->_submit_key))
+			if (empty($this->submit_key))
 			{
 				JError::raiseError(0, JText::_('COM_REDEVENT_Missing_key'));
 
@@ -90,7 +90,7 @@ class RedeventModelPayment extends JModelLegacy
 
 			$query->select('xref');
 			$query->from('#__redevent_register');
-			$query->where('submit_key = ' . $db->q($this->_submit_key));
+			$query->where('submit_key = ' . $db->q($this->submit_key));
 
 			$db->setQuery($query);
 			$xref = $db->loadResult();
@@ -98,10 +98,10 @@ class RedeventModelPayment extends JModelLegacy
 			$helper = RModel::getFrontInstance('Eventhelper');
 			$helper->setXref($xref);
 
-			$this->_event = $helper->getData();
+			$this->event = $helper->getData();
 		}
 
-		return $this->_event;
+		return $this->event;
 	}
 
 	/**
@@ -113,7 +113,7 @@ class RedeventModelPayment extends JModelLegacy
 	{
 		$rfcore = RdfCore::getInstance();
 
-		if ($rfcore->isPaidSubmitkey($this->_submit_key))
+		if ($rfcore->isPaidSubmitkey($this->submit_key))
 		{
 			$this->confirmAttendees();
 		}
@@ -149,7 +149,7 @@ class RedeventModelPayment extends JModelLegacy
 
 		$query->select('r.id');
 		$query->from('#__redevent_register AS r');
-		$query->where('r.submit_key = ' . $db->quote($this->_submit_key));
+		$query->where('r.submit_key = ' . $db->quote($this->submit_key));
 
 		$db->setQuery($query);
 		$res = $db->loadColumn();
