@@ -16,8 +16,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass( 'list');
-JFormHelper::loadFieldClass( 'category');
+JFormHelper::loadFieldClass('list');
+JFormHelper::loadFieldClass('category');
 
 /**
  * Form Field class for the Joomla Platform.
@@ -26,10 +26,9 @@ JFormHelper::loadFieldClass( 'category');
  * @package     Joomla.Platform
  * @subpackage  Form
  * @since       11.1
-*/
-class JFormFieldRELanguageCategorycat extends JFormFieldCategory {
-
-
+ */
+class JFormFieldRELanguageCategorycat extends JFormFieldCategory
+{
 	public $type = 'RELanguageCategorycat';
 
 	/**
@@ -38,11 +37,9 @@ class JFormFieldRELanguageCategorycat extends JFormFieldCategory {
 	 * @param   string  $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
-	 *
 	 */
 	public function __get($name)
 	{
-
 		switch ($name)
 		{
 			case 'element':
@@ -50,7 +47,8 @@ class JFormFieldRELanguageCategorycat extends JFormFieldCategory {
 				break;
 		}
 
-		$value = parent::__get( $name);
+		$value = parent::__get($name);
+
 		return $value;
 	}
 
@@ -72,35 +70,37 @@ class JFormFieldRELanguageCategorycat extends JFormFieldCategory {
 		$languages = (string) $this->element['languages'];
 		$name = (string) $this->element['name'];
 
-		// insert custom options passed in xml file
+		// Insert custom options passed in xml file
 		$options = array();
 
-		if(!is_null( $this->element->option))
+		if (!is_null($this->element->option))
 		{
-// 			echo '<pre>';print_r($this->element); echo '</pre>';exit;
-			foreach($this->element->option as $option)
+			foreach ($this->element->option as $option)
 			{
-				$options[] = JHtml::_('select.option', $option->getAttribute( 'value'), JText::_($option->data()));
+				$options[] = JHtml::_('select.option', $option->getAttribute('value'), JText::_($option->data()));
 			}
 		}
 
 		// Filter over published state or not depending upon if it is present.
-		// include k2item helper, which has the method we want
+		// Include k2item helper, which has the method we want
 		require_once dirname(__DIR__) . '/helpers/helper.php';
-		if ($published) {
-			$categoriesoptions = JosettaReCategoryHelper::getCategoryOptionsPerLanguage( array( 'filter.published' => explode(',', $published), 'filter.languages' => explode( ',', $languages)));
-		} else {
-			$categoriesoptions = JosettaReCategoryHelper::getCategoryOptionsPerLanguage( array( 'filter.languages' => explode( ',', $languages)));
+
+		if ($published)
+		{
+			$categoriesoptions = JosettaReCategoryHelper::getCategoryOptionsPerLanguage(array('filter.published' => explode(',', $published), 'filter.languages' => explode(',', $languages)));
 		}
-		//     echo '<pre>';print_r($categoriesoptions); echo '</pre>';exit;
+		else
+		{
+			$categoriesoptions = JosettaReCategoryHelper::getCategoryOptionsPerLanguage(array('filter.languages' => explode(',', $languages)));
+		}
 
-		$options = array_merge( $options, $categoriesoptions);
+		$options = array_merge($options, $categoriesoptions);
 
-		if (!empty($this->element['show_root']) && strtolower( $this->element['show_root']) == 'yes') {
+		if (!empty($this->element['show_root']) && strtolower($this->element['show_root']) == 'yes')
+		{
 			array_unshift($options, JHtml::_('select.option', '0', JText::_('JGLOBAL_ROOT')));
 		}
 
 		return $options;
 	}
-
 }

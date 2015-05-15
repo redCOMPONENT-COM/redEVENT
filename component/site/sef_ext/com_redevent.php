@@ -1,16 +1,16 @@
 <?php
 /**
- * sh404SEF support for com_search component.
- * Copyright Yannick Gaultier (shumisha) - 2007
- * shumisha@gmail.com
- * @version     $Id$
- * {shSourceVersionTag: Version x - 2007-09-20}
+ * sh404SEF support for redEVENT
+ * @package    Redevent.Site
+ *
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
-if (!class_exists('redEVENTsh404Helper'))
+if (!class_exists('RedEVENTsh404Helper'))
 {
-	class redEVENTsh404Helper
+	class RedEVENTsh404Helper
 	{
 		/**
 		 * Return pricegroup alias
@@ -70,7 +70,11 @@ $shLangIso = '';
 $title = array();
 $shItemidString = '';
 $dosef = shInitializePlugin($lang, $shLangName, $shLangIso, $option);
-if ($dosef == false) return;
+
+if ($dosef == false)
+{
+	return;
+}
 // ------------------  standard plugin initialize function - don't change ---------------------------
 
 // ------------------  load language file - adjust as needed ----------------------------------------

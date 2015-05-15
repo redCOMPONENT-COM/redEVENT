@@ -25,8 +25,9 @@ fwrite(STDOUT, "\033[32;1mInitializing PHP_CodeSniffer checks.\033[0m\n");
 
 // Files
 $files = array(
-	REPO_BASE . '/component/site',
-//	REPO_BASE . '/plugins'
+	REPO_BASE . '/component',
+	REPO_BASE . '/plugins',
+	REPO_BASE . '/modules',
 );
 
 // Ignored files
@@ -38,6 +39,7 @@ $ignored = array(
 	REPO_BASE . '/component/site/views/*/tmpl/*',
 	REPO_BASE . '/component/site/layouts/*',
 	REPO_BASE . '/component/site/classes/*',
+	REPO_BASE . '/component/site/sef_ext/*',
 	REPO_BASE . '/component/media'
 );
 

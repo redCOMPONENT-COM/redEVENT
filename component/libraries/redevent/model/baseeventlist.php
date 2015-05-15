@@ -1070,6 +1070,11 @@ class RedeventModelBaseeventlist extends RModel
 		return $res;
 	}
 
+	/**
+	 * Get countries as options
+	 *
+	 * @return mixed
+	 */
 	public function getCountryOptions()
 	{
 		$mainframe = JFactory::getApplication();
@@ -1091,7 +1096,8 @@ class RedeventModelBaseeventlist extends RModel
 		if ($this->getState('filter.language'))
 		{
 			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
 		}
 
 		$db->setQuery($query);
@@ -1099,6 +1105,11 @@ class RedeventModelBaseeventlist extends RModel
 		return $db->loadObjectList();
 	}
 
+	/**
+	 * Get states as options
+	 *
+	 * @return mixed
+	 */
 	public function getStateOptions()
 	{
 		$mainframe = JFactory::getApplication();
@@ -1115,7 +1126,8 @@ class RedeventModelBaseeventlist extends RModel
 		if ($this->getState('filter.language'))
 		{
 			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
 		}
 
 		if ($filter_country = $this->getState('filter_country'))
@@ -1128,6 +1140,11 @@ class RedeventModelBaseeventlist extends RModel
 		return $db->loadObjectList();
 	}
 
+	/**
+	 * Get cities as options
+	 *
+	 * @return mixed
+	 */
 	public function getCityOptions()
 	{
 		$mainframe = JFactory::getApplication();
@@ -1156,7 +1173,8 @@ class RedeventModelBaseeventlist extends RModel
 		if ($this->getState('filter.language'))
 		{
 			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
-			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
 		}
 
 		$db->setQuery($query);

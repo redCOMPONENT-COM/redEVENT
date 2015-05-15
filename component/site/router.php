@@ -1,65 +1,82 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved.
- * @license can be read in this package of software in the file license.txt or
- * read on http://redcomponent.com/license.txt
- * Developed by email@recomponent.com - redCOMPONENT.com
+ * @package    Redevent.Site
+ *
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
-function RedEventBuildRoute(&$query)
+
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Build route
+ *
+ * @param   array  &$query  query parts
+ *
+ * @return array
+ */
+function redeventBuildRoute(&$query)
 {
 	$segments = array();
 
-	if(isset($query['view']))
+	if (isset($query['view']))
 	{
 		$view = $query['view'];
 		$segments[] = $query['view'];
 		unset($query['view']);
 	}
-	else {
+	else
+	{
 		$view = '';
 	}
 
-	switch ($view) {
-
+	switch ($view)
+	{
 		case 'confirmation':
 			break;
 		case 'editevent':
-			if(isset($query['e_id']))
+			if (isset($query['e_id']))
 			{
 				$segments[] = $query['e_id'];
 				unset($query['e_id']);
-			};
-			if(isset($query['s_id']))
+			}
+
+			if (isset($query['s_id']))
 			{
 				$segments[] = $query['s_id'];
 				unset($query['s_id']);
-			};
+			}
+
 			break;
 
 		case 'editsession':
-			if(isset($query['e_id']))
+			if (isset($query['e_id']))
 			{
 				$segments[] = $query['e_id'];
 				unset($query['e_id']);
-			};
-			if(isset($query['s_id']))
+			}
+
+			if (isset($query['s_id']))
 			{
 				$segments[] = $query['s_id'];
 				unset($query['s_id']);
-			};
+			}
+
 			break;
 
 		case 'myevents':
-			if(isset($query['controller']))
+			if (isset($query['controller']))
 			{
 				$segments[] = $query['controller'];
 				unset($query['controller']);
-			};
-			if(isset($query['task']))
+			}
+
+			if (isset($query['task']))
 			{
 				$segments[] = $query['task'];
 				unset($query['task']);
-			};
+			}
+
 			break;
 
 		case 'calendar':
@@ -81,301 +98,351 @@ function RedEventBuildRoute(&$query)
 		case 'featured':
 		case 'venue':
 		case 'venues':
-			if(isset($query['id']))
+			if (isset($query['id']))
 			{
 				$segments[] = $query['id'];
 				unset($query['id']);
-			};
+			}
 
-			if(isset($query['task']))
+			if (isset($query['task']))
 			{
 				$segments[] = $query['task'];
 				unset($query['task']);
-			};
+			}
 
-			if(isset($query['returnid']))
+			if (isset($query['returnid']))
 			{
 				$segments[] = $query['returnid'];
 				unset($query['returnid']);
-			};
+			}
+
 			break;
 
 		case 'signup':
-			if(isset($query['subtype']))
+			if (isset($query['subtype']))
 			{
 				$segments[] = $query['subtype'];
 				unset($query['subtype']);
-			};
+			}
 
-			if(isset($query['task']))
+			if (isset($query['task']))
 			{
 				$segments[] = $query['task'];
 				unset($query['task']);
-			};
+			}
 
-			if(isset($query['id']))
+			if (isset($query['id']))
 			{
 				$segments[] = $query['id'];
 				unset($query['id']);
-			};
+			}
 
-			if(isset($query['xref']))
+			if (isset($query['xref']))
 			{
 				$segments[] = $query['xref'];
 				unset($query['xref']);
-			};
+			}
 
-			if(isset($query['pg']))
+			if (isset($query['pg']))
 			{
 				$segments[] = $query['pg'];
 				unset($query['pg']);
-			};
+			}
+
 			break;
 
 		case 'attendees':
-			if(isset($query['controller']))
+			if (isset($query['controller']))
 			{
 				$segments[] = $query['controller'];
 				unset($query['controller']);
-			};
-			if(isset($query['task']))
+			}
+
+			if (isset($query['task']))
 			{
 				$segments[] = $query['task'];
 				unset($query['task']);
-			};
-			if(isset($query['xref']))
-			{
-				$segments[] = $query['xref'];
-				unset($query['xref']);
-			};
-			break;
-		case 'moreinfo':
-			if(isset($query['xref']))
+			}
+
+			if (isset($query['xref']))
 			{
 				$segments[] = $query['xref'];
 				unset($query['xref']);
 			}
-			if(isset($query['tmpl']))
+
+			break;
+
+		case 'moreinfo':
+			if (isset($query['xref']))
+			{
+				$segments[] = $query['xref'];
+				unset($query['xref']);
+			}
+
+			if (isset($query['tmpl']))
 			{
 				unset($query['tmpl']);
 			}
+
 			break;
+
 		case 'week':
-			if(isset($query['week']))
+			if (isset($query['week']))
 			{
 				$segments[] = $query['week'];
 				unset($query['week']);
 			}
+
 			break;
 	}
 
 	return $segments;
 }
 
-function RedEventParseRoute($segments)
+/**
+ * Parse segments
+ *
+ * @param   array  $segments  segments
+ *
+ * @return array
+ */
+function redeventParseRoute($segments)
 {
 	$vars = array();
-	//Handle View and Identifier
-	switch($segments[0])
+
+	// Handle View and Identifier
+	switch ($segments[0])
 	{
 		case 'categoryevents':
+			$id = explode(':', $segments[1]);
+			$vars['id'] = $id[0];
+			$vars['view'] = 'categoryevents';
+
+			$count = count($segments);
+
+			if ($count > 2)
 			{
-				$id = explode(':', $segments[1]);
-				$vars['id'] = $id[0];
-				$vars['view'] = 'categoryevents';
+				$vars['task'] = $segments[2];
+			}
 
-				$count = count($segments);
-				if($count > 2) {
-					$vars['task'] = $segments[2];
-				}
-
-			} break;
+			break;
 
 		case 'venue':
-			{
-				if (isset($segments[1])) {
-					$id = explode(':', $segments[1]);
-					$vars['id'] = $id[0];
-				}
-				$vars['view'] = 'venue';
-			} break;
-
-		case 'details':
-			{
-				$vars['view'] = 'details';
-				$count = count($segments);
-				if ($count > 1)
-				{
-					$id = explode(':', $segments[1]);
-					$vars['id'] = $id[0];
-					if($count > 2) {
-						$vars['task'] = $segments[2];
-					}
-				}
-
-			} break;
-
-		case 'venueevents':
+			if (isset($segments[1]))
 			{
 				$id = explode(':', $segments[1]);
 				$vars['id'] = $id[0];
-				$vars['view'] = 'venueevents';
-				$count = count($segments);
-				if($count > 2) {
+			}
+
+			$vars['view'] = 'venue';
+
+			break;
+
+		case 'details':
+			$vars['view'] = 'details';
+			$count = count($segments);
+
+			if ($count > 1)
+			{
+				$id = explode(':', $segments[1]);
+				$vars['id'] = $id[0];
+
+				if ($count > 2)
+				{
 					$vars['task'] = $segments[2];
 				}
+			}
 
-			} break;
+			break;
+
+		case 'venueevents':
+			$id = explode(':', $segments[1]);
+			$vars['id'] = $id[0];
+			$vars['view'] = 'venueevents';
+			$count = count($segments);
+
+			if ($count > 2)
+			{
+				$vars['task'] = $segments[2];
+			}
+
+			break;
 
 		case 'editevent':
+			$count = count($segments);
+
+			$vars['view'] = 'editevent';
+
+			if ($count > 1)
 			{
-				$count = count($segments);
+				$vars['e_id'] = $segments[1];
+			}
 
-				$vars['view'] = 'editevent';
+			if ($count > 2)
+			{
+				$vars['s_id'] = $segments[2];
+			}
 
-				if ($count > 1) {
-					$vars['e_id'] = $segments[1];
-				}
-
-				if($count > 2) {
-					$vars['s_id'] = $segments[2];
-				}
-
-			} break;
+			break;
 
 		case 'editsession':
-		{
 			$count = count($segments);
 
 			$vars['view'] = 'editsession';
 
-			if ($count > 1) {
+			if ($count > 1)
+			{
 				$vars['e_id'] = $segments[1];
 			}
 
-			if($count > 2) {
+			if ($count > 2)
+			{
 				$vars['s_id'] = $segments[2];
 			}
 
-		} break;
+			break;
 
 		case 'editvenue':
+			$count = count($segments);
+
+			$vars['view'] = 'editvenue';
+
+			if ($count > 1)
 			{
-				$count = count($segments);
+				$vars['id'] = $segments[1];
+			}
 
-				$vars['view'] = 'editvenue';
+			if ($count > 2)
+			{
+				$vars['returnid'] = $segments[2];
+			}
 
-				if($count > 1) {
-					$vars['id'] = $segments[1];
-				}
-				if($count > 2) {
-					$vars['returnid'] = $segments[2];
-				}
-
-			} break;
+			break;
 
 		case 'simplelist':
+			$vars['view'] = 'simplelist';
+
+			$count = count($segments);
+
+			if ($count == 2)
 			{
-				$vars['view'] = 'simplelist';
+				$vars['task'] = $segments[1];
+			}
 
-				$count = count($segments);
-				if($count == 2) {
-					$vars['task'] = $segments[1];
-				}
-
-			} break;
+			break;
 
 		case 'categoriesdetailed':
+			$vars['view'] = 'categoriesdetailed';
+
+			$count = count($segments);
+
+			if ($count == 2)
 			{
-				$vars['view'] = 'categoriesdetailed';
+				$vars['task'] = $segments[1];
+			}
 
-				$count = count($segments);
-				if($count == 2) {
-					$vars['task'] = $segments[1];
-				}
-
-			} break;
+			break;
 
 		case 'categories':
+			$vars['view'] = 'categories';
+
+			$count = count($segments);
+
+			if ($count == 2)
 			{
-				$vars['view'] = 'categories';
+				$vars['task'] = $segments[1];
+			}
 
-				$count = count($segments);
-				if($count == 2) {
-					$vars['task'] = $segments[1];
-				}
-
-			} break;
+			break;
 
 		case 'venues':
+			$vars['view'] = 'venues';
+
+			$count = count($segments);
+
+			if ($count == 2)
 			{
-				$vars['view'] = 'venues';
+				$vars['task'] = $segments[1];
+			}
 
-				$count = count($segments);
-				if($count == 2) {
-					$vars['task'] = $segments[1];
-				}
-
-			} break;
+			break;
 
 		case 'day':
+			$vars['view'] = 'day';
+
+			$count = count($segments);
+
+			if ($count == 2)
 			{
-				$vars['view'] = 'day';
+				$vars['id'] = $segments[1];
+			}
 
-				$count = count($segments);
-				if($count == 2) {
-					$vars['id'] = $segments[1];
-				}
-
-			} break;
+			break;
 
 		case 'upcomingvenueevents':
+			$vars['view'] = 'upcomingvenueevents';
+
+			$count = count($segments);
+
+			if ($count == 2)
 			{
-				$vars['view'] = 'upcomingvenueevents';
+				$vars['id'] = $segments[1];
+			}
 
-				$count = count($segments);
-				if($count == 2) {
-					$vars['id'] = $segments[1];
-				}
-
-			} break;
+			break;
 
 		case 'attendees':
+			$vars['view'] = 'attendees';
+
+			$count = count($segments);
+
+			if ($count > 1)
 			{
-				$vars['view'] = 'attendees';
+				$vars['controller'] = $segments[1];
+			}
 
-				$count = count($segments);
-				if($count > 1) {
-					$vars['controller'] = $segments[1];
-				}
-				if($count > 2) {
-					$vars['task'] = $segments[2];
-				}
-				if($count > 3) {
-					$vars['xref'] = $segments[3];
-				}
+			if ($count > 2)
+			{
+				$vars['task'] = $segments[2];
+			}
 
-			} break;
+			if ($count > 3)
+			{
+				$vars['xref'] = $segments[3];
+			}
+
+			break;
 
 		case 'signup':
 			$vars['view'] = 'signup';
 
 			$count = count($segments);
-			if($count > 1) {
+
+			if ($count > 1)
+			{
 				$vars['subtype'] = $segments[1];
 			}
-			if($count > 2) {
+
+			if ($count > 2)
+			{
 				$vars['task'] = $segments[2];
 			}
-			if($count > 3) {
+
+			if ($count > 3)
+			{
 				$vars['id'] = $segments[3];
 			}
-			if($count > 4) {
+
+			if ($count > 4)
+			{
 				$vars['xref'] = $segments[4];
 			}
-			if($count > 5) {
+
+			if ($count > 5)
+			{
 				$vars['pg'] = $segments[5];
 			}
+
 			break;
 
 		case 'moreinfo':
@@ -416,15 +483,6 @@ function RedEventParseRoute($segments)
 		case 'featured':
 			$vars['view'] = $segments[0];
 			break;
-
-			//    case 'cregistration':
-			//    	$vars['controller'] = $segments[0];
-			//    	break;
-
-			//		default:
-			//      $vars['view'] = $segments[0];
-			//
-			//			break;
 	}
 
 	return $vars;

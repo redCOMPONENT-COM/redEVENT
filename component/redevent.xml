@@ -34,7 +34,7 @@
 	<files folder="site">
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
-		<filename>LICENSE.php</filename>
+		<filename>LICENSE.txt</filename>
 		<filename>redevent.php</filename>
 		<filename>router.php</filename>
 		<folder>assets</folder>
@@ -42,7 +42,6 @@
 		<folder>controllers</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>
-        <folder>meta_ext</folder>
 		<folder>models</folder>
 		<folder>sef_ext</folder>
 		<folder>views</folder>

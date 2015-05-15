@@ -8,23 +8,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
-
 /**
  * Redevent Component Controller
  *
- * @package    Joomla
- * @subpackage redEVENT
- * @since      0.9
+ * @package  Redevent.Site
+ * @since    0.9
  */
 class RedeventController extends RedeventControllerFront
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
-	 *                        Recognized key values include 'name', 'default_task', 'model_path', and
-	 *                        'view_path' (this list is not meant to be comprehensive).
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 * Recognized key values include 'name', 'default_task', 'model_path', and
+	 * 'view_path' (this list is not meant to be comprehensive).
+	 *
+	 * @since   11.1
 	 */
 	public function __construct($config = array())
 	{
@@ -38,31 +37,22 @@ class RedeventController extends RedeventControllerFront
 	/**
 	 * first step in unreg process by email
 	 *
+	 * @return void
 	 */
-	function cancelreg()
+	public function cancelreg()
 	{
 		$xref = JRequest::getInt('xref');
+
 		if (!RedeventHelper::canUnregister($xref))
 		{
 			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
+
 			return;
 		}
 
-		// display the unreg form confirmation
+		// Display the unreg form confirmation
 		JRequest::setVar('view', 'registration');
 		JRequest::setVar('layout', 'cancel');
-		parent::display();
-	}
-
-	/**
-	 * Display the select venue modal popup
-	 *
-	 * @since 0.9
-	 */
-	function selectvenue()
-	{
-		JRequest::setVar('view', 'editevent');
-		JRequest::setVar('layout', 'selectvenue');
 
 		parent::display();
 	}
@@ -113,7 +103,6 @@ class RedeventController extends RedeventControllerFront
 		}
 	}
 
-
 	/**
 	 * Delete a session
 	 *
@@ -146,7 +135,12 @@ class RedeventController extends RedeventControllerFront
 		}
 	}
 
-	function insertevent()
+	/**
+	 * Used by editor-xtd plugin
+	 *
+	 * @return void
+	 */
+	public function insertevent()
 	{
 		JRequest::setVar('view', 'simplelist');
 		JRequest::setVar('layout', 'editors-xtd');
@@ -157,14 +151,19 @@ class RedeventController extends RedeventControllerFront
 
 	/**
 	 * send reminder emails
+	 *
+	 * @return void
+	 *
+	 * @TODO: needs a layout
 	 */
-	function reminder()
+	public function reminder()
 	{
 		jimport('joomla.filesystem.file');
 		$app = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
-		$file = JPATH_COMPONENT_SITE . DS . 'reminder.txt';
+		$file = JPATH_COMPONENT_SITE . '/reminder.txt';
+
 		if (JFile::exists($file))
 		{
 			$date = (int) JFile::read($file);
@@ -174,11 +173,13 @@ class RedeventController extends RedeventControllerFront
 			$date = 0;
 		}
 
-		// only run this once a day
+		// Only run this once a day
 		echo sprintf("last update on %s<br/>", strftime('%Y-%m-%d %H:%M', $date));
+
 		if (time() - $date < 3600 * 23.9 && !JRequest::getVar('force', 0))
 		{
 			echo "reminder sent less the 24 hours ago<br/>";
+
 			return;
 		}
 
@@ -201,21 +202,23 @@ class RedeventController extends RedeventControllerFront
 			{
 				echo "sending reminder for event: " . RedeventHelper::getSessionFullTitle($event) . "<br>";
 
-				$tags = new RedeventTags();
+				$tags = new RedeventTags;
 				$tags->setXref($event->id);
 
-				// get attendees
+				// Get attendees
 				$attendees = $model->getAttendeesEmails($event->id, $params->get('reminder_include_waiting', 1));
+
 				if (!$attendees)
 				{
 					continue;
 				}
+
 				foreach ($attendees as $sid => $a)
 				{
 					$msubject = $tags->ReplaceTags($subject, array('sids' => array($sid)));
 					$mbody = '<html><body>' . $tags->ReplaceTags($body) . '</body></html>';
 
-					// convert urls
+					// Convert urls
 					$mbody = RedeventHelperOutput::ImgRelAbs($mbody);
 
 					$mailer->setSubject($msubject);
@@ -233,7 +236,7 @@ class RedeventController extends RedeventControllerFront
 			echo 'No events for this reminder interval<br/>';
 		}
 
-		// update file
+		// Update file
 		JFile::write($file, time());
 	}
 
@@ -277,52 +280,17 @@ class RedeventController extends RedeventControllerFront
 		}
 
 		fclose($fd);
+
 		return;
 	}
 
 	/**
-	 * Delete attachment
+	 * Task handler
 	 *
-	 * @return true on sucess
-	 * @access private
-	 * @since  1.1
+	 * @return void
 	 */
-	function ajaxattachremove()
-	{
-		$mainframe = JFactory::getApplication();
-		$id = JRequest::getVar('id', 0, 'request', 'int');
-
-		$helper = new RedeventHelperAttachment;
-		$res = $helper->remove($id);
-
-		if (!$res)
-		{
-			echo 0;
-			$mainframe->close();
-		}
-
-		$cache = JFactory::getCache('com_redevent');
-		$cache->clean();
-
-		echo 1;
-		$mainframe->close();
-	}
-
-	function debugrel()
-	{
-		$image = JHTML::image('components/com_redevent/assets/images/calendar_edit.png', 'blabla');
-		echo ELoutput::ImgRelAbs($image);
-		exit;
-	}
-
 	public function registrationexpiration()
 	{
 		RedeventHelper::registrationexpiration();
-	}
-
-	public function dbgajax()
-	{
-		echo 'test';
-		JFactory::getApplication()->close();
 	}
 }

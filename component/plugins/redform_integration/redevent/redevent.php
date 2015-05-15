@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    Redevent.integration
- * @copyright  redEVENT (C) 2008-2013 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @copyright  redEVENT (C) 2008-2015 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
@@ -19,7 +19,7 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
  * @package  Redevent.integration
  * @since    2.5
  */
-class plgRedform_integrationRedevent extends JPlugin
+class PlgRedform_integrationRedevent extends JPlugin
 {
 	private $rfcore;
 

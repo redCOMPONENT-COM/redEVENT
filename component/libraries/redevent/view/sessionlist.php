@@ -142,26 +142,34 @@ abstract class RedeventViewSessionlist extends RedeventViewFront
 		// Category filter
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY')));
 		$options = array_merge($options, $this->get('CategoriesOptions'));
-		$lists['categoryfilter'] = JHTML::_('select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_category);
+		$lists['categoryfilter'] = JHTML::_(
+			'select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_category
+		);
 
 		// Venue filter
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE')));
 		$options = array_merge($options, $this->get('VenuesOptions'));
-		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue);
+		$lists['venuefilter'] = JHTML::_(
+			'select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue
+		);
 
 		// Events filter
 		if ($params->get('lists_filter_event', 0))
 		{
 			$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT')));
 			$options = array_merge($options, $this->get('EventsOptions'));
-			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event);
+			$lists['eventfilter'] = JHTML::_(
+				'select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event
+			);
 		}
 
 		$vcatoptions = array();
 		$vcatoptions[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_venue_category'));
 		$vcatoptions = array_merge($vcatoptions, RedeventHelper::getVenuesCatOptions());
 		$selectedcats = ($filter_venuecategory) ? array($filter_venuecategory) : array();
-		$lists['vcategories'] =  JHTML::_('select.genericlist', $vcatoptions, 'filter_venuecategory', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
+		$lists['vcategories'] = JHTML::_(
+			'select.genericlist', $vcatoptions, 'filter_venuecategory', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats
+		);
 		unset($catoptions);
 
 		// Country filter

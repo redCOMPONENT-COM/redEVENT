@@ -23,7 +23,6 @@
 
 defined('_JEXEC') or die('');
 
-
 /**
  * Josetta! category translation Plugin helper
  *
@@ -38,9 +37,9 @@ abstract class JosettaReCategoryHelper
 	 *
 	 * @var    array
 	 */
-	protected static $_categoriesOptionsPerLanguage = array();
+	protected static $categoriesOptionsPerLanguage = array();
 
-	protected static $_categoriesDataPerLanguage = array();
+	protected static $categoriesDataPerLanguage = array();
 
 	/**
 	 * Returns a select list from the redevent categories
@@ -54,7 +53,7 @@ abstract class JosettaReCategoryHelper
 	{
 		$hash = md5(serialize($config));
 
-		if (!isset(self::$_categoriesOptionsPerLanguage[$hash]))
+		if (!isset(self::$categoriesOptionsPerLanguage[$hash]))
 		{
 			$config = (array) $config;
 
@@ -70,15 +69,15 @@ abstract class JosettaReCategoryHelper
 			// Indent cat list, for easier reading
 			$items = self::indentCategories($items);
 
-			self::$_categoriesOptionsPerLanguage[$hash] = array();
+			self::$categoriesOptionsPerLanguage[$hash] = array();
 
 			foreach ($items as &$item)
 			{
-				self::$_categoriesOptionsPerLanguage[$hash][] = JHtml::_('select.option', $item->id, str_replace('<sup>|_</sup>', '', $item->treename));
+				self::$categoriesOptionsPerLanguage[$hash][] = JHtml::_('select.option', $item->id, str_replace('<sup>|_</sup>', '', $item->treename));
 			}
 		}
 
-		return self::$_categoriesOptionsPerLanguage[$hash];
+		return self::$categoriesOptionsPerLanguage[$hash];
 	}
 
 	/**
@@ -86,14 +85,15 @@ abstract class JosettaReCategoryHelper
 	 *
 	 * @param   array  $config  An array of configuration options. By default, only
 	 *                              published and unpublished categories are returned.
+	 * @param   int    $index   index
 	 *
 	 * @return  array
 	 */
-	public static function getCategoriesPerLanguage( $config = array('filter.published' => array(0, 1), 'filter.languages' => array()), $index = null)
+	public static function getCategoriesPerLanguage($config = array('filter.published' => array(0, 1), 'filter.languages' => array()), $index = null)
 	{
 		$hash = md5(serialize($config));
 
-		if (!isset(self::$_categoriesDataPerLanguage[$hash]))
+		if (!isset(self::$categoriesDataPerLanguage[$hash]))
 		{
 			$config = (array) $config;
 			$db      = JFactory::getDbo();
@@ -120,12 +120,20 @@ abstract class JosettaReCategoryHelper
 				$item->title = $item->catname;
 			}
 
-			self::$_categoriesDataPerLanguage[$hash] = $items;
+			self::$categoriesDataPerLanguage[$hash] = $items;
 		}
 
-		return self::$_categoriesDataPerLanguage[$hash];
+		return self::$categoriesDataPerLanguage[$hash];
 	}
 
+	/**
+	 * Indent cats
+	 *
+	 * @param   array  &$rows  rows
+	 * @param   int    $root   root category
+	 *
+	 * @return mixed
+	 */
 	public static function indentCategories(& $rows, $root = 0)
 	{
 		$children = array ();
