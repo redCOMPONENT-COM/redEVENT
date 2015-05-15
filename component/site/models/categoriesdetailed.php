@@ -1,36 +1,17 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * Redevent Model Categories detailed
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       0.9
+ * @package  Redevent.Site
+ * @since    0.9
  */
 class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 {
@@ -39,14 +20,14 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 	 *
 	 * @var object
 	 */
-	protected $_parent = null;
+	protected $parent = null;
 
 	/**
 	 * Categories data array
 	 *
 	 * @var integer
 	 */
-	protected $_categories = null;
+	protected $categories = null;
 
 	/**
 	 * Constructor
@@ -94,8 +75,8 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 		}
 		else
 		{
-			$this->_parent = $obj;
-			$this->_categories = null;
+			$this->parent = $obj;
+			$this->categories = null;
 		}
 
 		return true;
@@ -115,16 +96,16 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 		$elsettings = RedeventHelper::config();
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_categories))
+		if (empty($this->categories))
 		{
 			$query = $this->_buildQuery();
-			$this->_categories = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$this->categories = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 
-			$count = count($this->_categories);
+			$count = count($this->categories);
 
 			for ($i = 0; $i < $count; $i++)
 			{
-				$category = $this->_categories[$i];
+				$category = $this->categories[$i];
 				$category->events = $this->_getEvents($category);
 				$category->assignedevents = $this->_getEventsTotal($category);
 
@@ -148,7 +129,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 			}
 		}
 
-		return $this->_categories;
+		return $this->categories;
 	}
 
 	/**
@@ -286,9 +267,9 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 		$query->where('c.published = 1');
 		$query->where('(c.access IN (' . $gids . '))');
 
-		if ($this->_parent)
+		if ($this->parent)
 		{
-			$query->where('c.parent_id = ' . $db->Quote($this->_parent->id));
+			$query->where('c.parent_id = ' . $db->Quote($this->parent->id));
 		}
 
 		// Optionally only get categories having events

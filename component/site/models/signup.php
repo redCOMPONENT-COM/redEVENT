@@ -1,35 +1,19 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * EventList Component Details Model
+ * Redevent Component Signup Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @TODO: group with registration model
+ *
+ * @package  Redevent.Site
+ * @since    0.9
  */
 class RedeventModelSignup extends RModel
 {
@@ -38,103 +22,110 @@ class RedeventModelSignup extends RModel
 	 *
 	 * @var array
 	 */
-	var $_details = null;
+	var $details = null;
 
 
 	/**
-	 * registeres in array
+	 * registered in array
 	 *
 	 * @var array
 	 */
-	var $_registers = null;
+	var $registers = null;
 
-	var $_xref = null;
+	var $xref = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
-		$id = JRequest::getInt('id');
-		$this->setId($id);
-		$xref = JRequest::getInt('xref');
-		$this->setXref($xref);
+		$input = JFactory::getApplication()->input;
+
+		$id = $input->getInt('id');
+		$this->setId((int) $id);
+		$xref = $input->getInt('xref');
+		$this->setXref((int) $xref);
 	}
 
 	/**
-	 * Method to set the details id
+	 * Method to set the details event id
 	 *
-	 * @access	public
-	 * @param	int	details ID number
+	 * @param   int  $id  details ID number
+	 *
+	 * @return void
 	 */
-
-	function setId($id)
+	public function setId($id)
 	{
 		// Set new details ID and wipe data
-		$this->_id			= $id;
+		$this->id = $id;
 	}
 
-	function setXref($xref)
+	/**
+	 * Method to set the session id
+	 *
+	 * @param   int  $xref  session ID number
+	 *
+	 * @return void
+	 */
+	public function setXref($xref)
 	{
 		// Set new details ID and wipe data
-		$this->_xref			= $xref;
+		$this->xref = $xref;
 	}
 
 	/**
 	 * Method to get event data for the Detailsview
 	 *
-	 * @access public
 	 * @return array
-	 * @since 0.9
 	 */
-	function getDetails( )
+	public function getDetails()
 	{
 		/*
 		 * Load the Category data
-		 */
+		*/
 		if ($this->_loadDetails())
 		{
-			$user	= JFactory::getUser();
+			$user = JFactory::getUser();
 
-	      // Is the category published?
-	      if (!count($this->_details->categories))
-	      {
-	        JError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
-	      }
+			// Is the category published?
+			if (!count($this->details->categories))
+			{
+				RedeventError::raiseError(404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED"));
+			}
 
-	      // Do we have access to any category ?
-	      $access = false;
-	      foreach ($this->_details->categories as $cat)
-	      {
-	      		if (in_array($cat->access, $user->getAuthorisedViewLevels()))
-	      		{
-	      			$access = true;
-	      			break;
-	      		}
-	      }
-	      if (!$access) {
-	      	JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
-	      }
+			// Do we have access to any category ?
+			$access = false;
 
+			foreach ($this->details->categories as $cat)
+			{
+				if (in_array($cat->access, $user->getAuthorisedViewLevels()))
+				{
+					$access = true;
+					break;
+				}
+			}
+
+			if (!$access)
+			{
+				JError::raiseError(403, JText::_("COM_REDEVENT_ALERTNOTAUTH"));
+			}
 		}
 
-		return $this->_details;
+		return $this->details;
 	}
 
 	/**
 	 * Method to load required data
 	 *
-	 * @access	private
-	 * @return	array
-	 * @since	0.9
+	 * @return    array
 	 */
-	function _loadDetails()
+	protected function _loadDetails()
 	{
-		if (empty($this->_details))
+		if (empty($this->details))
 		{
 			// Get the WHERE clause
 			$where	= $this->_buildDetailsWhere();
@@ -155,22 +146,22 @@ class RedeventModelSignup extends RModel
 					. $where
 					;
     		$this->_db->setQuery($query);
-			$this->_details = $this->_db->loadObject();
+			$this->details = $this->_db->loadObject();
 
-      if ($this->_details->did) {
+      if ($this->details->did) {
         $query =  ' SELECT c.id, c.name AS catname, c.access, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
               . ' FROM #__redevent_categories as c '
               . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
               . ' WHERE c.published = 1 '
-              . '   AND x.event_id = ' . $this->_db->Quote($this->_details->did)
+              . '   AND x.event_id = ' . $this->_db->Quote($this->details->did)
               . ' ORDER BY c.ordering'
               ;
         $this->_db->setQuery( $query );
 
-        $this->_details->categories = $this->_db->loadObjectList();
+        $this->details->categories = $this->_db->loadObjectList();
       }
-			return (boolean) $this->_details;
+			return (boolean) $this->details;
 		}
 		return true;
 	}
@@ -184,7 +175,7 @@ class RedeventModelSignup extends RModel
 	 */
 	function _buildDetailsWhere()
 	{
-		$where = ' WHERE x.id = '.$this->_xref;
+		$where = ' WHERE x.id = '.$this->xref;
 
 		return $where;
 	}
@@ -325,7 +316,7 @@ class RedeventModelSignup extends RModel
 		        . ' FROM #__redevent_event_venue_xref AS x'
             . ' INNER JOIN #__redevent_register AS r on r.xref = x.id '
 		        . ' INNER JOIN #__rwf_submitters AS s ON s.id = r.id'
-		        . ' WHERE x.id = ' . $this->_db->Quote($this->_xref)
+		        . ' WHERE x.id = ' . $this->_db->Quote($this->xref)
 		        . '   AND r.confirmed = 1'
 		        . '   AND r.cancelled = 0'
 		        ;
@@ -344,7 +335,7 @@ class RedeventModelSignup extends RModel
 	 */
 	function getRegistrationStatus()
 	{
-	  return RedeventHelper::canRegister($this->_xref);
+	  return RedeventHelper::canRegister($this->xref);
 	}
 
 	function getRegistration($submitter_id)

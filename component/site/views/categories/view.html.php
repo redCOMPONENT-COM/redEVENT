@@ -28,7 +28,7 @@ class RedeventViewCategories extends RedeventViewFront
 
 		$app = JFactory::getApplication();
 
-		$rows = $this->get('Data');
+		$rows = $this->get('Items');
 		$total = $this->get('Total');
 
 		$params = $app->getParams('com_redevent');

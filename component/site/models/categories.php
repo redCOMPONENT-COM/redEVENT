@@ -1,66 +1,26 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * Redevent Model Categories
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       0.9
+ * @package  Redevent.Site
+ * @since    0.9
  */
-class RedeventModelCategories extends RModel
+class RedeventModelCategories extends RModelList
 {
 	/**
 	 * category to use as a base for queries
 	 *
 	 * @var unknown_type
 	 */
-	protected $_parent = null;
-
-	/**
-	 * Categories data array
-	 *
-	 * @var array
-	 */
-	protected $_data = null;
-
-	/**
-	 * Categories total
-	 *
-	 * @var integer
-	 */
-	protected $_total = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	protected $_pagination = null;
+	protected $parent = null;
 
 	/**
 	 * Constructor
@@ -81,13 +41,6 @@ class RedeventModelCategories extends RModel
 			$this->setParent($params->get('parentcategory', 0));
 		}
 
-		// Get the number of events from database
-		$limit			= JRequest::getInt('limit', $params->get('cat_num'));
-		$limitstart		= JRequest::getInt('limitstart');
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
 		$this->setState('filter.language', $app->getLanguageFilter());
 	}
 
@@ -100,19 +53,20 @@ class RedeventModelCategories extends RModel
 	 */
 	public function setParent($id)
 	{
-		$sub = ' SELECT id, lft, rgt FROM #__redevent_categories WHERE id = ' . $this->_db->Quote((int) $id);
-		$this->_db->setQuery($sub);
-		$obj = $this->_db->loadObject();
+		$query = $this->_db->getQuery(true)
+			->select('id, lft, rgt')
+			->from('#__redevent_categories')
+			->where('id = ' . $this->_db->Quote((int) $id));
 
-		if (!$obj)
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObject();
+
+		if (!$res)
 		{
-			JError::raiseWarning(0, JText::_('COM_REDEVENT_PARENT_CATEGORY_NOT_FOUND'));
+			throw new RuntimeException(JText::_('COM_REDEVENT_PARENT_CATEGORY_NOT_FOUND'));
 		}
-		else
-		{
-			$this->_parent = $obj;
-			$this->_categories = null;
-		}
+
+		$this->parent = $res;
 
 		return true;
 	}
@@ -123,68 +77,32 @@ class RedeventModelCategories extends RModel
 	 * @access public
 	 * @return array
 	 */
-	public function &getData( )
+	public function getItems()
 	{
-		$elsettings = RedeventHelper::config();
-
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (!$items = parent::getItems())
 		{
-			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-
-			$k = 0;
-			$count = count($this->_data);
-
-			for ($i = 0; $i < $count; $i++)
-			{
-				$category = $this->_data[$i];
-
-				// Create target link
-				$task 	= JRequest::getWord('task');
-
-				$category->linktext = JText::_('COM_REDEVENT_SHOW_EVENTS');
-
-				$category->linktarget = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
-
-				$k = 1 - $k;
-			}
+			return $items;
 		}
 
-		return $this->_data;
-	}
-
-	/**
-	 * Total nr of Venues
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	public function getTotal()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total))
+		foreach ($items as &$item)
 		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			$item->linktext = JText::_('COM_REDEVENT_SHOW_EVENTS');
+			$item->linktarget = RedeventHelperRoute::getCategoryEventsRoute($item->slug);
 		}
 
-		return $this->_total;
+		return $items;
 	}
 
 	/**
 	 * Method to load the Categories
 	 *
-	 * @access private
 	 * @return array
 	 */
-	protected function _buildQuery()
+	protected function _getListQuery()
 	{
 		// Initialize some vars
 		$mainframe = JFactory::getApplication();
 		$params   = $mainframe->getParams('com_redevent');
-		$user		= JFactory::getUser();
-		$gid		= max($user->getAuthorisedViewLevels());
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -192,14 +110,7 @@ class RedeventModelCategories extends RModel
 		// Check archive task and ensure that only categories get selected if they contain a published/archived event
 		$task 	= JRequest::getVar('task', '', '', 'string');
 
-		if ($task == 'archive')
-		{
-			$count = 'CASE WHEN x.published = -1 THEN 1 ELSE 0 END';
-		}
-		else
-		{
-			$count = 'CASE WHEN x.published = 1 THEN 1 ELSE 0 END';
-		}
+		$count = 'CASE WHEN x.published = 1 THEN 1 ELSE 0 END';
 
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -216,19 +127,12 @@ class RedeventModelCategories extends RModel
 
 		if ($params->get('display_all_categories', 0) == 0)
 		{
-			if ($task == 'archive')
-			{
-				$query->where('x.published = -1');
-			}
-			else
-			{
-				$query->where(' x.published = 1');
-			}
+			$query->where(' x.published = 1');
 		}
 
-		if ($this->_parent)
+		if ($this->parent)
 		{
-			$query->where('c.parent_id = ' . $this->_db->Quote($this->_parent->id));
+			$query->where('c.parent_id = ' . $this->_db->Quote($this->parent->id));
 		}
 
 		$query->where('(c.access IN (' . $gids . ')) ');

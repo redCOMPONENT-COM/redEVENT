@@ -1,11 +1,10 @@
 <?php
 /**
- * @package    Redevent.Library
- * @copyright  Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**

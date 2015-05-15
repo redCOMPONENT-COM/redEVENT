@@ -1,8 +1,8 @@
 <?php
 /**
- * @package    Redevent.admin
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license    GNU/GPL, see LICENSE.php
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -23,6 +23,9 @@ class RedeventModelEditsessionnotify extends RModel
 
 	/**
 	 * Send notification
+	 *
+	 * @param   int   $sessionId  session id
+	 * @param   bool  $isNew      is new
 	 *
 	 * @return void
 	 */
@@ -129,7 +132,8 @@ class RedeventModelEditsessionnotify extends RModel
 		{
 			$usermail = JFactory::getMailer();
 
-			$state 	= $session->published ? JText::sprintf('COM_REDEVENT_USER_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_EVENT_UNPUBLISHED');
+			$state 	= $session->published ?
+				JText::sprintf('COM_REDEVENT_USER_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_EVENT_UNPUBLISHED');
 
 			$date = $this->formatDate($session);
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * @package    Redevent.admin
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license    GNU/GPL, see LICENSE.php
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * RedEvent Model Session
  *
- * @package  Redevent.admin
+ * @package  Redevent.Site
  * @since    0.9
  */
 class RedeventModelEditsession extends RModelAdmin
@@ -265,7 +265,6 @@ class RedeventModelEditsession extends RModelAdmin
 		$return = $app->input->get('return', null, 'base64');
 		$this->setState('return_page', base64_decode($return));
 	}
-
 
 	/**
 	 * Save recurrence data

@@ -1,39 +1,18 @@
 <?php
 /**
- * @version 1.0 $Id: eventlist.php 1180 2009-10-13 18:43:13Z julien $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
-defined('_JEXEC') or die ('Restricted access');
-
-jimport('joomla.application.component.model');
-jimport('joomla.html.pagination');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Redevents Component my events Model
  *
- * @package Joomla
- * @subpackage Redevent
- * @since   2.0
-*/
+ * @package  Redevent.Site
+ * @since    2.0
+ */
 class RedeventModelMyevents extends RedeventModelBaseeventlist
 {
 	/**
@@ -41,44 +20,44 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 *
 	 * @var array
 	 */
-	protected $_events = null;
+	protected $events = null;
+
 	/**
 	 * Events total
 	 *
 	 * @var integer
 	 */
-	protected $_total_events = null;
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	protected $_pagination_events = null;
-
-	protected $_venues = null;
-
-	protected $_total_venues = null;
+	protected $total_events = null;
 
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
-	protected $_pagination_venues = null;
+	protected $pagination_events = null;
 
+	protected $venues = null;
 
-	protected $_attending = null;
+	protected $total_venues = null;
 
-	protected $_total_attending = null;
+	/**
+	 * Pagination object
+	 *
+	 * @var object
+	 */
+	protected $pagination_venues = null;
 
-	protected $_pagination_attending = null;
+	protected $attending = null;
 
-	protected $_attended = null;
+	protected $total_attending = null;
 
-	protected $_total_attended = null;
+	protected $pagination_attending = null;
 
-	protected $_pagination_attended = null;
+	protected $attended = null;
 
+	protected $total_attended = null;
+
+	protected $pagination_attended = null;
 
 	/**
 	 * Constructor
@@ -94,7 +73,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		// Get the paramaters of the active menu item
 		$params = $mainframe->getParams('com_redevent');
 
-		//get the number of events from database
+		// Get the number of events from database
 		$limit 					= $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart_events 		= $mainframe->input->get('limitstart', 0, '', 'int');
 		$limitstart_venues 		= $mainframe->input->get('limitstart_venues', 0, '', 'int');
@@ -115,7 +94,6 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Method to get the Events
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getEvents()
@@ -123,270 +101,266 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_events))
+		if (empty($this->events))
 		{
 			$query = $this->_buildQueryEvents();
 			$pagination = $this->getEventsPagination();
 
 			if ($pop)
 			{
-				$this->_events = $this->_getList($query);
+				$this->events = $this->_getList($query);
 			}
 			else
 			{
-				$this->_events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+				$this->events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			}
 
-			$this->_events = $this->_categories($this->_events);
-			$this->_events = $this->_getPlacesLeft($this->_events);
+			$this->events = $this->_categories($this->events);
+			$this->events = $this->_getPlacesLeft($this->events);
 		}
 
-		return $this->_events;
+		return $this->events;
 	}
 
 	/**
 	 * Method to get the Events user is attending
 	 *
-	 * @access public
 	 * @return array
 	 */
-	public function & getAttending()
+	public function getAttending()
 	{
 		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_attending))
+		if (empty($this->attending))
 		{
 			$query = $this->_buildQueryAttending();
 			$pagination = $this->getAttendingPagination();
 
 			if ($pop)
 			{
-				$this->_attending = $this->_getList($query);
+				$this->attending = $this->_getList($query);
 			}
 			else
 			{
-				$this->_attending = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+				$this->attending = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			}
 		}
 
-		$this->_attending = $this->_categories($this->_attending);
-		$this->_attending = $this->_getPlacesLeft($this->_attending);
-		$this->_attending = $this->_getPrices($this->_attending);
+		$this->attending = $this->_categories($this->attending);
+		$this->attending = $this->_getPlacesLeft($this->attending);
+		$this->attending = $this->_getPrices($this->attending);
 
-		return $this->_attending;
+		return $this->attending;
 	}
 
 	/**
 	 * Method to get the Events user attended
 	 *
-	 * @access public
 	 * @return array
 	 */
-	public function & getAttended()
+	public function getAttended()
 	{
 		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_attended))
+		if (empty($this->attended))
 		{
 			$query = $this->_buildQueryAttended();
 			$pagination = $this->getAttendedPagination();
 
 			if ($pop)
 			{
-				$this->_attended = $this->_getList($query);
+				$this->attended = $this->_getList($query);
 			}
 			else
 			{
-				$this->_attended = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+				$this->attended = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			}
 		}
 
-		$this->_attended = $this->_categories($this->_attended);
-		$this->_attended = $this->_getPlacesLeft($this->_attended);
-		$this->_attended = $this->_getPrices($this->_attended);
+		$this->attended = $this->_categories($this->attended);
+		$this->attended = $this->_getPlacesLeft($this->attended);
+		$this->attended = $this->_getPrices($this->attended);
 
-		return $this->_attended;
+		return $this->attended;
 	}
 
 	/**
 	 * Method to get the Venues
 	 *
-	 * @access public
 	 * @return array
 	 */
-	public function & getVenues()
+	public function getVenues()
 	{
 		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_venues))
+		if (empty($this->venues))
 		{
 			$query = $this->_buildQueryVenues();
 			$pagination = $this->getVenuesPagination();
 
 			if ($pop)
 			{
-				$this->_venues = $this->_getList($query);
+				$this->venues = $this->_getList($query);
 			}
 			else
 			{
-				$this->_venues = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+				$this->venues = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			}
 		}
 
-		return $this->_venues;
+		return $this->venues;
 	}
 
 	/**
 	 * Total nr of events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getTotalEvents()
 	{
 		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total_events))
+		if (empty($this->total_events))
 		{
 			$query = $this->_buildQueryEvents();
-			$this->_total_events = $this->_getListCount($query);
+			$this->total_events = $this->_getListCount($query);
 		}
 
-		return $this->_total_events;
+		return $this->total_events;
 	}
 
 	/**
 	 * Total nr of events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getTotalAttending()
 	{
 		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total_attending))
+		if (empty($this->total_attending))
 		{
 			$query = $this->_buildQueryAttending();
-			$this->_total_attending = $this->_getListCount($query);
+			$this->total_attending = $this->_getListCount($query);
 		}
 
-		return $this->_total_attending;
+		return $this->total_attending;
 	}
 
 	/**
 	 * Total nr of events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getTotalAttended()
 	{
 		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total_attended))
+		if (empty($this->total_attended))
 		{
 			$query = $this->_buildQueryAttended();
-			$this->_total_attended = $this->_getListCount($query);
+			$this->total_attended = $this->_getListCount($query);
 		}
 
-		return $this->_total_attended;
+		return $this->total_attended;
 	}
 
 	/**
 	 * Total nr of events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getTotalVenues()
 	{
 		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total_venues))
+		if (empty($this->total_venues))
 		{
 			$query = $this->_buildQueryVenues();
-			$this->_total_venues = $this->_getListCount($query);
+			$this->total_venues = $this->_getListCount($query);
 		}
 
-		return $this->_total_venues;
+		return $this->total_venues;
 	}
 
 	/**
 	 * Method to get a pagination object for the events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getEventsPagination()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination_events))
+		if (empty($this->pagination_events))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_events = new RedeventAjaxPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
+			$this->pagination_events = new RedeventAjaxPagination(
+				$this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit')
+			);
 		}
 
-		return $this->_pagination_events;
+		return $this->pagination_events;
 	}
 
 	/**
 	 * Method to get a pagination object for the venues
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getVenuesPagination()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination_venues))
+		if (empty($this->pagination_venues))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_venues = new RedeventAjaxPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
+			$this->pagination_venues = new RedeventAjaxPagination(
+				$this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit')
+			);
 		}
 
-		return $this->_pagination_venues;
+		return $this->pagination_venues;
 	}
 
 	/**
 	 * Method to get a pagination object for the attending events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getAttendingPagination()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination_attending))
+		if (empty($this->pagination_attending))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_attending = new RedeventAjaxPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
+			$this->pagination_attending = new RedeventAjaxPagination(
+				$this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit')
+			);
 		}
 
-		return $this->_pagination_attending;
+		return $this->pagination_attending;
 	}
 
 	/**
 	 * Method to get a pagination object for the attended events
 	 *
-	 * @access public
 	 * @return integer
 	 */
 	public function getAttendedPagination()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination_attended))
+		if (empty($this->pagination_attended))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_attended = new RedeventAjaxPagination($this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit'));
+			$this->pagination_attended = new RedeventAjaxPagination(
+				$this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit')
+			);
 		}
 
-		return $this->_pagination_attended;
+		return $this->pagination_attended;
 	}
 
 	/**
 	 * Build the query
 	 *
-	 * @access private
 	 * @return string
 	 */
 	protected function _buildQueryEvents()
@@ -468,7 +442,6 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Build the query
 	 *
-	 * @access private
 	 * @return string
 	 */
 	protected function _buildQueryVenues()
@@ -499,7 +472,8 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Build the order clause
 	 *
-	 * @access private
+	 * @param   JDatabaseQuery  $query  query
+	 *
 	 * @return string
 	 */
 	protected function _buildEventListOrderBy($query)
@@ -507,7 +481,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$filter_order = $this->getState('filter_order');
 		$filter_order_dir = $this->getState('filter_order_dir');
 
-		$query->order($filter_order.' '.$filter_order_dir.', x.dates, x.times');
+		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
 
 		return $query;
 	}
@@ -608,15 +582,11 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Build the where clause
 	 *
-	 * @access private
 	 * @return string
 	 */
 	protected function _buildEventsOptionsWhere()
 	{
 		$mainframe = JFactory::getApplication();
-
-		$user = JFactory::getUser();
-		$gid = (int) max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
 		$params = $mainframe->getParams();
@@ -645,7 +615,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 
 			if ($xrefs && count($xrefs))
 			{
-				$where[] = ' x.id IN ('.implode(",", $xrefs).')';
+				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
 			}
 			else
 			{
@@ -674,33 +644,33 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 
 			if ($filter)
 			{
-				// clean filter variables
+				// Clean filter variables
 				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%'.$this->_db->escape($filter, true).'%', false);
+				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
 				$filter_type = JString::strtolower($filter_type);
 
-				switch($filter_type)
+				switch ($filter_type)
 				{
 					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
+						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
 						break;
 
 					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
+						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
 						break;
 
 					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE '.$filter;
+						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
 						break;
 
 					case 'type':
-						$where[] = ' LOWER( c.name ) LIKE '.$filter;
+						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
 						break;
 				}
 			}
 		}
 
-		$where = ' WHERE '. implode(' AND ', $where);
+		$where = ' WHERE ' . implode(' AND ', $where);
 
 		return $where;
 	}
@@ -708,7 +678,8 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Build the where clause
 	 *
-	 * @access private
+	 * @param   JDatabaseQuery  $query  query object
+	 *
 	 * @return string
 	 */
 	protected function _buildEventListAttendingWhere($query)
@@ -721,8 +692,8 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$now = strftime('%Y-%m-%d %H:%M');
 		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
-		// then if the user is attending the event
-		$query->where('r.uid = '.$this->_db->Quote($user->id));
+		// Then if the user is attending the event
+		$query->where('r.uid = ' . $this->_db->Quote($user->id));
 
 		return $query;
 	}
@@ -730,7 +701,8 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Build the where clause
 	 *
-	 * @access private
+	 * @param   JDatabaseQuery  $query  query object
+	 *
 	 * @return string
 	 */
 	protected function _buildEventListAttendedWhere($query)
@@ -743,18 +715,23 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$now = strftime('%Y-%m-%d %H:%M');
 		$query->where('x.dates > 0 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) <= ' . $this->_db->Quote($now));
 
-		// then if the user is attending the event
-		$query->where('r.uid = '.$this->_db->Quote($user->id));
+		// Then if the user is attending the event
+		$query->where('r.uid = ' . $this->_db->Quote($user->id));
 
 		return $query;
 	}
 
+	/**
+	 * Get events as options
+	 *
+	 * @return mixed
+	 */
 	public function getEventsOptions()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where = $this->_buildEventsOptionsWhere();
 
-		//Get Events from Database
+		// Get Events from Database
 		$query = ' SELECT a.id AS value, a.title as text '
 		. ' FROM #__redevent_event_venue_xref AS x'
 		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
@@ -763,8 +740,8 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 		. $where
 		. ' GROUP BY (a.id) '
-		. ' ORDER BY a.title '
-		;
+		. ' ORDER BY a.title ';
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 
