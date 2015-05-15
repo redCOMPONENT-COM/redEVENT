@@ -17,10 +17,12 @@ $data = $displayData;
 		$properties = $data->getInputProperties();
 		$properties['type'] = 'hidden';
 		$properties['value'] = $option->value;
+		$properties['price'] = $option->price;
+		$properties['vat'] = $option->vat;
 		$properties['readonly'] = 'readonly';
 	?>
 	<input <?php echo $data->propertiesToString($properties); ?>/>
-	<?php echo $option->currency . ' ' . $option->value; ?>
+	<?php echo $option->currency . ' ' . $option->price; ?>
 <?php else: ?>
 	<div class="fieldoptions">
 
