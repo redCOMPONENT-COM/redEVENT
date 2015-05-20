@@ -6,22 +6,16 @@
 		</message>
 	</layout>
 
-	<fields name="request">
-		<fieldset name="request"
-				  addfieldpath="/libraries/redevent/form/fields">
-			<field name="filter_category" type="recategorylist"
+	<fields name="params" addfieldpath="/libraries/redevent/form/fields">
+		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="category" type="recategorylist"
 				   default=""
 				   label="COM_REDEVENT_SELECT_CATEGORY"
 				   description="COM_REDEVENT_SELECT_CATEGORY_DESC"
 				   required="false"
-			>
+					>
 				<option value="">JSELECT</option>
 			</field>
-		</fieldset>
-	</fields>
-
-	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
-		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 			<field name="timelineDateFrom"
 				   type="calendar"
 				   label="COM_REDEVENT_XML_VIEW_TIMELINE_DATEFROM"

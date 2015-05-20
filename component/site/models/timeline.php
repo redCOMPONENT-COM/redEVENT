@@ -42,8 +42,15 @@ class RedeventModelTimeline extends RedeventModelBaseeventlist
 	{
 		parent::__construct();
 
+		$app = JFactory::getApplication();
+
+		// Get the paramaters of the active menu item
+		$params = $app->getParams('com_redevent');
+
 		// Get the filter request variables
 		$this->setState('filter_venue',  JFactory::getApplication()->input->getInt('id'));
+
+		$this->setState('filter_category', $app->input->get('filter_category', $params->get('category', 0), 'int'));
 	}
 
 	/**
