@@ -85,10 +85,17 @@ $shHomePageFlag = false;
 $shHomePageFlag = !$shHomePageFlag ? shIsHomepage($string) : $shHomePageFlag;
 
 if (!$shHomePageFlag)
-{ // we may have found that this is homepage, so we msut return an empty string
+{
+	// we may have found that this is homepage, so we msut return an empty string
 
-	if (isset($task) && $task == 'createpdfemail') $dosef = false;
-	else if (isset($page) && $page == 'print') $dosef = false;
+	if (isset($task) && $task == 'createpdfemail')
+	{
+		$dosef = false;
+	}
+	elseif (isset($page) && $page == 'print')
+	{
+		$dosef = false;
+	}
 	else
 	{
 
@@ -99,6 +106,7 @@ if (!$shHomePageFlag)
 		$db = JFactory::getDBO();
 
 		$Itemid = isset($Itemid) ? @$Itemid : null;
+
 		if (!empty($Itemid))
 		{
 			$menu = $app->getMenu();
@@ -109,62 +117,43 @@ if (!$shHomePageFlag)
 			$menuparams = null;
 		}
 
-		if (empty($Itemid))
-		{
-			if ($sefConfig->shInsertGlobalItemidIfNone && !empty($shCurrentItemid))
-			{
-				$string .= '&Itemid=' . $shCurrentItemid;; // append current Itemid
+		if (!preg_match( '/Itemid=[0-9]+/iu', $string)) { // if no Itemid in non-sef URL
+			// V 1.2.4.t moved back here
+			if ($sefConfig->shInsertGlobalItemidIfNone && !empty($shCurrentItemid)) {
+				$string .= '&Itemid='.$shCurrentItemid; ;  // append current Itemid
 				$Itemid = $shCurrentItemid;
 				shAddToGETVarsList('Itemid', $Itemid); // V 1.2.4.m
 			}
 
-			if ($sefConfig->shInsertTitleIfNoItemid || $sefConfig->shAlwaysInsertMenuTitle || $reParams->get('sh404sef_always_include_menu_title', 0))
-			{
+			if ($sefConfig->shInsertTitleIfNoItemid)
 				$title[] = $sefConfig->shDefaultMenuItemName ?
-					$sefConfig->shDefaultMenuItemName :
-					getMenuTitle($option, (isset($view) ? @$view : null), $shCurrentItemid, null, $shLangName); // V 1.2.4.q added forced language
-			}
-		}
-
-		if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid)))
-		{
-			$shItemidString = _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX . $sefConfig->replacement
-				. (empty($Itemid) ? $shCurrentItemid : $Itemid);
-		}
-
-		if (!empty($Itemid))
-		{
-			if ($sefConfig->shAlwaysInsertMenuTitle || $reParams->get('sh404sef_always_include_menu_title', 0))
-			{
+					$sefConfig->shDefaultMenuItemName : getMenuTitle($option, (isset($view) ? $view : null), $shCurrentItemid, null, $shLangName );  // V 1.2.4.q added forced language
+			$shItemidString = '';
+			if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid)))
+				$shItemidString = JText::_('COM_SH404SEF_ALWAYS_INSERT_ITEMID_PREFIX').$sefConfig->replacement
+					.(empty($Itemid)? $shCurrentItemid :$Itemid);
+		} else {  // if Itemid in non-sef URL
+			$shItemidString = $sefConfig->shAlwaysInsertItemid ?
+				JText::_('COM_SH404SEF_ALWAYS_INSERT_ITEMID_PREFIX').$sefConfig->replacement.$Itemid
+				: '';
+			if ($sefConfig->shAlwaysInsertMenuTitle){
 				//global $Itemid; V 1.2.4.g we want the string option, not current page !
 				if ($sefConfig->shDefaultMenuItemName)
-				{
-					$title[] = $sefConfig->shDefaultMenuItemName; // V 1.2.4.q added force language
-				}
-				else if ($menuTitle = getMenuTitle($option, (isset($view) ? @$view : null), $Itemid, '', $shLangName))
-				{
-					//echo 'Menutitle = '.$menuTitle.'<br />';
+					$title[] = $sefConfig->shDefaultMenuItemName;// V 1.2.4.q added force language
+				elseif ($menuTitle = getMenuTitle($option, (isset($view) ? $view : null), $Itemid, '',$shLangName )) {
 					if ($menuTitle != '/') $title[] = $menuTitle;
 				}
 			}
 		}
 
-		if (!empty($Itemid))
-			shRemoveFromGETVarsList('Itemid');
-
-		/* Remove some default values */
-//  shRemoveFromGETVarsList('option');
-//  shRemoveFromGETVarsList('lang');
-//  shRemoveFromGETVarsList('Itemid');
-//  shRemoveFromGETVarsList('limit');
-//  shRemoveFromGETVarsList('eventid');
-//  shRemoveFromGETVarsList('form_id');
-//  shRemoveFromGETVarsList('tmpl');
-//  shRemoveFromGETVarsList('pop');
-//  shRemoveFromGETVarsList('type');
-
 		shRemoveFromGETVarsList('option');
 		shRemoveFromGETVarsList('lang');
+
+		if (!empty($Itemid))
+		{
+			shRemoveFromGETVarsList('Itemid');
+		}
+
 		// optional removal of limit and limitstart
 		if (!empty($limit)) // use empty to test $limit as $limit is not allowed to be zero
 			shRemoveFromGETVarsList('limit');
@@ -382,25 +371,17 @@ if (!$shHomePageFlag)
 				default:
 					break;
 			}
-//    if ($shGETVars['view'] == 'editevent') {
-//      $title[] = $shGETVars['layout'];
-//    }
-//    if ($shGETVars['view'] == 'confirmation') {
-//      $title[] = $shGETVars['view'];
-//      $title[] = $shGETVars['task'];
-//      shRemoveFromGETVarsList('task');
-//    }
 		}
 
 		/* Remove ID field as we no longer need it */
 		shRemoveFromGETVarsList('view');
-
 
 		if (isset($subtype))
 		{
 			$title[] = $subtype;
 			shRemoveFromGETVarsList('subtype');
 		}
+
 		if (isset($submit_key))
 		{
 			if (isset($page))
