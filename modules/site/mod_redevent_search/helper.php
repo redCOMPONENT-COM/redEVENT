@@ -54,23 +54,14 @@ class modRedEventSearchHelper
 		$gids = implode(',', $gids);
 
 		// Get categories from database
-		$query  = ' SELECT c.id '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
-		. ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
-		. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		$query  = ' SELECT c.id AS value, c.catname AS text '
+		. ' FROM #__redevent_categories AS c'
 		;
 
 		$where = array();
-		$where[] = ' x.published = 1';
 
 		//acl
-		$where[] = ' (l.access IN (' . $gids . ')) ';
 		$where[] = ' (c.access IN (' . $gids . ')) ';
-		$where[] = ' (vc.id IS NULL OR vc.access IN (' . $gids . ')) ';
 
 		if ($app->getLanguageFilter())
 		{
@@ -83,12 +74,12 @@ class modRedEventSearchHelper
 		}
 
 		$query .= ' GROUP BY c.id ';
-		$query .= ' ORDER BY c.ordering';
+		$query .= ' ORDER BY c.catname';
 
 		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+		$res = $this->_db->loadObjectList();
 
-		return RedeventHelper::getEventsCatOptions(true, false, $res);
+		return $res;
 	}
 
 	/**
