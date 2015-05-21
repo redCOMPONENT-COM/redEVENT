@@ -74,7 +74,7 @@ class modRedEventSearchHelper
 		}
 
 		$query .= ' GROUP BY c.id ';
-		$query .= ' ORDER BY c.catname';
+		$query .= ' ORDER BY c.ordering';
 
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
