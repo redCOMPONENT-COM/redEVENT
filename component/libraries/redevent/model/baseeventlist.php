@@ -375,7 +375,12 @@ class RedeventModelBaseeventlist extends RModel
 
 					case 'title' :
 					default:
-						$query->where('(LOWER( a.title ) LIKE ' . $filter . ' OR LOWER( x.title ) LIKE ' . $filter . ')');
+						$query->where(
+							'(LOWER( a.title ) LIKE ' . $filter
+							. ' OR LOWER( a.datdescription ) LIKE ' . $filter
+							. ' OR LOWER( x.details ) LIKE ' . $filter
+							. ' OR LOWER( x.title ) LIKE ' . $filter . ')'
+						);
 						break;
 				}
 			}

@@ -358,7 +358,9 @@ class plgSearchRedevent extends JPlugin
 	{
 		$fields = array(
 			$this->_db->quoteName('e.title'),
-			$this->_db->quoteName('x.title')
+			$this->_db->quoteName('e.datdescription'),
+			$this->_db->quoteName('x.title'),
+			$this->_db->quoteName('x.details')
 		);
 
 		if ($custom = $this->getQuotedCustomFields())
