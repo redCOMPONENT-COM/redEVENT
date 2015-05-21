@@ -288,7 +288,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		FinderIndexerHelper::getContentExtras($item);
 
 		// Index the item.
-		FinderIndexer::index($item);
+		$this->indexer->index($item);
 	}
 
 	/**
@@ -300,9 +300,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 	 */
 	protected function setup()
 	{
-		// Load dependent classes.
-		require_once JPATH_SITE . '/includes/application.php';
-		require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
+		require_once JPATH_SITE . '/libraries/redevent/helper/route.php';
 
 		return true;
 	}

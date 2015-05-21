@@ -262,19 +262,19 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$item->addInstruction(FinderIndexer::META_CONTEXT, 'author');
 
 		// Add the type taxonomy data.
-		$item->addTaxonomy('Type', 'redEVENT Event');
+		$item->addTaxonomy('Type', 'Event');
 
 		// index categories
 		$this->addCategoriesTaxonomy($item);
 
 		// Add the language taxonomy data.
-		//$item->addTaxonomy('Language', $item->language);
+		$item->addTaxonomy('Language', $item->language);
 
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
 
 		// Index the item.
-		FinderIndexer::index($item);
+		$this->indexer->index($item);
 	}
 
 	/**
@@ -287,8 +287,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	protected function setup()
 	{
 		// Load dependent classes.
-		require_once JPATH_SITE . '/includes/application.php';
-		require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
+		require_once JPATH_SITE . '/libraries/redevent/helper/route.php';
 
 		return true;
 	}
@@ -307,7 +306,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$db = JFactory::getDbo();
 		// Check if we can use the supplied SQL query.
 		$sql = $sql instanceof JDatabaseQuery ? $sql : $db->getQuery(true);
-		$sql->select('a.id, a.title, a.alias, a.summary AS summary');
+		$sql->select('a.id, a.title, a.alias, a.summary AS summary, a.datdescription AS description');
 		$sql->select('a.meta_keywords AS metakey, a.meta_description AS metadesc');
 		$sql->select('a.created_by, a.modified, a.modified_by');
 		$sql->select('a.published AS state, a.created AS start_date');
@@ -512,7 +511,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		if ($cats)
 		{
 			foreach ($cats as $c) {
-				$item->addTaxonomy('Category', $c->catname, $c->state, $c->access);
+				$item->addTaxonomy('Category', $c->name, $c->state, $c->access);
 			}
 		}
 
