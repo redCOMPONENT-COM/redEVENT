@@ -77,7 +77,7 @@
 			event.preventDefault();
 
 			if ($(this).is(':checked')) {
-				$('#timeline-filter-order').val('l.venue');
+				$('#timeline-filter-order').val('a.title');
 				$('#timeline-filter-direction').val('asc');
 			}
 			else {
