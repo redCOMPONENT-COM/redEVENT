@@ -10,11 +10,22 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // Register library prefix
-JLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
+if (class_exists('RLoader'))
+{
+	RLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
+	RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+	RLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
+	RLoader::registerPrefix('Plgresyncmaersk', __DIR__);
+}
+else
+{
+	JLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
+	JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+	JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
+	JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
+}
 
-JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
+
 
 require_once JPATH_SITE . '/administrator/components/com_redeventsync/defines.php';
 
