@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php if ($this->category->image): ?>
 	<?php echo RedeventImage::modalimage($this->category->image, $this->category->name); ?>
 	<?php else: ?>
-	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->name); ?>
+	<?php echo JHTML::image('media/com_redevent/images/noimage.png', $this->category->name); ?>
 	<?php endif; ?>
 </div>
 <?php endif; ?>
@@ -107,7 +107,7 @@ else
 <?php if ($this->params->get('events_rsscal', 0)): ?>
 <span class="events-rsscal">
 	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($this->category->id, null, 'rsscal').'&format=feed'),
-                          JHTML::image('components/com_redevent/assets/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_RSSCAL'))
+                          JHTML::image('media/com_redevent/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_RSSCAL'))
 	                        ); ?>
 </span>
 <?php endif; ?>
@@ -115,7 +115,7 @@ else
 <?php if ($this->params->get('events_ical', 1)): ?>
 <span class="events-ical">
 	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($this->category->id, null).'&format=raw&layout=ics'),
-                          JHTML::image('components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
+                          JHTML::image('media/com_redevent/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
 	                        ); ?>
 </span>
 <?php endif; ?>

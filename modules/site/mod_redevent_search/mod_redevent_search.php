@@ -34,8 +34,7 @@ require_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
 
 $app = JFactory::getApplication();
 
-$document = JFactory::getDocument();
-$document->addStyleSheet( JURI::base() . 'modules/mod_redevent_search/mod_redevent_search.css' );
+RHelperAsset::load('mod_redevent_search.css', 'mod_redevent_search');
 
 $helper = new modRedEventSearchHelper();
 

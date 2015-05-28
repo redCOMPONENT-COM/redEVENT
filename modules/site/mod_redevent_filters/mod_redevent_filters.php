@@ -33,10 +33,9 @@ if (!$data)
 	return;
 }
 
-$model = modRedEventFiltersHelper::getModel();;
+$model = modRedEventFiltersHelper::getModel();
 
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . 'modules/mod_redevent_filters/mod_redevent_filters.css');
-$document->addScript(JURI::base() . 'modules/mod_redevent_filters/mod_redevent_filters.js');
+RHelperAsset::load('mod_redevent_filters.css', 'mod_redevent_filters');
+RHelperAsset::load('mod_redevent_filters.js', 'mod_redevent_filters');
 
 require(JModuleHelper::getLayoutPath('mod_redevent_filters'));

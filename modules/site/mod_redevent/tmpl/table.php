@@ -138,7 +138,7 @@ $class_prefix = 'mre-';
 				case 'webform':
 					$tdclass = $class_prefix .  'webform';
 					$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $item->slug, $item->xslug));
-					$img = JHTML::image('modules/mod_redevent/webform_icon.gif', 'register');
+					$img = JHTML::image('media/mod_redevent/images/webform_icon.gif', 'register');
 					$tdtext = JHTML::link($link, $img, 'class="webform-icon"');
 					break;
 

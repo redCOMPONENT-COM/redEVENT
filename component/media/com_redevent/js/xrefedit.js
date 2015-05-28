@@ -19,7 +19,7 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 window.addEvent('domready', function() {
   SqueezeBox.initialize({handler: 'iframe', size: {x: 600, y: 500}});
 
@@ -29,11 +29,11 @@ window.addEvent('domready', function() {
           SqueezeBox.fromElement(el);
         });
       });
-      
+
   $('sbox-btn-close').addEvent('click', function() {
     //alert('closing');
   });
-  
+
   // add delete link for xrefs
   $$('tr.xref-details').each(addremove);
 });
@@ -64,7 +64,7 @@ function updatexref(object)
 
 function removexref(event)
 {
-  if (confirm(confirmremove)) 
+  if (confirm(confirmremove))
   {
     var url = 'index.php?option=com_redevent&controller=events&task=removexref&tmpl=component&format=raw';
     var myXhr = new XHR(
@@ -77,7 +77,7 @@ function removexref(event)
         );
     var querystring = 'xref=' + this.id.substr(5)
                         ;
-    myXhr.send(url, querystring); 
+    myXhr.send(url, querystring);
   }
 }
 
@@ -94,7 +94,7 @@ function buildxreftr(object)
   new Element('td').appendText(object.date).injectInside(tr);
   new Element('td').appendText(object.time).injectInside(tr);
   new Element('td').appendText(object.note).injectInside(tr);
-  
+
   if (object.published == 1) {
 	  new Element('img', {src: 'images/tick.png', alt: textyes}).injectInside(new Element('td').injectInside(tr));
   }
@@ -104,13 +104,13 @@ function buildxreftr(object)
   else {
 	  new Element('img', {src: 'images/publish_y.png', alt: textno}).injectInside(new Element('td').injectInside(tr));
   }
-  
+
   if (object.featured == 1) {
-	  new Element('img', {src: 'components/com_redevent/assets/images/icon-16-featured.png', alt: textyes}).injectInside(new Element('td').injectInside(tr));
+	  new Element('img', {src: 'media/com_redevent/images/icon-16-featured.png', alt: textyes}).injectInside(new Element('td').injectInside(tr));
   }
   else {
 	  new Element('td').injectInside(tr);
-  }  
+  }
   new Element('td', {'class': 'cell-delxref'}).injectInside(tr);
   return tr;
 }
@@ -130,7 +130,7 @@ function buildxreftr(object)
   {
     this.addClass('ajax-loading');
   }
-  
+
   function reqfailed()
   {
     this.removeClass('ajax-loading');

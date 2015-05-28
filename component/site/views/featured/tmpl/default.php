@@ -95,7 +95,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 <?php if ($this->params->get('events_rsscal', 0)): ?>
 <span class="events-rsscal">
 	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getFeaturedRoute(null, 'rsscal').'&format=feed'),
-                          JHTML::image('components/com_redevent/assets/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_RSSCAL'))
+                          JHTML::image('media/com_redevent/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_RSSCAL'))
 	                        ); ?>
 </span>
 <?php endif; ?>
@@ -103,7 +103,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 <?php if ($this->params->get('events_ical', 1)): ?>
 <span class="events-ical">
 	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getFeaturedRoute().'&format=raw&layout=ics'),
-                          JHTML::image('components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
+                          JHTML::image('media/com_redevent/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
 	                        ); ?>
 </span>
 <?php endif; ?>

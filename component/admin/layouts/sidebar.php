@@ -50,7 +50,7 @@ $configurationLink = 'index.php?option=com_redcore&view=config&layout=edit&compo
 					<?php $link = JRoute::_('index.php?option=com_redevent&view=' . $icon['view']); ?>
 				<?php endif; ?>
 				<a href="<?php echo $link; ?>">
-					<?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/' . $icon['icon'], $icon['text']); ?>
+					<?php echo JHTML::_('image', 'media/com_redevent/images/' . $icon['icon'], $icon['text']); ?>
 					<?php echo $icon['text']; ?>
 				</a>
 			</li>

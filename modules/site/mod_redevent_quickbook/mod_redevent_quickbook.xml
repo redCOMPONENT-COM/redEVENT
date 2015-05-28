@@ -16,16 +16,18 @@
 
 	<files>
 		<filename module="mod_redevent_quickbook">mod_redevent_quickbook.php</filename>
-		<filename>mod_redevent_quickbook.css</filename>
-		<filename>mod_redevent_quickbook.js</filename>
-		<filename>mod_redevent_quickbook_modal.js</filename>
-		<filename>mod_redevent_quickbook_post.js</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
-		<folder>images</folder>
 		<folder>language</folder>
 		<folder>tmpl</folder>
 	</files>
+
+	<!-- media files -->
+	<media folder="media" destination="mod_redevent_quickbook">
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
 
 	<config>
 		<fields name="params">

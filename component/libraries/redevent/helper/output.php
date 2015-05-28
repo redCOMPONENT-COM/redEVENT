@@ -443,7 +443,7 @@ class RedeventHelperOutput
 		JHTML::_('behavior.framework');
 
 		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
-		$document->addScript(JURI::root() . '/components/com_redevent/assets/js/venuemap.js');
+		RHelperAsset::load('venuemap.js');
 		$document->addScriptDeclaration('
 			var basepath = "' . JURI::root() . '";
 			window.addEvent(\'domready\', function() {

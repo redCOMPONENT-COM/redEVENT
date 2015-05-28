@@ -146,7 +146,7 @@ $search = $this->state->get('filter.search');
 							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=event.edit&id=' . $row->id, $itemTitle); ?>
 						<?php endif; ?>
 						<span class="linkfront"><?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->id),
-								JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png',
+								JHTML::image('media/com_redevent/images/linkfront.png',
 									JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 						</span>
 						<br />

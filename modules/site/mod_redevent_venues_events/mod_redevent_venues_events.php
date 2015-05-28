@@ -32,8 +32,8 @@ if (!count($list))
 }
 
 JHTML::_('behavior.tooltip');
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . 'modules/mod_redevent_venues_events/mod_redevent_venues_events.css');
-$document->addScript(JURI::base() . 'modules/mod_redevent_venues_events/mod_redevent_venues_events.js');
+
+RHelperAsset::load('mod_redevent_venues_events.css', 'mod_redevent_venues_events');
+RHelperAsset::load('mod_redevent_venues_events.js', 'mod_redevent_venues_events');
 
 require(JModuleHelper::getLayoutPath('mod_redevent_venues_events'));

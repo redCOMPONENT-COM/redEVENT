@@ -35,9 +35,8 @@ if (!$items)
 	return;
 }
 
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . '/modules/mod_redevent_categories/mod_redevent_categories.css');
-$document->addScript(JURI::base() . '/modules/mod_redevent_categories/mod_redevent_categories.js');
+RHelperAsset::load('mod_redevent_categories.css', 'mod_redevent_categories');
+RHelperAsset::load('mod_redevent_categories.js', 'mod_redevent_categories');
 
 if (JRequest::getCmd('option') == 'com_redevent' && JRequest::getCmd('view') == 'categoryevents')
 {

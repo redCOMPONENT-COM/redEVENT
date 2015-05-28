@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension
-	type="module"
-	version="2.5"
-	client="site"
-	method="upgrade">
+		type="module"
+		version="2.5"
+		client="site"
+		method="upgrade">
 	<name>mod_redevent_filters</name>
 	<creationDate>2014-01-25</creationDate>
 	<author>redWEB Aps</author>
@@ -16,22 +16,25 @@
 
 	<files>
 		<filename module="mod_redevent_filters">mod_redevent_filters.php</filename>
-		<filename>mod_redevent_filters.css</filename>
-		<filename>mod_redevent_filters.js</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
-    <folder>tmpl</folder>
-    <folder>images</folder>
-    <folder>language</folder>
+		<folder>tmpl</folder>
+		<folder>language</folder>
 	</files>
+
+	<!-- media files -->
+	<media folder="media" destination="mod_redevent_filters">
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
 
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 
 				<field name="text_filter" type="radio" default="1"
-					label="MOD_REDEVENT_FILTERS_XML_TEXT_FILTER_LABEL"
-					description="MOD_REDEVENT_FILTERS_XML_TEXT_FILTER_DESCRIPTION">
+					   label="MOD_REDEVENT_FILTERS_XML_TEXT_FILTER_LABEL"
+					   description="MOD_REDEVENT_FILTERS_XML_TEXT_FILTER_DESCRIPTION">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
@@ -60,25 +63,26 @@
 			</fieldset>
 
 			<fieldset
-				name="advanced">
+					name="advanced">
 				<field
-					name="layout"
-					type="modulelayout"
-					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+						name="layout"
+						type="modulelayout"
+						label="JFIELD_ALT_LAYOUT_LABEL"
+						description="JFIELD_ALT_MODULE_LAYOUT_DESC"/>
 				<field
-					name="moduleclass_sfx"
-					type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+						name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
 				<field
-					name="cache"
-					type="list"
-					default="0"
-					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC">
+						name="cache"
+						type="list"
+						default="0"
+						label="COM_MODULES_FIELD_CACHING_LABEL"
+						description="COM_MODULES_FIELD_CACHING_DESC">
 					<option
-						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+							value="0">COM_MODULES_FIELD_VALUE_NOCACHING
+					</option>
 				</field>
 			</fieldset>
 		</fields>

@@ -57,7 +57,7 @@ foreach($this->categories as $category) :
 	  		$img = JHTML::image(RedeventImage::getThumbUrl($category->image), $category->name);
 	  	}
 	  	else {
-	  		$img = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->name);
+	  		$img = JHTML::image('media/com_redevent/images/noimage.png', $category->name);
 	  	}
 	  	echo JHTML::_('link', JRoute::_($category->linktarget), $img);
 		?>

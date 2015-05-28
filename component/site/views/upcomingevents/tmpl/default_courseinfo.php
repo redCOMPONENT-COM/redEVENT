@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 <tbody>
 <?php
 $elsettings = RedeventHelper::config();
-$imagepath = JURI::root() . 'administrator/components/com_redevent/assets/images/';
+$imagepath = JURI::root() . 'media/com_redevent/images/';
 
 foreach ($this->upcomingevents as $key => $event)
 {

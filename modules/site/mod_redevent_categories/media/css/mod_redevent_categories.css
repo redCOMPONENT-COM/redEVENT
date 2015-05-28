@@ -1,0 +1,134 @@
+@CHARSET "UTF-8";
+
+/* @group Flat */
+ul.mod_re_cats {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.mod_re_cats li {
+   height: 20px;
+   padding: 5px 0 2px 5px;
+   cursor: pointer;
+   border-top: 1px solid lightgrey;
+}
+
+ul.mod_re_cats li:first-child {
+   border-top: none;
+}
+
+ul.mod_re_cats li.open {
+   background: url(../images/array_right.png) no-repeat right;
+}
+
+
+/* @group Accordion */
+
+dl.mod_re_cats_accordion
+{
+
+}
+
+/* @group Level 1 */
+
+dl.mod_re_cats_accordion dt
+{
+   position: relative;
+   height: 20px;
+   padding: 5px 0 2px 5px;
+
+   background: url(../images/array_right.png) no-repeat right;
+
+   cursor: pointer;
+   border-top: 1px solid #lightgrey;
+}
+
+dl.mod_re_cats_accordion > dt
+{
+	border-top: 1px dotted lightgrey;
+}
+
+dl.mod_re_cats_accordion dt:first-child
+{
+	border-top: 0;
+}
+
+dl.mod_re_cats_accordion dt
+{
+   cursor: hand;
+}
+
+dl.mod_re_cats_accordion dt.open
+{
+   font-weight: bold;
+   background: url(../images/array_down.png) no-repeat right;
+}
+
+dl.mod_re_cats_accordion dd
+{
+	margin-left:5px;
+}
+
+/* @group Content */
+
+dl.mod_re_cats_accordion dd.sub_accordion
+{
+
+}
+
+dl.mod_re_cats_accordion dd.accordion_content
+{
+   padding: 0 10px 0 5px;
+}
+
+dl.mod_re_cats_accordion dd.accordion_content p
+{
+   padding: 5px 0 7px 0;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Level 2 */
+
+dl.mod_re_cats_accordion dd dl dt
+{
+   padding-left: 10px;
+}
+
+dl.mod_re_cats_accordion dd dl dd.accordion_content
+{
+   padding-left: 10px;
+}
+
+/* @end */
+
+/* @group Level 3 */
+
+dl.mod_re_cats_accordion dd dl dd dl dt
+{
+   padding-left: 20px;
+}
+
+dl.mod_re_cats_accordion dd dl dd dl dd.accordion_content
+{
+   padding-left: 20px;
+}
+
+/* @end */
+
+/* @group Level 4 */
+
+dl.mod_re_cats_accordion dd dl dd dl dd dl dt
+{
+   padding-left: 30px;
+}
+
+dl.mod_re_cats_accordion dd dl dd dl dd dl dd.accordion_content
+{
+   padding-left: 30px;
+}
+
+/* @end */

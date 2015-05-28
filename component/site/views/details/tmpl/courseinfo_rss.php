@@ -40,7 +40,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <tbody>
 <?php
 $elsettings = RedeventHelper::config();
-$imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
+$imagepath = JURI::base() . 'media/com_redevent/images/';
 foreach ($this->_eventlinks as $key => $event) {
 	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug));
 	$venue_url = JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($event->venueslug));
@@ -57,7 +57,7 @@ foreach ($this->_eventlinks as $key => $event) {
 		<?php
 		$registration_status = RedeventHelper::canRegister($event->xref);
 		if (!$registration_status->canregister) {
-		  $img = JHTML::_('image', JURI::base() . 'components/com_redevent/assets/images/agt_action_fail.png',
+		  $img = JHTML::_('image', JURI::base() . 'media/com_redevent/images/agt_action_fail.png',
 		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
 			echo $img;

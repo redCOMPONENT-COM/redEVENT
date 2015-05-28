@@ -35,7 +35,7 @@ if ($this->row->venueid != 0) {
 		<?php echo RedeventHelperOutput::printbutton( $this->print_link, $this->params ); ?>
 
 		<?php if ($this->params->get('event_ics', 1)): ?>
-			<?php $img = JHTML::image(JURI::base().'components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
+			<?php $img = JHTML::image(JURI::base().'media/com_redevent/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
 			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&format=raw&layout=ics', false),
 			                        $img ); ?>
 		<?php endif; ?>
@@ -154,7 +154,7 @@ if ($this->row->venueid != 0) {
 	  					<td>
 		  					<span class="event-file-dl-icon hasTip" title="<?php echo JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file).'::'.$this->escape($file->description);?>">
 		  					<?php echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id,
-		  					                       JHTML::image('components/com_redevent/assets/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
+		  					                       JHTML::image('media/com_redevent/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
 	  					</td>
 	  					<td class="event-file-name"><?php echo $this->escape($file->name ? $file->name : $file->file); ?></td>
 	  				</tr>

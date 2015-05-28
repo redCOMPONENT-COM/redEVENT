@@ -35,8 +35,7 @@ if (!$items)
 	return;
 }
 
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . '/modules/mod_redevent/mod_redevent.css');
+RHelperAsset::load('mod_redevent.css', 'mod_redevent');
 
 $layout = $params->get('layout');
 

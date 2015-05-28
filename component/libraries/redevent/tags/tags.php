@@ -2408,7 +2408,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2418,7 +2418,7 @@ class RedeventTags
 
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
-		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
+		$iconspath = $base_url . 'media/com_redevent/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink webform">'
 			. JHTML::_(
@@ -2448,7 +2448,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2458,7 +2458,7 @@ class RedeventTags
 
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
-		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
+		$iconspath = $base_url . 'media/com_redevent/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink email">'
 			. JHTML::_(
@@ -2489,7 +2489,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2499,7 +2499,7 @@ class RedeventTags
 
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
-		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
+		$iconspath = $base_url . 'media/com_redevent/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink formaloffer">'
 			. JHTML::_(
@@ -2530,7 +2530,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2540,7 +2540,7 @@ class RedeventTags
 
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
-		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
+		$iconspath = $base_url . 'media/com_redevent/images/';
 		$elsettings = RedeventHelper::config();
 
 		if (!empty($this->getEvent()->getData()->external_registration_url))
@@ -2579,7 +2579,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2589,7 +2589,7 @@ class RedeventTags
 
 		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
-		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
+		$iconspath = $base_url . 'media/com_redevent/images/';
 		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink phone">'
 			. JHTML::_(
@@ -2620,7 +2620,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2654,7 +2654,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2688,7 +2688,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);
@@ -2722,7 +2722,7 @@ class RedeventTags
 		if (!$registration_status->canregister)
 		{
 			$img = JHTML::_(
-				'image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png',
+				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
 				array('class' => 'hasTip', 'title' => $registration_status->status)
 			);

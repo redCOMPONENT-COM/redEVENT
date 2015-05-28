@@ -186,7 +186,7 @@ $search = $this->state->get('filter.search');
 						<?php endif; ?>
 						<span class="linkfront hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK')?>">
 						<?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->eventid, $row->id),
-							JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png',
+							JHTML::image('media/com_redevent/images/linkfront.png',
 								JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 					</span>
 					</td>

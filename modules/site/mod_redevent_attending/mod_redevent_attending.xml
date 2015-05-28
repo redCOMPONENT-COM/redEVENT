@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension
-	type="module"
-	version="1.7"
-	client="site"
-	method="upgrade">
+		type="module"
+		version="1.7"
+		client="site"
+		method="upgrade">
 	<name>mod_redevent_attending</name>
 	<creationDate>##DATE##</creationDate>
 	<author>redWEB Aps</author>
@@ -16,84 +16,101 @@
 
 	<files>
 		<filename module="mod_redevent_attending">mod_redevent_attending.php</filename>
-		<filename>mod_redevent_attending.css</filename>
 		<filename>index.html</filename>
-    <filename>helper.php</filename>
-    <filename>tmpl/list.php</filename>
-    <filename>tmpl/table.php</filename>
-    <filename>tmpl/index.html</filename>
-    <folder>language</folder>
+		<filename>helper.php</filename>
+		<folder>language</folder>
+		<folder>tmpl</folder>
 	</files>
+
+	<!-- media files -->
+	<media folder="media" destination="mod_redevent_attending">
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
 
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="type" type="list" default="0" label="MOD_REDEVENT_attending_WINDOW_LABEL" description="MOD_REDEVENT_attending_WINDOW_DESC">
+				<field name="type" type="list" default="0" label="MOD_REDEVENT_attending_WINDOW_LABEL"
+					   description="MOD_REDEVENT_attending_WINDOW_DESC">
 					<option value="0">MOD_REDEVENT_attending_WINDOW_UPCOMING</option>
 					<option value="1">MOD_REDEVENT_attending_WINDOW_DAY</option>
 					<option value="2">MOD_REDEVENT_attending_WINDOW_WEEK</option>
 					<option value="3">MOD_REDEVENT_attending_WINDOW_MONTH</option>
 				</field>
-				<field name="includeopen" type="list" default="0" label="MOD_REDEVENT_attending_INCLUDE_OPEN_LABEL" description="MOD_REDEVENT_attending_INCLUDE_OPEN_DESC">
+				<field name="includeopen" type="list" default="0" label="MOD_REDEVENT_attending_INCLUDE_OPEN_LABEL"
+					   description="MOD_REDEVENT_attending_INCLUDE_OPEN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
-				<field name="offset" type="text" default="0" label="MOD_REDEVENT_ATTENDING_OFFSET_LABEL" description="MOD_REDEVENT_ATTENDING_OFFSET_DESC"/>		
-				<field name="title_type" type="list" default="0" label="MOD_REDEVENT_ATTENDING_TITLE_TYPE_LABEL" description="MOD_REDEVENT_ATTENDING_TITLE_TYPE_DESC">
+				</field>
+				<field name="offset" type="text" default="0" label="MOD_REDEVENT_ATTENDING_OFFSET_LABEL"
+					   description="MOD_REDEVENT_ATTENDING_OFFSET_DESC"/>
+				<field name="title_type" type="list" default="0" label="MOD_REDEVENT_ATTENDING_TITLE_TYPE_LABEL"
+					   description="MOD_REDEVENT_ATTENDING_TITLE_TYPE_DESC">
 					<option value="0">MOD_REDEVENT_ATTENDING_TITLE_TYPE_EVENT</option>
 					<option value="1">MOD_REDEVENT_ATTENDING_TITLE_TYPE_SESSION</option>
 					<option value="2">MOD_REDEVENT_ATTENDING_TITLE_TYPE_FULL</option>
-				</field>	
-				<field name="showvenue" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_VENUE_LABEL" description="MOD_REDEVENT_attending_SHOW_VENUE_DESC">
+				</field>
+				<field name="showvenue" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_VENUE_LABEL"
+					   description="MOD_REDEVENT_attending_SHOW_VENUE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
-		    <field name="show_enddate" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_END_DATE_LABEL" description="MOD_REDEVENT_attending_SHOW_END_DATE_DESC">
-		      <option value="0">JNO</option>
-		      <option value="1">JYES</option>
-		    </field>
-		    <field name="show_time" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_TIME_LABEL" description="MOD_REDEVENT_attending_SHOW_TIME_DESC">
-		      <option value="0">JNO</option>
-		      <option value="1">JYES</option>
-		    </field>
-		    <field name="show_picture" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_PICTURE_LABEL" description="MOD_REDEVENT_attending_SHOW_PICTURE_DESC">
-		      <option value="0">JNO</option>
-		      <option value="1">JYES</option>
-		    </field>
-		    <field name="show_price_column" type="list" default="0" label="MOD_REDEVENT_attending_SHOW_PRICE_COLUMN_LABEL" description="MOD_REDEVENT_attending_SHOW_PRICE_COLUMN_DESC">
-		      <option value="0">JNO</option>
-		      <option value="1">JYES</option>
-		    </field>
-		    <field name="show_price_total" type="list" default="0" label="MOD_REDEVENT_attending_SHOW_PRICE_TOTAL_LABEL" description="MOD_REDEVENT_attending_SHOW_PRICE_TOTAL_DESC">
-		      <option value="0">JNO</option>
-		      <option value="1">JYES</option>
-		    </field>
-				<field name="picture_size" type="text" default="30" label="MOD_REDEVENT_attending_PICTURE_SIZE_LABEL" description="MOD_REDEVENT_attending_PICTURE_SIZE_DESC" />
-				<field name="formatdate" type="text" default="%d.%m.%Y" label="MOD_REDEVENT_attending_DATE_FORMAT_LABEL" description="MOD_REDEVENT_attending_DATE_FORMAT_DESC" />
-				<field name="formattime" type="text" default="%H.%M" label="MOD_REDEVENT_attending_TIME_FORMAT_LABEL" description="MOD_REDEVENT_attending_TIME_FORMAT_DESC" />
-				
+				</field>
+				<field name="show_enddate" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_END_DATE_LABEL"
+					   description="MOD_REDEVENT_attending_SHOW_END_DATE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="show_time" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_TIME_LABEL"
+					   description="MOD_REDEVENT_attending_SHOW_TIME_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="show_picture" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_PICTURE_LABEL"
+					   description="MOD_REDEVENT_attending_SHOW_PICTURE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="show_price_column" type="list" default="0" label="MOD_REDEVENT_attending_SHOW_PRICE_COLUMN_LABEL"
+					   description="MOD_REDEVENT_attending_SHOW_PRICE_COLUMN_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="show_price_total" type="list" default="0" label="MOD_REDEVENT_attending_SHOW_PRICE_TOTAL_LABEL"
+					   description="MOD_REDEVENT_attending_SHOW_PRICE_TOTAL_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="picture_size" type="text" default="30" label="MOD_REDEVENT_attending_PICTURE_SIZE_LABEL"
+					   description="MOD_REDEVENT_attending_PICTURE_SIZE_DESC"/>
+				<field name="formatdate" type="text" default="%d.%m.%Y" label="MOD_REDEVENT_attending_DATE_FORMAT_LABEL"
+					   description="MOD_REDEVENT_attending_DATE_FORMAT_DESC"/>
+				<field name="formattime" type="text" default="%H.%M" label="MOD_REDEVENT_attending_TIME_FORMAT_LABEL"
+					   description="MOD_REDEVENT_attending_TIME_FORMAT_DESC"/>
+
 			</fieldset>
-	
+
 			<fieldset
-				name="advanced">
+					name="advanced">
 				<field
-					name="layout"
-					type="modulelayout"
-					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+						name="layout"
+						type="modulelayout"
+						label="JFIELD_ALT_LAYOUT_LABEL"
+						description="JFIELD_ALT_MODULE_LAYOUT_DESC"/>
 				<field
-					name="moduleclass_sfx"
-					type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+						name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
 				<field
-					name="cache"
-					type="list"
-					default="0"
-					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC">
+						name="cache"
+						type="list"
+						default="0"
+						label="COM_MODULES_FIELD_CACHING_LABEL"
+						description="COM_MODULES_FIELD_CACHING_DESC">
 					<option
-						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+							value="0">COM_MODULES_FIELD_VALUE_NOCACHING
+					</option>
 				</field>
 			</fieldset>
 		</fields>

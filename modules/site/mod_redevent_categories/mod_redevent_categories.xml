@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension
-	type="module"
-	version="1.7"
-	client="site"
-	method="upgrade">
+		type="module"
+		version="1.7"
+		client="site"
+		method="upgrade">
 	<name>mod_redevent_categories</name>
 	<creationDate>##DATE##</creationDate>
 	<author>redWEB Aps</author>
@@ -16,14 +16,19 @@
 
 	<files>
 		<filename module="mod_redevent_categories">mod_redevent_categories.php</filename>
-		<filename>mod_redevent_categories.css</filename>
-		<filename>mod_redevent_categories.js</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
-    <folder>tmpl</folder>
-    <folder>images</folder>
-    <folder>language</folder>
+		<folder>tmpl</folder>
+		<folder>images</folder>
+		<folder>language</folder>
 	</files>
+
+	<!-- media files -->
+	<media folder="media" destination="mod_redevent_categories">
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
 
 	<config>
 		<fields name="params">
@@ -32,36 +37,39 @@
 					<option value="0">MOD_REDEVENT_CATEGORIES_MODE_FLAT</option>
 					<option value="1">MOD_REDEVENT_CATEGORIES_MODE_TREE</option>
 				</field>
-				<field name="show_count" type="radio" default="1" label="MOD_REDEVENT_CATEGORIES_SHOW_COUNT_LABEL" description="MOD_REDEVENT_CATEGORIES_SHOW_COUNT_DESC">
+				<field name="show_count" type="radio" default="1" label="MOD_REDEVENT_CATEGORIES_SHOW_COUNT_LABEL"
+					   description="MOD_REDEVENT_CATEGORIES_SHOW_COUNT_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				<field name="ordering" type="list" default="0" label="MOD_REDEVENT_CATEGORIES_ORDERING_LABEL" description="MOD_REDEVENT_CATEGORIES_ORDERING_DESC">
+				<field name="ordering" type="list" default="0" label="MOD_REDEVENT_CATEGORIES_ORDERING_LABEL"
+					   description="MOD_REDEVENT_CATEGORIES_ORDERING_DESC">
 					<option value="0">MOD_REDEVENT_CATEGORIES_ORDERING_ORDERING</option>
 					<option value="1">MOD_REDEVENT_CATEGORIES_ORDERING_ALPHA</option>
 				</field>
 			</fieldset>
-	
+
 			<fieldset
-				name="advanced">
+					name="advanced">
 				<field
-					name="layout"
-					type="modulelayout"
-					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+						name="layout"
+						type="modulelayout"
+						label="JFIELD_ALT_LAYOUT_LABEL"
+						description="JFIELD_ALT_MODULE_LAYOUT_DESC"/>
 				<field
-					name="moduleclass_sfx"
-					type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+						name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
 				<field
-					name="cache"
-					type="list"
-					default="0"
-					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC">
+						name="cache"
+						type="list"
+						default="0"
+						label="COM_MODULES_FIELD_CACHING_LABEL"
+						description="COM_MODULES_FIELD_CACHING_DESC">
 					<option
-						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+							value="0">COM_MODULES_FIELD_VALUE_NOCACHING
+					</option>
 				</field>
 			</fieldset>
 		</fields>

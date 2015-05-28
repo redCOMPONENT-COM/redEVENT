@@ -38,9 +38,8 @@ if (!$data) {
 	return;
 }
 
-$document = JFactory::getDocument();
-$document->addStyleSheet( JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook.css');
-$document->addScript(JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook.js');
+RHelperAsset::load('mod_redevent_quickbook.css', 'mod_redevent_quickbook');
+RHelperAsset::load('mod_redevent_quickbook.js', 'mod_redevent_quickbook');
 
 $document->addScriptDeclaration($data->pricegroupjs);
 
@@ -50,11 +49,11 @@ if ($params->get('target', 'post') == 'modal')
 {
 	$action .= "&modal=1";
 	JHtml::_('behavior.modal');
-	$document->addScript(JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook_modal.js');
+	RHelperAsset::load('mod_redevent_quickbook_modal.js', 'mod_redevent_quickbook');
 }
 else
 {
-	$document->addScript(JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook_post.js');
+	RHelperAsset::load('mod_redevent_quickbook_post.js', 'mod_redevent_quickbook');
 }
 
 require(JModuleHelper::getLayoutPath('mod_redevent_quickbook'));

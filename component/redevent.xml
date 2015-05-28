@@ -37,7 +37,6 @@
 		<filename>LICENSE.txt</filename>
 		<filename>redevent.php</filename>
 		<filename>router.php</filename>
-		<folder>assets</folder>
 		<folder>classes</folder>
 		<folder>controllers</folder>
 		<folder>language</folder>
@@ -72,7 +71,6 @@
 			<filename>controller.php</filename>
 			<filename>index.html</filename>
 			<filename>redevent.php</filename>
-			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>falang</folder>
 			<folder>language</folder>

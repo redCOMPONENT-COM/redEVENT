@@ -36,7 +36,7 @@ $icons = array(
 					<a class="reDashboardIcons" href="<?php echo JRoute::_($icon['link']); ?>">
 						<div class="row-fluid pagination-centered">
 							<span class="dashboard-icon-link-icon">
-								<?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/' . $icon['icon'], $icon['text']); ?>
+								<?php echo JHTML::_('image', 'media/com_redevent/images/' . $icon['icon'], $icon['text']); ?>
 							</span>
 						</div>
 						<div class="row-fluid pagination-centered">

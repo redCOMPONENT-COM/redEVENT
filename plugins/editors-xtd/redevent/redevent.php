@@ -61,7 +61,7 @@ class plgButtonRedevent extends JPlugin
 		$template = $mainframe->getTemplate();
 
 		$declaration	="
-		.button2-left .redevent 	{ background: url(components/com_redevent/assets/images/editor_button.png) 100% 0 no-repeat; } ";
+		.button2-left .redevent 	{ background: url(media/com_redevent/images/editor_button.png) 100% 0 no-repeat; } ";
 
 		$doc->addStyleDeclaration($declaration);
 

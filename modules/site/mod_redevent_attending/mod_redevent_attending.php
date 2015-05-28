@@ -55,8 +55,7 @@ $nexturi = clone $curi;
 $nexturi->setVar('reattoffset', $offset+1);
 $next = htmlspecialchars($nexturi->toString());
 
-$document = Jfactory::getDocument();
-$document->addScript('modules/mod_redevent_attending/mod_redevent_attending.js');
-$document->addStyleSheet( JURI::base() . '/modules/mod_redevent_attending/mod_redevent_attending.css' );
+RHelperAsset::load('mod_redevent_attending.js', 'mod_redevent_attending');
+RHelperAsset::load('mod_redevent_attending.css', 'mod_redevent_attending');
 
 require(JModuleHelper::getLayoutPath('mod_redevent_attending', $params->get('layout', 'table')));

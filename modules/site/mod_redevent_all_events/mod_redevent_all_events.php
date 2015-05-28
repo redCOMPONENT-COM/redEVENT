@@ -32,7 +32,6 @@ if (!count($list))
 }
 
 JHTML::_('behavior.tooltip');
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . '/modules/mod_redevent_all_events/mod_redevent_all_events.css');
+RHelperAsset::load('mod_redevent_all_events.css', 'mod_redevent_all_events');
 
 require(JModuleHelper::getLayoutPath('mod_redevent_all_events'));

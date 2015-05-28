@@ -18,12 +18,14 @@
 		<filename module="mod_redevent_all_events">mod_redevent_all_events.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
-		<filename>mod_redevent_all_events.css</filename>
-		<filename>tmpl/default.php</filename>
-		<filename>tmpl/index.html</filename>
-    <folder>tmpl</folder>
-    <folder>language</folder>
+		<folder>tmpl</folder>
+		<folder>language</folder>
 	</files>
+
+	<!-- media files -->
+	<media folder="media" destination="mod_redevent_all_events">
+		<folder>css</folder>
+	</media>
 
 	<config addfieldpath="/libraries/redevent/form/fields">
 		<fields name="params">

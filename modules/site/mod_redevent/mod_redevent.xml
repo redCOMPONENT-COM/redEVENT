@@ -16,13 +16,17 @@
 
 	<files>
 		<filename module="mod_redevent">mod_redevent.php</filename>
-		<filename>mod_redevent.css</filename>
-		<filename>webform_icon.gif</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
     <folder>language</folder>
     <folder>tmpl</folder>
 	</files>
+
+	<!-- media files -->
+	<media folder="media" destination="mod_redevent">
+		<folder>css</folder>
+		<folder>images</folder>
+	</media>
 
 	<config addfieldpath="/libraries/redevent/form/fields">
 		<fields name="params">
