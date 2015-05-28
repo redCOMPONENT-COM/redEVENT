@@ -1,0 +1,195 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.redcomponent.com/redevent"
+        xmlns:re="http://www.redcomponent.com/redevent"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified" >
+	<xs:element name="GetSessionsRS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:positiveInteger" name="TransactionId">
+					<xs:annotation>
+						<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this session in the RS message</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="Session" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SessionDetails">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element type="xs:string" name="SessionCode">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">This is the external unique identifier for the session</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:string" name="CourseCode">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Must match an exiting redEVENT course code</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:string" name="VenueCode">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Must match an exiting redEVENT venue Code</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:nonNegativeInteger" name="Group" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Must match an exiting redEVENT group id</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:string" name="Title" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Optional session title (appended to course title)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:string" name="Alias" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Used only for seo link generation</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:date" name="Date" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">If not specified, the session will be displayed as 'open date'.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:time" name="Time" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Do not include for 'all day' events.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:date" name="EndDate" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">If not specified, default to same date as start date.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:time" name="EndTime" minOccurs="0"/>
+										<xs:element type="xs:dateTime" name="EndOfRegistration" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">If not specified, the sesssion start date will be used as a time limit for registration.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:string" name="Note" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Only for backend display</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:anyURI" name="ExternalRegistrationUrl" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Allow to use an external system for registration</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element type="xs:byte" name="Published" />
+										<xs:element type="xs:boolean" name="Featured" minOccurs="0"/>
+										<xs:element name="CustomFields" type="re:CustomFields" minOccurs="0"/>
+										<xs:element type="xs:string" name="Details" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Optional specific session details</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="SessionRegistration" type="re:SessionRegistration" minOccurs="0" />
+							<xs:element name="SessionRoles" type="re:SessionRole" minOccurs="0" />
+							<xs:element name="SessionIcal" type="re:SessionIcal" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="CustomFields">
+		<xs:sequence>
+			<xs:element name="CustomField" maxOccurs="unbounded"
+				minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="xs:positiveInteger" name="CustomFieldId" >
+							<xs:annotation>
+								<xs:documentation source="Description" xml:lang="en">Must match an exiting redEVENT custom field id</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element type="xs:string" name="CustomFieldType" />
+						<xs:element type="xs:string" name="CustomFieldValue" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SessionRegistration">
+		<xs:sequence>
+			<xs:element type="xs:nonNegativeInteger" name="MaximumAttendees" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">If not present, the session won't limit the number of attendees</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:nonNegativeInteger" name="MaximumPlacesWaitingList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">If not present, there won't be any waiting list for the session</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:float" name="EventCredit" minOccurs="0"/>
+			<xs:element name="EventPrice" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PriceGroup" maxOccurs="unbounded"
+							minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element type="xs:positiveInteger" name="PriceGroupId">
+										<xs:annotation>
+											<xs:documentation source="Description" xml:lang="en">Must match an exiting redEVENT price group id</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element type="xs:string" name="PriceGroupName" />
+									<xs:element type="xs:float" name="PriceGroupPrice" />
+									<xs:element type="xs:string" name="CurrencyCode">
+										<xs:annotation>
+											<xs:documentation source="Description" xml:lang="en">Empty for default value, or an iso-3 currency code</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SessionRole">
+		<xs:sequence>
+			<xs:element name="Role" maxOccurs="unbounded" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="xs:positiveInteger" name="RoleId">
+							<xs:annotation>
+								<xs:documentation source="Description" xml:lang="en">Must match an exiting redEVENT role id</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element type="xs:string" name="RoleName" />
+						<xs:element type="xs:string" name="RoleUser" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SessionIcal">
+		<xs:sequence>
+			<xs:element type="xs:string" name="IcalDescription" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">Specific session description for ical output</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:string" name="IcalLocation" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">Optional, replaces actual set venue in location ical field if not empty</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

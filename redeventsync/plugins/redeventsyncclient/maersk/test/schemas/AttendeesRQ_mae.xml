@@ -1,0 +1,15 @@
+<AttendeesRQ xmlns="http://www.redcomponent.com/redevent">
+	<CreateAttendeeRQ>
+		<TransactionId>999</TransactionId>
+		<SessionCode>4643</SessionCode>
+		<VenueCode>MAERSKESBJERG</VenueCode>
+		<UserEmail>relax29@privat.dk</UserEmail>
+		<Firstname>Michel</Firstname>
+		<Lastname>Machin</Lastname>
+		<Cancelled>true</Cancelled>
+		<WaitingList>true</WaitingList>
+		<Confirmed>true</Confirmed>
+		<ConfirmDate>1999-05-31T13:20:00.000-05:00</ConfirmDate>
+		<RegistrationDate>1999-05-31T13:20:00.000-05:00</RegistrationDate>
+	</CreateAttendeeRQ>
+</AttendeesRQ>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CustomersRQ
+	xmlns="http://www.redcomponent.com/redevent">
+	<CustomerRQ>
+		<TransactionId>11</TransactionId>
+		<Emailaddress>julien@redweb.dk</Emailaddress>
+		<VenueCode></VenueCode>
+	</CustomerRQ>
+	<CustomerRQ>
+		<TransactionId>12323</TransactionId>
+		<Emailaddress>rn@techotel.dk</Emailaddress>
+		<VenueCode></VenueCode>
+	</CustomerRQ>
+	<CustomerRQ>
+		<TransactionId>666</TransactionId>
+		<Emailaddress>notregistered@bala.com</Emailaddress>
+		<VenueCode></VenueCode>
+	</CustomerRQ>
+</CustomersRQ>

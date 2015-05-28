@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CustomersRS
+        xmlns="http://www.redcomponent.com/redevent">
+    <CustomerRS>
+        <TransactionId>132</TransactionId>
+        <Success>
+            <Firstname>sync</Firstname>
+            <Lastname>test</Lastname>
+            <Emailaddress>synctest@acustomr.test</Emailaddress>
+            <CompanyCvrNr>123</CompanyCvrNr>
+            <CompanyName>Sync test</CompanyName>
+        </Success>
+    </CustomerRS>
+</CustomersRS>
