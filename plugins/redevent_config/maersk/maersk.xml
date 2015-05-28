@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent_config" method="upgrade">
+  <name>PLG_REDEVENT_CONFIG_MAERSK</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2013 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+    <description>PLG_REDEVENT_CONFIG_MAERSK_XML_DESCRIPTION</description>
+
+	<files>
+		<file plugin="maersk">maersk.php</file>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+    <config>
+        <fields name="params">
+            <fieldset name="extra" label="extra">
+                <field name="b2b_sessions_display_num"
+                       type="list"
+                       default="15"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_B2B_SESSIONS_DISPLAY_NUM_LABEL"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_B2B_SESSIONS_DISPLAY_NUM_DESCRIPTION"
+                       >
+                    <option value="15">15</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </field>
+                <field name="disable_waitinglist_status_email"
+                       type="radio"
+                       default="1"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_WAITING_LIST_NOTIFICATION"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_WAITING_LIST_NOTIFICATION_DESC"
+                        >
+                    <option value="0">JNo</option>
+                    <option value="1">JYes</option>
+                </field>
+                <field name="disable_frontend_session_title"
+                       type="radio"
+                       default="0"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_FRONTEND_SESSION_TITLE"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_FRONTEND_SESSION_TITLE_DESC"
+                        >
+                    <option value="0">JNo</option>
+                    <option value="1">JYes</option>
+                </field>
+                <field name="language_flags"
+                       type="textarea"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_LANGUAGE_FLAGS"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_LANGUAGE_FLAGS_DESC"
+                       rows="10" cols="50"
+                        >
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>
