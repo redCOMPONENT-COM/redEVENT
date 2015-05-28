@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter" addfieldpath="/libraries/redeventsync/form/fields">
+		<field
+			name="search"
+			type="rtext"
+			label="COM_REDCORE_FILTER_SEARCH_DESC"
+			description="COM_REDCORE_FILTER_SEARCH_DESC"
+			placeholder="JSEARCH_FILTER"
+			class="js-enter-submits"
+			/>
+		<field
+				name="type"
+				type="rtext"
+				label="COM_REDEVENTSYNC_FILTER_TYPE_DESC"
+				placeholder="COM_REDEVENTSYNC_FILTER_TYPE_PLACEHOLDER"
+				class="js-enter-submits"
+				/>
+		<field
+				name="from"
+				type="rtext"
+				label="COM_REDEVENTSYNC_FILTER_FROM_DESC"
+				placeholder="COM_REDEVENTSYNC_FILTER_FROM_PLACEHOLDER"
+				class="js-enter-submits"
+				/>
+		<field
+				name="to"
+				type="rtext"
+				label="COM_REDEVENTSYNC_FILTER_TO_DESC"
+				placeholder="COM_REDEVENTSYNC_FILTER_TO_PLACEHOLDER"
+				class="js-enter-submits"
+				/>
+		<field
+				name="direction"
+				type="rlist"
+				label="COM_REDEVENTSYNC_FILTER_DIRECTION_DESC"
+				class="chosen"
+				default=""
+				onchange="this.form.submit();"
+				>
+			<option value="">COM_REDEVENTSYNC_FILTER_DIRECTION_SELECT</option>
+			<option value="0">COM_REDEVENTSYNC_FILTER_DIRECTION_UP</option>
+			<option value="1">COM_REDEVENTSYNC_FILTER_DIRECTION_DOWN</option>
+		</field>
+
+	</fields>
+	<fields name="list">
+		<field
+			name="logs_limit"
+			type="rlimitbox"
+			class="inputbox input-mini chzn"
+			default="25"
+			label="JGLOBAL_ORDERING_LIST_LIMIT"
+			description="JGLOBAL_ORDERING_LIST_LIMIT_DESC"
+			onchange="this.form.submit();"
+			/>
+	</fields>
+</form>

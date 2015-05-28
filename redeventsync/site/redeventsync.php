@@ -2,22 +2,30 @@
 /**
  * @package     Redcomponent.redeventsync
  * @subpackage  com_redeventsync
- * @copyright   Copyright (C) 2013 redCOMPONENT.com
+ * @copyright   Copyright (C) 2013-2015 redCOMPONENT.com
  * @license     GNU General Public License version 2 or later
  */
 
 defined('_JEXEC') or die();
 
-// Load FOF
-include_once JPATH_LIBRARIES.'/fof/include.php';
-if(!defined('FOF_INCLUDED'))
+$loader = JPATH_LIBRARIES . '/redeventsync/bootstrap.php';
+
+if (!file_exists($loader))
 {
-	JError::raiseError ('500', 'FOF is not installed');
+	throw new Exception(JText::_('COM_redeventsync_LIB_INIT_FAILED'), 404);
 }
 
-include_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
+include_once $loader;
 
-JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
-RLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
+// Bootstraps redEVENTSYNC
+ResyncBootstrap::bootstrap();
 
-FOFDispatcher::getTmpInstance('com_redeventsync')->dispatch();
+$jinput = JFactory::getApplication()->input;
+
+// Require the base controller
+require_once JPATH_COMPONENT . '/controller.php';
+
+// Execute the controller
+$controller = JControllerLegacy::getInstance('redeventsync');
+$controller->execute($jinput->get('task'));
+$controller->redirect();

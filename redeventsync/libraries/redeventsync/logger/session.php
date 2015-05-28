@@ -8,15 +8,13 @@
 
 defined('_JEXEC') or die();
 
-require_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
-
 /**
  * RedEVENT sync logger session
  *
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RESyncLoggerSession
+class ResyncLoggerSession
 {
 	/**
 	 * create a new log

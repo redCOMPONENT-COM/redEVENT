@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die();
 
-class RedeventsyncModelSync extends FOFModel
+class RedeventsyncModelSync extends RModel
 {
 	/**
 	 * return sessions between two dates

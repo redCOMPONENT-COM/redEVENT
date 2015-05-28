@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RedeventsyncControllerSync extends FOFController
+class RedeventsyncControllerSync extends JControllerLegacy
 {
 	/**
 	 * Executes a given controller task. The onBefore<task> and onAfter<task>
@@ -49,7 +49,7 @@ class RedeventsyncControllerSync extends FOFController
 		JPluginHelper::importPlugin('redeventsyncclient');
 		$dispatcher = JDispatcher::getInstance();
 
-		$logger = new RESyncLoggerSession;
+		$logger = new ResyncLoggerSession;
 		$logger->init();
 
 		try
@@ -59,14 +59,14 @@ class RedeventsyncControllerSync extends FOFController
 				'to'     => $dateTo,
 				'object' => 'sessions'))
 			);
+
+			$log = $logger->read();
+			echo json_encode($log);
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			echo json_encode(array($e->getMessage()));
 		}
-
-		$log = $logger->read();
-		echo json_encode($log);
 
 		$app->close();
 	}
@@ -86,7 +86,7 @@ class RedeventsyncControllerSync extends FOFController
 		JPluginHelper::importPlugin('redeventsyncclient');
 		$dispatcher = JDispatcher::getInstance();
 
-		$logger = new RESyncLoggerSession;
+		$logger = new ResyncLoggerSession;
 		$logger->init();
 
 		try
@@ -96,14 +96,14 @@ class RedeventsyncControllerSync extends FOFController
 					'to'     => $dateTo,
 					'object' => 'attendees'))
 			);
+
+			$log = $logger->read();
+			echo json_encode($log);
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			echo json_encode(array($e->getMessage()));
 		}
-
-		$log = $logger->read();
-		echo json_encode($log);
 
 		$app->close();
 	}

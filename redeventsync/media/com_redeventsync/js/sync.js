@@ -1,55 +1,50 @@
-window.addEvent('domready', function(){
+(function($){
 
-	document.id('startsync').addEvent('click', function(){
+	var syncSessions = function() {
 
-		redeventsync.syncSessions();
+		$.ajax({
+			url: 'index.php?option=com_redeventsync&task=sync.sessions&tmpl=component',
+			data: $('#adminForm').serialize(),
+			type : 'POST',
+			dataType: 'json',
+			beforeSend: function (xhr) {
+				$('#results').empty();
+			}
+		}).done(function(data) {
+			var res = $('#results');
+			res.empty();
 
+			$.each(data, function(id, text) {
+				var sp = $('<div>').html(text).appendTo(res);
+			});
+
+			// Then update attendees
+			redeventsync.syncAttendees();
+		});
+
+	};
+
+	var syncAttendees = function() {
+
+		$.ajax({
+			url: 'index.php?option=com_redeventsync&task=sinc.attendees&tmpl=component',
+			data: $('#adminForm').serialize(),
+			type : 'POST',
+			dataType: 'json',
+			beforeSend: function (xhr) {
+				$('#results').empty();
+			}
+		}).done(function(data) {
+			var res = $('#results');
+
+			$.each(data, function(id, text) {
+				var sp = $('<div>').html(text).appendTo(res);
+			});
+		});
+	};
+
+	$(function() {
+		$('#startsync').click(syncSessions);
 	});
-});
 
-var redeventsync = {
-
-	syncSessions : function(){
-
-		var sync_req = new Request.JSON({
-			url : 'index.php?option=com_redeventsync&view=sync&task=sessions&tmpl=component',
-			data : document.id('adminForm'),
-			useSpinner: true,
-			spinnerTarget: document.id('theform'),
-			method : 'post',
-			onRequest : function() {
-				document.id('results').empty();
-			},
-			onSuccess : function(json_resp) {
-				var res = document.id('results');
-				res.empty();
-				json_resp.each(function(text) {
-					var sp = new Element('div').appendText(text).inject(res);
-				});
-
-				// Then update attendees
-				redeventsync.syncAttendees();
-			}
-		});
-		sync_req.send();
-
-	},
-
-	syncAttendees : function() {
-		var sync_req = new Request.JSON({
-			url : 'index.php?option=com_redeventsync&view=sync&task=attendees&tmpl=component',
-			data : document.id('adminForm'),
-			useSpinner: true,
-			spinnerTarget: document.id('theform'),
-			method : 'post',
-			onSuccess : function(json_resp) {
-				var res = document.id('results');
-
-				json_resp.each(function(text) {
-					var sp = new Element('div').appendText(text).inject(res);
-				});
-			}
-		});
-		sync_req.send();
-	}
-}
+})(jQuery);

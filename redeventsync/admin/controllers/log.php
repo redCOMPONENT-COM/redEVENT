@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Redcomponent.redeventsync
- * @subpackage  com_redeventsync
- * @copyright   Copyright (C) 2013 redCOMPONENT.com
- * @license     GNU General Public License version 2 or later
+ * @package     Redeventsync
+ * @subpackage  Admin
+ * @copyright   Copyright (C) 2013 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
 defined('_JEXEC') or die();
@@ -11,11 +11,17 @@ defined('_JEXEC') or die();
 /**
  * controller for log
  *
- * @package  RED.redeventsync
- * @since    2.5
+ * @package     Redeventsync
+ * @subpackage  Admin
+ * @since       2.5
  */
-class RedeventsyncControllerLog extends FOFController
+class RedeventsyncControllerLog extends RControllerForm
 {
+	/**
+	 * Clear logs
+	 *
+	 * @return void
+	 */
 	public function clear()
 	{
 		$model = $this->getModel('Logs');

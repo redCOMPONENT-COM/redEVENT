@@ -1,15 +1,101 @@
 <?php
 /**
- * @package     Redcomponent.redeventsync
- * @subpackage  com_redeventsync
- * @copyright   Copyright (C) 2013 redCOMPONENT.com
- * @license     GNU General Public License version 2 or later
+ * @package     Redeventsync
+ * @subpackage  Admin
+ * @copyright   Copyright (C) 2013 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
 defined('_JEXEC') or die();
 
-class RedeventsyncModelLogs extends FOFModel
+/**
+ * Class RedeventsyncModelLogs
+ *
+ * @package     Redeventsync
+ * @subpackage  Admin
+ * @since       3.0
+ */
+class RedeventsyncModelLogs extends RModelList
 {
+	/**
+	 * Name of the filter form to load
+	 *
+	 * @var  string
+	 */
+	protected $filterFormName = 'filter_logs';
+
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitField = 'logs_limit';
+
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitstartField = 'auto';
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
+	 */
+	public function __construct($config = array())
+	{
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'type', 'obj.type',
+				'id', 'obj.id',
+				'date', 'obj.date',
+				'transactionid', 'obj.transactionid',
+				'direction', 'obj.direction',
+				'status', 'obj.status',
+			);
+		}
+
+		parent::__construct($config);
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		parent::populateState('obj.id', 'desc');
+	}
+
 	/**
 	 * Clear logs
 	 *
@@ -36,31 +122,99 @@ class RedeventsyncModelLogs extends FOFModel
 	}
 
 	/**
-	 * Builds the SELECT query
+	 * Archive old logs
 	 *
-	 * @param   boolean  $overrideLimits  Are we requested to override the set limits?
-	 *
-	 * @return  JDatabaseQuery
+	 * @return mixed
 	 */
-	public function buildQuery($overrideLimits = false)
+	public function archiveold()
 	{
-		$query = parent::buildQuery($overrideLimits);
-		$table = $this->getTable();
-		$tableKey = $table->getKeyName();
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 
-		if (!$overrideLimits)
+		// Until it gets possible to do insert select in joomla...
+//		$query = 'INSERT INTO ' . $db->quoteName('#__redeventsync_archive')
+//			. ' SELECT * FROM ' . $db->quoteName('#__redeventsync_logs')
+//			. ' WHERE DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30';
+//		$db->setQuery($query);
+
+		$queryInsert = $db->getQuery(true)
+			->insert($db->quoteName('#__redeventsync_archive'));
+
+		$querySelect = $db->getQuery(true)
+			->select('*')
+			->from($db->quoteName('#__redeventsync_logs'))
+			->where('DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30');
+
+		$db->setQuery($queryInsert . '' . $querySelect);
+		$db->execute();
+
+		$affected = $db->getAffectedRows();
+
+		$queryDelete = $db->getQuery(true)
+			->delete($db->quoteName('#__redeventsync_logs'))
+			->where('DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30');
+
+		$db->setQuery($queryDelete);
+		$db->execute();
+
+		return $affected;
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  object  Query object
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select($this->getState('list.select', 'obj.*'));
+		$query->from($db->qn('#__redeventsync_logs', 'obj'));
+
+		// Filter: like / search
+		$search = $this->getState('filter.search', '');
+
+		if (!empty($search))
 		{
-			$order = $db->qn($tableKey);
-
-			if ($this->getTableAlias())
+			if (stripos($search, 'id:') === 0)
 			{
-				$order = $db->qn($this->getTableAlias()) . '.' . $order;
+				$query->where('obj.id = ' . (int) substr($search, 3));
 			}
-
-			$dir = $this->getState('filter_order_Dir', 'ASC', 'cmd');
-			$query->order($order . ' ' . $dir);
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$or = array(
+					'obj.type LIKE ' . $search,
+					'obj.message LIKE ' . $search,
+					'obj.transactionid LIKE ' . $search,
+					'obj.status LIKE ' . $search,
+				);
+				$query->where('(' . implode(' OR ', $or) . ')');
+			}
 		}
+
+		if ($filter = $this->getState('filter.from'))
+		{
+			$search = $db->quote($filter);
+			$query->where('date >= ' . $search);
+		}
+
+		if ($filter = $this->getState('filter.to'))
+		{
+			$search = $db->quote($filter);
+			$query->where('date <= ' . $search);
+		}
+
+		if (is_numeric($filter = $this->getState('filter.direction')))
+		{
+			$query->where('direction = ' . (int) $filter);
+		}
+
+		// Add the list ordering clause.
+		$query->order($db->escape($this->getState('list.ordering', 'obj.id')) . ' ' . $db->escape($this->getState('list.direction', 'DESC')));
 
 		return $query;
 	}

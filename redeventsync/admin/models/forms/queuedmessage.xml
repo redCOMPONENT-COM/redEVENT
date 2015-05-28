@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="basic">
+		<field
+			name="id"
+			type="hidden"
+			default="0"
+			class="readonly"
+			readonly="true"/>
+
+		<field name="queued" type="calendar"
+			class="inputbox"
+			label="COM_REDEVENTSYNC_QUEUEDMESSAGE_QUEUED"
+			description="COM_REDEVENTSYNC_QUEUEDMESSAGE_QUEUED_DESC"
+			required="true"
+		 />
+
+		<field name="plugin" type="text"
+			   class="inputbox"
+			   label="COM_REDEVENTSYNC_QUEUEDMESSAGE_PLUGIN"
+			   description="COM_REDEVENTSYNC_QUEUEDMESSAGE_PLUGIN_DESC"
+				/>
+
+		<field name="message" type="textarea"
+			   class="inputbox"
+			   label="COM_REDEVENTSYNC_QUEUEDMESSAGE_MESSAGE"
+			   description="COM_REDEVENTSYNC_QUEUEDMESSAGE_MESSAGE_DESC"
+			   cols="80"
+			   rows="60"
+			   filter="raw"
+				/>
+	</fieldset>
+</form>

@@ -8,38 +8,48 @@
 
 defined('_JEXEC') or die();
 
-require_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
-
 /**
  * RedEVENT sync helper for message logging
  *
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RESyncHelperMessagelog
+class ResyncHelperMessagelog
 {
 	/**
 	 * log transaction
 	 *
 	 * @param   int     $direction      up or down
 	 * @param   string  $type           message type
-	 * @param   int     $transactionid  transaction id
+	 * @param   string  $transactionid  transaction id
 	 * @param   string  $message        xml message
 	 * @param   string  $status         status
 	 * @param   string  $debug          debug info
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 */
 	public static function log($direction, $type, $transactionid, $message, $status, $debug = null)
 	{
-		$log = FOFTable::getAnInstance('logs', 'RedeventsyncTable');
+		static $tz;
+
+		if (!$tz)
+		{
+			$config = JFactory::getConfig();
+			$tz = new DateTimeZone($config->get('offset'));
+		}
+
+		// Need to define the 'option' in order for cli script to work properly
+		$log = RTable::getAdminInstance('log', array(), 'com_redeventsync');
 		$log->direction = $direction;
 		$log->transactionid = $transactionid;
 		$log->type = $type;
 		$log->message = $message;
 		$log->status = $status;
 		$log->debug = $debug;
-		$log->date = JFactory::getDate()->toSql(true);
+		$date = new JDate('now', $tz);
+		$log->date = $date->toSql(true);
 
 		if (!$log->store())
 		{

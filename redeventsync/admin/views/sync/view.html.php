@@ -9,25 +9,32 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die;
 
-class RedeventsyncViewSync extends FOFViewHtml
+class RedeventsyncViewSync extends ResyncView
 {
 	/**
-	 * Executes before rendering a generic page, default to actions necessary
-	 * for the Browse task.
+	 * Get the view title.
 	 *
-	 * @param   string  $tpl  Subtemplate to use
-	 *
-	 * @return  boolean  Return true to allow rendering of the page
+	 * @return  string  The view title.
 	 */
-	protected function onDisplay($tpl = null)
+	public function getTitle()
 	{
-		$view = $this->input->getCmd('view', 'cpanel');
+		return JText::_('COM_REDEVENTSYNC_PAGETITLE_VIEW_SYNC');
+	}
 
-		if (in_array($view, array('cpanel', 'cpanels', 'sync', 'syncs')))
-		{
-			return;
-		}
+	/**
+	 * Get the toolbar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user = JFactory::getUser();
 
-		return parent::onDisplay($tp);
+		$firstGroup = new RToolbarButtonGroup;
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup);
+
+		return $toolbar;
 	}
 }

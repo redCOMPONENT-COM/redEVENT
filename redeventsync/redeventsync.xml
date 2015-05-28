@@ -8,18 +8,8 @@
 	<creationDate>##DATE##</creationDate>
 	<license>GNU GPL v3 or later</license>
 	<version>##VERSION##</version>
+	<redcore version="1.4.13" />
 	<description>COM_REDEVENTSYNC_XML_DESCRIPTION</description>
-
-	<!-- Public front end files -->
-	<files folder="site">
-		<filename>index.html</filename>
-		<filename>dispatcher.php</filename>
-		<filename>redeventsync.php</filename>
-
-		<folder>controllers</folder>
-		<folder>language</folder>
-		<folder>views</folder>
-	</files>
 
 	<!-- SQL query files to execute on installation -->
 	<install>
@@ -48,6 +38,14 @@
 		</schemas>
 	</update>
 
+	<!-- Public front end files -->
+	<files folder="site">
+		<folder>language</folder>
+		<filename>index.html</filename>
+		<filename>controller.php</filename>
+		<filename>redeventsync.php</filename>
+	</files>
+
 	<!-- Media files -->
 	<media folder="media">
 		<folder>com_redeventsync</folder>
@@ -63,18 +61,15 @@
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>defines.php</filename>
-			<filename>dispatcher.php</filename>
 			<filename>index.html</filename>
+			<filename>controller.php</filename>
 			<filename>redeventsync.php</filename>
-			<filename>toolbar.php</filename>
-
 			<folder>controllers</folder>
-			<folder>fields</folder>
-			<folder>models</folder>
 			<folder>language</folder>
-			<folder>plugins</folder>
+			<folder>layouts</folder>
+			<folder>models</folder>
 			<folder>sql</folder>
+			<folder>tables</folder>
 			<folder>views</folder>
 		</files>
 
@@ -97,7 +92,7 @@
 
 	<!-- Plugins here -->
 	<plugins>
-		<plugin folder="admin/plugins/redevent" plugin="redeventsync" group="redevent" />
-		<plugin folder="admin/plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
+		<plugin folder="plugins/redevent" plugin="redeventsync" group="redevent" />
+		<plugin folder="plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
 	</plugins>
 </extension>
