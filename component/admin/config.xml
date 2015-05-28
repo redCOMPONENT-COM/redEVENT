@@ -492,6 +492,11 @@
 			   label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_LABEL"
 			   description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC"/>
 
+		<field name="registration_notification_attach_ics" type="radio" default="0" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_ICS_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_ICS_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+
 		<field name="unregistration_notification_subject" type="text" size="80"
 			   default="Cancelled registration for event [event_title] on [date]"
 			   label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT"
