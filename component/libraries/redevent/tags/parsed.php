@@ -72,7 +72,7 @@ class RedeventTagsParsed
 	 *
 	 * @return string
 	 */
-	public function getFull()
+	public function getFullMatch()
 	{
 		return $this->full_tag;
 	}

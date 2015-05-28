@@ -330,7 +330,7 @@ class RedEventModelRegistration extends RModel
 	protected function _getEventCategories($row)
 	{
 		$query = $this->_db->getQuery(true)
-			->select('SELECT c.id, c.name AS catname, c.access')
+			->select('c.id, c.name AS catname, c.access')
 			->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug')
 			->from('#__redevent_categories as c')
 			->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id')

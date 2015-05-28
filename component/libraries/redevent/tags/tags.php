@@ -208,43 +208,11 @@ class RedeventTags
 	 */
 	public function getOption($name, $default = null)
 	{
-		if (isset($this->options) && isset($this->options[$name]))
-		{
-			return $this->options[$name];
-		}
-		else
-		{
-			return $default;
-		}
+		return JArrayHelper::getValue($this->options, $name, $default);
 	}
 
 	/**
 	 * Substitute tags with the correct info
-	 *
-	 * Supported tags are:
-	 * [event_description]
-	 * [event_title]
-	 * [price]
-	 * [credits]
-	 * [code]
-	 * [redform]
-	 * [inputname] Writes an input box for a name
-	 * [inputemail] Writes an input box for an e-mail address
-	 * [submit] Writes a submit button
-	 * [event_info_text]
-	 * [time]
-	 * [date]
-	 * [duration]
-	 * [venue]
-	 * [city]
-	 * [username]
-	 * [useremail]
-	 * [eventplaces]
-	 * [waitinglistplaces]
-	 * [eventplacesleft]
-	 * [waitinglistplacesleft]
-	 * [paymentrequest]
-	 * [paymentrequestlink]
 	 *
 	 * @param   string  $text     text to replace
 	 * @param   array   $options  options
@@ -253,18 +221,12 @@ class RedeventTags
 	 */
 	public function ReplaceTags($text, $options = null)
 	{
-		$mainframe = JFactory::getApplication();
-		$base_url = JURI::root();
-		$rfcore = $this->getRFCore();
-		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
-
 		if ($options)
 		{
 			$this->addOptions($options);
 		}
 
-		$elsettings = RedeventHelper::config();
-		$this->submitkey = $this->submitkey ? $this->submitkey : JRequest::getVar('submit_key');
+		$this->submitkey = $this->submitkey ? $this->submitkey : JFactory::getApplication()->input->get('submit_key');
 
 		$text = $this->replace($text);
 
@@ -331,11 +293,15 @@ class RedeventTags
 	 */
 	protected function replace($text)
 	{
-		// Check if tags where replaced, in which case we should run it again
-		$replaced = false;
+		$recurse = false;
 
 		// First, let's do the library tags replacement
 		$text = $this->replaceLibraryTags($text);
+
+		// Check for plugins
+		JPluginHelper::importPlugin('redform');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onRedeventTagsReplace', array($this, &$text, &$recurse));
 
 		// Now get the list of all remaining tags
 		if (preg_match_all('/\[([^\]\s]+)(?:\s*)([^\]]*)\]/i', $text, $alltags, PREG_SET_ORDER))
@@ -348,39 +314,44 @@ class RedeventTags
 				$tag_obj = new RedeventTagsParsed($tag[0]);
 
 				// Check for conditions tags
-				if ($tag_obj->getParam('condition_hasplacesleft') == "0" && $this->getEvent()->getPlacesLeft())
+				if ($tag_obj->getParam('condition_hasplacesleft') == "0"
+					&& $this->getEvent()->getPlacesLeft())
 				{
-					$search[] = $tag_obj->getFull();
+					$search[] = $tag_obj->getFullMatch();
 					$replace[] = '';
 					continue;
 				}
 
-				if ($tag_obj->getParam('condition_hasplacesleft') == "1" && $this->getEvent()->getData()->maxattendees > 0 && !$this->getEvent()->getPlacesLeft())
+				if ($tag_obj->getParam('condition_hasplacesleft') == "1"
+					&& $this->getEvent()->getData()->maxattendees > 0
+					&& !$this->getEvent()->getPlacesLeft())
 				{
-					$search[] = $tag_obj->getFull();
+					$search[] = $tag_obj->getFullMatch();
 					$replace[] = '';
 					continue;
 				}
 
+				// Attending or waiting list prefix
 				if ($this->submitkey && strpos($tag_obj->getName(), 'attending_') === 0)
 				{
 					// Replace with rest of tag if attending
-					$search[] = $tag_obj->getFull();
+					$search[] = $tag_obj->getFullMatch();
 
 					if ($this->hasAttending())
 					{
 						$replace[] = '[' . substr($tag_obj->getName(), 10) . ']';
-						$replaced = true;
 					}
 					else
 					{
 						$replace[] = '';
 					}
+
+					continue;
 				}
 				elseif ($this->submitkey && strpos($tag_obj->getName(), 'waiting_') === 0)
 				{
 					// Replace with rest of tag if not attending
-					$search[] = $tag_obj->getFull();
+					$search[] = $tag_obj->getFullMatch();
 
 					if ($this->hasAttending())
 					{
@@ -389,32 +360,37 @@ class RedeventTags
 					else
 					{
 						$replace[] = '[' . substr($tag_obj->getName(), 8) . ']';
-						$replaced = true;
 					}
-				}
-				elseif ($this->replaceLibraryTag($tag_obj->getName()) !== false)
-				{
-					$search[] = $tag_obj->getFull();
-					$replace[] = $this->replaceLibraryTag($tag_obj->getName());
-				}
-				else
-				{
-					$func = 'getTag_' . strtolower($tag_obj->getName());
 
-					if (method_exists($this, $func))
-					{
-						$search[] = $tag_obj->getFull();
-						$replace[] = $this->$func($tag_obj);
-						$replaced = true;
-					}
+					continue;
+				}
+
+				if ($this->replaceLibraryTag($tag_obj->getName()) !== false)
+				{
+					$search[] = $tag_obj->getFullMatch();
+					$replace[] = $this->replaceLibraryTag($tag_obj->getName());
+
+					continue;
+				}
+
+
+				$func = 'getTag_' . strtolower($tag_obj->getName());
+
+				if (method_exists($this, $func))
+				{
+					$search[] = $tag_obj->getFullMatch();
+					$replace[] = $this->$func($tag_obj);
 				}
 			}
 
 			// Do the replace
-			$text = str_replace($search, $replace, $text);
+			$text = str_replace($search, $replace, $text, $count);
+
+			// Check if tags where replaced, in which case we should run it again
+			$recurse = $count ? true : false;
 		}
 
-		// Then the custom tags
+		// Then the custom fields tags
 		$search = array();
 		$replace = array();
 
@@ -427,14 +403,7 @@ class RedeventTags
 			$replace[] = $data->text_field;
 		}
 
-		$text = str_ireplace($search, $replace, $text, $count);
-
-		if ($count)
-		{
-			$replaced = true;
-		}
-
-		/* Load redform fields */
+		/* redFORM fields values replacements */
 		if ($alltags)
 		{
 			$redformfields = $this->getFieldsTags();
@@ -454,17 +423,16 @@ class RedeventTags
 						$replace[] = $this->getFieldAnswer(substr($tag[1], 6));
 					}
 				}
-
-				$text = str_ireplace($search, $replace, $text, $count);
 			}
 		}
 
-		if ($count)
+		if (count($search))
 		{
-			$replaced = true;
+			$text = str_ireplace($search, $replace, $text, $count);
 		}
 
-		if ($replaced)
+		// Recurse if we did replacement(s), possibly expanding new tags
+		if ($recurse)
 		{
 			$text = $this->replace($text);
 		}
@@ -853,7 +821,7 @@ class RedeventTags
 		// First replacement
 		$text = str_ireplace($search, $replace, $text, $count);
 
-		// Now, the problem that there could have been libray tags embedded into one another, so we keep replacing if $count is > 0
+		// Now, the problem that there could have been library tags embedded into one another, so we keep replacing if $count is > 0
 		if ($count)
 		{
 			$text = $this->replaceLibraryTags($text);
