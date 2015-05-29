@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die;
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+require_once JPATH_SITE . '/libraries/redmember/library.php';
 
 /**
  * Specific parameters for redEVENT.
@@ -26,6 +26,9 @@ class plgRedeventMaerskregistration extends JPlugin
 {
 	protected $registrationId;
 
+	/**
+	 * @var RdfAnswers
+	 */
 	protected $answers;
 
 	/**
@@ -63,7 +66,7 @@ class plgRedeventMaerskregistration extends JPlugin
 	/**
 	 * Get answers for current registration id
 	 *
-	 * @return mixed
+	 * @return RdfAnswers
 	 */
 	protected function getAnswers()
 	{
@@ -79,9 +82,9 @@ class plgRedeventMaerskregistration extends JPlugin
 			$db->setQuery($query);
 			$registration = $db->loadObject();
 
-			$rfcore = new RedformCore;
-			$answers = $rfcore->getSidsFieldsAnswers(array($registration->sid));
-			$this->answers = $answers[$registration->sid];
+			$rfcore = new RdfCore();
+			$answers = $rfcore->getSidAnswers(array($registration->sid));
+			$this->answers = $answers;
 		}
 
 		return $this->answers;
@@ -99,9 +102,9 @@ class plgRedeventMaerskregistration extends JPlugin
 		$fieldIds = $this->cleanIds($text);
 		$answers = $this->getAnswers();
 
-		foreach ($answers as $a)
+		foreach ($answers->getFields() as $a)
 		{
-			if (in_array($a->id, $fieldIds))
+			if (in_array($a->field_id, $fieldIds))
 			{
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true);
@@ -111,7 +114,7 @@ class plgRedeventMaerskregistration extends JPlugin
 				$query->where('id = ' . $this->registrationId);
 
 				$db->setQuery($query);
-				$res = $db->execute();
+				$db->execute();
 
 				return true;
 			}
@@ -132,7 +135,7 @@ class plgRedeventMaerskregistration extends JPlugin
 		$fieldIds = $this->cleanIds($text);
 		$answers = $this->getAnswers();
 
-		foreach ($answers as $a)
+		foreach ($answers->getFields() as $a)
 		{
 			if (in_array($a->id, $fieldIds))
 			{
@@ -144,7 +147,7 @@ class plgRedeventMaerskregistration extends JPlugin
 				$query->where('id = ' . $this->registrationId);
 
 				$db->setQuery($query);
-				$res = $db->execute();
+				$db->execute();
 
 				return true;
 			}
