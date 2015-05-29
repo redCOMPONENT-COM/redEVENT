@@ -7,10 +7,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+$params = RedeventHelper::config();
+
 $return = base64_encode('index.php?option=com_redevent');
 
 $icons = array(
 	array('link' => 'index.php?option=com_redevent&view=events', 'icon' => 'icon-48-events.png', 'text' => JText::_('COM_REDEVENT_EVENTS'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=sessions', 'icon' => 'icon-48-events.png', 'text' => JText::_('COM_REDEVENT_SESSIONS'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=venues', 'icon' => 'icon-48-venues.png', 'text' => JText::_('COM_REDEVENT_VENUES'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=categories', 'icon' => 'icon-48-categories.png', 'text' => JText::_('COM_REDEVENT_CATEGORIES'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=venuescategories', 'icon' => 'icon-48-venuescategories.png', 'text' => JText::_('COM_REDEVENT_VENUES_CATEGORIES'), 'access' => 'core.edit'),
@@ -23,6 +26,11 @@ $icons = array(
 	array('link' => 'index.php?option=com_redevent&view=logs', 'icon' => 'icon-48-log.png', 'text' => JText::_('COM_REDEVENT_LOG'), 'access' => 'core.manage'),
 	array('link' => 'index.php?option=com_redcore&view=config&layout=edit&component=com_redevent&return=' . $return, 'icon' => 'icon-48-settings.png', 'text' => JText::_('COM_REDEVENT_SETTINGS'), 'access' => 'core.manage'),
 );
+
+if ($params->get('redmember_integration_b2b', 0))
+{
+	$icons[] = array('link' => 'index.php?option=com_redevent&view=organizations', 'icon' => 'icon-48-groupedit.png', 'text' => JText::_('COM_REDEVENT_ORGANIZATIONS'), 'access' => 'core.edit');
+}
 ?>
 <div class="row-fluid">
 	<div class="span9 reDashboardMainIcons">

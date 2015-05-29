@@ -11,6 +11,7 @@ defined('JPATH_REDCORE') or die;
 $user = JFactory::getUser();
 $active = null;
 $data = $displayData;
+$params = RedeventHelper::config();
 
 if (isset($data['active']))
 {
@@ -32,6 +33,11 @@ $icons = array(
 	array('view' => 'logs', 'icon' => 'icon-16-events.png', 'text' => JText::_('COM_REDEVENT_LOG'), 'access' => 'core.manage'),
 	array('view' => 'configuration', 'icon' => 'icon-16-settings.png', 'text' => JText::_('COM_REDEVENT_SETTINGS'), 'access' => 'core.manage'),
 );
+
+if ($params->get('redmember_integration_b2b', 0))
+{
+	$icons[] = array('view' => 'organizations', 'icon' => 'icon-16-groups.png', 'text' => JText::_('COM_REDEVENT_ORGANIZATIONS'), 'access' => 'core.edit');
+}
 
 // Configuration link
 $uri = JUri::getInstance();
