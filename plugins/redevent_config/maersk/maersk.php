@@ -41,6 +41,7 @@ class plgRedevent_configMaersk extends JPlugin
 	{
 		$params->set('b2b_show_open', 0);
 		$params->set('redirect_search_unique_result_to_details', 1);
+		$params->set('redmember_integration_b2b', 1);
 		$params->merge($this->params);
 	}
 }
