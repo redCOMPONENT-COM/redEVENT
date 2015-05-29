@@ -307,6 +307,28 @@
 			</then>
 		</if>
 
+		<!-- Mcv overrides -->
+		<if>
+			<available file="overrides/code/site/" type="dir"/>
+			<then>
+				<copy todir="${www.dir}/code/" overwrite="true">
+					<fileset dir="${dirs.root}/overrides/code/site">
+						<include name="**"/>
+					</fileset>
+				</copy>
+			</then>
+		</if>
+		<if>
+			<available file="overrides/code/admin/" type="dir"/>
+			<then>
+				<copy todir="${www.dir}/administrator/code/" overwrite="true">
+					<fileset dir="${dirs.root}/overrides/code/admin">
+						<include name="**"/>
+					</fileset>
+				</copy>
+			</then>
+		</if>
+
 		<!-- redeventsync -->
 
 		<!-- Manifest & install script -->

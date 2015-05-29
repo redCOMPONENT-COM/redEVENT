@@ -10,6 +10,5 @@ CREATE TABLE IF NOT EXISTS `#__redevent_organizations` (
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `organization_id` (`organization_id`),
-  CONSTRAINT `fk_organization1` FOREIGN KEY (`organization_id`) REFERENCES `#__redmember_organization` (`id`) ON DELETE CASCADE
+  UNIQUE KEY `organization_id` (`organization_id`)
 ) DEFAULT CHARSET=utf8;
