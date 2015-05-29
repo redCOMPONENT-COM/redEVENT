@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addfieldpath="/libraries/redevent/form/fields">
+
+	<fieldset name="venue">
+        <field name="id"
+               type="hidden"
+               default="0"
+               class="readonly"
+               readonly="true"
+                />
+
+		<field
+			name="venue"
+			type="text"
+			default=""
+			label="COM_REDEVENT_VENUE"
+			description ="COM_REDEVENT_VENUE"
+			required="true"
+			class="inputbox" />
+
+		<field
+			name="alias"
+			type="text"
+			default=""
+			label="COM_REDEVENT_Alias"
+			description ="COM_REDEVENT_Alias"
+			class="inputbox" />
+
+		<field
+			name="venue_code"
+			type="text"
+			default=""
+			label="COM_REDEVENT_VENUE_CODE"
+			description ="COM_REDEVENT_VENUE_CODE_DESC"
+			class="inputbox" />
+
+		<field
+			name="published"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>
+
+		<field
+			name="language"
+			type="contentlanguage"
+			label="JFIELD_LANGUAGE_LABEL"
+			description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
+			class="inputbox">
+			<option value="*">JALL</option>
+		</field>
+
+		<field
+			name="company"
+			type="text"
+			default=""
+			label="COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL"
+			description ="COM_REDEVENT_VENUE_EDIT_COMPANY_TIP"
+			class="inputbox" />
+
+		<field
+			name="categories"
+			type="revenuecategorylist"
+			default=""
+			label="COM_REDEVENT_CATEGORY"
+			description ="COM_REDEVENT_CATEGORY"
+			required="true"
+            multiple="true"
+            size="10"
+			class="inputbox" />
+
+		<field
+			name="locdescription"
+			type="editor"
+			label="COM_REDEVENT_DESCRIPTION"
+			description="COM_REDEVENT_DESCRIPTION"
+			class="inputbox"
+			filter="safehtml"
+			buttons="true"
+			hide="readmore,pagebreak"/>
+
+		<field
+			name="locimage"
+			type="rmedia"
+			label="COM_REDEVENT_CHOOSE_IMAGE"
+			description="COM_REDEVENT_CHOOSE_IMAGE"
+			class="inputbox"
+			directory="redevent/categories"/>
+
+		<field
+			name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			class="inputbox"/>
+	</fieldset>
+
+	<fieldset name="address">
+		<field
+			name="street"
+			type="text"
+			default=""
+			label="COM_REDEVENT_STREET"
+			description ="COM_REDEVENT_STREET"
+			class="inputbox" />
+		<field
+			name="plz"
+			type="text"
+			default=""
+			label="COM_REDEVENT_ZIP"
+			description ="COM_REDEVENT_ZIP"
+			class="inputbox" />
+		<field
+			name="city"
+			type="text"
+			default=""
+			label="COM_REDEVENT_CITY"
+			description ="COM_REDEVENT_CITY"
+			class="inputbox" />
+		<field
+			name="state"
+			type="text"
+			default=""
+			label="COM_REDEVENT_STATE"
+			description ="COM_REDEVENT_STREET"
+			class="inputbox" />
+		<field
+			name="country"
+			type="rcountry"
+			default=""
+			label="COM_REDEVENT_COUNTRY"
+			description ="COM_REDEVENT_COUNTRY_HINT"
+			class="inputbox" >
+            <option value="">COM_REDEVENT_SELECT_COUNTRY</option>
+        </field>
+		<field
+			name="url"
+			type="url"
+			default=""
+			label="COM_REDEVENT_WEBSITE"
+			description ="COM_REDEVENT_WEBSITE_HINT"
+			class="inputbox" />
+
+        <field
+            name="email"
+            type="email"
+            default=""
+            label="COM_REDEVENT_ADMIN_EMAIL"
+            description ="COM_REDEVENT_ADMIN_EMAIL_HINT"
+            class="inputbox" />
+
+		<field
+				name="contactAdminEmail"
+				type="contactAdminEmail"
+				default=""
+				label="COM_REDEVENT_CONTACT_ADMIN_EMAIL"
+				description ="COM_REDEVENT_CONTACT_ADMIN_EMAIL_DESC"
+				class="inputbox" />
+
+		<field
+			name="map"
+			type="list"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_VENUE_SHOW_ON_MAP"
+			description="COM_REDEVENT_VENUE_SHOW_ON_MAP_DESC">
+			<option
+				value="1">
+				JYES</option>
+			<option
+				value="0">
+				JNO</option>
+		</field>
+		<field
+			name="latitude"
+			type="text"
+			default=""
+			label="COM_REDEVENT_LATITUDE"
+			description ="COM_REDEVENT_LATITUDE_TIP"
+			class="inputbox" />
+		<field
+			name="longitude"
+			type="text"
+			default=""
+			label="COM_REDEVENT_LONGITUDE"
+			description ="COM_REDEVENT_LONGITUDE_TIP"
+			class="inputbox" />
+	</fieldset>
+
+	<fields name="params">
+		<fieldset
+			name="extra">
+
+			<field
+				name="allowed_gateways"
+				type="redformgateway"
+				label="COM_REDEVENT_VENUE_ALLOWED_GATEWAYS"
+				description="COM_REDEVENT_VENUE_ALLOWED_GATEWAYS_DESC"
+				multiple="multiple"
+				size="10"
+				/>
+
+		</fieldset>
+	</fields>
+
+	<fieldset name="acl">
+
+		<field name="asset_id" type="hidden" filter="unset" />
+
+		<field name="rules"
+		       type="rules"
+		       label="COM_REDEVENT_EVENTS_MANAGE_RULES_LABEL"
+		       translate_label="true"
+		       filter="rules"
+		       validate="rules"
+		       class="inputbox"
+		       component="com_redevent"
+		       section="venue"
+		/>
+	</fieldset>
+</form>
