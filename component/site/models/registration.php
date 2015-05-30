@@ -551,15 +551,13 @@ class RedEventModelRegistration extends RModel
 
 		if ($userid < 1)
 		{
-			JError::raiseError(403, JText::_('COM_REDEVENT_ALERTNOTAUTH'));
-
-			return;
+			throw new RuntimeException(JText::_('COM_REDEVENT_ALERTNOTAUTH'), 403);
 		}
 
 		// First, check if the user is allowed to unregister from this
 		// He must be the one that submitted the form, plus the unregistration must be allowed
 		$query = $this->_db->getQuery(true)
-			->select('s.*, r.uid, r.xref, e.unregistra, x.dates, x.times, x.registrationend')
+			->select('s.*, r.uid, r.xref, r.cancelled, e.unregistra, x.dates, x.times, x.registrationend')
 			->from('#__rwf_submitters AS s')
 			->join('INNER', '#__redevent_register AS r ON r.sid = s.id')
 			->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref')
@@ -574,16 +572,12 @@ class RedEventModelRegistration extends RModel
 
 		if (!RedeventHelper::canUnregister($submitterinfo->xref) && !$manager)
 		{
-			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
-
-			return false;
+			throw new RuntimeException(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
 		}
 
 		if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager)
 		{
-			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
-
-			return false;
+			throw new RuntimeException(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
 		}
 
 		// Now that we made sure, we can set as cancelled
@@ -596,9 +590,7 @@ class RedEventModelRegistration extends RModel
 
 		if (!$this->_db->execute())
 		{
-			$this->setError(JText::_('COM_REDEVENT_ERROR_CANNOT_DELETE_REGISTRATION'));
-
-			return false;
+			throw new RuntimeException(JText::_('COM_REDEVENT_ERROR_CANNOT_DELETE_REGISTRATION'));
 		}
 
 		return true;

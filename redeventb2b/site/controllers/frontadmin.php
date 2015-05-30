@@ -386,7 +386,7 @@ class Redeventb2bControllerFrontadmin extends FOFController
 		$rid = $app->input->get('rid', 0, 'int');
 		$orgId = $app->input->get('org', 0, 'int');
 
-		$model = $this->getModel('registration');
+		$model = RModel::getFrontInstance('registration', array('ignore_request' => true), 'com_redevent');
 
 		$resp = new stdClass;
 
