@@ -51,6 +51,9 @@ class Redeventb2bBootstrap
 
 			// Register library prefix
 			RLoader::registerPrefix('Redeventb2b', __DIR__);
+			RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+			RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+			RLoader::registerPrefix('Redmember', JPATH_LIBRARIES . '/redmember');
 
 			// Make available the fields
 			JFormHelper::addFieldPath(JPATH_LIBRARIES . '/redeventb2b/form/fields');

@@ -13,29 +13,20 @@ if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 }
 
-$redcoreLoader = JPATH_LIBRARIES . '/redcore/bootstrap.php';
+$loader = JPATH_LIBRARIES . '/redeventb2b/bootstrap.php';
 
-if (!file_exists($redcoreLoader) || !JPluginHelper::isEnabled('system', 'redcore'))
+if (!file_exists($loader))
 {
-	throw new Exception(JText::_('COM_REDEVENT_REDCORE_REQUIRED'), 404);
+	throw new Exception(JText::_('COM_redeventb2b_LIB_INIT_FAILED'), 404);
 }
 
-include_once $redcoreLoader;
+include_once $loader;
 
-// Bootstraps redCORE
-RBootstrap::bootstrap();
+// Bootstraps redEVENTB2B
+Redeventb2bBootstrap::bootstrap();
 
-// Register redFORM
-RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
-
-// Bootstraps Redevent application
-$redEVENTLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
-require_once $redEVENTLoader;
-
-RedeventBootstrap::bootstrap();
-
-// Perform cleanup if it wasn't done today (archive, delete, recurrence)
-RedeventHelper::cleanup();
+$language = JFactory::getLanguage();
+$language->load('com_redevent' , JPATH_SITE . '/components/com_redevent', $language->getTag(), true);
 
 try
 {

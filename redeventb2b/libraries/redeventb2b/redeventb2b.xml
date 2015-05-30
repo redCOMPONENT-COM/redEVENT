@@ -12,6 +12,7 @@
 	<description>redEVENT B2B library</description>
 	<files>
 		<filename>bootstrap.php</filename>
+		<folder>helper</folder>
 		<folder>view</folder>
 	</files>
 </extension>

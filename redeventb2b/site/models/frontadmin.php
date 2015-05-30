@@ -22,15 +22,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 /**
  * Redevents Component events list Model
  *
  * @package  Redevent
  * @since    2.5
  */
-class RedeventModelFrontadmin extends RedeventModelBaseeventlist
+class Redeventb2bModelFrontadmin extends RedeventModelBaseeventlist
 {
 	/**
 	 * caching for sessions
@@ -167,7 +165,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_sessions))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_sessions = new REAjaxPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_sessions = new RedeventAjaxPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
 		}
 
 		return $this->pagination_sessions;
@@ -202,7 +200,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new REAjaxPagination($this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit'));
+			$this->pagination_booked = new RedeventAjaxPagination($this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -237,7 +235,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new REAjaxPagination($this->getTotalMemberBooked(), $this->getState('booked_limitstart'), $this->getState('limit'));
+			$this->pagination_booked = new RedeventAjaxPagination($this->getTotalMemberBooked(), $this->getState('booked_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -255,7 +253,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_previous))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_previous = new REAjaxPagination($this->getTotalMemberPrevious(), $this->getState('previous_limitstart'), $this->getState('limit'));
+			$this->pagination_previous = new RedeventAjaxPagination($this->getTotalMemberPrevious(), $this->getState('previous_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_previous;
@@ -450,7 +448,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id as value, c.catname as text');
+		$query->select('c.id as value, c.name as text');
 		$query->from('#__redevent_categories AS c');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id');
 		$query->where('c.id IN (' . implode(',', $allowed) . ')');
@@ -487,18 +485,18 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('o.organization_id as value, o.organization_name as text');
+		$query->select('o.id as value, o.name as text');
 		$query->from('#__redmember_organization AS o');
-		$query->order('o.organization_name');
+		$query->order('o.name');
 
 		if (!$this->useracl->superuser())
 		{
-			$query->join('INNER', '#__redmember_user_organization_xref AS x ON x.organization_id = o.organization_id');
+			$query->join('INNER', '#__redmember_user_organization_xref AS x ON x.organization_id = o.id');
 			$query->where('x.user_id = ' . $user->get('id'));
 			$query->where('x.level > 1');
 		}
 
-		$query->group('o.organization_id');
+		$query->group('o.id');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -589,8 +587,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 
 		$query->select('u.id AS value, u.name AS text');
 		$query->from('#__redmember_users AS rmu');
-		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
-		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.user_id');
+		$query->join('INNER', '#__users AS u ON u.id = rmu.joomla_user_id');
+		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.joomla_user_id');
 		$query->where('rmuo.organization_id = ' . (int) $this->getState('filter_organization'));
 		$query->order('u.name');
 
@@ -631,9 +629,9 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 
 		// Join over
 		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
-		$query->join('INNER', '#__redmember_users AS rmu ON rmu.user_id = r.uid');
-		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.user_id');
-		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
+		$query->join('INNER', '#__redmember_users AS rmu ON rmu.joomla_user_id = r.uid');
+		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.joomla_user_id');
+		$query->join('INNER', '#__users AS u ON u.id = rmu.joomla_user_id');
 		$query->where('rmuo.organization_id = ' . $this->getState('filter_organization'));
 		$query->where('r.cancelled = 0');
 
@@ -1024,11 +1022,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 			$uid = JFactory::getUser()->get('id');
 		}
 
-		$data = RedmemberLib::getUserData($uid);
+		$data = RedmemberApi::getUser($uid);
 
 		if (count($data->organizations))
 		{
-			$orgId = reset(array_keys($data->organizations));
+			$ids = array_keys($data->organizations);
+			$orgId = reset($ids);
 
 			return $orgId;
 		}

@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent
  * @since    2.5
  */
-class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
+class Redeventb2bModelFrontadminMembers extends RedeventModelBaseeventlist
 {
 	/**
 	 * caching for sessions
@@ -110,7 +110,7 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 		if (empty($this->pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination = new REAjaxPagination($this->getTotal(), $this->getState('members_limitstart'), $this->getState('limit'));
+			$this->pagination = new RedeventAjaxPagination($this->getTotal(), $this->getState('members_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination;
@@ -134,8 +134,8 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 
 		$query->select('u.*');
 		$query->from('#__redmember_user_organization_xref AS rmuo');
-		$query->join('INNER', '#__redmember_users AS rmu ON rmuo.user_id = rmu.user_id');
-		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
+		$query->join('INNER', '#__redmember_users AS rmu ON rmuo.user_id = rmu.joomla_user_id');
+		$query->join('INNER', '#__users AS u ON u.id = rmu.joomla_user_id');
 		$query->where('rmuo.organization_id = ' . $this->organizationId);
 		$query->group('u.id');
 
@@ -143,14 +143,14 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 
 		if ($this->filter_user)
 		{
-			$query->join('LEFT', '#__redmember_fields_values AS v ON v.entity_id = u.id');
+			$query->join('LEFT', '#__redmember_fields_values AS v ON v.user_id = u.id');
 
 			$like = $db->Quote("%{$this->filter_user}%");
 			$cond = array();
 			$cond[] = 'u.username LIKE ' . $like;
 			$cond[] = 'u.name LIKE ' . $like;
 			$cond[] = 'u.email LIKE ' . $like;
-			$cond[] = 'v.field_value LIKE ' . $like;
+			$cond[] = 'v.value LIKE ' . $like;
 			$query->where('(' . implode(' OR ', $cond) . ')');
 		}
 

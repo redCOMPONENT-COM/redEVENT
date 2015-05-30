@@ -291,7 +291,7 @@ var redb2b = {
 			}
 
 			req = new Request.JSON({
-				url: 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
+				url: 'index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component',
 				data: document.id('member-update'),
 				format: 'json',
 				method: 'post',
@@ -321,7 +321,7 @@ var redb2b = {
 			var user_name     = document.id('member_name').value;
 			var user_email    = document.id('member_email').value;
 			req = new Request.JSON({
-				url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
+				url : 'index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component',
 				data : document.id('member-update'),
 				format: 'json',
 				method : 'post',
@@ -350,7 +350,7 @@ var redb2b = {
 				var registerId = this.getParent('tr').getProperty('rid');
 				var orgId = document.id('filter_organization').get('value');
 				req = new Request.JSON({
-					url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component&from=b2b',
+					url : 'index.php?option=com_redeventb2b&task=frontadmin.cancelreg&tmpl=component&from=b2b',
 					data : {'rid' : registerId, 'org' : orgId},
 					method : 'post',
 					onRequest: function(){
@@ -396,7 +396,7 @@ var redb2b = {
 
 			var orgId = document.id('filter_organization').get('value');
 			req = new Request.JSON({
-				url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b&org=' + orgId,
+				url : 'index.php?option=com_redeventb2b&task=frontadmin.quickbook&tmpl=component&from=b2b&org=' + orgId,
 				data : document.id('selected_users'),
 				method : 'post',
 				onRequest: function(){
@@ -482,7 +482,7 @@ var redb2b = {
 			var rid = this.getParent('tr').getProperty('rid');
 			var el = this;
 			var req = new Request.JSON({
-				url : 'index.php?option=com_redevent&controller=frontadmin&task=updateponumber&tmpl=component',
+				url : 'index.php?option=com_redeventb2b&task=frontadmin.updateponumber&tmpl=component',
 				data :{'rid' : rid, 'value' : text},
 				onRequest: function(){
 					el.set('spinner').spin();
@@ -505,7 +505,7 @@ var redb2b = {
 			var rid = this.getParent('tr').getProperty('rid');
 			var el = this;
 			var req = new Request.JSON({
-				url : 'index.php?option=com_redevent&controller=frontadmin&task=updatecomments&tmpl=component',
+				url : 'index.php?option=com_redeventb2b&task=frontadmin.updatecomments&tmpl=component',
 				data :{'rid' : rid, 'value' : text},
 				onRequest: function(){
 					el.set('spinner').spin();
@@ -535,7 +535,7 @@ var redb2b = {
 			var rid = this.getParent('tr').getProperty('rid');
 			var el = this;
 			var req = new Request.JSON({
-				url : 'index.php?option=com_redevent&controller=frontadmin&task=updatestatus&tmpl=component',
+				url : 'index.php?option=com_redeventb2b&task=frontadmin.updatestatus&tmpl=component',
 				data :{'rid' : rid, 'value' : current},
 				onRequest: function(){
 					el.set('spinner').spin();
@@ -673,7 +673,7 @@ var redb2b = {
 	 */
 	getSessions : function() {
 		var req = new Request({
-			url: 'index.php?option=com_redevent&controller=frontadmin&task=searchsessions&tmpl=component',
+			url: 'index.php?option=com_redeventb2b&task=frontadmin.searchsessions&tmpl=component',
 			data: document.id('course-search-form'),
 			onRequest : function(){
 				document.id('main-course-results').set('spinner').spin();
@@ -698,7 +698,7 @@ var redb2b = {
 	updateEventField : function(async) {
 		async = typeof async !== 'undefined' ? async : true;
 		var req = new Request.JSON({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=eventsoptions&tmpl=component',
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.eventsoptions&tmpl=component',
 			data :document.id('course-search-form'),
 			async : async,
 			onRequest: function(){
@@ -724,7 +724,7 @@ var redb2b = {
 	updateSessionField : function(async) {
 		async = typeof async !== 'undefined' ? async : true;
 		var req = new Request.JSON({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=sessionsoptions&tmpl=component',
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.sessionsoptions&tmpl=component',
 			data :document.id('course-search-form'),
 			async : async,
 			onRequest: function(){
@@ -752,7 +752,7 @@ var redb2b = {
 	updateVenueField : function(async) {
 		async = typeof async !== 'undefined' ? async : true;
 		var req = new Request.JSON({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=venuesoptions&tmpl=component',
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.venuesoptions&tmpl=component',
 			data :document.id('course-search-form'),
 			async : async,
 			onRequest: function(){
@@ -778,7 +778,7 @@ var redb2b = {
 	updateCategoryField : function(async) {
 		async = typeof async !== 'undefined' ? async : true;
 		var req = new Request.JSON({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=categoriesoptions&tmpl=component',
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.categoriesoptions&tmpl=component',
 			data :document.id('course-search-form'),
 			async : async,
 			onRequest: function(){
@@ -803,7 +803,7 @@ var redb2b = {
 
 	searchBookings : function() {
 		req = new Request({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=getbookings&tmpl=component',
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.getbookings&tmpl=component',
 			data : redb2b.getAllData(),
 			method : 'post',
 			onSuccess : function(responseText){
@@ -816,7 +816,7 @@ var redb2b = {
 
 	selectSession : function(id) {
 		var req = new Request.JSON({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=getsession&tmpl=component&id=' + id,
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.getsession&tmpl=component&id=' + id,
 			onSuccess : function(session){
 				document.id('filter_event').set('value', session.did);
 				document.id('filter_session').empty();
@@ -857,7 +857,7 @@ var redb2b = {
 	getMembersList : function() {
 		if (document.id('filter_organization').get('value') > 0) {
 			var req = new Request.HTML({
-				url: 'index.php?option=com_redevent&controller=frontadmin&task=getattendees&tmpl=component',
+				url: 'index.php?option=com_redeventb2b&task=frontadmin.getattendees&tmpl=component',
 				data : redb2b.getAllData(),
 				onRequest : function(){
 					document.id('employees-result').set('spinner').spin();
@@ -889,7 +889,7 @@ var redb2b = {
 
 	publishSession : function(xref, state) {
 		var req = new Request.JSON({
-			url: 'index.php?option=com_redevent&controller=frontadmin&task=publishxref&tmpl=component',
+			url: 'index.php?option=com_redeventb2b&task=frontadmin.publishxref&tmpl=component',
 			data : {'xref' : xref,
 				'state' : state
 			},
@@ -915,7 +915,7 @@ var redb2b = {
 		}
 
 		var dummylink = new Element('a', {
-			href: "index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component&modal=1&orgId=" + orgId
+			href: "index.php?option=com_redeventb2b&task=frontadmin.editmember&tmpl=component&modal=1&orgId=" + orgId
 		});
 		SqueezeBox.open(dummylink, {handler: 'iframe', size: {x: 800, y: 400}, onClose: redb2b.getMembersList});
 	},
@@ -929,7 +929,7 @@ var redb2b = {
 			return;
 		}
 		req = new Request({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component',
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.editmember&tmpl=component',
 			data : {'uid' : id, 'orgId': orgId},
 			method : 'post',
 			onSuccess : function(responseText){
@@ -953,7 +953,7 @@ var redb2b = {
 
 	updateOrganizationUserOptions : function() {
 		var person_req = new Request.JSON({
-			url : 'index.php?option=com_redevent&controller=frontadmin&task=getusers&tmpl=component',
+			url : 'index.php?option=com_redeventb2b&task=frontadmin.getusers&tmpl=component',
 			data : {'filter_organization' : document.id('filter_organization').get('value')},
 			method : 'post',
 			onSuccess : function(options){
@@ -972,7 +972,7 @@ var redb2b = {
 
 	updateFormList : function(form) {
 		var req = new Request.HTML({
-			url: 'index.php?option=com_redevent',
+			url: 'index.php?option=com_redeventb2b',
 			data : form,
 			onRequest : function(){
 				form.set('spinner').spin();
@@ -1194,7 +1194,7 @@ var redb2b = {
 	gaJoinCategoyNames : function(categories) {
 		var names = [];
 		for (var i = 0; i < categories.length; i++) {
-			names.push(categories[i].catname);
+			names.push(categories[i].name);
 		}
 		return names.join(',');
 	}

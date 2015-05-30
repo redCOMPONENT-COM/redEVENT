@@ -24,11 +24,6 @@
 // No direct access
 defined('_JEXEC') or die ('Restricted access');
 
-jimport('joomla.application.component.view');
-
-require_once JPATH_SITE . '/components/com_redevent/views/myevents/view.html.php';
-require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 /**
  * HTML View class for the frontend admin View
  *
@@ -36,7 +31,7 @@ require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewFrontadmin extends JView
+class Redeventb2bViewFrontadmin extends RViewAdmin
 {
 	/**
 	 * Creates the View
@@ -93,10 +88,6 @@ class RedeventViewFrontadmin extends JView
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
 
-		// Load Akeeba Strapper
-		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
-		AkeebaStrapper::bootstrap();
-
 		$mainframe = JFactory::getApplication();
 
 		$user = JFactory::getUser();
@@ -112,23 +103,23 @@ class RedeventViewFrontadmin extends JView
 		$pathway    = $mainframe->getPathWay();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();
-		$modelAttendees = FOFModel::getAnInstance('FrontadminMembers', 'RedeventModel');
+		$modelAttendees = RModel::getFrontInstance('FrontadminMembers');
 
-		$menu = JSite::getMenu();
+		$menu = JFactory::getApplication()->getMenu();
 		$item = $menu->getActive();
 
 		// Add css file
 		if (!$params->get('custom_css'))
 		{
-			$document->addStyleSheet('media/com_redevent/css/redevent.css');
-			$document->addStyleSheet($this->baseurl . '/media/com_redevent/css/redevent-b2b.css');
+			$document->addStyleSheet('media/com_redeventb2b/css/redevent.css');
+			$document->addStyleSheet($this->baseurl . '/media/com_redeventb2b/css/redevent-b2b.css');
 		}
 		else
 		{
 			$document->addStyleSheet($params->get('custom_css'));
 		}
 
-		$document->addScript('media/com_redevent/js/b2b.js?v=' . uniqid());
+		$document->addScript('media/com_redeventb2b/js/b2b.js?v=' . uniqid());
 
 		// For redmember
 		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');

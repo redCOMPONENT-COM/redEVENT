@@ -22,15 +22,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 /**
  * Redevents Component events list Model
  *
  * @package  Redevent
  * @since    2.5
  */
-class RedeventModelFrontadmininfo extends JModelLegacy
+class Redeventb2bModelFrontadmininfo extends JModelLegacy
 {
 	/**
 	 * @var int

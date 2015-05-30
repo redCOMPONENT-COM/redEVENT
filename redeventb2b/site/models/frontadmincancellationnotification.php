@@ -22,15 +22,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 /**
  * B2B Cancellation Notification model
  *
  * @package  Redevent
  * @since    2.5
  */
-class RedeventModelFrontadminCancellationNotification extends JModelLegacy
+class Redeventb2bModelFrontadminCancellationNotification extends JModelLegacy
 {
 	/**
 	 * @var int

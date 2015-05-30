@@ -22,7 +22,7 @@ jimport('joomla.application.component.view');
  * @package  Redevent.site
  * @since    2.5
  */
-class RedeventControllerFrontadminlogin extends JControllerLegacy
+class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 {
 	/**
 	 * Method to log in a user.

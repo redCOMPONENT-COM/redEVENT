@@ -48,7 +48,7 @@ $my = JRoute::_('index.php?option=com_redmember&view=userdetail&layout=alterdeta
 	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn')); ?></li>
 	<li>
 		<?php
-		$return = JRoute::_(RedeventHelperRoute::getFrontadminloginRoute());
+		$return = JRoute::_(Redeventb2bHelperRoute::getFrontadminloginRoute());
 		echo JHTML::link('index.php?option=com_users&task=user.logout&' . JSession::getFormToken() . '=1'
 			. '&return=' . base64_encode($return),
 			JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT'), array('class' => 'btn'));
