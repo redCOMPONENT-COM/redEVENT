@@ -113,7 +113,7 @@ class Redeventb2bModelFrontadminCancellationNotification extends JModelLegacy
 
 		// Notify managers
 		JPluginHelper::importPlugin('redevent');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onB2BCancellationNotifyAdmins', array($this->attendeeId));
 	}
 

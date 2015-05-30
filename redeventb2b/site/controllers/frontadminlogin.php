@@ -43,7 +43,7 @@ class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 
 		// Set the return URL if empty.
 		if (empty($data['return'])) {
-			$data['return'] = 'index.php?option=com_redevent&view=frontadmin';
+			$data['return'] = 'index.php?option=com_redeventb2b&view=frontadmin';
 		}
 
 		// Set the return URL in the user state to allow modification by plugins
@@ -68,7 +68,7 @@ class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 			// Login failed !
 			$data['remember'] = (int)$options['remember'];
 			$app->setUserState('users.login.form.data', $data);
-			$app->redirect(JRoute::_('index.php?option=com_redevent&view=frontadminlogin', false));
+			$app->redirect(JRoute::_('index.php?option=com_redeventb2b&view=frontadminlogin', false));
 		}
 	}
 

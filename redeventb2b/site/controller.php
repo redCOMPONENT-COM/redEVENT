@@ -16,4 +16,8 @@ defined('_JEXEC') or die('Restricted access');
  */
 class Redeventb2bController extends JControllerLegacy
 {
+	/**
+	 * @var    string  The default view.
+	 */
+	protected $default_view = 'frontadmin';
 }

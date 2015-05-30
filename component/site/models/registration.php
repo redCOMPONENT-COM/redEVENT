@@ -108,7 +108,7 @@ class RedEventModelRegistration extends RModel
 	 */
 	public function register($user, $sid, $submit_key, $sessionpricegroup_id)
 	{
-		$config  = redEventHelper::config();
+		$config  = RedeventHelper::config();
 		$session = $this->getSessionDetails();
 
 		if (!$sid)
@@ -118,7 +118,7 @@ class RedEventModelRegistration extends RModel
 			return false;
 		}
 
-		$obj = $this->getTable('Attendee', 'RedeventTable');
+		$obj = RTable::getAdminInstance('Attendee', array(), 'com_redevent');
 		$obj->load(array('sid' => $sid));
 		$obj->sid        = $sid;
 		$obj->xref       = $this->xref;

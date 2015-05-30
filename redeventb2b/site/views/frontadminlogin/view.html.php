@@ -7,15 +7,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 /**
  * B2B login view
  *
  * @package  Redevent.site
  * @since    2.5
  */
-class RedeventviewFrontadminlogin extends JView
+class Redeventb2bViewFrontadminlogin extends RViewSite
 {
 	/**
 	 * Execute and display a template script.
@@ -34,7 +32,7 @@ class RedeventviewFrontadminlogin extends JView
 
 		$user = JFactory::getUser();
 
-		$frontadminRoute = JRoute::_(RedeventHelperRoute::getFrontadminRoute());
+		$frontadminRoute = JRoute::_(Redeventb2bHelperRoute::getFrontadminRoute());
 
 		if ($user->get('id'))
 		{
@@ -42,10 +40,6 @@ class RedeventviewFrontadminlogin extends JView
 
 			return;
 		}
-
-		// Load Akeeba Strapper
-		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
-		AkeebaStrapper::bootstrap();
 
 		$params = $app->getParams();
 		$document  = JFactory::getDocument();

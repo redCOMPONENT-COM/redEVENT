@@ -94,10 +94,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		if ($model->getPricegroups())
 		{
-			foreach ($pricegroups as $p)
+			foreach ($pricegroups as $regPricegroup)
 			{
-				$regPricegroup = $model->getRegistrationPrice($p);
-
 				if (!$regPricegroup)
 				{
 					$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
@@ -108,7 +106,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 				$field = new RedeventRfieldSessionprice;
 				$field->setOptions(array($regPricegroup));
-				$field->setValue($p);
+				$field->setValue($regPricegroup->id);
 				$field->setFormIndex($i);
 
 				$extrafields[$i++] = array($field);

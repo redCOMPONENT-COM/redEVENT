@@ -138,7 +138,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	{
 		if (!$this->registrationmodel)
 		{
-			$this->registrationmodel = JModel::getInstance('Registration', 'RedeventModel');
+			$this->registrationmodel = RModel::getFrontInstance('Registration', array('ignore_request' => true), 'com_redevent');
 			$this->registrationmodel->setXref($this->xref);
 		}
 
@@ -176,11 +176,17 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	private function redformRegistration()
 	{
 		$pricegroup = $this->getPricegroup();
-		$options = array('baseprice' => $pricegroup->price, 'currency' => $pricegroup->currency);
+
+		$field = new RedeventRfieldSessionprice;
+		$field->setOptions(array($pricegroup));
+		$field->setValue($pricegroup->id);
+		$field->setFormIndex(1);
+
+		$options = array('extrafields' => array(array($field)), 'currency' => $pricegroup->currency);
 
 		$redformId = $this->getRedformId();
 
-		$redform = RedformCore::getInstance($redformId);
+		$redform = RdfCore::getInstance($redformId);
 		$result = $redform->quickSubmit($this->user_id, 'redevent', $options);
 
 		if (!$result)
@@ -194,7 +200,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	/**
 	 * redEVENT registration
 	 *
-	 * @param   object  $redformResult  redform submission result
+	 * @param   RdfCoreSubmission  $redformResult  redform submission result
 	 *
 	 * @return mixed
 	 *
@@ -325,39 +331,23 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	 */
 	private function getPricegroup()
 	{
-		if (!$this->pricegroup)
+		if ($this->pricegroup === null)
 		{
-			$db      = JFactory::getDbo();
-			$query = $db->getQuery(true);
+			$model = RModel::getFrontInstance('Registration', array('ignore_request' => true), 'com_redevent');
+			$model->setXref($this->xref);
 
-			$query->select('spg.id, spg.price, spg.currency');
-			$query->select('f.currency AS form_currency');
-			$query->from('#__redevent_sessions_pricegroups AS spg');
-			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = spg.xref');
-			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-			$query->join('INNER', '#__rwf_forms AS f ON f.id = e.redform_id');
-			$query->where('spg.xref = ' . $this->xref);
+			$priceGroups = $model->getPricegroups();
 
-			$db->setQuery($query, 0, 1);
-			$res = $db->loadObject();
-
-			$pricegroup = new stdclass;
-
-			if (!$res)
+			if (!empty($priceGroups))
 			{
-				$pricegroup->id = 0;
-				$pricegroup->price = 0;
-				$pricegroup->currency = '';
+				$this->pricegroup = reset($priceGroups);
 			}
 			else
 			{
-				$pricegroup->id = $res->id;
-				$pricegroup->price = $res->price;
-				$pricegroup->currency = $res->currency ? $res->currency : $res->form_currency;
+				$this->pricegroup = false;
 			}
-
-			$this->pricegroup = $pricegroup;
 		}
+
 
 		return $this->pricegroup;
 	}

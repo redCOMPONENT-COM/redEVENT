@@ -77,7 +77,7 @@ class Redeventb2bControllerFrontadmin extends FOFController
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getSessionsOptions();
 
 		echo json_encode($options);
@@ -147,7 +147,7 @@ class Redeventb2bControllerFrontadmin extends FOFController
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin', 'Redeventb2bModel');
 		$options = $model->getUsersOptions();
 
 		echo json_encode($options);
@@ -163,7 +163,7 @@ class Redeventb2bControllerFrontadmin extends FOFController
 	public function getsession()
 	{
 		$app = JFactory::getApplication();
-		$model = $this->getModel('eventhelper');
+		$model = RModel::getFrontInstance('eventhelper', array('ignore_request' => true), 'com_redevent');
 		$model->setXref($app->input->get('id'));
 		$data  = $model->getData();
 
@@ -295,30 +295,39 @@ class Redeventb2bControllerFrontadmin extends FOFController
 
 			foreach ($regs as $user_id)
 			{
-				$model = $this->getModel('Frontadminregistration', 'RedeventModel');
-				$attendee = $model->book($user_id, $xref, $orgId);
-				$regresp = new stdclass;
-
-				if ($attendee)
+				try
 				{
-					$regresp->status = 1;
-					$regresp->details = $attendee;
-					$resp->submit_key = $attendee->submit_key;
-					$added++;
+					$model = $this->getModel('Frontadminregistration', 'Redeventb2bModel');
+					$attendee = $model->book($user_id, $xref, $orgId);
+					$regresp = new stdclass;
 
-					JPluginHelper::importPlugin( 'redevent' );
-					$dispatcher =& JDispatcher::getInstance();
-					$res = $dispatcher->trigger('onAttendeeCreated', array($attendee->id));
+					if ($attendee)
+					{
+						$regresp->status = 1;
+						$regresp->details = $attendee;
+						$resp->submit_key = $attendee->submit_key;
+						$added++;
+
+						JPluginHelper::importPlugin('redevent');
+						$dispatcher = JDispatcher::getInstance();
+						$dispatcher->trigger('onAttendeeCreated', array($attendee->id));
+					}
+					else
+					{
+						$resp->status = 0;
+						$regresp->status = 0;
+						$regresp->error = $model->getError();
+					}
+
+					$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
+					$resp->regs[] = $regresp;
 				}
-				else
+				catch (Exception $e)
 				{
 					$resp->status = 0;
 					$regresp->status = 0;
-					$regresp->error = $model->getError();
+					$regresp->error = $e->getMessage();
 				}
-
-				$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
-				$resp->regs[] = $regresp;
 			}
 		}
 
