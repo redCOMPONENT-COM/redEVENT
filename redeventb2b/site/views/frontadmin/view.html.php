@@ -88,6 +88,8 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
 
+//		RHtmlMedia::setFramework('bootstrap3');
+
 		$mainframe = JFactory::getApplication();
 
 		$user = JFactory::getUser();
@@ -111,8 +113,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		// Add css file
 		if (!$params->get('custom_css'))
 		{
-			$document->addStyleSheet('media/com_redeventb2b/css/redevent.css');
-			$document->addStyleSheet($this->baseurl . '/media/com_redeventb2b/css/redevent-b2b.css');
+			RHelperAsset::load('redevent-b2b.css');
 		}
 		else
 		{
@@ -408,10 +409,6 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 	{
 		$document = JFactory::getDocument();
 
-		// Load Akeeba Strapper
-		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
-		AkeebaStrapper::bootstrap();
-
 		$member = $this->get('MemberInfo');
 		$booked = $this->get('MemberBooked');
 		$previous = $this->get('MemberPrevious');
@@ -428,22 +425,17 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 			return;
 		}
 
-		$rmu_fields = RedmemberLib::getUserFields(JFactory::getApplication()->input->get('uid'),
-			array('assign_organization' => JFactory::getApplication()->input->get('orgId')));
+		$rmUser = RedmemberApi::getUser(JFactory::getApplication()->input->get('uid'));
 
-		$this->assignRef('tabs', $rmu_fields);
+		$this->form = $rmUser->getBaseForm();
+		$this->tabs = $rmUser->getTabs();
 
 		if ($modal)
 		{
-			// Load Akeeba Strapper
-			include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
-			AkeebaStrapper::bootstrap();
-
 			// Add css file
 			if (!$this->params->get('custom_css'))
 			{
-				$document->addStyleSheet('media/com_redevent/css/redevent.css');
-				$document->addStyleSheet($this->baseurl . '/media/com_redevent/css/redevent-b2b.css');
+				RHelperAsset::load('redevent-b2b.css');
 			}
 			else
 			{

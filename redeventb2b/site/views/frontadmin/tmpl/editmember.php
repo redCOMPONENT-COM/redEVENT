@@ -61,6 +61,7 @@ JHtml::_('behavior.formvalidation')
 
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
+			<li class="active"><a href="#base" role="tab" data-toggle="tab"><?php echo JText::_('COM_REDEVENTB2B_EDITMEMBER_TAB_USER'); ?></a></li>
 			<?php $i = 0; ?>
 			<?php foreach ($this->tabs as $t): ?>
 				<li class="<?php echo $i ? '' : 'active'; ?>"><a href="#tab<?php echo $i; ?>" role="tab" data-toggle="tab"><?php echo $t->tab_name; ?></a></li>
@@ -70,21 +71,34 @@ JHtml::_('behavior.formvalidation')
 
 		<!-- Tab panes -->
 		<div class="tab-content">
+			<div class="tab-base active" id="tab-base">
+				<fieldset>
+					<?php foreach ($this->form->getFieldset('general') as $field): ?>
+						<?php if (!$field->hidden) : ?>
+							<div class="control-group">
+								<?php echo $field->label; ?>
+								<div class="controls">
+									<?php echo $field->input; ?>
+								</div>
+							</div>
+						<?php else: ?>
+							<?php echo $field->input; ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</fieldset>
+			</div>
+
 			<?php $i = 0; ?>
 			<?php foreach ($this->tabs as $t): ?>
 			<div class="tab-pane<?php echo $i ? '' : ' active'; ?>" id="tab<?php echo $i; ?>">
 			<fieldset>
 				<?php foreach ($t->fields as $field): ?>
-					<?php if (!$field->hidden) : ?>
 					<div class="control-group">
 						<?php echo $field->getLabel(array('class' => 'control-label')); ?>
 						<div class="controls">
 							<?php echo $field->getInput(); ?>
 						</div>
 					</div>
-					<?php else: ?>
-						<?php echo $field->getInput(); ?>
-					<?php endif; ?>
 				<?php endforeach; ?>
 			</fieldset>
 			</div>
