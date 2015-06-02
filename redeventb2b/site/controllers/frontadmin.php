@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage  redEVENT
  * @since       2.5
  */
-class Redeventb2bControllerFrontadmin extends FOFController
+class Redeventb2bControllerFrontadmin extends JControllerLegacy
 {
 	/**
 	 * return sessions html table
@@ -41,9 +41,8 @@ class Redeventb2bControllerFrontadmin extends FOFController
 	{
 		$app = JFactory::getApplication();
 
-		$this->viewName  = 'frontadmin';
-		$this->modelName = 'frontadmin';
-		$this->layout    = 'searchsessions';
+		$this->input->set('view', 'frontadmin');
+		$this->input->set('layout', 'searchsessions');
 
 		$this->display();
 
@@ -195,10 +194,11 @@ class Redeventb2bControllerFrontadmin extends FOFController
 
 		$att = $model->getAttendees($app->input->get('xref', 0, 'int'), $orgId, $app->input->get('filter_person', '', 'string'));
 
-		$view = $this->getThisView();
+		$view = $this->getView('frontadmin', 'html');
 		$view->assignRef('attendees', $att);
 		$view->assign('orgId', $orgId);
 		$view->setModel($model, false);
+		$view->setLayout($this->layout);
 		$this->display();
 
 		JFactory::getApplication()->close();
@@ -208,11 +208,8 @@ class Redeventb2bControllerFrontadmin extends FOFController
 	{
 		$app = JFactory::getApplication();
 
-		$this->viewName  = 'frontadmin';
-		$this->modelName = 'frontadmin';
-		$this->layout    = 'editmember';
-
-		$model = $this->getModel('frontadmin');
+		$this->input->set('view', 'frontadmin');
+		$this->input->set('layout', 'editmember');
 
 		$this->display();
 
@@ -606,4 +603,110 @@ class Redeventb2bControllerFrontadmin extends FOFController
 
 		$this->setRedirect($redirect, $msg, $msgType);
 	}
+
+	/**
+	 * ajax update user
+	 *
+	 * @return void
+	 */
+	public function update_user()
+	{
+		$app = JFactory::getApplication();
+
+		$dataForm = $app->input->get('jform', array(), 'array');
+		$dataCustom = $app->input->get('cform', array(), 'array');
+
+		$rmId = isset($dataForm['id']) && $dataForm['id'] ? (int) $dataForm['id'] : 0;
+
+		$rmUser = RedmemberApi::getUserByRmid($rmId);
+
+		$resp = new stdClass;
+
+		try
+		{
+			if (!$orgId = $app->input->getInt('orgId'))
+			{
+				RedeventHelperLog::simpleLog('Create user B2b missing organization');
+				throw new InvalidArgumentException('Missing organization id');
+			}
+
+			$currentOrgs = $rmUser->getOrganizations();
+
+			if (!isset($currentOrgs[$orgId]))
+			{
+				$currentOrgs[$orgId] = array('organization_id' => $orgId, 'level' => 1);
+			}
+
+			$rmUser->setOrganizations($currentOrgs);
+
+			// Remove type from posted fields
+			$customDataClean = array();
+
+			foreach ($dataCustom as $type => $fieldValues)
+			{
+				foreach ($fieldValues as $fieldcode => $value)
+				{
+					$customDataClean[$fieldcode] = $value;
+				}
+			}
+
+			$rmUser->bind($dataForm, $customDataClean);
+
+			$rmUser->save();
+			$resp->status = 1;
+		}
+		catch (Exception $e)
+		{
+			$resp->status = 0;
+			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED') . ': ' . $e->getMessage();
+		}
+
+		if ($this->input->get('type') == 'json')
+		{
+			echo json_encode($resp);
+			$app->close();
+		}
+		else
+		{
+			$app->input->set('orgId', $orgId);
+
+			if ($resp->status)
+			{
+				$app->input->set('uid', $rmUser->joomla_user_id);
+				$app->input->set('uname', $rmUser->name);
+
+				if ($app->input->get('modal'))
+				{
+					$this->closemodalmember();
+				}
+				else
+				{
+					$app->enqueueMessage(Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED'));
+					$this->editmember();
+				}
+			}
+			else
+			{
+				$app->enqueueMessage($resp->error, 'error');
+				$this->editmember();
+			}
+		}
+	}
+
+	public function display($cachable = false, $urlparams = array())
+	{
+		if (isset($this->viewName))
+		{
+			$this->input->set('view', $this->viewName);
+		}
+
+		if (isset($this->layout))
+		{
+			$this->input->set('layout', $this->layout);
+		}
+
+		return parent::display($cachable, $urlparams);
+	}
+
+
 }

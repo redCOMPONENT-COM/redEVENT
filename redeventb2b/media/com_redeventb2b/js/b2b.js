@@ -291,9 +291,9 @@ var redb2b = {
 			}
 
 			req = new Request.JSON({
-				url: 'index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component',
+				url: 'index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component&type=json',
 				data: document.id('member-update'),
-				format: 'json',
+				//format: 'json',
 				method: 'post',
 				onRequest: function () {
 
@@ -321,9 +321,9 @@ var redb2b = {
 			var user_name     = document.id('member_name').value;
 			var user_email    = document.id('member_email').value;
 			req = new Request.JSON({
-				url : 'index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component',
+				url : 'index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component&type=json',
 				data : document.id('member-update'),
-				format: 'json',
+				//format: 'json',
 				method : 'post',
 				onRequest: function(){
 
