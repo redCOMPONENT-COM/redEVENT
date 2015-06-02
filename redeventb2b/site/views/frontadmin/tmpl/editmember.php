@@ -21,9 +21,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.formvalidation')
+JHtml::_('behavior.formvalidation');
 ?>
-
 
 <?php if ($this->modal): ?>
 	<script type="text/javascript">
@@ -107,6 +106,8 @@ JHtml::_('behavior.formvalidation')
 		</div>
 
 		<input type="hidden" name="modal" value="<?php echo $this->modal; ?>" />
+		<input type="hidden" name="orgId" value="<?php echo $this->orgId; ?>" />
+		<?php echo $this->form->getField('joomla_user_id')->input; ?>
     </form>
 </div>
 

@@ -448,6 +448,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		$this->assignRef('previous',   $previous);
 		$this->assignRef('modal',      $modal);
 		$this->uid       = $state->get('uid');
+		$this->orgId = $orgId;
 
 		$this->booked_order = $state->get('booked_order');
 		$this->booked_order_dir = $state->get('booked_order_dir');
