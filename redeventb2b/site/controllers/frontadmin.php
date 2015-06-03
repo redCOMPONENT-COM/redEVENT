@@ -521,8 +521,6 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	 */
 	public function personsuggestions()
 	{
-		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 		$return = array();
 
 		$search       = $this->input->get('q', '', 'string');
@@ -530,7 +528,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		if ($search && $organization)
 		{
-			$res = RedmemberLib::searchMember($search, $organization);
+			$res = RedmemberApi::searchMember($search, $organization);
 
 			// Check the data.
 			if (empty($res))
@@ -650,9 +648,9 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 				}
 			}
 
-			$rmUser->bind($dataForm, $customDataClean);
+			$data = array_merge($dataForm, $customDataClean);
+			$rmUser->save($data);
 
-			$rmUser->save();
 			$resp->status = 1;
 		}
 		catch (Exception $e)

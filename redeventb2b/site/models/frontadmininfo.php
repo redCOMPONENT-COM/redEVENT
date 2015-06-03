@@ -131,7 +131,7 @@ class Redeventb2bModelFrontadmininfo extends JModelLegacy
 	{
 		$user = JFactory::getUser();
 
-		$data = RedmemberLib::getUserData($user->get('id'));
+		$data = RedmemberApi::getUser($user->get('id'));
 
 		if (!$data)
 		{
