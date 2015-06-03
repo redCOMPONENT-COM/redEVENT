@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_dir, $this->order); ?></th>
-				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_dir, $this->order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.name', $this->order_dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_STATUS'); ?></th>
 				<?php if ($this->show_action_column): ?>
 				<th colspan="3"><?php echo JText::_('COM_REDEVENT_ACTIONS'); ?></th>
@@ -51,11 +51,11 @@ defined('_JEXEC') or die('Restricted access');
 					{
 						if ($this->params->get('catlinklist', 1) == 1)
 						{
-							$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
+							$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
 						}
 						else
 						{
-							$cats[] = $this->escape($cat->catname);
+							$cats[] = $this->escape($cat->name);
 						}
 					}
 					echo implode("<br/>", $cats);

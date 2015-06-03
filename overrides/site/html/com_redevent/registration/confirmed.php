@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
 <?php
-	$prices = RedformCore::getSubmissionPrice(JFactory::getApplication()->input->get('submit_key'));
+	$prices = RdfCore::getSubmissionPrice(JFactory::getApplication()->input->get('submit_key'));
 
 	$total = 0;
 	$currency = 'DKK';

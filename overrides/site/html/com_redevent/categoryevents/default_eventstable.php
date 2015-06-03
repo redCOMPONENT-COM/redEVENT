@@ -30,16 +30,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php foreach ($this->columns as $k => $col): ?>
 			<?php switch ($col):
 				case 'title': ?>
-				<th id="el_title" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_title" class="sectiontableheader"><?php echo JText::_('COM_REDEVENT_TITLE'); ?></th>
 				<?php break;?>
 
 				<?php case 'venue': ?>
-				<th id="el_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_location" class="sectiontableheader"><?php echo JText::_('COM_REDEVENT_VENUE'); ?></th>
 				<th id="el_info" class="sectiontableheader"><?php echo JText::_('COM_REDEVENT_INFO'); ?></th>
 				<?php break;?>
 
 				<?php case 'category': ?>
-				<th id="el_category" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_category" class="sectiontableheader"><?php echo JText::_('COM_REDEVENT_CATEGORY'); ?></th>
 				<?php break;?>
 
 				<?php case 'picture': ?>
@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<?php if (strpos($col, 'custom') === 0): ?>
 						<?php $c = $this->customs[intval(substr($col, 6))]; ?>
 			        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
-			        	<?php echo JHTML::_('grid.sort', $this->escape($c->name), 'custom'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
+			        	<?php echo $this->escape($c->name); ?>
 			        	<?php if ($c->tips && $this->params->get('lists_show_custom_tip', 1)):?>
 			        	<?php echo JHTML::tooltip(str_replace("\n", "<br/>", $c->tips), '', 'tooltip.png', '', '', false); ?>
 			        	<?php endif; ?>
@@ -109,10 +109,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					      foreach ($row->categories as $cat)
 					      {
 					      	if ($this->params->get('catlinklist', 1) == 1) {
-					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
+					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
 					      	}
 					      	else {
-					      		$cats[] = $this->escape($cat->catname);
+					      		$cats[] = $this->escape($cat->name);
 					      	}
 					      }
 					      echo implode("<br/>", $cats);
@@ -121,7 +121,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php break;?>
 
 				<?php case 'picture': ?>
-          <td class="re_places" itemprop="image"><?php echo redEVENTImage::modalimage($row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
+          <td class="re_places" itemprop="image"><?php echo RedeventImage::modalimage($row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
 				<?php break;?>
 
 				<?php default: ?>

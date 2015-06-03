@@ -49,7 +49,7 @@ function tableOrdering( order, dir, view )
 <tbody>
 <?php
 $elsettings = RedeventHelper::config();
-$imagepath = JURI::root().'administrator/components/com_redevent/assets/images/';
+$imagepath = JURI::root().'media/com_redevent/images/';
 foreach ($this->upcomingvenueevents as $key => $event) {
 	//print_r($event);
 	$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref=' . $event->xref . '&id=' . $event->slug);
@@ -61,7 +61,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
 
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag( $event->country ); ?></td>
+		<td><?php echo RedeventHelperCountries::getCountryFlag( $event->country ); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo ($event->maxattendees == 0 ? JText::_('COM_REDEVENT_EVENT_NOLIMIT') : $event->maxattendees);?></td>
 		<td class="courseinfo_signup" width="*">
@@ -80,8 +80,8 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 			$venues_html = '';
 			/* Get the different submission types */
 			$submissiontypes = explode(',', $event->submission_types);
-			foreach ($submissiontypes as $key => $subtype)
-			{
+		$venues_html = '';
+		foreach ($submissiontypes as $key => $subtype) {
 				switch ($subtype) {
 					case 'email':
 						$venues_html .= '<div class="courseinfo_vlink courseinfo_email">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->get('signup_email_img'),  JText::_($elsettings->get('signup_email_text')), 'width="24px" height="24px"')).'</div> ';

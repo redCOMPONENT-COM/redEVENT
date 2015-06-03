@@ -38,12 +38,11 @@ function tableOrdering( order, dir, view )
 }
 </script>
 
-<form action="" method="post" id="adminForm">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="venuesform">
 <div id="upcomingevents">
 <table class="courseinfo_tabel">
 <thead>
 	<tr>
-			<!-- <th class="courseinfo_titlename"><?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?></th> -->
 			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 		<th class="courseinfo_titlelanguage"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LANGUAGE', 'x.session_language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -56,8 +55,8 @@ function tableOrdering( order, dir, view )
 <tbody>
 <?php
 $elsettings = RedeventHelper::config();
-$imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
-foreach ($this->_eventlinks as $key => $event) {
+$imagepath = JURI::base() . 'media/com_redevent/images/';
+foreach ($this->eventlinks as $key => $event) {
 
 	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug));
 	$venue_url = JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($event->venueslug));
@@ -79,7 +78,7 @@ else
 			<td class="courseinfo_duration"><?php echo $duration; ?></td>
 			<td><?php echo RedeventHelperLanguages::getFormattedIso1($event->session_language); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag($event->country); ?></td>
+			<td class="courseinfo_country"><?php echo RedeventHelperCountries::getCountryFlag( $event->country ); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo $placesleft;?></td>
 		<td class="courseinfo_signup" width="*">
@@ -87,7 +86,7 @@ else
 		$registration_status = RedeventHelper::canRegister($event->xref);
 		if (!$registration_status->canregister)
 		{
-			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+			$imgpath = 'media/com_redevent/images/'.$registration_status->error.'.png';
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
@@ -111,10 +110,10 @@ else
 			{
 				switch ($subtype) {
 					case 'email':
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_email">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->get('signup_email_img'),  JText::_($elsettings->get('signup_email_text')), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_email">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->get('signup_email_img', 'email_icon.gif'),  JText::_($elsettings->get('signup_email_text')), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'phone':
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_phone">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->get('signup_phone_img'),  JText::_($elsettings->get('signup_phone_text')), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_phone">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->get('signup_phone_img', 'phone_icon.gif'),  JText::_($elsettings->get('signup_phone_text')), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'external':
 			      if (!empty($event->external_registration_url)) {
@@ -123,7 +122,7 @@ else
 			      else {
 			      	$link = $event->submission_type_external;
 			      }
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_external hasTip" title="::'.$elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->get('signup_external_img'),  $elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_external hasTip" title="::'.$elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
 						break;
 					case 'webform':
 						if ($event->prices && count($event->prices))
@@ -131,7 +130,7 @@ else
 							foreach ($event->prices as $p)
 							{
 								$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
-								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img'),  JText::_($p->name))
+								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($p->name))
 								                        : JHTML::_('image', JURI::base().$p->image,  JText::_($p->name));
 								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 

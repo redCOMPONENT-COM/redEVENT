@@ -28,7 +28,6 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation');
 
 $fieldsOrdering = array(
-	'id',
 	'rm_firstname',
 	'rm_lastname',
 	'email',
@@ -42,7 +41,6 @@ if ($this->uid)
 
 $fieldsOrdering[] = 'rm_birthday';
 $fieldsOrdering[] = 'rm_note';
-$fieldsOrdering[] = 'organizations';
 $fieldsOrdering[] = 'rm_mobile';
 $fieldsOrdering[] = 'rm_certificate_email';
 $fieldsOrdering[] = 'rm_invoice_email';
@@ -58,7 +56,7 @@ $fieldsOrdering[] = 'rm_invoice_contact';
 	</script>
 <?php endif; ?>
 
-<div class="akeeba-bootstrap">
+<div>
 
 <jdoc:include type="message" />
 
@@ -70,7 +68,7 @@ $fieldsOrdering[] = 'rm_invoice_contact';
 		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_CREATE_MEMBER'); ?></h2>
 	<?php endif; ?>
 
-	<form class="form-horizontal form-validate" id="member-update" method="post" action="index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component" enctype="multipart/form-data">
+	<form class="form-horizontal form-validate" id="member-update" method="post" action="index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component" enctype="multipart/form-data">
 
 		<div id="employee-submit">
 		<?php if (!$this->modal): ?>
@@ -85,9 +83,23 @@ $fieldsOrdering[] = 'rm_invoice_contact';
 		<!-- Tab panes -->
 		<div>
 			<?php foreach ($fieldsOrdering as $lookup): ?>
+				<?php foreach ($this->form->getFieldset('general') as $field): ?>
+					<?php if ($field->fieldname !== $lookup) continue; ?>
+					<?php if (!$field->hidden) : ?>
+						<div class="control-group">
+							<?php echo $field->label; ?>
+							<div class="controls">
+								<?php echo $field->input; ?>
+							</div>
+						</div>
+					<?php else: ?>
+						<?php echo $field->input; ?>
+					<?php endif; ?>
+				<?php endforeach; ?>
+
 				<?php foreach ($this->tabs as $t): ?>
 						<?php foreach ($t->fields as $field): ?>
-							<?php if ($field->id !== $lookup) continue; ?>
+							<?php if ($field->fieldcode !== $lookup) continue; ?>
 							<?php if (!$field->hidden) : ?>
 							<div class="control-group field-<?php echo $field->id; ?>">
 								<?php echo $field->getLabel(array('class' => 'control-label')); ?>
@@ -104,7 +116,9 @@ $fieldsOrdering[] = 'rm_invoice_contact';
 		</div>
 
 		<input type="hidden" name="modal" value="<?php echo $this->modal; ?>" />
-
+		<input type="hidden" name="orgId" value="<?php echo $this->orgId; ?>" />
+		<?php echo $this->form->getField('joomla_user_id')->input; ?>
+		<?php echo $this->form->getField('id')->input; ?>
     </form>
 </div>
 
