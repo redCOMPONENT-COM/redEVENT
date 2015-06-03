@@ -694,8 +694,14 @@ class RedEventModelRegistration extends RModel
 			}
 		}
 
+		$password = JUserHelper::genRandomPassword();
+		$data['password'] = md5($password);
+
 		$rmUser = RedmemberApi::getUser();
 		$rmUser->save($data);
+
+		// Send email using juser controller
+		$this->_sendUserCreatedMail($rmUser->user, $data['password']);
 
 		return $rmUser->user;
 	}
