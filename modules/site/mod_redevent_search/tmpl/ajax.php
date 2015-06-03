@@ -20,6 +20,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+$document = JFactory::getDocument();
+
 // Google analytics integration
 if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 {
