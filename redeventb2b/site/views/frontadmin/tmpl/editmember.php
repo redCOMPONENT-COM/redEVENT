@@ -108,6 +108,7 @@ JHtml::_('behavior.formvalidation');
 		<input type="hidden" name="modal" value="<?php echo $this->modal; ?>" />
 		<input type="hidden" name="orgId" value="<?php echo $this->orgId; ?>" />
 		<?php echo $this->form->getField('joomla_user_id')->input; ?>
+		<?php echo $this->form->getField('id')->input; ?>
     </form>
 </div>
 

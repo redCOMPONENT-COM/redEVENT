@@ -21,8 +21,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-
 // Register library prefix
 JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');

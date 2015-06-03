@@ -30,8 +30,6 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 // get helper
 require_once (dirname(__FILE__).'/helper.php');
 
-require_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
-
 $app = JFactory::getApplication();
 
 RHelperAsset::load('mod_redevent_search.css', 'mod_redevent_search');
