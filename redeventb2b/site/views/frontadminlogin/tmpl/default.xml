@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_REDEVENT_VIEW_LAYOUT_B2B_LOGIN">
+		<message>
+			<![CDATA[COM_REDEVENT_VIEW_LAYOUT_B2B_LOGIN_DESC]]>
+		</message>
+	</layout>
+    <fields name="params"
+            addfieldpath="/administrator/components/com_redevent/models/fields">
+        <fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+            <field name="secure" default="0" type="radio"
+                   label="COM_REDEVENT_VIEW_LAYOUT_B2B_LOGIN_SECURE"
+                   description="COM_REDEVENT_VIEW_LAYOUT_B2B_LOGIN_SECURE_DESC"
+                    >
+                <option value="0">JNo</option>
+                <option value="1">Jyes</option>
+            </field>
+        </fieldset>
+    </fields>
+
+</metadata>
