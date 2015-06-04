@@ -160,7 +160,7 @@ else
 	<?php if ($event->details): ?>
 	<tr>
 	 <td colspan="7">
-			<?php $tagsHelper = new redEVENT_tags(); ?>
+			<?php $tagsHelper = new RedeventTags; ?>
 			<?php $tagsHelper->setXref($event->xref); ?>
 	   <?php echo $tagsHelper->ReplaceTags($event->details); ?>
 	 </td>
