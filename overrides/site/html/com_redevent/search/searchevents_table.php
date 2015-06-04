@@ -30,16 +30,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php foreach ($this->columns as $k => $col): ?>
 			<?php switch ($col):
 				case 'title': ?>
-				<th id="el_title" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_title" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->orderDir, $this->order ); ?></th>
 				<?php break;?>
 
 				<?php case 'venue': ?>
-				<th id="el_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->orderDir, $this->order ); ?></th>
 				<th id="el_info" class="sectiontableheader"><?php echo JText::_('COM_REDEVENT_INFO'); ?></th>
 				<?php break;?>
 
 				<?php case 'category': ?>
-				<th id="el_category" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_CATEGORY'), 'c.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_category" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_CATEGORY'), 'c.name', $this->orderDir, $this->order ); ?></th>
 				<?php break;?>
 
 				<?php case 'picture': ?>
@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<?php if (strpos($col, 'custom') === 0): ?>
 						<?php $c = $this->customs[intval(substr($col, 6))]; ?>
 			        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
-			        	<?php echo JHTML::_('grid.sort', $this->escape($c->name), 'custom'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
+			        	<?php echo JHTML::_('grid.sort', $this->escape($c->name), 'custom'. $c->id, $this->orderDir, $this->order ); ?>
 			        	<?php if ($c->tips && $this->params->get('lists_show_custom_tip', 1)):?>
 			        	<?php echo JHTML::tooltip(str_replace("\n", "<br/>", $c->tips), '', 'tooltip.png', '', '', false); ?>
 			        	<?php endif; ?>
