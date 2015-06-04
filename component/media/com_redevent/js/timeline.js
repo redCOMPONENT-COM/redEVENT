@@ -4,7 +4,7 @@
 
 (function($){
 
-	function setCurrentTimeLine() {
+	var setCurrentTimeLine = function() {
 		var timelineWidth = parseInt($('.timeline-sessions').css('width'));
 
 		// the timeline covers 15 hours, from 9 to 24, let's compute pixels per minute from there
@@ -49,28 +49,35 @@
 			min: 0,
 			max: 14,
 			slide: function(event, ui) {
-				var l = hourWidth * ui.value;
-				$('.timeline-sessions').css('left', '-' + (hourWidth * ui.value) + 'px');
-
-				$('.timeline-venues').each(function(){
-					var bW = parseInt($(this).attr('relw'));
-					var bL = parseInt($(this).attr('rell'));
-
-					var newW = bW + bL - l;
-
-					if (newW < 50 || l == 0)
-					{
-						$(this).css('width', bW);
-						$(this).css('left', bL);
-					}
-					else if (l >= bL)
-					{
-						$(this).css('width', newW);
-						$(this).css('left', l);
-					}
-				});
+				slideTimeline(ui.value);
 			}
 		});
+
+		var slideTimeline = function(sliderValue) {
+			var l = hourWidth * sliderValue;
+			$('.timeline-sessions').css('left', '-' + l + 'px');
+
+			$('.timeline-venues').each(function(){
+				var bW = parseInt($(this).attr('relw'));
+				var bL = parseInt($(this).attr('rell'));
+
+				var newW = bW + bL - l;
+
+				if (newW < 50 || l == 0)
+				{
+					$(this).css('width', bW);
+					$(this).css('left', bL);
+				}
+				else if (l >= bL)
+				{
+					$(this).css('width', newW);
+					$(this).css('left', l);
+				}
+			});
+		}
+
+		$('#timeslider').slider('value', timelineStartHour - 9);
+		slideTimeline(timelineStartHour - 9);
 
 		// Sort time checkbox
 		$('#timeline-sort-venue-checkbox').change(function(event){

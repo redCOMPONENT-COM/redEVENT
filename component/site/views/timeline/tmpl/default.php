@@ -33,6 +33,8 @@ RHelperAsset::load('timeline.js');
 RHelperAsset::load('timeline.css');
 
 RHtml::_('rjquery.ui');
+
+$startTime = array();
 ?>
 
 <script type="text/javascript">
@@ -204,6 +206,7 @@ RHtml::_('rjquery.ui');
 											<div class="timeline-venues-wrapper" style="height: <?php echo $baseHeight ?>px;">
 												<?php foreach ($sessions as $session): ?>
 													<?php
+													$startTime[] = $session->dates . ' ' . $session->times;
 													$session->eventImage = $session->datimage;
 													$additionClass = '';
 													$iCalLink = JRoute::_('index.php?option=com_redevent&view=details&id=' . $session->slug . '&xref=' . $session->xslug . '&Itemid=' . $itemId . '&format=raw&layout=ics');
@@ -255,3 +258,23 @@ RHtml::_('rjquery.ui');
 	<?php endif; ?>
 
 </div>
+<?php
+// determine earliest session start
+$startHour = false;
+
+foreach ($startTime as $dateString)
+{
+	$date = JFactory::getDate($dateString);
+	$hour = $date->format('H');
+
+	if (!$startHour || $hour < $startHour)
+	{
+		$startHour = $hour;
+	}
+}
+
+$startHour = $startHour ? $startHour : 9;
+?>
+<script type="text/javascript">
+	var timelineStartHour = <?php echo $startHour; ?>;
+</script>
