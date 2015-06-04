@@ -37,12 +37,12 @@ function tableOrdering( order, dir, view )
 <table class="courseinfo_tabel">
 <thead>
 	<tr>
-			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th class="courseinfo_title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="courseinfo_titledate"><?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?></th>
+			<th class="courseinfo_title"><?php echo JText::_('COM_REDEVENT_TITLE'); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
-			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LOCATION', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="courseinfo_titlevenue" colspan="2"><?php echo JText::_('COM_REDEVENT_LOCATION'); ?></th>
 			<th class="courseinfo_titleprice"><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
-			<th class="courseinfo_titlecredit"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_AVAILABLE_SEAT', 'x.maxattendees', $this->lists['order_Dir'], $this->lists['order'] ); JText::_('COM_REDEVENT_EVENT_AVAILABLE_SEAT'); ?></th>
+			<th class="courseinfo_titlecredit"><?php echo JText::_('COM_REDEVENT_EVENT_AVAILABLE_SEAT'); JText::_('COM_REDEVENT_EVENT_AVAILABLE_SEAT'); ?></th>
 			<th class="courseinfo_titlesignup"><?php echo JText::_('COM_REDEVENT_EVENT_SIGNUP'); ?></th>
 	</tr>
 </thead>
@@ -61,7 +61,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
 
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td><?php echo RedeventHelperCountries::getCountryFlag( $event->country ); ?></td>
+		<td><?php echo RedeventHelperCountries::getCountryFlag($event->country); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo ($event->maxattendees == 0 ? JText::_('COM_REDEVENT_EVENT_NOLIMIT') : $event->maxattendees);?></td>
 		<td class="courseinfo_signup" width="*">
