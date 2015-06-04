@@ -560,136 +560,16 @@ class RedeventTags
 	{
 		if (empty($this->eventlinks))
 		{
-			// TODO: should be moved to a model
-			$xcustoms = $this->getXrefCustomFields();
-
-			$order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');
-			$order = JRequest::getCmd('filter_order', 'x.dates');
-
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->select('e.*');
-			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title');
-
-			$query->select('IF (x.course_credit = 0, "", x.course_credit) AS course_credit');
-			$query->select('x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.venueid, x.details');
-			$query->select('x.maxattendees, x.maxwaitinglist, x.registrationend, x.external_registration_url');
-			$query->select('UNIX_TIMESTAMP(x.dates) AS unixdates');
-
-			$query->select('v.venue, v.id AS venue_id, v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description');
-			$query->select('v.country, v.locimage, v.street, v.plz, v.map');
-
-			$query->select('f.id AS form_id, f.formname, f.currency');
-
-			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug');
-			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
-			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug');
-
-			// Add the custom fields
-			foreach ((array) $xcustoms as $c)
-			{
-				$query->select('x.custom' . $c->id);
-			}
-
-			$query->from('#__redevent_events AS e');
-			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
-			$query->join('INNER', '#__redevent_venues AS v ON x.venueid = v.id');
-			$query->join('LEFT', '#__rwf_forms AS f ON f.id = e.redform_id');
-			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
-			$query->join('LEFT', '#__redevent_categories AS c ON xcat.category_id = c.id');
-			$query->join('LEFT', '#__users AS u ON u.id = e.created_by');
-
-			$query->where('x.published = ' . $db->Quote($this->getEvent()->getData()->published));
-			$query->where('e.id = ' . $this->eventid);
-
-			$query->group('x.id');
-
-			$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
-			$ordering_def = $open_order ? 'x.dates = 0 ' . $order_Dir . ', x.dates ' . $order_Dir
-				: 'x.dates > 0 ' . $order_Dir . ', x.dates ' . $order_Dir;
-
-			switch ($order)
-			{
-				case 'x.dates':
-					$ordering = $ordering_def;
-					break;
-
-				default:
-					$ordering = $order . ' ' . $order_Dir . ', ' . $ordering_def;
-			}
-
-			$query->order($ordering);
-
-			$db->setQuery($query);
-			$this->eventlinks = $db->loadObjectList();
-			$this->eventlinks = $this->getPlacesLeft($this->eventlinks);
-			$this->eventlinks = $this->getCategories($this->eventlinks);
+			$model = RModel::getFrontInstance('simplelist', array('ignore_request' => true), 'com_redevent');
+			$model->setState('filter.event', $this->eventid);
+			$model->setState('limit', 0);
+			$model->setState('filter_order', 'x.dates');
+			$model->setState('filter_order_Dir', 'ASC');
+			$this->eventlinks = $model->getData();
 			$this->eventlinks = $this->getUserRegistrations($this->eventlinks);
-			$this->eventlinks = $this->getPrices($this->eventlinks);
 		}
 
 		return $this->eventlinks;
-	}
-
-	/**
-	 * Add categories to rows
-	 *
-	 * @param   array  $rows  session rows
-	 *
-	 * @return mixed
-	 */
-	private function getCategories($rows)
-	{
-		$db = $this->db;
-
-		foreach ($rows as $k => $r)
-		{
-			$query = $db->getQuery(true);
-
-			$query->select('c.id, c.name AS catname, c.image')
-				->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug')
-				->from('#__redevent_categories AS c')
-				->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id')
-				->where('xcat.event_id = ' . $db->Quote($r->id))
-				->order('c.lft');
-
-			$db->setQuery($query);
-			$rows[$k]->categories = $db->loadObjectList();
-		}
-
-		return ($rows);
-	}
-
-	/**
-	 * adds registered (int) and waiting (int) properties to rows.
-	 *
-	 * @param   array  $rows  session rows
-	 *
-	 * @return array
-	 */
-	private function getPlacesLeft($rows)
-	{
-		$db = $this->db;
-
-		foreach ($rows as $k => $r)
-		{
-			$query = $db->getQuery(true);
-
-			$query->select('r.waitinglist, COUNT(r.id) AS total')
-				->from('#__redevent_register AS r')
-				->where('r.xref = ' . $db->Quote($r->xref))
-				->where('r.confirmed = 1')
-				->where('r.cancelled = 0')
-				->group('r.waitinglist');
-
-			$db->setQuery($query);
-			$res = $db->loadObjectList('waitinglist');
-			$rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0);
-			$rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0);
-		}
-
-		return $rows;
 	}
 
 	/**
@@ -723,75 +603,6 @@ class RedeventTags
 			else
 			{
 				$rows[$k]->userregistered = 0;
-			}
-		}
-
-		return $rows;
-	}
-
-	/**
-	 * adds registered (int) and waiting (int) properties to rows.
-	 *
-	 * @param   array  $rows  session rows
-	 *
-	 * @return array
-	 */
-	private function getPrices($rows)
-	{
-		if (!count($rows))
-		{
-			return $rows;
-		}
-
-		$db = $this->db;
-		$ids = array();
-
-		foreach ($rows as $k => $r)
-		{
-			$ids[$r->xref] = $k;
-		}
-
-		$query = $db->getQuery(true);
-
-		$query->select('sp.*, p.name, p.alias, p.image, p.tooltip, f.currency AS form_currency');
-		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', sp.id, p.alias) ELSE sp.id END as slug');
-		$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
-		$query->from('#__redevent_sessions_pricegroups AS sp');
-		$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
-		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-		$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
-		$query->where('sp.xref IN (' . implode(",", array_keys($ids)) . ')');
-		$query->order('p.ordering ASC');
-
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-
-		// Sort this out
-		$prices = array();
-
-		foreach ((array) $res as $p)
-		{
-			if (!isset($prices[$p->xref]))
-			{
-				$prices[$p->xref] = array($p);
-			}
-			else
-			{
-				$prices[$p->xref][] = $p;
-			}
-		}
-
-		// Add to rows
-		foreach ($rows as $k => $r)
-		{
-			if (isset($prices[$r->xref]))
-			{
-				$rows[$k]->prices = $prices[$r->xref];
-			}
-			else
-			{
-				$rows[$k]->prices = null;
 			}
 		}
 
