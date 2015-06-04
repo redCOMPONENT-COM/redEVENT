@@ -16,8 +16,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventViewDetails extends RViewSite
 {
-	protected $eventlinks = null;
-
 	/**
 	 * Execute and display a template script.
 	 *
@@ -31,17 +29,9 @@ class RedeventViewDetails extends RViewSite
 
 		// Load event details
 		$row = $this->get('Details');
-		$xreflinks = $this->get('XrefLinks');
-		$this->eventlinks = $xreflinks;
 
 		$document->setTitle($this->escape(RedeventHelper::getSessionFullTitle($row)));
 		$document->setDescription('');
-
-		ob_start();
-		$this->setLayout('courseinfo_rss');
-		parent::display();
-		$contents = ob_get_contents();
-		ob_end_clean();
 
 		$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug));
 
@@ -49,7 +39,7 @@ class RedeventViewDetails extends RViewSite
 		$item = new JFeedItem;
 		$item->title = RedeventHelper::getSessionFullTitle($row);
 		$item->link = JRoute::_($link);
-		$item->description = $contents;
+		$item->description = $row->summary;
 		$item->date = '';
 		$item->category = '';
 

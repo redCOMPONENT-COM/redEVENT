@@ -26,8 +26,6 @@ class RedeventModelDetails extends RModel
 	 */
 	protected $details = null;
 
-	protected $xreflinks = null;
-
 	/**
 	 * registered in array
 	 *
@@ -184,57 +182,6 @@ class RedeventModelDetails extends RModel
 		}
 
 		return true;
-	}
-
-	/**
-	 * Load all venues and their signup links
-	 *
-	 * @return array
-	 */
-	public function getXrefLinks()
-	{
-		if (empty($this->xreflinks))
-		{
-			$query = $this->_db->getQuery(true)
-				->select('e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit')
-				->select('x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, x.registrationend')
-				->select('x.external_registration_url')
-				->select('v.city AS location, v.country, v.locimage')
-				->select('UNIX_TIMESTAMP(x.dates) AS unixdates')
-				->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug')
-				->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug')
-				->from('#__redevent_events AS e')
-				->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id')
-				->join('INNER', '#__redevent_venues AS v ON x.venueid = v.id')
-				->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')
-				->join('LEFT', '#__redevent_categories AS c ON xcat.category_id = c.id')
-				->where('x.published = 1')
-				->where('e.id = ' . $this->_db->Quote($this->id))
-				->group('x.id')
-				->order('x.dates ASC, x.times ASC');
-
-			$this->_db->setQuery($query);
-			$rows = $this->_db->loadObjectList();
-
-			foreach ((array) $rows as $k => $r)
-			{
-				$query = $this->_db->getQuery(true)
-					->select('SELECT c.id, c.name AS catname, c.image')
-					->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug')
-					->from('#__redevent_categories AS c')
-					->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id')
-					->where('xcat.event_id = ' . $this->_db->Quote($r->id))
-					->order('c.lft');
-
-				$this->_db->setQuery($query);
-				$rows[$k]->categories = $this->_db->loadObjectList();
-			}
-
-			$this->xreflinks = $rows;
-			$this->xreflinks = $this->_getPrices($this->xreflinks);
-		}
-
-		return $this->xreflinks;
 	}
 
 	/**
@@ -648,73 +595,5 @@ class RedeventModelDetails extends RModel
 		$res = $this->_db->loadObjectList();
 
 		return $res;
-	}
-
-	/**
-	 * adds registered (int) and waiting (int) properties to rows.
-	 *
-	 * @param   array  $rows  rows
-	 *
-	 * @return array
-	 */
-	private function _getPrices($rows)
-	{
-		if (!count($rows))
-		{
-			return $rows;
-		}
-
-		$db = JFactory::getDBO();
-		$ids = array();
-
-		foreach ($rows as $k => $r)
-		{
-			$ids[$r->xref] = $k;
-		}
-
-		$query = $db->getQuery(true);
-
-		$query->select('sp.*, p.name, p.alias, p.image, p.tooltip');
-		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', sp.id, p.alias) ELSE sp.id END as slug');
-		$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
-		$query->from('#__redevent_sessions_pricegroups AS sp');
-		$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
-		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-		$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
-		$query->where('sp.xref IN (' . implode(",", array_keys($ids)) . ')');
-		$query->order('p.ordering ASC');
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-
-		// Sort this out
-		$prices = array();
-
-		foreach ((array) $res as $p)
-		{
-			if (!isset($prices[$p->xref]))
-			{
-				$prices[$p->xref] = array($p);
-			}
-			else
-			{
-				$prices[$p->xref][] = $p;
-			}
-		}
-
-		// Add to rows
-		foreach ($rows as $k => $r)
-		{
-			if (isset($prices[$r->xref]))
-			{
-				$rows[$k]->prices = $prices[$r->xref];
-			}
-			else
-			{
-				$rows[$k]->prices = null;
-			}
-		}
-
-		return $rows;
 	}
 }

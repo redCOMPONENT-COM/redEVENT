@@ -52,6 +52,18 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 		<td class="re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 		<td>
 		<?php
+		$registration_status = RedeventHelper::canRegister($event->xref);
+		if (!$registration_status->canregister)
+		{
+			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+		  $img = JHTML::_('image', JURI::base() . $imgpath,
+		                          $registration_status->status,
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+			echo RedeventHelperOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
+		}
+		else
+		{
+			$venues_html = '';
 		/* Get the different submission types */
 		$submissiontypes = explode(',', $event->submission_types);
 		$venues_html = '';
@@ -90,6 +102,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 			}
 		}
 		echo $venues_html;
+		}
 		?>
 		</td>
 	</tr>

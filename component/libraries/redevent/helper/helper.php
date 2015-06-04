@@ -444,23 +444,23 @@ class RedeventHelper
 			->where('x.id = ' . $db->Quote($xref_id));
 
 		$db->setQuery($query);
-		$event = $db->loadObject();
+		$session = $db->loadObject();
 
 		// Check if unregistration is allowed
-		if (!$event->unregistra)
+		if (!$session->unregistra)
 		{
 			return false;
 		}
 
-		if (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00')
+		if (!empty($session->registrationend) && $session->registrationend != '0000-00-00 00:00:00')
 		{
-			if (strtotime($event->registrationend) < time())
+			if (strtotime($session->registrationend) < time())
 			{
 				// REGISTRATION IS OVER
 				return false;
 			}
 		}
-		elseif (static::isValidDate($event->dates) && strtotime($event->dates . ' ' . $event->times) < time())
+		elseif (static::isValidDate($session->dates) && strtotime($session->dates . ' ' . $session->times) < time())
 		{
 			// It's separated from previous case so that it is not checked if a registration end was set
 			// REGISTRATION IS OVER
@@ -475,53 +475,53 @@ class RedeventHelper
 	 *
 	 * it requires the input object to have the properties registra, registrationend, dates, times, maxattendees, registered
 	 *
-	 * @param   object  $xref  session data
+	 * @param   object  $session  session data
 	 *
 	 * @return string
 	 */
-	public static function getRemainingPlaces($xref)
+	public static function getRemainingPlaces($session)
 	{
 		// Only display for events were registrations still open
-		if (!$xref->registra)
+		if (!$session->registra)
 		{
 			return '-';
 		}
 
-		if ((static::isValidDate($xref->registrationend) && strtotime($xref->registrationend) < time())
-			|| strtotime($xref->dates . ' ' . $xref->times) < time())
+		if ((static::isValidDate($session->registrationend) && strtotime($session->registrationend) < time())
+			|| strtotime($session->dates . ' ' . $session->times) < time())
 		{
 			return '-';
 		}
 
 		// If there is no limit...
-		if (!$xref->maxattendees)
+		if (!$session->maxattendees)
 		{
 			return '-';
 		}
 
-		return $xref->maxattendees - $xref->registered;
+		return $session->maxattendees - $session->registered;
 	}
 
 	/**
-	 * returns true if the event is over.
+	 * returns true if the session is over.
 	 * object in parameters must include properties
 	 *
-	 * @param   object  $event      event data
+	 * @param   object  $session    event data
 	 * @param   bool    $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
 	 *
 	 * @return bool
 	 *
 	 * @throws Exception
 	 */
-	public static function isOver($event, $day_check = true)
+	public static function isOver($session, $day_check = true)
 	{
-		if (!(property_exists($event, 'dates') && property_exists($event, 'times')
-			&& property_exists($event, 'enddates') && property_exists($event, 'endtimes')))
+		if (!(property_exists($session, 'dates') && property_exists($session, 'times')
+			&& property_exists($session, 'enddates') && property_exists($session, 'endtimes')))
 		{
 			throw new Exception('Missing object properties');
 		}
 
-		if (!static::isValidDate($event->dates))
+		if (!static::isValidDate($session->dates))
 		{
 			// Open dates
 			return false;
@@ -529,13 +529,13 @@ class RedeventHelper
 
 		$cmp = $day_check ? strtotime('today') : time();
 
-		if (static::isValidDate($event->enddates . ' ' . $event->endtimes))
+		if (static::isValidDate($session->enddates . ' ' . $session->endtimes))
 		{
-			return strtotime($event->enddates . ' ' . $event->endtimes) < $cmp;
+			return strtotime($session->enddates . ' ' . $session->endtimes) < $cmp;
 		}
 		else
 		{
-			return strtotime($event->dates . ' ' . $event->times) < $cmp;
+			return strtotime($session->dates . ' ' . $session->times) < $cmp;
 		}
 	}
 
@@ -667,11 +667,11 @@ class RedeventHelper
 	 * Add event to ical
 	 *
 	 * @param   vcalendar  &$calendartool  calendar object
-	 * @param   object     $event          session data
+	 * @param   object     $session        session data
 	 *
 	 * @return bool
 	 */
-	public static function icalAddEvent(&$calendartool, $event)
+	public static function icalAddEvent(&$calendartool, $session)
 	{
 		require_once JPATH_SITE . '/components/com_redevent/classes/iCalcreator.class.php';
 
@@ -683,25 +683,25 @@ class RedeventHelper
 		// Get categories names
 		$categories = array();
 
-		foreach ($event->categories as $c)
+		foreach ($session->categories as $c)
 		{
 			$categories[] = $c->name;
 		}
 
-		if (!static::isValidDate($event->dates))
+		if (!static::isValidDate($session->dates))
 		{
 			// No start date...
 			return false;
 		}
 
 		// Make end date same as start date if not set
-		if (!static::isValidDate($event->enddates))
+		if (!static::isValidDate($session->enddates))
 		{
-			$event->enddates = $event->dates;
+			$session->enddates = $session->dates;
 		}
 
 		// Start
-		if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $event->dates, $start_date))
+		if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $session->dates, $start_date))
 		{
 			throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTDATE_FORMAT'));
 		}
@@ -709,15 +709,15 @@ class RedeventHelper
 		$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
 
 		// All day event if start time is not set
-		if (!$event->times || $event->times == '00:00:00')
+		if (!$session->times || $session->times == '00:00:00')
 		{
 			// All day !
 			$dateparam = array('VALUE' => 'DATE');
 
 			// For ical all day events, dtend must be send to the next day
-			$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates . ' +1 day'));
+			$session->enddates = strftime('%Y-%m-%d', strtotime($session->enddates . ' +1 day'));
 
-			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $event->enddates, $end_date))
+			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $session->enddates, $end_date))
 			{
 				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
 			}
@@ -728,7 +728,7 @@ class RedeventHelper
 		else
 		{
 			// Not all day events, there is a start time
-			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/', $event->times, $start_time))
+			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/', $session->times, $start_time))
 			{
 				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
 			}
@@ -743,25 +743,25 @@ class RedeventHelper
 				$dateparam['TZID'] = $timezone_name;
 			}
 
-			if (!$event->endtimes || $event->endtimes == '00:00:00')
+			if (!$session->endtimes || $session->endtimes == '00:00:00')
 			{
-				$event->endtimes = $event->times;
+				$session->endtimes = $session->times;
 			}
 
 			// If same day but end time < start time, change end date to +1 day
-			if ($event->enddates == $event->dates && strtotime($event->dates . ' ' . $event->endtimes) < strtotime($event->dates . ' ' . $event->times))
+			if ($session->enddates == $session->dates && strtotime($session->dates . ' ' . $session->endtimes) < strtotime($session->dates . ' ' . $session->times))
 			{
-				$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates . ' +1 day'));
+				$session->enddates = strftime('%Y-%m-%d', strtotime($session->enddates . ' +1 day'));
 			}
 
-			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $event->enddates, $end_date))
+			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/', $session->enddates, $end_date))
 			{
 				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
 			}
 
 			$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
 
-			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/', $event->endtimes, $end_time))
+			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/', $session->endtimes, $end_time))
 			{
 				throw new RuntimeException(JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
 			}
@@ -777,46 +777,46 @@ class RedeventHelper
 			}
 		}
 
-		$title = static::getSessionFullTitle($event);
+		$title = static::getSessionFullTitle($session);
 
 		// Item description text
 		$description = $title . '\\n';
 		$description .= JText::_('COM_REDEVENT_CATEGORY') . ': ' . implode(', ', $categories) . '\\n';
 
 		// Url link to event
-		$link = JURI::base() . RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref);
+		$link = JURI::base() . RedeventHelperRoute::getDetailsRoute($session->slug, $session->xref);
 		$link = JRoute::_($link);
 		$description .= JText::_('COM_REDEVENT_ICS_LINK') . ': ' . $link . '\\n';
 
-		if (!empty($event->icaldetails))
+		if (!empty($session->icaldetails))
 		{
-			$description .= $event->icaldetails;
+			$description .= $session->icaldetails;
 		}
 
 		// Location
 		$location = array();
 
-		if (isset($event->icalvenue) && !empty($event->icalvenue))
+		if (isset($session->icalvenue) && !empty($session->icalvenue))
 		{
-			$location[] = $event->icalvenue;
+			$location[] = $session->icalvenue;
 		}
 		else
 		{
-			$location[] = $event->venue;
+			$location[] = $session->venue;
 
-			if (isset($event->street) && !empty($event->street))
+			if (isset($session->street) && !empty($session->street))
 			{
-				$location[] = $event->street;
+				$location[] = $session->street;
 			}
 
-			if (isset($event->city) && !empty($event->city))
+			if (isset($session->city) && !empty($session->city))
 			{
-				$location[] = $event->city;
+				$location[] = $session->city;
 			}
 
-			if (isset($event->countryname) && !empty($event->countryname))
+			if (isset($session->countryname) && !empty($session->countryname))
 			{
-				$exp = explode(",", $event->countryname);
+				$exp = explode(",", $session->countryname);
 				$location[] = $exp[0];
 			}
 		}
@@ -837,7 +837,7 @@ class RedeventHelper
 		$e->setProperty('description', $description);
 		$e->setProperty('location', $location);
 		$e->setProperty('url', $link);
-		$e->setProperty('uid', 'event' . $event->id . '-' . $event->xref . '@' . $mainframe->getCfg('sitename'));
+		$e->setProperty('uid', 'event' . $session->id . '-' . $session->xref . '@' . $mainframe->getCfg('sitename'));
 		$calendartool->addComponent($e);
 
 		return true;

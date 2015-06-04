@@ -37,7 +37,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 		$this->setId((int) $id);
 
 		// For the toggles
-		$this->setState('filter_category', $this->_id);
+		$this->setState('filter_category', $id);
 
 		$params    = $app->getParams('com_redevent');
 
@@ -141,7 +141,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	 *
 	 * @return array
 	 */
-	public function getSessions()
+	public function getData()
 	{
 		if ($this->getState('results_type', 1) == 1)
 		{
