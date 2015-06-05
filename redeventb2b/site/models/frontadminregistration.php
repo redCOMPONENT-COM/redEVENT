@@ -261,7 +261,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 
 		if (!$email->send())
 		{
-			throw new Exception('failed sending org admins email');
+			throw new Redeventb2bExceptionNotice('failed sending org admins email');
 		}
 
 		// Notify managers

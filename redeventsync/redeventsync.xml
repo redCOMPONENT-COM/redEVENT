@@ -8,7 +8,7 @@
 	<creationDate>##DATE##</creationDate>
 	<license>GNU GPL v3 or later</license>
 	<version>##VERSION##</version>
-	<redcore version="1.4.13" />
+	<redcore version="1.5.0" />
 	<description>COM_REDEVENTSYNC_XML_DESCRIPTION</description>
 
 	<!-- SQL query files to execute on installation -->
@@ -93,6 +93,5 @@
 	<!-- Plugins here -->
 	<plugins>
 		<plugin folder="plugins/redevent" plugin="redeventsync" group="redevent" />
-		<plugin folder="plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
 	</plugins>
 </extension>

@@ -319,6 +319,12 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 					$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
 					$resp->regs[] = $regresp;
 				}
+				catch (Redeventb2bExceptionNotice $e)
+				{
+					$resp->status = 1;
+					$regresp->status = 1;
+					$regresp->error = $e->getMessage();
+				}
 				catch (Exception $e)
 				{
 					$resp->status = 0;
