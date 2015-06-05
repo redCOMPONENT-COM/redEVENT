@@ -348,6 +348,7 @@
 		<!-- Manifest & install script -->
 		<delete dir="${www.dir}/administrator/components/com_redeventsync" quiet="yes" includeemptydirs="false"/>
 		<delete dir="${www.dir}/components/com_redeventsync" quiet="yes" includeemptydirs="false"/>
+
 		<echo message="Copying manifest..."/>
 		<copy file="${dirs.root}/redeventsync/redeventsync.xml"
 			  tofile="${www.dir}/administrator/components/com_redeventsync/redeventsync.xml" overwrite="true">

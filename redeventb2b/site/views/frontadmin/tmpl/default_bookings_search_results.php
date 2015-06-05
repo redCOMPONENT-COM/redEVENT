@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 	</table>
 
 	<!--pagination-->
-	<div class="pagination">
+	<div class="pagination redevent-ajaxnav">
 		<div class="limit"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?>
 			<?php echo $this->getLimitBox(); ?>
 		</div>
