@@ -10,3 +10,5 @@ fof
 composer.lock
 /vendor
 vendor
+
+tmp
