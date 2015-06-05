@@ -46,7 +46,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$item = $menu->getActive();
 
 		RHelperAsset::load('myevents.js');
-		RHelperAsset::load('ajaxnav.js');
+		RHelperAsset::load('ajaxnav.js', 'com_redevent');
 		JText::script("COM_REDEVENT_CONFIRM_DELETE_DATE");
 		JText::script("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING");
 

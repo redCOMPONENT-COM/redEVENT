@@ -30,7 +30,7 @@ class RedeventAjaxPagination extends RPagination
 	public function __construct($total, $limitstart, $limit, $prefix = '')
 	{
 		parent::__construct($total, $limitstart, $limit, $prefix);
-		RHelperAsset::load('ajaxnav.js');
+		RHelperAsset::load('ajaxnav.js', 'com_redevent');
 	}
 
 	/**
@@ -148,7 +148,7 @@ class RedeventAjaxPagination extends RPagination
 	 */
 	protected function _item_active(RPaginationObject $item)
 	{
-		return RLayoutHelper::render('reajaxpagination.item.active', $item, '', 'com_redevent');
+		return RLayoutHelper::render('reajaxpagination.item.active', $item);
 	}
 
 	/**
@@ -162,6 +162,6 @@ class RedeventAjaxPagination extends RPagination
 	 */
 	protected function _item_inactive(RPaginationObject $item)
 	{
-		return RLayoutHelper::render('reajaxpagination.item.inactive', $item, '', 'com_redevent');
+		return RLayoutHelper::render('reajaxpagination.item.inactive', $item);
 	}
 }

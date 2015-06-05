@@ -595,14 +595,14 @@ var redb2b = {
 			redb2b.getSessions();
 		});
 
-		document.id('redevent-admin').addEvent('click:relay(#main-course-results .itemnav)', function(e){
+		document.id('redevent-admin').addEvent('click:relay(#main-course-results .pagenav)', function(e){
 			e.stop();
 			var form = document.id('course-search-form');
 			form.limitstart.value = this.getProperty('startvalue');
 			redb2b.getSessions();
 		});
 
-		$$('#main-course-results .itemnav').addEvent('click', function(e){
+		$$('#main-course-results .pagenav').addEvent('click', function(e){
 			e.stop();
 			var form = document.id('course-search-form');
 			form.limitstart.value = this.getProperty('startvalue');
@@ -625,7 +625,7 @@ var redb2b = {
 			redb2b.searchBookings();
 		});
 
-		document.id('main-bookings').addEvent('click:relay(.itemnav)', function(e){
+		document.id('main-bookings').addEvent('click:relay(.pagenav)', function(e){
 			e.stop();
 			var form = document.id('org-form');
 			form.bookings_limitstart.value = this.getProperty('startvalue');
@@ -648,7 +648,7 @@ var redb2b = {
 			redb2b.getMembersList();
 		});
 
-		document.id('main-attendees').addEvent('click:relay(.itemnav)', function(e){
+		document.id('main-attendees').addEvent('click:relay(.pagenav)', function(e){
 			e.stop();
 			var form = document.id('org-form');
 			form.members_limitstart.value = this.getProperty('startvalue');

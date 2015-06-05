@@ -43,8 +43,9 @@ JS;
 	JFactory::getDocument()->addScriptDeclaration($script);
 }
 
+RHelperAsset::load('lib/bootstrap/css/boostrap.min.css', 'redcore');
 ?>
-<div id="redevent-admin" class="akeeba-bootstrap">
+<div id="redevent-admin">
 
 <div id="redadmin-toolbar">
 	<?php echo $this->loadTemplate('toolbar'); ?>
