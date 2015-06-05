@@ -481,7 +481,7 @@ class RedeventTags
 	{
 		if (empty($this->event))
 		{
-			$this->event = RModel::getFrontInstance('Eventhelper');
+			$this->event = RModel::getFrontInstance('Eventhelper', array('ignore_request' => true), 'com_redevent');
 			$this->event->setId($this->eventid);
 			$this->event->setXref($this->xref);
 		}
