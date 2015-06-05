@@ -93,5 +93,6 @@
 	<!-- Plugins here -->
 	<plugins>
 		<plugin folder="plugins/redevent" plugin="redeventsync" group="redevent" />
+		<plugin folder="plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
 	</plugins>
 </extension>
