@@ -50,6 +50,7 @@
 		<delete dir="${dirs.release}" quiet="yes" includeemptydirs="false"/>
 		<mkdir dir="${dirs.release}"/>
 
+		<!-- Create the package redEVENT -->
 		<copy todir="${dirs.tmp}/component">
 			<fileset dir="${dirs.root}/component">
 				<include name="**"/>
@@ -61,10 +62,23 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-
-		<!-- Create the package -->
 		<zip basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.zip" includeemptydirs="true"/>
 
+		<!-- Create the package redEVENTB2B -->
+		<copy todir="${dirs.tmp}/redeventb2b">
+			<fileset dir="${dirs.root}/redeventb2b">
+				<include name="**"/>
+			</fileset>
+			<filterchain>
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}"/>
+					<token key="VERSION" value="${version}"/>
+				</replacetokens>
+			</filterchain>
+		</copy>
+		<zip basedir="${dirs.tmp}/redeventb2b" destfile="${dirs.release}/com_redeventb2b-${version}.zip" includeemptydirs="true"/>
+
+		<!-- Create the package redEVENTSYNC -->
 		<copy todir="${dirs.tmp}/redeventsync">
 			<fileset dir="${dirs.root}/redeventsync">
 				<include name="**"/>
