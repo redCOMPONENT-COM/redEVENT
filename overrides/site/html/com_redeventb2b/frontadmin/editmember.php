@@ -100,16 +100,12 @@ $fieldsOrdering[] = 'rm_invoice_contact';
 				<?php foreach ($this->tabs as $t): ?>
 						<?php foreach ($t->fields as $field): ?>
 							<?php if ($field->fieldcode !== $lookup) continue; ?>
-							<?php if (!$field->hidden) : ?>
 							<div class="control-group field-<?php echo $field->id; ?>">
 								<?php echo $field->getLabel(array('class' => 'control-label')); ?>
 								<div class="controls">
 									<?php echo $field->getInput(); ?>
 								</div>
 							</div>
-							<?php else: ?>
-								<?php echo $field->getInput(); ?>
-							<?php endif; ?>
 						<?php endforeach; ?>
 				<?php endforeach; ?>
 			<?php endforeach; ?>
