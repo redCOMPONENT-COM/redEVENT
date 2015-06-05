@@ -26,11 +26,7 @@ JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
 
 JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
-
-if (!class_exists('RedmemberLib'))
-{
-	require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-}
+RLoader::registerPrefix('Redmember', JPATH_LIBRARIES . '/redmember');
 
 require_once 'helper.php';
 require_once 'client.php';

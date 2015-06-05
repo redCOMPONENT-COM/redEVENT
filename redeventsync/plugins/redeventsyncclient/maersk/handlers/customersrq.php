@@ -49,7 +49,7 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception('User not found');
 			}
 
-			$user = redmemberlib::getUserData($user_id);
+			$rmUser = RedmemberApi::getUser($user_id);
 
 			// Log
 			$this->log(
@@ -87,52 +87,52 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 
 		$success = new SimpleXMLElement('<Success/>');
 
-		if ($user->rm_customerid)
+		if ($rmUser->rm_customerid)
 		{
-			$success->addChild('CustomerID',      $user->rm_customerid);
+			$success->addChild('CustomerID',      $rmUser->rm_customerid);
 		}
 
 		$companyAddress = array();
 
-		if ($user->organization_address1)
+		if ($rmUser->organization_address1)
 		{
-			$companyAddress[] = $user->organization_address1;
+			$companyAddress[] = $rmUser->organization_address1;
 		}
 
-		if ($user->organization_address2)
+		if ($rmUser->organization_address2)
 		{
-			$companyAddress[] = $user->organization_address1;
+			$companyAddress[] = $rmUser->organization_address1;
 		}
 
-		if ($user->organization_address3)
+		if ($rmUser->organization_address3)
 		{
-			$companyAddress[] = $user->organization_address3;
+			$companyAddress[] = $rmUser->organization_address3;
 		}
 
-		$success->addChild('Firstname',    $user->rm_firstname);
-		$success->addChild('Lastname',     $user->rm_lastname);
-		$success->addChild('Address1',     $user->rm_address1);
-		$success->addChild('Address2',     $user->rm_address2);
-		$success->addChild('Address3',     $user->rm_address3);
-		$success->addChild('City',         $user->rm_city);
-		$success->addChild('Zipcode',      $user->rm_zipcode);
-		$success->addChild('Countrycode',  $user->rm_countrycode);
-		$success->addChild('Emailaddress', $user->email);
-		$success->addChild('Nationality', $user->rm_nationality);
-		$success->addChild('TitleRank', $user->titlerank);
+		$success->addChild('Firstname',    $rmUser->rm_firstname);
+		$success->addChild('Lastname',     $rmUser->rm_lastname);
+		$success->addChild('Address1',     $rmUser->rm_address1);
+		$success->addChild('Address2',     $rmUser->rm_address2);
+		$success->addChild('Address3',     $rmUser->rm_address3);
+		$success->addChild('City',         $rmUser->rm_city);
+		$success->addChild('Zipcode',      $rmUser->rm_zipcode);
+		$success->addChild('Countrycode',  $rmUser->rm_countrycode);
+		$success->addChild('Emailaddress', $rmUser->email);
+		$success->addChild('Nationality', $rmUser->rm_nationality);
+		$success->addChild('TitleRank', $rmUser->titlerank);
 
-		if ($dob = $this->parent->convertDateToPicasso($user->rm_birthday))
+		if ($dob = $this->parent->convertDateToPicasso($rmUser->rm_birthday))
 		{
 			$success->addChild('Birthdate', $dob);
 		}
 
-		$success->addChild('Phonenumber',  $user->rm_phone);
-		$success->addChild('Mobilephonenumber', $user->rm_mobile);
-		$success->addChild('CompanyCvrNr',      $user->organization_vat);
-		$success->addChild('CompanyName',      $user->organization_name);
-		$success->addChild('CompanyZip',      $user->organization_zip);
+		$success->addChild('Phonenumber',  $rmUser->rm_phone);
+		$success->addChild('Mobilephonenumber', $rmUser->rm_mobile);
+		$success->addChild('CompanyCvrNr',      $rmUser->organization_vat);
+		$success->addChild('CompanyName',      $rmUser->organization_name);
+		$success->addChild('CompanyZip',      $rmUser->organization_zip);
 		$success->addChild('CompanyAddress',      implode(', ', $companyAddress));
-		$success->addChild('CompanyPhone',      $user->organization_phone);
+		$success->addChild('CompanyPhone',      $rmUser->organization_phone);
 
 		$this->appendElement($response, $success);
 

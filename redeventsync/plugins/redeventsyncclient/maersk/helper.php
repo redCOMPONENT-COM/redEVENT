@@ -13,7 +13,7 @@ class RedeventsyncclientMaerskHelper
 	 *
 	 * @param   string  $email  user email
 	 *
-	 * @return mixed object user with redmember data or false if not found
+	 * @return RedmemberUser
 	 *
 	 * @throws Exception
 	 */
@@ -36,12 +36,27 @@ class RedeventsyncclientMaerskHelper
 
 		if ($user_id)
 		{
-			$user = redmemberlib::getUserData($user_id);
+			$user = RedmemberApi::getUser($user_id);
 
 			return $user;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Create company from data
+	 *
+	 * @param   array  $data  data
+	 *
+	 * @return int|mixed
+	 */
+	public static function createCompany($data)
+	{
+		$company = RedmemberApi::getOrganization();
+		$company->save($data, false);
+
+		return $company->id;
 	}
 
 	/**
@@ -119,7 +134,7 @@ class RedeventsyncclientMaerskHelper
 
 		if ($attendee)
 		{
-			$attendee->redmember = redmemberlib::getUserData($attendee->uid);
+			$attendee->redmember = RedmemberApi::getUser($attendee->uid);
 		}
 
 		return $attendee;

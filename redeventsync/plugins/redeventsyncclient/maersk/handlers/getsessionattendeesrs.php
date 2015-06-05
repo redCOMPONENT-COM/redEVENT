@@ -77,16 +77,16 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		{
 			$parsed = $this->parseAttendeeXml($xml);
 
-			$user = RedeventsyncclientMaerskHelper::getUser($parsed->user_email);
+			$rmUser = RedeventsyncclientMaerskHelper::getUser($parsed->user_email);
 
-			if (!$user->id)
+			if (!$rmUser->id)
 			{
 				// We need an user, trigger a special Exception to force getting one
 				throw new PlgresyncmaerskExceptionMissinguser($parsed->user_email, $parsed->venue_code);
 			}
-			elseif ($parsed->firstname != $user->rm_firstname || $parsed->lastname != $user->rm_lastname)
+			elseif ($parsed->firstname != $rmUser->rm_firstname || $parsed->lastname != $rmUser->rm_lastname)
 			{
-				throw new PlgresyncmaerskExceptionMismatchuser($parsed->user_email, $parsed->venue_code, $user->rm_firstname, $user->rm_lastname);
+				throw new PlgresyncmaerskExceptionMismatchuser($parsed->user_email, $parsed->venue_code, $rmUser->rm_firstname, $rmUser->rm_lastname);
 			}
 
 			// Store the attendee
@@ -148,14 +148,14 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		// Get user
 		if (!$attendee->id)
 		{
-			$user = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
+			$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
 
-			if (!$user->id)
+			if (!$rmUser->joomla_user_id)
 			{
 				throw new Exception('No user associated to attendee');
 			}
 
-			$row->uid = $user->id;
+			$row->uid = $rmUser->joomla_user_id;
 		}
 
 		if ($attendee->answers)

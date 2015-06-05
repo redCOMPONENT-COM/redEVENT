@@ -27,8 +27,6 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 	 */
 	protected function processCustomerRS(SimpleXMLElement $xml)
 	{
-		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 		$transaction_id = (int) $xml->TransactionId;
 
 		if (isset($xml->Errors))
@@ -59,7 +57,7 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 
 		if ($user_id = $db->loadResult())
 		{
-			$rmUser = RedmemberLib::getUserData($user_id);
+			$rmUser = RedmemberApi::getUser($user_id);
 		}
 		else
 		{
@@ -106,28 +104,21 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 
 		$orgId = $this->getCompanyId($companyData);
 
-		$options = array('no_check' => 1);
-
 		if ($orgId)
 		{
-			if ($rmUser)
-			{
-				$currentUserOrganizations = array_keys($rmUser->organizations);
+			$currentUserOrganizations = $rmUser->getOrganizations();
 
-				if (!in_array($orgId, $currentUserOrganizations))
-				{
-					$options['assign_organization'] = $orgId;
-				}
-			}
-			else
+			if (!in_array($orgId, $currentUserOrganizations))
 			{
-				$options['assign_organization'] = $orgId;
+				$currentUserOrganizations[$orgId] = array('organization_id' => $orgId, 'level' => 1);
 			}
+
+			$rmUser->setOrganizations($currentUserOrganizations);
 		}
 
 		try
 		{
-			redmemberlib::saveUser(false, $data, false, $options);
+			$rmUser->save($data, false);
 
 			// Log
 			$this->log(
@@ -166,7 +157,7 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 			return $id;
 		}
 
-		return $this->createCompany($data);
+		return RedeventsyncclientMaerskHelper::createCompany($data);
 	}
 
 	/**
@@ -181,46 +172,14 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('organization_id')
+		$query->select('id')
 			->from('#__redmember_organization')
-			->where('organization_name = ' . $db->quote($name));
+			->where('name = ' . $db->quote($name));
 
 		$db->setQuery($query);
 		$res = $db->loadResult();
 
 		return $res;
-	}
-
-	/**
-	 * Create company from data
-	 *
-	 * @param   array  $data  data
-	 *
-	 * @return int|mixed
-	 *
-	 * @throws Exception
-	 */
-	private function createCompany($data)
-	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->insert('#__redmember_organization')
-			->set('organization_name = ' . $db->quote($data['organization_name']))
-			->set('address1 = ' . $db->quote($data['address1']))
-			->set('zip = ' . $db->quote($data['zip']))
-			->set('phone = ' . $db->quote($data['phone']))
-			->set('vat = ' . $db->quote($data['vat']))
-			->set('published = 1');
-
-		$db->setQuery($query);
-
-		if (!$db->execute())
-		{
-			throw new Exception($db->getErrorMsg());
-		}
-
-		return $db->insertid();
 	}
 
 	/**

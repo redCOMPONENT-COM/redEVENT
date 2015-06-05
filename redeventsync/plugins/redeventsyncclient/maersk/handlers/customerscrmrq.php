@@ -64,11 +64,6 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 	 */
 	protected function processCreateCustomerCRMRQ(SimpleXMLElement $customer)
 	{
-		if (!class_exists('RedmemberLib'))
-		{
-			require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-		}
-
 		$data = array();
 
 		$data['email'] = (string) $customer->Emailaddress;
@@ -83,6 +78,8 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 
 		$db->setQuery($query);
 		$user_id = $db->loadResult();
+
+		$rmUser = RedmemberApi::getUser($user_id);
 
 		// Fields should match the actual fields db_name from maersk redmember
 		$data['id'] = (int) $user_id;
@@ -123,16 +120,21 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 
 		$orgId = $this->getCompanyId($companyData);
 
-		$options = array('no_check' => 1);
-
 		if ($orgId)
 		{
-			$options['assign_organization'] = $orgId;
+			$currentUserOrganizations = $rmUser->getOrganizations();
+
+			if (!in_array($orgId, $currentUserOrganizations))
+			{
+				$currentUserOrganizations[$orgId] = array('organization_id' => $orgId, 'level' => 1);
+			}
+
+			$rmUser->setOrganizations($currentUserOrganizations);
 		}
 
 		try
 		{
-			redmemberlib::saveUser(false, $data, false, $options);
+			$rmUser->save($data, false);
 
 			// Log
 			$this->log(
@@ -176,7 +178,7 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 			return $id;
 		}
 
-		return $this->createCompany($data);
+		return RedeventsyncclientMaerskHelper::createCompany($data);
 	}
 
 	/**
@@ -191,46 +193,14 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('organization_id')
+		$query->select('id')
 			->from('#__redmember_organization')
-			->where('organization_name = ' . $db->quote($name));
+			->where('name = ' . $db->quote($name));
 
 		$db->setQuery($query);
 		$res = $db->loadResult();
 
 		return $res;
-	}
-
-	/**
-	 * Create company from data
-	 *
-	 * @param   array  $data  data
-	 *
-	 * @return int|mixed
-	 *
-	 * @throws Exception
-	 */
-	private function createCompany($data)
-	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->insert('#__redmember_organization')
-			->set('organization_name = ' . $db->quote($data['organization_name']))
-			->set('address1 = ' . $db->quote($data['address1']))
-			->set('zip = ' . $db->quote($data['zip']))
-			->set('phone = ' . $db->quote($data['phone']))
-			->set('vat = ' . $db->quote($data['vat']))
-			->set('published = 1');
-
-		$db->setQuery($query);
-
-		if (!$db->execute())
-		{
-			throw new Exception($db->getErrorMsg());
-		}
-
-		return $db->insertid();
 	}
 
 	/**
@@ -333,56 +303,56 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 	 */
 	private function addUserXml($message, $userId)
 	{
-		$user = redmemberlib::getUserData($userId);
+		$rmUser = RedmemberApi::getUser($userId);
 
 		$companyAddress = array();
 
-		if ($user->organization_address1)
+		if ($rmUser->organization_address1)
 		{
-			$companyAddress[] = $user->organization_address1;
+			$companyAddress[] = $rmUser->organization_address1;
 		}
 
-		if ($user->organization_address2)
+		if ($rmUser->organization_address2)
 		{
-			$companyAddress[] = $user->organization_address1;
+			$companyAddress[] = $rmUser->organization_address1;
 		}
 
-		if ($user->organization_address3)
+		if ($rmUser->organization_address3)
 		{
-			$companyAddress[] = $user->organization_address3;
+			$companyAddress[] = $rmUser->organization_address3;
 		}
 
 		$message->addChild('VenueCode', '');
 
-		if ($user->rm_customerid)
+		if ($rmUser->rm_customerid)
 		{
-			$message->addChild('CustomerID',      $user->rm_customerid);
+			$message->addChild('CustomerID',      $rmUser->rm_customerid);
 		}
 
-		$message->addChild('Firstname',    $user->rm_firstname);
-		$message->addChild('Lastname',     $user->rm_lastname);
-		$message->addChild('Address1',     $user->rm_address1);
-		$message->addChild('Address2',     $user->rm_address2);
-		$message->addChild('Address3',     $user->rm_address3);
-		$message->addChild('City',         $user->rm_city);
-		$message->addChild('Zipcode',      $user->rm_zipcode);
-		$message->addChild('Countrycode',  $user->rm_countrycode);
-		$message->addChild('Emailaddress', $user->email);
-		$message->addChild('Nationality', $user->rm_nationality);
-		$message->addChild('TitleRank', $user->rm_titlerank);
+		$message->addChild('Firstname',    $rmUser->rm_firstname);
+		$message->addChild('Lastname',     $rmUser->rm_lastname);
+		$message->addChild('Address1',     $rmUser->rm_address1);
+		$message->addChild('Address2',     $rmUser->rm_address2);
+		$message->addChild('Address3',     $rmUser->rm_address3);
+		$message->addChild('City',         $rmUser->rm_city);
+		$message->addChild('Zipcode',      $rmUser->rm_zipcode);
+		$message->addChild('Countrycode',  $rmUser->rm_countrycode);
+		$message->addChild('Emailaddress', $rmUser->email);
+		$message->addChild('Nationality', $rmUser->rm_nationality);
+		$message->addChild('TitleRank', $rmUser->rm_titlerank);
 
-		if ($dob = $this->parent->convertDateToPicasso($user->rm_birthday))
+		if ($dob = $this->parent->convertDateToPicasso($rmUser->rm_birthday))
 		{
 			$message->addChild('Birthdate', $dob);
 		}
 
-		$message->addChild('Phonenumber',  $user->rm_phone);
-		$message->addChild('Mobilephonenumber', $user->rm_mobile);
-		$message->addChild('CompanyCvrNr',      $user->organization_vat);
-		$message->addChild('CompanyName',      $user->organization_name);
-		$message->addChild('CompanyZip',      $user->organization_zip);
+		$message->addChild('Phonenumber',  $rmUser->rm_phone);
+		$message->addChild('Mobilephonenumber', $rmUser->rm_mobile);
+		$message->addChild('CompanyCvrNr',      $rmUser->organization_vat);
+		$message->addChild('CompanyName',      $rmUser->organization_name);
+		$message->addChild('CompanyZip',      $rmUser->organization_zip);
 		$message->addChild('CompanyAddress',      implode(', ', $companyAddress));
-		$message->addChild('CompanyPhone',      $user->organization_phone);
+		$message->addChild('CompanyPhone',      $rmUser->organization_phone);
 
 		return $message;
 	}

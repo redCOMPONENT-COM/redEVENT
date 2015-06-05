@@ -148,17 +148,17 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			}
 
 			// Make sure we have an user !
-			$user = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
+			$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
 
-			if (!$user)
+			if (!$rmUser)
 			{
 				// We need an user, trigger a special Exception to force getting one
 				throw new PlgresyncmaerskExceptionMissinguser($attendee->user_email, $attendee->venue_code);
 			}
-			elseif ($attendee->firstname != $user->rm_firstname || $attendee->lastname != $user->rm_lastname)
+			elseif ($attendee->firstname != $rmUser->rm_firstname || $attendee->lastname != $rmUser->rm_lastname)
 			{
 				// Just try to update it
-				$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $user->rm_firstname, $user->rm_lastname);
+				$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $rmUser->rm_firstname, $rmUser->rm_lastname);
 			}
 
 			// We will first add to redform submitters, then to corresponding redform form,
@@ -198,7 +198,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			else
 			{
 				// Use quickSubmit method
-				$result = $rfcore->quickSubmit($user->id, 'redevent', $data);
+				$result = $rfcore->quickSubmit($rmUser->id, 'redevent', $data);
 			}
 
 			if (!$result)
@@ -212,7 +212,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			$row->xref = $session_details->session_id;
 			$row->sid = $sid;
 			$row->submit_key = $result->submit_key;
-			$row->uid = $user->id;
+			$row->uid = $rmUser->joomla_user_id;
 
 			// Now save !
 			if (!($row->check() && $row->store()))
