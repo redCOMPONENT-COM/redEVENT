@@ -224,20 +224,13 @@ class RedeventModelBaseeventlist extends RModel
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code, x.details');
 		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
-		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, a.submission_type_external');
-		$query->select('a.redform_id');
+		$query->select('a.*');
 		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription, l.venue_code, l.id AS venue_id');
 		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
 		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
-
-		// Add the custom fields
-		foreach ((array) $customs as $c)
-		{
-			$query->select('a.custom' . $c->id);
-		}
 
 		foreach ((array) $xcustoms as $c)
 		{
@@ -350,6 +343,16 @@ class RedeventModelBaseeventlist extends RModel
 
 				$query->where(implode(' OR ', $filterOr));
 			}
+		}
+
+		if (is_numeric($this->getState('filter_event')) && $this->getState('filter_event'))
+		{
+			$query->where('a.id = ' . (int) $this->getState('filter_event'));
+		}
+
+		if ($filter_venuecategory = $this->getState('filter_venuecategory'))
+		{
+			$query->where('vc.id = ' . $filter_venuecategory);
 		}
 
 		if ($filter_venuecategory = $this->getState('filter_venuecategory'))

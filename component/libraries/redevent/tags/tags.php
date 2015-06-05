@@ -561,8 +561,8 @@ class RedeventTags
 		if (empty($this->eventlinks))
 		{
 			$model = RModel::getFrontInstance('simplelist', array('ignore_request' => true), 'com_redevent');
-			$model->setState('filter.event', $this->eventid);
-			$model->setState('limit', 0);
+			$model->setState('filter_event', $this->eventid);
+			$model->setState('limit', 1000);
 			$model->setState('filter_order', 'x.dates');
 			$model->setState('filter_order_Dir', 'ASC');
 			$this->eventlinks = $model->getData();
