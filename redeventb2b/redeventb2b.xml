@@ -37,6 +37,7 @@
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
+			<filename>controller.php</filename>
 			<filename>redeventb2b.php</filename>
 			<folder>language</folder>
 			<folder>views</folder>
