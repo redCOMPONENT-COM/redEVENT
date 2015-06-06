@@ -698,6 +698,20 @@ class RedEventModelRegistration extends RModel
 		$data['password'] = md5($password);
 
 		$rmUser = RedmemberApi::getUser();
+
+		// Organization
+		if ($data['organization'])
+		{
+			$organization = RedmemberApi::getOrganization(array('name' => $data['organization']));
+
+			if (!$organization->id)
+			{
+				$organization->save($data, false);
+			}
+
+			$rmUser->setOrganizations(array(array('organization_id' => $organization->id, 'level' => 1)));
+		}
+
 		$rmUser->save($data);
 
 		// Send email using juser controller

@@ -324,12 +324,14 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 					$resp->status = 1;
 					$regresp->status = 1;
 					$regresp->error = $e->getMessage();
+					$resp->regs[] = $regresp;
 				}
 				catch (Exception $e)
 				{
 					$resp->status = 0;
 					$regresp->status = 0;
 					$regresp->error = $e->getMessage();
+					$resp->regs[] = $regresp;
 				}
 			}
 		}
