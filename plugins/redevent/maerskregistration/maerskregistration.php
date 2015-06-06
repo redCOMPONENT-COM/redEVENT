@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die;
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-require_once JPATH_SITE . '/libraries/redmember/library.php';
+JLoader::registerPrefix('Redmemer', JPATH_LIBRARIES . '/redmember');
 
 /**
  * Specific parameters for redEVENT.
@@ -83,7 +83,7 @@ class plgRedeventMaerskregistration extends JPlugin
 			$registration = $db->loadObject();
 
 			$rfcore = new RdfCore();
-			$answers = $rfcore->getSidAnswers(array($registration->sid));
+			$answers = $rfcore->getSidAnswers($registration->sid);
 			$this->answers = $answers;
 		}
 
@@ -110,7 +110,7 @@ class plgRedeventMaerskregistration extends JPlugin
 				$query = $db->getQuery(true);
 
 				$query->update('#__redevent_register');
-				$query->set('ponumber = ' . $db->quote($a->answer));
+				$query->set('ponumber = ' . $db->quote($a->value));
 				$query->where('id = ' . $this->registrationId);
 
 				$db->setQuery($query);
@@ -143,7 +143,7 @@ class plgRedeventMaerskregistration extends JPlugin
 				$query = $db->getQuery(true);
 
 				$query->update('#__redevent_register');
-				$query->set('comments = ' . $db->quote($a->answer));
+				$query->set('comments = ' . $db->quote($a->value));
 				$query->where('id = ' . $this->registrationId);
 
 				$db->setQuery($query);
@@ -261,10 +261,10 @@ class plgRedeventMaerskregistration extends JPlugin
 			$subject = $params->get('registration_notification_subject');
 		}
 
-		$attendeeInfo = RedmemberLib::getUserData($attendee->getUserId());
+		$attendeeInfo = RedmemberApi::getUser($attendee->getUserId());
 
 		$booker = JFactory::getUser();
-		$bookerInfo = RedmemberLib::getUserData($booker->get('id'));
+		$bookerInfo = RedmemberApi::getUser($booker->get('id'));
 
 		$body = '<HTML><HEAD>
 			<STYLE TYPE="text/css">
@@ -305,12 +305,12 @@ class plgRedeventMaerskregistration extends JPlugin
 
 		$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_HEADER') . '</h2>';
 		$body .= '<ul>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_NAME') .': ' . $attendeeInfo->organization_name . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_NAME') .': ' . $attendeeInfo->organization . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS1') .': ' . $attendeeInfo->organization_address1 . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS2') .': ' . $attendeeInfo->organization_address2 . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS3') .': ' . $attendeeInfo->organization_address3 . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ZIP') .': ' . $attendeeInfo->organization_zip . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COUNTRY') .': ' . RedmemberLib::getCountryName($attendeeInfo->organization_country) . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COUNTRY') .': ' . $attendeeInfo->organization_country . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_PHONE') .': ' . $attendeeInfo->organization_phone . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_VAT') .': ' . $attendeeInfo->organization_vat . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_NOTE') .': ' . $attendeeInfo->organization_note . '</li>';
@@ -407,7 +407,7 @@ class plgRedeventMaerskregistration extends JPlugin
 	{
 		$user = JFactory::getUser();
 
-		$data = RedmemberLib::getUserData($user->get('id'));
+		$data = RedmemberApi::getUser($user->get('id'));
 
 		if (!$data)
 		{

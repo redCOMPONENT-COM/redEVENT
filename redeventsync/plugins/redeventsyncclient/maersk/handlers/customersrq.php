@@ -129,7 +129,7 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		$success->addChild('Phonenumber',  $rmUser->rm_phone);
 		$success->addChild('Mobilephonenumber', $rmUser->rm_mobile);
 		$success->addChild('CompanyCvrNr',      $rmUser->organization_vat);
-		$success->addChild('CompanyName',      $rmUser->organization_name);
+		$success->addChild('CompanyName',      $rmUser->organization);
 		$success->addChild('CompanyZip',      $rmUser->organization_zip);
 		$success->addChild('CompanyAddress',      implode(', ', $companyAddress));
 		$success->addChild('CompanyPhone',      $rmUser->organization_phone);

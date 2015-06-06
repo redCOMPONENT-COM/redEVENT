@@ -111,11 +111,11 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		}
 
 		$companyData = array(
-			'organization_name' => (string) $customer->CompanyName,
-			'vat' => (string) $customer->CompanyCvrNr,
-			'zip' => (string) $customer->CompanyZip,
-			'address1' => (string) $customer->CompanyAddress,
-			'phone' => (string) $customer->CompanyPhone
+			'name' => (string) $customer->CompanyName,
+			'organization_vat' => (string) $customer->CompanyCvrNr,
+			'organization_zip' => (string) $customer->CompanyZip,
+			'organization_address1' => (string) $customer->CompanyAddress,
+			'organization_phone' => (string) $customer->CompanyPhone
 		);
 
 		$orgId = $this->getCompanyId($companyData);
@@ -168,12 +168,12 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 	 */
 	private function getCompanyId($data)
 	{
-		if (!isset($data['organization_name']) || !$data['organization_name'])
+		if (!isset($data['name']) || !$data['name'])
 		{
 			return 0;
 		}
 
-		if ($id = $this->findCompanyIdByName($data['organization_name']))
+		if ($id = $this->findCompanyIdByName($data['name']))
 		{
 			return $id;
 		}
@@ -349,7 +349,7 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$message->addChild('Phonenumber',  $rmUser->rm_phone);
 		$message->addChild('Mobilephonenumber', $rmUser->rm_mobile);
 		$message->addChild('CompanyCvrNr',      $rmUser->organization_vat);
-		$message->addChild('CompanyName',      $rmUser->organization_name);
+		$message->addChild('CompanyName',      $rmUser->organization);
 		$message->addChild('CompanyZip',      $rmUser->organization_zip);
 		$message->addChild('CompanyAddress',      implode(', ', $companyAddress));
 		$message->addChild('CompanyPhone',      $rmUser->organization_phone);

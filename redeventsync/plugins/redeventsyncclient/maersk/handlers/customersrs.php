@@ -95,11 +95,11 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		}
 
 		$companyData = array(
-			'organization_name' => (string) $customer->CompanyName,
-			'vat' => (string) $customer->CompanyCvrNr,
-			'zip' => (string) $customer->CompanyZip,
-			'address1' => (string) $customer->CompanyAddress,
-			'phone' => (string) $customer->CompanyPhone
+			'name' => (string) $customer->CompanyName,
+			'organization_vat' => (string) $customer->CompanyCvrNr,
+			'organization_zip' => (string) $customer->CompanyZip,
+			'organization_address1' => (string) $customer->CompanyAddress,
+			'organization_phone' => (string) $customer->CompanyPhone
 		);
 
 		$orgId = $this->getCompanyId($companyData);
