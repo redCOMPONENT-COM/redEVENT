@@ -33,17 +33,20 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	{
 		$this->options = array();
 
-		foreach ($sessionpriceGroups as $sessionPricegroup)
+		if (is_array($sessionpriceGroups) && count($sessionpriceGroups))
 		{
-			$option = new stdclass;
-			$option->value = $sessionPricegroup->id;
-			$option->label = $sessionPricegroup->name;
-			$option->sku = $sessionPricegroup->sku;
-			$option->price = $sessionPricegroup->price;
-			$option->vat = $sessionPricegroup->vatrate;
-			$option->currency = $sessionPricegroup->currency;
+			foreach ($sessionpriceGroups as $sessionPricegroup)
+			{
+				$option = new stdclass;
+				$option->value = $sessionPricegroup->id;
+				$option->label = $sessionPricegroup->name;
+				$option->sku = $sessionPricegroup->sku;
+				$option->price = $sessionPricegroup->price;
+				$option->vat = $sessionPricegroup->vatrate;
+				$option->currency = $sessionPricegroup->currency;
 
-			$this->options[] = $option;
+				$this->options[] = $option;
+			}
 		}
 	}
 

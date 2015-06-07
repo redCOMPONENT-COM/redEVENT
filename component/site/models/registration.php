@@ -700,7 +700,7 @@ class RedEventModelRegistration extends RModel
 		$rmUser = RedmemberApi::getUser();
 
 		// Organization
-		if ($data['organization'])
+		if (isset($data['organization']) && $data['organization'])
 		{
 			$organization = RedmemberApi::getOrganization(array('name' => $data['organization']));
 
