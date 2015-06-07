@@ -15,6 +15,13 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedEventModelOrganization extends RModelAdmin
 {
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  mixed    Object on success, false on failure.
+	 */
 	public function getItem($pk = null)
 	{
 		$item = parent::getItem($pk);

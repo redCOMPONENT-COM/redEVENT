@@ -42,6 +42,13 @@ class RedeventAnalytics
 		RdfHelperAnalytics::recordTransMeasurementProtocol($submit_key, $options);
 	}
 
+	/**
+	 * Build options
+	 *
+	 * @param   string  $submit_key  submit key
+	 *
+	 * @return array
+	 */
 	private function buildOptions($submit_key)
 	{
 		$details = $this->getSessionDetails($submit_key);
@@ -67,7 +74,7 @@ class RedeventAnalytics
 	/**
 	 * Get data from session
 	 *
-	 * @param $submit_key
+	 * @param   string  $submit_key  submit key
 	 *
 	 * @return mixed
 	 */

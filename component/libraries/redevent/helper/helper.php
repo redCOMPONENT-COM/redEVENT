@@ -749,7 +749,8 @@ class RedeventHelper
 			}
 
 			// If same day but end time < start time, change end date to +1 day
-			if ($session->enddates == $session->dates && strtotime($session->dates . ' ' . $session->endtimes) < strtotime($session->dates . ' ' . $session->times))
+			if ($session->enddates == $session->dates
+				&& strtotime($session->dates . ' ' . $session->endtimes) < strtotime($session->dates . ' ' . $session->times))
 			{
 				$session->enddates = strftime('%Y-%m-%d', strtotime($session->enddates . ' +1 day'));
 			}
