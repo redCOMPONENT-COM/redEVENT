@@ -24,9 +24,10 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+$input = JFactory::getApplication()->input;
 ?>
 <?php
-	$prices = RdfCore::getSubmissionPrice(JFactory::getApplication()->input->get('submit_key'));
+	$prices = RdfCore::getSubmissionPrice($input->get('submit_key'));
 
 	$total = 0;
 	$currency = 'DKK';
@@ -53,4 +54,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="confirmation_message">
 	<?php echo $this->message; ?>
 </div>
-<div><?php echo JHTML::_('link', JRoute::_(RedEventHelperRoute::getDetailsRoute($this->event->slug, JRequest::getInt('xref'))), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'), array('class' => 're-back')); ?></div>
+<div><?php echo JHTML::_('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($this->event->slug, $input->getInt('xref'))), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'), array('class' => 're-back')); ?></div>
