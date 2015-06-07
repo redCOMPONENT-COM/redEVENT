@@ -45,7 +45,7 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 	public function onFilterGateways(&$gateways, $details)
 	{
 		// First check that if this is redEVENT submission
-		if (!$details->integration == 'redevent')
+		if (!isset($details->integration) || $details->integration !== 'redevent')
 		{
 			return true;
 		}

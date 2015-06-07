@@ -13,6 +13,8 @@ defined('JPATH_BASE') or die;
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
+JLoader::registerPrefix('Redmember', JPATH_LIBRARIES . '/redmember');
+
 /**
  * Specific parameters for redEVENT.
  *
@@ -71,14 +73,6 @@ class plgRedeventNotifyCompanyAdmin extends JPlugin
 	 */
 	protected function addOrganizationAdmins($attendee_id, &$emails)
 	{
-		// Make sure redMEMBER is installed !
-		if (!file_exists(JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php'))
-		{
-			throw new Exception('redMEMBER is required', 404);
-		}
-
-		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 		// Get Admins
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -88,9 +82,10 @@ class plgRedeventNotifyCompanyAdmin extends JPlugin
 		$db->setQuery($query);
 		$user_id = $db->loadResult();
 
-		$ids = RedmemberLib::getUserOrganizationManagers($user_id);
+		$rmUser = RedmemberApi::getUser($user_id);
+		$admins = $rmUser->getOrganizationsManagers();
 
-		foreach ($ids as $admin_id)
+		foreach ($admins as $admin_id)
 		{
 			$user = JUser::getInstance($admin_id);
 			$emails[] = array('name' => $user->get('name'), 'email' => $user->get('email'));

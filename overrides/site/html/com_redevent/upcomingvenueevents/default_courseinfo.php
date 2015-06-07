@@ -40,7 +40,7 @@ function tableOrdering( order, dir, view )
 			<th class="courseinfo_titledate"><?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?></th>
 			<th class="courseinfo_title"><?php echo JText::_('COM_REDEVENT_TITLE'); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
-			<th class="courseinfo_titlevenue" colspan="2"><?php echo JText::_('COM_REDEVENT_LOCATION'); ?></th>
+			<th class="courseinfo_titlevenue" colspan="2"><?php echo JText::_('COM_REDEVENT_VENUE'); ?></th>
 			<th class="courseinfo_titleprice"><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
 			<th class="courseinfo_titlecredit"><?php echo JText::_('COM_REDEVENT_EVENT_AVAILABLE_SEAT'); JText::_('COM_REDEVENT_EVENT_AVAILABLE_SEAT'); ?></th>
 			<th class="courseinfo_titlesignup"><?php echo JText::_('COM_REDEVENT_EVENT_SIGNUP'); ?></th>

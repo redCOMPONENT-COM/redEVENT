@@ -46,7 +46,7 @@ function tableOrdering( order, dir, view )
 			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 		<th class="courseinfo_titlelanguage"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LANGUAGE', 'x.session_language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LOCATION', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_VENUE', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleprice"><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
 			<th class="courseinfo_titlecredit"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_AVAILABLE_SEAT', 'x.maxattendees', $this->lists['order_Dir'], $this->lists['order'] ); JText::_('COM_REDEVENT_EVENT_AVAILABLE_SEAT'); ?></th>
 			<th class="courseinfo_titlesignup"><?php echo JText::_('COM_REDEVENT_EVENT_SIGNUP'); ?></th>
