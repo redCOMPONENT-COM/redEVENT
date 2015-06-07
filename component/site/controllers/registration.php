@@ -54,11 +54,11 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$isedit = $this->input->getInt('isedit', 0);
 
 		$nbPosted = $this->input->getInt('nbactive', 1);
-		$pricegroups = array();
+		$selectedPricegroups = array();
 
 		for ($i = 1; $i < $nbPosted + 1; $i++)
 		{
-			$pricegroups[] = $this->input->getInt('sessionprice_' . $i);
+			$selectedPricegroups[] = $this->input->getInt('sessionprice_' . $i);
 		}
 
 		if (!$xref)
@@ -92,9 +92,9 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		$i = 1;
 
-		if ($model->getPricegroups())
+		if ($pricegroups = $model->getPricegroups())
 		{
-			foreach ($pricegroups as $regPricegroup)
+			foreach ($selectedPricegroups as $regPricegroup)
 			{
 				if (!$regPricegroup)
 				{
@@ -104,13 +104,16 @@ class RedeventControllerRegistration extends RedeventControllerFront
 					return false;
 				}
 
+				$pg = RTable::getAdminInstance('Sessionpricegroup', array(), 'com_redevent');
+				$pg->load($regPricegroup);
+
 				$field = new RedeventRfieldSessionprice;
-				$field->setOptions(array($regPricegroup));
-				$field->setValue($regPricegroup->id);
+				$field->setOptions($pricegroups);
+				$field->setValue($regPricegroup);
 				$field->setFormIndex($i);
 
 				$extrafields[$i++] = array($field);
-				$currency = $regPricegroup->currency;
+				$currency = $pg->currency;
 			}
 
 			$options['extrafields'] = $extrafields;
@@ -123,12 +126,24 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		}
 
 		$rfcore = RdfCore::getInstance();
-		$result = $rfcore->saveAnswers('redevent', $options);
 
-		if (!$result)
+		try
+		{
+			$result = $rfcore->saveAnswers('redevent', $options);
+
+			if (!$result)
+			{
+				// Redform saving failed
+				$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $rfcore->getError();
+				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
+
+				return false;
+			}
+		}
+		catch (Exception $e)
 		{
 			// Redform saving failed
-			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $rfcore->getError();
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $e->getMessage();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
 
 			return false;
@@ -151,7 +166,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		if ($review)
 		{
 			// Remember set prices groups
-			$app->setUserState('spgids' . $submit_key, $pricegroups);
+			$app->setUserState('spgids' . $submit_key, $selectedPricegroups);
 		}
 		else
 		{
@@ -175,7 +190,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 			foreach ($result->posts as $rfpost)
 			{
-				$pricegroup = isset($pricegroups[$k]) ? $pricegroups[$k] : null;
+				$pricegroup = isset($selectedPricegroups[$k]) ? $selectedPricegroups[$k] : null;
 				$k++;
 
 				if (!$res = $model->register($user, $rfpost['sid'], $result->submit_key, $pricegroup))

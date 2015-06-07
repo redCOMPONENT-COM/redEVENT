@@ -793,7 +793,7 @@ class RedeventAttendee extends JObject
 				$mailer->AddAddress($email['email'], $email['fullname']);
 			}
 
-			if ($params->get(registration_notification_attach_ics, 0))
+			if ($params->get('registration_notification_attach_ics', 0))
 			{
 				$ics = $this->getIcs();
 				$mailer->addAttachment($ics);
