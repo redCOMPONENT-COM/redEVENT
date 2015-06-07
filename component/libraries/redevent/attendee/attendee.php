@@ -992,10 +992,10 @@ class RedeventAttendee extends JObject
 		// Get data from the model
 		$row = $this->getSessionDetails();
 
-		// initiate new CALENDAR
+		// Initiate new CALENDAR
 		$vcal = RedeventHelper::getCalendarTool();
 		$vcal->setProperty('unique_id', 'session' . $row->xref . '@' . $app->getCfg('sitename'));
-		$vcal->setConfig( "filename", "event".$row->xref.".ics" );
+		$vcal->setConfig("filename", "event" . $row->xref . ".ics");
 
 		RedeventHelper::icalAddEvent($vcal, $row);
 

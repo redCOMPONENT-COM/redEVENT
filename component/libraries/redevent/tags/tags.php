@@ -373,7 +373,6 @@ class RedeventTags
 					continue;
 				}
 
-
 				$func = 'getTag_' . strtolower($tag_obj->getName());
 
 				if (method_exists($this, $func))

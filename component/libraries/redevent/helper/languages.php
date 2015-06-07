@@ -7,6 +7,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Languages helper
+ *
+ * @package  Redevent.Library
+ * @since    3.0
+ */
 class RedeventHelperLanguages
 {
 	/**
