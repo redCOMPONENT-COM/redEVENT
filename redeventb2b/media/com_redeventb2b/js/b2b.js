@@ -202,6 +202,7 @@ var redb2b = {
 		 * update course search when clicking on book session button in lists
 		 */
 		document.id('redevent-admin').addEvent('click:relay(.bookthis)', function(e){
+			e.preventDefault();
 			var id = this.getProperty('xref');
 			redb2b.selectSession(id);
 		});
