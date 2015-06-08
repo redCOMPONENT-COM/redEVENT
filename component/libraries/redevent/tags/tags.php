@@ -1618,7 +1618,7 @@ class RedeventTags
 
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
-			$cats[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
+			$cats[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->name);
 		}
 
 		return '<span class="details-categories">' . implode(', ', $cats) . '</span>';

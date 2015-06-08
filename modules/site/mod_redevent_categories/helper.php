@@ -163,7 +163,7 @@ class modRedEventCategoriesHelper
 	public function printDtCat($category, $depth, $showcount = 1, $currents)
 	{
 		$link = JRoute::_(RedeventHelperRoute::getCategoryeventsRoute($category->slug));
-		$txt = $showcount ? $category->name . ' (' . $category->assignedevents . ')' : $category->catname;
+		$txt = $showcount ? $category->name . ' (' . $category->assignedevents . ')' : $category->name;
 		$opened_class = in_array($category->id, $currents) ? ' open' : '';
 
 		ob_start();

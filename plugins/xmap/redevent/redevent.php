@@ -214,7 +214,7 @@ class xmap_com_redevent {
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id , c.name AS catname, c.alias');
+		$query->select('c.id , c.name, c.alias');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_categories AS c');
 		$query->where('c.published = 1');
@@ -229,7 +229,7 @@ class xmap_com_redevent {
 			$node = new stdclass;
 			$node->id   = $parent->id;
 			$node->uid  = $parent->uid.'c'.$cat->id;
-			$node->name = $cat->catname;
+			$node->name = $cat->name;
 			$node->link = RedeventHelperRoute::getCategoryEventsRoute($cat->slug);
 			$node->priority   = $params['cat_priority'];
 			$node->changefreq = $params['cat_changefreq'];

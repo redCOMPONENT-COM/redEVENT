@@ -200,7 +200,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	/**
 	 * redEVENT registration
 	 *
-	 * @param   RdfCoreSubmission  $redformResult  redform submission result
+	 * @param   RdfCoreFormSubmission  $redformResult  redform submission result
 	 *
 	 * @return mixed
 	 *

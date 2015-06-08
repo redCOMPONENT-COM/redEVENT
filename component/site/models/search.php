@@ -345,7 +345,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	 */
 	public function getCategory($id)
 	{
-		$query = ' SELECT c.id, c.name AS catname, c.lft, c.rgt '
+		$query = ' SELECT c.id, c.name, c.lft, c.rgt '
 			. ' FROM #__redevent_categories AS c '
 			. ' WHERE c.id = ' . $this->_db->Quote($id);
 		$this->_db->setQuery($query);

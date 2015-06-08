@@ -142,6 +142,7 @@ class RedeventViewPayment extends RViewSite
 		if (RdfHelperAnalytics::isEnabled())
 		{
 			$submit_key = JFactory::getApplication()->input->get('submit_key');
+			$cartReference = RdfCore::getInstance()->getSubmitkeyCartReference($submit_key);
 			$details = $this->get('Event');
 
 			$options = array();
@@ -159,7 +160,7 @@ class RedeventViewPayment extends RViewSite
 
 			$options['category'] = implode(', ', $cats);
 
-			RdfHelperAnalytics::recordTrans($submit_key, $options);
+			RdfHelperAnalytics::recordTrans($cartReference, $options);
 		}
 	}
 }
