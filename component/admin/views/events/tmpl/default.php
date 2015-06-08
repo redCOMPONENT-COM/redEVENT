@@ -163,7 +163,7 @@ $search = $this->state->get('filter.search');
 						foreach ((array) $row->categories as $k => $cat)
 						{
 							if ($cat->checked_out && ( $cat->checked_out != $this->user->get('id') ) ) {
-								echo htmlspecialchars($cat->catname, ENT_QUOTES, 'UTF-8');
+								echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8');
 							} else {
 								$catlink    = 'index.php?option=com_redevent&view=category&cid[]='.$cat->id;
 								?>

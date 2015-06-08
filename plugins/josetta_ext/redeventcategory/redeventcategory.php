@@ -185,7 +185,7 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 			case 'parent_id':
 				$table = $table = RTable::getAdminInstance('category');
 				$table->load($originalItem->parent_id);
-				$displayText = $table->catname;
+				$displayText = $table->name;
 				break;
 		}
 

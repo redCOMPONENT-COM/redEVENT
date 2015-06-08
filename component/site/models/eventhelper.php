@@ -198,7 +198,7 @@ class RedeventModelEventhelper extends RModel
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id, c.name AS catname, c.access, c.image');
+		$query->select('c.id, c.name AS name, c.access, c.image');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_categories as c');
 		$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');

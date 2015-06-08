@@ -332,7 +332,7 @@ class modRedEventHelper
 
 		foreach ($categories as $c)
 		{
-			$res[] = $c->catname;
+			$res[] = $c->name;
 		}
 
 		return implode(", ", $res);

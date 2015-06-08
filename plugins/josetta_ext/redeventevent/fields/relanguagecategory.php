@@ -131,7 +131,7 @@ class JFormFieldRELanguageCategory extends JFormFieldCategory {
 			// B/C compat.
 			foreach ($items as &$item)
 			{
-				$item->title = $item->catname;
+				$item->title = $item->name;
 			}
 
 			// Indent cat list, for easier reading
@@ -184,7 +184,7 @@ class JFormFieldRELanguageCategory extends JFormFieldCategory {
 
 			foreach ($items as &$item)
 			{
-				$item->title = $item->catname;
+				$item->title = $item->name;
 			}
 
 			$this->_categoriesDataPerLanguage[$hash] = $items;

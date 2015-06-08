@@ -289,7 +289,7 @@ class RedeventHelper
 		}
 
 		$query = $db->getQuery(true);
-		$query->select('c.id, c.name AS catname, (COUNT(parent.name) - 1) AS depth')
+		$query->select('c.id, c.name AS name, (COUNT(parent.name) - 1) AS depth')
 			->from('#__redevent_categories AS c')
 			->join('INNER', '#__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt')
 			->group('c.id')
@@ -321,7 +321,7 @@ class RedeventHelper
 			$options[] = JHTML::_(
 				'select.option',
 				$cat->id,
-				str_repeat('&nbsp;', $cat->depth) . ' ' . $cat->catname,
+				str_repeat('&nbsp;', $cat->depth) . ' ' . $cat->name,
 				'value', 'text', ($enabled ? !in_array($cat->id, $enabled) : false)
 			);
 		}

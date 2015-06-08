@@ -10,7 +10,7 @@
 			<size>10</size>
 		</id>
 		<title>
-			<column>catname</column>
+			<column>name</column>
 			<type>josettatext</type>
 			<size>100</size>
 		</title>
@@ -20,5 +20,5 @@
 			<size>10</size>
 		</published>
 	</reference>
-		
+
 </josetta>

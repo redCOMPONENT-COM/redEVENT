@@ -25,8 +25,10 @@ class RedeventAnalytics
 	 */
 	public function addTransactionJs($submit_key)
 	{
+		$cartReference = RdfCore::getSubmitkeyCartReference($submit_key);
 		$options = $this->buildOptions($submit_key);
-		RdfHelperAnalytics::recordTrans($submit_key, $options);
+
+		RdfHelperAnalytics::recordTrans($cartReference, $options);
 	}
 
 	/**
@@ -63,7 +65,7 @@ class RedeventAnalytics
 
 		foreach ($details->categories as $c)
 		{
-			$cats[] = $c->catname;
+			$cats[] = $c->name;
 		}
 
 		$options['category'] = implode(', ', $cats);

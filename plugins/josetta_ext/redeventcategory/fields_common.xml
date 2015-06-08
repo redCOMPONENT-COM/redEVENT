@@ -22,7 +22,7 @@
 			<require>no</require>
 			<readonly>true</readonly>
 		</field>
-		
+
 		<field>
 			<id>parent_id</id>
 			<name>COM_REDEVENT_PARENT_CATEGORY</name>
@@ -34,12 +34,12 @@
 			<display>yes</display>
 			<option value=""></option>
 		</field>
-		
+
 		<field>
-			<id>catname</id>
+			<id>name</id>
 			<name>COM_REDEVENT_NAME</name>
 			<description>COM_REDEVENT_NAME</description>
-			<column>catname</column>
+			<column>name</column>
 			<type>josettatext</type>
 			<size>60</size>
 			<length>255</length>
@@ -47,7 +47,7 @@
 			<display>yes</display>
 			<require>yes</require>
 		</field>
-		
+
 		<field>
 			<id>alias</id>
 			<name>JFIELD_ALIAS_LABEL</name>
@@ -70,8 +70,8 @@
 			<display>yes</display>
 			<require>no</require>
 		</field>
-		
-		
+
+
 	    <field>
 	      <id>meta_description</id>
 	      <name>JFIELD_META_DESCRIPTION_LABEL</name>
@@ -83,7 +83,7 @@
 	      <translate>yes</translate>
 	      <display>yes</display>
 	    </field>
-	    
+
 	    <field>
 	      <id>meta_keywords</id>
 	      <name>JFIELD_META_KEYWORDS_LABEL</name>
@@ -95,7 +95,7 @@
 	      <translate>yes</translate>
 	      <display>yes</display>
 	    </field>
-		
+
 		<field>
 			<id>color</id>
 			<column>color</column>
@@ -103,7 +103,7 @@
 			<display>no</display>
 			<require>no</require>
 		</field>
-		
+
 		<field>
 			<id>image</id>
 			<column>image</column>
@@ -111,7 +111,7 @@
 			<display>no</display>
 			<require>no</require>
 		</field>
-			    <!-- 
+			    <!--
 		<field>
 			<id>published</id>
 			<column>published</column>
@@ -138,7 +138,7 @@
 			<translate>no</translate>
 			<display>no</display>
 			<require>no</require>
-		</field>		
-    
+		</field>
+
 	</fields>
 </josetta>

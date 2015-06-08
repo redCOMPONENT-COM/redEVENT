@@ -227,9 +227,9 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			{
 				$link = $rfredirect;
 			}
-			elseif ($gateway)
+			elseif ($gateway && $cartReference = $result->getCartReference())
 			{
-				$link = RdfHelperRoute::getPaymentProcessRoute($submit_key, $gateway);
+				$link = RdfHelperRoute::getPaymentProcessRoute($cartReference, $gateway);
 			}
 			else
 			{
