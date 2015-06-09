@@ -191,7 +191,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 			$properties['vat'] = $this->getParam('vat');
 		}
 
-		if ($this->load()->validate)
+		if ($this->load()->validate && !$this->load()->readonly)
 		{
 			if ($properties['class'])
 			{

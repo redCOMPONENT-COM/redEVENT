@@ -67,7 +67,9 @@ JFactory::getDocument()->addScriptDeclaration('hljs.initHighlightingOnLoad();');
 			</div>
 			<div class="controls">
 				<?php
-				if ($xmlDoc = DOMDocument::loadXML($this->item->message))
+				$xmlDoc = new DOMDocument();
+
+				if (@$xmlDoc->loadXML($this->item->message))
 				{
 					$xmlDoc->preserveWhiteSpace = false;
 					$xmlDoc->formatOutput = true;
