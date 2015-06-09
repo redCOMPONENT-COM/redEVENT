@@ -24,6 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+$title = $this->course->session_title ?: $this->course->event_title;
 ?>
 <?php if (isset($this->fullpage)): ?>
 <div id="redevent" class="el_webformsignup">
@@ -42,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php endif; ?>
 <?php endif; ?>
 <div class="bookevent_detail">
-	<h2><?php echo JText::sprintf('COM_REDEVENT_MAERSK_SIGNUP_TITLE', $this->course->title, $this->course->venue); ?></h2>
+	<h2><?php echo JText::sprintf('COM_REDEVENT_MAERSK_SIGNUP_TITLE', $title, $this->course->venue); ?></h2>
 
 	<?php if (RedeventHelper::isValidDate($this->course->dates)): ?>
 		<div class="signup-date-time">
