@@ -96,7 +96,7 @@ else
 
 			echo '<div title="Request date" href="#" class="clickTip exampleTip">Book';
 			echo '<div class="tip_content" style="display:none">';
-				echo $event->venue_description;
+				echo $event->locdescription;
 			echo '</div>';
 			echo '</div>';
 
