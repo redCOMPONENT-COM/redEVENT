@@ -17,7 +17,7 @@ $class = isset($attributes['class']) ? $attributes['class'] : '';
 
 if ($value && strlen($value) >= 8)
 {
-	$date = date("Y-m-d", strtotime($this->value));
+	$date = date("Y-m-d", strtotime($value));
 
 	$year = substr($date, 0, 4);
 	$month = substr($date, 5, 2);
