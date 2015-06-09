@@ -567,7 +567,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			$a->addAttribute('FieldId',    $f->id);
 			$a->addAttribute('FieldName',  $f->field);
 			$a->addAttribute('FieldType',  $f->fieldtype);
-			$a->addAttribute('FieldValue', $f->value);
+			$a->addAttribute('FieldValue', $f->getValueAsString(','));
 
 			$this->appendElement($answers, $a);
 		}
