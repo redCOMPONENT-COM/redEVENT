@@ -112,8 +112,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 	protected function storeAttendee($attendee)
 	{
 		// Register table
-		require_once JPATH_ADMINISTRATOR . '/components/com_redevent/tables/redevent_register.php';
-		$row = JTable::getInstance('RedEvent_register', '');
+		$row = RTable::getAdminInstance('Register', array(), 'com_redevent');
 
 		if ($attendee->id)
 		{

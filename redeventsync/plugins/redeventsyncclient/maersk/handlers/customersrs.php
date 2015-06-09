@@ -61,7 +61,7 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		}
 		else
 		{
-			$rmUser = false;
+			$rmUser = RedmemberApi::getUser();
 		}
 
 		// Fields should match the actual fields db_name from maersk redmember
@@ -147,12 +147,12 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 	 */
 	private function getCompanyId($data)
 	{
-		if (!isset($data['organization_name']) || !$data['organization_name'])
+		if (!isset($data['name']) || !$data['name'])
 		{
 			return 0;
 		}
 
-		if ($id = $this->findCompanyIdByName($data['organization_name']))
+		if ($id = $this->findCompanyIdByName($data['name']))
 		{
 			return $id;
 		}

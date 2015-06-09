@@ -23,7 +23,7 @@ ResyncBootstrap::bootstrap();
 
 // Register library prefix
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
+JLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
 RLoader::registerPrefix('Redmember', JPATH_LIBRARIES . '/redmember');

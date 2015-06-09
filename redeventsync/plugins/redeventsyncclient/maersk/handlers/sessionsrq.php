@@ -27,14 +27,12 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 	 */
 	protected function processCreateSessionRQ(SimpleXMLElement $xml)
 	{
-		require_once JPATH_ADMINISTRATOR . '/components/com_redevent/tables/redevent_eventvenuexref.php';
-
 		$transaction_id = (int) $xml->TransactionId;
 
 		try
 		{
 			$object = $this->parseSessionXml($xml);
-			$row = JTable::getInstance('RedEvent_eventvenuexref', '');
+			$row = RTable::getAdminInstance('Session', array(), 'com_redevent');
 
 			if (!$row->bind($object))
 			{
@@ -105,14 +103,12 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 	 */
 	protected function processModifySessionRQ(SimpleXMLElement $xml)
 	{
-		require_once JPATH_ADMINISTRATOR . '/components/com_redevent/tables/redevent_eventvenuexref.php';
-
 		$transaction_id = (int) $xml->TransactionId;
 
 		try
 		{
 			$object = $this->parseSessionXml($xml);
-			$row = JTable::getInstance('RedEvent_eventvenuexref', '');
+			$row = RTable::getAdminInstance('Session', array(), 'com_redevent');
 
 			if (!$object->id)
 			{
@@ -188,8 +184,6 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 	 */
 	protected function processDeleteSessionRQ(SimpleXMLElement $xml)
 	{
-		require_once JPATH_ADMINISTRATOR . '/components/com_redevent/models/session.php';
-
 		$transaction_id = (int) $xml->TransactionId;
 
 		try
@@ -202,7 +196,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception('session not found');
 			}
 
-			$row = JModel::getInstance('Session', 'RedeventModel');
+			$row = RModel::getAdminInstance('Session', array('ignore_request' => true), 'RedeventModel');
 
 			if (!$row->removexref($id))
 			{
