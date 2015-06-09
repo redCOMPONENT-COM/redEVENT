@@ -8,8 +8,6 @@
 
 defined('_JEXEC') or die();
 
-require_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
-
 /**
  * redEVENT sync Abstractmessage
  *

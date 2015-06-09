@@ -130,8 +130,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		$session_details = RedeventsyncclientMaerskHelper::getSessionDetails($attendee->session_code, $attendee->venue_code);
 
 		// Post to redform
-		require_once JPATH_SITE . '/components/com_redform/redform.core.php';
-		$rfcore = new RedformCore;
+		$rfcore = new RdfCore;
 		$rfcore->setFormId($session_details->redform_id);
 
 		$data = array();
