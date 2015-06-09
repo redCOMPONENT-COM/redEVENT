@@ -22,6 +22,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 JText::script('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
+
+RHelperAsset::load('threefieldsdate.js', 'com_redeventb2b');
 ?>
 <script>
 	window.onbeforeunload = function(e) {
