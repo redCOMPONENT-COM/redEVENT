@@ -247,9 +247,10 @@ class RedeventModelEvents extends RModelList
 	 *
 	 * @return  void
 	 */
-	public function populateState($ordering = 'obj.title', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
-		parent::populateState($ordering, $direction);
+		// Forcing default values
+		parent::populateState($ordering ?: 'obj.title', $direction ?: 'asc');
 	}
 
 	/**
@@ -257,7 +258,7 @@ class RedeventModelEvents extends RModelList
 	 *
 	 * @param   array  $event_ids  events ids to archive.
 	 *
-	 * @return unknown_type
+	 * @return array
 	 */
 	public function archivePast($event_ids = array())
 	{

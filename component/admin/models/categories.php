@@ -248,9 +248,9 @@ class RedeventModelCategories extends RModelList
 	 *
 	 * @return  void
 	 */
-	public function populateState($ordering = 'c.lft', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		// Forcing default values
-		parent::populateState($ordering, $direction);
+		parent::populateState($ordering ?: 'c.lft', $direction ?: 'asc');
 	}
 }
