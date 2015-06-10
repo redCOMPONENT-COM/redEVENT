@@ -46,6 +46,10 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		);
 	}
 }
+
+JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
+// JHtml::_('rjquery.ui');
+RHelperAsset::load('mod_redevent_search_ajax.js', 'mod_redevent_search');
 ?>
 
 <script type="application/javascript">
@@ -68,7 +72,11 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		<?php if ($params->get('filter_text', 1)) : ?>
 			<div class="rssm_filter_row">
 				<span class="rssm_filter">
-					<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="inputbox text_filter" id="modres_text_filter"
+					<input type="text"
+					       name="filter"
+					       id="mod-redevent-searchword"
+					       class="inputbox text_filter"
+					       size="1" value="<?php echo htmlspecialchars(JFactory::getApplication()->input->get('filter', '', 'string')); ?>"
 						placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>"/>
 				</span>
 			</div>
