@@ -529,7 +529,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	 */
 	public function personsuggestions()
 	{
-		$return = array();
+		$response = false;
 
 		$search       = $this->input->get('q', '', 'string');
 		$organization = $this->input->getint('org', 0);
@@ -539,16 +539,15 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 			$res = RedmemberApi::searchMember($search, $organization);
 
 			// Check the data.
-			if (empty($res))
+			if (!empty($res))
 			{
 				$return = array();
-			}
-			else
-			{
 				foreach ($res as $member)
 				{
 					$return[] = $member->name;
 				}
+
+				$response = array('suggestions' => $return);
 			}
 		}
 
@@ -556,7 +555,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		header('Content-Type: application/json');
 
 		// Send the response.
-		echo json_encode($return);
+		echo json_encode($response);
 		JFactory::getApplication()->close();
 	}
 

@@ -44,6 +44,8 @@ JS;
 }
 
 RHelperAsset::load('lib/bootstrap/css/boostrap.min.css', 'redcore');
+
+JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
 ?>
 <div id="redevent-admin">
 
