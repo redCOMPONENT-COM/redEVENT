@@ -45,8 +45,7 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 	}
 }
 
-//JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
-JHtml::_('rjquery.ui');
+JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
 RHelperAsset::load('mod_redevent_search_ajax.js', 'mod_redevent_search');
 ?>
 
@@ -59,7 +58,6 @@ RHelperAsset::load('mod_redevent_search_ajax.js', 'mod_redevent_search');
 					<input type="text"
 					       name="filter"
 					       id="mod-redevent-searchword"
-					       class="searchh-query"
 					       size="1" value="<?php echo htmlspecialchars(JFactory::getApplication()->input->get('filter', '', 'string')); ?>"
 					       placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>"/>
 				</span>
