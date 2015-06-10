@@ -91,7 +91,7 @@ class RedeventControllerFront extends JControllerLegacy
 			}
 			else
 			{
-				$v = $filterInput->clean($v, 'cmd');
+				$v = $filterInput->clean($v, 'string');
 			}
 
 			switch ($filter)
