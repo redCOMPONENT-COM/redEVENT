@@ -26,13 +26,13 @@ class RedeventControllerAjax extends JControllerLegacy
 
 		$return = array();
 
-		$search       = $app->input->get('q', '', 'string');
+		$search = $app->input->get('filter', '', 'string');
 
 		if (strlen($search) > 2)
 		{
-			$model = $this->getModel('Ajaxeventssuggest', 'RedeventModel');
-			$model->setState('filter.text', $search);
-			$return = $model->getItems();
+			$model = $this->getModel('Ajaxeventssuggest', 'RedeventModel', array('ignore_request' => true));
+			$model->setState('filter.title', $search);
+			$return = array('suggestions' => $model->getItems());
 		}
 
 		// Use the correct json mime-type

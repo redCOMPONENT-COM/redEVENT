@@ -24,7 +24,7 @@ class RedeventModelAjaxeventssuggest extends RModelList
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array('q');
+			$config['filter_fields'] = array('filter');
 		}
 
 		parent::__construct($config);
@@ -55,9 +55,9 @@ class RedeventModelAjaxeventssuggest extends RModelList
 		$this->setState('list.direction', 'ASC');
 		$this->setState('filter.language', $app->getLanguageFilter());
 
-		if ($app->input->get('q'))
+		if ($app->input->get('filter'))
 		{
-			$this->setState('filter.title', $app->input->get('q'));
+			$this->setState('filter.title', $app->input->getString('filter'));
 		}
 	}
 

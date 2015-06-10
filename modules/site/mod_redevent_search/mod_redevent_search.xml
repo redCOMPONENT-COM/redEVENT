@@ -25,28 +25,13 @@
 	<!-- media files -->
 	<media folder="media" destination="mod_redevent_search">
 		<folder>css</folder>
+		<folder>js</folder>
 	</media>
 
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 		  	<field name="filter_text" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT_DESC">
-					<option value="0">Hide</option>
-					<option value="1">Show</option>
-				</field>
-		  	<field name="filter_type_event" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT_DESC">
-					<option value="0">Hide</option>
-					<option value="1">Show</option>
-				</field>
-		  	<field name="filter_type_category" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY_DESC">
-					<option value="0">Hide</option>
-					<option value="1">Show</option>
-				</field>
-		  	<field name="filter_type_venue" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE_DESC">
-					<option value="0">Hide</option>
-					<option value="1">Show</option>
-				</field>
-		  	<field name="filter_type_city" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY_DESC">
 					<option value="0">Hide</option>
 					<option value="1">Show</option>
 				</field>
