@@ -20,6 +20,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
 ?>
 
 <div id="employees-header" class="panel-heading">
@@ -43,17 +45,22 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <script type="application/javascript">
-    <?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
-    (function(){
-        var url = '<?php echo JRoute::_('index.php?option=com_redevent&controller=frontadmin&task=personsuggestions&tmpl=component', false); ?>';
-        var completer = new Autocompleter.Request.JSON(document.id('filter_person'), url, {'postVar': 'q', 'autoSubmit': true});
+	(function($){
+		$('#filter_person').autocomplete({
+			serviceUrl: 'index.php?option=com_redeventb2b&task=frontadmin.personsuggestions&tmpl=component',
+			paramName: 'q',
+			minChars: 1,
+			maxHeight: 400,
+			width: 300,
+			zIndex: 9999,
+			deferRequestBy: 500,
+			onSearchStart: function(query) {
+				query.org = $('#filter_organization').val();
+			},
+			onSelect: function(suggestion) {
+				redb2b.filterPerson();
+			}
+		});
 
-        completer.addEvent('onRequest', function(element, request, data){
-            data['org'] = document.id('filter_organization').get('value');
-        });
-
-        completer.addEvent('onSelection', function(element, selected){
-            document.id('filter_organization').fireEvent('change');
-        });
-    })();
+	})(jQuery);
 </script>

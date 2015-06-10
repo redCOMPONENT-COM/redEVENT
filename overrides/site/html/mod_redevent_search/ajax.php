@@ -48,23 +48,8 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 }
 
 JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
-// JHtml::_('rjquery.ui');
 RHelperAsset::load('mod_redevent_search_ajax.js', 'mod_redevent_search');
 ?>
-
-<script type="application/javascript">
-	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
-	window.addEvent('domready', function(){
-		var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
-		var completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {'postVar': 'q', 'autoSubmit': true});
-	});
-</script>
-
-<style>
-	ul.autocompleter-choices li {
-		border-bottom: 1px dotted #1D4B59;
-	}
-</style>
 
 <form action="<?php echo $action; ?>" method="post" id="redeventsearchform">
 
