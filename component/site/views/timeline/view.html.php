@@ -328,6 +328,7 @@ class RedeventViewTimeline extends RViewSite
 
 			$start = new JDate($session->times);
 			$end   = new JDate($session->endtimes);
+			$end = $end > $start ? $end : new JDate('23:59:59'); // We can display only until midnight;
 			$session->startPixel = ((($start->format('H') - $startTime) * 60) + $start->format('i')) * $this->minutePixel;
 			$session->endPixel   = ((($end->format('H') - $startTime) * 60) + $end->format('i')) * $this->minutePixel;
 			$session->widthPixel = $session->endPixel - $session->startPixel;
