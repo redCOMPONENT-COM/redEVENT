@@ -107,8 +107,8 @@ echo RLayoutHelper::render(
 			</th>
 			<th width="10"><?php echo JText::_('COM_REDEVENT_ANSWERS'); ?></th>
 			<th width="10"><?php echo JText::_('COM_REDEVENT_PRICE'); ?></th>
-			<th width="10"><?php echo JText::_('COM_REDEVENT_PRICEGROUP'); ?></th>
-			<th width="10">
+			<th class="col-pricegroup" width="auto"><?php echo JText::_('COM_REDEVENT_PRICEGROUP'); ?></th>
+			<th width="auto">
 				<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_PAYMENT', 'p.paid', $listDirn, $listOrder); ?>
 			</th>
 		</tr>
@@ -168,10 +168,10 @@ echo RLayoutHelper::render(
 				<td class="attendeePrice">
 					<?php echo $row->price ? $row->currency . ' ' . ($row->price + $row->vat) : ''; ?>
 				</td>
-				<td>
+				<td class="col-pricegroup" width="auto">
 					<?php echo $row->pricegroup; ?>
 				</td>
-				<td class="price <?php echo($row->paid ? 'paid' : 'unpaid'); ?>">
+				<td class="price <?php echo($row->paid ? 'paid' : 'unpaid'); ?>" width="auto">
 					<?php echo RLayoutHelper::render(
 						'attendees.paymentinfo',
 						$row
