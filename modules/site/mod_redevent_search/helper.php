@@ -49,47 +49,7 @@ class modRedEventSearchHelper
 	 */
 	public function getCategoriesOptions()
 	{
-		$app = JFactory::getApplication();
-
-		$gids = JFactory::getUser()->getAuthorisedViewLevels();
-		$gids = implode(',', $gids);
-
-		// Get categories from database
-		$query  = ' SELECT c.id '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
-		. ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
-		. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		;
-
-		$where = array();
-		$where[] = ' x.published = 1';
-
-		//acl
-		$where[] = ' (l.access IN (' . $gids . ')) ';
-		$where[] = ' (c.access IN (' . $gids . ')) ';
-		$where[] = ' (vc.id IS NULL OR vc.access IN (' . $gids . ')) ';
-
-		if ($app->getLanguageFilter())
-		{
-			$where[] = '(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR c.language IS NULL)';
-		}
-
-		if (count($where))
-		{
-			$query .= ' WHERE '. implode(' AND ', $where);
-		}
-
-		$query .= ' GROUP BY c.id ';
-		$query .= ' ORDER BY c.ordering';
-
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadColumn();
-
-		return RedeventHelper::getEventsCatOptions(true, false, $res);
+		return RedeventHelper::getEventsCatOptions(true, false);
 	}
 
 	/**
@@ -110,7 +70,7 @@ class modRedEventSearchHelper
 		. ' LEFT JOIN #__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id '
 		. ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xcat.category_id '
 		;
-		$where = array();
+		$where = array('v.published = 1');
 
 		//acl
 		$where[] = ' (v.access IN (' . $gids . ')) ';
@@ -126,6 +86,7 @@ class modRedEventSearchHelper
 		}
 		$query .= ' ORDER BY v.venue ';
 		$this->_db->setQuery($query);
+
 		$res = $this->_db->loadObjectList();
 
 		return $res;
