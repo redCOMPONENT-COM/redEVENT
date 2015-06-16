@@ -139,6 +139,7 @@ class RedeventViewTimeline extends RViewSite
 		$this->assignRef('config', $elsettings);
 		$this->assign('filter_customs', $filter_customs);
 		$this->params = $params;
+		$this->state = $state;
 
 		$this->order = $state->get('filter_order');
 		$this->orderDir = $state->get('filter_order_Dir');

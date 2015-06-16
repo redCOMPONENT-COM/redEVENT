@@ -178,7 +178,8 @@ $startTime = array();
 						?>
 						<?php foreach ($this->sortedRows as $venues): ?>
 							<?php $currentHeight = $venues['rowsCount'] * $baseHeight; ?>
-							<?php $venueUrl = RedeventHelperRoute::getVenueTimelineRoute($venues['slug']); ?>
+							<?php $venueUrl = RedeventHelperRoute::getVenueTimelineRoute($venues['slug'])
+								. ($this->state->get('filter_date') ? '&filter_date=' . $this->state->get('filter_date') : ''); ?>
 							<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
 								<?php echo JHtml::link($venueUrl, $venues['venue']); ?>
 							</div>
