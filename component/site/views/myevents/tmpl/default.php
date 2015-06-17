@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 
 <?php if ($this->canAddXref): ?>
-	<div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
+	<div><?php echo JHTML::link(RedeventHelperRoute::getEditXrefRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
 <?php endif; ?>
 
 <?php if ($this->canAddEvent): ?>

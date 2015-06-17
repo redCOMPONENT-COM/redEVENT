@@ -9,7 +9,6 @@ defined('_JEXEC') or die('Restricted access');
 
 
 JHTML::_('behavior.formvalidation');
-JHtml::_('rjquery.chosen', 'select');
 ?>
 
 <script type="text/javascript">
@@ -148,6 +147,7 @@ JHtml::_('rjquery.chosen', 'select');
 				</div>
 			</div>
 
+			<?php if ($this->params->get('allow_attachments', 1)): ?>
 			<div class="tab-pane" id="attachments">
 				<div class="row-fluid">
 					<div class="span12">
@@ -155,6 +155,7 @@ JHtml::_('rjquery.chosen', 'select');
 					</div>
 				</div>
 			</div>
+			<?php endif; ?>
 		</div>
 
 		<?php echo $this->form->getInput('id'); ?>

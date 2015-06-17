@@ -9,7 +9,6 @@ defined('_JEXEC') or die('Restricted access');
 
 
 JHTML::_('behavior.formvalidation');
-JHtml::_('rjquery.chosen', 'select');
 ?>
 
 <script type="text/javascript">
