@@ -70,7 +70,7 @@ else
 	$placesleft = JText::_('COM_REDEVENT_EVENT_NOLIMIT');
 }
 	$startEnd = RedeventHelperOutput::formatEventDateTime($event, true);
-	$duration = JHtml::tooltip($startEnd, '', '', RedeventHelper::getEventDuration($event));
+	$duration = RHtml::tooltip($startEnd, '', null, RedeventHelper::getEventDuration($event));
 	?>
 	<tr>
 			<!--<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>-->
@@ -87,9 +87,10 @@ else
 		if (!$registration_status->canregister)
 		{
 			$imgpath = 'media/com_redevent/images/'.$registration_status->error.'.png';
+
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
-		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		                          array('class' => 'hasTooltip', 'title' => $registration_status->status));
 			echo RedeventHelperOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 
 		}else if( RedeventHelperOutput::formatdate($event->dates, $event->times) == JText::_('COM_REDEVENT_OPEN_DATE') ){
