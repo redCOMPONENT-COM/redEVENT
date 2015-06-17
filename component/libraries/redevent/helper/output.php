@@ -47,13 +47,12 @@ class RedeventHelperOutput
 			$link = RedeventHelperRoute::getEditEventRoute();
 			$tip = JText::_('COM_REDEVENT_SUBMIT_EVENT_TIP');
 
-			$output = JHtml::link(
-				$link,
+			$output = RHtml::tooltip(
+				$tip,
+				JText::_('COM_REDEVENT_DELIVER_NEW_EVENT'),
 				$image,
-				array(
-					'class' => 'hasTip',
-					'title' => JText::_('COM_REDEVENT_DELIVER_NEW_EVENT') . '::' . $tip
-				)
+				null,
+				$link
 			);
 		}
 
@@ -94,7 +93,7 @@ class RedeventHelperOutput
 			$link,
 			$image,
 			array(
-				'class' => 'hasTip',
+				'class' => 'hasTooltip',
 				'title' => JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT')
 			)
 		);
@@ -131,7 +130,7 @@ class RedeventHelperOutput
 			$link,
 			$image,
 			array(
-				'class' => 'hasTip',
+				'class' => 'hasTooltip',
 				'title' => JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT')
 			)
 		);
@@ -157,7 +156,7 @@ class RedeventHelperOutput
 			array('alt' => $txt)
 		);
 
-		return JHTML::link($link, $image, array('class' => "editlinktip hasTip", 'title' => $txt));
+		return JHTML::link($link, $image, array('class' => "editlinktip hasTooltip", 'title' => $txt));
 	}
 
 	/**
@@ -194,14 +193,7 @@ class RedeventHelperOutput
 
 		$link = JRoute::_('index.php?option=com_redevent&view=archive');
 
-		$output = JHtml::link(
-			$link,
-			$image,
-			array(
-				'class' => 'hasTip',
-				'title' => $title . '::' . $tip
-			)
-		);
+		$output = RHtml::tooltip($tip, $title, $image, null, $link);
 
 		return $output;
 	}
@@ -264,14 +256,7 @@ class RedeventHelperOutput
 					break;
 			}
 
-			$output = JHtml::link(
-				$link,
-				$image,
-				array(
-					'class' => 'hasTip',
-					'title' => $text . '::' . $tip
-				)
-			);
+			$output = RHtml::tooltip($tip, $text, $image, null, $link);
 
 			return $output;
 		}
@@ -300,14 +285,7 @@ class RedeventHelperOutput
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES');
 		$link = RedeventHelperRoute::getManageAttendees($id);
 
-		$output = JHtml::link(
-			$link,
-			$image,
-			array(
-				'class' => 'hasTip',
-				'title' => $text . '::' . $tip
-			)
-		);
+		$output = RHtml::tooltip($tip, $text, $image, null, $link);
 
 		return $output;
 	}
@@ -343,11 +321,14 @@ class RedeventHelperOutput
 			}
 			else
 			{
-				$overlib = JText::_('COM_REDEVENT_PRINT_TIP');
+				$tip = JText::_('COM_REDEVENT_PRINT_TIP');
 				$text = JText::_('COM_REDEVENT_Print');
 
-				$output = '<a href="' . JRoute::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''
-					. $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+				$link = JHtml::link($print_link, $image, array(
+					'onclick' => "window.open(this.href,\'win2\',\'' . $status . '\'); return false;"
+				));
+
+				$output = RHtml::tooltip($tip, $text, null, $link);
 			}
 
 			return $output;
@@ -388,7 +369,7 @@ class RedeventHelperOutput
 			$overlib = JText::_('COM_REDEVENT_EMAIL_TIP');
 			$text = JText::_('COM_REDEVENT_Email');
 
-			$output = '<a href="' . JRoute::_($url) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''
+			$output = '<a href="' . JRoute::_($url) . '" class="editlinktip hasTooltip" onclick="window.open(this.href,\'win2\',\''
 				. $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 
 			return $output;
@@ -589,11 +570,11 @@ class RedeventHelperOutput
 	 * return formatted event date and time (start and end), or false if open date
 	 *
 	 * @param   object   $event     event data
-	 * @param   boolean  $show_end  show end
+	 * @param   boolean  $showend   show end
 	 *
 	 * @return string
 	 */
-	public static function formatEventDateTime($event, $show_end = true)
+	public static function formatEventDateTime($event, $showend = null)
 	{
 		if (!RedeventHelper::isValidDate($event->dates))
 		{
@@ -604,7 +585,11 @@ class RedeventHelperOutput
 		}
 
 		$settings = RedeventHelper::config();
-		$showend = $settings->get('lists_showend', 1);
+
+		if (is_null($showend))
+		{
+			$showend = $settings->get('lists_showend', 1);
+		}
 
 		$date_start = self::formatdate($event->dates, $event->times);
 		$time_start = '';
@@ -621,7 +606,7 @@ class RedeventHelperOutput
 
 		if ($allday)
 		{
-			if ($showend & RedeventHelper::isValidDate($event->enddates))
+			if ($showend && RedeventHelper::isValidDate($event->enddates))
 			{
 				if (strtotime($event->enddates . ' -1 day') != strtotime($event->dates)
 					&& strtotime($event->enddates) != strtotime($event->dates))

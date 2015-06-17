@@ -1187,7 +1187,7 @@ class RedeventHelper
 				break;
 		}
 
-		$options = array('class' => 'hasTip statusicon');
+		$options = array('class' => 'hasTooltip statusicon');
 		$options['title'] = JText::_('COM_REDEVENT_STATUS_ICON_TITLE');
 		$options['rel'] = $tip;
 		$options['current'] = $status;

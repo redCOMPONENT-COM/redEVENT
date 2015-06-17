@@ -201,7 +201,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$text = JText::_('COM_REDEVENT_EDIT_XREF');
 
 		$link 	= 'index.php?option=com_redevent&view=editevent&layout=eventdate&id=' . $id . '&xref=' . $xref;
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}
@@ -231,7 +231,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$text = JText::_('COM_REDEVENT_EDIT_EVENT');
 
 		$link 	= RedeventHelperRoute::getEditEventRoute($id, $xref) . '&referer=myevents';
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}
@@ -254,7 +254,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$text = JText::_('COM_REDEVENT_DELETE_XREF');
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref=' . $id;
-		$output	= '<a href="' . JRoute::_($link) . '" class="deletelink hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="deletelink hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}
@@ -275,7 +275,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES');
 		$link 	= RedeventHelperRoute::getManageAttendees($id, 'registration.manageattendees');
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}
@@ -297,7 +297,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$text = JText::_('COM_REDEVENT_EDIT_VENUE');
 
 		$link = RedeventHelperRoute::getEditVenueRoute($id . '&return=' . base64_encode(RedeventHelperRoute::getMyeventsRoute()));
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}

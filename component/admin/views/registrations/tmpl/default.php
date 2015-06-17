@@ -121,7 +121,7 @@ echo RLayoutHelper::render(
 			$eventdate = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
 			$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->xref,
 					$row->title . '<br/>' . $eventdate,
-					'class="hasTip" title="' . JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE') . '::"') . '<br/>@' . $row->venue . '</br>' . JText::_('COM_REDEVENT_AUTHOR') . ': ' . $row->creator;
+					'class="hasTooltip" title="' . JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE') . '"') . '<br/>@' . $row->venue . '</br>' . JText::_('COM_REDEVENT_AUTHOR') . ': ' . $row->creator;
 
 			$trClass = $row->cancelled ? ' class="cancelled"' : '';
 			?>

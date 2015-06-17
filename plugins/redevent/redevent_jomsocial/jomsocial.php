@@ -245,7 +245,7 @@ class plgRedeventjomsocial extends JPlugin {
   	$avatar = $user->getThumbAvatar();
   	$name = $user->getDisplayName();
   	$link = CRoute::_('index.php?option=com_community&view=profile&userid=' . $user_id);
-  	$text = '<a href="' . $link . '" alt="'. $user->get('username') .'"><img class="hasTip" src="'.$avatar.'" title="'. $name .'"/></a>';
+  	$text = '<a href="' . $link . '" alt="'. $user->get('username') .'"><img class="hasTooltip" src="'.$avatar.'" title="'. $name .'"/></a>';
   	return true;
   }
 
@@ -256,7 +256,7 @@ class plgRedeventjomsocial extends JPlugin {
     $avatar = $user->getThumbAvatar();
     $name = $user->getDisplayName();
     $link = CRoute::_('index.php?option=com_community&view=profile&userid=' . $user_id);
-    $object->text = '<a href="' . $link . '" alt="'. $user->get('username') .'"><img class="hasTip" src="'.$avatar.'" title="'. $name .'"/></a>';
+    $object->text = '<a href="' . $link . '" alt="'. $user->get('username') .'"><img class="hasTooltip" src="'.$avatar.'" title="'. $name .'"/></a>';
     return true;
   }
 }

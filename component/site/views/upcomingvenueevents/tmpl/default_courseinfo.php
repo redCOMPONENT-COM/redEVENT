@@ -58,7 +58,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
-		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		                          array('class' => 'hasTooltip', 'title' => $registration_status->status));
 			echo RedeventHelperOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		}
 		else
@@ -76,19 +76,19 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 					$venues_html .= '<div class="vlink phone">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->get('signup_phone_img', 'phone_icon.gif'),  $elsettings->get('signup_phone_text'), 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'external':
-					$venues_html .= '<div class="vlink external hasTip" title="::'.$elsettings->get('signup_external_text').'">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
+					$venues_html .= '<div class="vlink external hasTooltip" title="'.$elsettings->get('signup_external_text').'">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
 					if ($event->prices && count($event->prices))
 					{
 						foreach ($event->prices as $p)
 						{
-							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
+							$title = ' title="'.$p->name.'<br/>'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
 							$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($elsettings->get('signup_webform_text')))
 							                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 
-							$venues_html .= '<div class="vlink webform hasTip '.$p->alias.'"'.$title.'>'
+							$venues_html .= '<div class="vlink webform hasTooltip '.$p->alias.'"'.$title.'>'
 								             .JHTML::_('link', $link, $img).'</div> ';
 						}
 					}

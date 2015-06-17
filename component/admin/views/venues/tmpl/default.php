@@ -215,7 +215,7 @@ if (($saveOrder) && ($this->canEdit))
 							{
 								$catlink    = 'index.php?option=com_redevent&amp;controller=venuescategories&amp;task=edit&amp;cid[]='.$cat->id;
 								?>
-								<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_CATEGORY' );?>::<?php echo $cat->name; ?>">
+								<span class="editlinktip hasTooltip" title="<?php echo JText::_('COM_REDEVENT_EDIT_CATEGORY' );?>::<?php echo $cat->name; ?>">
 								<a href="<?php echo $catlink; ?>">
 									<?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
 								</a></span>
@@ -239,7 +239,7 @@ if (($saveOrder) && ($this->canEdit))
 						$delivertime 	= JHTML::Date($row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 						$edittime 		= JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 						$ip				= $row->author_ip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->author_ip;
-						$image 			= '<i class="icon-info-sign" /> ';
+						$image 			= '<span class="icon-info-sign" /> ';
 						$overlib 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$delivertime.'<br />';
 						$overlib		.= JText::_('COM_REDEVENT_WITH_IP' ).': '.$ip.'<br />';
 
@@ -249,7 +249,7 @@ if (($saveOrder) && ($this->canEdit))
 							$overlib 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
 						}
 						?>
-						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_VENUE_STATS'); ?>::<?php echo $overlib; ?>">
+						<span class="editlinktip hasTooltip" title="<?php echo $overlib; ?>">
 					<?php echo $image; ?>
 				</span>
 					</td>

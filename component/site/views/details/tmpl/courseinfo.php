@@ -71,9 +71,9 @@ foreach ($this->eventlinks as $key => $event) {
 		if (!$registration_status->canregister)
 		{
 			$imgpath = 'media/com_redevent/images/'.$registration_status->error.'.png';
-		  $img = JHTML::_('image', JURI::base() . $imgpath,
-		                          $registration_status->status,
-		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+			$img = JHTML::_('image', JURI::base() . $imgpath,
+				$registration_status->status,
+				array('class' => 'hasTooltip', 'title' => $registration_status->status));
 			echo RedeventHelperOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		}
 		else
@@ -97,7 +97,7 @@ foreach ($this->eventlinks as $key => $event) {
 			      else {
 			      	$link = $event->submission_type_external;
 			      }
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_external hasTip" title="::'.$elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_external hasTooltip" title="'.$elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
 						break;
 					case 'webform':
 						if ($event->prices && count($event->prices))
@@ -109,7 +109,7 @@ foreach ($this->eventlinks as $key => $event) {
 								                        : JHTML::_('image', JURI::base().$p->image,  JText::_($p->name));
 								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 
-								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTip '.$p->alias.'"'.$title.'>'
+								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTooltip '.$p->alias.'"'.$title.'>'
 									             .JHTML::_('link', $link, $img).'</div> ';
 							}
 						}

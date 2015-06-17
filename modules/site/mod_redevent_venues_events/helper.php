@@ -82,7 +82,7 @@ class modRedEventVenuesEventsHelper
 
 			if ($title_length && $length > $title_length)
 			{
-				$rows[$k]->title_short = '<span class="hasTip" title="' . $row->title . '">'
+				$rows[$k]->title_short = '<span class="hasTooltip" title="' . $row->title . '">'
 					. htmlspecialchars(substr($row->title, 0, $title_length) . '...', ENT_COMPAT, 'UTF-8')
 					. '</span>';
 			}

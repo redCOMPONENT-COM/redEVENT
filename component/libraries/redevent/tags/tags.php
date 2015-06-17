@@ -2220,7 +2220,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2260,7 +2260,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2301,7 +2301,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2342,7 +2342,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2391,7 +2391,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2432,7 +2432,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2466,7 +2466,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2500,7 +2500,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
@@ -2534,7 +2534,7 @@ class RedeventTags
 			$img = JHTML::_(
 				'image', JURI::root() . 'media/com_redevent/images/agt_action_fail.png',
 				$registration_status->status,
-				array('class' => 'hasTip', 'title' => $registration_status->status)
+				array('class' => 'hasTooltip', 'title' => $registration_status->status)
 			);
 
 			return $img;
