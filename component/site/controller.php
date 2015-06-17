@@ -137,6 +137,7 @@ class RedeventController extends JControllerLegacy
 								if ($sub)
 								{
 									$r[] = $sub;
+									$vars++;
 								}
 							}
 
