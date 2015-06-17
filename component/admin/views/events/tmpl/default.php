@@ -216,7 +216,7 @@ $search = $this->state->get('filter.search');
 							$tip 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
 						}
 
-						echo RHtml::tooltip($tip, '', null, '<span class="icon-info"/>');
+						echo RHtml::tooltip($tip, '', null, '<span class="icon-info-sign"/>');
 						?>
 					</td>
 					<td align="center"><?php echo $row->language == '*' ? Jtext::_('All') : $row->language_title; ?></td>
