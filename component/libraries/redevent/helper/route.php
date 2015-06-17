@@ -393,6 +393,21 @@ class RedeventHelperRoute
 		return self::buildUrl($parts);
 	}
 
+
+	/**
+	 * Route to timeline search
+	 *
+	 * @return string
+	 */
+	public function getSearchTimelineRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+			"view"   => "timeline",
+			"layout" => "search",
+		);
+		return self::buildUrl($parts);
+	}
+
 	/**
 	 * Route to venue timeline
 	 *

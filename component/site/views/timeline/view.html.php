@@ -86,8 +86,21 @@ class RedeventViewTimeline extends RViewSite
 		$task = $input->getWord('task', '');
 		$pop  = $input->getBool('pop', false);
 
-		$model->setLimit(99999);
-		$model->timelinePrepareData();
+
+
+		// Don't filter by date if there is a text filter
+		if ($state->get('filter') || $layout == 'search')
+		{
+			$model->setState('filter_date', false);
+			$model->setState('filter_order', 'a.title');
+			$model->setState('filter_order_Dir', 'ASC');
+			$this->setLayout('search');
+		}
+		else
+		{
+			$model->setLimit(99999);
+			$model->timelinePrepareData();
+		}
 
 		// Get data from model
 		$this->rows     = $this->get('Data');
