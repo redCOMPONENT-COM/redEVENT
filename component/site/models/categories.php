@@ -107,9 +107,6 @@ class RedeventModelCategories extends RModelList
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
-		// Check archive task and ensure that only categories get selected if they contain a published/archived event
-		$task 	= JRequest::getVar('task', '', '', 'string');
-
 		$count = 'CASE WHEN x.published = 1 THEN 1 ELSE 0 END';
 
 		$db    = JFactory::getDbo();

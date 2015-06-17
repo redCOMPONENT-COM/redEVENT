@@ -40,7 +40,7 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 
 		$mainframe = JFactory::getApplication();
 
-		$id = JRequest::getInt('id');
+		$id = JFactory::getApplication()->input->getInt('id');
 		$this->setId((int) $id);
 
 		$params    = $mainframe->getParams('com_redevent');
@@ -58,8 +58,8 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 		if ($results_type == 0)
 		{
 			// Get the filter request variables
-			$this->setState('filter_order',     JRequest::getCmd('filter_order', 'a.title'));
-			$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+			$this->setState('filter_order',     JFactory::getApplication()->input->getCmd('filter_order', 'a.title'));
+			$this->setState('filter_order_Dir', strtoupper(JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
 		}
 
 		$this->setState('results_type', $results_type);

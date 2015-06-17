@@ -201,18 +201,6 @@ class RedeventModelCalendar extends RModel
 		// Get the paramaters of the active menu item
 		$params = $app->getParams();
 
-		$task = JRequest::getWord('task');
-
-		// First thing we need to do is to select only the published events
-		if ($task == 'archive')
-		{
-			$query->where(' x.published = -1 ');
-		}
-		else
-		{
-			$query->where(' x.published = 1 ');
-		}
-
 		$query->where(' a.published <> 0 ');
 
 		// Category must be published too

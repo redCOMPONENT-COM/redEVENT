@@ -39,7 +39,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseeventlist
 	{
 		parent::__construct();
 
-		$id = JRequest::getInt('id');
+		$id = JFactory::getApplication()->input->getInt('id');
 		$this->setId((int) $id);
 	}
 

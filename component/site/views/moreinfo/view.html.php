@@ -39,7 +39,7 @@ class RedeventViewMoreinfo extends RViewSite
 			parent::display($tpl);
 		}
 
-		$xref = JRequest::getInt('xref');
+		$xref = JFactory::getApplication()->input->getInt('xref');
 		$user = JFactory::getUser();
 
 		if (!$xref)

@@ -39,7 +39,7 @@ class RedeventViewCategoryEvents extends RViewSite
 
 		// Initiate new CALENDAR
 		$vcal = RedeventHelper::getCalendarTool();
-		$catid = JRequest::getInt('id');
+		$catid = JFactory::getApplication()->input->getInt('id');
 		$vcal->setProperty('unique_id', 'category' . $catid . '@' . $mainframe->getCfg('sitename'));
 		$vcal->setConfig("filename", "category" . $catid . ".ics");
 

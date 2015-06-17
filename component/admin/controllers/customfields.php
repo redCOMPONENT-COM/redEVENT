@@ -69,11 +69,11 @@ class RedeventControllerCustomfields extends RControllerAdmin
 	 */
 	private function doimport()
 	{
-		$replace = JRequest::getVar('replace', 0, 'post', 'int');
+		$replace = $this->input->get('replace', 0, 'post', 'int');
 
 		$msg = '';
 
-		if ($file = JRequest::getVar('import', null, 'files', 'array'))
+		if ($file = $this->input->get('import', null, 'files', 'array'))
 		{
 			$handle = fopen($file['tmp_name'], 'r');
 

@@ -58,8 +58,8 @@ class RedeventViewMyevents extends RedeventViewFront
 		$limitstart_attending   = $state->get('limitstart_attending');
 		$limit        = $state->get('limit');
 		$filter_event = $state->get('filter_event');
-		$task = JRequest::getWord('task');
-		$pop = JRequest::getBool('pop');
+		$task = JFactory::getApplication()->input->getWord('task');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		// Get data from model
 		$events = $this->get('Events');
@@ -92,7 +92,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		if ($lists['filter'])
 		{
 			$uri->setVar('filter', $lists['filter']);
-			$uri->setVar('filter_type', JRequest::getString('filter_type'));
+			$uri->setVar('filter_type', JFactory::getApplication()->input->getString('filter_type'));
 		}
 		else
 		{
@@ -154,11 +154,11 @@ class RedeventViewMyevents extends RedeventViewFront
 	{
 		$elsettings = RedeventHelper::config();
 
-		$filter_order = JRequest::getCmd('filter_order', 'x.dates');
-		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');
+		$filter_order = JFactory::getApplication()->input->getCmd('filter_order', 'x.dates');
+		$filter_order_Dir = JFactory::getApplication()->input->getWord('filter_order_Dir', 'ASC');
 
-		$filter = $this->escape(JRequest::getString('filter'));
-		$filter_type = JRequest::getString('filter_type');
+		$filter = $this->escape(JFactory::getApplication()->input->getString('filter'));
+		$filter_type = JFactory::getApplication()->input->getString('filter_type');
 
 		$sortselects = array ();
 		$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT'));

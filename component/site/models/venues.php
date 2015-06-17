@@ -62,8 +62,8 @@ class RedeventModelVenues extends RModel
 		}
 
 		// Get the number of events from database
-		$limit			= JRequest::getInt('limit', $params->get('display_venues_num'));
-		$limitstart		= JRequest::getInt('limitstart');
+		$limit			= JFactory::getApplication()->input->getInt('limit', $params->get('display_venues_num'));
+		$limitstart		= JFactory::getApplication()->input->getInt('limitstart');
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -150,16 +150,7 @@ class RedeventModelVenues extends RModel
 				}
 
 				// Create target link
-				$task 	= JRequest::getVar('task', '', '', 'string');
-
-				if ($task == 'archive')
-				{
-					$venue->targetlink = JRoute::_(RedeventHelperRoute::getVenueEventsRoute($venue->slug, 'archive'));
-				}
-				else
-				{
-					$venue->targetlink = JRoute::_(RedeventHelperRoute::getVenueEventsRoute($venue->slug));
-				}
+				$venue->targetlink = JRoute::_(RedeventHelperRoute::getVenueEventsRoute($venue->slug));
 
 				$k = 1 - $k;
 			}

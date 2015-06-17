@@ -232,7 +232,7 @@ class RedeventHelperOutput
 
 					$tip = JText::_('COM_REDEVENT_EDIT_EVENT_TIP');
 					$text = JText::_('COM_REDEVENT_EDIT_EVENT');
-					$link = JRoute::_(RedeventHelperRoute::getEditEventRoute($id, JRequest::getInt('xref')));
+					$link = JRoute::_(RedeventHelperRoute::getEditEventRoute($id, JFactory::getApplication()->input->getInt('xref')));
 					break;
 
 				case 'editvenue':
@@ -315,7 +315,7 @@ class RedeventHelperOutput
 				$image = JText::_('COM_REDEVENT_Print');
 			}
 
-			if (JRequest::getInt('pop'))
+			if (JFactory::getApplication()->input->getInt('pop'))
 			{
 				$output = '<a href="#" onclick="window.print();return false;">' . $image . '</a>';
 			}

@@ -28,9 +28,6 @@ class RedeventViewDetails extends RViewSite
 	public function display($tpl = null)
 	{
 		$mainframe = JFactory::getApplication();
-		$id = JRequest::getInt('id');
-
-		$settings = RedeventHelper::config();
 
 		// Get data from the model
 		$row = $this->get('Details');

@@ -28,8 +28,8 @@ class RedeventViewPayment extends RViewSite
 		$model = $this->getModel();
 
 		/* Set which page to show */
-		$state = JRequest::getVar('state', '');
-		$submit_key = JRequest::getVar('submit_key', '');
+		$state = JFactory::getApplication()->input->get('state', '');
+		$submit_key = JFactory::getApplication()->input->get('submit_key', '');
 
 		$document = JFactory::getDocument();
 		$dispatcher = JDispatcher::getInstance();
@@ -39,7 +39,7 @@ class RedeventViewPayment extends RViewSite
 		$row = $this->get('Event');
 
 		/* This loads the tags replacer */
-		JRequest::setVar('xref', $row->xref); // neede for tag constructor
+		JFactory::getApplication()->input->set('xref', $row->xref); // neede for tag constructor
 		$tags = new RedeventTags;
 		$tags->setXref($row->xref);
 		$tags->setSubmitkey($submit_key);
@@ -74,7 +74,7 @@ class RedeventViewPayment extends RViewSite
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		// Print
-		$pop = JRequest::getBool('pop');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		$params->def('page_title', JText::_('COM_REDEVENT_DETAILS'));
 
@@ -127,7 +127,7 @@ class RedeventViewPayment extends RViewSite
 		$this->assignRef('item', $item);
 		$this->assignRef('tags', $tags);
 
-		$tpl = JRequest::getVar('tpl', $tpl);
+		$tpl = JFactory::getApplication()->input->get('tpl', $tpl);
 
 		parent::display($tpl);
 	}

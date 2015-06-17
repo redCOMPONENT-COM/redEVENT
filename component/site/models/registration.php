@@ -63,7 +63,7 @@ class RedEventModelRegistration extends RModel
 		}
 		else
 		{
-			$this->setXref(JRequest::getInt('xref', 0));
+			$this->setXref(JFactory::getApplication()->input->getInt('xref', 0));
 		}
 	}
 
@@ -299,6 +299,7 @@ class RedEventModelRegistration extends RModel
 				->select('a.course_code, a.submission_types, c.name AS catname, c.published, c.access')
 				->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title')
 				->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
+				->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug')
 				->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug')
 				->from('#__redevent_events AS a')
 				->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id')

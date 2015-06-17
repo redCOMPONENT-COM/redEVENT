@@ -51,8 +51,8 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		if ($results_type == 0)
 		{
 			// Get the filter request variables
-			$this->setState('filter_order',     JRequest::getCmd('filter_order', 'a.title'));
-			$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+			$this->setState('filter_order',     JFactory::getApplication()->input->getCmd('filter_order', 'a.title'));
+			$this->setState('filter_order_Dir', strtoupper(JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
 		}
 	}
 
@@ -148,8 +148,6 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		{
 			// Get the paramaters of the active menu item
 			$mainframe = JFactory::getApplication();
-			$params    = $mainframe->getParams();
-			$post = JRequest::get('request');
 
 			$filter_continent = $this->getState('filter_continent');
 			$filter_country   = $this->getState('filter_country');
@@ -165,8 +163,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 
 			$customs              = $this->getState('filtercustom');
 
-			$filter 		      = $this->getState('filter');
-			$filter_type 	    = $this->getState('filter_type');
+			$filter = $this->getState('filter');
 
 			$where = array();
 

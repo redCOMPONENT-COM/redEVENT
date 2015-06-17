@@ -41,19 +41,12 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 		$mainframe = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params 	= $mainframe->getParams('com_redevent');
+		$params = $mainframe->getParams('com_redevent');
 
 		if ($params->get('parentcategory', 0))
 		{
 			$this->setParent($params->get('parentcategory', 0));
 		}
-
-		// Get the number of events from database
-		$limit			= $params->get('cat_num');
-		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
 	}
 
 	/**
@@ -121,10 +114,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 				}
 
 				// Create target link
-				$task 	= JRequest::getWord('task');
-
 				$category->linktext = JText::_('COM_REDEVENT_SHOW_EVENTS');
-
 				$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug));
 			}
 		}
@@ -187,7 +177,6 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
-		$task 		= JRequest::getWord('task');
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
 

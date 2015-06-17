@@ -25,15 +25,7 @@ class RedeventViewRegistration extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app        = JFactory::getApplication();
 		$document   = JFactory::getDocument();
-		$user       = JFactory::getUser();
-		$dispatcher = JDispatcher::getInstance();
-
-		$config     = RedeventHelper::config();
-		$acl        = RedeventUserAcl::getInstance();
-
-		$submit_key = JFactory::getApplication()->input->get('submit_key');
 
 		$event = $this->get('SessionDetails');
 
@@ -64,7 +56,7 @@ class RedeventViewRegistration extends JViewLegacy
 
 		/* Start the tag replacer */
 		$tags = new RedeventTags;
-		$tags->setXref(JRequest::getInt('xref'));
+		$tags->setXref($event->xref);
 		$message = $tags->ReplaceTags($message);
 
 		$this->assignRef('tags',    $tags);
@@ -85,8 +77,8 @@ class RedeventViewRegistration extends JViewLegacy
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
 		$acl  = RedeventUserAcl::getInstance();
-		$xref = JRequest::getInt('xref');
-		$submitter_id = JRequest::getInt('submitter_id');
+		$xref = $app->input->getInt('xref');
+		$submitter_id = $app->input->getInt('submitter_id');
 
 		if (!$submitter_id)
 		{
@@ -159,12 +151,8 @@ class RedeventViewRegistration extends JViewLegacy
 	 */
 	protected function _displayCancel($tpl)
 	{
-		$user = JFactory::getUser();
-		$uri  = JFactory::getURI();
-
-		$xref = JRequest::getInt('xref');
-		$rid  = JRequest::getInt('rid');
-		$key  = JRequest::getVar('submit_key', '', 'request', 'string');
+		$xref = JFactory::getApplication()->input->getInt('xref');
+		$rid  = JFactory::getApplication()->input->getInt('rid');
 
 		$document 	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CANCEL_REGISTRATION'));
@@ -174,7 +162,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$course = $this->get('SessionDetails');
 		$course->dateinfo = RedeventHelperOutput::formatdate($course->dates, $course->times);
 
-		$cancellink = JRoute::_(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xref) . '&task=delreguser&rid=' . $rid);
+		$cancellink = JRoute::_(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xslug) . '&task=delreguser&rid=' . $rid);
 
 		$this->assignRef('course',     $course);
 		$this->assignRef('xref',       $xref);

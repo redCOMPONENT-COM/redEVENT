@@ -140,8 +140,6 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getData()
 	{
-		$pop = JRequest::getBool('pop');
-
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
@@ -420,13 +418,13 @@ class RedeventModelBaseeventlist extends RModel
 		}
 
 		// State
-		if ($state = JRequest::getVar('state', '', 'request', 'string'))
+		if ($state = JFactory::getApplication()->input->get('state', '', 'request', 'string'))
 		{
 			$query->where(' STRCMP(l.state, ' . $this->_db->Quote($state) . ') = 0 ');
 		}
 
 		// Country
-		if ($country = JRequest::getVar('country', '', 'request', 'string'))
+		if ($country = JFactory::getApplication()->input->get('country', '', 'request', 'string'))
 		{
 			$query->where(' STRCMP(l.country, ' . $this->_db->Quote($country) . ') = 0 ');
 		}
@@ -484,9 +482,9 @@ class RedeventModelBaseeventlist extends RModel
 		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
-		$params 	= & $app->getParams();
+		$params 	= $app->getParams();
 
-		$task 		= JRequest::getWord('task');
+		$task 		= JFactory::getApplication()->input->getWord('task');
 
 		$where = array();
 
@@ -865,9 +863,9 @@ class RedeventModelBaseeventlist extends RModel
 	public function getCategoriesOptions()
 	{
 		$app = JFactory::getApplication();
-		$filter_venuecategory = JRequest::getVar('filter_venuecategory');
-		$filter_venue         = JRequest::getVar('filter_venue');
-		$task 		            = JRequest::getWord('task');
+		$filter_venuecategory = JFactory::getApplication()->input->get('filter_venuecategory');
+		$filter_venue         = JFactory::getApplication()->input->get('filter_venue');
+		$task 		            = JFactory::getApplication()->input->getWord('task');
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -935,9 +933,9 @@ class RedeventModelBaseeventlist extends RModel
 	public function getVenuesOptions()
 	{
 		$app = JFactory::getApplication();
-		$vcat    = JRequest::getVar('filter_venuecategory');
-		$city    = JRequest::getVar('filter_city');
-		$country = JRequest::getVar('filter_country');
+		$vcat    = JFactory::getApplication()->input->get('filter_venuecategory');
+		$city    = JFactory::getApplication()->input->get('filter_city');
+		$country = JFactory::getApplication()->input->get('filter_country');
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);

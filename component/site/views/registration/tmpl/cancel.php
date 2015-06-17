@@ -31,4 +31,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <button type="submit" id="submitbt"><?php echo JText::_('COM_REDEVENT_BUTTON_LABEL_CONFIRM'); ?></button>
 <input name="task" type="hidden" value="delreguser" />
 </form>
-<div><?php echo JHTML::_('link', JRoute::_(RedEventHelperRoute::getDetailsRoute($this->course->slug, JRequest::getInt('xref'))), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'), array('class' => 're-back')); ?></div>
+<div><?php echo JHTML::_('link', JRoute::_(RedEventHelperRoute::getDetailsRoute($this->course->slug, $this->course->xslug)), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'), array('class' => 're-back')); ?></div>
