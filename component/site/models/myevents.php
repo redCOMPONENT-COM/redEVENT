@@ -98,7 +98,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 */
 	public function getEvents()
 	{
-		$pop = JRequest::getBool('pop');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->events))
@@ -129,7 +129,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 */
 	public function getAttending()
 	{
-		$pop = JRequest::getBool('pop');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->attending))
@@ -161,7 +161,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 */
 	public function getAttended()
 	{
-		$pop = JRequest::getBool('pop');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->attended))
@@ -193,7 +193,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 */
 	public function getVenues()
 	{
-		$pop = JRequest::getBool('pop');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->venues))
@@ -591,19 +591,8 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		// Get the paramaters of the active menu item
 		$params = $mainframe->getParams();
 
-		$task = JRequest::getWord('task');
-
 		$where = array();
-
-		// First thing we need to do is to select only needed events
-		if ($task == 'archive')
-		{
-			$where[] = ' x.published = -1 ';
-		}
-		else
-		{
-			$where[] = ' x.published > -1 ';
-		}
+		$where[] = ' x.published > -1 ';
 
 		$acl = RedeventUserAcl::getInstance();
 
@@ -639,8 +628,8 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		*/
 		if ($params->get('filter_text'))
 		{
-			$filter = JRequest::getString('filter', '', 'request');
-			$filter_type = JRequest::getWord('filter_type', '', 'request');
+			$filter = JFactory::getApplication()->input->getString('filter', '', 'request');
+			$filter_type = JFactory::getApplication()->input->getWord('filter_type', '', 'request');
 
 			if ($filter)
 			{

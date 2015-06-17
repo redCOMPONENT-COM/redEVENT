@@ -69,33 +69,30 @@ class RedeventViewSignup extends RViewSite
 		{
 			echo '<span class="registration_error">' . $canRegister->status . '</span>';
 			echo '<br/>';
-			echo JHTML::_(
-				'link',
-				JRoute::_('index.php?option=com_redevent&view=details&xref=' . JRequest::getInt('xref') . '&id=' . JRequest::getInt('id')),
-				JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS')
-			);
+			echo JHTML::link(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xslug), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'));
 
 			return;
 		}
 
 		/* This loads the tags replacer */
 		$tags = new RedeventTags;
-		$tags->setXref(JRequest::getInt('xref'));
+		$tags->setXref($course->xref);
 		$this->assignRef('tags', $tags);
 
-		switch (JRequest::getCmd('subtype', 'webform'))
+		$this->tmp_xref = $course->xref;
+		$this->tmp_id = $course->event_id;
+
+		switch (JFactory::getApplication()->input->getCmd('subtype', 'webform'))
 		{
 			case 'email':
-				if (JRequest::getVar('sendmail') == '1')
+				if (JFactory::getApplication()->input->get('sendmail') == '1')
 				{
-					$this->tmp_xref = JRequest::getInt('xref');
-					$this->tmp_id = JRequest::getInt('id');
 					$model_signup = $this->getModel('Signup');
 					/* Send the user the signup email */
 					$result = $model_signup->getSendSignupEmail($tags, $course->send_pdf_form);
 					$this->assignRef('result', $result);
-					JRequest::setVar('xref', $this->tmp_xref);
-					JRequest::setVar('id', $this->tmp_id);
+					JFactory::getApplication()->input->set('xref', $this->tmp_xref);
+					JFactory::getApplication()->input->set('id', $this->tmp_id);
 				}
 
 				/* Load the view */
@@ -104,10 +101,8 @@ class RedeventViewSignup extends RViewSite
 				break;
 
 			case 'formaloffer':
-				if (JRequest::getVar('sendmail') == '1')
+				if (JFactory::getApplication()->input->get('sendmail') == '1')
 				{
-					$this->tmp_xref = JRequest::getInt('xref');
-					$this->tmp_id = JRequest::getInt('id');
 					$model_details = $this->getModel('Details');
 					$model_signup = $this->getModel('Signup');
 					$model_details->getDetails();
@@ -147,9 +142,6 @@ class RedeventViewSignup extends RViewSite
 						$mainframe->redirect('index.php?option=com_users&view=login&return=' . base64_encode($uri->toString()), $message);
 					}
 				}
-
-				$this->tmp_xref = JRequest::getInt('xref');
-				$this->tmp_id = JRequest::getInt('id');
 
 				$review_txt = trim(strip_tags($course->review_message));
 

@@ -47,11 +47,11 @@ class RedeventControllerAttendees extends RControllerAdmin
 	 */
 	public function move()
 	{
-		$cid = JRequest::getVar('cid', array(), 'post', 'array');
-		$xref = JRequest::getInt('xref');
-		$dest = JRequest::getInt('dest');
+		$cid = $this->input->get('cid', array(), 'post', 'array');
+		$xref = $this->input->getInt('xref');
+		$dest = $this->input->getInt('dest');
 		$total = count($cid);
-		$formid = JRequest::getInt('form_id');
+		$formid = $this->input->getInt('form_id');
 
 		/* Check if anything is selected */
 		if (!is_array($cid) || count($cid) < 1)

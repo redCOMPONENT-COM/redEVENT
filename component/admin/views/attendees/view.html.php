@@ -206,7 +206,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 	{
 		RHelperAsset::load('backend.css');
 
-		$cid = JRequest::getVar('cid', array(), 'post', 'array');
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'post', 'array');
 
 		$event = $this->get('Event');
 
@@ -216,7 +216,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 		JToolBarHelper::cancel('cancelmove');
 
 		// Assign data to template
-		$this->assignRef('form_id',  JRequest::getInt('form_id'));
+		$this->assignRef('form_id',  JFactory::getApplication()->input->getInt('form_id'));
 		$this->assignRef('cid',      $cid);
 		$this->assignRef('session',  $event);
 

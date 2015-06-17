@@ -34,7 +34,7 @@ class RedeventModelVenue extends RModel
 
 		$this->setState('filter.language', $app->getLanguageFilter());
 
-		$id = JRequest::getInt('id');
+		$id = JFactory::getApplication()->input->getInt('id');
 		$this->setId($id);
 	}
 

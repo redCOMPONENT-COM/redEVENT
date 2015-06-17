@@ -45,7 +45,7 @@ class RedeventViewDay extends RedeventViewSessionlist
 		$this->assignRef('print_link', $print_link);
 		$this->assignRef('dellink', $dellink);
 		$this->assignRef('daydate', $daydate);
-		$this->assign('action', JRoute::_(RedeventHelperRoute::getDayRoute(JRequest::getInt('id'))));
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getDayRoute(JFactory::getApplication()->input->getInt('id'))));
 
 		parent::display($tpl);
 	}
@@ -57,6 +57,6 @@ class RedeventViewDay extends RedeventViewSessionlist
 	 */
 	protected function prepareAction()
 	{
-		$this->assign('action', JRoute::_(RedeventHelperRoute::getDayRoute(JRequest::getInt('id'))));
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getDayRoute(JFactory::getApplication()->input->getInt('id'))));
 	}
 }

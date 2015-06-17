@@ -41,7 +41,7 @@ class RedeventController extends RedeventControllerFront
 	 */
 	public function cancelreg()
 	{
-		$xref = JRequest::getInt('xref');
+		$xref = $this->input->getInt('xref');
 
 		if (!RedeventHelper::canUnregister($xref))
 		{
@@ -51,8 +51,8 @@ class RedeventController extends RedeventControllerFront
 		}
 
 		// Display the unreg form confirmation
-		JRequest::setVar('view', 'registration');
-		JRequest::setVar('layout', 'cancel');
+		$this->input->set('view', 'registration');
+		$this->input->set('layout', 'cancel');
 
 		parent::display();
 	}
@@ -142,9 +142,9 @@ class RedeventController extends RedeventControllerFront
 	 */
 	public function insertevent()
 	{
-		JRequest::setVar('view', 'simplelist');
-		JRequest::setVar('layout', 'editors-xtd');
-		JRequest::setVar('filter_state', 'P');
+		$this->input->set('view', 'simplelist');
+		$this->input->set('layout', 'editors-xtd');
+		$this->input->set('filter_state', 'P');
 
 		parent::display();
 	}
@@ -176,7 +176,7 @@ class RedeventController extends RedeventControllerFront
 		// Only run this once a day
 		echo sprintf("last update on %s<br/>", strftime('%Y-%m-%d %H:%M', $date));
 
-		if (time() - $date < 3600 * 23.9 && !JRequest::getVar('force', 0))
+		if (time() - $date < 3600 * 23.9 && !$this->input->getInt('force', 0))
 		{
 			echo "reminder sent less the 24 hours ago<br/>";
 

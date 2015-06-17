@@ -60,8 +60,8 @@ class RedeventViewDetails extends JViewLegacy
 
 		/* This loads the tags replacer */
 		$tags = new RedeventTags;
-		$tags->setEventId(JRequest::getInt('id'));
-		$tags->setXref(JRequest::getInt('xref'));
+		$tags->setEventId($row->event_id);
+		$tags->setXref($row->xref);
 		$this->assignRef('tags', $tags);
 
 		// Get menu information
@@ -98,7 +98,7 @@ class RedeventViewDetails extends JViewLegacy
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		// Print
-		$pop = JRequest::getBool('pop');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		$params->def('page_title', RedeventHelper::getSessionFullTitle($row));
 
@@ -107,7 +107,7 @@ class RedeventViewDetails extends JViewLegacy
 			$params->set('popup', 1);
 		}
 
-		$print_link = JRoute::_('index.php?option=com_redevent&view=details&id=' . $row->slug . '&xref=' . JRequest::getInt('xref')
+		$print_link = JRoute::_('index.php?option=com_redevent&view=details&id=' . $row->slug . '&xref=' . $row->xref
 			. '&pop=1&tmpl=component');
 
 		// Pathway
@@ -266,7 +266,7 @@ class RedeventViewDetails extends JViewLegacy
 			$this->_opengraph();
 		}
 
-		$tpl = JRequest::getVar('tpl', $tpl);
+		$tpl = JFactory::getApplication()->input->get('tpl', $tpl);
 
 		if ($tpl == '')
 		{

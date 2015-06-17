@@ -149,7 +149,7 @@ class RedeventModelSignup extends RModel
 		{
 			$pdf = file_get_contents(
 				JURI::root() . 'index.php?option=com_redevent&view=signup&task=signup.createpdfemail&format=pdf&xref='
-				. JRequest::getInt('xref') . '&id=' . JRequest::getInt('id')
+				. JFactory::getApplication()->input->getInt('xref') . '&id=' . JFactory::getApplication()->input->getInt('id')
 			);
 			$pdffile = JPATH_CACHE . '/signup.pdf';
 			file_put_contents($pdffile, $pdf);
@@ -157,7 +157,7 @@ class RedeventModelSignup extends RModel
 		}
 
 		/* Add the recipient */
-		$this->mailer->AddAddress(JRequest::getVar('subemailaddress'), JRequest::getVar('subemailname'));
+		$this->mailer->AddAddress(JFactory::getApplication()->input->get('subemailaddress'), JFactory::getApplication()->input->get('subemailname'));
 
 		/* Add the body to the mail */
 		/* Read the template */
@@ -215,12 +215,12 @@ class RedeventModelSignup extends RModel
 			ON e.id = x.eventid
 			LEFT JOIN #__redevent_venues v
 			ON v.id = x.venueid
-			WHERE x.id = " . JRequest::getInt('xref');
+			WHERE x.id = " . JFactory::getApplication()->input->getInt('xref');
 		$db->setQuery($q);
 		$details = $db->loadObject();
 
 		/* Add the recipient */
-		$this->mailer->AddAddress(JRequest::getVar('subemailaddress'), JRequest::getVar('subemailname'));
+		$this->mailer->AddAddress(JFactory::getApplication()->input->get('subemailaddress'), JFactory::getApplication()->input->get('subemailname'));
 
 		/* Set the subject */
 		$this->mailer->setSubject($tags->ReplaceTags($details->submission_type_formal_offer_subject));

@@ -29,13 +29,8 @@ class RedeventViewCategories extends RedeventViewFront
 		$app = JFactory::getApplication();
 
 		$rows = $this->get('Items');
-		$total = $this->get('Total');
 
 		$params = $app->getParams('com_redevent');
-
-		// Request variables
-		$limitstart = JRequest::getInt('limitstart');
-		$limit = JRequest::getInt('limit', $params->get('cat_num'));
 
 		// Get icon settings
 		$params->def('icons', $app->getCfg('icons'));
@@ -43,10 +38,7 @@ class RedeventViewCategories extends RedeventViewFront
 		// Check if the user has access to the form
 		$canCreate = JFactory::getUser()->authorise('re.createevent');
 
-		// Create the pagination object
-		jimport('joomla.html.pagination');
-
-		$pageNav = new JPagination($total, $limitstart, $limit);
+		$pageNav = $this->get('Pagination');
 
 		$this->assignRef('rows', $rows);
 		$this->assignRef('canCreate', $canCreate);

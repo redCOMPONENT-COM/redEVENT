@@ -61,7 +61,7 @@ class RedeventViewListfeed extends RViewSite
 		$mainframe = JFactory::getApplication();
 		$config = RedeventHelper::config();
 
-		$id = JRequest::getInt('id');
+		$id = JFactory::getApplication()->input->getInt('id');
 
 		$feed = new rsscalCreator('redEVENT feed', JURI::base(), '');
 		$feed->setFilename(CACHE, 'venue' . $id . '.rss');

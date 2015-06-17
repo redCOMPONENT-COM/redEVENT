@@ -66,7 +66,7 @@ class RedeventViewAttendees extends RViewSite
 		}
 
 		// Print
-		$pop = JRequest::getBool('pop');
+		$pop = JFactory::getApplication()->input->getBool('pop');
 
 		$params->def('page_title', RedeventHelper::getSessionFullTitle($session) . ' - ' . JText::_('COM_REDEVENT_ATTENDEES'));
 
@@ -110,8 +110,6 @@ class RedeventViewAttendees extends RViewSite
 		$this->assignRef('unreg_check', $unreg_check);
 		$this->assignRef('action', JRoute::_('index.php?option=com_redevent&view=attendees&xref=' . $session->slug));
 		$this->assignRef('lists', $lists);
-
-		$tpl = JRequest::getVar('tpl', $tpl);
 
 		parent::display($tpl);
 	}

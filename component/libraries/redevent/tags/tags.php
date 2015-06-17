@@ -84,10 +84,10 @@ class RedeventTags
 			$this->db = JFactory::getDbo();
 		}
 
-		$eventid = JRequest::getVar('id', 0, 'request', 'int');
+		$eventid = JFactory::getApplication()->input->getInt('id', 0);
 		$this->setEventId($eventid);
 
-		$xref = JRequest::getInt('xref');
+		$xref = JFactory::getApplication()->input->getInt('xref');
 		$this->setXref($xref);
 
 		// If no xref specified. try to get one associated to the event id, published if possible !
@@ -478,8 +478,8 @@ class RedeventTags
 		$this->getEventLinks();
 		$template_path = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/com_redevent';
 
-		$lists['order_Dir'] = JRequest::getWord('filter_order_Dir', 'ASC');
-		$lists['order'] = JRequest::getCmd('filter_order', 'x.dates');
+		$lists['order_Dir'] = JFactory::getApplication()->input->getWord('filter_order_Dir', 'ASC');
+		$lists['order'] = JFactory::getApplication()->input->getCmd('filter_order', 'x.dates');
 		$this->lists = $lists;
 
 		$uri = JFactory::getURI('index.php?option=com_redevent');
@@ -698,7 +698,7 @@ class RedeventTags
 		$this->row->did = $event->id;
 		$this->elsettings = RedeventHelper::config();
 
-		if (JRequest::getVar('format') != 'raw')
+		if (JFactory::getApplication()->input->get('format') != 'raw')
 		{
 			ob_start();
 
