@@ -256,4 +256,14 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	{
 		return $this->value;
 	}
+
+	/**
+	 * Get customized label for price item
+	 *
+	 * @return string
+	 */
+	public function getPriceItemLabel()
+	{
+		return $this->load()->field;
+	}
 }

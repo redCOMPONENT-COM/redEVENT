@@ -88,8 +88,11 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 			$date = JText::_('PLG_REDFORM_INTEGRATION_REDFORM_OPEN_DATE');
 		}
 
+		$uniqueId = RedeventHelper::getRegistrationUniqueId($res);
+
 		$paymentDetailFields = new stdclass;
 		$paymentDetailFields->title = JText::sprintf('PLG_REDFORM_INTEGRATION_REDFORM_TITLE',
+			$uniqueId,
 			$res->title,
 			$res->venue,
 			$date
@@ -98,13 +101,14 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 		$fullname = $this->getFullname($submit_key);
 
 		$paymentDetailFields->adminDesc = JText::sprintf('PLG_REDFORM_INTEGRATION_REDFORM_ADMIN_DESC',
+			$uniqueId,
 			$fullname,
 			$res->title,
 			$res->venue,
 			$date
 		);
 
-		$paymentDetailFields->uniqueid = RedeventHelper::getRegistrationUniqueId($res);
+		$paymentDetailFields->uniqueid = $uniqueId;
 
 		return true;
 	}

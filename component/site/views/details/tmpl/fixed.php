@@ -152,7 +152,7 @@ if ($this->row->venueid != 0) {
   			<?php foreach ($this->row->attachments as $file): ?>
 	  				<tr>
 	  					<td>
-		  					<span class="event-file-dl-icon hasTip" title="<?php echo JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file).'::'.$this->escape($file->description);?>">
+		  					<span class="event-file-dl-icon hasTooltip" title="<?php echo JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file).'<br/>'.$this->escape($file->description);?>">
 		  					<?php echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id,
 		  					                       JHTML::image('media/com_redevent/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
 	  					</td>
@@ -243,7 +243,7 @@ if ($this->row->venueid != 0) {
 			$imgpath = 'media/com_redevent/images/'.$registration_status->error.'.png';
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
-		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		                          array('class' => 'hasTooltip', 'title' => $registration_status->status));
 			echo RedeventHelperOutput::moreInfoIcon($this->row->xslug, $img, $registration_status->status);
 		else : ?>
 		<?php $venues_html = '';
@@ -266,19 +266,19 @@ if ($this->row->venueid != 0) {
 		      else {
 		      	$link = $this->row->submission_type_external;
 		      }
-					$venues_html .= '<div class="registration_method hasTip" title="::'.$this->elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->get('signup_external_img', 'external_icon.gif'),  $this->elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
+					$venues_html .= '<div class="registration_method hasTooltip" title="'.$this->elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->get('signup_external_img', 'external_icon.gif'),  $this->elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
 					if ($this->prices && count($this->prices))
 					{
 						foreach ($this->prices as $p)
 						{
-							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
+							$title = ' title="'.$p->name.'<br/>'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
 							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($p->name))
 							                        : JHTML::_('image', JURI::root().$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug, $p->slug));
 
-							$venues_html .= '<div class="registration_method hasTip '.$p->alias.'"'.$title.'>'
+							$venues_html .= '<div class="registration_method hasTooltip '.$p->alias.'"'.$title.'>'
 								             .JHTML::_('link', $link, $img).'</div> ';
 						}
 					}

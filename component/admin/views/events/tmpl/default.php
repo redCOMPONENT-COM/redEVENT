@@ -159,20 +159,19 @@ $search = $this->state->get('filter.search');
 					</td>
 					<td>
 						<?php
-						//$cats_html = array();
 						foreach ((array) $row->categories as $k => $cat)
 						{
-							if ($cat->checked_out && ( $cat->checked_out != $this->user->get('id') ) ) {
+							if ($cat->checked_out && ($cat->checked_out != $this->user->get('id')))
+							{
 								echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8');
-							} else {
-								$catlink    = 'index.php?option=com_redevent&view=category&cid[]='.$cat->id;
-								?>
-								<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_CATEGORY' );?>::<?php echo $cat->name; ?>">
-		            <a href="<?php echo $catlink; ?>">
-			            <?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
-		            </a></span>
-								<?php
-								if ($k < count($row->categories)-1) {
+							}
+							else
+							{
+								$editLink = 'index.php?option=com_redevent&task=category.edit&id=' . $cat->id;
+								echo RHtml::tooltip(JText::_('COM_REDEVENT_EDIT_CATEGORY' ), '', null, $cat->name, $editLink);
+
+								if ($k < count($row->categories)-1)
+								{
 									echo "<br/>";
 								}
 							}
@@ -181,20 +180,24 @@ $search = $this->state->get('filter.search');
 					</td>
 					<td>
 						<?php if (isset($this->eventvenues[$row->id])): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&filter[event]='.$row->id,
+							<?php echo RHtml::tooltip(
+								Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK_TIP'
+									, $this->eventvenues[$row->id]->unpublished
+									, $this->eventvenues[$row->id]->published
+									, $this->eventvenues[$row->id]->archived
+									, $this->eventvenues[$row->id]->featured),
+								Jtext::_('COM_REDEVENT_SESSIONS_LINK_TIP_TITLE'),
+								false,
 								Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK', $this->eventvenues[$row->id]->total
 									, $this->eventvenues[$row->id]->unpublished
 									, $this->eventvenues[$row->id]->published
 									, $this->eventvenues[$row->id]->archived
 									, $this->eventvenues[$row->id]->featured),
-								array('class' => 'hasTip',
-									'title' => Jtext::_('COM_REDEVENT_SESSIONS_LINK_TIP_TITLE').'::'.Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK_TIP'
-											, $this->eventvenues[$row->id]->unpublished
-											, $this->eventvenues[$row->id]->published
-											, $this->eventvenues[$row->id]->archived
-											, $this->eventvenues[$row->id]->featured))); ?>
+								'index.php?option=com_redevent&view=sessions&filter[event]=' . $row->id
+							);
+							?>
 						<?php else: ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&eventid='.$row->id, Jtext::sprintf('COM_REDEVENT_0_SESSION_LINK')); ?>
+							<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&filter[event]=' . $row->id, Jtext::sprintf('COM_REDEVENT_0_SESSION_LINK')); ?>
 						<?php endif; ?>
 					</td>
 					<td>
@@ -204,18 +207,17 @@ $search = $this->state->get('filter.search');
 						$created	 	= JHTML::Date( $row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
 						$edited 		= JHTML::Date( $row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
 						$ip				= $row->author_ip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->author_ip;
-						$image 			= '<i class="icon-info"/>';
-						$overlib 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$created.'<br />';
-						$overlib		.= JText::_('COM_REDEVENT_WITH_IP' ).': '.$ip.'<br />';
+						$tip 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$created.'<br />';
+						$tip		.= JText::_('COM_REDEVENT_WITH_IP' ).': '.$ip.'<br />';
+
 						if ($row->modified != '0000-00-00 00:00:00')
 						{
-							$overlib 	.= JText::_('COM_REDEVENT_EDITED_AT' ).': '.$edited.'<br />';
-							$overlib 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
+							$tip 	.= JText::_('COM_REDEVENT_EDITED_AT' ).': '.$edited.'<br />';
+							$tip 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
 						}
+
+						echo RHtml::tooltip($tip, '', null, '<span class="icon-info"/>');
 						?>
-						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_STATS'); ?>::<?php echo $overlib; ?>">
-						<?php echo $image; ?>
-					</span>
 					</td>
 					<td align="center"><?php echo $row->language == '*' ? Jtext::_('All') : $row->language_title; ?></td>
 					<td>

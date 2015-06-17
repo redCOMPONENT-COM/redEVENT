@@ -144,7 +144,7 @@ $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 
 <?php if ($params->get('toggle', 0)):?>
 <div class="cal_toggle"><?php echo JText::_('MOD_REDEVENTCAL_MINIMIZE'); ?></div>
-<div class="toggleoff hasTip" title="<?php echo JText::_('MOD_REDEVENTCAL_TOGGLE_TIP');?>"></div>
+<div class="toggleoff hasTooltip" title="<?php echo JText::_('MOD_REDEVENTCAL_TOGGLE_TIP');?>"></div>
 <?php endif; ?>
 
 </div>

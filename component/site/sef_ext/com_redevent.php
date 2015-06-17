@@ -214,6 +214,45 @@ if (!$shHomePageFlag)
 
 			switch ($view)
 			{
+				case 'calendar':
+					if ($menuparams && $catId = $menuparams->get('topcat'))
+					{
+						$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $catId);
+						$db->setQuery($q);
+						$title[] = $db->loadResult();
+					}
+					break;
+
+				case 'categories':
+					if ($menuparams && $menuparams->get('parentcategory', 0))
+					{
+						$vcat = $menuparams->get('parentcategory', 0);
+						$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
+						$db->setQuery($q);
+						$title[] = $db->loadResult();
+					}
+					break;
+
+				case 'categoriesdetailed':
+					if ($menuparams && $menuparams->get('parentcategory', 0))
+					{
+						$vcat = $menuparams->get('parentcategory', 0);
+						$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
+						$db->setQuery($q);
+						$title[] = $db->loadResult();
+					}
+					break;
+
+				case 'categoryevents':
+					$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
+					$db->setQuery($q);
+					$title[] = $db->loadResult();
+					//$title[] = $id;
+					/* Remove xref so no other course details are added */
+					shRemoveFromGETVarsList('id');
+					shRemoveFromGETVarsList('xref');
+					break;
+
 				case 'day':
 					if (isset($id))
 					{
@@ -239,70 +278,6 @@ if (!$shHomePageFlag)
 								break;
 						}
 					}
-					break;
-
-				case 'categoryevents':
-					$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
-					$db->setQuery($q);
-					$title[] = $db->loadResult();
-					//$title[] = $id;
-					/* Remove xref so no other course details are added */
-					shRemoveFromGETVarsList('id');
-					shRemoveFromGETVarsList('xref');
-					break;
-
-				case 'categories':
-					if ($menuparams && $menuparams->get('parentcategory', 0))
-					{
-						$vcat = $menuparams->get('parentcategory', 0);
-						$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
-						$db->setQuery($q);
-						$title[] = $db->loadResult();
-					}
-					break;
-
-				case 'categoriesdetailed':
-					if ($menuparams && $menuparams->get('parentcategory', 0))
-					{
-						$vcat = $menuparams->get('parentcategory', 0);
-						$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
-						$db->setQuery($q);
-						$title[] = $db->loadResult();
-					}
-					break;
-
-				case 'venues':
-					if ($menuparams && $menuparams->get('categoryid', 0))
-					{
-						$vcat = $menuparams->get('categoryid', 0);
-						$q = "SELECT name FROM #__redevent_venues_categories WHERE id = " . $db->Quote((int) $vcat);
-						$db->setQuery($q);
-						$title[] = $db->loadResult();
-					}
-					break;
-
-				case 'venueevents':
-					$q = "SELECT venue FROM #__redevent_venues WHERE id = " . $db->Quote((int) $id);
-					$db->setQuery($q);
-					$title[] = $db->loadResult();
-					/* Remove xref so no other course details are added */
-					shRemoveFromGETVarsList('id');
-					break;
-
-				case 'venuecategory':
-					$q = "SELECT name FROM #__redevent_venues_categories WHERE id = " . $db->Quote((int) $id);
-					$db->setQuery($q);
-					$title[] = $db->loadResult();
-					/* Remove xref so no other course details are added */
-					shRemoveFromGETVarsList('id');
-					break;
-
-				case 'upcomingvenueevents':
-					$q = "SELECT venue FROM #__redevent_venues WHERE id = " . $db->Quote((int) $id);
-					$db->setQuery($q);
-					$title[] = $db->loadResult();
-					/* Remove xref so no other course details are added */
-					shRemoveFromGETVarsList('id');
 					break;
 
 				case 'details':
@@ -364,8 +339,42 @@ if (!$shHomePageFlag)
 					shRemoveFromGETVarsList('id');
 					break;
 
+				case 'upcomingvenueevents':
+					$q = "SELECT venue FROM #__redevent_venues WHERE id = " . $db->Quote((int) $id);
+					$db->setQuery($q);
+					$title[] = $db->loadResult();
+					/* Remove xref so no other course details are added */
+					shRemoveFromGETVarsList('id');
+					break;
+
 				case 'venue': // ajax call, no need for sef
 					$dosef = false;
+					break;
+
+				case 'venuecategory':
+					$q = "SELECT name FROM #__redevent_venues_categories WHERE id = " . $db->Quote((int) $id);
+					$db->setQuery($q);
+					$title[] = $db->loadResult();
+					/* Remove xref so no other course details are added */
+					shRemoveFromGETVarsList('id');
+					break;
+
+				case 'venueevents':
+					$q = "SELECT venue FROM #__redevent_venues WHERE id = " . $db->Quote((int) $id);
+					$db->setQuery($q);
+					$title[] = $db->loadResult();
+					/* Remove xref so no other course details are added */
+					shRemoveFromGETVarsList('id');
+					break;
+
+				case 'venues':
+					if ($menuparams && $menuparams->get('categoryid', 0))
+					{
+						$vcat = $menuparams->get('categoryid', 0);
+						$q = "SELECT name FROM #__redevent_venues_categories WHERE id = " . $db->Quote((int) $vcat);
+						$db->setQuery($q);
+						$title[] = $db->loadResult();
+					}
 					break;
 
 				default:

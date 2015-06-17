@@ -110,6 +110,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				$field = new RedeventRfieldSessionprice;
 				$field->setOptions($pricegroups);
 				$field->setValue($regPricegroup);
+				$field->setPaymentRequestItemLabel(JText::sprintf('COM_REDEVENT_REGISTRATION_PRICE_ITEM_LABEL_S', $details->full_title));
 				$field->setFormIndex($i);
 
 				$extrafields[$i++] = array($field);

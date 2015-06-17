@@ -139,8 +139,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     				<?php if ($this->acl->canEditXref($row->xref)): ?>
    					<?php echo JHTML::link('index.php?option=com_redevent&task=editsession.edit&e_id=' . $row->slug . '&s_id=' . $row->xref,
    					                       RedeventHelperOutput::formatEventDateTime($row),
-   					                       array('class' => 'hasTip',
-   					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
+   					                       array('class' => 'hasTooltip',
+   					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'<br/>'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
     				<?php else: ?>
    					<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
    					<?php endif; ?>

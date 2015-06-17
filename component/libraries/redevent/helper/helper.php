@@ -266,6 +266,9 @@ class RedeventHelper
 		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
+		$gids = implode(',', $gids);
+
 		if ($show_empty == false)
 		{
 			// Select categories with events first
@@ -292,6 +295,7 @@ class RedeventHelper
 		$query->select('c.id, c.name AS name, (COUNT(parent.name) - 1) AS depth')
 			->from('#__redevent_categories AS c')
 			->join('INNER', '#__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt')
+			->where('c.access IN (' . $gids . ')')
 			->group('c.id')
 			->order('c.ordering, c.lft');
 
@@ -1183,7 +1187,7 @@ class RedeventHelper
 				break;
 		}
 
-		$options = array('class' => 'hasTip statusicon');
+		$options = array('class' => 'hasTooltip statusicon');
 		$options['title'] = JText::_('COM_REDEVENT_STATUS_ICON_TITLE');
 		$options['rel'] = $tip;
 		$options['current'] = $status;

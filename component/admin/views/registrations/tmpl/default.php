@@ -107,8 +107,8 @@ echo RLayoutHelper::render(
 			</th>
 			<th width="10"><?php echo JText::_('COM_REDEVENT_ANSWERS'); ?></th>
 			<th width="10"><?php echo JText::_('COM_REDEVENT_PRICE'); ?></th>
-			<th width="10"><?php echo JText::_('COM_REDEVENT_PRICEGROUP'); ?></th>
-			<th width="10">
+			<th class="col-pricegroup" width="auto"><?php echo JText::_('COM_REDEVENT_PRICEGROUP'); ?></th>
+			<th width="auto">
 				<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_PAYMENT', 'p.paid', $listDirn, $listOrder); ?>
 			</th>
 		</tr>
@@ -121,7 +121,7 @@ echo RLayoutHelper::render(
 			$eventdate = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
 			$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->xref,
 					$row->title . '<br/>' . $eventdate,
-					'class="hasTip" title="' . JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE') . '::"') . '<br/>@' . $row->venue . '</br>' . JText::_('COM_REDEVENT_AUTHOR') . ': ' . $row->creator;
+					'class="hasTooltip" title="' . JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE') . '"') . '<br/>@' . $row->venue . '</br>' . JText::_('COM_REDEVENT_AUTHOR') . ': ' . $row->creator;
 
 			$trClass = $row->cancelled ? ' class="cancelled"' : '';
 			?>
@@ -168,10 +168,10 @@ echo RLayoutHelper::render(
 				<td class="attendeePrice">
 					<?php echo $row->price ? $row->currency . ' ' . ($row->price + $row->vat) : ''; ?>
 				</td>
-				<td>
+				<td class="col-pricegroup" width="auto">
 					<?php echo $row->pricegroup; ?>
 				</td>
-				<td class="price <?php echo($row->paid ? 'paid' : 'unpaid'); ?>">
+				<td class="price <?php echo($row->paid ? 'paid' : 'unpaid'); ?>" width="auto">
 					<?php echo RLayoutHelper::render(
 						'attendees.paymentinfo',
 						$row

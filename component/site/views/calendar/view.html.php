@@ -77,22 +77,8 @@ class RedeventViewCalendar extends RedeventViewFront
 	 *
 	 * @return  string
 	 */
-	public function caltooltip($tooltip, $title = '', $text = '', $href = '', $class = 'editlinktip hasTip')
+	public function caltooltip($tooltip, $title = '', $text = '', $href = '', $class = 'editlinktip hasTooltip')
 	{
-		$tooltip = (htmlspecialchars($tooltip));
-		$title = (htmlspecialchars($title));
-
-		if ($href)
-		{
-			$href = JRoute::_($href);
-			$style = '';
-			$tip = '<span class="' . $class . '" title="' . $title . '" rel="' . $tooltip . '"><a href="' . $href . '">' . $text . '</a></span>';
-		}
-		else
-		{
-			$tip = '<span class="' . $class . '" title="' . $title . '" rel="' . $tooltip . '">' . $text . '</span>';
-		}
-
-		return $tip;
+		return RHtml::tooltip($tooltip, $title, null, $text, $href, null, $class);
 	}
 }

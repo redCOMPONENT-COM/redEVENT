@@ -70,7 +70,7 @@ foreach ($this->upcomingevents as $key => $event)
 					break;
 
 				case 'external':
-					$venues_html .= '<div class="vlink external hasTip" title="::' . $elsettings->get('signup_external_text') . '">' . JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath . $elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"') . '</div> ';
+					$venues_html .= '<div class="vlink external hasTooltip" title="' . $elsettings->get('signup_external_text') . '">' . JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath . $elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"') . '</div> ';
 					break;
 
 				case 'webform':
@@ -78,12 +78,12 @@ foreach ($this->upcomingevents as $key => $event)
 					{
 						foreach ($event->prices as $p)
 						{
-							$title = ' title="' . $p->name . '::' . addslashes(str_replace("\n", "<br/>", $p->tooltip)) . '"';
+							$title = ' title="' . $p->name . '<br/>' . addslashes(str_replace("\n", "<br/>", $p->tooltip)) . '"';
 							$img = empty($p->image) ? JHTML::_('image', $imagepath . $elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($elsettings->get('signup_webform_text')))
 							: JHTML::_('image', $p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 
-							$venues_html .= '<div class="vlink courseinfo_webform hasTip ' . $p->alias . '"' . $title . '>'
+							$venues_html .= '<div class="vlink courseinfo_webform hasTooltip ' . $p->alias . '"' . $title . '>'
 							. JHTML::_('link', $link, $img) . '</div> ';
 						}
 					}

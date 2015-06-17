@@ -31,8 +31,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<tbody>
 	<?php foreach ($this->row->attachments as $file): ?>
 		<tr>
-			<td><span class="el-file-dl-icon hasTip"
-			          title="<?php echo JText::_('COM_REDEVENT_Download').' '.($file->file).'::'.($file->description);?>"><?php
+			<td><span class="el-file-dl-icon hasTooltip"
+			          title="<?php echo JText::_('COM_REDEVENT_Download').' '.($file->file).'<br/>'.($file->description);?>"><?php
 			          echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id,
 			                           JHTML::image('media/com_redevent/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
 			</td>

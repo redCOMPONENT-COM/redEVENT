@@ -184,7 +184,7 @@ $search = $this->state->get('filter.search');
 						<?php else : ?>
 							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=session.edit&id=' . $row->id, $displaydate); ?>
 						<?php endif; ?>
-						<span class="linkfront hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK')?>">
+						<span class="linkfront hasTooltip" title="<?php echo JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'); ?>">
 						<?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->eventid, $row->id),
 							JHTML::image('media/com_redevent/images/linkfront.png',
 								JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>

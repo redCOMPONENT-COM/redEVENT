@@ -65,7 +65,7 @@ $app = JFactory::getApplication();
 		</div>
 		<div class="control-group">
 			<div class="control-label">
-				<label for="subject" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT' ).'::'.JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT_DESC' ); ?>">
+				<label for="subject" class="hasTooltip" title="<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT' ).'::'.JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT_DESC' ); ?>">
 					<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT' ).':'; ?>
 				</label>
 			</div>

@@ -88,8 +88,8 @@
 	<field
 		name="event_template"
 		type="session"
-		label="COM_REDEVENT_Category_Event_template"
-		description="COM_REDEVENT_Category_Event_template"
+		label="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE"
+		description="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE_TIP"
 		class="inputbox"
 		filter="safehtml"
 		buttons="false"/>

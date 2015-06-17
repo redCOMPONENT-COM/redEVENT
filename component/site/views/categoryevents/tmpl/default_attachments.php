@@ -31,10 +31,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<tbody>
 	<?php foreach ($this->category->attachments as $file): ?>
 		<tr>
-			<td><span class="el-file-dl-icon hasTip"
-			          title="<?php echo JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file).'::'.$this->escape($file->description);?>"><?php
-			          echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id,
-			                           JHTML::image('media/com_redevent/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
+			<td>
+				<?php
+					echo RHtml::tooltip(
+						$this->escape($file->description),
+						JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file),
+						null,
+						JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file=' . $file->id,
+							RHelperAsset::load('download_16.png'), JText::_('COM_REDEVENT_Download')),
+						'', '', "el-file-dl-icon hasTooltip"
+					);
+				?>
 			</td>
 			<td class="re-file-name"><?php echo $this->escape($file->name ? $file->name : $file->file); ?></td>
 		</tr>
