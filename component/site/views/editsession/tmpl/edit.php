@@ -43,7 +43,7 @@ JHTML::_('behavior.formvalidation');
 		</div>
 		<ul class="nav nav-tabs" id="userTab">
 			<li class="active">
-				<a href="#main" data-toggle="tab">
+				<a href="#eventmain" data-toggle="tab">
 					<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_MAIN'); ?></strong>
 				</a>
 			</li>
@@ -95,7 +95,7 @@ JHTML::_('behavior.formvalidation');
 			</li>
 		</ul>
 		<div class="tab-content">
-			<div class="tab-pane active" id="main">
+			<div class="tab-pane active" id="eventmain">
 				<div class="row-fluid">
 					<div class="span12">
 						<fieldset class="form-horizontal">

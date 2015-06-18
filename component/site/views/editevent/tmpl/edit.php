@@ -45,7 +45,7 @@ JHTML::_('behavior.formvalidation');
 
 		<ul class="nav nav-tabs" id="userTab">
 			<li class="active">
-				<a href="#main" data-toggle="tab">
+				<a href="#editmain" data-toggle="tab">
 					<strong><?php echo JText::_('COM_REDEVENT_DETAILS'); ?></strong>
 				</a>
 			</li>
@@ -60,7 +60,7 @@ JHTML::_('behavior.formvalidation');
 		</ul>
 
 		<div class="tab-content">
-			<div class="tab-pane active" id="main">
+			<div class="tab-pane active" id="editmain">
 				<div class="row-fluid">
 					<div class="span12">
 						<fieldset class="form-horizontal">
@@ -151,7 +151,7 @@ JHTML::_('behavior.formvalidation');
 			<div class="tab-pane" id="attachments">
 				<div class="row-fluid">
 					<div class="span12">
-						<?php echo RLayoutHelper::render('attachments.edit', $this, null, array('component' => 'com_redevent', 'client' => 1)); ?>
+						<?php echo RLayoutHelper::render('attachments.edit', $this); ?>
 					</div>
 				</div>
 			</div>

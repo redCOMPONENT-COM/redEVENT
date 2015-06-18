@@ -12,8 +12,6 @@ RHelperAsset::load('attachments.js');
 JText::script('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG');
 
 $data = $displayData;
-
-JHtml::_('rjquery.chosen', 'select');
 ?>
 &nbsp;<!-- this is a trick for IE7... otherwise the first table inside the tab is shifted right ! -->
 <table class="adminform" id="re-attachments">

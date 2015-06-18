@@ -36,7 +36,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php if ($this->hasManagedEvents) :	?>
 
 	<h2><?php echo JText::_('COM_REDEVENT_Manage_Events'); ?></h2>
+	<div id="result_events">
 	<?php echo $this->loadTemplate('events'); ?>
+	</div>
 
 <?php endif; ?>
 

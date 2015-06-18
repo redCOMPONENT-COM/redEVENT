@@ -200,7 +200,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_XREF');
 
-		$link 	= 'index.php?option=com_redevent&view=editevent&layout=eventdate&id=' . $id . '&xref=' . $xref;
+		$link 	= RedeventHelperRoute::getEditXrefRoute($id, $xref);
 		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;

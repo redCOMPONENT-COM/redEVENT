@@ -28,7 +28,7 @@ class RedeventControllerAjax extends JControllerLegacy
 
 		$search = $app->input->get('filter', '', 'string');
 
-		if (strlen($search) > 2)
+		if (strlen($search) > 1)
 		{
 			$model = $this->getModel('Ajaxeventssuggest', 'RedeventModel', array('ignore_request' => true));
 			$model->setState('filter.title', $search);
