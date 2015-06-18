@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<?php if ($a->registered): ?>
 				<td>
-					<input name="ponumber[]" class="input-small ponumber" type="text" value="<?php echo $a->registered->ponumber; ?>" />
+					<input name="ponumber[]" class="input-small ponumber" type="text" maxlength="10" value="<?php echo $a->registered->ponumber; ?>" />
 				</td>
 				<td>
 					<textarea name="comments[]" class="input-medium comments hasTip"
