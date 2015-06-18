@@ -28,6 +28,8 @@ class RedeventModelAjaxeventssuggest extends RModelList
 		}
 
 		parent::__construct($config);
+
+		$this->setState('filter.language', JFactory::getApplication()->getLanguageFilter());
 	}
 
 	/**
@@ -106,6 +108,8 @@ class RedeventModelAjaxeventssuggest extends RModelList
 			$query->where('(e.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
 				. ',' . $this->_db->quote('*') . ') OR e.language IS NULL)');
 		}
+
+		$query->order($this->getState('list.ordering', 'e.title') . ' ' . $this->getState('list.direction', 'ASC'));
 
 		return $query;
 	}
