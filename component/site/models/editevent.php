@@ -287,8 +287,42 @@ class RedeventModelEditevent extends RModelAdmin
 				unset($templateData['course_code']);
 				$data = array_merge($templateData, $data);
 			}
+
+			if (!isset($data['categories']))
+			{
+				$query = $this->_db->getQuery(true)
+					->select('category_id')
+					->from('#__redevent_event_category_xref')
+					->where('event_id = ' . (int) $templateId);
+
+				$this->_db->setQuery($query);
+				$data['categories'] = $this->_db->loadColumn();
+			}
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Method to allow derived classes to preprocess the form.
+	 *
+	 * @param   JForm   $form   A JForm object.
+	 * @param   mixed   $data   The data expected for the form.
+	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
+	 *
+	 * @return  void
+	 *
+	 * @throws  Exception if there is an error in the form event.
+	 */
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+		parent::preprocessForm($form, $data, $group);
+
+		$config = RedeventHelper::config();
+
+		if (!$config->get('edit_categories'))
+		{
+			$form->setFieldAttribute('categories', 'required', 'false');
+		}
 	}
 }

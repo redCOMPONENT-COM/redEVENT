@@ -239,6 +239,12 @@ class RedeventTableEvent extends RedeventTable
 			return false;
 		}
 
+		if (!$categoryIds)
+		{
+			// No category, could be frontend submission
+			return true;
+		}
+
 		// Update the event category xref
 		// First, delete current rows for this event
 		$db = $this->_db;
