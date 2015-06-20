@@ -213,6 +213,7 @@
         <field
                 name="showfields"
                 type="RedformField"
+				filterform="redform_id"
                 class="inputbox"
                 multiple="true"
                 label="COM_REDEVENT_REDFORM_FORM_SELECT_FIELDS"
