@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</thead>
 	<tbody>
+	<?php if ($this->attendees): ?>
 		<?php foreach($this->attendees as $a): ?>
 		<tr<?php echo ($a->registered ? ' class="registered"' : ''); ?> rid="<?php echo $a->registered ? $a->registered->id : ''; ?>" uid="<?php echo $a->id; ?>">
 			<td>
@@ -87,6 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 		</tr>
 		<?php endforeach;?>
+	<?php endif; ?>
 	</tbody>
 </table>
 
