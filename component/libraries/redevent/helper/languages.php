@@ -56,13 +56,24 @@ class RedeventHelperLanguages
 	 * @param   string  $value_tag   value key
 	 * @param   string  $text_tag    text key
 	 * @param   bool    $add_select  add 'select' option
+	 * @param   array   $filter      array of iso2 codes for allowed languages
 	 *
 	 * @return array
 	 */
-	public static function getOptions($value_tag = 'value', $text_tag = 'text', $add_select = false)
+	public static function getOptions($value_tag = 'value', $text_tag = 'text', $add_select = false, $filter = array())
 	{
 		$codes = self::getAllCodes();
-		$options = array();
+
+		if (!empty($filter))
+		{
+			$codes = array_filter(
+				$codes,
+				function($element) use ($filter)
+				{
+					return in_array($element['iso2'], $filter);
+				}
+			);
+		}
 
 		if ($add_select)
 		{
