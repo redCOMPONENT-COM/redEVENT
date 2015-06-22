@@ -54,6 +54,11 @@
                        rows="10" cols="50"
                         >
                 </field>
+				<field name="allowed_session_languages"
+					   type="text"
+					   label="PLG_REDEVENT_CONFIG_MAERSK_ALLOWED_SESSION_LANGUAGES"
+					   description="PLG_REDEVENT_CONFIG_MAERSK_ALLOWED_SESSION_LANGUAGES_DESC"
+						/>
             </fieldset>
         </fields>
     </config>
