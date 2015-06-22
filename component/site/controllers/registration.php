@@ -708,6 +708,7 @@ class RedEventControllerRegistration extends RedEventController
 
 		if (!isset($data['rm_firstname']) && !isset($data['rm_lastname']) && $data['name'])
 		{
+			$data['name'] = trim($data['name']);
 			$parts = explode(' ', $data['name']);
 
 			if (count($parts) > 1)
