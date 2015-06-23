@@ -1,6 +1,24 @@
 jQuery(document).ready(function($){
-	
-	
+
+	if($(window).width() < 768 ){
+		$("#menu #nav-menu li#item-109 a").click(function(){
+			var wpurl = "http://hcafestivals.dk/da/festival/app";
+			$(this).attr('href', wpurl);
+		});
+
+	}
+
+	var visited = readCookie('mypopup');
+	var url = window.location.href; 
+	if (!visited && url=='http://hcafestivals.dk/da/timeline') {
+	  $(document).ready(function(){
+	    var url = 'http://hcafestivals.dk/da/popup';
+		SqueezeBox.open(url, {handler: 'iframe', size: {x: 600, y: 350}});
+	    createCookie('mypopup','no',0);
+	  });
+	}
+
+
 	$('body').click(function() {
 	   $('.search .box').css({
 			display: 'none'
@@ -64,8 +82,8 @@ jQuery(document).ready(function($){
 		$(this).css('border-color', '#e8e8e8');
 	});
 	$(".wrapper-menu ul.nav.menu > li").hover(function() {
-		var with2 = $(this).prev().innerWidth();
-		$(this).children('ul.dropdown-menu').css("margin-left", -with2);
+		//var with2 = $(this).prev().innerWidth();
+		// $(this).children('ul.dropdown-menu').css("margin-left", -with2);
 		//$(this).children('ul.dropdown-menu li a:after').css("left", with2 + 30);
 	}, function() {
 		/* Stuff to do when the mouse leaves the element */
@@ -226,7 +244,7 @@ jQuery(document).ready(function($){
 
 	});
 
-	$('ul#divselect6').before('<div class="type">Type<span class="valuetypefilter">Alle</span></div>');
+	$('ul#divselect6').before('<div class="type">Jeg er interesseret i<span class="valuetypefilter">Alle</span></div>');
 	$('ul#divselect6').addClass('hiddentype');
 	
 	$('.type').toggle(
@@ -252,7 +270,7 @@ jQuery(document).ready(function($){
 	});
 
 
-	$('ul#divselect7').before('<div class="agefilter">Aldersgruppe<span class="valueagefilter">Alle</span></div>');
+	$('ul#divselect7').before('<div class="agefilter">Jeg vil se arrangementer for <span class="valueagefilter" style="width: auto;">Alle</span></div>');
 	$('ul#divselect7').addClass('hiddentype');
 	$('.agefilter').toggle(
 		  function() {
@@ -336,7 +354,7 @@ jQuery(document).ready(function($){
 		}
 		else if(index==2)
 		{
-			$('.valueagefilter').html('<span >'+selectedage[0]+'   & ' + selectedage[1] + '& '+ selectedage[2] + '</span>');
+			$('.valueagefilter').html('<span >'+selectedage[0] + ' & ' + selectedage[1] + ' & '+ selectedage[2] + '</span>');
 			$('.valueagefilter').css('margin-top','-13px');
 		}
 		else
@@ -353,7 +371,7 @@ jQuery(document).ready(function($){
 	// Su check date
 
 
-	$('ul#divselectdate').before('<div class="date-filter">Dag<span class="valuedatefilter">Alle</span></div>');
+	$('ul#divselectdate').before('<div class="date-filter">Jeg vil se programmet for<span class="valuedatefilter">Alle</span></div>');
 	$('ul#divselectdate').addClass('hiddentype');
 	
 	$('.date-filter').toggle(
@@ -450,7 +468,7 @@ jQuery(document).ready(function($){
     /* end check date */
 
     /* check filter_venuecategory */
-
+    	$("ul#divselectvenuecategory li.option1").before('<li id="0" class="option0">Vælg mødested kategori</li>');
 	    $('ul#divselectvenuecategory').before('<div class="venue-filter">Venue<span class="valuevenuefilter">Alle</span></div>');
 		$('ul#divselectvenuecategory').addClass('hiddentype');
 		
@@ -589,16 +607,18 @@ function pad(){
 
 	  function fixDiv() {
 	  	var w_win = $(window).width();
-    	var w = 926 - 40;
+    	var w = w_win - 100;
     	var venue = (w_win - w)/2 - 18;
 	    var $cache = $('.redevent-timeline .scrollbar');
+	    var w_scroll = w_win - 50 - venue;
 	    if ($(window).scrollTop() > 350)
 	      $cache.css({
 	        'position': 'fixed',
 	        'z-index': '999',
 	        'left': venue,
-	        'padding-left': '0',
-	        'top': '0'
+	        'padding-left': '20px',
+	        'top': '0',
+	        'width': w_scroll
 	      });
 	    else
 	      $cache.css({
@@ -611,4 +631,68 @@ function pad(){
 	  }
 	  $(window).scroll(fixDiv);
 	  fixDiv();
+	  
+	  
+	  $('#above-main ul.nyheder').each(function() {
+    var selecta = $(document.createElement('select')).insertBefore($(this).hide());
+    selecta.className = "nyheder";
+    $('>li a', this).each(function() {
+        var a = $(this).click(function() {
+            if ($(this).attr('target')==='_blank') {
+                window.open(this.href);
+            }
+            else {
+                window.location.href = this.href;
+            }
+        }),
+        option = $(document.createElement('option')).appendTo(selecta).val(this.href).html($(this).html()).click(function() {
+            a.click();
+        });
+    });
 });
+	  $('#above-main select').insertAfter(".blog h2");
+	  
+	  
+	   $(function(){
+      // bind change event to select
+      var link = $("#above-main ul li.active a").attr("href");
+      $('.blog select').bind('change', function (index) {
+          var url = $(this).val(); // get selected value
+
+          if (url) { // require a URL
+              window.location = url; // redirect
+          }
+          
+          link = url;
+          //return false;
+      });
+      var root = window.location.protocol + '//' + window.location.host;
+      var fulllink = root+link;
+      
+      $('select option[value="'+ fulllink +'"]').attr('selected',true);
+    });
+});
+
+
+function createCookie(name,value,days) {
+	
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime()+(days*24*60*60*1000));
+    var expires = "; expires="+date.toGMTString();
+  }
+  else var expires = "";
+  document.cookie = name+"="+value+expires+"; path='http://hcafestivals.dk/da/timeline'";
+  console.log(document.cookie);
+}
+
+function readCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
