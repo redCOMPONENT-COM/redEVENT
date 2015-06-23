@@ -142,7 +142,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
    					<?php echo JHTML::link($editsessionLink,
    					                       RedeventHelperOutput::formatEventDateTime($row),
    					                       array('class' => 'hasTooltip',
-   					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'<br/>'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
+   					                             'title' => '<strong>' . JText::_('COM_REDEVENT_EDIT_XREF' ).'</strong><br/>'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
     				<?php else: ?>
    					<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
    					<?php endif; ?>
