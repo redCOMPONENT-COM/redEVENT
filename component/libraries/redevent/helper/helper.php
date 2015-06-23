@@ -1137,7 +1137,7 @@ class RedeventHelper
 			$direction = ($direction == 'desc') ? 'asc' : 'desc';
 		}
 
-		$html = '<a href="#" ordercol="' . $order . '" orderdir="' . $direction . '" class="ajaxsortcolumn" title="'
+		$html = '<a href="#" ordercol="' . $order . '" orderdir="' . $direction . '" class="ajaxsortcolumn hasTooltip" title="'
 		. JText::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
 		$html .= JText::_($title);
 
