@@ -9,22 +9,22 @@ jQuery(document).ready(function($){
 	}
 
 	var visited = readCookie('mypopup');
-	var url = window.location.href; 
+	var url = window.location.href;
 	if (!visited && url=='http://hcafestivals.dk/da/timeline') {
-	  $(document).ready(function(){
-	    var url = 'http://hcafestivals.dk/da/popup';
-		SqueezeBox.open(url, {handler: 'iframe', size: {x: 600, y: 350}});
-	    createCookie('mypopup','no',0);
-	  });
+		$(document).ready(function(){
+			var url = 'http://hcafestivals.dk/da/popup';
+			SqueezeBox.open(url, {handler: 'iframe', size: {x: 600, y: 350}});
+			createCookie('mypopup','no',0);
+		});
 	}
 
 
 	$('body').click(function() {
-	   $('.search .box').css({
+		$('.search .box').css({
 			display: 'none'
-	   });
+		});
 	});
-	  $('input#mod-search-searchword').click(function(event) {
+	$('input#mod-search-searchword').click(function(event) {
 		event.stopPropagation();
 	});
 	$('a#modsearch').click(function(event) {
@@ -51,7 +51,7 @@ jQuery(document).ready(function($){
 		$(".wrapper-menu ul.nav.menu ul.dropdown-menu").each(function() {
 			//var lis = $(this).find("li");
 			$(this).find("> li").each(function() {
-				 var $this = $(this);
+				var $this = $(this);
 
 				ulWidth += $this.innerWidth();
 
@@ -149,7 +149,7 @@ jQuery(document).ready(function($){
 
 			if (id != 'date')
 				$("#divselect" + id).append('<li id="' + i + '" class="option' + i + '"><div class="img-type-session"></div>' + '<span>'+$(this).text() + '</span></li>');
-			
+
 
 			i++;
 		}
@@ -163,31 +163,28 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	var countli = $( "#divselect6 >li" ).length;
-    var selectedtypetest = [];
-    $('#filtercustom6 :selected').each(function(i, selected){
-		  selectedtypetest[i] = $(selected).text();
+	// Get selected options text
+	var selectedtypetext = $('#filtercustom6 :selected').get().map(function(selected){
+		return $(selected).text();
 	});
-	var length=selectedtypetest.length;
-		for(var i=0;i<length;i++)
+
+	// Highlight matching elements in ul list
+	$('#divselect6').find('li').each(function()
+	{
+		if (selectedtypetext.indexOf($(this).text()) > -1)
 		{
-			$('#divselect6').find('li').each(function()
-			{
-				if($(this).text() == selectedtypetest[i])
-				{
-					$(this).addClass('img-type-session-hover-active');
-				}
-			});
+			$(this).addClass('img-type-session-hover-active');
 		}
-	
+	});
+
 	$("ul#divselect7").find('li').click(function(){
-		
+
 		var a = $(this).parent().attr('id');
 		var id = a.replace("divselect", "");
 		//$('#filtercustom' + id + ' option').eq($(this).attr('id')).prop('selected', true);
 		var selectedage1 = [];
 		$('#filtercustom7 :selected').each(function(i, selected){
-		  selectedage1[i] = $(selected).text();
+			selectedage1[i] = $(selected).text();
 		});
 		var length=selectedage1.length;
 		for(var i=0;i<length;i++)
@@ -203,101 +200,112 @@ jQuery(document).ready(function($){
 				$('#filtercustom' + id + ' option').eq($(this).attr('id')).prop('selected', true);
 			}
 		}
-		
+
 		$('#adminForm').submit();
-		
+
 
 	});
+
 	$("ul#divselect6").find('li').click(function(){
 
-		
-		$(this).submit(function(){ 
+		$(this).submit(function(){
 			$(this).addClass('active');
 		});
+
 		var a = $(this).parent().attr('id');
-		var id = a.replace("divselect", "");
+		var fieldId = a.replace("divselect", "");
+
 		//for type
 		var selectedtypes = [];
-		$('#filtercustom6 :selected').each(function(i, selected){
-		  selectedtypes[i] = $(selected).text();
+
+		$('#filtercustom6 :selected').get().each(function(i, selected){
+			selectedtypes.push($(selected).text());
 		});
+
+		//var thisIndex = selectedtypes.indexOf($(this).text());
+		//
+		//if (thisIndex) {
+		//	$('#filtercustom' + thisIndex + ' option').eq($(this).attr('id')).prop('selected', false);
+		//}
+
 		var length1=selectedtypes.length;
 		for(var i=0;i<length1;i++)
 		{
 			if($(this).text() == selectedtypes[i])
 			{
-				$('#filtercustom' + id + ' option').eq($(this).attr('id')).prop('selected', false);
+				$('#filtercustom' + fieldId + ' option').eq($(this).attr('id')).prop('selected', false);
 				break;
 			}
 			else
 			{
-				
-				$('#filtercustom' + id + ' option').eq($(this).attr('id')).prop('selected', true);
-
-				
+				$('#filtercustom' + fieldId + ' option').eq($(this).attr('id')).prop('selected', true);
 			}
 		}
-		
-		$('#adminForm').submit();
-		
-		
 
+		$('#adminForm').submit();
 	});
 
-	$('ul#divselect6').before('<div class="type">Jeg er interesseret i<span class="valuetypefilter">Alle</span></div>');
+	$('ul#divselect6').before(
+		'<div class="type">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_LABEL_TYPE')
+		+ '<span class="valuetypefilter">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_ALL') + '</span></div>'
+	);
 	$('ul#divselect6').addClass('hiddentype');
-	
+
 	$('.type').toggle(
-		  function() {
-		  	
-		    $('ul#divselect6').removeClass('hiddentype');$('ul#divselect7').removeClass().addClass('hiddentype');
-		  }, function() {
-		    $('ul#divselect6').addClass('hiddentype');
-		  }
+		function() {
+
+			$('ul#divselect6').removeClass('hiddentype');$('ul#divselect7').removeClass().addClass('hiddentype');
+		}, function() {
+			$('ul#divselect6').addClass('hiddentype');
+		}
 	);
 
 	$(document).click(function(e) {
-	    var target = e.target;
-	    if (!$(target).is('.type') && !$(target).parents().is('.type')) {
-	       $('ul#divselect6').removeClass().addClass('hiddentype');
-	    }
+		var target = e.target;
+		if (!$(target).is('.type') && !$(target).parents().is('.type')) {
+			$('ul#divselect6').removeClass().addClass('hiddentype');
+		}
 	});
 	$(document).click(function(e) {
-	    var target = e.target;
-	    if (!$(target).is('.agefilter') && !$(target).parents().is('.type')) {
-	       $('ul#divselect7').removeClass().addClass('hiddentype');
-	    }
+		var target = e.target;
+		if (!$(target).is('.agefilter') && !$(target).parents().is('.type')) {
+			$('ul#divselect7').removeClass().addClass('hiddentype');
+		}
 	});
 
 
-	$('ul#divselect7').before('<div class="agefilter">Jeg vil se arrangementer for <span class="valueagefilter" style="width: auto;">Alle</span></div>');
+	$('ul#divselect7').before(
+		'<div class="agefilter">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_LABEL_AGE')
+		+ '<span class="valueagefilter" style="width: auto;">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_ALL') + '</span></div>'
+	);
 	$('ul#divselect7').addClass('hiddentype');
 	$('.agefilter').toggle(
-		  function() {
-		    $('ul#divselect7').removeClass('hiddentype');$('ul#divselect6').removeClass().addClass('hiddentype');
-		  }, function() {
-		    $('ul#divselect7').addClass('hiddentype');
-		  }
+		function() {
+			$('ul#divselect7').removeClass('hiddentype');$('ul#divselect6').removeClass().addClass('hiddentype');
+		}, function() {
+			$('ul#divselect7').addClass('hiddentype');
+		}
 	);
 	$('ul#divselect6 li').each(function(e)
 	{
 		$(this).hover(
-		  function() {
-		    $( this ).addClass('img-type-session-hover');
-		  }, function() {
-		    $( this ).removeClass('img-type-session-hover');
-		  }
+			function() {
+				$( this ).addClass('img-type-session-hover');
+			}, function() {
+				$( this ).removeClass('img-type-session-hover');
+			}
 		);
 	});
 
 	$('.timeline-sessions-wrapper .timeline-sessions .time-marker').height($('.timeline-sessions-wrapper .timeline-sessions').height());
 	$('.redevent-timeline .timeline-sessions-wrapper').css('width', $(window).width()+'px');
-	
+
 	//get value of multiple selected type
 	var selectedtype = [];
-	$('#filtercustom6 :selected').each(function(i, selected){
-	  selectedtype[i] = $(selected).text();
+	$('#filtercustom6 :selected, #filtercustom9 :selected').each(function(i, option){
+		selectedtype.push(option);
 	});
+
 	$contentfacesession='<div><img src="/templates/hcafestivals/images/pink.png" width="39px" height="29px"/></div>';
 	$contentkitesession='<div><img src="/templates/hcafestivals/images/dieu.png" width="35px" height="34px"/></div>';
 
@@ -305,49 +313,47 @@ jQuery(document).ready(function($){
 	$contentbooksession='<div><img src="/templates/hcafestivals/images/book.png" width="36px" height="25px"/></div>';
 	$contentartsession='<div><img src="/templates/hcafestivals/images/draw.png" width="30px" height="28px"/></div>';
 	$contentspokensession='<div><img src="/templates/hcafestivals/images/spoken-word-type.png" width="39px" height="29px"/></div>';
-	$.each(selectedtype, function( index, value ) {
-  		
-	    if(value == 'Underholdning og teater')
-	    {
-	    	$('.valuetypefilter').empty();
 
-	    	$('.type').append($contentfacesession);
-			
-			
-	    }
-	    else if(value == 'Leg og læring')
-	    {
-	    	$('.valuetypefilter').empty();
-	    	$('.type').append($contentkitesession);
-	    }
-	    else if(value == 'Musik')
-	    {
-	    	$('.valuetypefilter').empty();
-	    	$('.type').append($contentmusicsession);
-	    }
-	    else if(value == 'Kulturformidling')
-	    {
-	    	$('.valuetypefilter').empty();
-	    	$('.type').append($contentbooksession);
-	    }
-	    else if(value == 'Kunst og kultur')
-	    {
-	    	$('.valuetypefilter').empty();
-	    	$('.type').append($contentartsession);
-	    }
-	    else if(value == 'Spoken Word Festival')
-	    {
-	    	$('.valuetypefilter').empty();
-	    	$('.type').append($contentspokensession);
-	    }
+	$.each(selectedtype, function(index, option) {
+		if(option.value == 'Underholdning og teater')
+		{
+			$('.valuetypefilter').empty();
+			$('.type').append($contentfacesession);
+		}
+		else if(option.value == 'Leg og læring')
+		{
+			$('.valuetypefilter').empty();
+			$('.type').append($contentkitesession);
+		}
+		else if(option.value == 'Musik')
+		{
+			$('.valuetypefilter').empty();
+			$('.type').append($contentmusicsession);
+		}
+		else if(option.value == 'Kulturformidling')
+		{
+			$('.valuetypefilter').empty();
+			$('.type').append($contentbooksession);
+		}
+		else if(option.value == 'Kunst og kultur')
+		{
+			$('.valuetypefilter').empty();
+			$('.type').append($contentartsession);
+		}
+		else if(option.value == 'Spoken Word Festival')
+		{
+			$('.valuetypefilter').empty();
+			$('.type').append($contentspokensession);
+		}
+	});
+
 	//get value of multiple selected age
 	var selectedage = [];
 	$('#filtercustom7 :selected').each(function(i, selected){
-	  selectedage[i] = $(selected).text();
-	});   
-	
-	$.each(selectedage, function( index, value ) {
-		
+		selectedage.push($(selected).text());
+	});
+
+	$.each(selectedage, function(index, value) {
 		if(index==1)
 		{
 			$('.valueagefilter').html('<span >'+selectedage[0]+'   & '+ selectedage[1] + '</span>');
@@ -362,66 +368,66 @@ jQuery(document).ready(function($){
 			$('.valueagefilter').html('<span >'+selectedage[0]+'</span>');
 			$('.valueagefilter').css('margin-top','0');
 		}
-		
-	});      
-	  
 	});
-	
+
 
 	// Su check date
 
 
-	$('ul#divselectdate').before('<div class="date-filter">Jeg vil se programmet for<span class="valuedatefilter">Alle</span></div>');
-	$('ul#divselectdate').addClass('hiddentype');
-	
-	$('.date-filter').toggle(
-		  function() {
-		  	
-		    $('ul#divselectdate').removeClass('hiddentype');
-		  }, function() {
-		    $('ul#divselectdate').addClass('hiddentype');
-		  }
+	$('ul#divselectdate').before(
+		'<div class="date-filter">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_LABEL_DAY') + '<span class="valuedatefilter">'
+		+ Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_ALL') + '</span></div>'
 	);
-	
+	$('ul#divselectdate').addClass('hiddentype');
+
+	$('.date-filter').toggle(
+		function() {
+
+			$('ul#divselectdate').removeClass('hiddentype');
+		}, function() {
+			$('ul#divselectdate').addClass('hiddentype');
+		}
+	);
+
 	$(document).click(function(e) {
-	    var target = e.target;
-	    if (!$(target).is('.date-filter') && !$(target).parents().is('.date-filter')) {
-	       $('ul#divselectdate').removeClass().addClass('hiddentype');
-	    }
+		var target = e.target;
+		if (!$(target).is('.date-filter') && !$(target).parents().is('.date-filter')) {
+			$('ul#divselectdate').removeClass().addClass('hiddentype');
+		}
 	});
 
-/*	$("#filter_date option").filter(function() {
-	    //may want to use $.trim in here
-	    return $(this).text() == '2015-08-16'; 
-	}).attr('selected', true);*/
-	    
+	/*	$("#filter_date option").filter(function() {
+	 //may want to use $.trim in here
+	 return $(this).text() == '2015-08-16';
+	 }).attr('selected', true);*/
 
-    $("#divselectdate li").removeClass('active');
-    var filter_date = $('#filter_date').val();
+	var days = [
+		Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_DAY3_SUN'),
+		Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_DAY3_MON'),
+		Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_DAY3_TUE'),
+		Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_DAY3_WED'),
+		Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_DAY3_THU'),
+		Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_DAY3_FRI'),
+		Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_DAY3_SAT')
+	];
+
+	$("#divselectdate li").removeClass('active');
+	var filter_date = $('#filter_date').val();
 
 	// Add option for li on filter_date
 	$('#filter_date option').each(function(i){
 		var index = i + 1;
 		//var additionClass = ($(this).is(':selected')) ? ' active' : '';
-		var days = [
-		    'søn',
-		    'man',
-		    'tir',
-		    'ons',
-		    'tor',
-		    'fre',
-		    'lør'
-		];
 		var d = new Date($(this).text());
 		var dayName = days[d.getDay()];
 		var date = d.getDate();
 		var month = d.getMonth() + 1;
 		var fulldate = dayName + '<span>' + date + '/' + month + '</span>';
-		
+
 		var opClass = 'option' + index;
-		
+
 		if ($(this).val() == filter_date) {
-			opClass += ' active';		
+			opClass += ' active';
 		}
 
 		$('<li>').attr('id', index)
@@ -439,260 +445,254 @@ jQuery(document).ready(function($){
 
 		$('#adminForm').submit();
 	});
-	
+
 	var selecteddag = [];
 	$('#filter_date :selected').each(function(i, selected){
-	  selecteddag[i] = $(selected).text();
+		selecteddag[i] = $(selected).text();
 	});
 
-
-	var days = [
-	    'søn',
-	    'man',
-	    'tir',
-	    'ons',
-	    'tor',
-	    'fre',
-	    'lør'
-	];
-
-    $.each(selecteddag, function( index, value ) {
+	$.each(selecteddag, function( index, value ) {
 		var d = new Date(value);
 		var dayName = days[d.getDay()];
 		var date = d.getDate();
 		var month = d.getMonth() + 1;
 
-    	$('.valuedatefilter').html(dayName + '<span>' + date + '/' + month + '</span>');
+		$('.valuedatefilter').html(dayName + '<span>' + date + '/' + month + '</span>');
 
-	 });
-    /* end check date */
+	});
+	/* end check date */
 
-    /* check filter_venuecategory */
-    	$("ul#divselectvenuecategory li.option1").before('<li id="0" class="option0">Vælg mødested kategori</li>');
-	    $('ul#divselectvenuecategory').before('<div class="venue-filter">Venue<span class="valuevenuefilter">Alle</span></div>');
-		$('ul#divselectvenuecategory').addClass('hiddentype');
-		
-		$('.venue-filter').toggle(
-			  function() {
-			  	
-			    $('ul#divselectvenuecategory').removeClass('hiddentype');
-			  }, function() {
-			    $('ul#divselectvenuecategory').addClass('hiddentype');
-			  }
-		);
-		
-		$(document).click(function(e) {
-		    var target = e.target;
-		    if (!$(target).is('.venue-filter') && !$(target).parents().is('.venue-filter')) {
-		       $('ul#divselectvenuecategory').removeClass().addClass('hiddentype');
-		    }
+	/* check filter_venuecategory */
+	//$("ul#divselectvenuecategory li.option1").before('<li id="0" class="option0">Vælg mødested kategori</li>');
+	$("ul#divselectvenuecategory li.option1").before('<li id="0" class="option0">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTERCATEGORY_SELECT') + '</li>');
+
+	//$('ul#divselectvenuecategory').before('<div class="venue-filter">Venue<span class="valuevenuefilter">Alle</span></div>');
+	$('ul#divselectvenuecategory').before('<div class="venue-filter">'
+	+ Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_LABEL_VENUE') + '<span class="valuevenuefilter">'
+	+ Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_ALL') + '</span></div>');
+	$('ul#divselectvenuecategory').addClass('hiddentype');
+
+	$('.venue-filter').toggle(
+		function() {
+
+			$('ul#divselectvenuecategory').removeClass('hiddentype');
+		}, function() {
+			$('ul#divselectvenuecategory').addClass('hiddentype');
+		}
+	);
+
+	$(document).click(function(e) {
+		var target = e.target;
+		if (!$(target).is('.venue-filter') && !$(target).parents().is('.venue-filter')) {
+			$('ul#divselectvenuecategory').removeClass().addClass('hiddentype');
+		}
+	});
+
+	// Add option for li on filter_venue
+	$('#filter_venuecategory option').each(function(i){
+		var index = i + 1;
+		var additionClass = ($(this).is(':selected')) ? ' active' : '';
+
+		$('<li>').attr('id', index)
+			.addClass('option' + index + ' ' + additionClass)
+			.attr('val', $(this).text())
+			.append($('<div>').addClass('img-type-session ' + additionClass))
+			.append($('<span>').html($(this).text()));
+		//.appendTo($('#divselectvenuecategory'));
+	});
+
+
+	$('ul#divselectvenuecategory').on("click", "li", function (event) {
+
+		var selectedvenuetest = [];
+
+		var a = $(this).parent().attr('id');
+		var id = a.replace("divselect", "");
+
+		$('#filter_venuecategory :selected').each(function(i, selected){
+			selectedvenuetest[i] = $(selected).text();
 		});
+		var length1=selectedvenuetest.length;
 
-		// Add option for li on filter_venue
-		$('#filter_venuecategory option').each(function(i){
-			var index = i + 1;
-			var additionClass = ($(this).is(':selected')) ? ' active' : '';
-			
-			$('<li>').attr('id', index)
-				.addClass('option' + index + ' ' + additionClass)
-				.attr('val', $(this).text())
-				.append($('<div>').addClass('img-type-session ' + additionClass))
-				.append($('<span>').html($(this).text()));
-				//.appendTo($('#divselectvenuecategory'));
-		});
-
-
-		$('ul#divselectvenuecategory').on("click", "li", function (event) {
-
-			var selectedvenuetest = [];
-
-			var a = $(this).parent().attr('id');
-			var id = a.replace("divselect", "");
-
-			$('#filter_venuecategory :selected').each(function(i, selected){
-			  selectedvenuetest[i] = $(selected).text();
-			});
-			var length1=selectedvenuetest.length;
-
-			for(var i=0;i<length1;i++)
+		for(var i=0;i<length1;i++)
+		{
+			if($(this).attr('val') == selectedvenuetest)
 			{
-				if($(this).attr('val') == selectedvenuetest)
-				{
-					$('#filter_' + id + ' option').eq($(this).attr('id')).prop('selected', false);
-					break;
-				}
-				else
-				{
-					
-					$('#filter_' + id + ' option').eq($(this).attr('id')).prop('selected', true);
+				$('#filter_' + id + ' option').eq($(this).attr('id')).prop('selected', false);
+				break;
+			}
+			else
+			{
 
-					
-				}
+				$('#filter_' + id + ' option').eq($(this).attr('id')).prop('selected', true);
+
+
+			}
+		}
+
+		$('#adminForm').submit();
+	});
+
+
+
+	var selectedvenue = [];
+	$('#filter_venuecategory :selected').each(function(i, selected){
+		selectedvenue[i] = $(selected).text();
+	});
+
+	$.each(selectedvenue, function( index, value ) {
+
+		$('.valuevenuefilter').html(value);
+
+	});
+
+
+	/* end check filter_venuecategory */
+
+	$(".event-map.venuemap").text("Se arrangementet på kortet");
+
+	$("#sessions .session-status .session-paid a").before('<label></label>');
+	$("#midle-top1 .readmore_button").find("a").each(function() {
+		var text = $(this).text();
+		if (text == "")
+			$(this).css('display', 'none');
+	});
+
+	$(".btn-reset-filter-redvent").click(function() {
+		/* Act on the event */
+		$('#filter_date').prop('selectedIndex',3);
+		$('#filter_venuecategory').prop('selectedIndex',0);
+		$('#filtercustom6').prop('selectedIndex',0);
+		$('#filtercustom7').prop('selectedIndex',0);
+	});
+
+	$( window ).resize(function() {
+		pad();
+	});
+	pad();
+
+	function pad(){
+		var w_win = $(window).width();
+		var w = 926 - 40;
+		var padding = (w_win - w)/2;
+
+		$(".timeline-wrapper .venues-list").css("padding-left", padding);
+		//$(".scrollbar .sessions-left").css("width", $(".timeline-wrapper .venues-list").woth);
+
+
+		var venue = $('.venues-list').width();
+
+		var w_ss = 926 - venue - 30;
+
+		$(".scrollbar .sessions-left").width(venue);
+		$(".scrollbar .sessions-time").width(w_ss);
+	}
+
+
+
+	function getUrlParameter(sParam)
+	{
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++)
+		{
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam)
+			{
+				return sParameterName[1];
+			}
+		}
+	}
+
+
+	function fixDiv() {
+		var w_win = $(window).width();
+		var w = w_win - 100;
+		var venue = (w_win - w)/2 - 18;
+		var $cache = $('.redevent-timeline .scrollbar');
+		var w_scroll = w_win - 50 - venue;
+		if ($(window).scrollTop() > 350)
+			$cache.css({
+				'position': 'fixed',
+				'z-index': '999',
+				'left': venue,
+				'padding-left': '20px',
+				'top': '0',
+				'width': w_scroll
+			});
+		else
+			$cache.css({
+				'position': 'relative',
+				'left': 'auto',
+				'padding-left': '0',
+				'top': 'auto'
+
+			});
+	}
+	$(window).scroll(fixDiv);
+	fixDiv();
+
+
+	$('#above-main ul.nyheder').each(function() {
+		var selecta = $(document.createElement('select')).insertBefore($(this).hide());
+		selecta.className = "nyheder";
+		$('>li a', this).each(function() {
+			var a = $(this).click(function() {
+					if ($(this).attr('target')==='_blank') {
+						window.open(this.href);
+					}
+					else {
+						window.location.href = this.href;
+					}
+				}),
+				option = $(document.createElement('option')).appendTo(selecta).val(this.href).html($(this).html()).click(function() {
+					a.click();
+				});
+		});
+	});
+	$('#above-main select').insertAfter(".blog h2");
+
+
+	$(function(){
+		// bind change event to select
+		var link = $("#above-main ul li.active a").attr("href");
+		$('.blog select').bind('change', function (index) {
+			var url = $(this).val(); // get selected value
+
+			if (url) { // require a URL
+				window.location = url; // redirect
 			}
 
-			$('#adminForm').submit();
+			link = url;
+			//return false;
 		});
+		var root = window.location.protocol + '//' + window.location.host;
+		var fulllink = root+link;
 
-
-
-		var selectedvenue = [];
-		$('#filter_venuecategory :selected').each(function(i, selected){
-		  selectedvenue[i] = $(selected).text();
-		});
-
-	    $.each(selectedvenue, function( index, value ) {
-
-	    	$('.valuevenuefilter').html(value);
-
-		 });
-
-
-	/* end check filter_venuecategory */    
-
-    $(".event-map.venuemap").text("Se arrangementet på kortet");
-
-    $("#sessions .session-status .session-paid a").before('<label></label>');
-    $("#midle-top1 .readmore_button").find("a").each(function() {
-    	var text = $(this).text();
-    	if (text == "")
-    		$(this).css('display', 'none');
-    });
-
-    $(".btn-reset-filter-redvent").click(function() {
-    	/* Act on the event */
-    	$('#filter_date').prop('selectedIndex',3);
-    	$('#filter_venuecategory').prop('selectedIndex',0);
-    	$('#filtercustom6').prop('selectedIndex',0);
-    	$('#filtercustom7').prop('selectedIndex',0);
-    });
-
-$( window ).resize(function() {
-	pad();
-});
-pad();
-
-function pad(){
-    var w_win = $(window).width();
-    var w = 926 - 40;
-    var padding = (w_win - w)/2;
-
-    $(".timeline-wrapper .venues-list").css("padding-left", padding);
-    //$(".scrollbar .sessions-left").css("width", $(".timeline-wrapper .venues-list").woth);
-
-    
-  var venue = $('.venues-list').width();
-    
-    var w_ss = 926 - venue - 30;
-    
-     $(".scrollbar .sessions-left").width(venue);
-    $(".scrollbar .sessions-time").width(w_ss);
-}
-
-
-
-    function getUrlParameter(sParam)
-    {
-        var sPageURL = window.location.search.substring(1);
-        var sURLVariables = sPageURL.split('&');
-        for (var i = 0; i < sURLVariables.length; i++)
-        {
-            var sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] == sParam)
-            {
-                return sParameterName[1];
-            }
-        }
-    }
-
-
-	  function fixDiv() {
-	  	var w_win = $(window).width();
-    	var w = w_win - 100;
-    	var venue = (w_win - w)/2 - 18;
-	    var $cache = $('.redevent-timeline .scrollbar');
-	    var w_scroll = w_win - 50 - venue;
-	    if ($(window).scrollTop() > 350)
-	      $cache.css({
-	        'position': 'fixed',
-	        'z-index': '999',
-	        'left': venue,
-	        'padding-left': '20px',
-	        'top': '0',
-	        'width': w_scroll
-	      });
-	    else
-	      $cache.css({
-	        'position': 'relative',
-	        'left': 'auto',
-	        'padding-left': '0',
-	        'top': 'auto'
-
-	      });
-	  }
-	  $(window).scroll(fixDiv);
-	  fixDiv();
-	  
-	  
-	  $('#above-main ul.nyheder').each(function() {
-    var selecta = $(document.createElement('select')).insertBefore($(this).hide());
-    selecta.className = "nyheder";
-    $('>li a', this).each(function() {
-        var a = $(this).click(function() {
-            if ($(this).attr('target')==='_blank') {
-                window.open(this.href);
-            }
-            else {
-                window.location.href = this.href;
-            }
-        }),
-        option = $(document.createElement('option')).appendTo(selecta).val(this.href).html($(this).html()).click(function() {
-            a.click();
-        });
-    });
-});
-	  $('#above-main select').insertAfter(".blog h2");
-	  
-	  
-	   $(function(){
-      // bind change event to select
-      var link = $("#above-main ul li.active a").attr("href");
-      $('.blog select').bind('change', function (index) {
-          var url = $(this).val(); // get selected value
-
-          if (url) { // require a URL
-              window.location = url; // redirect
-          }
-          
-          link = url;
-          //return false;
-      });
-      var root = window.location.protocol + '//' + window.location.host;
-      var fulllink = root+link;
-      
-      $('select option[value="'+ fulllink +'"]').attr('selected',true);
-    });
+		$('select option[value="'+ fulllink +'"]').attr('selected',true);
+	});
 });
 
 
 function createCookie(name,value,days) {
-	
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime()+(days*24*60*60*1000));
-    var expires = "; expires="+date.toGMTString();
-  }
-  else var expires = "";
-  document.cookie = name+"="+value+expires+"; path='http://hcafestivals.dk/da/timeline'";
-  console.log(document.cookie);
+
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path='http://hcafestivals.dk/da/timeline'";
+	console.log(document.cookie);
 }
 
 function readCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
-  for(var i=0;i < ca.length;i++) {
-    var c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  }
-  return null;
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
 }

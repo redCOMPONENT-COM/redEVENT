@@ -170,6 +170,22 @@ class RedeventViewTimeline extends RViewSite
 
 		$this->sortedRows = $this->timelineProcessData($this->rows);
 
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_ALL');
+
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_LABEL_DAY');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_DAY3_SUN');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_DAY3_MON');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_DAY3_TUE');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_DAY3_WED');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_DAY3_THU');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_DAY3_FRI');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_DAY3_SAT');
+
+		JText::script('COM_REDEVENT_TIMELINE_FILTERCATEGORY_SELECT');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_LABEL_VENUE');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_LABEL_TYPE');
+		JText::script('COM_REDEVENT_TIMELINE_FILTER_LABEL_AGE');
+
 		parent::display($tpl);
 	}
 

@@ -882,11 +882,18 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getCustomFilters()
 	{
-		$query = ' SELECT f.* FROM #__redevent_fields AS f '
-		. ' WHERE f.published = 1 '
-		. '   AND f.searchable = 1 '
-		//           . '   AND f.object_key = '. $this->_db->Quote("redevent.event")
-		. ' ORDER BY f.ordering ASC ';
+		$query = $this->_db->getQuery(true)
+			->select('f.*')
+			->from('#__redevent_fields AS f')
+			->where('f.published = 1')
+			->where('f.searchable = 1')
+			->order('f.ordering ASC');
+
+		if ($this->getState('filter.language'))
+		{
+			$query->where('(f.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR f.language IS NULL)');
+		}
+
 		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
 
