@@ -33,13 +33,13 @@ jQuery(document).ready(function($){
 		{
 			$('.search .box').css({
 				display: 'block',
-				opacity: 1,
+				opacity: 1
 			});
 		}
 		else{
 			$('.search .box').css({
 				display: 'none',
-				opacity: 0,
+				opacity: 0
 			});
 		}
 
@@ -169,7 +169,7 @@ jQuery(document).ready(function($){
 	});
 
 	// Highlight matching elements in ul list
-	$('#divselect6').find('li').each(function()
+	$('#divselect6, #divselect9').find('li').each(function()
 	{
 		if (selectedtypetext.indexOf($(this).text()) > -1)
 		{
@@ -177,36 +177,8 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	$("ul#divselect7").find('li').click(function(){
-
-		var a = $(this).parent().attr('id');
-		var id = a.replace("divselect", "");
-		//$('#filtercustom' + id + ' option').eq($(this).attr('id')).prop('selected', true);
-		var selectedage1 = [];
-		$('#filtercustom7 :selected').each(function(i, selected){
-			selectedage1[i] = $(selected).text();
-		});
-		var length=selectedage1.length;
-		for(var i=0;i<length;i++)
-		{
-			if($(this).text() == selectedage1[i])
-			{
-				$('#filtercustom' + id + ' option').eq($(this).attr('id')).prop('selected', false);
-				break;
-			}
-			else
-			{
-
-				$('#filtercustom' + id + ' option').eq($(this).attr('id')).prop('selected', true);
-			}
-		}
-
-		$('#adminForm').submit();
-
-
-	});
-
-	$("ul#divselect6").find('li').click(function(){
+	// Toggle selected state of items on clicking
+	$("ul#divselect6, ul#divselect7, ul#divselect9, ul#divselect10").find('li').click(function(){
 
 		$(this).submit(function(){
 			$(this).addClass('active');
@@ -216,77 +188,68 @@ jQuery(document).ready(function($){
 		var fieldId = a.replace("divselect", "");
 
 		//for type
-		var selectedtypes = [];
-
-		$('#filtercustom6 :selected').get().each(function(i, selected){
-			selectedtypes.push($(selected).text());
+		var selectedtypes = $('#filtercustom' + fieldId + ' :selected').get().map(function(selected){
+			 return $(selected).text();
 		});
 
-		//var thisIndex = selectedtypes.indexOf($(this).text());
-		//
-		//if (thisIndex) {
-		//	$('#filtercustom' + thisIndex + ' option').eq($(this).attr('id')).prop('selected', false);
-		//}
+		var selected = selectedtypes.indexOf($(this).text()) > -1;
 
-		var length1=selectedtypes.length;
-		for(var i=0;i<length1;i++)
-		{
-			if($(this).text() == selectedtypes[i])
-			{
-				$('#filtercustom' + fieldId + ' option').eq($(this).attr('id')).prop('selected', false);
-				break;
-			}
-			else
-			{
-				$('#filtercustom' + fieldId + ' option').eq($(this).attr('id')).prop('selected', true);
-			}
-		}
+		// Toggle selected state
+		$('#filtercustom' + fieldId + ' option').eq($(this).attr('id')).prop('selected', !selected);
 
 		$('#adminForm').submit();
 	});
 
-	$('ul#divselect6').before(
+	// age filter label
+	$('ul#divselect6, ul#divselect9').before(
 		'<div class="type">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_LABEL_TYPE')
 		+ '<span class="valuetypefilter">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_ALL') + '</span></div>'
 	);
-	$('ul#divselect6').addClass('hiddentype');
+	$('ul#divselect6, ul#divselect9').addClass('hiddentype');
 
+	// toggle type filter
 	$('.type').toggle(
 		function() {
-
-			$('ul#divselect6').removeClass('hiddentype');$('ul#divselect7').removeClass().addClass('hiddentype');
-		}, function() {
-			$('ul#divselect6').addClass('hiddentype');
+			$('ul#divselect6, ul#divselect9').removeClass('hiddentype');
+		},
+		function() {
+			$('ul#divselect6, ul#divselect9').addClass('hiddentype');
 		}
 	);
 
+	// Hide selector when clicking away
 	$(document).click(function(e) {
 		var target = e.target;
 		if (!$(target).is('.type') && !$(target).parents().is('.type')) {
-			$('ul#divselect6').removeClass().addClass('hiddentype');
+			$('ul#divselect6, ul#divselect9').removeClass().addClass('hiddentype');
 		}
 	});
+
+	// Hide selector when clicking away
 	$(document).click(function(e) {
 		var target = e.target;
-		if (!$(target).is('.agefilter') && !$(target).parents().is('.type')) {
-			$('ul#divselect7').removeClass().addClass('hiddentype');
+		if (!$(target).is('.agefilter') && !$(target).parents().is('.agefilter')) {
+			$('ul#divselect7, ul#divselect10').removeClass().addClass('hiddentype');
 		}
 	});
 
-
-	$('ul#divselect7').before(
+	// add label to age filter
+	$('ul#divselect7, ul#divselect10').before(
 		'<div class="agefilter">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_LABEL_AGE')
 		+ '<span class="valueagefilter" style="width: auto;">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_ALL') + '</span></div>'
 	);
-	$('ul#divselect7').addClass('hiddentype');
+	$('ul#divselect7, ul#divselect10').addClass('hiddentype');
+
+	// Toggle age filter action
 	$('.agefilter').toggle(
 		function() {
-			$('ul#divselect7').removeClass('hiddentype');$('ul#divselect6').removeClass().addClass('hiddentype');
+			$('ul#divselect7, ul#divselect10').removeClass('hiddentype');
 		}, function() {
-			$('ul#divselect7').addClass('hiddentype');
+			$('ul#divselect7, ul#divselect10').addClass('hiddentype');
 		}
 	);
-	$('ul#divselect6 li').each(function(e)
+
+	$('ul#divselect6 li, ul#divselect9 li').each(function(e)
 	{
 		$(this).hover(
 			function() {
@@ -300,7 +263,7 @@ jQuery(document).ready(function($){
 	$('.timeline-sessions-wrapper .timeline-sessions .time-marker').height($('.timeline-sessions-wrapper .timeline-sessions').height());
 	$('.redevent-timeline .timeline-sessions-wrapper').css('width', $(window).width()+'px');
 
-	//get value of multiple selected type
+	// Display of pictures types
 	var selectedtype = [];
 	$('#filtercustom6 :selected, #filtercustom9 :selected').each(function(i, option){
 		selectedtype.push(option);
@@ -347,29 +310,25 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	//get value of multiple selected age
-	var selectedage = [];
-	$('#filtercustom7 :selected').each(function(i, selected){
-		selectedage.push($(selected).text());
+	// Display of selected age options next to label
+	var selectedage = $('#filtercustom7 :selected, #filtercustom10 :selected').get().map(function(selected){
+		return $(selected).text();
 	});
 
-	$.each(selectedage, function(index, value) {
-		if(index==1)
-		{
+	switch (selectedage.length) {
+		case 3:
+			$('.valueagefilter').html('<span >'+selectedage[0] + ' & ' + selectedage[1] + ' & '+ selectedage[2] + '</span>')
+				.css('margin-top','-13px');
+			break;
+
+		case 2:
 			$('.valueagefilter').html('<span >'+selectedage[0]+'   & '+ selectedage[1] + '</span>');
-		}
-		else if(index==2)
-		{
-			$('.valueagefilter').html('<span >'+selectedage[0] + ' & ' + selectedage[1] + ' & '+ selectedage[2] + '</span>');
-			$('.valueagefilter').css('margin-top','-13px');
-		}
-		else
-		{
-			$('.valueagefilter').html('<span >'+selectedage[0]+'</span>');
-			$('.valueagefilter').css('margin-top','0');
-		}
-	});
+			break;
 
+		default:
+			$('.valueagefilter').html('<span >'+selectedage[0]+'</span>')
+				.css('margin-top','0');
+	}
 
 	// Su check date
 
@@ -463,10 +422,8 @@ jQuery(document).ready(function($){
 	/* end check date */
 
 	/* check filter_venuecategory */
-	//$("ul#divselectvenuecategory li.option1").before('<li id="0" class="option0">Vælg mødested kategori</li>');
 	$("ul#divselectvenuecategory li.option1").before('<li id="0" class="option0">' + Joomla.JText._('COM_REDEVENT_TIMELINE_FILTERCATEGORY_SELECT') + '</li>');
 
-	//$('ul#divselectvenuecategory').before('<div class="venue-filter">Venue<span class="valuevenuefilter">Alle</span></div>');
 	$('ul#divselectvenuecategory').before('<div class="venue-filter">'
 	+ Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_LABEL_VENUE') + '<span class="valuevenuefilter">'
 	+ Joomla.JText._('COM_REDEVENT_TIMELINE_FILTER_ALL') + '</span></div>');
@@ -474,9 +431,9 @@ jQuery(document).ready(function($){
 
 	$('.venue-filter').toggle(
 		function() {
-
 			$('ul#divselectvenuecategory').removeClass('hiddentype');
-		}, function() {
+		},
+		function() {
 			$('ul#divselectvenuecategory').addClass('hiddentype');
 		}
 	);
@@ -533,8 +490,6 @@ jQuery(document).ready(function($){
 		$('#adminForm').submit();
 	});
 
-
-
 	var selectedvenue = [];
 	$('#filter_venuecategory :selected').each(function(i, selected){
 		selectedvenue[i] = $(selected).text();
@@ -562,8 +517,7 @@ jQuery(document).ready(function($){
 		/* Act on the event */
 		$('#filter_date').prop('selectedIndex',3);
 		$('#filter_venuecategory').prop('selectedIndex',0);
-		$('#filtercustom6').prop('selectedIndex',0);
-		$('#filtercustom7').prop('selectedIndex',0);
+		$('#filtercustom6, #filtercustom7, #filtercustom9, #filtercustom10').prop('selectedIndex',0);
 	});
 
 	$( window ).resize(function() {
