@@ -89,7 +89,7 @@ $search = $this->state->get('filter.search');
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_EVENT_TITLE', 'obj.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="100">
-					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_CATEGORY', 'c.name', $listDirn, $listOrder); ?>
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_CATEGORY', 'cat.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="150">
 					<?php echo JText::_('COM_REDEVENT_SESSIONS'); ?>
