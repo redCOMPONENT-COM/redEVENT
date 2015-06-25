@@ -290,7 +290,7 @@ class RedeventModelDetails extends RModel
 				foreach ($fields as $key => $field)
 				{
 					$table_fields[] = 'a.field_' . $field->id;
-					$fields_names['field_' . $field->id] = $field->field_header ?: $field->field ;
+					$fields_names['field_' . $field->id] = $field->field_header ?: $field->field;
 				}
 
 				$query = $this->_db->getQuery(true)

@@ -68,6 +68,7 @@ class RedeventViewFeatured extends RedeventViewSessionlist
 	 */
 	protected function prepareAction()
 	{
+		parent::prepareAction();
 		$this->action = JRoute::_(RedeventHelperRoute::getFeaturedRoute());
 	}
 }

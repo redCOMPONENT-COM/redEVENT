@@ -46,4 +46,16 @@ class RedeventViewSimpleList extends RedeventViewSessionlist
 
 		return $params->get('page_title');
 	}
+
+	/**
+	 * Prepare form action
+	 *
+	 * @return void
+	 */
+	protected function prepareAction()
+	{
+		parent::prepareAction();
+
+		$this->assign('action', RedeventHelperRoute::getSimpleListRoute());
+	}
 }

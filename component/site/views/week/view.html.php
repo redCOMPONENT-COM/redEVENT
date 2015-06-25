@@ -60,6 +60,18 @@ class RedeventViewWeek extends RedeventViewSessionlist
 	}
 
 	/**
+	 * Prepare form action
+	 *
+	 * @return void
+	 */
+	protected function prepareAction()
+	{
+		parent::prepareAction();
+
+		$this->assign('action', RedeventHelperRoute::getWeekRoute());
+	}
+
+	/**
 	 * Get the view title.
 	 *
 	 * @return  string  The view title.

@@ -51,7 +51,7 @@ class RedeventModelEvents extends RModelList
 				'title', 'obj.title',
 				'published', 'obj.published',
 				'id', 'obj.id',
-				'cat.id',
+				'cat.id', 'cat.name'
 			);
 		}
 
