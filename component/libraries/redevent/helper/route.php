@@ -544,13 +544,17 @@ class RedeventHelperRoute
 	 *
 	 * @return string
 	 */
-	public static function getWeekRoute($week)
+	public static function getWeekRoute($week = null)
 	{
 		$parts = array(
 			"option" => "com_redevent",
-			"view"   => 'week',
-			"week"   => $week,
+			"view"   => 'week'
 		);
+
+		if ($week && preg_match('/^([0-9]{4})([0-9]{2})$/', $week))
+		{
+			$parts['week'] = $week;
+		}
 
 		return self::buildUrl($parts);
 	}

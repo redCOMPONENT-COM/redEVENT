@@ -79,6 +79,7 @@ function redeventBuildRoute(&$query)
 
 			break;
 
+		case 'archive':
 		case 'calendar':
 		case 'categoryevents':
 		case 'details':
@@ -471,6 +472,7 @@ function redeventParseRoute($segments)
 
 			break;
 
+		case 'archive':
 		case 'confirmation':
 		case 'calendar':
 		case 'payment':

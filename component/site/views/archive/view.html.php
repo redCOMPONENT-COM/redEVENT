@@ -60,4 +60,16 @@ class RedeventViewArchive extends RedeventViewSessionlist
 
 		return $params->get('page_title');
 	}
+
+	/**
+	 * Prepare form action
+	 *
+	 * @return void
+	 */
+	protected function prepareAction()
+	{
+		parent::prepareAction();
+
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getArchiveRoute()));
+	}
 }

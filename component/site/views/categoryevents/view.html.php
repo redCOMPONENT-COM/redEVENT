@@ -96,7 +96,7 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 	{
 		parent::prepareAction();
 
-		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=categoryevents&id=' . $this->category->id));
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($this->category->id)));
 	}
 
 	/**

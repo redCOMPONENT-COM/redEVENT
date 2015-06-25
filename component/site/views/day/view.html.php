@@ -57,6 +57,7 @@ class RedeventViewDay extends RedeventViewSessionlist
 	 */
 	protected function prepareAction()
 	{
+		parent::prepareAction();
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getDayRoute(JFactory::getApplication()->input->getInt('id'))));
 	}
 }
