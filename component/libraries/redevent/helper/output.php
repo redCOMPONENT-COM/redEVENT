@@ -324,9 +324,9 @@ class RedeventHelperOutput
 				$tip = JText::_('COM_REDEVENT_PRINT_TIP');
 				$text = JText::_('COM_REDEVENT_Print');
 
-				$link = JHtml::link($print_link, $image, array(
-					'onclick' => "window.open(this.href,\'win2\',\'' . $status . '\'); return false;"
-				));
+				$link = JHtml::link(
+					$print_link, $image, array('onclick' => "window.open(this.href,\'win2\',\'' . $status . '\'); return false;")
+				);
 
 				$output = RHtml::tooltip($tip, $text, null, $link);
 			}
@@ -569,8 +569,8 @@ class RedeventHelperOutput
 	/**
 	 * return formatted event date and time (start and end), or false if open date
 	 *
-	 * @param   object   $event     event data
-	 * @param   boolean  $showend   show end
+	 * @param   object   $event    event data
+	 * @param   boolean  $showend  show end
 	 *
 	 * @return string
 	 */

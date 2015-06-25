@@ -844,7 +844,9 @@ class RedeventModelBaseeventlist extends RModel
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(f.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR f.language IS NULL)');
+			$query->where(
+				'(f.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR f.language IS NULL)'
+			);
 		}
 
 		$this->_db->setQuery($query);
