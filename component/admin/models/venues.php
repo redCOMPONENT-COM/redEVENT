@@ -160,6 +160,21 @@ class RedeventModelVenues extends RModelList
 			$query->where('(LOWER(obj.venue) LIKE ' . $like . ' OR LOWER(obj.city) LIKE ' . $like . ')');
 		}
 
+		if ($aclCheck = $this->getState('filter.acl'))
+		{
+			$acl = RedeventUserAcl::getInstance();
+			$ids = $acl->getAllowedForEventsVenues();
+
+			if (!$ids)
+			{
+				$query->where('0');
+			}
+			else
+			{
+				$query->where('obj.id IN (' . implode(',', $ids) . ')');
+			}
+		}
+
 		return $query;
 	}
 
@@ -255,6 +270,7 @@ class RedeventModelVenues extends RModelList
 		$id	.= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.language');
 		$id	.= ':' . $this->getState('filter.published');
+		$id	.= ':' . $this->getState('filter.acl');
 
 		return parent::getStoreId($id);
 	}

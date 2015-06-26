@@ -27,6 +27,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 JHTML::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select');
+
+JFactory::getDocument()->addScriptDeclaration("
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'editvenue.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
+		{
+			" . $this->form->getField('locdescription')->save() . "
+			Joomla.submitform(task);
+		}
+	};
+");
 ?>
 
 <script type="text/javascript">

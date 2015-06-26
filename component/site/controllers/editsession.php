@@ -87,6 +87,11 @@ class RedeventControllerEditsession extends RControllerForm
 			$append .= '&e_id=' . $e_id;
 		}
 
+		if ($itemId = $this->input->get('Itemid'))
+		{
+			$append .= '&Itemid=' . $itemId;
+		}
+
 		return $append;
 	}
 

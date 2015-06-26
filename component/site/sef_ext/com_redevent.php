@@ -310,6 +310,21 @@ if (!$shHomePageFlag)
 					}
 					break;
 
+				case 'editsession':
+					if (isset($e_id))
+					{
+						$title[] = $e_id;
+						shRemoveFromGETVarsList('e_id');
+					}
+
+					if (isset($s_id))
+					{
+						$title[] = $s_id;
+						shRemoveFromGETVarsList('s_id');
+					}
+
+					break;
+
 				case 'signup':
 					$title[] = $details->venueslug;
 
@@ -438,12 +453,13 @@ if (!$shHomePageFlag)
 				shRemoveFromGETVarsList('confirmid');
 				shRemoveFromGETVarsList('controller');
 				shRemoveFromGETVarsList('xref');
+				shRemoveFromGETVarsList('task');
 			}
 			else
 			{
 				$title[] = $task;
+				shRemoveFromGETVarsList('task');
 			}
-			shRemoveFromGETVarsList('task');
 		}
 
 		if (isset($tpl))

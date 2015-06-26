@@ -7,8 +7,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-
 JHTML::_('behavior.formvalidation');
+
+JFactory::getDocument()->addScriptDeclaration("
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'editevent.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
+		{
+			" . ($this->params->get('edit_description', 0) ? $this->form->getField('datdescription')->save() : '') . "
+			" . ($this->params->get('edit_summary', 1) ? $this->form->getField('summary')->save() : '') . "
+			Joomla.submitform(task);
+		}
+	};
+");
 ?>
 
 <script type="text/javascript">

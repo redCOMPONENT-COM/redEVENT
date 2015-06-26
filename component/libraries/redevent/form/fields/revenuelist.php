@@ -35,6 +35,13 @@ class JFormFieldRevenuelist extends JFormFieldList
 		$model->setState('list.ordering', 'obj.venue');
 		$model->setState('list.direction', 'asc');
 		$model->setState('list.limit', 0);
+
+		if (isset($this->element['acl_check']))
+		{
+			$val = (string) $this->element['acl_check'];
+			$model->setState('filter.acl', $val == 'true' || $val == '1');
+		}
+
 		$rows = $model->getItems();
 
 		if ($rows)
