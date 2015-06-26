@@ -10,21 +10,31 @@
                readonly="true"
                 />
 
-        <field
-            name="eventid"
-            type="reeventlist"
-            label="COM_REDEVENT_SESSION_EVENT_LABEL"
-            description ="COM_REDEVENT_SESSION_EVENT_DESC"
-            required="true"
-            class="inputbox" />
+		<field
+				name="eventid"
+				type="reeventlist"
+				label="COM_REDEVENT_SESSION_EVENT_LABEL"
+				description="COM_REDEVENT_SESSION_EVENT_DESC"
+				required="true"
+				acl_check="true"
+				show_lang="true"
+				filter_published="1"
+				class="inputbox">
+			<option value="">COM_REDEVENT_SELECT_EVENT</option>
+		</field>
 
-        <field
-            name="venueid"
-            type="revenuelist"
-            label="COM_REDEVENT_SESSION_VENUE_LABEL"
-            description ="COM_REDEVENT_SESSION_VENUE_DESC"
-            required="true"
-            class="inputbox" />
+		<field
+				name="venueid"
+				type="revenuelist"
+				label="COM_REDEVENT_SESSION_VENUE_LABEL"
+				description="COM_REDEVENT_SESSION_VENUE_DESC"
+				required="true"
+				acl_check="true"
+				show_lang="true"
+				filter_published="1"
+				class="inputbox">
+			<option value="">COM_REDEVENT_SELECT_VENUE</option>
+		</field>
 
         <field
             name="title"

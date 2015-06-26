@@ -11,6 +11,16 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidation');
 
 RHelperAsset::load('xref_prices.js');
+
+JFactory::getDocument()->addScriptDeclaration("
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
+		{
+			Joomla.submitform(task);
+		}
+	}
+");
 ?>
 
 <script type="text/javascript">
