@@ -188,6 +188,21 @@ class RedeventModelEvents extends RModelList
 			$query->where('loc.id = ' . (int) $venue);
 		}
 
+		if ($aclCheck = $this->getState('filter.acl'))
+		{
+			$acl = RedeventUserAcl::getInstance();
+			$categoryIds = $acl->getManagedCategories();
+
+			if (!$categoryIds)
+			{
+				$query->where('0');
+			}
+			else
+			{
+				$query->where('cat.id IN (' . implode(',', $categoryIds) . ')');
+			}
+		}
+
 		return $query;
 	}
 
@@ -234,7 +249,10 @@ class RedeventModelEvents extends RModelList
 		// Compile the store id.
 		$id	.= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.category');
+		$id .= ':' . $this->getState('filter.venue');
 		$id	.= ':' . $this->getState('filter.published');
+		$id	.= ':' . $this->getState('filter.acl');
 
 		return parent::getStoreId($id);
 	}

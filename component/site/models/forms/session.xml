@@ -16,6 +16,8 @@
 				label="COM_REDEVENT_SESSION_EVENT_LABEL"
 				description="COM_REDEVENT_SESSION_EVENT_DESC"
 				required="true"
+				acl_check="true"
+				show_lang="true"
 				class="inputbox">
 			<option value="">COM_REDEVENT_SELECT_EVENT</option>
 		</field>
@@ -27,6 +29,7 @@
 				label="COM_REDEVENT_SESSION_VENUE_LABEL"
 				description="COM_REDEVENT_SESSION_VENUE_DESC"
 				required="true"
+				acl_check="true"
 				class="inputbox">
 			<option value="">COM_REDEVENT_SELECT_VENUE</option>
 		</field>

@@ -39,13 +39,22 @@ class JFormFieldReeventlist extends JFormFieldList
 		$model->setState('list.limit', 0);
 		$model->setState('filter.published', $this->filter_published);
 
+		if (isset($this->element['acl_check']))
+		{
+			$val = (string) $this->element['acl_check'];
+			$model->setState('filter.acl', $val == 'true' || $val == '1');
+		}
+
+		$showLang = isset($this->element['show_lang']) && ($this->element['show_lang'] == 'true' || $this->element['show_lang'] == '1');
+
 		$rows = $model->getItems();
 
 		if ($rows)
 		{
 			foreach ($rows as $row)
 			{
-				$options[] = JHtml::_('select.option', $row->id, $row->title);
+				$language = $row->language && $row->language != '*' ? $row->language : '';
+				$options[] = JHtml::_('select.option', $row->id, $showLang && $language ? $row->title . ' (' . $language . ')' : $row->title);
 			}
 		}
 
