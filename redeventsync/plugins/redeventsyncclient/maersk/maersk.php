@@ -604,13 +604,13 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
-	 * handles attendee creation
+	 * handles attendee creation, only once confirmed
 	 *
 	 * @param   int  $attendee_id  attendee id
 	 *
 	 * @return bool
 	 */
-	public function onHandleAttendeeCreated($attendee_id)
+	public function onHandleAttendeeConfirmed($attendee_id)
 	{
 		$model = $this->getHandler('Attendeesrq');
 		$model->sendCreateAttendeeRQ($attendee_id);

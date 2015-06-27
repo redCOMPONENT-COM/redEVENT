@@ -135,16 +135,14 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			{
 				$row->bind($existing);
 			}
-//			elseif (!$create)
-//			{
-//				throw new Exception('Attendee not found');
-//			}
 			else
 			{
 				if (!isset($attendee->waitinglist))
 				{
 					$attendee->waitinglist = 0;
 				}
+
+				$row->origin = "picasso";
 			}
 
 			// Make sure we have an user !
