@@ -228,7 +228,18 @@ class RedeventModelAttendee extends RModelAdmin
 
 		// First save redform data
 		$rfcore = RdfCore::getInstance();
-		$result = $rfcore->saveAnswers('redevent', array('extrafields' => array(1 => array($field)), 'currency' => $details->currency, 'edit' => 1));
+
+		try
+		{
+			$result = $rfcore->saveAnswers('redevent', array('extrafields' => array(1 => array($field)), 'currency' => $details->currency, 'edit' => 1));
+		}
+		catch (Exception $e)
+		{
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
+			$this->setError($msg . ' - ' . $e->getMessage());
+
+			return false;
+		}
 
 		if (!$result)
 		{

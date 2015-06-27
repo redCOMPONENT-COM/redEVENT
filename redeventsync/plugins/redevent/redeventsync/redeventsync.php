@@ -127,6 +127,33 @@ class plgRedeventRedeventsync extends JPlugin
 	}
 
 	/**
+	 * handles attendee confirmed
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
+	public function onAttendeeConfirmed($attendee_id)
+	{
+		try
+		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onHandleAttendeeConfirmed', array($attendee_id));
+		}
+		catch (ResyncException $e)
+		{
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeConfirmed', 0, $e->getMessage(), $e->status, $e->debug);
+		}
+		catch (Exception $e)
+		{
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeConfirmed', 0, $e->getMessage(), 'error');
+		}
+
+		return true;
+	}
+
+	/**
 	 * handles attendee modified
 	 *
 	 * @param   int  $attendee_id  attendee id

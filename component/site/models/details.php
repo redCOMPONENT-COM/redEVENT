@@ -138,7 +138,7 @@ class RedeventModelDetails extends RModel
 			// Get the WHERE clause
 			$query = $this->_buildDetailsWhere($query);
 
-			$query->select('a.id AS did, a.title AS event_title, a.datdescription');
+			$query->select('a.id AS did, a.id AS event_id, a.title AS event_title, a.datdescription');
 			$query->select('a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, a.details_layout');
 			$query->select('a.created_by, a.redform_id, a.juser, a.show_names, a.showfields, a.enable_ical');
 			$query->select('a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message');

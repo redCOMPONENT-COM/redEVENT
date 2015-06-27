@@ -28,7 +28,7 @@ $options = array(
 	'currency' => $this->row->currency
 );
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="redform" id="adminForm" class="redform-validate" enctype="multipart/form-data">
 
 <fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Booking' ); ?></legend>
 

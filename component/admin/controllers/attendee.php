@@ -20,7 +20,7 @@ class RedeventControllerAttendee extends RControllerForm
 	 *
 	 * @return void
 	 */
-	public function save()
+	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries
 		JSession::checkToken() or die('Invalid Token');
@@ -46,6 +46,13 @@ class RedeventControllerAttendee extends RControllerForm
 
 		$data['sessionpricegroup_id'] = $pricegroups[0];
 
+		$isNew = $data['id'] == 0;
+
+		if ($isNew)
+		{
+			$data['origin'] = 'backend';
+		}
+
 		if ($returnid = $model->store($data))
 		{
 			$model_wait = $this->getModel('Waitinglist');
@@ -57,7 +64,7 @@ class RedeventControllerAttendee extends RControllerForm
 
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onAttendeeModified', array($returnid));
+			$dispatcher->trigger($isNew ? 'onAttendeeCreated' : 'onAttendeeModified', array($returnid));
 
 			switch ($task)
 			{

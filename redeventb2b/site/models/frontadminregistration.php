@@ -213,7 +213,9 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 		$user = JFactory::getUser($this->user_id);
 		$rfpost = $redformResult->posts[0];
 
-		if (!$reg = $this->getRegistrationModel()->register($user, $rfpost['sid'], $redformResult->submit_key, $pricegroup->id, 1))
+		if (!$reg = $this->getRegistrationModel()
+			->setOrigin('b2b')
+			->register($user, $rfpost['sid'], $redformResult->submit_key, $pricegroup->id, 1))
 		{
 			throw new Exception(JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED'));
 		}
