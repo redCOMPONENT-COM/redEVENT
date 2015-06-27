@@ -47,6 +47,8 @@ class RedEventModelRegistration extends RModel
 
 	protected $prices = null;
 
+	protected $origin = '';
+
 	/**
 	 * Constructor
 	 *
@@ -97,6 +99,20 @@ class RedEventModelRegistration extends RModel
 	}
 
 	/**
+	 * Setter
+	 *
+	 * @param   string  $origin  registration origin (b2c, backend, b2b, 3rd party, etc...)
+	 *
+	 * @return RedEventModelRegistration
+	 */
+	public function setOrigin($origin)
+	{
+		$this->origin = $origin;
+
+		return $this;
+	}
+
+	/**
 	 * create a new attendee
 	 *
 	 * @param   object  $user                  performing the registration
@@ -120,6 +136,14 @@ class RedEventModelRegistration extends RModel
 
 		$obj = RTable::getAdminInstance('Attendee', array(), 'com_redevent');
 		$obj->load(array('sid' => $sid));
+
+		$isNew = $obj->id == 0;
+
+		if ($isNew)
+		{
+			$obj->origin = $this->origin;
+		}
+
 		$obj->sid        = $sid;
 		$obj->xref       = $this->xref;
 		$obj->sessionpricegroup_id = $sessionpricegroup_id;
@@ -142,7 +166,8 @@ class RedEventModelRegistration extends RModel
 			return false;
 		}
 
-		if ($session->activate == 0 // No activation
+		if (!$obj->confirmed
+			&& $session->activate == 0 // No activation
 			&& !$this->confirmOnPayment($obj))
 		{
 			$doConfirm = true;

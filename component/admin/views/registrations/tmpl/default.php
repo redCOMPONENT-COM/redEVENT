@@ -105,6 +105,9 @@ echo RLayoutHelper::render(
 			<th width="50">
 				<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_WAITINGLIST', 'r.waitinglist', $listDirn, $listOrder); ?>
 			</th>
+			<th width="50">
+				<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_REGISTRATION_ORIGIN', 'r.origin', $listDirn, $listOrder); ?>
+			</th>
 			<th width="10"><?php echo JText::_('COM_REDEVENT_ANSWERS'); ?></th>
 			<th width="10"><?php echo JText::_('COM_REDEVENT_PRICE'); ?></th>
 			<th class="col-pricegroup" width="auto"><?php echo JText::_('COM_REDEVENT_PRICEGROUP'); ?></th>
@@ -158,6 +161,9 @@ echo RLayoutHelper::render(
 				</td>
 				<td>
 					<?php echo $this->waitingStatus($row, $i); ?>
+				</td>
+				<td>
+					<?php echo $this->escape($row->origin); ?>
 				</td>
 
 				<td>

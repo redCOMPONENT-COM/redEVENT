@@ -194,7 +194,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				$pricegroup = isset($selectedPricegroups[$k]) ? $selectedPricegroups[$k] : null;
 				$k++;
 
-				if (!$res = $model->register($user, $rfpost['sid'], $result->submit_key, $pricegroup))
+				if (!$res = $model->setOrigin('frontend')->register($user, $rfpost['sid'], $result->submit_key, $pricegroup))
 				{
 					$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
