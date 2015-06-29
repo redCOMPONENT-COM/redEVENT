@@ -84,7 +84,7 @@ class RedeventModelVenue extends RModel
 			if ($this->_id)
 			{
 				// Load the Event data
-				$query = ' SELECT v.id, v.venue, v.url, v.street, v.plz, v.city, v.state, v.country, v.locdescription, v.locimage, v.latitude, v.longitude, v.company, '
+				$query = ' SELECT v.id, v.venue, v.url, v.street, v.plz, v.city, v.state, v.country, v.locdescription, v.locimage, v.latitude, v.longitude, v.company, v.email, '
 				. ' COUNT( a.id ) AS assignedevents,'
 				. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug'
 				. ' FROM #__redevent_venues as v'

@@ -181,7 +181,7 @@ class plgRedeventHcafxml extends JPlugin
 		$venueRoot->appendChild($this->domtree->createElement('locationcountry', $venue->country));
 		$venueRoot->appendChild($this->domtree->createElement(
 			'locationurl',
-			$venue->url ?: htmlspecialchars(JURI::root() . RedeventHelperRoute::getVenueEventsRoute($venue->id)))
+			$venue->url ? htmlspecialchars($venue->url) : htmlspecialchars(JURI::root() . RedeventHelperRoute::getVenueEventsRoute($venue->id)))
 		);
 		$venueRoot->appendChild($this->domtree->createElement('locationdescription', $venue->locdescription));
 
