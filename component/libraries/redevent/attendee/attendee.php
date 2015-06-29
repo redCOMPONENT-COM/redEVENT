@@ -315,6 +315,7 @@ class RedeventAttendee extends JObject
 			$this->sendWLAdminNotification(0);
 		}
 
+		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onAttendeeConfirmed', array($this->id));
 
