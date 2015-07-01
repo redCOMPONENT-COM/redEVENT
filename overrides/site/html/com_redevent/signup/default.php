@@ -50,13 +50,21 @@ $title = $this->course->session_title ?: $this->course->event_title;
 			<div class="signup-date-title"><?php echo JText::_('COM_REDEVENT_MAERSK_SIGNUP_DATE_AND_TIME'); ?></div>
 			<div class="signup-date">
 				<span class="label"><?php echo JText::_('COM_REDEVENT_FROM'); ?></span>
-				<?php echo RedeventHelperOutput::formatdate($this->course->dates, $this->course->times) . ' ' . RedeventHelperOutput::formattime($this->course->dates,$this->course->times); ?>
+				<?php echo JText::sprintf(
+					'COM_REDEVENT_MAERSK_SIGNUP_DATE_AND_TIME_FORMAT_S_S',
+					RedeventHelperOutput::formatdate($this->course->dates, $this->course->times),
+					RedeventHelperOutput::formattime($this->course->dates,$this->course->times)
+				); ?>
 			</div>
 
 			<?php if (RedeventHelper::isValidDate($this->course->enddates)): ?>
 				<div class="signup-date">
 					<span class="label"><?php echo JText::_('COM_REDEVENT_TO'); ?></span>
-					<?php echo RedeventHelperOutput::formatdate($this->course->enddates, $this->course->endtimes) . ' ' . RedeventHelperOutput::formattime($this->course->enddates,$this->course->endtimes); ?>
+					<?php echo JText::sprintf(
+						'COM_REDEVENT_MAERSK_SIGNUP_DATE_AND_TIME_FORMAT_S_S',
+						RedeventHelperOutput::formatdate($this->course->enddates, $this->course->endtimes),
+						RedeventHelperOutput::formattime($this->course->enddates,$this->course->endtimes)
+					); ?>
 				</div>
 			<?php endif; ?>
 
