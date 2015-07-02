@@ -33,7 +33,7 @@ class RedeventHelperOutput
 
 			if ($params->get('icons', 1))
 			{
-				$image = RHelperAsset::load(
+				$text = RHelperAsset::load(
 					'submitevent.png',
 					null,
 					array('alt' => JText::_('COM_REDEVENT_DELIVER_NEW_EVENT'))
@@ -41,7 +41,7 @@ class RedeventHelperOutput
 			}
 			else
 			{
-				$image = JText::_('COM_REDEVENT_DELIVER_NEW_EVENT');
+				$text = JText::_('COM_REDEVENT_DELIVER_NEW_EVENT');
 			}
 
 			$link = RedeventHelperRoute::getEditEventRoute();
@@ -50,8 +50,8 @@ class RedeventHelperOutput
 			$output = RHtml::tooltip(
 				$tip,
 				JText::_('COM_REDEVENT_DELIVER_NEW_EVENT'),
-				$image,
 				null,
+				$text,
 				$link
 			);
 		}
