@@ -8,4 +8,4 @@ script:
 - php .travis/phpcs.php # Code Sniffer Checker
 #- php .travis/phpmd.php # Mess detector Checker
 notifications:
-  slack: redweb:7hTS3MPEBxt3lkVopUcVPJKa
+  slack: redweb:egb7X6jqHYp9PCwbUuQt0pVE
