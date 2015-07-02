@@ -109,15 +109,21 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'filter_date_from':
 				case 'filter_date_to':
 				case 'filter_country':
-				case 'layout':
 				case 'task':
-				case 'limit':
+				case 'layout':
 				case 'showfilters':
 					if ($v)
 					{
 						$myuri->setVar($filter, $v);
 						$vars++;
 					}
+					break;
+
+				case 'limit':
+					$app = JFactory::getApplication();
+					$params = $app->getParams('com_redevent');
+					$app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+					$vars++;
 					break;
 
 				case 'filtercustom':

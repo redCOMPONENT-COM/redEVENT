@@ -53,6 +53,12 @@ JFactory::getDocument()->addScriptDeclaration("
 	});
 </script>
 
+<?php if ($this->params->def('show_page_title', 1)): ?>
+	<h1 class='componentheading'>
+		<?php echo $this->getTitle(); ?>
+	</h1>
+<?php endif; ?>
+
 <div class="redevent-edit-form">
 	<form enctype="multipart/form-data"
 	      action="<?php echo JRoute::_('index.php?option=com_redevent&view=editvenue&id=' . $this->item->id); ?>"

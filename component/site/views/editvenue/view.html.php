@@ -22,7 +22,7 @@ class RedeventViewEditvenue extends RViewSite
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	public function display( $tpl=null )
+	public function display($tpl=null)
 	{
 		$app = JFactory::getApplication();
 
@@ -31,6 +31,7 @@ class RedeventViewEditvenue extends RViewSite
 		$this->item = $this->get('Item');
 		$this->form     = $this->get('Form');
 		$this->return = $app->input->get('return');
+		$this->params = RedeventHelper::config();
 
 		if ($this->item->id && !$acl->canEditVenue($this->item->id))
 		{
