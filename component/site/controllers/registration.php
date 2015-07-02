@@ -136,7 +136,17 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			{
 				// Redform saving failed
 				$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $rfcore->getError();
-				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
+
+				$this->setMessage($msg, 'error');
+
+				if ($return = $this->input->getString('submissionurl', ''))
+				{
+					$this->setRedirect(base64_decode($return));
+				}
+				else
+				{
+					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)));
+				}
 
 				return false;
 			}
@@ -145,7 +155,17 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		{
 			// Redform saving failed
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $e->getMessage();
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
+
+			$this->setMessage($msg, 'error');
+
+			if ($return = $this->input->getString('submissionurl', ''))
+			{
+				$this->setRedirect(base64_decode($return));
+			}
+			else
+			{
+				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)));
+			}
 
 			return false;
 		}

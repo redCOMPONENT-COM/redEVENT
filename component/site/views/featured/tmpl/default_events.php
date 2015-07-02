@@ -32,6 +32,7 @@ $colnames = array_map('trim', $colnames);
 	foreach ($this->rows as $row) :
 		//Link to details
 		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
+
 		if (RedeventHelper::isValidDate($row->dates))
 		{
 			$date = JFactory::getDate($row->times ? $row->dates.' '.$row->times : $row->dates);
@@ -40,6 +41,7 @@ $colnames = array_map('trim', $colnames);
 		{
 			$date = false;
 		}
+
 		$img = RedeventImage::getThumbUrl($row->datimage, 150);
 		$img = ($img ? JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) : false);
 		?>
@@ -64,13 +66,14 @@ $colnames = array_map('trim', $colnames);
 						<div class="month"><?php echo $date->format('M'); ?></div>
 						<div class="daynumber"><?php echo $date->format('d'); ?></div>
 						<div class="weekday"><?php echo $date->format('D'); ?></div>
+
+						<?php if ($row->times): ?>
+							<div class="event-time">
+								<?php echo $date->format($this->params->get('formattime_date', 'H:i')); ?>
+							</div>
+						<?php endif; ?>
 					<?php endif; ?>
 					</div>
-					<?php if ($row->times): ?>
-						<div class="event-time">
-							<?php echo $date->format($this->params->get('formattime_date', 'H:i')); ?>
-						</div>
-					<?php endif; ?>
 				</div>
 			</div>
 
