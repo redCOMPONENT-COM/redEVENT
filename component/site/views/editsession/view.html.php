@@ -22,7 +22,7 @@ class RedeventViewEditsession extends RViewSite
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	public function display( $tpl=null )
+	public function display($tpl=null)
 	{
 		$app = JFactory::getApplication();
 
