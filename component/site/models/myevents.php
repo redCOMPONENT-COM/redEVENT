@@ -136,7 +136,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		{
 			$query = $this->_buildQueryAttending();
 			$pagination = $this->getAttendingPagination();
-
+//echo '<pre>'; echo str_replace('#__', 'j3x_', $query); echo '</pre>'; exit;
 			if ($pop)
 			{
 				$this->attending = $this->_getList($query);

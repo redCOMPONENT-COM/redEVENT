@@ -256,7 +256,7 @@ class RedeventHelperOutput
 					break;
 			}
 
-			$output = RHtml::tooltip($tip, $text, $image, null, $link);
+			$output = RHtml::tooltip($tip, $text, null, $image, $link);
 
 			return $output;
 		}
