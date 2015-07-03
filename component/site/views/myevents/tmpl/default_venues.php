@@ -74,6 +74,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="limitstart_venues" value="<?php echo $this->lists['limitstart_venues']; ?>" class="redajax_limitstart" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" class="redajax_order"/>
 <input type="hidden" name="filter_order_Dir" value="" class="redajax_order_dir"/>
-<input type="hidden" name="task" value="managedvenues" />
+<input type="hidden" name="task" value="myevents.managedvenues" />
 
 </form>
