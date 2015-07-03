@@ -53,10 +53,6 @@ class RedeventViewMyevents extends RedeventViewFront
 		$state = $this->get('state');
 
 		// Get variables
-		$limitstart   = $state->get('limitstart');
-		$limitstart_venues   = $state->get('limitstart_venues');
-		$limitstart_attending   = $state->get('limitstart_attending');
-		$limit        = $state->get('limit');
 		$filter_event = $state->get('filter_event');
 		$task = JFactory::getApplication()->input->getWord('task');
 		$pop = JFactory::getApplication()->input->getBool('pop');

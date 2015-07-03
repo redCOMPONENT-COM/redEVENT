@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <div>
       <?php
       echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
-      echo $this->events_pageNav->getLimitBox();
+      echo $this->events_pageNav->getLimitBox('limit_events');
       ?>
     </div>
     <?php endif; ?>
