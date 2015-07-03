@@ -102,6 +102,7 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'filter_order':
 				case 'filter_order_Dir':
 				case 'filter':
+				case 'filter_event':
 				case 'filter_type':
 				case 'filter_venue':
 				case 'filter_multivenue':
@@ -149,6 +150,16 @@ class RedeventControllerFront extends JControllerLegacy
 					}
 
 					break;
+
+				default:
+					if (strpos($filter, 'filter_') === 0)
+					{
+						if ($v)
+						{
+							$myuri->setVar($filter, $v);
+							$vars++;
+						}
+					}
 			}
 		}
 

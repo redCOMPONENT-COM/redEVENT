@@ -66,7 +66,7 @@ class RedeventModelBaseeventlist extends RModel
 		$app = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params 	= $app->getParams('com_redevent');
+		$params = $app->getParams('com_redevent');
 
 		// Get the number of events from database
 		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
@@ -208,13 +208,22 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	protected function _buildQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
+		$query = $this->_buildSelectFrom();
+		$query = $this->_buildWhere($query);
+		$query = $this->_buildOrderBy($query);
+
+		return $query;
+	}
+
+	/**
+	 * Build the select and from parts
+	 *
+	 * @return JDatabaseQuery
+	 */
+	protected function _buildSelectFrom()
+	{
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
-		$acl = RedeventUserAcl::getInstance();
-
-		$gids = JFactory::getUser()->getAuthorisedViewLevels();
-		$gids = implode(',', $gids);
 
 		$db = $this->_db;
 		$query = $db->getQuery(true);
@@ -230,6 +239,11 @@ class RedeventModelBaseeventlist extends RModel
 		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
 
+		foreach ((array) $customs as $c)
+		{
+			$query->select('a.custom' . $c->id);
+		}
+
 		foreach ((array) $xcustoms as $c)
 		{
 			$query->select('x.custom' . $c->id);
@@ -242,13 +256,7 @@ class RedeventModelBaseeventlist extends RModel
 		$query->join('LEFT', '#__redevent_venues_categories AS vc ON xvcat.category_id = vc.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$query->join('INNER', '#__redevent_categories AS c ON c.id = xcat.category_id');
-		$query->where('(l.access IN (' . $gids . '))');
-		$query->where('(c.access IN (' . $gids . '))');
-		$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . '))');
 		$query->group('x.id');
-
-		$query = $this->_buildWhere($query);
-		$query = $this->_buildOrderBy($query);
 
 		return $query;
 	}
@@ -256,7 +264,7 @@ class RedeventModelBaseeventlist extends RModel
 	/**
 	 * Build the order clause
 	 *
-	 * @param   object  $query  query
+	 * @param   JDatabaseQuery  $query  query
 	 *
 	 * @return object
 	 */
@@ -300,11 +308,8 @@ class RedeventModelBaseeventlist extends RModel
 	{
 		$app = JFactory::getApplication();
 
-		$user		= JFactory::getUser();
-		$gid		= max($user->getAuthorisedViewLevels());
-
 		// Get the paramaters of the active menu item
-		$params 	= $app->getParams();
+		$params = $app->getParams();
 
 		// First thing we need to do is to select only needed events
 		if ($filter_published = $this->getState('filter_published'))
@@ -324,7 +329,7 @@ class RedeventModelBaseeventlist extends RModel
 		*/
 		if ($params->get('filter_text'))
 		{
-			$filter 		  = $this->getState('filter');
+			$filter = $this->getState('filter');
 
 			if ($filter)
 			{
@@ -465,6 +470,14 @@ class RedeventModelBaseeventlist extends RModel
 			);
 		}
 
+		// ACL
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
+		$gids = implode(',', $gids);
+
+		$query->where('(l.access IN (' . $gids . '))');
+		$query->where('(c.access IN (' . $gids . '))');
+		$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . '))');
+
 		return $query;
 	}
 
@@ -479,7 +492,6 @@ class RedeventModelBaseeventlist extends RModel
 		$app = JFactory::getApplication();
 
 		$user		= JFactory::getUser();
-		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
 		$params 	= $app->getParams();
@@ -996,43 +1008,39 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getEventsOptions()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildEventsOptionsWhere();
-		$customs = $this->getCustomFields();
-		$xcustoms = $this->getXrefCustomFields();
+		$query = $this->_buildSelectFrom();
+		$query->select('a.id AS value, a.title AS text');
+		$query->where(' a.published <> 0');
+		$query->clear('group')->group('a.id');
+		$query->order('a.title, x.title ASC');
 
+		// ACL
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
-		// Get Events from Database
-		$query = 'SELECT a.id AS value, a.title AS text ';
+		$query->where('(l.access IN (' . $gids . '))');
+		$query->where('(c.access IN (' . $gids . '))');
+		$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . '))');
 
-		// Add the custom fields
-		foreach ((array) $customs as $c)
+
+		if ($filter_venue = $this->getState('filter_venue'))
 		{
-			$query .= ', a.custom' . $c->id;
+			$query->where(' l.id = ' . $this->_db->Quote($filter_venue));
 		}
 
-		// Add the custom fields
-		foreach ((array) $xcustoms as $c)
+		if ($cat = $this->getState('filter_category'))
 		{
-			$query .= ', x.custom' . $c->id;
+			$category = $this->getCategory((int) $cat);
+
+			if ($category)
+			{
+				$query->where(
+					'(c.id = ' . $this->_db->Quote($category->id)
+					. ' OR (c.lft > ' . $this->_db->Quote($category->lft)
+					. ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');
+			}
 		}
 
-		$query .= ' FROM #__redevent_event_venue_xref AS x'
-		. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
-		. ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
-		. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id ';
-
-		$query .= $where
-		. ' AND (l.access IN (' . $gids . ')) '
-		. ' AND (c.access IN (' . $gids . ')) '
-		. ' AND (vc.access IN (' . $gids . ') OR vc.id IS NULL) '
-		. ' GROUP BY (a.id) '
-		. ' ORDER BY a.title, x.title ASC ';
 		$this->_db->setQuery($query);
 
 		return $this->_db->loadObjectList();
