@@ -31,7 +31,7 @@ class RedeventViewCalendar extends RedeventViewFront
 		$app = JFactory::getApplication();
 
 		// Load tooltips behavior
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		$document = JFactory::getDocument();
 		$settings = RedeventHelper::config();
