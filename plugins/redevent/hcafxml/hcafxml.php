@@ -114,7 +114,7 @@ class plgRedeventHcafxml extends JPlugin
 		$eventRoot->setAttribute('id', $session->xref);
 
 		$eventRoot->appendChild($this->domtree->createElement('title', substr($session->full_title, 0, 100)));
-		$eventRoot->appendChild($this->domtree->createElement('shortdescription', substr($session->summary, 0, 255)));
+		$eventRoot->appendChild($this->domtree->createElement('shortdescription', html_entity_decode(substr($session->summary, 0, 255), null, 'UTF-8')));
 
 		$categories = array_map(function($category){
 			return $category->name;
