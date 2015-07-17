@@ -73,9 +73,9 @@ class plgRedeventHcafxml extends JPlugin
 		$provider = $this->domtree->createElement("provider");
 		$provider = $this->xmlRoot->appendChild($provider);
 
-		$provider->appendChild($this->domtree->createElement('name', $this->params->get('provider_name')));
-		$provider->appendChild($this->domtree->createElement('email', $this->params->get('provider_email')));
-		$provider->appendChild($this->domtree->createElement('phone', $this->params->get('provider_phone')));
+		$provider->appendChild($this->createDomTextElement('name', $this->params->get('provider_name')));
+		$provider->appendChild($this->createDomTextElement('email', $this->params->get('provider_email')));
+		$provider->appendChild($this->createDomTextElement('phone', $this->params->get('provider_phone')));
 	}
 
 	/**
@@ -113,26 +113,32 @@ class plgRedeventHcafxml extends JPlugin
 		$eventRoot = $eventsRoot->appendChild($eventRoot);
 		$eventRoot->setAttribute('id', $session->xref);
 
-		$eventRoot->appendChild($this->domtree->createElement('title', substr($session->full_title, 0, 100)));
-		$eventRoot->appendChild($this->domtree->createElement('shortdescription', html_entity_decode(substr($session->summary, 0, 255), null, 'UTF-8')));
+		$eventRoot->appendChild($this->createDomTextElement('title', substr($session->title, 0, 100)));
+		$eventRoot->appendChild($this->createDomTextElement('shortdescription', substr($session->summary, 0, 255)));
+		$eventRoot->appendChild($this->createDomTextElement('longdescription', $session->details));
+
+		if ($session->datimage)
+		{
+			$eventRoot->appendChild($this->createDomTextElement('pictureurl', JURI::root() . $session->datimage));
+		}
 
 		$categories = array_map(function($category){
 			return $category->name;
 		}, $session->categories);
 
-		$eventRoot->appendChild($this->domtree->createElement('category', implode(', ', $categories)));
-		$eventRoot->appendChild($this->domtree->createElement('target', JText::_('PLG_REDEVENT_HCAFXML_TARGET_ALL')));
+		$eventRoot->appendChild($this->createDomTextElement('category', implode(', ', $categories)));
+		$eventRoot->appendChild($this->createDomTextElement('target', JText::_('PLG_REDEVENT_HCAFXML_TARGET_ALL')));
 
 		if (RedeventHelper::isValidDate($session->dates))
 		{
 			$date = JFactory::getDate($session->dates);
-			$eventRoot->appendChild($this->domtree->createElement('startdate', $date->format('Y-m-d')));
+			$eventRoot->appendChild($this->createDomTextElement('startdate', $date->format('Y-m-d')));
 		}
 
 		if (RedeventHelper::isValidDate($session->enddates))
 		{
 			$date = JFactory::getDate($session->enddates);
-			$eventRoot->appendChild($this->domtree->createElement('enddate', $date->format('Y-m-d')));
+			$eventRoot->appendChild($this->createDomTextElement('enddate', $date->format('Y-m-d')));
 		}
 
 		if (preg_match('/^([0-9]+:[0-9]+)/', $session->times, $match))
@@ -144,11 +150,11 @@ class plgRedeventHcafxml extends JPlugin
 				$time .= '-' . str_replace(':', '.', $match[1]);
 			}
 
-			$eventRoot->appendChild($this->domtree->createElement('time', $time));
+			$eventRoot->appendChild($this->createDomTextElement('time', $time));
 		}
 
-		$eventRoot->appendChild($this->domtree->createElement('url', htmlspecialchars(JURI::root().RedeventHelperRoute::getDetailsRoute($session->slug, $session->xslug))));
-		$eventRoot->appendChild($this->domtree->createElement('email', $this->params->get('provider_email')));
+		$eventRoot->appendChild($this->createDomTextElement('url', htmlspecialchars(JURI::root().RedeventHelperRoute::getDetailsRoute($session->slug, $session->xslug))));
+		$eventRoot->appendChild($this->createDomTextElement('email', $this->params->get('provider_email')));
 
 		$this->addLocation($eventRoot, $session);
 	}
@@ -174,26 +180,26 @@ class plgRedeventHcafxml extends JPlugin
 		$venueRoot = $eventRoot->appendChild($venueRoot);
 		$venueRoot->setAttribute('id', $venue->id);
 
-		$venueRoot->appendChild($this->domtree->createElement('locationname', $venue->venue));
-		$venueRoot->appendChild($this->domtree->createElement('locationaddress', $venue->street));
-		$venueRoot->appendChild($this->domtree->createElement('locationzipcode', $venue->plz));
-		$venueRoot->appendChild($this->domtree->createElement('locationzipcity', $venue->city));
-		$venueRoot->appendChild($this->domtree->createElement('locationcountry', $venue->country));
-		$venueRoot->appendChild($this->domtree->createElement(
+		$venueRoot->appendChild($this->createDomTextElement('locationname', $venue->venue));
+		$venueRoot->appendChild($this->createDomTextElement('locationaddress', $venue->street));
+		$venueRoot->appendChild($this->createDomTextElement('locationzipcode', $venue->plz));
+		$venueRoot->appendChild($this->createDomTextElement('locationzipcity', $venue->city));
+		$venueRoot->appendChild($this->createDomTextElement('locationcountry', $venue->country));
+		$venueRoot->appendChild($this->createDomTextElement(
 			'locationurl',
 			$venue->url ? htmlspecialchars($venue->url) : htmlspecialchars(JURI::root() . RedeventHelperRoute::getVenueEventsRoute($venue->id)))
 		);
-		$venueRoot->appendChild($this->domtree->createElement('locationdescription', $venue->locdescription));
+		$venueRoot->appendChild($this->createDomTextElement('locationdescription', $venue->locdescription));
 
 		if ($venue->categories)
 		{
 			$categories = array_map(function($category){
 				return $category->name;
 			}, $venue->categories);
-			$venueRoot->appendChild($this->domtree->createElement('locationtype', implode(', ', $categories)));
+			$venueRoot->appendChild($this->createDomTextElement('locationtype', implode(', ', $categories)));
 		}
 
-		$venueRoot->appendChild($this->domtree->createElement('locationemail', $venue->email));
+		$venueRoot->appendChild($this->createDomTextElement('locationemail', $venue->email));
 	}
 
 	/**
@@ -207,7 +213,15 @@ class plgRedeventHcafxml extends JPlugin
 		$model->setState('limit', $this->params->get('limit', 0));
 		$model->setState('filter.published', 1);
 
-		return $model->getData();
+		$sessions = $model->getData();
+
+		// We are stripping tags from session description, they only seem to be using [session_read_more] and [venues] that can be blanked in xml
+		foreach ($sessions as &$session)
+		{
+			$session->details = preg_replace('/\[([^\]\s]+)(?:\s*)([^\]]*)\]/i', '', $session->details);
+		}
+
+		return $sessions;
 	}
 
 	/**
@@ -254,5 +268,23 @@ class plgRedeventHcafxml extends JPlugin
 		include_once $redeventLoader;
 
 		RedeventBootstrap::bootstrap();
+	}
+
+	/**
+	 * Return DOMElement: tag containing text
+	 *
+	 * @param   string  $tag   tag name
+	 * @param   string  $text  text content
+	 *
+	 * @return DOMElement
+	 */
+	private function createDomTextElement($tag, $text)
+	{
+		$element = $this->domtree->createElement($tag);
+		$element->appendChild(
+			$this->domtree->createTextNode($text)
+		);
+
+		return $element;
 	}
 }
