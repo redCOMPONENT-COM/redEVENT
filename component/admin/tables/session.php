@@ -118,7 +118,7 @@ class RedeventTableSession extends RedeventTable
 				continue;
 			}
 
-			$new = RTable::getAdminInstance('Sessionpricegroup');
+			$new = RTable::getAdminInstance('Sessionpricegroup', array(), 'com_redevent');
 			$new->set('xref',          $this->id);
 			$new->set('pricegroup_id', $price->pricegroup_id);
 			$new->set('price',         $price->price);
