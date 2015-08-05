@@ -179,7 +179,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 
 		$sid = $result->posts[0]['sid'];
 
-		$row->bind($attendee);
+		$row->bind(get_object_vars($attendee));
 		$row->xref = $session_details->session_id;
 		$row->sid = $sid;
 		$row->submit_key = $result->submit_key;

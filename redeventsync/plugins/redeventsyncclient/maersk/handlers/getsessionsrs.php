@@ -69,9 +69,9 @@ class RedeventsyncHandlerGetsessionsrs extends RedeventsyncHandlerAbstractmessag
 		{
 			$object = $this->parseSessionXml($xml);
 
-			$row = JTable::getInstance('RedEvent_eventvenuexref', '');
+			$row = RTable::getAdminInstance('Session', array(), 'com_redevent');
 
-			if (!$row->bind($object))
+			if (!$row->bind(get_object_vars($object)))
 			{
 				throw new Exception($row->getError());
 			}

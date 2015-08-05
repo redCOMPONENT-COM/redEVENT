@@ -34,7 +34,8 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			$object = $this->parseSessionXml($xml);
 			$row = RTable::getAdminInstance('Session', array(), 'com_redevent');
 
-			if (!$row->bind($object))
+
+			if (!$row->bind(get_object_vars($object)))
 			{
 				throw new Exception($row->getError());
 			}
@@ -115,7 +116,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception('session not found');
 			}
 
-			if (!$row->bind($object))
+			if (!$row->bind(get_object_vars($object)))
 			{
 				throw new Exception($row->getError());
 			}

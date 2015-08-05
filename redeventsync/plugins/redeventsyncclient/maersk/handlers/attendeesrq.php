@@ -123,7 +123,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		{
 			// Register table
 			require_once JPATH_ADMINISTRATOR . '/components/com_redevent/tables/redevent_register.php';
-			$row = JTable::getInstance('RedEvent_register', '');
+			$row = RTable::getAdminInstance('Attendee', array(), 'com_redevent');
 
 			// Create attendee from the xml info
 			$attendee = $this->parseAttendeeXml($xml);
@@ -133,7 +133,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 			if ($existing)
 			{
-				$row->bind($existing);
+				$row->bind(get_object_vars($existing));
 			}
 			else
 			{
@@ -206,7 +206,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 			$sid = $result->posts[0]['sid'];
 
-			$row->bind($attendee);
+			$row->bind(get_object_vars($attendee));
 			$row->xref = $session_details->session_id;
 			$row->sid = $sid;
 			$row->submit_key = $result->submit_key;
