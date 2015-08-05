@@ -49,7 +49,7 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 		$list_link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, null, 'default');
 
 		// Check if the user has access to the edit form
-		$dellink = JFactory::getUser()->authorise('re.manageevents');
+		$dellink = JFactory::getUser()->authorise('re.manageevents', $category->asset_name);
 
 		// Generate Categorydescription
 		if (empty ($category->description))

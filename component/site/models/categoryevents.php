@@ -113,11 +113,12 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 			$db      = $this->_db;
 			$query = $db->getQuery(true);
 
-			$query->select('*');
-			$query->select('CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug');
-			$query->from('#__redevent_categories');
-			$query->where('id = ' . $this->_id);
-			$query->where('access IN (' . $gids . ')');
+			$query->select('c.*, asset.name AS asset_name');
+			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
+			$query->from('#__redevent_categories AS c');
+			$query->join('LEFT', '#__assets AS asset ON asset.id = c.asset_id');
+			$query->where('c.id = ' . $this->_id);
+			$query->where('c.access IN (' . $gids . ')');
 
 			$db->setQuery($query);
 			$this->category = $db->loadObject();

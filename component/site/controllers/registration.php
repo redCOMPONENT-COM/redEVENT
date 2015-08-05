@@ -445,9 +445,18 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		// First, ask redform to save it's fields, and return the corresponding sids.
 		$options = array('baseprice' => $price, 'currency' => $regPricegroup->currency, 'edit' => 1);
 		$rfcore = RdfCore::getInstance();
-		$result = $rfcore->saveAnswers('redevent', $options);
 
-		if (!$result)
+		try
+		{
+			$result = $rfcore->saveAnswers('redevent', $options);
+
+			// Legacy
+			if (!$result)
+			{
+				throw new Exception($rfcore->getError());
+			}
+		}
+		catch (Exception $e)
 		{
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $rfcore->getError();
 

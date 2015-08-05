@@ -136,7 +136,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		{
 			$query = $this->_buildQueryAttending();
 			$pagination = $this->getAttendingPagination();
-//echo '<pre>'; echo str_replace('#__', 'j3x_', $query); echo '</pre>'; exit;
+
 			if ($pop)
 			{
 				$this->attending = $this->_getList($query);
@@ -150,6 +150,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$this->attending = $this->_categories($this->attending);
 		$this->attending = $this->_getPlacesLeft($this->attending);
 		$this->attending = $this->_getPrices($this->attending);
+		$this->attending = $this->addPaymentInfo($this->attending);
 
 		return $this->attending;
 	}
@@ -422,7 +423,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
 		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('x.featured');
-		$query->select('r.id AS attendee_id');
+		$query->select('r.id AS attendee_id, r.sid, r.submit_key');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
@@ -735,5 +736,54 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$res = $this->_db->loadObjectList();
 
 		return $res;
+	}
+
+	/**
+	 * Add payment info to items
+	 *
+	 * @param   array  $items  items
+	 *
+	 * @return array
+	 */
+	protected function addPaymentInfo($items)
+	{
+		if (!$items)
+		{
+			return $items;
+		}
+
+		$sids = array();
+
+		foreach ($items as $item)
+		{
+			$sids[] = $item->sid;
+		}
+
+		$paymentRequests = RdfCore::getSubmissionsPaymentRequests($sids);
+
+		foreach ($items as &$item)
+		{
+			$item->paid = 1;
+
+			if (isset($paymentRequests[$item->sid]))
+			{
+				$item->paymentRequests = $paymentRequests[$item->sid];
+
+				foreach ($paymentRequests[$item->sid] as $pr)
+				{
+					if ($pr->paid == 0)
+					{
+						$item->paid = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				$item->paymentRequests = false;
+			}
+		}
+
+		return $items;
 	}
 }

@@ -208,7 +208,8 @@ class RedeventViewDetails extends JViewLegacy
 		}
 
 		$document->addCustomTag('<meta property="og:site_name" content="' . $mainframe->getCfg('sitename') . '"/>');
-		$document->addCustomTag('<meta property="og:description" content="' . JFilterOutput::cleanText($row->summary) . '"/>');
+		$summary = $row->summary;
+		$document->addCustomTag('<meta property="og:description" content="' . JFilterOutput::cleanText($summary) . '"/>');
 
 		// Build the url
 		if (!empty($row->url) && strtolower(substr($row->url, 0, 7)) != "http://")
