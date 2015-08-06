@@ -195,7 +195,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			else
 			{
 				// Use quickSubmit method
-				$result = $rfcore->quickSubmit($rmUser->id, 'redevent', $data);
+				$result = $rfcore->quickSubmit($rmUser->joomla_user_id, 'redevent', $data);
 			}
 
 			if (!$result)
