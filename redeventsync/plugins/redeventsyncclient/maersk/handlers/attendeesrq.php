@@ -122,7 +122,6 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		try
 		{
 			// Register table
-			require_once JPATH_ADMINISTRATOR . '/components/com_redevent/tables/redevent_register.php';
 			$row = RTable::getAdminInstance('Attendee', array(), 'com_redevent');
 
 			// Create attendee from the xml info
