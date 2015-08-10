@@ -123,5 +123,8 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 				return $option->label;
 			}
 		}
+
+		// Just in case...
+		return $this->value;
 	}
 }

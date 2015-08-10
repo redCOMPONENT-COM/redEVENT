@@ -167,6 +167,7 @@ class RedeventModelBaseeventlist extends RModel
 			$this->_data = $this->_categories($this->_data);
 			$this->_data = $this->_getPlacesLeft($this->_data);
 			$this->_data = $this->_getPrices($this->_data);
+			$this->_data = $this->addCustomFields($this->_data);
 		}
 
 		return $this->_data;
@@ -766,7 +767,7 @@ class RedeventModelBaseeventlist extends RModel
 			$db      = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select('f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips');
+			$query->select('f.*');
 			$query->from('#__redevent_fields AS f');
 			$query->where('f.published = 1');
 			$query->where('f.object_key = ' . $db->Quote('redevent.event'));
@@ -796,7 +797,7 @@ class RedeventModelBaseeventlist extends RModel
 			$db      = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select('f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips');
+			$query->select('f.*');
 			$query->from('#__redevent_fields AS f');
 			$query->where('f.published = 1');
 			$query->where('f.object_key = ' . $db->Quote('redevent.xref'));
@@ -1114,5 +1115,33 @@ class RedeventModelBaseeventlist extends RModel
 		$res = $this->_db->loadObject();
 
 		return $res;
+	}
+
+	/**
+	 * Add custom field objects
+	 *
+	 * @param   array  $data  data rows
+	 *
+	 * @return mixed
+	 */
+	protected function addCustomFields($data)
+	{
+		foreach ($data as &$row)
+		{
+			$row->customFields = array();
+
+			$allFields = array_merge($this->getCustomFields(), $this->getXrefCustomFields());
+
+			foreach ($allFields as $field)
+			{
+				$object = RedeventFactoryCustomfield::getField($field->type);
+				$object->bind($field);
+				$object->value = $row->{'custom' . $field->id};
+
+				$row->customFields[$field->tag] = $object;
+			}
+		}
+
+		return $data;
 	}
 }

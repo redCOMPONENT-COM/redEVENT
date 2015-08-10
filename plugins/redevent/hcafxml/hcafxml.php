@@ -39,8 +39,6 @@ class plgRedeventHcafxml extends JPlugin
 	/**
 	 * Alters component parameters
 	 *
-	 * @param   JRegistry  $params  parameters
-	 *
 	 * @return bool true on success
 	 */
 	public function onAjaxAlleventsxml()
@@ -48,7 +46,7 @@ class plgRedeventHcafxml extends JPlugin
 		$this->loadLib();
 		$this->loadLanguage();
 
-		header ("Content-Type:text/xml");
+		header("Content-Type:text/xml");
 
 		$this->domtree = new DOMDocument('1.0', 'UTF-8');
 
@@ -122,11 +120,17 @@ class plgRedeventHcafxml extends JPlugin
 			$eventRoot->appendChild($this->createDomTextElement('pictureurl', JURI::root() . $session->datimage));
 		}
 
-		$categories = array_map(function($category){
-			return $category->name;
-		}, $session->categories);
+		$lang = JFactory::getLanguage()->getTag();
 
-		$eventRoot->appendChild($this->createDomTextElement('category', implode(', ', $categories)));
+		if ($lang == 'en-GB')
+		{
+			$eventRoot->appendChild($this->createDomTextElement('category', $session->customFields['type_en']->renderValue()));
+		}
+		elseif ($lang = "da-DK")
+		{
+			$eventRoot->appendChild($this->createDomTextElement('category', $session->customFields['type_dk']->renderValue()));
+		}
+
 		$eventRoot->appendChild($this->createDomTextElement('target', JText::_('PLG_REDEVENT_HCAFXML_TARGET_ALL')));
 
 		if (RedeventHelper::isValidDate($session->dates))
@@ -185,17 +189,22 @@ class plgRedeventHcafxml extends JPlugin
 		$venueRoot->appendChild($this->createDomTextElement('locationzipcode', $venue->plz));
 		$venueRoot->appendChild($this->createDomTextElement('locationzipcity', $venue->city));
 		$venueRoot->appendChild($this->createDomTextElement('locationcountry', $venue->country));
-		$venueRoot->appendChild($this->createDomTextElement(
-			'locationurl',
-			$venue->url ? htmlspecialchars($venue->url) : htmlspecialchars(JURI::root() . RedeventHelperRoute::getVenueEventsRoute($venue->id)))
+		$venueRoot->appendChild(
+			$this->createDomTextElement(
+				'locationurl',
+				$venue->url ? htmlspecialchars($venue->url) : htmlspecialchars(JURI::root() . RedeventHelperRoute::getVenueEventsRoute($venue->id))
+			)
 		);
 		$venueRoot->appendChild($this->createDomTextElement('locationdescription', $venue->locdescription));
 
 		if ($venue->categories)
 		{
-			$categories = array_map(function($category){
-				return $category->name;
-			}, $venue->categories);
+			$categories = array_map(
+				function($category){
+					return $category->name;
+				},
+				$venue->categories
+			);
 			$venueRoot->appendChild($this->createDomTextElement('locationtype', implode(', ', $categories)));
 		}
 
