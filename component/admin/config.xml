@@ -9,10 +9,10 @@
             <option value="0">COM_REDEVENT_DETAILS_OFF</option>
             <option value="1">COM_REDEVENT_LINK_ON_TITLE</option>
         </field>
-        <field name="formatdate" type="text" default="%d.%m.%Y" label="COM_REDEVENT_DATE_STRFTIME"
-               description="COM_REDEVENT_DATE_STRFTIME_TIP"/>
-        <field name="formattime" type="text" default="%H.%M" label="COM_REDEVENT_TIME_STRFTIME"
-               description="COM_REDEVENT_TIME_STRFTIME_TIP"/>
+        <field name="formatdate" type="text" default="d.m.Y" label="COM_REDEVENT_SETTINGS_DATE_FORMAT"
+               description="COM_REDEVENT_SETTINGS_DATE_FORMAT_TIP"/>
+        <field name="formattime" type="text" default="H:i" label="COM_REDEVENT_SETTINGS_TIME_FORMAT"
+               description="COM_REDEVENT_SETTINGS_TIME_FORMAT_TIP"/>
         <field name="currency_decimal_separator" type="text" default="," label="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR"
                description="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR_TIP"/>
         <field name="currency_thousand_separator" type="text" default="."
@@ -676,8 +676,8 @@
                label="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_LABEL"
                description="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_DESC"
                default="redevent"/>
-        <field name="backend_formatdate" type="text" default="%d.%m.%Y" label="COM_REDEVENT_DATE_STRFTIME_BACKEND"
-               description="COM_REDEVENT_DATE_STRFTIME_BACKEND_TIP"/>
+        <field name="backend_formatdate" type="text" default="d.m.Y" label="COM_REDEVENT_SETTINGS_BACKEND_DATE_FORMAT"
+               description="COM_REDEVENT_SETTINGS_BACKEND_DATE_FORMAT_YIP"/>
         <field name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL"
                description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC"/>
         <field name="ical_no_timezone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL"

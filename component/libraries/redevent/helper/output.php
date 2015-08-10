@@ -577,7 +577,8 @@ class RedeventHelperOutput {
 		}
 
 		//Format date
-		$formatdate = strftime( $settings->get('formatdate', '%d.%m.%Y'), strtotime( $date.' '.$time ));
+		$date = JFactory::getDate($date . ' ' . $time);
+		$formatdate = $date->format($settings->get('formatdate', 'd.m.Y'));
 
 		return $formatdate;
 	}
@@ -594,14 +595,16 @@ class RedeventHelperOutput {
 	 */
 	public static function formattime($date, $time)
 	{
-		$settings = & RedeventHelper::config();
+		$settings = RedeventHelper::config();
 
 		if(!$time) {
 			return;
 		}
 
 		//Format time
-		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));
+		$date = JFactory::getDate($date . ' ' . $time);
+		$formattime = $date->format($settings->get('formattime', 'H:i'));
+
 		return $formattime;
 	}
 
@@ -644,7 +647,7 @@ class RedeventHelperOutput {
 				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
 				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
 				{
-					$date_end = self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes);
+					$date_end = self::formatdate(strftime('Y-m-d', strtotime($event->enddates. ' -1 day')), $event->endtimes);
 				}
 			}
 		}
