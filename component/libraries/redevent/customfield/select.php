@@ -104,4 +104,24 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 
 		return $option_list;
 	}
+
+	/**
+	 * Display value. In case of select, should be the label if any
+	 *
+	 * @return mixed
+	 */
+	public function renderValue()
+	{
+		$options = explode("\n", $this->options);
+
+		foreach ($options as $opt)
+		{
+			$option = $this->getOptionLabelValue($opt);
+
+			if ($option->value == $this->value)
+			{
+				return $option->label;
+			}
+		}
+	}
 }
