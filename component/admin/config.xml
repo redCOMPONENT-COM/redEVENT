@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config addfieldpath="/administrator/components/com_redevent/models/fields">
 
-	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL"
-			  description="COM_REDEVENT_SETTINGS_GENERAL_DESC" addfieldpath="/libraries/redform/form/fields">
-		<field type="spacer" label="COM_REDEVENT_DISPLAY_SETTINGS"/>
-		<field name="showdetails" type="list" default="1" label="COM_REDEVENT_SHOW_DETAILS"
-			   description="COM_REDEVENT_SHOW_DETAILS_TIP">
-			<option value="0">COM_REDEVENT_DETAILS_OFF</option>
-			<option value="1">COM_REDEVENT_LINK_ON_TITLE</option>
-		</field>
-		<field name="formatdate" type="text" default="%d.%m.%Y" label="COM_REDEVENT_DATE_STRFTIME"
-			   description="COM_REDEVENT_DATE_STRFTIME_TIP"/>
-		<field name="formattime" type="text" default="%H.%M" label="COM_REDEVENT_TIME_STRFTIME"
-			   description="COM_REDEVENT_TIME_STRFTIME_TIP"/>
-		<field name="currency_decimal_separator" type="text" default="," label="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR"
-			   description="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR_TIP"/>
-		<field name="currency_thousand_separator" type="text" default="."
-			   label="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR"
-			   description="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR_TIP"/>
-		<field name="currency_decimals" type="list" default="1" label="COM_REDEVENT_CURRENCY_DECIMALS"
-			   description="COM_REDEVENT_CURRENCY_DECIMALS_TIP">
-			<option value="decimals">COM_REDEVENT_DECIMALS</option>
-			<option value="comma">COM_REDEVENT_DECIMALS_COMMA_HYPHEN</option>
-			<option value="none">COM_REDEVENT_NONE</option>
-		</field>
-		<field name="storeip" type="radio" default="1" label="COM_REDEVENT_STORE_IP"
-			   class="btn-group"
-			   description="COM_REDEVENT_STORE_IP_TIP">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+    <fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL"
+              description="COM_REDEVENT_SETTINGS_GENERAL_DESC" addfieldpath="/libraries/redform/form/fields">
+        <field type="spacer" label="COM_REDEVENT_DISPLAY_SETTINGS"/>
+        <field name="showdetails" type="list" default="1" label="COM_REDEVENT_SHOW_DETAILS"
+               description="COM_REDEVENT_SHOW_DETAILS_TIP">
+            <option value="0">COM_REDEVENT_DETAILS_OFF</option>
+            <option value="1">COM_REDEVENT_LINK_ON_TITLE</option>
+        </field>
+        <field name="formatdate" type="text" default="d.m.Y" label="COM_REDEVENT_SETTINGS_DATE_FORMAT"
+               description="COM_REDEVENT_SETTINGS_DATE_FORMAT_TIP"/>
+        <field name="formattime" type="text" default="H:i" label="COM_REDEVENT_SETTINGS_TIME_FORMAT"
+               description="COM_REDEVENT_SETTINGS_TIME_FORMAT_TIP"/>
+        <field name="currency_decimal_separator" type="text" default="," label="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR"
+               description="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR_TIP"/>
+        <field name="currency_thousand_separator" type="text" default="."
+               label="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR"
+               description="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR_TIP"/>
+        <field name="currency_decimals" type="list" default="1" label="COM_REDEVENT_CURRENCY_DECIMALS"
+               description="COM_REDEVENT_CURRENCY_DECIMALS_TIP">
+            <option value="decimals">COM_REDEVENT_DECIMALS</option>
+            <option value="comma">COM_REDEVENT_DECIMALS_COMMA_HYPHEN</option>
+            <option value="none">COM_REDEVENT_NONE</option>
+        </field>
+        <field name="storeip" type="radio" default="1" label="COM_REDEVENT_STORE_IP"
+               description="COM_REDEVENT_STORE_IP_TIP">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
 
 		<field type="spacer" label="COM_REDEVENT_MAIL_HANDLING"/>
 		<field name="mailinform" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_SUBMISSION"
@@ -764,9 +763,9 @@
 			   label="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_LABEL"
 			   description="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_DESC"
 			   default="redevent"/>
-		<field name="backend_formatdate" type="text" default="%d.%m.%Y" label="COM_REDEVENT_DATE_STRFTIME_BACKEND"
-			   description="COM_REDEVENT_DATE_STRFTIME_BACKEND_TIP"/>
-		<field name="ical_timezone" type="timezone" default="Europe/London" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL"
+        <field name="backend_formatdate" type="text" default="d.m.Y" label="COM_REDEVENT_SETTINGS_BACKEND_DATE_FORMAT"
+               description="COM_REDEVENT_SETTINGS_BACKEND_DATE_FORMAT_TIP"/>
+        <field name="ical_timezone" type="timezone" default="Europe/London" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL"
 			   description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC"/>
 		<field name="ical_no_timezone" type="radio" default="0"
 			   class="btn-group"
