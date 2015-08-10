@@ -537,7 +537,7 @@ class RedeventHelperOutput
 			$time = '00:00:00';
 		}
 
-		//Format date
+		// Format date
 		$date = JFactory::getDate($date . ' ' . $time);
 		$formatdate = $date->format($settings->get('formatdate', 'd.m.Y'));
 
@@ -561,7 +561,7 @@ class RedeventHelperOutput
 			return;
 		}
 
-		//Format time
+		// Format time
 		$date = JFactory::getDate($date . ' ' . $time);
 		$formattime = $date->format($settings->get('formattime', 'H:i'));
 
