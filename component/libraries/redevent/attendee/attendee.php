@@ -295,26 +295,27 @@ class RedeventAttendee extends JObject
 			// Send attending email
 			$this->sendWaitinglistStatusEmail(0);
 			$this->sendWLAdminNotification(0);
-
-			return true;
-		}
-
-		$attendees = $this->getAttending();
-
-		if (count($attendees) > $session->maxattendees)
-		{
-			// Put this attendee on WL
-			$this->toggleWaitingListStatus(1);
 		}
 		else
 		{
-			$this->addToAttending();
+			$attendees = $this->getAttending();
 
-			// Send attending email
-			$this->sendWaitinglistStatusEmail(0);
-			$this->sendWLAdminNotification(0);
+			if (count($attendees) > $session->maxattendees)
+			{
+				// Put this attendee on WL
+				$this->toggleWaitingListStatus(1);
+			}
+			else
+			{
+				$this->addToAttending();
+
+				// Send attending email
+				$this->sendWaitinglistStatusEmail(0);
+				$this->sendWLAdminNotification(0);
+			}
 		}
 
+		// Notify
 		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onAttendeeConfirmed', array($this->id));
