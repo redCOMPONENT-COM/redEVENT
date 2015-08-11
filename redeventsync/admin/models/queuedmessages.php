@@ -138,23 +138,4 @@ class RedeventsyncModelQueuedmessages extends RModelList
 
 		return $query;
 	}
-
-	/**
-	 * Remove from queue table
-	 *
-	 * @param   string  $message  message
-	 *
-	 * @return void
-	 */
-	private function dequeueMessage($message)
-	{
-		$db = $this->_db;
-		$query = $db->getQuery(true);
-
-		$query->delete('#__redeventsync_queuedmessages');
-		$query->where('id = ' . $message->id);
-
-		$db->setQuery($query);
-		$db->execute();
-	}
 }

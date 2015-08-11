@@ -632,7 +632,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBaseeventlist
 		$query->join('INNER', '#__redmember_users AS rmu ON rmu.joomla_user_id = r.uid');
 		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.joomla_user_id');
 		$query->join('INNER', '#__users AS u ON u.id = rmu.joomla_user_id');
-		$query->where('rmuo.organization_id = ' . $this->getState('filter_organization'));
+		$query->where('rmuo.organization_id = ' . (int) $this->getState('filter_organization'));
 		$query->where('r.cancelled = 0');
 
 		$session_state = array();
@@ -1033,29 +1033,5 @@ class Redeventb2bModelFrontadmin extends RedeventModelBaseeventlist
 		}
 
 		return false;
-	}
-
-	/**
-	 * Search for person within current organization
-	 *
-	 * @param   string  $input  the string to search for
-	 *
-	 * @return array
-	 */
-	public function searchPerson($input)
-	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('');
-		$query->from('#__ AS ');
-		$query->join('INNER', '#__');
-		$query->join('LEFT', '#__');
-		$query->where('');
-		$query->group('');
-		$query->order('');
-
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
 	}
 }

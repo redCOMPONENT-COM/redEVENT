@@ -269,7 +269,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 		// Notify managers
 
 		JPluginHelper::importPlugin( 'redevent' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onB2BRegistrationNotifyAdmins', array($registration->id));
 	}
 
