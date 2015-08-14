@@ -39,8 +39,8 @@
 				onchange="this.form.submit();"
 				>
 			<option value="">COM_REDEVENTSYNC_FILTER_DIRECTION_SELECT</option>
-			<option value="0">COM_REDEVENTSYNC_FILTER_DIRECTION_UP</option>
-			<option value="1">COM_REDEVENTSYNC_FILTER_DIRECTION_DOWN</option>
+			<option value="0">COM_REDEVENTSYNC_FILTER_DIRECTION_DOWN</option>
+			<option value="1">COM_REDEVENTSYNC_FILTER_DIRECTION_UP</option>
 		</field>
 
 	</fields>
