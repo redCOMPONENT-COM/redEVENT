@@ -48,7 +48,7 @@ JText::script('COM_REDEVENT_UPLOAD_DELETE_FILE');
 RHelperAsset::load('lib/jquery-ui/jquery-ui.min.js', 'redcore');
 RHelperAsset::load('lib/jquery-ui/jquery-ui.custom.min.css', 'redcore');
 RHelperAsset::load('jquery/jquery.ajaxfileupload.min.js', 'com_redevent');
-RHelperAsset::load('dragndrop.js', 'com_redevent');
+RHelperAsset::load('dragndrop.min.js', 'com_redevent');
 RHelperAsset::load('dragndrop.min.css', 'com_redevent');
 RHelperAsset::load('reditem.cropimage.min.js', 'com_redevent');
 ?>
@@ -63,7 +63,8 @@ RHelperAsset::load('reditem.cropimage.min.js', 'com_redevent');
 			config: {
 				size: "<?php echo $uploadMaxFilesizeInByte ?>",
 				ext: "<?php echo $allowedFileExtension?>",
-				mime: "<?php echo $allowedMime ?>"
+				mime: "<?php echo $allowedMime ?>",
+				includeBrowse: 1,
 			},
 		});
 	});

@@ -63,7 +63,8 @@ RHelperAsset::load('reditem.cropimage.min.js', 'com_redevent');
 			config: {
 				size: "<?php echo $uploadMaxFilesizeInByte ?>",
 				ext: "<?php echo $allowedFileExtension?>",
-				mime: "<?php echo $allowedMime ?>"
+				mime: "<?php echo $allowedMime ?>",
+				includeBrowse: 1
 			},
 		});
 	});
