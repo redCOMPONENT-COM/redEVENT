@@ -574,25 +574,34 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		// Payment
 		if ($attendee->paid)
 		{
-			// Extract transaction id
-			if (preg_match('/tid:([^\n]+)/', $attendee->payment_data, $matches))
+			foreach ($attendee->paymentRequests as $paymentRequest)
 			{
-				$transactionId = $matches[1];
-			}
-			elseif (preg_match('/transactionId:([^\n]+)/', $attendee->payment_data, $matches))
-			{
-				$transactionId = $matches[1];
-			}
-			else
-			{
-				$transactionId = 'not found';
-			}
+				if (!$paymentRequest->paid)
+				{
+					continue;
+				}
 
-			$a = new SimpleXMLElement('<Payment/>');
-			$a->addChild('Plateform', $attendee->payment_gateway);
-			$a->addChild('TransactionId', $transactionId);
+				// Extract transaction id
+				if (preg_match('/tid:([^\n]+)/', $paymentRequest->payment->data, $matches))
+				{
+					$transactionId = $matches[1];
+				}
+				elseif (preg_match('/transactionId:([^\n]+)/', $paymentRequest->payment->data, $matches))
+				{
+					$transactionId = $matches[1];
+				}
+				else
+				{
+					$transactionId = 'not found';
+				}
 
-			$this->appendElement($message, $a);
+				$a = new SimpleXMLElement('<Payment/>');
+				$a->addChild('Plateform', $paymentRequest->payment->gateway);
+				$a->addChild('TransactionId', $transactionId);
+
+				$this->appendElement($message, $a);
+
+			}
 		}
 
 		return $message;

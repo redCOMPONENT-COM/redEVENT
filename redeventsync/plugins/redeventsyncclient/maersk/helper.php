@@ -120,12 +120,10 @@ class RedeventsyncclientMaerskHelper
 		$query->select('v.venue_code');
 		$query->select('e.redform_id');
 		$query->select('u.email');
-		$query->select('p.date AS payment_date, p.gateway AS payment_gateway, p.status AS payment_status, p.data AS payment_data, p.paid');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
 		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->join('LEFT', '#__rwf_payment AS p ON p.submit_key = r.submit_key AND p.paid = 1');
 		$query->join('LEFT', '#__users AS u ON u.id = r.uid');
 		$query->where('r.id = ' . $db->quote($attendee_id));
 
@@ -137,7 +135,74 @@ class RedeventsyncclientMaerskHelper
 			$attendee->redmember = RedmemberApi::getUser($attendee->uid);
 		}
 
+		$attendee = static::addPaymentInfo($attendee);
+
 		return $attendee;
+	}
+
+	/**
+	 * Add payment info to items
+	 *
+	 * @param   object  $attendee  attendee data
+	 *
+	 * @return array
+	 */
+	protected static function addPaymentInfo($attendee)
+	{
+		if (!$attendee)
+		{
+			return $attendee;
+		}
+
+		$paymentRequests = RdfCore::getSubmissionsPaymentRequests(array($attendee->sid));
+
+		$attendee->paid = 1;
+
+		if (!empty($paymentRequests[$attendee->sid]))
+		{
+			foreach ($paymentRequests[$attendee->sid] as $pr)
+			{
+				if ($pr->paid == 0)
+				{
+					$attendee->paid = 0;
+				}
+				else
+				{
+					$pr->payment = static::getPayment($pr->id);
+				}
+			}
+
+			$attendee->paymentRequests = $paymentRequests[$attendee->sid];
+		}
+		else
+		{
+			$attendee->paymentRequests = false;
+		}
+
+		return $attendee;
+	}
+
+	/**
+	 * Get payment data from payment request
+	 *
+	 * @param   int  $paymentRequestId  payment request id
+	 *
+	 * @return object
+	 */
+	protected static function getPayment($paymentRequestId)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('p.*')
+			->from('#__rwf_payment AS p')
+			->join('INNER', '#__rwf_cart_item AS ci ON ci.cart_id = p.cart_id')
+			->where('ci.payment_request_id = ' . $paymentRequestId)
+			->where('p.paid = 1');
+
+		$db->setQuery($query);
+		$res = $db->loadObject();
+
+		return $res;
 	}
 
 	/**
