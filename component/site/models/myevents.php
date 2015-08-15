@@ -13,358 +13,41 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    2.0
  */
-class RedeventModelMyevents extends RedeventModelBasesessionlist
+class RedeventModelMyevents extends RModelList
 {
-	/**
-	 * Events data array
-	 *
-	 * @var array
-	 */
-	protected $events = null;
-
-	/**
-	 * Events total
-	 *
-	 * @var integer
-	 */
-	protected $total_events = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	protected $pagination_events = null;
-
-	protected $venues = null;
-
-	protected $total_venues = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	protected $pagination_venues = null;
-
-	protected $attending = null;
-
-	protected $total_attending = null;
-
-	protected $pagination_attending = null;
-
-	protected $attended = null;
-
-	protected $total_attended = null;
-
-	protected $pagination_attended = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		$mainframe = JFactory::getApplication();
-
-		// Get the paramaters of the active menu item
-		$params = $mainframe->getParams('com_redevent');
-
-		// Get the number of events from database
-		$limit 					= $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart_events 		= $mainframe->input->get('limitstart', 0, '', 'int');
-		$limitstart_venues 		= $mainframe->input->get('limitstart_venues', 0, '', 'int');
-		$limitstart_attending 	= $mainframe->input->get('limitstart_attending', 0, '', 'int');
-		$limitstart_attended 	= $mainframe->input->get('limitstart_attended', 0, '', 'int');
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart_events', $limitstart_events);
-		$this->setState('limitstart_venues', $limitstart_venues);
-		$this->setState('limitstart_attending', $limitstart_attending);
-		$this->setState('limitstart_attended', $limitstart_attended);
-
-		// Get the filter request variables
-		$this->setState('filter_order', $mainframe->input->getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_dir', $mainframe->input->getCmd('filter_order_Dir', 'ASC'));
-	}
-
 	/**
 	 * Method to get the Events
 	 *
 	 * @return array
 	 */
-	public function getEvents()
+	public function getItems()
 	{
-		$pop = JFactory::getApplication()->input->getBool('pop');
+		// Get a storage key.
+		$store = $this->getStoreId();
 
-		// Lets load the content if it doesn't already exist
-		if (empty($this->events))
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store]))
 		{
-			$query = $this->_buildQueryEvents();
-			$pagination = $this->getEventsPagination();
-
-			if ($pop)
-			{
-				$this->events = $this->_getList($query);
-			}
-			else
-			{
-				$this->events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			}
-
-			$this->events = $this->_categories($this->events);
-			$this->events = $this->_getPlacesLeft($this->events);
+			return $this->cache[$store];
 		}
 
-		return $this->events;
+		$items = parent::getItems();
+		$items = $this->addCategories($items);
+
+		// Add the items to the internal cache.
+		$this->cache[$store] = $items;
+
+		return $this->cache[$store];
 	}
 
 	/**
-	 * Method to get the Events user is attending
+	 * Method to cache the last query constructed.
 	 *
-	 * @return array
-	 */
-	public function getAttending()
-	{
-		$pop = JFactory::getApplication()->input->getBool('pop');
-
-		// Lets load the content if it doesn't already exist
-		if (empty($this->attending))
-		{
-			$query = $this->_buildQueryAttending();
-			$pagination = $this->getAttendingPagination();
-
-			if ($pop)
-			{
-				$this->attending = $this->_getList($query);
-			}
-			else
-			{
-				$this->attending = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			}
-		}
-
-		$this->attending = $this->_categories($this->attending);
-		$this->attending = $this->_getPlacesLeft($this->attending);
-		$this->attending = $this->_getPrices($this->attending);
-		$this->attending = $this->addPaymentInfo($this->attending);
-
-		return $this->attending;
-	}
-
-	/**
-	 * Method to get the Events user attended
+	 * This method ensures that the query is constructed only once for a given state of the model.
 	 *
-	 * @return array
+	 * @return  JDatabaseQuery  A JDatabaseQuery object
 	 */
-	public function getAttended()
-	{
-		$pop = JFactory::getApplication()->input->getBool('pop');
-
-		// Lets load the content if it doesn't already exist
-		if (empty($this->attended))
-		{
-			$query = $this->_buildQueryAttended();
-			$pagination = $this->getAttendedPagination();
-
-			if ($pop)
-			{
-				$this->attended = $this->_getList($query);
-			}
-			else
-			{
-				$this->attended = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			}
-		}
-
-		$this->attended = $this->_categories($this->attended);
-		$this->attended = $this->_getPlacesLeft($this->attended);
-		$this->attended = $this->_getPrices($this->attended);
-
-		return $this->attended;
-	}
-
-	/**
-	 * Method to get the Venues
-	 *
-	 * @return array
-	 */
-	public function getVenues()
-	{
-		$pop = JFactory::getApplication()->input->getBool('pop');
-
-		// Lets load the content if it doesn't already exist
-		if (empty($this->venues))
-		{
-			$query = $this->_buildQueryVenues();
-			$pagination = $this->getVenuesPagination();
-
-			if ($pop)
-			{
-				$this->venues = $this->_getList($query);
-			}
-			else
-			{
-				$this->venues = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			}
-		}
-
-		return $this->venues;
-	}
-
-	/**
-	 * Total nr of events
-	 *
-	 * @return integer
-	 */
-	public function getTotalEvents()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->total_events))
-		{
-			$query = $this->_buildQueryEvents();
-			$this->total_events = $this->_getListCount($query);
-		}
-
-		return $this->total_events;
-	}
-
-	/**
-	 * Total nr of events
-	 *
-	 * @return integer
-	 */
-	public function getTotalAttending()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->total_attending))
-		{
-			$query = $this->_buildQueryAttending();
-			$this->total_attending = $this->_getListCount($query);
-		}
-
-		return $this->total_attending;
-	}
-
-	/**
-	 * Total nr of events
-	 *
-	 * @return integer
-	 */
-	public function getTotalAttended()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->total_attended))
-		{
-			$query = $this->_buildQueryAttended();
-			$this->total_attended = $this->_getListCount($query);
-		}
-
-		return $this->total_attended;
-	}
-
-	/**
-	 * Total nr of events
-	 *
-	 * @return integer
-	 */
-	public function getTotalVenues()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->total_venues))
-		{
-			$query = $this->_buildQueryVenues();
-			$this->total_venues = $this->_getListCount($query);
-		}
-
-		return $this->total_venues;
-	}
-
-	/**
-	 * Method to get a pagination object for the events
-	 *
-	 * @return integer
-	 */
-	public function getEventsPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->pagination_events))
-		{
-			jimport('joomla.html.pagination');
-			$this->pagination_events = new RedeventAjaxPagination(
-				$this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit')
-			);
-		}
-
-		return $this->pagination_events;
-	}
-
-	/**
-	 * Method to get a pagination object for the venues
-	 *
-	 * @return integer
-	 */
-	public function getVenuesPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->pagination_venues))
-		{
-			jimport('joomla.html.pagination');
-			$this->pagination_venues = new RedeventAjaxPagination(
-				$this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit')
-			);
-		}
-
-		return $this->pagination_venues;
-	}
-
-	/**
-	 * Method to get a pagination object for the attending events
-	 *
-	 * @return integer
-	 */
-	public function getAttendingPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->pagination_attending))
-		{
-			jimport('joomla.html.pagination');
-			$this->pagination_attending = new RedeventAjaxPagination(
-				$this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit')
-			);
-		}
-
-		return $this->pagination_attending;
-	}
-
-	/**
-	 * Method to get a pagination object for the attended events
-	 *
-	 * @return integer
-	 */
-	public function getAttendedPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->pagination_attended))
-		{
-			jimport('joomla.html.pagination');
-			$this->pagination_attended = new RedeventAjaxPagination(
-				$this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit')
-			);
-		}
-
-		return $this->pagination_attended;
-	}
-
-	/**
-	 * Build the query
-	 *
-	 * @return string
-	 */
-	protected function _buildQueryEvents()
+	protected function getListQuery()
 	{
 		$query = $this->_buildQueryEventsSelect();
 
@@ -376,40 +59,7 @@ class RedeventModelMyevents extends RedeventModelBasesessionlist
 	}
 
 	/**
-	 * Build the query
-	 *
-	 * @return string
-	 */
-	protected function _buildQueryAttending()
-	{
-		$query = $this->_buildQueryEventsSelect();
-		$query->where('r.cancelled = 0');
-
-		// Get the WHERE and ORDER BY clauses for the query
-		$query = $this->_buildEventListAttendingWhere($query);
-		$query = $this->_buildEventListOrderBy($query);
-
-		return $query;
-	}
-
-	/**
-	 * Build the query
-	 *
-	 * @return string
-	 */
-	protected function _buildQueryAttended()
-	{
-		$query = $this->_buildQueryEventsSelect();
-
-		// Get the WHERE and ORDER BY clauses for the query
-		$query = $this->_buildEventListAttendedWhere($query);
-		$query = $this->_buildEventListOrderBy($query);
-
-		return $query;
-	}
-
-	/**
-	 * build base select and joins for sessions queries
+	 * build base select and joins
 	 *
 	 * @return JDatabaseQuery
 	 */
@@ -418,54 +68,14 @@ class RedeventModelMyevents extends RedeventModelBasesessionlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code');
-		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
 		$query->select('c.name AS catname, c.id AS catid');
-		$query->select('x.featured');
-		$query->select('r.id AS attendee_id, r.sid, r.submit_key');
-		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
-		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
-		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('LEFT', '#__redevent_register AS r ON r.xref = x.id');
-		$query->join('LEFT', '#__redevent_events AS a ON a.id = x.eventid');
-		$query->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid');
+		$query->from('#__redevent_events AS a');
 		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
-		$query->group('x.id');
-
-		return $query;
-	}
-
-	/**
-	 * Build the query
-	 *
-	 * @return string
-	 */
-	protected function _buildQueryVenues()
-	{
-		$allowed = RedeventUserAcl::getInstance()->getAllowedForEventsVenues();
-
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('l.id, l.venue, l.city, l.state, l.url, l.published');
-		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
-		$query->from('#__redevent_venues AS l');
-		$query->group('l.id');
-		$query->order('l.venue ASC');
-
-		if ($allowed && count($allowed))
-		{
-			$query->where('l.id IN (' . implode(',', $allowed) . ') ');
-		}
-		else
-		{
-			$query->where('0');
-		}
+		$query->group('a.id');
 
 		return $query;
 	}
@@ -482,7 +92,7 @@ class RedeventModelMyevents extends RedeventModelBasesessionlist
 		$filter_order = $this->getState('filter_order');
 		$filter_order_dir = $this->getState('filter_order_dir');
 
-		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
+		$query->order($filter_order . ' ' . $filter_order_dir . ', a.title');
 
 		return $query;
 	}
@@ -503,34 +113,20 @@ class RedeventModelMyevents extends RedeventModelBasesessionlist
 
 		$where = array();
 
-		$where[] = 'x.published > -1';
-
 		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->superuser())
 		{
-			$xrefs = $acl->getCanEditXrefs();
-			$xrefs = @array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
-			$xrefs = @array_unique($xrefs);
+			$ids = $acl->getCanEditEvents();
 
-			if ($xrefs && count($xrefs))
+			if ($ids && count($ids))
 			{
-				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
+				$where[] = ' a.id IN (' . implode(",", $ids) . ')';
 			}
 			else
 			{
 				$where[] = '0';
 			}
-		}
-
-		if ($params->get('showopendates', 1) == 0)
-		{
-			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
-		}
-
-		if ($params->get('shownonbookable', 1) == 0)
-		{
-			$where[] = ' a.registra > 0 ';
 		}
 
 		/*
@@ -539,8 +135,8 @@ class RedeventModelMyevents extends RedeventModelBasesessionlist
 		*/
 		if ($params->get('filter_text'))
 		{
-			$filter = $app->input->getString('filter', '', 'request');
-			$filter_type = $app->input->getWord('filter_type', '', 'request');
+			$filter = $this->getState('filter');
+			$filter_type = $this->getState('filter_type');
 
 			if ($filter)
 			{
@@ -555,24 +151,11 @@ class RedeventModelMyevents extends RedeventModelBasesessionlist
 						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
 						break;
 
-					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
-						break;
-
-					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
-						break;
-
 					case 'type':
 						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
 						break;
 				}
 			}
-		}
-
-		if ($app->input->getInt('filter_event'))
-		{
-			$where[] = ' a.id = ' . $app->input->getInt('filter_event');
 		}
 
 		$query->where(implode(' AND ', $where));
@@ -581,209 +164,126 @@ class RedeventModelMyevents extends RedeventModelBasesessionlist
 	}
 
 	/**
-	 * Build the where clause
+	 * Method to auto-populate the model state.
 	 *
-	 * @return string
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
 	 */
-	protected function _buildEventsOptionsWhere()
+	protected function populateState($ordering = null, $direction = null)
 	{
 		$mainframe = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params = $mainframe->getParams();
+		$params = $mainframe->getParams('com_redevent');
 
-		$where = array();
-		$where[] = ' x.published > -1 ';
+		// Get the number of events from database
+		$limit = $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limitstart_events = $mainframe->input->get('limitstart', 0, '', 'int');
 
-		$acl = RedeventUserAcl::getInstance();
+		$this->setState('list.limit', $limit);
+		$this->setState('list.start', $limitstart_events);
 
-		if (!$acl->superuser())
-		{
-			$xrefs = $acl->getCanEditXrefs();
-			$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
-			$xrefs = array_unique($xrefs);
+		// Get the filter request variables
+		$this->setState('filter_order', $mainframe->input->getCmd('filter_order_events', 'a.title'));
+		$this->setState('filter_order_dir', $mainframe->input->getCmd('filter_order_Dir', 'ASC'));
 
-			if ($xrefs && count($xrefs))
-			{
-				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
-			}
-			else
-			{
-				$where[] = '0';
-			}
-		}
+		$filter = $mainframe->getUserStateFromRequest('com_redevent.myevents.filter', 'filter', '', 'string');
+		$filter_type = $mainframe->getUserStateFromRequest('com_redevent.myevents.filter_type', 'filter_type', '', 'string');
 
-		if ($params->get('showopendates', 1) == 0)
-		{
-			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
-		}
-
-		if ($params->get('shownonbookable', 1) == 0)
-		{
-			$where[] = ' a.registra > 0 ';
-		}
-
-		/*
-		 * If we have a filter, and this is enabled... lets tack the AND clause
-		* for the filter onto the WHERE clause of the item query.
-		*/
-		if ($params->get('filter_text'))
-		{
-			$filter = JFactory::getApplication()->input->getString('filter', '', 'request');
-			$filter_type = JFactory::getApplication()->input->getWord('filter_type', '', 'request');
-
-			if ($filter)
-			{
-				// Clean filter variables
-				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
-				$filter_type = JString::strtolower($filter_type);
-
-				switch ($filter_type)
-				{
-					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
-						break;
-
-					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
-						break;
-
-					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
-						break;
-
-					case 'type':
-						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
-						break;
-				}
-			}
-		}
-
-		$where = ' WHERE ' . implode(' AND ', $where);
-
-		return $where;
+		$this->setState('filter', $filter);
+		$this->setState('filter_type', $filter_type);
 	}
 
 	/**
-	 * Build the where clause
+	 * Method to get a store id based on the model configuration state.
 	 *
-	 * @param   JDatabaseQuery  $query  query object
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
 	 *
-	 * @return string
+	 * @param   string  $id  An identifier string to generate the store id.
+	 *
+	 * @return  string  A store id.
+	 *
+	 * @since   11.1
 	 */
-	protected function _buildEventListAttendingWhere($query)
+	protected function getStoreId($id = '')
 	{
-		$user = JFactory::getUser();
+		$id = parent::getStoreId($id);
+		$id .= ':' . $this->getState('filter');
+		$id .= ':' . $this->getState('filter_type');
 
-		$query->where('x.published > -1');
-
-		// Upcoming !
-		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
-
-		// Then if the user is attending the event
-		$query->where('r.uid = ' . $this->_db->Quote($user->id));
-
-		return $query;
+		return $id;
 	}
 
 	/**
-	 * Build the where clause
+	 * adds categories property to event rows
 	 *
-	 * @param   JDatabaseQuery  $query  query object
-	 *
-	 * @return string
-	 */
-	protected function _buildEventListAttendedWhere($query)
-	{
-		$user = JFactory::getUser();
-
-		$query->where('x.published > -1');
-
-		// Upcoming !
-		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('x.dates > 0 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) <= ' . $this->_db->Quote($now));
-
-		// Then if the user is attending the event
-		$query->where('r.uid = ' . $this->_db->Quote($user->id));
-
-		return $query;
-	}
-
-	/**
-	 * Get events as options
-	 *
-	 * @return mixed
-	 */
-	public function getEventsOptions()
-	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where = $this->_buildEventsOptionsWhere();
-
-		// Get Events from Database
-		$query = ' SELECT a.id AS value, a.title as text '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. $where
-		. ' GROUP BY (a.id) '
-		. ' ORDER BY a.title ';
-
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-
-		return $res;
-	}
-
-	/**
-	 * Add payment info to items
-	 *
-	 * @param   array  $items  items
+	 * @param   array  $rows  rows of events
 	 *
 	 * @return array
 	 */
-	protected function addPaymentInfo($items)
+	protected function addCategories($rows)
 	{
-		if (!$items)
+		if (empty($rows))
 		{
-			return $items;
+			return $rows;
 		}
 
-		$sids = array();
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
+		$gids = implode(',', $gids);
 
-		foreach ($items as $item)
+		for ($i = 0, $n = count($rows); $i < $n; $i++)
 		{
-			$sids[] = $item->sid;
-		}
+			$db = $this->_db;
+			$query = $db->getQuery(true);
 
-		$paymentRequests = RdfCore::getSubmissionsPaymentRequests($sids);
+			$query->select('c.id, c.name AS name, c.color');
+			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
+			$query->from('#__redevent_categories as c');
+			$query->join('INNER', '#__redevent_event_category_xref as xcat ON xcat.category_id = c.id');
+			$query->where('c.published = 1');
+			$query->where('xcat.event_id = ' . $this->_db->Quote($rows[$i]->id));
+			$query->where('c.access IN (' . $gids . ')');
+			$query->group('c.id');
+			$query->order('c.ordering');
 
-		foreach ($items as &$item)
-		{
-			$item->paid = 1;
-
-			if (isset($paymentRequests[$item->sid]))
+			if ($this->getState('filter.language'))
 			{
-				$item->paymentRequests = $paymentRequests[$item->sid];
+				$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+			}
 
-				foreach ($paymentRequests[$item->sid] as $pr)
-				{
-					if ($pr->paid == 0)
-					{
-						$item->paid = 0;
-						break;
-					}
-				}
-			}
-			else
-			{
-				$item->paymentRequests = false;
-			}
+			$db->setQuery($query);
+
+			$rows[$i]->categories = $db->loadObjectList();
 		}
 
-		return $items;
+		return $rows;
+	}
+
+	/**
+	 * Method to get a pagination object for the events
+	 *
+	 * @return integer
+	 */
+	public function getPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->pagination))
+		{
+			$this->pagination = new RedeventAjaxPagination(
+				$this->getTotal(), $this->getState('list.start'), $this->getState('list.limit')
+			);
+		}
+
+		return $this->pagination;
 	}
 }

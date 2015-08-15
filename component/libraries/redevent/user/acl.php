@@ -361,7 +361,7 @@ class RedeventUserAcl
 
 		if (!$this->superuser())
 		{
-			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ') OR e.created_by = ' . $this->userid);
 		}
 
 		$db->setQuery($query);

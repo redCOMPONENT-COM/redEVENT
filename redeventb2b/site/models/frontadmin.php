@@ -300,11 +300,13 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 	 */
 	public function getEventsOptions()
 	{
-		$db      = JFactory::getDbo();
+		$db      = $this->_db;
 		$query = $db->getQuery(true);
 
-		$ids = array_merge($this->useracl->getCanEditEvents(),
-			$this->useracl->getEventsCanViewAttendees());
+		$ids = array_merge(
+			$this->useracl->getCanEditEvents(),
+			$this->useracl->getEventsCanViewAttendees()
+		);
 		$ids = array_unique($ids);
 
 		if (!$ids)

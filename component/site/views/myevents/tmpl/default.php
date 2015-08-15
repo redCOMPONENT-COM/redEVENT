@@ -21,23 +21,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="redevent" class="el_eventlist">
 
-<?php if ($this->params->def( 'show_page_title', 1 )) : ?>
+<?php if ($this->params->def('show_page_title', 1)): ?>
 
-    <h1 class="componentheading">
+	<h1 class="componentheading">
 		<?php echo $this->escape($this->pagetitle); ?>
 	</h1>
 
 <?php endif; ?>
 
-<?php if ($this->hasManagedEvents) :	?>
+<?php if ($this->hasManagedEvents && $this->canAddXref): ?>
 
-	<h2><?php echo JText::_('COM_REDEVENT_Manage_Events'); ?></h2>
+	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_SESSIONS'); ?></h2>
+	<div id="result_sessions">
+	<?php echo $this->loadTemplate('sessions'); ?>
+	</div>
+
+<?php elseif ($this->hasManagedEvents && $this->canAddEvent): ?>
+
+	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_EVENTS'); ?></h2>
 	<div id="result_events">
-	<?php echo $this->loadTemplate('events'); ?>
+		<?php echo $this->loadTemplate('events'); ?>
 	</div>
 
 <?php endif; ?>
@@ -50,8 +57,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<div><?php echo JHTML::link(RedeventHelperRoute::getEditEventRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
 <?php endif; ?>
 
-<?php if (count((array)$this->venues)) : ?>
-	<h2><?php echo JText::_('COM_REDEVENT_Manage_Venues'); ?></h2>
+<?php if (count((array) $this->venues)): ?>
+	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_VENUES'); ?></h2>
 	<?php echo $this->loadTemplate('venues'); ?>
 <?php endif; ?>
 
@@ -59,12 +66,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<div><?php echo JHTML::link(RedeventHelperRoute::getEditVenueRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
 <?php endif; ?>
 
-<?php if (count((array)$this->attending)) : ?>
+<?php if (count((array)$this->attending)): ?>
 	<h2><?php echo JText::_('COM_REDEVENT_ATTENDING'); ?></h2>
 	<?php echo $this->loadTemplate('attending'); ?>
 <?php endif; ?>
 
-<?php if (count((array)$this->attended)) : ?>
+<?php if (count((array)$this->attended)): ?>
 	<h2><?php echo JText::_('COM_REDEVENT_BOOKING_HISTORY'); ?></h2>
 	<?php echo $this->loadTemplate('attended'); ?>
 <?php endif; ?>

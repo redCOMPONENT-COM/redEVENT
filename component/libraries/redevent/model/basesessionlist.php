@@ -797,6 +797,19 @@ class RedeventModelBasesessionlist extends RModel
 	}
 
 	/**
+	 * compare custom fields by ordering
+	 *
+	 * @param   object  $a  field
+	 * @param   object  $b  field
+	 *
+	 * @return number
+	 */
+	protected function _cmpCustomFields($a, $b)
+	{
+		return $a->ordering - $b->ordering;
+	}
+
+	/**
 	 * returns searchable custom fields
 	 *
 	 * @return array
@@ -1168,5 +1181,54 @@ class RedeventModelBasesessionlist extends RModel
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
+	}
+
+	/**
+	 * Add payment info to items
+	 *
+	 * @param   array  $items  items
+	 *
+	 * @return array
+	 */
+	protected function addPaymentInfo($items)
+	{
+		if (!$items)
+		{
+			return $items;
+		}
+
+		$sids = array();
+
+		foreach ($items as $item)
+		{
+			$sids[] = $item->sid;
+		}
+
+		$paymentRequests = RdfCore::getSubmissionsPaymentRequests($sids);
+
+		foreach ($items as &$item)
+		{
+			$item->paid = 1;
+
+			if (isset($paymentRequests[$item->sid]))
+			{
+				$item->paymentRequests = $paymentRequests[$item->sid];
+
+				foreach ($paymentRequests[$item->sid] as $pr)
+				{
+					if ($pr->paid == 0)
+					{
+						$item->paid = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				$item->paymentRequests = false;
+			}
+		}
+
+		return $items;
 	}
 }

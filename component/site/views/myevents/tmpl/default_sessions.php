@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-events" class="redevent-ajaxnav">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-sessions" class="redevent-ajaxnav">
 
 <?php if ($this->params->get('filter_text',1) || $this->params->get('display_limit_select') || $this->params->get('showeventfilter')) : ?>
 <div id="el_filter" class="floattext">
@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <div>
       <?php
       echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
-      echo $this->events_pageNav->getLimitBox();
+      echo $this->sessions_pageNav->getLimitBox();
       ?>
     </div>
     <?php endif; ?>
@@ -124,14 +124,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</thead>
 	<tbody>
 	<?php
-	if (count((array)$this->events) == 0) :
+	if (count((array)$this->sessions) == 0) :
 		?>
 		<tr align="center"><td><?php echo JText::_('COM_REDEVENT_NO_EVENTS' ); ?></td></tr>
 		<?php
 	else :
 
 	$i = 0;
-	foreach ((array) $this->events as $row) :
+	foreach ((array) $this->sessions as $row) :
 		$editsessionLink = RedeventHelperRoute::getEditXrefRoute($row->slug, $row->xref);
 		?>
   			<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
@@ -240,22 +240,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </table>
 
 <!--pagination-->
-<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->events_pageNav->get('pages.total') > 1)) : ?>
+<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->sessions_pageNav->get('pages.total') > 1)) : ?>
 <div class="pagination">
 	<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
 		<p class="counter">
-				<?php echo $this->events_pageNav->getPagesCounter(); ?>
+				<?php echo $this->sessions_pageNav->getPagesCounter(); ?>
 		</p>
 
 		<?php endif; ?>
-	<?php echo $this->events_pageNav->getPagesLinks(); ?>
+	<?php echo $this->sessions_pageNav->getPagesLinks(); ?>
 </div>
 <?php  endif; ?>
 <!-- pagination end -->
 
-<input type="hidden" name="limitstart" value="<?php echo $this->lists['limitstart']; ?>" class="redajax_limitstart" />
+	<input type="hidden" name="limitstart" value="<?php echo $this->lists['limitstart']; ?>" class="redajax_limitstart" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" class="redajax_order"/>
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" class="redajax_order_dir"/>
-<input type="hidden" name="task" value="myevents.managedevents" />
+<input type="hidden" name="task" value="myevents.managedsessions" />
 
 </form>
