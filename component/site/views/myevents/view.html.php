@@ -190,14 +190,14 @@ class RedeventViewMyevents extends RedeventViewFront
 	}
 
 	/**
-	 * Creates the event edit button
+	 * Creates the event delete button
 	 *
 	 * @param   int  $id    event id
 	 * @param   int  $xref  session id
 	 *
 	 * @return string html
 	 */
-	public static function eventeditbutton($id, $xref)
+	public static function eventeditbutton($id, $xref = null)
 	{
 		$acl = RedeventUserAcl::getInstance();
 
@@ -213,7 +213,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$overlib = JText::_('COM_REDEVENT_EDIT_EVENT_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_EVENT');
 
-		$link 	= RedeventHelperRoute::getEditEventRoute($id, $xref) . '&referer=myevents';
+		$link 	= RedeventHelperRoute::getEditEventRoute($id, $xref);
 		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;
@@ -236,6 +236,29 @@ class RedeventViewMyevents extends RedeventViewFront
 		$text = JText::_('COM_REDEVENT_DELETE_XREF');
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref=' . $id;
+		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
+
+		return $output;
+	}
+
+	/**
+	 * Creates the event delete button
+	 *
+	 * @param   int  $id  event id
+	 *
+	 * @return string html
+	 */
+	public static function eventdeletebutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+
+		$image = RHelperAsset::load('no.png', null, array('alt' => JText::_('COM_REDEVENT_DELETE_EVENT')));
+
+		$overlib = JText::_('COM_REDEVENT_DELETE_EVENT_TIP');
+		$text = JText::_('COM_REDEVENT_DELETE_EVENT');
+
+		$return = base64_encode(RedeventHelperRoute::getMyeventsRoute());
+		$link = 'index.php?option=com_redevent&task=editevent.delete&id=' . $id . '&return=' . $return;
 		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;

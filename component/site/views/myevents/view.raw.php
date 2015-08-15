@@ -54,6 +54,52 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @return void
 	 */
+	protected function displayEvents($tpl)
+	{
+		$user      = JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$params    = $mainframe->getParams();
+
+		if (!$user->get('id'))
+		{
+			return false;
+		}
+
+		$model = RModel::getFrontInstance('Myevents');
+
+		$acl = RedeventUserAcl::getInstance();
+
+		$state = $model->getState();
+
+		// Get data from model
+		$items = $model->getItems();
+		$pageNav = $model->getPagination();
+
+		// Sorting and filtering
+		$lists = $this->buildSortLists();
+		$lists['limitstart'] = $state->get('list.start');
+
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
+
+		$this->assignRef('events', $items);
+		$this->assignRef('params', $params);
+		$this->assignRef('events_pageNav', $pageNav);
+		$this->assignRef('acl',         $acl);
+		$this->assignRef('lists',      $lists);
+
+		$this->setLayout('default');
+		echo $this->loadTemplate('events');
+
+		return true;
+	}
+
+	/**
+	 * Specialize MyItems layout
+	 *
+	 * @param   string  $tpl  template file to load
+	 *
+	 * @return void
+	 */
 	protected function displaySessions($tpl)
 	{
 		$user      = JFactory::getUser();
@@ -312,9 +358,9 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @return string html
 	 */
-	public static function eventeditbutton($id, $xref)
+	public static function eventeditbutton($id, $xref = null)
 	{
-		$acl = &RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditEvent($id))
 		{
@@ -353,6 +399,29 @@ class RedeventViewMyevents extends RViewSite
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref=' . $id;
 		$output	= '<a href="' . JRoute::_($link) . '" class="deletelink hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
+
+		return $output;
+	}
+
+	/**
+	 * Creates the event delete button
+	 *
+	 * @param   int  $id  event id
+	 *
+	 * @return string html
+	 */
+	public static function eventdeletebutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+
+		$image = RHelperAsset::load('no.png', null, array('alt' => JText::_('COM_REDEVENT_DELETE_EVENT')));
+
+		$overlib = JText::_('COM_REDEVENT_DELETE_EVENT_TIP');
+		$text = JText::_('COM_REDEVENT_DELETE_EVENT');
+
+		$return = base64_encode(RedeventHelperRoute::getMyeventsRoute());
+		$link = 'index.php?option=com_redevent&task=editevent.delete&id=' . $id . '&return=' . $return;
+		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;
 	}

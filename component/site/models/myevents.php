@@ -68,7 +68,7 @@ class RedeventModelMyevents extends RModelList
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code');
+		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code, a.published');
 		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
@@ -106,13 +106,6 @@ class RedeventModelMyevents extends RModelList
 	 */
 	protected function _buildEventListWhere($query)
 	{
-		$app = JFactory::getApplication();
-
-		// Get the paramaters of the active menu item
-		$params = $app->getParams();
-
-		$where = array();
-
 		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->superuser())
@@ -121,44 +114,28 @@ class RedeventModelMyevents extends RModelList
 
 			if ($ids && count($ids))
 			{
-				$where[] = ' a.id IN (' . implode(",", $ids) . ')';
+				$query->where('a.id IN (' . implode(",", $ids) . ')');
 			}
 			else
 			{
-				$where[] = '0';
+				$query->where('0');
+
+				return $query;
 			}
 		}
 
-		/*
-		 * If we have a filter, and this is enabled... lets tack the AND clause
-		* for the filter onto the WHERE clause of the item query.
-		*/
-		if ($params->get('filter_text'))
-		{
-			$filter = $this->getState('filter');
-			$filter_type = $this->getState('filter_type');
+		$filter = $this->getState('filter');
 
-			if ($filter)
-			{
-				// Clean filter variables
-				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
-				$filter_type = JString::strtolower($filter_type);
+		// Clean filter variables
+		$filter = JString::strtolower($filter);
+		$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
 
-				switch ($filter_type)
-				{
-					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
-						break;
+		$or = array(
+			'LOWER( a.title ) LIKE ' . $filter,
+			'LOWER( c.name ) LIKE ' . $filter
+		);
 
-					case 'type':
-						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
-						break;
-				}
-			}
-		}
-
-		$query->where(implode(' AND ', $where));
+		$query->where('(' . implode(' OR ', $or) . ')');
 
 		return $query;
 	}
@@ -219,7 +196,6 @@ class RedeventModelMyevents extends RModelList
 	{
 		$id = parent::getStoreId($id);
 		$id .= ':' . $this->getState('filter');
-		$id .= ':' . $this->getState('filter_type');
 
 		return $id;
 	}

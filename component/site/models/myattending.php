@@ -1,4 +1,4 @@
-myevents.php<?php
+<?php
 /**
  * @package    Redevent.Site
  * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.

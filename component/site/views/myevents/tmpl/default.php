@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->loadTemplate('sessions'); ?>
 	</div>
 
-<?php elseif ($this->hasManagedEvents && $this->canAddEvent): ?>
+<?php elseif (!empty($this->events)): ?>
 
 	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_EVENTS'); ?></h2>
 	<div id="result_events">
@@ -50,11 +50,11 @@ defined('_JEXEC') or die('Restricted access');
 <?php endif; ?>
 
 <?php if ($this->canAddXref): ?>
-	<div><?php echo JHTML::link(RedeventHelperRoute::getEditXrefRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
+	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editsession.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
 <?php endif; ?>
 
 <?php if ($this->canAddEvent): ?>
-	<div><?php echo JHTML::link(RedeventHelperRoute::getEditEventRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
+	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editevent.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
 <?php endif; ?>
 
 <?php if (count((array) $this->venues)): ?>

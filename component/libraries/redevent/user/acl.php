@@ -344,24 +344,28 @@ class RedeventUserAcl
 			return array();
 		}
 
-		$cats    = $this->getAuthorisedCategories('re.manageevents');
-		$canEdit = $this->getUser()->authorise('re.editevent', 'com_redevent');
-
-		if ((!$canEdit) || !count($cats))
-		{
-			return array();
-		}
-
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('e.id');
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->group('e.id');
 
 		if (!$this->superuser())
 		{
-			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ') OR e.created_by = ' . $this->userid);
+			$cats    = $this->getAuthorisedCategories('re.manageevents');
+			$canEdit = $this->getUser()->authorise('re.editevent', 'com_redevent');
+
+			if ((!$canEdit) || !count($cats))
+			{
+				// Only edit own
+				$query->where('e.created_by = ' . $this->userid);
+			}
+			else
+			{
+				$query->where('(xcat.category_id IN (' . implode(', ', $cats) . ') OR e.created_by = ' . $this->userid . ')');
+			}
 		}
 
 		$db->setQuery($query);

@@ -117,4 +117,67 @@ class RedeventControllerEditevent extends RControllerForm
 
 		return $append;
 	}
+
+	/**
+	 * Method to check if you can add a new record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   11.1
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+		return JFactory::getUser()->authorise('re.editevent', $this->option);
+	}
+
+	/**
+	 * Method to check if you can add a new record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   11.1
+	 */
+	protected function allowAdd($data = array())
+	{
+		return JFactory::getUser()->authorise('re.createevent', $this->option);
+	}
+
+	/**
+	 * Delete a session
+	 *
+	 * @return void
+	 */
+	public function delete()
+	{
+		$acl = RedeventUserAcl::getInstance();
+		$id = $this->input->getInt('id');
+
+		$return = $this->input->getBase64('return')
+			? base64_decode($this->input->getBase64('return'))
+			: JRoute::_(RedeventHelperRoute::getMyEventsRoute());
+
+		$model = $this->getModel('editevent');
+		$pks = array($id);
+
+		if ($model->delete($pks))
+		{
+			$msg = JText::_('COM_REDEVENT_EVENT_DELETED');
+			$this->setRedirect($return, $msg);
+		}
+		else
+		{
+			$msg = JText::_('COM_REDEVENT_EVENT_DELETE_ERROR') . '<br>' . $model->getError();
+			$this->setRedirect($return, $msg, 'error');
+		}
+	}
 }
