@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Plugins
  * @since       2.5
  */
-class plgReSimplistModel extends RedeventModelBaseeventlist
+class plgReSimplistModel extends RedeventModelBasesessionlist
 {
 	/**
 	 * Constructor

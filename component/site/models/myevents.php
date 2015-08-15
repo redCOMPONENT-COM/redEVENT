@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    2.0
  */
-class RedeventModelMyevents extends RedeventModelBaseeventlist
+class RedeventModelMyevents extends RedeventModelBasesessionlist
 {
 	/**
 	 * Events data array

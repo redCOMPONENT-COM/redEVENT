@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    0.9
  */
-class RedeventModelCategoryevents extends RedeventModelBaseeventlist
+class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 {
 	/**
 	 * category data array
@@ -138,7 +138,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	/**
 	 * override to take into account search type
 	 *
-	 * @see RedeventModelBaseeventlist::getData()
+	 * @see RedeventModelBasesessionlist::getData()
 	 *
 	 * @return array
 	 */

@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent
  * @since    2.5
  */
-class Redeventb2bModelFrontadmin extends RedeventModelBaseeventlist
+class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 {
 	/**
 	 * caching for sessions

@@ -28,7 +28,7 @@ JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
-class RokMiniEventsSourceRedEventModel extends RedeventModelBaseeventlist {
+class RokMiniEventsSourceRedEventModel extends RedeventModelBasesessionlist {
 
 	protected $_params = null;
 

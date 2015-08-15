@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    2.0
  */
-class RedeventModelSearch extends RedeventModelBaseeventlist
+class RedeventModelSearch extends RedeventModelBasesessionlist
 {
 	/**
 	 * the query

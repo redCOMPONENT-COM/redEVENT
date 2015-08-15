@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    0.9
  */
-class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
+class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 {
 	/**
 	 * Top category for the view.

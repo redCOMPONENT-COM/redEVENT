@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  redevent
  * @since       2.0
  */
-class RedeventModelBaseeventlist extends RModel
+class RedeventModelBasesessionlist extends RModel
 {
 	/**
 	 * Events data array
@@ -780,7 +780,9 @@ class RedeventModelBaseeventlist extends RModel
 
 		if (!empty($fields))
 		{
-			uasort($fields, array('RedeventModelBaseeventlist', '_cmpCustomFields'));
+			uasort($fields, function($a, $b){
+				return $a->ordering - $b->ordering;
+			});
 
 			foreach ((array) $fields as $f)
 			{
@@ -792,19 +794,6 @@ class RedeventModelBaseeventlist extends RModel
 		}
 
 		return $res;
-	}
-
-	/**
-	 * compare custom fields by ordering
-	 *
-	 * @param   object  $a  field
-	 * @param   object  $b  field
-	 *
-	 * @return number
-	 */
-	protected function _cmpCustomFields($a, $b)
-	{
-		return $a->ordering - $b->ordering;
 	}
 
 	/**
