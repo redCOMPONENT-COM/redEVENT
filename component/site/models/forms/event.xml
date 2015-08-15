@@ -86,7 +86,7 @@
 
         <field
                 name="categories"
-                type="recategorylist"
+                type="remanagedcategorylist"
                 label="COM_REDEVENT_CATEGORY"
                 description ="COM_REDEVENT_CATEGORY"
                 required="true"

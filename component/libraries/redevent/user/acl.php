@@ -21,6 +21,8 @@ class RedeventUserAcl
 
 	protected $db = null;
 
+	private $managedCategories = null;
+
 	/**
 	 * constructor
 	 *
@@ -798,7 +800,12 @@ class RedeventUserAcl
 	 */
 	public function getManagedCategories()
 	{
-		return $this->getAuthorisedCategories('re.manageevents');
+		if (is_null($this->managedCategories))
+		{
+			$this->managedCategories = $this->getAuthorisedCategories('re.manageevents');
+		}
+
+		return $this->managedCategories;
 	}
 
 	/**
