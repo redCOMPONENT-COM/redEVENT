@@ -127,8 +127,6 @@ class RedeventControllerEditevent extends RControllerForm
 	 * @param   string  $key   The name of the key for the primary key; default is id.
 	 *
 	 * @return  boolean
-	 *
-	 * @since   11.1
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
@@ -140,12 +138,9 @@ class RedeventControllerEditevent extends RControllerForm
 	 *
 	 * Extended classes can override this if necessary.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 * @param   array  $data  An array of input data.
 	 *
 	 * @return  boolean
-	 *
-	 * @since   11.1
 	 */
 	protected function allowAdd($data = array())
 	{

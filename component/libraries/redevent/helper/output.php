@@ -613,7 +613,7 @@ class RedeventHelperOutput
 				if (strtotime($event->enddates . ' -1 day') != strtotime($event->dates)
 					&& strtotime($event->enddates) != strtotime($event->dates))
 				{
-					$date_end = self::formatdate(strftime('Y-m-d', strtotime($event->enddates. ' -1 day')), $event->endtimes);
+					$date_end = self::formatdate(strftime('Y-m-d', strtotime($event->enddates . ' -1 day')), $event->endtimes);
 				}
 			}
 		}

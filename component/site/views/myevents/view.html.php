@@ -119,7 +119,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$this->lists = $lists;
 		$this->acl = $acl;
 		$this->hasManagedEvents = $hasManagedEvents;
-		$this->canAddXref =  $acl->canAddXref();
+		$this->canAddXref = $acl->canAddXref();
 		$this->canAddEvent = $acl->canAddEvent();
 		$this->canAddVenue = $acl->canAddVenue();
 

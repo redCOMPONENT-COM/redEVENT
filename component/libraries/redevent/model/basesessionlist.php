@@ -780,9 +780,12 @@ class RedeventModelBasesessionlist extends RModel
 
 		if (!empty($fields))
 		{
-			uasort($fields, function($a, $b){
-				return $a->ordering - $b->ordering;
-			});
+			uasort(
+				$fields,
+				function($a, $b){
+					return $a->ordering - $b->ordering;
+				}
+			);
 
 			foreach ((array) $fields as $f)
 			{
