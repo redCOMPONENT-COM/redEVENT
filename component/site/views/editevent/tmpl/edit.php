@@ -168,7 +168,7 @@ JFactory::getDocument()->addScriptDeclaration("
 			<div class="tab-pane" id="attachments">
 				<div class="row-fluid">
 					<div class="span12">
-						<?php echo RLayoutHelper::render('attachments.edit', $this); ?>
+						<?php echo RedeventLayoutHelper::render('attachments.edit', $this); ?>
 					</div>
 				</div>
 			</div>

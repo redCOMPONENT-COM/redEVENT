@@ -22,7 +22,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
 	<!-- filters  -->
-	<?php echo RLayoutHelper::render(
+	<?php echo RedeventLayoutHelper::render(
 		'sessionlist.filters',
 		$this
 	); ?>

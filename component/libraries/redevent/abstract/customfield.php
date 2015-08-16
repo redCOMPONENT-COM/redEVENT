@@ -131,7 +131,7 @@ abstract class RedeventAbstractCustomfield extends JObject
 	 */
 	public function getLabel()
 	{
-		$label = RLayoutHelper::render('customfields.label', $this, null, array('component' => 'com_redevent'));
+		$label = RedeventLayoutHelper::render('customfields.label', $this, null, array('component' => 'com_redevent'));
 
 		return $label;
 	}

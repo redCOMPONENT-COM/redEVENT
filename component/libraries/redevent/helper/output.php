@@ -405,7 +405,7 @@ class RedeventHelperOutput
 
 		$mapLink = JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id=' . $data->venueid);
 
-		$output = RLayoutHelper::render('mapicon', array('link' => $mapLink, 'attributes' => $attributes), null, array('client' => 0));
+		$output = RedeventLayoutHelper::render('mapicon', array('link' => $mapLink, 'attributes' => $attributes), null, array('client' => 0));
 
 		return $output;
 	}
@@ -476,7 +476,7 @@ class RedeventHelperOutput
 
 		RHelperAsset::load('pinpoint.js');
 
-		$output = RLayoutHelper::render('pinpoint', null, null, array('client' => 0));
+		$output = RedeventLayoutHelper::render('pinpoint', null, null, array('client' => 0));
 
 		return $output;
 	}

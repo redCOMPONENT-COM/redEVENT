@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-echo RLayoutHelper::render(
+echo RedeventLayoutHelper::render(
 	'sessionlist.table',
 	array(
 		'params' => $this->params,
