@@ -8,13 +8,9 @@
  */
 defined('JPATH_REDCORE') or die;
 
-$id           = $displayData['id'];
-$fieldcode    = $displayData['id'];
-$value        = $displayData['value'];
-$attributes   = $displayData['attributes'];
-$basePath     = $displayData['basepath'];
-$imagePreview = $displayData['imagePreview'];
-$config       = $displayData['config'];
+extract($displayData);
+
+$fieldcode = $id;
 
 $uploadMaxFilesize       = (int) $config->get('upload_max_filesize', 2);
 $uploadMaxFilesizeInByte = $uploadMaxFilesize * 1024 * 1024;
