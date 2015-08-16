@@ -15,4 +15,33 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerCustomfield extends RControllerForm
 {
+	/**
+	 * Method for upload an image using AJAX method
+	 *
+	 * @return  void
+	 */
+	public function ajaxUpload()
+	{
+		$app = JFactory::getApplication();
+		$files = $app->input->files->get('dragFile');
+
+		$uploadType = $app->input->getString('uploadType', '');
+
+		if (!in_array($uploadType, array('file', 'image', 'gallery')))
+		{
+			$app->close();
+		}
+
+		$uploadTarget = $app->input->getString('uploadTarget', '');
+
+		if (trim($uploadTarget) == '')
+		{
+			$app->close();
+		}
+
+		$model = $this->getModel();
+		echo $model->dragndropUpload($files, $uploadType, $uploadTarget);
+
+		$app->close();
+	}
 }
