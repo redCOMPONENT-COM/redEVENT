@@ -1,0 +1,23 @@
+{
+	"wwwDir"           : "/path/to/joomla/root",
+	"browserSyncProxy" : "localhost",
+	"browser" : "chromium-browser",
+	"extensions"       : {
+	  "components" : ["redevent"],
+	  "modules" : {
+		"frontend" : [
+		  "redevent",
+		  "redevent_all_events",
+		  "redevent_attending",
+		  "redevent_calendar",
+		  "redevent_categories",
+		  "redevent_filters",
+		  "redevent_quickbook",
+		  "redevent_search",
+		  "redevent_teaser",
+		  "redevent_venues_events",
+		  "rokminievents-1.6"
+		]
+	  }
+	}
+}

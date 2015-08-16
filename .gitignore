@@ -11,4 +11,8 @@ composer.lock
 /vendor
 vendor
 
+# Build config
+gulp-config.json
+node_modules
+
 tmp
