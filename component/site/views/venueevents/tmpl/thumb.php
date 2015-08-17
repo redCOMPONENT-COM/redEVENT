@@ -111,7 +111,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 		<!-- filters  -->
-		<?php echo RLayoutHelper::render(
+		<?php echo RedeventLayoutHelper::render(
 			'sessionlist.filters',
 			$this
 		); ?>

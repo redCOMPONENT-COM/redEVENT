@@ -23,6 +23,8 @@
 		<folder>helper</folder>
 		<folder>html</folder>
 		<folder>image</folder>
+		<folder>layout</folder>
+		<folder>layouts</folder>
 		<folder>model</folder>
 		<folder>recurrence</folder>
 		<folder>registration</folder>

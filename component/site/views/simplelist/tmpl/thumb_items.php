@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
-echo RLayoutHelper::render(
+echo RedeventLayoutHelper::render(
 	'sessionlist.thumbnails',
 	array(
 		'params' => $this->params,

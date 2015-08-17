@@ -157,7 +157,7 @@ $fieldSets = $this->form->getFieldsets('params');
 					</div>
 				</div>
 				<div class="span3">
-					<?php echo RLayoutHelper::render('joomla.edit.metadata', $this); ?>
+					<?php echo RedeventLayoutHelper::render('joomla.edit.metadata', $this); ?>
 				</div>
 			</div>
 		</div>
@@ -256,7 +256,7 @@ $fieldSets = $this->form->getFieldsets('params');
 
 		<div class="tab-pane" id="attachments">
 			<div class="row-fluid">
-				<?php echo RLayoutHelper::render('attachments.edit', $this, null, array('component' => 'com_redevent')); ?>
+				<?php echo RedeventLayoutHelper::render('attachments.edit', $this, null, array('component' => 'com_redevent')); ?>
 			</div>
 		</div>
 
@@ -284,7 +284,7 @@ $fieldSets = $this->form->getFieldsets('params');
 
 		<div class="tab-pane" id="extra">
 			<div class="row-fluid">
-				<?php echo RLayoutHelper::render('attachments.edit', $this, null, array('component' => 'com_redevent')); ?>
+				<?php echo RedeventLayoutHelper::render('attachments.edit', $this, null, array('component' => 'com_redevent')); ?>
 			</div>
 		</div>
 

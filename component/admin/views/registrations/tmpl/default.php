@@ -47,7 +47,7 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 </script>
 <form action="index.php?option=com_redevent&view=registrations" class="admin" id="adminForm" method="post" name="adminForm">
 <?php
-echo RLayoutHelper::render(
+echo RedeventLayoutHelper::render(
 	'searchtools.default',
 	array(
 		'view' => $this,
@@ -178,7 +178,7 @@ echo RLayoutHelper::render(
 					<?php echo $row->pricegroup; ?>
 				</td>
 				<td class="price <?php echo($row->paid ? 'paid' : 'unpaid'); ?>" width="auto">
-					<?php echo RLayoutHelper::render(
+					<?php echo RedeventLayoutHelper::render(
 						'attendees.paymentinfo',
 						$row
 					);

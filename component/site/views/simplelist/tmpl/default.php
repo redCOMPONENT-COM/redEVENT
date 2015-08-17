@@ -41,7 +41,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 <form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
 <!-- filters  -->
-	<?php echo RLayoutHelper::render(
+	<?php echo RedeventLayoutHelper::render(
 		'sessionlist.filters',
 		$this
 	); ?>

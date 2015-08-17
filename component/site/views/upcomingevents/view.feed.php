@@ -32,7 +32,7 @@ class RedeventViewUpcomingevents extends RViewSite
 		foreach ($upcomingevents as $key => $event)
 		{
 			$event_url = RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug);
-			$description = RLayoutHelper::render('feed.description', $event);
+			$description = RedeventLayoutHelper::render('feed.description', $event);
 			$item = new JFeedItem;
 			$item->title = RedeventHelper::getSessionFullTitle($event);
 			$item->link = $event_url;

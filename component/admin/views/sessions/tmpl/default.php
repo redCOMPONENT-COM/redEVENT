@@ -44,7 +44,7 @@ $search = $this->state->get('filter.search');
 </script>
 <form action="index.php?option=com_redevent&view=sessions" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
-	echo RLayoutHelper::render(
+	echo RedeventLayoutHelper::render(
 		'searchtools.default',
 		array(
 			'view' => $this,

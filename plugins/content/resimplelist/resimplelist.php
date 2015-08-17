@@ -35,9 +35,19 @@ class plgContentRESimplelist extends JPlugin {
 
 	protected $_model;
 
-	public function __construct( $subject, $params )
+	/**
+	 * Constructor
+	 *
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An optional associative array of configuration settings.
+	 *                             Recognized key values include 'name', 'group', 'params', 'language'
+	 *                             (this list is not meant to be comprehensive).
+	 *
+	 * @since   11.1
+	 */
+	public function __construct(&$subject, $config = array())
 	{
-		parent::__construct( $subject, $params );
+		parent::__construct($subject, $config);
 		$this->loadLanguage();
 	}
 
@@ -54,7 +64,7 @@ class plgContentRESimplelist extends JPlugin {
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins/content/resimplelist/resimplelist.css');
 
-		// do we have matches for the plugin
+		// Do we have matches for the plugin
 		if (!preg_match_all('/{RESimplelist([\s]+[^}]*)*}/i', $article->text, $matches, PREG_SET_ORDER))
 		{
 			return;
@@ -62,20 +72,26 @@ class plgContentRESimplelist extends JPlugin {
 
 		$search  = array();
 		$replace = array();
+
 		foreach ($matches as $match)
 		{
 			$settings = array();
-			// get params
+
+			// Get params
 			if (isset($match[1]))
 			{
 				$match_params = trim($match[1]);
+
 				if (!empty($match_params))
 				{
 					preg_match_all('/([^=\s]+)=["\']([^"\']*)[\'"]/', $match_params, $match_params_array, PREG_SET_ORDER);
+
 					foreach ($match_params_array as $m)
 					{
 						$property = strtolower($m[1]);
-						if (!isset($settings[$property])) {
+
+						if (!isset($settings[$property]))
+						{
 							$settings[$property] = array();
 						}
 						$settings[$property][] = $m[2];
@@ -86,6 +102,7 @@ class plgContentRESimplelist extends JPlugin {
 			$search[]  = $match[0];
 			$replace[] = $this->_getList($settings);
 		}
+
 		$article->text = str_replace($search, $replace, $article->text);
 	}
 
@@ -145,11 +162,14 @@ class plgContentRESimplelist extends JPlugin {
 		if (isset($settings['cols']))
 		{
 			$cols = array();
-			foreach(explode(",", $settings['cols'][0]) as $c) {
+
+			foreach(explode(",", $settings['cols'][0]) as $c)
+			{
 				$cols[] = trim($c);
 			}
 		}
-		else {
+		else
+		{
 			$cols = array( 'date', 'title', 'venue', 'city', 'category');
 		}
 
@@ -253,34 +273,40 @@ class plgContentRESimplelist extends JPlugin {
 	 */
 	protected function _formatEventDateTime($event)
 	{
-		if (!RedeventHelper::isValidDate($event->dates)) { // open dates
+		if (!RedeventHelper::isValidDate($event->dates))
+		{
+			// Open dates
 			$date = '<span class="event-date open-date">'.JText::_('PLG_RESIMPLELIST_OPEN_DATE').'</span>';
 			return $date;
 		}
 
-		// is this a full day(s) event ?
+		// Is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
 
 		$date = '<span class="event-date">';
 		$date .= '<span class="event-start">';
 		$date .= '<span class="event-day">'.self::_formatdate($event->dates, $event->times).'</span>';
-		if (!$allday && $this->params->get('show_time', 1)) {
+
+		if (!$allday && $this->params->get('show_time', 1))
+		{
 			$date .= ' <span class="event-time">'.self::_formattime($event->dates, $event->times).'</span>';
 		}
+
 		$date .= '</span>';
 
 		if ($allday)
 		{
 			if ($this->params->get('show_end', 1) &RedeventHelper::isValidDate($event->enddates))
 			{
-				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
-				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
+				if (strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
+				    && strtotime($event->enddates) != strtotime($event->dates))
+				    // All day is written as midnight to midnight, so remove last day
 				{
 					$date .= ' <span class="event-end"><span class="event-day">'.self::_formatdate(strftime('Y-m-d', strtotime($event->enddates. ' -1 day')), $event->endtimes).'</span></span>';
 				}
 			}
 		}
-		else if ($this->params->get('show_end', 1))
+		elseif ($this->params->get('show_end', 1))
 		{
 			if (RedeventHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
 			{
@@ -313,16 +339,18 @@ class plgContentRESimplelist extends JPlugin {
 	 */
 	protected function _formatdate($date, $time)
 	{
-		if(!RedeventHelper::isValidDate($date)) {
+		if(!RedeventHelper::isValidDate($date))
+		{
 			return JText::_('OPEN DATE');
 		}
 
-		if(!$time) {
+		if(!$time)
+		{
 			$time = '00:00:00';
 		}
 
 		//Format date
-		$formatdate = strftime( $this->params->get('date_format', '%b %d, %Y'), strtotime( $date.' '.$time ));
+		$formatdate = strftime($this->params->get('date_format', '%b %d, %Y'), strtotime($date.' '.$time));
 
 		return $formatdate;
 	}
@@ -339,7 +367,8 @@ class plgContentRESimplelist extends JPlugin {
 	 */
 	protected function _formattime($date, $time)
 	{
-		if(!$time) {
+		if(!$time)
+		{
 			return;
 		}
 

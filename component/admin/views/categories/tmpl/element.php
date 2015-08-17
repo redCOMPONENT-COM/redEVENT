@@ -20,7 +20,7 @@ JHtml::_('rjquery.chosen', 'select');
 
 <form action="index.php?option=com_redevent&view=categories&layout=element&tmpl=component&function=<?php echo $function; ?>" method="post" name="adminForm" id="adminForm">
 	<?php
-	echo RLayoutHelper::render(
+	echo RedeventLayoutHelper::render(
 		'searchtools.default',
 		array(
 			'view' => $this,
