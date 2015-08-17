@@ -33,7 +33,7 @@ class RedeventModelCustomfield extends RModelAdmin
 		$fileName      = JFilterOutput::stringURLSafe(JFile::stripExt($file['name']));
 
 		$file['name'] = $fileName . '.' . $fileExtension;
-		$fileFolder   = JPATH_ROOT . '/media/com_redevent/images/customfields/temporary/';
+		$fileFolder   = JPATH_ROOT . '/images/com_redevent/customfields/image/';
 
 		// Get global configuration
 		$config = JComponentHelper::getParams('com_redevent');

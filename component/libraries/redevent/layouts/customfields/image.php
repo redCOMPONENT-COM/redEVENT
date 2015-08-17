@@ -55,7 +55,7 @@ RHelperAsset::load('reditem.cropimage.min.js', 'com_redevent');
 			url: "index.php?option=com_redevent&task=customfield.ajaxUpload",
 			text: "<?php echo JText::_('COM_REDEVENT_ITEM_DRAG_A_FILE') ?>",
 			img_preview: "div_<?php echo $fieldId; ?>",
-			img_preview_path: "<?php echo JURI::root() . '/media/com_redevent/images/customfields/temporary/' ?>",
+			img_preview_path: "<?php echo JURI::root() . 'images/com_redevent/customfields/image/' ?>",
 			config: {
 				size: "<?php echo $uploadMaxFilesizeInByte ?>",
 				ext: "<?php echo $allowedFileExtension?>",

@@ -65,7 +65,7 @@ class RedeventCustomfieldImage extends RedeventAbstractCustomfield
 
 		if (!empty($value))
 		{
-			$imagePreview = JUri::root() . '/media/com_redevent/images/customfields/temporary/' . $this->value;
+			$imagePreview = JUri::root() . 'images/com_redevent/customfields/image/' . $this->value;
 		}
 
 		$layoutData = array(
