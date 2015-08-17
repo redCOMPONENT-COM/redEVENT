@@ -33,24 +33,26 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php endif; ?>
 
-<?php if ($this->hasManagedEvents && $this->canAddXref): ?>
+<?php if (!empty($this->sessions)): ?>
 
 	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_SESSIONS'); ?></h2>
 	<div id="result_sessions">
 	<?php echo $this->loadTemplate('sessions'); ?>
 	</div>
 
-<?php elseif (!empty($this->events)): ?>
+<?php endif; ?>
+
+	<?php if ($this->canAddXref): ?>
+		<div><?php echo JHTML::link('index.php?option=com_redevent&task=editsession.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
+	<?php endif; ?>
+
+<?php if (!empty($this->events)): ?>
 
 	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_EVENTS'); ?></h2>
 	<div id="result_events">
 		<?php echo $this->loadTemplate('events'); ?>
 	</div>
 
-<?php endif; ?>
-
-<?php if ($this->canAddXref): ?>
-	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editsession.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
 <?php endif; ?>
 
 <?php if ($this->canAddEvent): ?>
