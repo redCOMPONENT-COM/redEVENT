@@ -80,6 +80,14 @@ RHelperAsset::load('mod_redevent_search_ajax.js', 'mod_redevent_search');
 			</div>
 		<?php endif; ?>
 
+		<?php if (isset($lists['multiple_categories']) && $params->get('show_filter_multiple_category', 0)): ?>
+			<div class="rssm_filter_row">
+				<span class="rssm_filter">
+					<?php echo $lists['multiple_categories']; ?>
+				</span>
+			</div>
+		<?php endif; ?>
+
 		<?php if ($params->get('show_filter_date', 0)): ?>
 			<div class="rssm_filter_row">
 				<label for="filter_type"><?php echo JText::_('MOD_REDEVENT_SEARCH_DATE_FROM_LABEL'); ?></label>

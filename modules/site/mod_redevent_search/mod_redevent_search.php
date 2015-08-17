@@ -40,11 +40,12 @@ $elsettings = RedeventHelper::config();
 
 $action = JRoute::_(RedeventHelperRoute::getSearchRoute());
 
+$input = JFactory::getApplication()->input;
 
 // FILTERS
 $lists = array();
 
-$lists['filter'] = JRequest::getVar('filter');
+$lists['filter'] = $input->get('filter');
 
 $sortselects = array();
 if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') );
@@ -59,31 +60,33 @@ else if (count($sortselects) == 1) {
 	$sortselect = '<input type="hidden" name="filter_type" value="'.$sortselects[0]->value.'" />'.$sortselects[0]->text;
 }
 else {
-	$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', JRequest::getVar('filter_type') );
+	$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $input->get('filter_type') );
 }
 $lists['filter_types'] = $sortselect;
 
 // category filter
 $options = array(JHTML::_('select.option', '', JText::_('MOD_REDEVENT_SEARCH_FILTER_SELECT_CATEGORY') ));
 $options = array_merge($options, $helper->getCategoriesOptions());
-$lists['categories'] = JHTML::_('select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', JRequest::getInt('filter_category'));
+$lists['categories'] = JHTML::_('select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $input->getInt('filter_category'));
+
+$lists['multiple_categories'] = JHTML::_('select.genericlist', $options, 'filter_multicategory[]', 'size="6" multiple="multiple" class="inputbox dynfilter"', 'value', 'text', $input->get('filter_category', array(), 'array'));
 
 // venue filter
 $options = array(JHTML::_('select.option', '', JText::_('MOD_REDEVENT_SEARCH_FILTER_SELECT_VENUE') ));
 $options = array_merge($options, $helper->getVenuesOptions());
-$lists['venues'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', JRequest::getInt('filter_venue'));
+$lists['venues'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $input->getInt('filter_venue'));
 
-$filter_date_from = JRequest::getVar('filter_date_from');
-$filter_date_to   = JRequest::getVar('filter_date_to');
+$filter_date_from = $input->get('filter_date_from');
+$filter_date_to   = $input->get('filter_date_to');
 
 $customsfilters = $helper->getCustomFilters();
 
-$post = JRequest::get('post');
-$search = isset($post['search']) ? $post['search'] : '';
+$search = $input->getString('search', '');
+$query = $input->getString('query', '');
 
-if ($search =='ajax' && isset($post['query']))
+if ($search == 'ajax' && $query)
 {
-	$helper->getAjaxSearch($post['query']);
+	$helper->getAjaxSearch($query);
 	$app->close();
 }
 
