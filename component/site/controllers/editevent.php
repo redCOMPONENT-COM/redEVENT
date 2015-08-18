@@ -39,6 +39,21 @@ class RedeventControllerEditevent extends RControllerForm
 	}
 
 	/**
+	 * Get the JRoute object for a redirect to item.
+	 *
+	 * @param   string  $append  An optionnal string to append to the route
+	 *
+	 * @return  JRoute  The JRoute object
+	 */
+	protected function getRedirectToItemRoute($append = null)
+	{
+		return JRoute::_(
+			'index.php?option=' . $this->option . '&view=' . $this->view_item
+			. $append, false
+		);
+	}
+
+	/**
 	 * Method to edit an existing record.
 	 *
 	 * @param   string  $key     The name of the primary key of the URL variable.
@@ -110,7 +125,9 @@ class RedeventControllerEditevent extends RControllerForm
 	{
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
 
-		if ($itemId = $this->input->get('Itemid'))
+		$itemId = $this->input->get('Itemid') ? $this->input->get('Itemid') : RedeventHelperRoute::getViewItemId('editevent');
+
+		if ($itemId)
 		{
 			$append .= '&Itemid=' . $itemId;
 		}

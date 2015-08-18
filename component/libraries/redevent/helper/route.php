@@ -560,6 +560,28 @@ class RedeventHelperRoute
 	}
 
 	/**
+	 * Return item id associated to a view
+	 *
+	 * @param   string  $viewName  view name
+	 *
+	 * @return int|bool false on failure
+	 */
+	public static function getViewItemId($viewName)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => 'week'
+		);
+
+		if ($item = self::_findItem($parts))
+		{
+			return $item->id;
+		}
+
+		return false;
+	}
+
+	/**
 	 * build url from parts
 	 *
 	 * @param   array  $parts  parts
