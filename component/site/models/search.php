@@ -159,6 +159,7 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 			$filter_date_to       = $this->getState('filter_date_to');
 			$filter_venuecategory = $this->getState('filter_venuecategory');
 			$filter_category      = $this->getState('filter_category');
+			$filter_multicategory = $this->getState('filter_multicategory');
 			$filter_event         = $this->getState('filter_event');
 
 			$customs              = $this->getState('filtercustom');
@@ -180,7 +181,7 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 				$filterOr[] = 'LOWER(a.title) LIKE ' . $filter;
 				$filterOr[] = 'LOWER(x.title) LIKE ' . $filter;
 
-				$where[] = implode(' OR ', $filterOr);
+				$where[] = '(' . implode(' OR ', $filterOr) . ')';
 			}
 
 			// Filter date
@@ -219,6 +220,35 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 			}
 
 			// Filter category
+			if ($filter_multicategory)
+			{
+				$or = array();
+
+				foreach ($filter_multicategory as $cat)
+				{
+					$category = $this->getCategory((int) $cat);
+
+					if ($category)
+					{
+						$or[] = '(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
+					}
+				}
+
+				if (!empty($or))
+				{
+					$where[] = '(' . implode(' OR ', $or) . ')';
+				}
+			}
+			elseif ($cat = $this->getState('filter_category'))
+			{
+				$category = $this->getCategory((int) $cat);
+
+				if ($category)
+				{
+					$where[] = '(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
+				}
+			}
+
 			if ($filter_category)
 			{
 				$category = $this->getCategory((int) $filter_category);

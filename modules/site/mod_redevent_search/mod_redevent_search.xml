@@ -4,7 +4,7 @@
 	version="1.7"
 	client="site"
 	method="upgrade">
-	<name>redEVENT Search</name>
+	<name>MOD_REDEVENT_SEARCH</name>
 	<creationDate>##DATE##</creationDate>
 	<author>redWEB Aps</author>
 	<authorEmail>email@redweb.dk</authorEmail>
