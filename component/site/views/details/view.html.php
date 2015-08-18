@@ -48,7 +48,17 @@ class RedeventViewDetails extends JViewLegacy
 			$document->addScript('http://platform.twitter.com/widgets.js');
 		}
 
-		$row = $this->get('Details');
+		try
+		{
+			$row = $this->get('Details');
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+
+			return;
+		}
+
 		$registers = $this->get('Registers');
 		$roles = $this->get('Roles');
 		$prices = $this->get('Prices');
