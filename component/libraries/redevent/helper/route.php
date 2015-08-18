@@ -478,7 +478,7 @@ class RedeventHelperRoute
 	 *
 	 * @return string
 	 */
-	public function getEditSessionTaskRoute($id = null, $sessionId)
+	public function getEditSessionTaskRoute($id = null, $sessionId = 0)
 	{
 		$parts = array(
 			"option" => "com_redevent",
