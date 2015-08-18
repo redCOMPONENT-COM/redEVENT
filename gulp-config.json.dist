@@ -3,21 +3,44 @@
 	"browserSyncProxy" : "localhost",
 	"browser" : "chromium-browser",
 	"extensions"       : {
-	  "components" : ["redevent"],
-	  "modules" : {
-		"frontend" : [
-		  "redevent",
-		  "redevent_all_events",
-		  "redevent_attending",
-		  "redevent_calendar",
-		  "redevent_categories",
-		  "redevent_filters",
-		  "redevent_quickbook",
-		  "redevent_search",
-		  "redevent_teaser",
-		  "redevent_venues_events",
-		  "rokminievents-1.6"
-		]
-	  }
+		"components" : ["redevent"],
+	 	"modules" : {
+			"frontend" : [
+				"mod_redevent",
+				"mod_redevent_all_events",
+				"mod_redevent_attending",
+				"mod_redevent_calendar",
+				"mod_redevent_categories",
+				"mod_redevent_filters",
+				"mod_redevent_quickbook",
+				"mod_redevent_search",
+				"mod_redevent_teaser",
+				"mod_redevent_venues_events",
+				"mod_rokminievents"
+			]
+		},
+		"plugins" : {
+			"content" : ["resimplelist"],
+			"editors-xtd" : ["redevent"],
+			"finder" : ["re_events", "re_venues"],
+			"jomsocial" : ["plg_js_redevent"],
+			"josetta_ext" : [
+				"redeventcategory",
+				"redeventcustomfield",
+				"redeventevent",
+				"redeventpricegroup",
+				"redeventrole",
+				"redeventsession",
+				"redeventtextsnippet",
+				"redeventvenue",
+				"redeventvenuecategory"
+			],
+			"redevent" : ["redevent_jomsocial", "redmemberlogin"],
+			"redform" : ["paymentnotificationemail"],
+			"redform_payment" : ["filtervenue"],
+			"search" : ["redevent"],
+			"system" : ["autotweetredevent"],
+			"xmap" : ["redevent"]
+		}
 	}
 }
