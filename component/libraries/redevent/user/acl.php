@@ -143,9 +143,9 @@ class RedeventUserAcl
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$canEdit = $this->getUser()->authorise('re.editevent', 'com_redevent');
-		$canAdd  = $this->getUser()->authorise('re.createevent', 'com_redevent');
+		$canEditOwn = $this->getUser()->authorise('core.edit.own', 'com_redevent');
 
-		if ((!$canEdit && !$canAdd) || !count($cats))
+		if ((!$canEdit && !$canEditOwn) || !count($cats))
 		{
 			return false;
 		}
@@ -293,9 +293,9 @@ class RedeventUserAcl
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
 		$canEdit = $this->getUser()->authorise('re.editsession', 'com_redevent');
-		$canAdd  = $this->getUser()->authorise('re.createsession', 'com_redevent');
+		$canEditOwn  = $this->getUser()->authorise('core.edit.own', 'com_redevent');
 
-		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
+		if ((!$canEdit && !$canEditOwn) || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
 			return false;
 		}
@@ -358,11 +358,19 @@ class RedeventUserAcl
 		{
 			$cats    = $this->getAuthorisedCategories('re.manageevents');
 			$canEdit = $this->getUser()->authorise('re.editevent', 'com_redevent');
+			$canEditOwn  = $this->getUser()->authorise('core.edit.own', 'com_redevent');
 
 			if ((!$canEdit) || !count($cats))
 			{
 				// Only edit own
-				$query->where('e.created_by = ' . $this->userid);
+				if ($canEditOwn)
+				{
+					$query->where('e.created_by = ' . $this->userid);
+				}
+				else
+				{
+					$query->where('0');
+				}
 			}
 			else
 			{
@@ -393,8 +401,9 @@ class RedeventUserAcl
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
 		$canEdit = $this->getUser()->authorise('re.editsession', 'com_redevent');
 		$canAdd  = $this->getUser()->authorise('re.createsession', 'com_redevent');
+		$canEditOwn  = $this->getUser()->authorise('core.edit.own', 'com_redevent');
 
-		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
+		if ((!$canEdit && !$canEditOwn) || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
 			return array();
 		}
@@ -713,10 +722,10 @@ class RedeventUserAcl
 		}
 
 		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
-		$canAdd = $this->getUser()->authorise('re.createvenue', 'com_redevent');
+		$canEditOwn = $this->getUser()->authorise('core.edit.own', 'com_redevent');
 		$canEdit = $this->getUser()->authorise('re.editvenue', 'com_redevent');
 
-		if ((!$canEdit && !$canAdd) || !count($cats))
+		if ((!$canEdit && !$canEditOwn) || !count($cats))
 		{
 			return false;
 		}

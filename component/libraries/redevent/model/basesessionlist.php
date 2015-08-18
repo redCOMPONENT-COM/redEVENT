@@ -339,7 +339,7 @@ class RedeventModelBasesessionlist extends RModel
 				$filterOr[] = 'LOWER(a.title) LIKE ' . $filter;
 				$filterOr[] = 'LOWER(x.title) LIKE ' . $filter;
 
-				$query->where(implode(' OR ', $filterOr));
+				$query->where('(' . implode(' OR ', $filterOr) . ')');
 			}
 		}
 
@@ -393,7 +393,10 @@ class RedeventModelBasesessionlist extends RModel
 				}
 			}
 
-			$query->where('(' . implode(' OR ', $or) . ')');
+			if (!empty($or))
+			{
+				$query->where('(' . implode(' OR ', $or) . ')');
+			}
 		}
 		elseif ($cat = $this->getState('filter_category'))
 		{

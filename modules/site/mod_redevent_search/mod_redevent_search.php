@@ -69,7 +69,7 @@ $options = array(JHTML::_('select.option', '', JText::_('MOD_REDEVENT_SEARCH_FIL
 $options = array_merge($options, $helper->getCategoriesOptions());
 $lists['categories'] = JHTML::_('select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $input->getInt('filter_category'));
 
-$lists['multiple_categories'] = JHTML::_('select.genericlist', $options, 'filter_multicategory[]', 'size="6" multiple="multiple" class="inputbox dynfilter"', 'value', 'text', $input->get('filter_category', array(), 'array'));
+$lists['multiple_categories'] = JHTML::_('select.genericlist', $options, 'filter_multicategory[]', 'size="6" multiple="multiple" class="inputbox dynfilter"', 'value', 'text', $input->get('filter_multicategory', array(), 'array'));
 
 // venue filter
 $options = array(JHTML::_('select.option', '', JText::_('MOD_REDEVENT_SEARCH_FILTER_SELECT_VENUE') ));
