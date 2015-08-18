@@ -80,7 +80,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				<?php
 				//Link to details
-				$detaillink = JRoute::_('index.php?option=com_redevent&task=editevent.edit&id=' . $row->slug);
+				$detaillink = JRoute::_('index.php?option=com_redevent&task=editevent.edit&e_id=' . $row->slug);
 				//title
 				?>
 				<td headers="el_title" align="left" valign="top">
