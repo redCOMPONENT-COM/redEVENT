@@ -125,4 +125,38 @@ class RedeventControllerEditsession extends RControllerForm
 
 		parent::postSaveHook($model, $validData);
 	}
+
+	/**
+	 * Method to check if you can add a new record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 *
+	 * @return  boolean
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
+		$acl = RedeventUserAcl::getInstance();
+
+		return $acl->canEditXref($recordId);
+	}
+
+	/**
+	 * Method to check if you can add a new record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array  $data  An array of input data.
+	 *
+	 * @return  boolean
+	 */
+	protected function allowAdd($data = array())
+	{
+		$acl = RedeventUserAcl::getInstance();
+
+		return $acl->canAddSession();
+	}
 }

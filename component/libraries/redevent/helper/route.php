@@ -431,7 +431,7 @@ class RedeventHelperRoute
 	{
 		$parts = array(
 			"option" => "com_redevent",
-			"task"   => "editsession.edit"
+			"view"   => "editsession"
 		);
 
 		if (!empty($id))
@@ -442,6 +442,55 @@ class RedeventHelperRoute
 		if ($xref)
 		{
 			$parts['s_id'] = $xref;
+		}
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Get task route to add session
+	 *
+	 * @param   int  $id  event id
+	 *
+	 * @return string
+	 */
+	public function getAddSessionTaskRoute($id = null)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => "editsession",
+			"task"   => "editsession.add"
+		);
+
+		if (!empty($id))
+		{
+			$parts['e_id'] = $id;
+		}
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Get task route to edit session
+	 *
+	 * @param   int  $id         event id
+	 * @param   int  $sessionId  session id
+	 *
+	 * @return string
+	 */
+	public function getEditSessionTaskRoute($id = null, $sessionId)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => "editsession",
+			"task"   => "editsession.edit"
+		);
+
+		$parts['s_id'] = $sessionId;
+
+		if (!empty($id))
+		{
+			$parts['e_id'] = $id;
 		}
 
 		return self::buildUrl($parts);

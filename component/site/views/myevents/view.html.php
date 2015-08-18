@@ -183,7 +183,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_XREF');
 
-		$link 	= RedeventHelperRoute::getEditXrefRoute($id, $xref);
+		$link 	= RedeventHelperRoute::getEditSessionTaskRoute($id, $xref);
 		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;

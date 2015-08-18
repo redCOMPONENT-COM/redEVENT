@@ -132,7 +132,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	$i = 0;
 	foreach ((array) $this->sessions as $row) :
-		$editsessionLink = RedeventHelperRoute::getEditXrefRoute($row->slug, $row->xref);
+		$editsessionLink = RedeventHelperRoute::getEditSessionTaskRoute($row->slug, $row->xref);
 		?>
   			<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
 

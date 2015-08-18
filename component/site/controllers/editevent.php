@@ -105,7 +105,7 @@ class RedeventControllerEditevent extends RControllerForm
 
 			if ($useracl->canAddSession())
 			{
-				$this->setRedirect(RedeventHelperRoute::getEditXrefRoute($model->getState($this->context . '.id')));
+				$this->setRedirect(RedeventHelperRoute::getAddSessionTaskRoute($model->getState($this->context . '.id')));
 				$this->setMessage(JText::_('COM_REDEVENT_EVENT_SAVED_PLEASE_CREATE_SESSION'), 'success');
 			}
 		}
@@ -148,40 +148,9 @@ class RedeventControllerEditevent extends RControllerForm
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$user = JFactory::getUser();
+		$acl = RedeventUserAcl::getInstance();
 
-		if ($user->authorise('re.editevent', $this->option))
-		{
-			return true;
-		}
-
-		// Check own item
-		if ($user->authorise('core.edit.own', $this->option))
-		{
-			// Now test the owner is the user.
-			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
-
-			if (empty($ownerId) && $recordId)
-			{
-				// Need to do a lookup from the model.
-				$record = $this->getModel()->getItem($recordId);
-
-				if (empty($record))
-				{
-					return false;
-				}
-
-				$ownerId = $record->created_by;
-			}
-
-			// If the owner matches 'me' then do the test.
-			if ($ownerId == $user->id)
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return $acl->canEditEvent($recordId);
 	}
 
 	/**

@@ -19,6 +19,11 @@ JFactory::getDocument()->addScriptDeclaration("
 		}
 	}
 ");
+
+$viewName = 'editsession';
+$option   = 'com_redevent';
+
+$action = JRoute::_('index.php?option=' . $option . '&view=' . $viewName);
 ?>
 
 <script type="text/javascript">
@@ -42,7 +47,7 @@ JFactory::getDocument()->addScriptDeclaration("
 
 <div class="redevent-edit-form">
 	<form enctype="multipart/form-data"
-	      action="<?php echo JRoute::_('index.php?option=com_redevent&view=editsession&s_id=' . $this->item->id); ?>"
+	      action="<?php echo $action; ?>"
 	      method="post" name="adminForm" class="form-validate"
 	      id="adminForm">
 		<div class="btn-toolbar">
@@ -210,9 +215,9 @@ JFactory::getDocument()->addScriptDeclaration("
 			</div>
 		</div>
 
-		<?php echo $this->form->getInput('id'); ?>
-		<input type="hidden" name="option" value="com_redevent" />
-		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="option" value="<?php echo $option; ?>">
+		<input type="hidden" name="s_id" value="<?php echo $this->item->id; ?>">
+		<input type="hidden" name="task" value="">
 		<?php if ($this->return): ?>
 			<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
 		<?php endif; ?>
