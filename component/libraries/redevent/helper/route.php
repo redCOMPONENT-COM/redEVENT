@@ -570,7 +570,7 @@ class RedeventHelperRoute
 	{
 		$parts = array(
 			"option" => "com_redevent",
-			"view"   => 'week'
+			"view"   => $viewName
 		);
 
 		if ($item = self::_findItem($parts))
