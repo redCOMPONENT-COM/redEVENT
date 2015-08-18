@@ -76,7 +76,7 @@ module.exports.addModule = function (name) {
 	// Watch: Module
 	gulp.task('watch:' + baseTask + ':media', function() {
 		gulp.watch([
-			extPath + '/media'
+			extPath + '/media/**'
 		], ['copy:' + baseTask + ':media']);
 	});
 };
