@@ -130,7 +130,41 @@ class RedeventControllerEditevent extends RControllerForm
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('re.editevent', $this->option);
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
+		$user = JFactory::getUser();
+
+		if ($user->authorise('re.editevent', $this->option))
+		{
+			return true;
+		}
+
+		// Check own item
+		if ($user->authorise('core.edit.own', $this->option))
+		{
+			// Now test the owner is the user.
+			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
+
+			if (empty($ownerId) && $recordId)
+			{
+				// Need to do a lookup from the model.
+				$record = $this->getModel()->getItem($recordId);
+
+				if (empty($record))
+				{
+					return false;
+				}
+
+				$ownerId = $record->created_by;
+			}
+
+			// If the owner matches 'me' then do the test.
+			if ($ownerId == $user->id)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
