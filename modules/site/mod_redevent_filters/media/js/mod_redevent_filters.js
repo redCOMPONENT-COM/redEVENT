@@ -1,76 +1,81 @@
 /**
- * redevent quickbook module javascript
+ * Redevent filter module javascript
  */
+(function($){
+	modReFilters = (function(options) {
 
-document.addEvent('domready', function(){
+		var settings = {
+			'filtersDivId': '#modRedeventFilters',
+			'listFormId': '#adminForm'
+		};
 
-	modReFilters.init();
-	modReFilters.syncForm();
-
-	modReFilters.getFiltersDiv().getElements('input').addEvent('change', function() {
-		modReFilters.syncForm();
-		modReFilters.getListForm().submit();
-	});
-
-	modReFilters.getFiltersDiv().getElement('button').addEvent('click', function(){
-		this.getParent('div').getElement('input').set('value', '').fireEvent('change');
-	});
-});
-
-modReFilters = {
-
-	options: {
-		'filtersDivId': 'modRedeventFilters',
-		'listFormId': 'adminForm'
-	},
-
-	init: function(options) {
 		if (options) {
-			this.options = Object.merge(this.options, options);
-		}
-	},
-
-	/**
-	 * return list form element
-	 *
-	 * @returns Element
-	 */
-	getListForm: function() {
-		return document.id(this.options.listFormId);
-	},
-
-	/**
-	 * return list form element
-	 *
-	 * @returns Element
-	 */
-	getFiltersDiv: function() {
-		return document.id(this.options.filtersDivId);
-	},
-
-	/**
-	 * Copy filter fields to list form
-	 */
-	syncForm: function() {
-		var listForm = this.getListForm();
-		var filtersDiv = this.getFiltersDiv();
-
-		// First general text search
-		if (filtersDiv.getElement('[name=filter_text]') && listForm.getElement('#filter')) {
-			listForm.getElement('#filter_type').set('value', 'event');
-			listForm.getElement('#filter').set('value', filtersDiv.getElement('[name=filter_text]').get('value'));
+			$.extend(settings, options);
 		}
 
-		if (listForm.getElement('#clonedDiv')) {
-			listForm.getElement('#clonedDiv').dispose();
-		}
+		/**
+		 * return list form element
+		 *
+		 * @returns Element
+		 */
+		var getListForm = function() {
+			return $(settings.listFormId);
+		};
 
-		var cloneDiv = new Element('div', {'id': 'clonedDiv'}).setStyle('display', 'none').inject(listForm);
+		/**
+		 * return list form element
+		 *
+		 * @returns Element
+		 */
+		var getFiltersDiv = function() {
+			return $(settings.filtersDivId);
+		};
 
-		filtersDiv.getElements('input').each(function(el) {
-			var cp = el.clone().set('value', el.get('value')).inject(cloneDiv);
+		/**
+		 * Copy filter fields to list form
+		 */
+		var syncForm = function() {
+			var $listForm = getListForm();
+			var $filtersDiv = getFiltersDiv();
+
+			// First general text search
+			if ($listForm.find('[name=filter_text]') && $listForm.find('#filter')) {
+				$listForm.find('#filter_type').val('event');
+				$listForm.find('#filter').val($filtersDiv.find('[name=filter_text]').val());
+			}
+
+			if ($listForm.find('#clonedDiv')) {
+				$listForm.find('#clonedDiv').remove();
+			}
+
+			var cloneDiv = $('<div/>').prop('id', 'clonedDiv').css('display', 'none').appendTo($listForm);
+
+			$filtersDiv.find('input').each(function(index, element) {
+				var $element = $(element);
+				$element.clone().val($element.val()).appendTo(cloneDiv);
+			});
+		};
+
+		return {
+			'syncForm': syncForm,
+			'getFiltersDiv': getFiltersDiv,
+			'getListForm': getListForm
+		};
+	})();
+
+	$(document).ready(function() {
+		modReFilters.syncForm();
+
+		modReFilters.getFiltersDiv().find('input').change(function() {
+			modReFilters.syncForm();
+			modReFilters.getListForm().submit();
 		});
-	}
+
+		modReFilters.getFiltersDiv().find('button').click(function(){
+			var $element = $(this);
+			$element.parents('div').find('input').val('').trigger('change');
+		});
+	});
+})(jQuery);
 
 
-};

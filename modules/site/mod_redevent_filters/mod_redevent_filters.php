@@ -25,15 +25,16 @@ RedeventBootstrap::bootstrap();
 // Get helper
 require_once dirname(__FILE__) . '/helper.php';
 
-$data = modRedEventFiltersHelper::getData($params);
+$helper = new ModRedeventFiltersHelper;
+$model = $helper->getModel();
+
+$data = $helper->getData($params);
 
 // Check if any results returned
 if (!$data)
 {
 	return;
 }
-
-$model = modRedEventFiltersHelper::getModel();
 
 RHelperAsset::load('mod_redevent_filters.css', 'mod_redevent_filters');
 RHelperAsset::load('mod_redevent_filters.js', 'mod_redevent_filters');
