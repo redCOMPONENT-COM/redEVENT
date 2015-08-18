@@ -52,7 +52,7 @@ class RedeventUserAcl
 	 *
 	 * @return RedeventUserAcl The User object.
 	 */
-	public static function &getInstance($id = 0)
+	public static function getInstance($id = 0)
 	{
 		static $instances;
 
@@ -905,7 +905,7 @@ class RedeventUserAcl
 	 *
 	 * @return boolean True on success
 	 */
-	public static function superuser($user = null)
+	public function superuser($user = null)
 	{
 		if ($user == null)
 		{
@@ -1057,7 +1057,7 @@ class RedeventUserAcl
 	 *
 	 * @return array
 	 */
-	public static function getAllowedGroups($action, $asset = null)
+	public function getAllowedGroups($action, $asset = null)
 	{
 		$allowed = array();
 
@@ -1095,9 +1095,9 @@ class RedeventUserAcl
 	 *
 	 * @return array
 	 */
-	public static function getAllowedUsers($action, $asset = null)
+	public function getAllowedUsers($action, $asset = null)
 	{
-		$allowedgroups = self::getAllowedGroups($action, $asset);
+		$allowedgroups = $this->getAllowedGroups($action, $asset);
 
 		if (!$allowedgroups)
 		{
@@ -1117,72 +1117,24 @@ class RedeventUserAcl
 	}
 
 	/**
-	 * get ids of user allowed to receive notifications for a session
+	 * Get ids of user allowed to receive notifications for a session
 	 *
 	 * @param   int  $xref  session id
 	 *
 	 * @return array
 	 */
-	public static function getXrefRegistrationRecipients($xref)
+	public function getXrefRegistrationRecipients($xref)
 	{
-		// Get all users globally allowed to receive notifications
-		$rec_allowed = self::getAllowedUsers('re.receiveregistrations');
+		static $cache = array();
 
-		if (!$rec_allowed)
+		if (empty($cache[$xref]))
 		{
-			return false;
+			$helper = new RedeventUserAclSessionregistration($xref, $this);
+
+			$cache[$xref] = $helper->getRecipients();
+
 		}
 
-		// Get categories and venue associated
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('xcat.category_id, a.name AS cat_asset_name, av.name AS venue_asset_name');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-		$query->join('INNER', '#__redevent_venues AS v ON x.venueid = v.id');
-		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
-		$query->join('INNER', '#__redevent_categories AS c ON xcat.category_id = c.id');
-		$query->join('LEFT', '#__assets AS a ON c.asset_id = a.id');
-		$query->join('LEFT', '#__assets AS av ON v.asset_id = av.id');
-		$query->where('x.id = ' . (int) $xref);
-
-		$db->setQuery($query);
-		$cats = $db->loadObjectList();
-
-		if (!$cats)
-		{
-			return false;
-		}
-
-		// Get users for venue
-		$venue_asset = $cats[0]->venue_asset_name;
-		$ven_allowed = self::getAllowedUsers('re.manageevents', $venue_asset);
-
-		if (!$ven_allowed)
-		{
-			return false;
-		}
-
-		// Then for each cats
-		$cats_allowed = array();
-
-		foreach ($cats as $cat)
-		{
-			if ($res = self::getAllowedUsers('re.manageevents', $cat->cat_asset_name))
-			{
-				$cats_allowed = array_merge($cats_allowed, $res);
-			}
-		}
-
-		if (!$cats_allowed)
-		{
-			return false;
-		}
-
-		// Intersect to find allowed users
-		$allowed = array_intersect($rec_allowed, $ven_allowed, $cats_allowed);
-
-		return $allowed;
+		return $cache[$xref];
 	}
 }

@@ -181,7 +181,7 @@ class RedeventHelperSessionadmins
 	private function getXrefRegistrationRecipients()
 	{
 		$event = $this->getSessionDetails();
-		$usersIds = RedeventUserAcl::getXrefRegistrationRecipients($event->xref);
+		$usersIds = RedeventUserAcl::getInstance()->getXrefRegistrationRecipients($event->xref);
 
 		if (!$usersIds)
 		{
