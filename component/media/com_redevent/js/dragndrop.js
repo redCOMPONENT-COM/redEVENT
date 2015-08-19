@@ -418,10 +418,12 @@
 				if (isNaN(includeBrowse)) includeBrowse = 0;
 			}
 
+			var defaultValue = $('#cform_' + uploadTarget + '_value').val();
+
 			// Add elements for dragndrop process
 			mainObject.after('<div id="statusBar_' + uploadTarget + '"></div>');
 			mainObject.after('<div id="reditem_dragselect_' + uid + '" class="dragselect">' + dragText + '</div>');
-			mainObject.after('<input type="hidden" id="cform_dragndrop_upload' + uid + '" name="jform[custom' + uploadTarget + ']" value="" />');
+			mainObject.after('<input type="hidden" id="cform_dragndrop_upload' + uid + '" name="jform[custom' + uploadTarget + ']" value="' + defaultValue + '" />');
 
 			// Include Browse option enabled
 			if ((includeBrowse == 1) && isFileAPIEnabled()) {
