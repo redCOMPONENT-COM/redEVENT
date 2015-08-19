@@ -1132,7 +1132,6 @@ class RedeventUserAcl
 			$helper = new RedeventUserAclSessionregistration($xref, $this);
 
 			$cache[$xref] = $helper->getRecipients();
-
 		}
 
 		return $cache[$xref];
