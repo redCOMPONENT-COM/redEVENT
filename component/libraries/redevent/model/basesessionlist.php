@@ -339,6 +339,13 @@ class RedeventModelBasesessionlist extends RModel
 				$filterOr[] = 'LOWER(a.title) LIKE ' . $filter;
 				$filterOr[] = 'LOWER(x.title) LIKE ' . $filter;
 
+				if ($params->get('filter_text_search_descriptions', 0))
+				{
+					$filterOr[] = 'a.datdescription LIKE ' . $filter;
+					$filterOr[] = 'a.summary LIKE ' . $filter;
+					$filterOr[] = 'x.details LIKE ' . $filter;
+				}
+
 				$query->where('(' . implode(' OR ', $filterOr) . ')');
 			}
 		}

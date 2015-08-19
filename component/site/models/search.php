@@ -147,7 +147,7 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 		if (empty($this->filter))
 		{
 			// Get the paramaters of the active menu item
-			$mainframe = JFactory::getApplication();
+			$params = JFactory::getApplication()->getParams('com_redevent');
 
 			$filter_continent = $this->getState('filter_continent');
 			$filter_country   = $this->getState('filter_country');
@@ -180,6 +180,13 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 				$filterOr[] = 'LOWER(c.name) LIKE ' . $filter;
 				$filterOr[] = 'LOWER(a.title) LIKE ' . $filter;
 				$filterOr[] = 'LOWER(x.title) LIKE ' . $filter;
+
+				if ($params->get('filter_text_search_descriptions', 0))
+				{
+					$filterOr[] = 'a.datdescription LIKE ' . $filter;
+					$filterOr[] = 'a.summary LIKE ' . $filter;
+					$filterOr[] = 'x.details LIKE ' . $filter;
+				}
 
 				$where[] = '(' . implode(' OR ', $filterOr) . ')';
 			}

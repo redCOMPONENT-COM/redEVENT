@@ -305,6 +305,13 @@
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
 		</field>
+		<field name="filter_text_search_descriptions" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_FILTER_TEXT_SEARCH_DESCRIPTIONS"
+			   description="COM_REDEVENT_SETTINGS_FILTER_TEXT_SEARCH_DESCRIPTIONS_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
 		<field name="filter_type_event" type="radio" default="1"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_FILTER_TYPE_EVENT"
