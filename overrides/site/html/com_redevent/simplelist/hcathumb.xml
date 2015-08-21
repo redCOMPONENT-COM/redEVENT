@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_REDEVENT_Simplelist_Layout_hca_thumb">
+		<message>
+			<![CDATA[COM_REDEVENT_SIMPLELIST_LAYOUT_hca_thumb_DESC]]>
+		</message>
+	</layout>
+
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="introtext"
+			       type="editor"
+			       default=""
+			       label="COM_REDEVENT_INTROTEXT_FIELD"
+			       description="COM_REDEVENT_INTROTEXT_FIELD_TIP"
+			       filter="safehtml"/>
+			<field name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
+				<option value="0">COM_REDEVENT_Hide</option>
+				<option value="1">COM_REDEVENT_Show</option>
+			</field>
+			<field name="session_state" type="list" default="0" label="COM_REDEVENT_VIEW_FILTER_SESSION_STATE" description="COM_REDEVENT_VIEW_FILTER_SESSION_STATE_DESC">
+				<option value="0">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_ALL</option>
+				<option value="1">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_UPCOMINGS</option>
+				<option value="2">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_OPENDATE</option>
+			</field>
+
+			<field name="show_pagination" type="list"
+				description="JGLOBAL_PAGINATION_DESC"
+				label="JGLOBAL_PAGINATION_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+			</field>
+
+			<field name="show_pagination_results" type="list"
+				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				description="JGLOBAL_PAGINATION_RESULTS_DESC">
+
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="lists_filter_date" type="radio" class="btn-group" default="1" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_DATE" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_DATE_DESC">
+				<option value="0">COM_REDEVENT_Hide</option>
+				<option value="1">COM_REDEVENT_Show</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>

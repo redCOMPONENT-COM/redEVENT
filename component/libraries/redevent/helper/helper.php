@@ -24,7 +24,16 @@ class RedeventHelper
 	 */
 	public static function config()
 	{
-		$params = JComponentHelper::getParams('com_redevent');
+		$app = JFactory::getApplication();
+
+		if (method_exists($app, 'getParams'))
+		{
+			$params = $app->getParams('com_redevent');
+		}
+		else
+		{
+			$params = JComponentHelper::getParams('com_redevent');
+		}
 
 		// See if there are any plugins that wish to alter the configuration (client specific demands !)
 		JPluginHelper::importPlugin('redevent_config');
