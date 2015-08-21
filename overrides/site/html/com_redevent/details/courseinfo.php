@@ -55,7 +55,7 @@ $elsettings = RedeventHelper::config();
 $imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
 foreach ($this->_eventlinks as $key => $event) {
 	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug));
-	$venue_url = JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($event->venueslug));
+	$venue_url = JRoute::_(RedeventHelperRoute::getVenueTimelineRoute($event->venueslug) . '&filter_date=2015-08-19');
 	?>
 	<tr>
 			<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
