@@ -2074,13 +2074,11 @@ class RedeventTags
 	{
 		$res = '';
 
-		if (strtotime($this->getEvent()->getData()->registrationend))
+		if (RedeventHelper::isValidDate($this->getEvent()->getData()->registrationend))
 		{
 			$elsettings = RedeventHelper::config();
-			$res = strftime(
-				$elsettings->get('formatdate', '%d.%m.%Y') . ' ' . $elsettings->get('formattime', '%H:%M'),
-				strtotime($this->getEvent()->getData()->registrationend)
-			);
+			$res = JFactory::getDate($this->getEvent()->getData()->registrationend)
+				->format($elsettings->get('formatdate', 'd.m.Y') . ' ' . $elsettings->get('formattime', 'H:i'));
 		}
 
 		return $res;
