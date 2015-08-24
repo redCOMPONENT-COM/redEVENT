@@ -8,7 +8,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>Copyright (C) 2012 - 2013 redCOMPONENT.com. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later, see LICENSE.</license>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.1</version>
 	<description>redEVENT Sync library</description>
 	<files>
 		<folder>exception</folder>

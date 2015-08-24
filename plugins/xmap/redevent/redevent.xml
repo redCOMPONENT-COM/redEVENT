@@ -7,14 +7,14 @@
 	<authorEmail>email@redweb.dk</authorEmail>
 	<authorUrl>www.redweb.dk</authorUrl>
 	<copyright>(c) 2011 Redweb.dk</copyright>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.1</version>
 	<description>PLG_XMAP_REDEVENT_DESC</description>
-	
+
 	<files>
 		<folder>language</folder>
 		<filename plugin="redevent">redevent.php</filename>
 	</files>
-        
+
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
