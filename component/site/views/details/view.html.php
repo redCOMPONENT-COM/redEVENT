@@ -348,7 +348,7 @@ class RedeventViewDetails extends JViewLegacy
 
 				foreach ($this->_venues as $key => $venue)
 				{
-					if (RedeventHelper::isValidDate($venue->$keyword))
+					if (RedeventHelperDate::isValidDate($venue->$keyword))
 					{
 						$content .= strftime($formatdate, strtotime($venue->$keyword)) . ' ';
 					}

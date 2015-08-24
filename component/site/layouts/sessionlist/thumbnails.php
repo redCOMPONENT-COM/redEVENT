@@ -29,7 +29,7 @@ $rows = $displayData['rows'];
 			<p class="rf_thumbevent_date">
 				<span class="dtstart"><?php echo RedeventHelperOutput::formatdate($row->dates, $row->times); ?></span>
 				<?php
-				if (RedeventHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
+				if (RedeventHelperDate::isValidDate($row->enddates) && $row->enddates != $row->dates) :
 					echo ' - <span class="dtend">' . RedeventHelperOutput::formatdate($row->enddates, $row->endtimes) . '</span>';
 				endif;
 				?>

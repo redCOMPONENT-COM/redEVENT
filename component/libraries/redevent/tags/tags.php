@@ -1490,7 +1490,7 @@ class RedeventTags
 	 */
 	private function getTag_duration()
 	{
-		return RedeventHelper::getEventDuration($this->getEvent()->getData());
+		return RedeventHelperDate::getEventDuration($this->getEvent()->getData());
 	}
 
 	/**
@@ -2074,7 +2074,7 @@ class RedeventTags
 	{
 		$res = '';
 
-		if (RedeventHelper::isValidDate($this->getEvent()->getData()->registrationend))
+		if (RedeventHelperDate::isValidDate($this->getEvent()->getData()->registrationend))
 		{
 			$elsettings = RedeventHelper::config();
 			$res = JFactory::getDate($this->getEvent()->getData()->registrationend)

@@ -50,7 +50,7 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 	<strong><?php echo JText::_('COM_REDEVENT_DATE' ).':'; ?></strong>
 	<?php echo JHtml::link(
 		'index.php?option=com_redevent&task=session.edit&id=' . $this->session->xref,
-		(RedeventHelper::isValidDate($this->session->dates) ? $this->session->dates : JText::_('COM_REDEVENT_OPEN_DATE'))
+		(RedeventHelperDate::isValidDate($this->session->dates) ? $this->session->dates : JText::_('COM_REDEVENT_OPEN_DATE'))
 		); ?>
 	<br />
 	<strong><?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).':'; ?></strong>&nbsp;<?php echo htmlspecialchars($this->session->title, ENT_QUOTES, 'UTF-8'); ?>

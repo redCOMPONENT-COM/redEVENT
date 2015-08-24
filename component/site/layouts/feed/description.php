@@ -15,7 +15,7 @@ $sessionData = $displayData;
 
 $event_url = RedeventHelperRoute::getDetailsRoute($sessionData->slug, $sessionData->xslug);
 $venue_url = RedeventHelperRoute::getVenueEventsRoute($sessionData->venueslug);
-$duration = RedeventHelper::getEventDuration($sessionData);
+$duration = RedeventHelperDate::getEventDuration($sessionData);
 ?>
 <table>
 	<tbody>

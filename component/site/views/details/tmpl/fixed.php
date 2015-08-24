@@ -233,7 +233,7 @@ if ($this->row->venueid != 0) {
 
 	<?php if ($this->row->registra): ?>
 		<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_Registration' ); ?></h2>
-		<?php if (RedeventHelper::isValidDate($this->row->registrationend)): ?>
+		<?php if (RedeventHelperDate::isValidDate($this->row->registrationend)): ?>
 			<?php echo strftime('%F', strtotime($this->row->registrationend)); ?>
 		<?php endif; ?>
 		<?php $registration_status = RedeventHelper::canRegister($this->row->xref); ?>

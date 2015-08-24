@@ -87,7 +87,7 @@ class RedeventViewDetails extends RViewSite
 			}
 		}
 
-		if (!RedeventHelper::isValidDate($event->dates))
+		if (!RedeventHelperDate::isValidDate($event->dates))
 		{
 			$event->dates = JText::_('COM_REDEVENT_OPEN_DATE');
 		}

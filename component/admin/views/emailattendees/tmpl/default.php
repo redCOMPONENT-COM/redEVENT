@@ -27,7 +27,7 @@ JHTML::_('behavior.formvalidation');
 JHTML::_('behavior.tooltip');
 $app = JFactory::getApplication();
 ?>
-<h2><?php echo $this->session->title. '@'. $this->session->venue. ' ' . (RedeventHelper::isValidDate($this->session->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->session->dates)) : ''); ?></h2>
+<h2><?php echo $this->session->title. '@'. $this->session->venue. ' ' . (RedeventHelperDate::isValidDate($this->session->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->session->dates)) : ''); ?></h2>
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal" >
 
 	<div class="row-fluid">

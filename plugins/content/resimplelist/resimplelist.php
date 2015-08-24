@@ -273,7 +273,7 @@ class plgContentRESimplelist extends JPlugin {
 	 */
 	protected function _formatEventDateTime($event)
 	{
-		if (!RedeventHelper::isValidDate($event->dates))
+		if (!RedeventHelperDate::isValidDate($event->dates))
 		{
 			// Open dates
 			$date = '<span class="event-date open-date">'.JText::_('PLG_RESIMPLELIST_OPEN_DATE').'</span>';
@@ -296,7 +296,7 @@ class plgContentRESimplelist extends JPlugin {
 
 		if ($allday)
 		{
-			if ($this->params->get('show_end', 1) &RedeventHelper::isValidDate($event->enddates))
+			if ($this->params->get('show_end', 1) &RedeventHelperDate::isValidDate($event->enddates))
 			{
 				if (strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
 				    && strtotime($event->enddates) != strtotime($event->dates))
@@ -308,7 +308,7 @@ class plgContentRESimplelist extends JPlugin {
 		}
 		elseif ($this->params->get('show_end', 1))
 		{
-			if (RedeventHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
+			if (RedeventHelperDate::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
 			{
 				$date .= ' <span class="event-end"><span class="event-day">'.self::_formatdate($event->enddates, $event->endtimes).'</span>';
 				if ($this->params->get('show_time', 1)) {
@@ -339,7 +339,7 @@ class plgContentRESimplelist extends JPlugin {
 	 */
 	protected function _formatdate($date, $time)
 	{
-		if(!RedeventHelper::isValidDate($date))
+		if(!RedeventHelperDate::isValidDate($date))
 		{
 			return JText::_('OPEN DATE');
 		}

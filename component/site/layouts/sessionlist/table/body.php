@@ -24,7 +24,7 @@ $colnames = array_map('trim', $colnames);
 
 	$k = 0;
 	foreach ($rows as $row) :
-		$isover = (RedeventHelper::isOver($row) ? ' isover' : '');
+		$isover = (RedeventHelperDate::isOver($row) ? ' isover' : '');
 
 		//Link to details
 		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );

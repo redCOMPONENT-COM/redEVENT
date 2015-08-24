@@ -206,7 +206,7 @@ class RedeventModelEditsessionnotify extends RModel
 	 */
 	private function formatDate($session)
 	{
-		if (RedeventHelper::isValidDate($session->dates))
+		if (RedeventHelperDate::isValidDate($session->dates))
 		{
 			$date = is_null($session->times)
 				? JHTML::date($session->dates, JText::_('COM_REDEVENT_JDATE_FORMAT_DATE'))

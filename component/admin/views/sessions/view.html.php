@@ -33,7 +33,7 @@ class RedeventViewSessions extends RedeventViewAdmin
 		$this->activeFilters = $this->get('ActiveFilters');
 		$this->event = $this->get('Event');
 		$this->user = $user;
-		$this->params = JComponentHelper::getParams('com_redform');
+		$this->params = RedeventHelper::config();
 
 		// Edit permission
 		$this->canEdit = false;

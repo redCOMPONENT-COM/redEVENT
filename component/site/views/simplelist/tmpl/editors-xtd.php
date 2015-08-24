@@ -138,7 +138,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     					<?php echo RedeventHelperOutput::formatdate($row->dates, $row->times); ?>
 
     					<?php
-    					if (RedeventHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
+    					if (RedeventHelperDate::isValidDate($row->enddates) && $row->enddates != $row->dates) :
     						echo ' - '.RedeventHelperOutput::formatdate($row->enddates, $row->endtimes);
     					endif;
     					?>

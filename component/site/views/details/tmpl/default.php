@@ -65,8 +65,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					continue;
 				}
         /* Get the date */
-        $date = (!RedeventHelper::isValidDate($venuedate->dates)  ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->dates )));
-        $enddate  = (!RedeventHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->enddates ));
+        $date = (!RedeventHelperDate::isValidDate($venuedate->dates)  ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->dates )));
+        $enddate  = (!RedeventHelperDate::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->enddates ));
         $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
         $displaytime = '';

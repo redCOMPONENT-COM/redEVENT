@@ -156,13 +156,13 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 		$ev['street'] = $event->street;
 		$ev['city'] = $event->city;
 
-		if (RedeventHelper::isValidDate($event->dates))
+		if (RedeventHelperDate::isValidDate($event->dates))
 		{
 			$date = RedeventHelperOutput::formattime($event->dates, $event->times);
 			$ev['start_time'] = $date;
 		}
 
-		if (RedeventHelper::isValidDate($event->enddates))
+		if (RedeventHelperDate::isValidDate($event->enddates))
 		{
 			$date = RedeventHelperOutput::formattime($event->enddates, $event->endtimes);
 			$ev['end_time'] = $date;

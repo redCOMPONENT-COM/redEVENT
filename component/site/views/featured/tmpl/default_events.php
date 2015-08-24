@@ -33,7 +33,7 @@ $colnames = array_map('trim', $colnames);
 		//Link to details
 		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
 
-		if (RedeventHelper::isValidDate($row->dates))
+		if (RedeventHelperDate::isValidDate($row->dates))
 		{
 			$date = JFactory::getDate($row->times ? $row->dates.' '.$row->times : $row->dates);
 		}

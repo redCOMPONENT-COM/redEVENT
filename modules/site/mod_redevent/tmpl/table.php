@@ -77,7 +77,7 @@ $class_prefix = 'mre-';
 	</thead>
 	<tbody>
 	<?php foreach ($list as $item) :  ?>
-		<?php $isover = (RedeventHelper::isOver($item) ? ' isover' : ''); ?>
+		<?php $isover = (RedeventHelperDate::isOver($item) ? ' isover' : ''); ?>
 		<tr class="sectiontableentry<?php echo ($i+1).$isover; ?>">
 
 			<?php foreach ($cols as $c): ?>
