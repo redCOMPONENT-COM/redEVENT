@@ -53,7 +53,7 @@ class RedeventModelMyvenues extends RModelList
 	 */
 	protected function getListQuery()
 	{
-		$allowed = RedeventUserAcl::getInstance()->getAllowedForEventsVenues();
+		$allowed = RedeventUserAcl::getInstance()->getManagedVenues();
 
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);

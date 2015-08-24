@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php endif; ?>
 
 <?php if ($this->canAddVenue): ?>
-	<div><?php echo JHTML::link(RedeventHelperRoute::getEditVenueRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
+	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editvenue.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
 <?php endif; ?>
 
 <?php if (count((array)$this->attending)): ?>

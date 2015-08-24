@@ -89,7 +89,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.create', 'com_redevent'))
 		{
 			return true;
 		}
@@ -114,7 +114,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.create', 'com_redevent'))
 		{
 			return true;
 		}
@@ -136,7 +136,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent'))
 		{
 			return true;
 		}
@@ -183,7 +183,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent'))
 		{
 			return true;
 		}
@@ -236,7 +236,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent'))
 		{
 			return true;
 		}
@@ -284,7 +284,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent'))
 		{
 			return true;
 		}
@@ -354,7 +354,9 @@ class RedeventUserAcl
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->group('e.id');
 
-		if (!$this->superuser())
+		$allowedAll = $this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent');
+
+		if (!$allowedAll)
 		{
 			$cats    = $this->getAuthorisedCategories('re.manageevents');
 			$canEdit = $this->getUser()->authorise('re.editevent', 'com_redevent');
@@ -400,13 +402,7 @@ class RedeventUserAcl
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
 		$canEdit = $this->getUser()->authorise('re.editsession', 'com_redevent');
-		$canAdd  = $this->getUser()->authorise('re.createsession', 'com_redevent');
 		$canEditOwn  = $this->getUser()->authorise('core.edit.own', 'com_redevent');
-
-		if ((!$canEdit && !$canEditOwn) || !count($cats) || (!count($venuescats) && !count($venues)))
-		{
-			return array();
-		}
 
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -417,8 +413,15 @@ class RedeventUserAcl
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
 
-		if (!$this->superuser())
+		$allowedAll = $this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent');
+
+		if (!$allowedAll)
 		{
+			if (!$cats)
+			{
+				return false;
+			}
+
 			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
 			if (count($venuescats) && count($venues))
@@ -429,14 +432,22 @@ class RedeventUserAcl
 			{
 				$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
 			}
-			else
+			elseif (count($venues))
 			{
 				$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
 			}
+			else
+			{
+				return false;
+			}
 
-			if (!$canEdit)
+			if ((!$canEdit) && $canEditOwn)
 			{
 				$query->where('e.created_by = ' . $db->Quote($this->userid));
+			}
+			elseif (!$canEdit)
+			{
+				return false;
 			}
 		}
 
@@ -571,7 +582,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.create', 'com_redevent'))
 		{
 			return true;
 		}
@@ -716,37 +727,51 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent'))
 		{
 			return true;
 		}
 
-		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
-		$canEditOwn = $this->getUser()->authorise('core.edit.own', 'com_redevent');
-		$canEdit = $this->getUser()->authorise('re.editvenue', 'com_redevent');
-
-		if ((!$canEdit && !$canEditOwn) || !count($cats))
-		{
-			return false;
-		}
-
+		// Get venue data
 		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('v.id');
-		$query->from('#__redevent_venues AS v');
-		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
-		$query->where('v.id = ' . $id);
-		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
-
-		if (!$canEdit)
-		{
-			$query->where('v.created_by = ' . $db->Quote($this->userid));
-		}
+		$query = $db->getQuery(true)
+			->select('v.id, asset.name AS asset_name, v.created_by, xcat.category_id AS cat_id')
+			->from('#__redevent_venues AS v')
+			->leftJoin(('#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id'))
+			->leftJoin('#__assets AS asset ON v.asset_id = asset.id')
+			->where('v.id = ' . $id);
 
 		$db->setQuery($query);
+		$items = $db->loadObjectList();
 
-		return ($db->loadResult() ? true : false);
+		if (!$items)
+		{
+			throw new OutOfBoundsException('venue not found', 500);
+		}
+
+		$canEditOwn = $this->getUser()->authorise('core.edit.own', 'com_redevent');
+
+		if ($canEditOwn && $items[0]->created_by == $this->userid)
+		{
+			return true;
+		}
+
+		if ($this->getUser()->authorise('re.managevenue', $items[0]->asset_name))
+		{
+			return true;
+		}
+
+		$cats = $this->getAuthorisedVenuesCategories('re.managevenues');
+
+		foreach ($items as $item)
+		{
+			if (in_array($item->cat_id, $cats))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -763,7 +788,7 @@ class RedeventUserAcl
 			return false;
 		}
 
-		if ($this->superuser())
+		if ($this->superuser() || $this->getUser()->authorise('core.edit', 'com_redevent'))
 		{
 			return true;
 		}
