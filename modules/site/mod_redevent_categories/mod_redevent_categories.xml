@@ -11,7 +11,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.b.3.1</version>
+	<version>3.0.b.3.2</version>
 	<description>MOD_REDEVENT_CATEGORIES_XML_DESCRIPTION</description>
 
 	<files>
@@ -19,7 +19,6 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
-		<folder>images</folder>
 		<folder>language</folder>
 	</files>
 
