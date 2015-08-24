@@ -68,16 +68,16 @@ if ($this->row->venueid != 0) {
   	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
-			$tmp = RedeventHelperOutput::formatdate($this->row->dates, $this->row->times);
+			$tmp = RedeventHelperDate::formatdate($this->row->dates, $this->row->times);
 			if (!empty($this->row->times) && strcasecmp('00:00:00', $this->row->times)) {
-				$tmp .= ' ' .RedeventHelperOutput::formattime($this->row->dates, $this->row->times);
+				$tmp .= ' ' .RedeventHelperDate::formattime($this->row->dates, $this->row->times);
 			}
 			if (!empty($this->row->enddates) && $this->row->enddates != $this->row->dates)
 			{
-				$tmp .= ' - ' .RedeventHelperOutput::formatdate($this->row->enddates, $this->row->endtimes);
+				$tmp .= ' - ' .RedeventHelperDate::formatdate($this->row->enddates, $this->row->endtimes);
 			}
 			if (!empty($this->row->endtimes) && strcasecmp('00:00:00', $this->row->endtimes)) {
-				$tmp .= ' ' .RedeventHelperOutput::formattime($this->row->dates, $this->row->endtimes);
+				$tmp .= ' ' .RedeventHelperDate::formattime($this->row->dates, $this->row->endtimes);
 			}
 			echo $tmp;
 			?>

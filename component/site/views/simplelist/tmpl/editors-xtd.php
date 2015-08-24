@@ -135,11 +135,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     			<td headers="el_date" align="left">
     				<strong>
-    					<?php echo RedeventHelperOutput::formatdate($row->dates, $row->times); ?>
+    					<?php echo RedeventHelperDate::formatdate($row->dates, $row->times); ?>
 
     					<?php
     					if (RedeventHelperDate::isValidDate($row->enddates) && $row->enddates != $row->dates) :
-    						echo ' - '.RedeventHelperOutput::formatdate($row->enddates, $row->endtimes);
+    						echo ' - '.RedeventHelperDate::formatdate($row->enddates, $row->endtimes);
     					endif;
     					?>
     				</strong>
@@ -149,10 +149,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					?>
 						<br />
 						<?php
-						echo RedeventHelperOutput::formattime($row->dates, $row->times);
+						echo RedeventHelperDate::formattime($row->dates, $row->times);
 
 						if ($row->endtimes) :
-							echo ' - '.RedeventHelperOutput::formattime($row->enddates, $row->endtimes);
+							echo ' - '.RedeventHelperDate::formattime($row->enddates, $row->endtimes);
 						endif;
 					endif;
 					?>

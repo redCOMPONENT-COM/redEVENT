@@ -37,16 +37,16 @@ $colnames = array_map('trim', $colnames);
 					case 'date': ?>
 						<td class="re_date">
 							<?php if ($row->dates && strtotime($row->dates)): ?>
-								<meta itemprop="startDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->dates, $row->times); ?>">
+								<meta itemprop="startDate" content="<?php echo RedeventHelperDate::getISODate($row->dates, $row->times); ?>">
 							<?php endif; ?>
 							<?php if ($row->enddates && strtotime($row->enddates)): ?>
-								<meta itemprop="endDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
+								<meta itemprop="endDate" content="<?php echo RedeventHelperDate::getISODate($row->enddates, $row->endtimes); ?>">
 							<?php endif; ?>
 
 							<?php if ($params->get('link_date', 0)): ?>
-								<?php echo JHTML::link($detaillink, RedeventHelperOutput::formatEventDateTime($row));	?>
+								<?php echo JHTML::link($detaillink, RedeventHelperDate::formatEventDateTime($row));	?>
 							<?php else: ?>
-								<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
+								<?php echo RedeventHelperDate::formatEventDateTime($row);	?>
 							<?php endif; ?>
 						</td>
 						<?php break;?>
@@ -54,8 +54,8 @@ $colnames = array_map('trim', $colnames);
 					<?php case 'enddate': ?>
 						<td class="re_title" itemprop="enddate">
 							<?php if ($row->enddates && strtotime($row->enddates)): ?>
-								<meta itemprop="endDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
-								<?php echo RedeventHelperOutput::formatdate($row->enddates, $row->endtimes); ?>
+								<meta itemprop="endDate" content="<?php echo RedeventHelperDate::getISODate($row->enddates, $row->endtimes); ?>">
+								<?php echo RedeventHelperDate::formatdate($row->enddates, $row->endtimes); ?>
 							<?php endif; ?>
 						</td>
 						<?php break;?>

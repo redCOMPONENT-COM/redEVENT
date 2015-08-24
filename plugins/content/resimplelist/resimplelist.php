@@ -302,7 +302,7 @@ class plgContentRESimplelist extends JPlugin {
 				    && strtotime($event->enddates) != strtotime($event->dates))
 				    // All day is written as midnight to midnight, so remove last day
 				{
-					$date .= ' <span class="event-end"><span class="event-day">'.self::_formatdate(strftime('Y-m-d', strtotime($event->enddates. ' -1 day')), $event->endtimes).'</span></span>';
+					$date .= ' <span class="event-end"><span class="event-day">'.self::_formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes).'</span></span>';
 				}
 			}
 		}

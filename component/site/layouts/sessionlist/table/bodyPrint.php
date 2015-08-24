@@ -30,7 +30,7 @@ $colnames = array_map('trim', $colnames);
 				<?php switch ($col):
 					case 'date': ?>
 						<td class="re_date">
-							<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
+							<?php echo RedeventHelperDate::formatEventDateTime($row);	?>
 						</td>
 						<?php break;?>
 

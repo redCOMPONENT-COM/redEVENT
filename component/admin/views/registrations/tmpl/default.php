@@ -121,7 +121,7 @@ echo RedeventLayoutHelper::render(
 		<?php foreach ($this->items as $i => $row) :
 			$displaydate = JHTML::Date($row->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 
-			$eventdate = (!RedeventHelperDate::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
+			$eventdate = RedeventHelperDate::formatdate($row->dates, null, $this->params->get('backend_formatdate', 'd.m.Y'));
 			$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->xref,
 					$row->title . '<br/>' . $eventdate,
 					'class="hasTooltip" title="' . JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE') . '"') . '<br/>@' . $row->venue . '</br>' . JText::_('COM_REDEVENT_AUTHOR') . ': ' . $row->creator;

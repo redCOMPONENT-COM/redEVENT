@@ -1387,7 +1387,7 @@ class RedeventTags
 	 */
 	private function getTag_date()
 	{
-		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		return RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 	}
 
 	/**
@@ -1397,7 +1397,7 @@ class RedeventTags
 	 */
 	private function getTag_enddate()
 	{
-		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+		return RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 	}
 
 	/**
@@ -1411,11 +1411,11 @@ class RedeventTags
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 
 			if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 			{
-				$tmp .= ' - ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+				$tmp .= ' - ' . RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 			}
 		}
 
@@ -1433,7 +1433,7 @@ class RedeventTags
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 
 		return $tmp;
@@ -1450,7 +1450,7 @@ class RedeventTags
 
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 
 		return $tmp;
@@ -1463,21 +1463,21 @@ class RedeventTags
 	 */
 	private function getTag_startenddatetime()
 	{
-		$tmp = RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		$tmp = RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 
 		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
 		{
-			$tmp .= ' - ' . RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' - ' . RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
 		}
 
 		return $tmp;
@@ -2586,7 +2586,7 @@ class RedeventTags
 			$title = urlencode(
 				$this->getEvent()->getData()->title
 				. ' '
-				. RedeventHelperOutput::formatdate(
+				. RedeventHelperDate::formatdate(
 					$this->getEvent()->getData()->dates,
 					$this->getEvent()->getData()->times
 				)

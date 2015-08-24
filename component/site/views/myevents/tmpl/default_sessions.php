@@ -139,11 +139,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<td headers="el_date" align="left">
     				<?php if ($this->acl->canEditXref($row->xref)): ?>
    					<?php echo JHTML::link($editsessionLink,
-   					                       RedeventHelperOutput::formatEventDateTime($row),
+   					                       RedeventHelperDate::formatEventDateTime($row),
    					                       array('class' => 'hasTooltip',
    					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'<br/>'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
     				<?php else: ?>
-   					<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
+   					<?php echo RedeventHelperDate::formatEventDateTime($row);	?>
    					<?php endif; ?>
 					</td>
 

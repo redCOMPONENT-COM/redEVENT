@@ -139,11 +139,11 @@ $search = $this->state->get('filter.search');
 				/* Get the time */
 				if (RedeventHelperDate::isValidTime($row->times) && $row->times != '00:00:00')
 				{
-					$displaytime = RedeventHelperDate::formattime($row->times, $this->params->get('formattime', 'H:i'));
+					$displaytime = RedeventHelperDate::formattime($row->dates, $row->times);
 
 					if (RedeventHelperDate::isValidTime($row->endtimes) && $row->endtimes != '00:00:00')
 					{
-						$displaytime .= ' - ' . RedeventHelperDate::formattime($row->endtimes, $this->params->get('formattime', 'H:i'));
+						$displaytime .= ' - ' . RedeventHelperDate::formattime($row->enddates, $row->endtimes, $this->params->get('formattime', 'H:i'));
 					}
 				}
 

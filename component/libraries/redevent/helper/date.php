@@ -188,7 +188,7 @@ class RedeventHelperDate
 	 *
 	 * @return string
 	 */
-	public static function formattime($date, $time, $format = null)
+	public static function formattime($date = null, $time = null, $format = null)
 	{
 		$settings = RedeventHelper::config();
 
@@ -196,6 +196,8 @@ class RedeventHelperDate
 		{
 			return;
 		}
+
+		$date = $date ?: 'today';
 
 		// Format time
 		$date = JFactory::getDate($date . ' ' . $time);

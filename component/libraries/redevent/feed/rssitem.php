@@ -45,7 +45,7 @@ class RedeventFeedRssitem
 		}
 
 		// Format date
-		$date = strftime($config->get('formatdate', '%d.%m.%Y'), strtotime($session->dates));
+		$date = RedeventHelperDate::formatdate($session->dates);
 
 		if (!$session->enddates)
 		{
@@ -53,20 +53,20 @@ class RedeventFeedRssitem
 		}
 		else
 		{
-			$enddate = strftime($config->get('formatdate', '%d.%m.%Y'), strtotime($session->enddates));
+			$enddate = RedeventHelperDate::formatdate($session->enddates);
 			$displaydate = $date . ' - ' . $enddate;
 		}
 
 		// Format time
 		if ($session->times)
 		{
-			$time = strftime($config->get('formattime', '%H:%M'), strtotime($session->times));
+			$time = RedeventHelperDate::formattime($session->times);
 			$displaytime = $time;
 		}
 
 		if ($session->endtimes)
 		{
-			$endtime = strftime($config->get('formattime', '%H:%M'), strtotime($session->endtimes));
+			$endtime = RedeventHelperDate::formattime($session->endtimes);
 			$displaytime = $time . ' - ' . $endtime;
 		}
 

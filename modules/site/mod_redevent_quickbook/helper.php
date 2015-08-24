@@ -134,7 +134,7 @@ class ModRedeventQuickbookHelper
 			}
 			else
 			{
-				$date = strftime($params->get('formatdate', '%d/%m/%Y'), strtotime($s->dates . ' ' . $s->times));
+				$date = RedeventHelperDate::formatdate($s->dates, $s->times);
 			}
 
 			$text = $date . ' - ' . $s->venue;

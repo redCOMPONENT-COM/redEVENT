@@ -29,7 +29,7 @@ $duration = RedeventHelperDate::getEventDuration($sessionData);
 		</tr>
 		<tr>
 			<td>Date:</td>
-			<td><?php echo RedeventHelperOutput::formatdate($sessionData->dates, $sessionData->times); ?></td>
+			<td><?php echo RedeventHelperDate::formatdate($sessionData->dates, $sessionData->times); ?></td>
 		</tr>
 		<tr>
 			<td>Duration:</td>

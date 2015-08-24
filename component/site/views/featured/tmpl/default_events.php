@@ -62,7 +62,7 @@ $colnames = array_map('trim', $colnames);
 						<?php echo JText::_('COM_REDEVENT_OPEN_DATE'); ?>
 						</div>
 					<?php else: ?>
-						<meta itemprop="startDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->dates, $row->times); ?>">
+						<meta itemprop="startDate" content="<?php echo RedeventHelperDate::getISODate($row->dates, $row->times); ?>">
 						<div class="month"><?php echo $date->format('M'); ?></div>
 						<div class="daynumber"><?php echo $date->format('d'); ?></div>
 						<div class="weekday"><?php echo $date->format('D'); ?></div>

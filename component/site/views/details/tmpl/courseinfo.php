@@ -59,7 +59,7 @@ foreach ($this->eventlinks as $key => $event) {
 	?>
 	<tr>
 			<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
-			<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
+			<td class="courseinfo_date"><?php echo RedeventHelperDate::formatdate($event->dates, $event->times); ?></td>
 			<td class="courseinfo_duration"><?php echo RedeventHelperDate::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo RedeventHelperCountries::getCountryFlag( $event->country ); ?></td>

@@ -163,7 +163,7 @@ class RedeventViewDetails extends JViewLegacy
 			{
 				if (preg_match("#\[([^\]]*)\]#", $keyword, $match))
 				{
-					$replace = $this->keyword_switcher($match[1], $row, $elsettings->get('formattime', '%H:%M'), $elsettings->get('formatdate', '%d.%m.%Y'));
+					$replace = $this->keyword_switcher($match[1], $row, $elsettings->get('formattime', 'H:i'), $elsettings->get('formatdate', 'd.m.Y'));
 
 					$keyword = str_replace('[' . $match[1] . ']', $replace, $keyword);
 					$meta_keywords_content[] = trim($keyword);
@@ -191,7 +191,7 @@ class RedeventViewDetails extends JViewLegacy
 				foreach ($match[1] as $keyword)
 				{
 					$search[] = '[' . $keyword . ']';
-					$replace[] = $this->keyword_switcher($keyword, $row, $elsettings->get('formattime', '%H:%M'), $elsettings->get('formatdate', '%d.%m.%Y'));
+					$replace[] = $this->keyword_switcher($keyword, $row, $elsettings->get('formattime', 'H:i'), $elsettings->get('formatdate', 'd.m.Y'));
 				}
 
 				$description_content = str_replace($search, $replace, $row->meta_description);
@@ -337,7 +337,7 @@ class RedeventViewDetails extends JViewLegacy
 				{
 					if ($venue->$keyword)
 					{
-						$content .= strftime($formattime, strtotime($venue->$keyword)) . ' ';
+						$content .= RedeventHelperDate::formattime(null, $venue->$keyword, $formattime) . ' ';
 					}
 				}
 				break;
@@ -348,15 +348,9 @@ class RedeventViewDetails extends JViewLegacy
 
 				foreach ($this->_venues as $key => $venue)
 				{
-					if (RedeventHelperDate::isValidDate($venue->$keyword))
-					{
-						$content .= strftime($formatdate, strtotime($venue->$keyword)) . ' ';
-					}
-					else
-					{
-						$content .= Jtext::_('COM_REDEVENT_OPEN_DATE');
-					}
+					$content .= RedeventHelperDate::formatdate($venue->$keyword, null, $formatdate) . ' ';
 				}
+
 				break;
 
 			default:

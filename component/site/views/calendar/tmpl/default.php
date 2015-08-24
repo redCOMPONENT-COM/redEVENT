@@ -35,8 +35,8 @@ foreach ($this->rows as $row)
 
 	if ($this->params->get('show_tip_time', 0))
 	{
-		$start = RedeventHelperOutput::formattime($row->dates, $row->times);
-		$end = RedeventHelperOutput::formattime($row->dates, $row->endtimes);
+		$start = RedeventHelperDate::formattime($row->dates, $row->times);
+		$end = RedeventHelperDate::formattime($row->dates, $row->endtimes);
 
 		if ($start != '')
 		{
@@ -95,7 +95,7 @@ foreach ($this->rows as $row)
 
 	$catname = '<div class="catname">'.implode(', ', $cat_names).'</div>';
 
-	$eventdate = RedeventHelperOutput::formatdate($row->dates, $row->times);
+	$eventdate = RedeventHelperDate::formatdate($row->dates, $row->times);
 
 	//venue
 	if ($this->params->get('showlocate', 1) == 1)
@@ -118,7 +118,7 @@ foreach ($this->rows as $row)
 	$content .= $colorpic;
 	if ($this->params->get('show_start_time', 0))
 	{
-		$content .= RedeventHelperOutput::formattime($row->dates, $row->times) . ' ';
+		$content .= RedeventHelperDate::formattime($row->dates, $row->times) . ' ';
 	}
 
 	// Text to display in calendar
