@@ -516,6 +516,81 @@ class RedeventHelperOutput
 	}
 
 	/**
+	 * Formats date
+	 *
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
+	 *
+	 * @return string
+	 *
+	 * @deprecated
+	 */
+	public static function formatdate($date, $time)
+	{
+		return RedeventHelperDate::formatdate($date, $time);
+	}
+
+	/**
+	 * Formats time
+	 *
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
+	 *
+	 * @return string
+	 *
+	 * @deprecated
+	 */
+	public static function formattime($date, $time)
+	{
+		return RedeventHelperDate::formattime($date, $time);
+	}
+
+	/**
+	 * return formatted event date and time (start and end), or false if open date
+	 *
+	 * @param   object   $event    event data
+	 * @param   boolean  $showend  show end
+	 *
+	 * @return string
+	 *
+	 * @deprecated
+	 */
+	public static function formatEventDateTime($event, $showend = null)
+	{
+		return RedeventHelperDate::getISODate($event, $showend);
+	}
+
+	/**
+	 * returns iso date
+	 *
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
+	 *
+	 * @return string
+	 *
+	 * @deprecated
+	 */
+	public static function getISODate($date, $time)
+	{
+		return RedeventHelperDate::getISODate($date, $time);
+	}
+
+	/**
+	 * Returns an array for ical formatting
+	 *
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
+	 *
+	 * @return array
+	 *
+	 * @deprecated
+	 */
+	public static function getIcalDateArray($date, $time = null)
+	{
+		return RedeventHelperDate::getIcalDateArray($date, $time);
+	}
+
+	/**
 	 * Formats time
 	 *
 	 * @param   string  $price     price to format

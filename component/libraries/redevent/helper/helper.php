@@ -200,6 +200,20 @@ class RedeventHelper
 	}
 
 	/**
+	 * returns formatted event duration.
+	 *
+	 * @param   object  $event  object having properties dates, enddates, times, endtimes
+	 *
+	 * @return string
+	 *
+	 * @deprecated
+	 */
+	public static function getEventDuration($event)
+	{
+		return RedeventHelperDate::getEventDuration($event);
+	}
+
+	/**
 	 * returns indented event category options
 	 *
 	 * @param   bool  $show_empty        show categories with no publish xref associated
@@ -451,6 +465,66 @@ class RedeventHelper
 		}
 
 		return $session->maxattendees - $session->registered;
+	}
+
+	/**
+	 * returns true if the session is over.
+	 * object in parameters must include properties
+	 *
+	 * @param   object  $session    event data
+	 * @param   bool    $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
+	 *
+	 * @return bool
+	 *
+	 * @deprecated
+	 */
+	public static function isOver($session, $day_check = true)
+	{
+		return RedeventHelperDate::isOver($session, $day_check);
+	}
+
+	/**
+	 * return true is a date is valid (not null, or 0000-00...)
+	 *
+	 * @param   string  $date  date string from db
+	 *
+	 * @return boolean
+	 */
+	public static function isValidDate($date)
+	{
+		if (is_null($date))
+		{
+			return false;
+		}
+
+		if ($date == '0000-00-00' || $date == '0000-00-00 00:00:00')
+		{
+			return false;
+		}
+
+		if (!strtotime($date))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * return true is a date is valid (not null, or 0000-00...)
+	 *
+	 * @param   string  $time  time string from db
+	 *
+	 * @return boolean
+	 */
+	public static function isValidTime($time)
+	{
+		if (is_null($time))
+		{
+			return false;
+		}
+
+		return preg_match('/[0-2]*[0-9]:[0-5][0-9](:[0-5][0-9])*/', $time);
 	}
 
 	/**
