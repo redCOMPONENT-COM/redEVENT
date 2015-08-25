@@ -8,7 +8,7 @@
 */
 defined('_JEXEC') or die('Restricted access.');
 
-include_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
+include_once(JPATH_SITE . '/libraries/redevent/helper/route.php');
 
 /*
  * Handles redEVENT Category structure
