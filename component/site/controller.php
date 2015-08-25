@@ -35,29 +35,6 @@ class RedeventController extends RedeventControllerFront
 	}
 
 	/**
-	 * first step in unreg process by email
-	 *
-	 * @return void
-	 */
-	public function cancelreg()
-	{
-		$xref = $this->input->getInt('xref');
-
-		if (!RedeventHelper::canUnregister($xref))
-		{
-			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
-
-			return;
-		}
-
-		// Display the unreg form confirmation
-		$this->input->set('view', 'registration');
-		$this->input->set('layout', 'cancel');
-
-		parent::display();
-	}
-
-	/**
 	 * Publish a session
 	 *
 	 * @return void

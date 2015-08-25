@@ -272,6 +272,29 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	}
 
 	/**
+	 * first step in unreg process by email
+	 *
+	 * @return void
+	 */
+	public function emailcancelregistration()
+	{
+		$xref = $this->input->getInt('xref');
+
+		if (!RedeventHelper::canUnregister($xref))
+		{
+			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
+
+			return;
+		}
+
+		// Display the unreg form confirmation
+		$this->input->set('view', 'registration');
+		$this->input->set('layout', 'cancel');
+
+		parent::display();
+	}
+
+	/**
 	 * Deletes a registered user
 	 *
 	 * @return void
@@ -649,6 +672,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 * Actually do the cancel work (with notifications)
 	 *
 	 * @return bool
+	 *
+	 * @TODO: there are to much registration cancellation function !
 	 */
 	protected function cancelRegistration()
 	{
