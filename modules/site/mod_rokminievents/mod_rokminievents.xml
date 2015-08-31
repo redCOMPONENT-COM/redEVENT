@@ -8,6 +8,7 @@
 	<copyright>(C) 2005 - 2011 RocketTheme, LLC. All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<version>3.0.b.3.1</version>
+	<tag>##VERSION##</tag>
 	<description>RokMiniEvents allows to share your Joomla! website Google
 		Calendar Events</description>
 	<files>

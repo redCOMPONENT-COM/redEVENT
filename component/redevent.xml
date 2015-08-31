@@ -9,6 +9,7 @@
 	<license>GNU/GPL</license>
 	<version>3.0.b.3.2</version>
     <redcore version="1.4.5" />
+	<tag>##VERSION##</tag>
 	<description>COM_REDEVENT_XML_DESCRIPTION</description>
 
 	<scriptfile>install.php</scriptfile>

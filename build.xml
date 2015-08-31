@@ -59,6 +59,7 @@
 			<filterchain>
 				<replacetokens begintoken="##" endtoken="##">
 					<token key="DATE" value="${build.date}"/>
+					<token key="VERSION" value="${version}"/>
 				</replacetokens>
 			</filterchain>
 		</copy>
@@ -168,6 +169,7 @@
 			<filterchain>
 				<replacetokens begintoken="##" endtoken="##">
 					<token key="DATE" value="${build.date}"/>
+					<token key="VERSION" value="${version}"/>
 				</replacetokens>
 			</filterchain>
 		</copy>

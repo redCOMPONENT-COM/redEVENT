@@ -8,6 +8,7 @@
 	<creationDate>##DATE##</creationDate>
 	<license>GNU GPL v3 or later</license>
 	<version>3.0.b.3.2</version>
+	<tag>##VERSION##</tag>
 	<redcore version="1.5.0" />
 	<description>COM_REDEVENTSYNC_XML_DESCRIPTION</description>
 

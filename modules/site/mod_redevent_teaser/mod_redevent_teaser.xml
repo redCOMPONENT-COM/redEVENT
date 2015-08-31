@@ -12,6 +12,7 @@
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
 	<version>3.0.b.3.1</version>
+	<tag>##VERSION##</tag>
 	<description>MOD_REDEVENT_TEASER_MODULE_DESC</description>
 
 	<files>
