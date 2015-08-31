@@ -580,6 +580,14 @@
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE"
 			   description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP"/>
 
+		<field name="frontendsubmit_allow_past_dates" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ALLOW_PAST_DATES"
+			   description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ALLOW_PAST_DATES_TIP">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+
 		<field name="edit_categories" type="radio" default="0"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY"

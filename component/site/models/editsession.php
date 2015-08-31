@@ -86,6 +86,21 @@ class RedeventModelEditsession extends RModelAdmin
 			$form->setValue('eventid', '', $this->getState($this->getName() . '.eventid'));
 		}
 
+		if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
+		{
+			$class = $form->getFieldAttribute('dates', 'class');
+			$class = ($class ? ' ' : '') . 'validate-futuredate';
+			$form->setFieldAttribute('dates', 'class', $class);
+
+			$class = $form->getFieldAttribute('enddates', 'class');
+			$class = ($class ? ' ' : '') . 'validate-futuredate';
+			$form->setFieldAttribute('enddates', 'class', $class);
+
+			$class = $form->getFieldAttribute('registrationend', 'class');
+			$class = ($class ? ' ' : '') . 'validate-futuredate';
+			$form->setFieldAttribute('registrationend', 'class', $class);
+		}
+
 		// Only allow to modify the recurrence if this is the first session in it
 		if ($form->getValue('recurrenceid', 'recurrence') && $form->getValue('repeat', 'recurrence') > 0)
 		{
@@ -116,6 +131,16 @@ class RedeventModelEditsession extends RModelAdmin
 		if (!$validData = parent::validate($form, $data, $group))
 		{
 			return false;
+		}
+
+		if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
+		{
+			if (RedeventHelperDate::isValidDate($data['dates']) && JFactory::getDate($data['dates']) < JFactory::getDate('today'))
+			{
+				$this->setError(JText::_('COM_REDEVENT_FRONTEND_SUBMIT_SESSION_ERROR_DATE_IN_THE_PAST'));
+
+				return false;
+			}
 		}
 
 		// Now add custom fields
