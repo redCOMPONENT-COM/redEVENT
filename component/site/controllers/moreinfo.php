@@ -97,6 +97,8 @@ class RedeventControllerMoreinfo extends RedeventControllerFront
 		}
 
 		// Confirm sending
-		$this->setRedirect('index.php?option=com_redevent&view=moreinfo&layout=final&xref=' . $xref);
+		$return = 'index.php?option=com_redevent&view=moreinfo&tmpl=component&layout=final&xref=' . $xref;
+		$return = $this->input->get('tmpl') ? $return . '&tmpl=' . $this->input->get('tmpl') : $return;
+		$this->setRedirect($return);
 	}
 }
