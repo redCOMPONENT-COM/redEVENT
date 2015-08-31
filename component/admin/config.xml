@@ -496,12 +496,26 @@
 		</field>
 		<field name="registration_notification_attach_rfuploads_maxsize" type="text" size="20" default="2000"
 			   label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_LABEL"
-			   description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC"/>
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC"
+				showon="registration_notification_attach_rfuploads:1"
+				/>
 
 		<field name="registration_notification_attach_ics" type="radio" default="0" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_ICS_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_ICS_DESC">
 			<option value="0">JNo</option>
 			<option value="1">JYes</option>
 		</field>
+
+		<field name="moreinfo_recipient" type="list" default="0" label="COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_DESC">
+			<option value="0">COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_SITE_EMAIL</option>
+			<option value="1">COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_EVENT_CREATOR</option>
+			<option value="2">COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_SESSION_ADMINS</option>
+			<option value="3">COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_CUSTOM</option>
+		</field>
+
+		<field name="moreinfo_recipient_custom" type="text" default=""
+			   label="COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_CUSTOM_LABEL"
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_MORE_INFO_RECIPIENT_CUSTOM_DESC"
+			   showon="moreinfo_recipient:3"/>
 
 		<field name="unregistration_notification_subject" type="text" size="80"
 			   default="Cancelled registration for event [event_title] on [date]"
@@ -536,20 +550,24 @@
 		<field name="wl_notify_admin_waiting_subject"
 			   type="text" size="80" default="[event_title]: attendee added to waiting list"
 			   label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT"
-			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT_DESC"/>
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT_DESC"
+				showon="wl_notify_admin:1,2,3"/>
 		<field name="wl_notify_admin_waiting_body" type="textarea" cols="80" rows="5"
 			   default="registration details&lt;br /&gt;&lt;br /&gt;[answers]"
 			   label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_BODY"
-			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_BODY_TIP"/>
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_BODY_TIP"
+			   showon="wl_notify_admin:1,2,3"/>
 
 		<field name="wl_notify_admin_attending_subject" type="text" size="80"
 			   default="[event_title]: attendee added to attending list"
 			   label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_SUBJECT"
-			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_SUBJECT_TIP"/>
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_SUBJECT_TIP"
+			   showon="wl_notify_admin:1,2,3"/>
 		<field name="wl_notify_admin_attending_body" type="textarea" cols="80" rows="5"
 			   default="registration details&lt;br /&gt;&lt;br /&gt;[answers]"
 			   label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_BODY"
-			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_BODY_TIP"/>
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_BODY_TIP"
+			   showon="wl_notify_admin:1,2,3"/>
 
 		<field type="spacer" hr="true"/>
 		<field type="spacer" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC"/>

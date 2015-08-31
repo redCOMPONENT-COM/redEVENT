@@ -16,6 +16,7 @@
 		<folder>attendee</folder>
 		<folder>controller</folder>
 		<folder>customfield</folder>
+		<folder>entity</folder>
 		<folder>error</folder>
 		<folder>factory</folder>
 		<folder>feed</folder>
