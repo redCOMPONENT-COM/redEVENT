@@ -85,7 +85,6 @@ class RedeventTagsFormForm
 		$submit_key = $this->input->get('submit_key');
 
 		$form = $this->getRedformForm();
-		$action = RedeventHelperRoute::getRegistrationRoute($this->model->getData()->xslug, 'registration.register');
 		$multi = $this->getNumberOfSignup();
 		$prices = $this->model->getPrices();
 
@@ -120,9 +119,11 @@ class RedeventTagsFormForm
 			}
 		}
 
-		$html = '<form action="' . $action . '" class="redform-validate" method="post" name="redform" enctype="multipart/form-data">';
+		$html = '<form action="' . JRoute::_('index.php') . '" class="redform-validate" method="post" name="redform" enctype="multipart/form-data">';
 		$html .= $this->rfcore->getFormFields($this->model->getData()->redform_id, $isReview ? null : $submit_key, $multi, $options);
 		$html .= '<input type="hidden" name="xref" value="' . $this->model->getData()->xref . '"/>';
+		$html .= '<input type="hidden" name="option" value="com_redevent"/>';
+		$html .= '<input type="hidden" name="task" value="registration.register"/>';
 
 		if ($hasReview)
 		{
