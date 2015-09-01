@@ -358,6 +358,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	{
 		$submit_key = $this->input->get('submit_key');
 		$xref = $this->input->getInt('xref');
+		$return = $this->input->getString('return');
 
 		$model = $this->getModel('registration');
 		$model->setXref($xref);
@@ -365,7 +366,9 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$eventdata = $model->getSessionDetails();
 
 		$msg = JText::_('COM_REDEVENT_Registration_cancelled');
-		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
+		$return = $return ? base64_decode($return) : RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref);
+
+		$this->setRedirect(JRoute::_($return), $msg);
 	}
 
 	/**
