@@ -300,7 +300,7 @@ class RedeventModelSessions extends RModelList
 
 			$query = $this->_db->getQuery(true);
 
-			$query->update('__redevent_event_venue_xref')
+			$query->update('#__redevent_event_venue_xref')
 				->set('featured = ' . (int) $featured)
 				->where('id IN (' . $cids . ')');
 
