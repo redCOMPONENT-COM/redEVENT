@@ -48,7 +48,7 @@ class RedeventControllerMoreinfo extends RedeventControllerFront
 			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', RedeventHelper::getSessionFullTitle($details)));
 
 			$helper = new RedeventHelperMoreinforecipients($xref);
-echo '<pre>'; echo print_r($helper->getRecipients(), true); echo '</pre>'; exit;
+
 			foreach ($helper->getRecipients() as $recipient)
 			{
 				$mailer->AddAddress($recipient['email'], empty($recipient['name']) ? '' : $recipient['name']);
