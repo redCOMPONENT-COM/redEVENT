@@ -15,6 +15,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventRegistrationCanregister
 {
+	const ERROR_IS_OVER = 'isover';
+	const ERROR_IS_FULL = 'isfull';
+	const ERROR_NO_REGISTRATION = 'noregistration';
+	const ERROR_HAS_PENDING = 'haspending';
+	const ERROR_USER_MAX = 'usermax';
+
 	private $user;
 
 	private $session;
@@ -37,7 +43,7 @@ class RedeventRegistrationCanregister
 
 		if (!($this->session->published == 1))
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_SESSION_NOT_PUBLISHED'), 'isover');
+			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_SESSION_NOT_PUBLISHED'), static::ERROR_IS_OVER);
 
 			return $this->result;
 		}
@@ -156,14 +162,14 @@ class RedeventRegistrationCanregister
 		if (RedeventHelperDate::isValidDate($this->session->registrationend)
 			&& strtotime($this->session->registrationend) < $now_unix)
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), 'isover');
+			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
 			return true;
 		}
 		elseif (RedeventHelperDate::isValidDate($this->session->dates)
 			&& strtotime($this->session->dates . ' ' . $this->session->times) < $now_unix)
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), 'isover');
+			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
 			return true;
 		}
@@ -180,7 +186,7 @@ class RedeventRegistrationCanregister
 	{
 		if (!$this->session->registra)
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_NO_REGISTRATION_FOR_THIS_EVENT'), 'noregistration');
+			$this->setResultError(JText::_('COM_REDEVENT_NO_REGISTRATION_FOR_THIS_EVENT'), static::ERROR_NO_REGISTRATION);
 
 			return true;
 		}
@@ -218,7 +224,7 @@ class RedeventRegistrationCanregister
 			if ($this->session->maxattendees <= $this->session->registered
 				&& $this->session->maxwaitinglist <= $this->session->waiting)
 			{
-				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), 'isfull');
+				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
 
 				return true;
 			}
@@ -251,7 +257,7 @@ class RedeventRegistrationCanregister
 
 			if ($res)
 			{
-				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION'), 'haspending');
+				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION'), static::ERROR_HAS_PENDING);
 
 				return true;
 			}
@@ -288,7 +294,7 @@ class RedeventRegistrationCanregister
 
 		if ($this->session->userregistered >= ($this->session->max_multi_signup ? $this->session->max_multi_signup : 1))
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED'), 'usermax');
+			$this->setResultError(JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED'), static::ERROR_USER_MAX);
 
 			return true;
 		}
