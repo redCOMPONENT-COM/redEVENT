@@ -565,6 +565,27 @@ class RedeventHelperRoute
 	/**
 	 * Get route
 	 *
+	 * @param   int     $registrationId  session id
+	 * @param   string  $xref            xref
+	 * @param   string  $task            task
+	 *
+	 * @return string
+	 */
+	public static function getCancelRegistrationRoute($registrationId, $xref, $task = 'registration.cancelreg')
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"task"   => $task,
+			"rid"   => $registrationId,
+			"xref" => $xref,
+		);
+
+		return 'index.php?' . JURI::buildQuery($parts);
+	}
+
+	/**
+	 * Get route
+	 *
 	 * @param   int     $xref  session id
 	 * @param   string  $task  task
 	 *
