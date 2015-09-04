@@ -42,7 +42,6 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 		$document->setDescription(strip_tags($category->meta_description));
 
 		$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
-		$pathway->addItem($category->name, JRoute::_($link));
 		$print_link = JRoute::_($link . '&pop=1&tmpl=component');
 
 		$thumb_link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, null, 'thumb');
