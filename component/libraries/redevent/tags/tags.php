@@ -83,29 +83,6 @@ class RedeventTags
 		{
 			$this->db = JFactory::getDbo();
 		}
-
-		$eventid = JFactory::getApplication()->input->getInt('id', 0);
-		$this->setEventId($eventid);
-
-		$xref = JFactory::getApplication()->input->getInt('xref');
-		$this->setXref($xref);
-
-		// If no xref specified. try to get one associated to the event id, published if possible !
-		if (!$this->xref)
-		{
-			$this->initXref();
-		}
-
-		if ($this->xref)
-		{
-			$db = $this->db;
-			$query = $db->getQuery(true)
-				->select('eventid, venueid, maxattendees, maxwaitinglist, published')
-				->from('#__redevent_event_venue_xref')
-				->where('id = ' . $this->xref);
-			$db->setQuery($query);
-			list($this->eventid, $this->venueid, $this->maxattendees, $this->maxwaitinglist, $this->published) = $db->loadRow();
-		}
 	}
 
 	/**
