@@ -2054,8 +2054,11 @@ class RedeventTags
 		if (RedeventHelperDate::isValidDate($this->getEvent()->getData()->registrationend))
 		{
 			$elsettings = RedeventHelper::config();
-			$res = JFactory::getDate($this->getEvent()->getData()->registrationend)
-				->format($elsettings->get('formatdate', 'd.m.Y') . ' ' . $elsettings->get('formattime', 'H:i'));
+			$timezone = new DateTimeZone(JFactory::getUser()->getParam('timezone', JFactory::getConfig()->get('offset')));
+			$date = new JDate($this->getEvent()->getData()->registrationend, new DateTimeZone('UTC'));
+			$date->setTimezone($timezone);
+
+			return $date->format($elsettings->get('formatdate', 'd.m.Y') . ' ' . $elsettings->get('formattime', 'H:i'), true);
 		}
 
 		return $res;
