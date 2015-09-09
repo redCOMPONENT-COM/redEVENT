@@ -97,6 +97,7 @@
 				name="registrationend"
 				type="calendar"
 				format="%Y-%m-%d %H:%M"
+				filter="user_utc"
 				label="COM_REDEVENT_XREF_REGISTRATION_END"
 				description="COM_REDEVENT_XREF_REGISTRATION_END_TIP"
 				class="inputbox"/>
