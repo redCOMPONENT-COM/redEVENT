@@ -217,6 +217,8 @@
 			<option value="1">Yes</option>
 		</field>
 
+		<field typ="spacer" hr="true" />
+
 		<field name="showmapserv" type="radio" default="1"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL"
