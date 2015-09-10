@@ -12,9 +12,9 @@
 	<description>redevent fi-FI</description>
 
 	<fileset>
-		<!-- <files folder="admin" target="administrator/language">
+		<files folder="admin" target="administrator/language">
 			<folder>fi-FI</folder>
-		</files> -->
+		</files>
 		<files folder="site" target="language">
 			<folder>fi-FI</folder>
 		</files>

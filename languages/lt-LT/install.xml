@@ -15,10 +15,9 @@
 		<files folder="admin" target="administrator/language">
 			<folder>lt-LT</folder>
 		</files>
-	<!--
+
 		<files folder="site" target="language">
 			<folder>lt-LT</folder>
 		</files>
-		  -->
 	</fileset>
 </extension>
