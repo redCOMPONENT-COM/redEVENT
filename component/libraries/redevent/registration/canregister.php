@@ -250,6 +250,7 @@ class RedeventRegistrationCanregister
 			$query->from('#__redevent_register AS r');
 			$query->where('r.xref = ' . $this->session->xref);
 			$query->where('r.confirmed = 0');
+			$query->where('r.cancelled = 0');
 			$query->where('r.uid = ' . $this->user->get('id'));
 
 			$db->setQuery($query);
