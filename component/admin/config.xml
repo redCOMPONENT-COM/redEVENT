@@ -137,7 +137,7 @@
 			   translate_default="true"
 			   default="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT_DEFAULT"
 			   label="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT"
-			   description="COM_REDEVENT_SETTING_phone_EXTERNAL_TEXT_DESC"/>
+			   description="COM_REDEVENT_SETTING_PHONE_TEXT_DESC"/>
 		<field name="signup_phone_img" type="imagelist"
 			   label="COM_REDEVENT_SETTING_SIGNUP_phone_IMAGE"
 			   description="COM_REDEVENT_SETTING_SIGNUP_phone_IMAGE_DESC"
