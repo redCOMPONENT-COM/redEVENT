@@ -13,11 +13,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Class plgRedeventIbcglobase
+ * Create affiliate conversions
  *
  * @since  2.5
  */
-class plgRedeventIbcglobase extends JPlugin
+class plgRedeventIbcaffiliate extends JPlugin
 {
 	/**
 	 * constructor
@@ -75,7 +75,7 @@ class plgRedeventIbcglobase extends JPlugin
 			$conversion_data = array(
 				"name" => "redEVENT registration",
 				"component" => "com_redevent",
-				"extended_name" => "registration",
+				"extended_name" => "registration " . $this->getUniqueId($attendee),
 				"type" => 1,
 				"value" => (float) $attendee->price ,
 				"reference_id" => $attendee->id,
@@ -87,6 +87,18 @@ class plgRedeventIbcglobase extends JPlugin
 
 			AffiliateHelper::create_conversion($conversion_data, $user_id);
 		}
+	}
+
+	/**
+	 * get unique id
+	 *
+	 * @param   object  $attendee  attendee
+	 *
+	 * @return string
+	 */
+	private function getUniqueId($attendee)
+	{
+		return ($attendee->course_code ?: 'E' . $attendee->eventid) . '-' . $attendee->xref . '-' . $attendee->id;
 	}
 
 	/**
@@ -102,7 +114,7 @@ class plgRedeventIbcglobase extends JPlugin
 		$query = $db->getQuery(true);
 
 		$query->select('r.*, s.price, x.track_affiliate');
-		$query->select('e.title');
+		$query->select('e.title, e.course_code');
 		$query->select('f.formname');
 
 		$query->from('#__redevent_register AS r');
