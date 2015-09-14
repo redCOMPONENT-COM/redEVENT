@@ -37,12 +37,10 @@ class plgButtonRedevent extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @access      protected
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An array that holds the plugin configuration
 	 */
-	public function __construct(& $subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
@@ -51,25 +49,26 @@ class plgButtonRedevent extends JPlugin
 	/**
 	 * Display the button
 	 *
+	 * @param   string  $name  name
+	 *
 	 * @return object button
 	 */
-	function onDisplay($name)
+	public function onDisplay($name)
 	{
 		$mainframe = JFactory::getApplication();
 
 		$doc = JFactory::getDocument();
 		$template = $mainframe->getTemplate();
 
-		$declaration	="
-		.button2-left .redevent 	{ background: url(media/com_redevent/images/editor_button.png) 100% 0 no-repeat; } ";
+		$declaration =".button2-left .redevent 	{ background: url(media/com_redevent/images/editor_button.png) 100% 0 no-repeat; }";
 
 		$doc->addStyleDeclaration($declaration);
 
-		$link = 'index.php?option=com_redevent&amp;task=insertevent&amp;tmpl=component&amp;e_name='.$name;
+		$link = 'index.php?option=com_redevent&amp;task=insertevent&amp;tmpl=component&amp;e_name=' . $name;
 
 		JHTML::_('behavior.modal');
 
-		$button = new JObject();
+		$button = new JObject;
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', JText::_('PLG_REDEVENT_EDITORXTD_Event'));

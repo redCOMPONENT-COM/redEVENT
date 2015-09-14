@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redEVENT
+ * @package     Redevent
  * @subpackage  Finder.re_events
  *
  * @copyright   Copyright redEVENT (C) 2008-2012 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -17,7 +17,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
 /**
  * Finder adapter for redEVENT events.
  *
- * @package     redEVENT
+ * @package     Redevent
  * @subpackage  Finder.re_events
  * @since       2.5
  */
@@ -171,7 +171,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	 * to queue the item to be indexed later.
 	 *
 	 * @param   string   $context  The context of the content passed to the plugin.
-	 * @param   JTable   $row     A JTable object
+	 * @param   JTable   $row      A JTable object
 	 * @param   boolean  $isNew    If the content is just about to be created
 	 *
 	 * @return  boolean  True on success.
@@ -264,7 +264,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		// Add the type taxonomy data.
 		$item->addTaxonomy('Type', 'Event');
 
-		// index categories
+		// Index categories
 		$this->addCategoriesTaxonomy($item);
 
 		// Add the language taxonomy data.
@@ -304,6 +304,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	protected function getListQuery($sql = null)
 	{
 		$db = JFactory::getDbo();
+
 		// Check if we can use the supplied SQL query.
 		$sql = $sql instanceof JDatabaseQuery ? $sql : $db->getQuery(true);
 		$sql->select('a.id, a.title, a.alias, a.summary AS summary, a.datdescription AS description');
@@ -321,7 +322,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$a_id = $sql->castAsChar('a.id');
 		$case_when_item_alias .= $sql->concatenate(array($a_id, 'a.alias'), ':');
 		$case_when_item_alias .= ' ELSE ';
-		$case_when_item_alias .= $a_id.' END as slug';
+		$case_when_item_alias .= $a_id . ' END as slug';
 		$sql->select($case_when_item_alias);
 
 		$sql->select('u.name AS author');
@@ -352,12 +353,19 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$this->old_access = $row->access;
 	}
 
+	/**
+	 * Check category access
+	 *
+	 * @param   object  $row  row
+	 *
+	 * @return void
+	 */
 	protected function checkCategoryAccess($row)
 	{
 		$query = $this->db->getQuery(true);
 		$query->select($this->db->quoteName('access'));
 		$query->from($this->db->quoteName('#__redevent_categories'));
-		$query->where($this->db->quoteName('id') . ' = ' . (int)$row->id);
+		$query->where($this->db->quoteName('id') . ' = ' . (int) $row->id);
 		$this->db->setQuery($query);
 
 		// Store the access level to determine if it changes
@@ -375,10 +383,13 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	protected function getStateQuery()
 	{
 		$sql = $this->db->getQuery(true);
+
 		// Item ID
 		$sql->select('a.id');
+
 		// Item and category published state
 		$sql->select('a.' . $this->state_field . ' AS state, MAX(c.published) AS cat_state');
+
 		// Item and category access levels
 		$sql->select('MAX(c.access) AS cat_access');
 		$sql->from($this->table . ' AS a');
@@ -493,8 +504,9 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	/**
 	 * get categories associated to row
 	 *
-	 * @param object $row
-	 * @return object
+	 * @param   FinderIndexerResult  &$item  item
+	 *
+	 * @return FinderIndexerResult
 	 */
 	protected function addCategoriesTaxonomy(FinderIndexerResult &$item)
 	{
@@ -504,13 +516,14 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$query->select('c.name, c.access, c.published AS state');
 		$query->from('#__redevent_categories AS c');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id');
-		$query->where('xcat.event_id = '.$item->id);
+		$query->where('xcat.event_id = ' . $item->id);
 		$db->setQuery($query);
 		$cats = $db->loadObjectList();
 
 		if ($cats)
 		{
-			foreach ($cats as $c) {
+			foreach ($cats as $c)
+			{
 				$item->addTaxonomy('Category', $c->name, $c->state, $c->access);
 			}
 		}
@@ -529,7 +542,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	 */
 	protected function categoryAccessChange($row)
 	{
-		$sql = clone($this->getStateQuery());
+		$sql = clone $this->getStateQuery();
 		$sql->where('c.id = ' . (int) $row->id);
 
 		// Get the access level.

@@ -28,7 +28,6 @@ include_once( JPATH_BASE . DS . 'components' . DS . 'com_community' . DS . 'libr
 
 class plgCommunityRedevent extends CApplications
 {
-
 	var $name 		= "Redevent Application";
 	var $_name		= 'redevent';
 	var $_path		= '';
