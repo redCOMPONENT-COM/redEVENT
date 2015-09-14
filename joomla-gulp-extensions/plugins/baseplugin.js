@@ -38,5 +38,4 @@ module.exports.addPlugin = function (group, name) {
 	gulp.task('watch:' + baseTask + ':plugin', function() {
 		gulp.watch(extPath + '/**', ['copy:' + baseTask]);
 	});
-
 }
