@@ -6,7 +6,6 @@
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-
 defined('JPATH_BASE') or die;
 
 // Import library dependencies
@@ -19,7 +18,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage  Config.Example
  * @since       2.5
  */
-class plgRedeventRedmemberlogin extends JPlugin
+class PlgRedeventRedmemberlogin extends JPlugin
 {
 	/**
 	 * The plugin identifier.

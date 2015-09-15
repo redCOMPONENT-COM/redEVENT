@@ -1,14 +1,16 @@
 <?php
 /**
- * @package     Redevent.Frontend
- * @subpackage  Plugins
+ * @package     Redevent.Plugin
+ * @subpackage  paymentnotificationemail
  *
- * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008-2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('JPATH_BASE') or die;
+
+// Import library dependencies
+jimport('joomla.plugin.plugin');
 
 // Load redEVENT library
 $redeventLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
@@ -22,9 +24,6 @@ include_once $redeventLoader;
 
 RedeventBootstrap::bootstrap();
 
-// Import library dependencies
-jimport('joomla.plugin.plugin');
-
 /**
  * Class plgSearchRedevent
  *
@@ -32,7 +31,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage  Plugins
  * @since       1.0
  */
-class plgSearchRedevent extends JPlugin
+class PlgSearchRedevent extends JPlugin
 {
 	/**
 	 * @var array
@@ -42,7 +41,7 @@ class plgSearchRedevent extends JPlugin
 	/**
 	 * @var JDatabase|JDatabaseDriver
 	 */
-	protected $_db;
+	protected $db;
 
 	/**
 	 * Constructor
@@ -50,12 +49,12 @@ class plgSearchRedevent extends JPlugin
 	 * @param   object  &$subject  The object to observe
 	 * @param   array   $config    An array that holds the plugin configuration
 	 */
-	public function __construct(& $subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
 
-		$this->_db = isset($config['db']) ? $config['db'] : JFactory::getDbo();
+		$this->db = isset($config['db']) ? $config['db'] : JFactory::getDbo();
 	}
 
 	/**
@@ -111,11 +110,11 @@ class plgSearchRedevent extends JPlugin
 
 		$rows = array();
 
-		$search = $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS'));
+		$search = $this->db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS'));
 
 		if (!$areas || in_array('redeventevents', $areas))
 		{
-			$query = $this->_db->getQuery(true);
+			$query = $this->db->getQuery(true);
 
 			switch ($phrase)
 			{
@@ -166,7 +165,7 @@ class plgSearchRedevent extends JPlugin
 			// The database query;
 			$query->select('e.summary AS text, x.id AS xref, x.dates, x.times')
 				->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as title')
-				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS')) . ' ) AS section')
+				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS')) . ' ) AS section')
 				->select('CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug')
 				->select('NULL AS created')
 				->select('"2" AS browsernav')
@@ -175,8 +174,8 @@ class plgSearchRedevent extends JPlugin
 				->where('x.published = 1');
 
 			// Set query
-			$this->_db->setQuery($query, 0, $limit);
-			$results = $this->_db->loadObjectList();
+			$this->db->setQuery($query, 0, $limit);
+			$results = $this->db->loadObjectList();
 
 			foreach ($results as $key => $row)
 			{
@@ -209,14 +208,14 @@ class plgSearchRedevent extends JPlugin
 
 		if (!$areas || in_array('redeventcategories', $areas))
 		{
-			$query = $this->_db->getQuery(true)
+			$query = $this->db->getQuery(true)
 				->where('c.published = 1');
 
 			switch ($phrase)
 			{
 				// Search exact
 				case 'exact':
-					$string = $this->_db->Quote('%' . $this->_db->escape($text, true) . '%', false);
+					$string = $this->db->Quote('%' . $this->db->escape($text, true) . '%', false);
 					$query->where('LOWER(c.name) LIKE ' . $string);
 					break;
 
@@ -231,7 +230,7 @@ class plgSearchRedevent extends JPlugin
 
 					foreach ($words as $word)
 					{
-						$word = $this->_db->Quote('%' . $this->_db->escape($word, true) . '%', false);
+						$word = $this->db->Quote('%' . $this->db->escape($word, true) . '%', false);
 						$wheres[] = 'LOWER(c.name) LIKE ' . $word;
 					}
 
@@ -265,15 +264,15 @@ class plgSearchRedevent extends JPlugin
 
 			// The database query; differs per situation! It will look something like this:
 			$query->select('c.name AS title')
-				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_CATEGORIES')) . ' ) AS section')
+				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->db->Quote(JText::_('PLG_REDEVENT_SEARCH_CATEGORIES')) . ' ) AS section')
 				->select('CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS slug')
 				->select('NULL AS created')
 				->select('"2" AS browsernav')
 				->from('#__redevent_categories AS c');
 
 			// Set query
-			$this->_db->setQuery($query, 0, $limit);
-			$results = $this->_db->loadObjectList();
+			$this->db->setQuery($query, 0, $limit);
+			$results = $this->db->loadObjectList();
 
 			// The 'output' of the displayed link
 			foreach ($results as $key => $row)
@@ -286,12 +285,12 @@ class plgSearchRedevent extends JPlugin
 
 		if (!$areas || in_array('redeventvenues', $areas))
 		{
-			$query = $this->_db->getQuery(true);
+			$query = $this->db->getQuery(true);
 
 			switch ($phrase)
 			{
 				case 'exact':
-					$string = $this->_db->Quote('%' . $this->_db->escape($text, true) . '%', false);
+					$string = $this->db->Quote('%' . $this->db->escape($text, true) . '%', false);
 					$query->where('LOWER(v.venue) LIKE ' . $string);
 					break;
 
@@ -303,7 +302,7 @@ class plgSearchRedevent extends JPlugin
 
 					foreach ($words as $word)
 					{
-						$word = $this->_db->Quote('%' . $this->_db->escape($word, true) . '%', false);
+						$word = $this->db->Quote('%' . $this->db->escape($word, true) . '%', false);
 						$wheres[] = 'LOWER(v.venue) LIKE ' . $word;
 					}
 
@@ -327,14 +326,14 @@ class plgSearchRedevent extends JPlugin
 			$query->order($order);
 
 			$query->select('v.venue AS title')
-				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_VENUES')) . ' ) AS section')
+				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->db->Quote(JText::_('PLG_REDEVENT_SEARCH_VENUES')) . ' ) AS section')
 				->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug')
 				->select('NULL AS created')
 				->select(' "2" AS browsernav')
 				->from('#__redevent_venues AS v');
 
-			$this->_db->setQuery($query, 0, $limit);
-			$results = $this->_db->loadObjectList();
+			$this->db->setQuery($query, 0, $limit);
+			$results = $this->db->loadObjectList();
 
 			foreach ($results as $key => $row)
 			{
@@ -357,8 +356,8 @@ class plgSearchRedevent extends JPlugin
 	protected function eventLike($text)
 	{
 		$fields = array(
-			$this->_db->quoteName('e.title'),
-			$this->_db->quoteName('x.title')
+			$this->db->quoteName('e.title'),
+			$this->db->quoteName('x.title')
 		);
 
 		if ($custom = $this->getQuotedCustomFields())
@@ -367,7 +366,7 @@ class plgSearchRedevent extends JPlugin
 		}
 
 		$conditions = array();
-		$search = $this->_db->Quote('%' . $this->_db->escape($text, true) . '%', false);
+		$search = $this->db->Quote('%' . $this->db->escape($text, true) . '%', false);
 
 		foreach ($fields as $field)
 		{
@@ -389,14 +388,14 @@ class plgSearchRedevent extends JPlugin
 			$fieldNames = array();
 
 			// Get the fields
-			$query = $this->_db->getQuery(true)
+			$query = $this->db->getQuery(true)
 				->select('f.id, f.object_key')
 				->from('#__redevent_fields AS f')
 				->where('f.published = 1')
 				->where('f.searchable = 1')
 				->order('f.ordering ASC');
-			$this->_db->setQuery($query);
-			$rows = $this->_db->loadObjectList();
+			$this->db->setQuery($query);
+			$rows = $this->db->loadObjectList();
 
 			foreach ($rows as $field)
 			{
@@ -413,7 +412,7 @@ class plgSearchRedevent extends JPlugin
 					continue;
 				}
 
-				$fieldNames[] = $this->_db->quoteName($fieldname);
+				$fieldNames[] = $this->db->quoteName($fieldname);
 			}
 
 			$this->customFieldsQuoted = $fieldNames;

@@ -21,7 +21,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  * @subpackage  Finder.re_venues
  * @since       2.5
  */
-class plgFinderRe_venues extends FinderIndexerAdapter
+class PlgFinderRe_Venues extends FinderIndexerAdapter
 {
 	/**
 	 * The plugin identifier.
@@ -236,7 +236,6 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		{
 			$this->pluginDisable($pks);
 		}
-
 	}
 
 	/**
@@ -347,7 +346,6 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 
 		return $sql;
 	}
-
 
 	/**
 	 * Method to check the existing access level for items

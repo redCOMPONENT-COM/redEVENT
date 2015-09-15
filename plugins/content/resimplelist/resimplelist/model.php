@@ -13,11 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Class plgReSimplistModel
  *
- * @package     Redevent.Frontend
- * @subpackage  Plugins
- * @since       2.5
+ * @since  2.5
  */
-class plgReSimplistModel extends RedeventModelBasesessionlist
+class PlgReSimplistModel extends RedeventModelBasesessionlist
 {
 	/**
 	 * Constructor
@@ -109,7 +107,8 @@ class plgReSimplistModel extends RedeventModelBasesessionlist
 
 				if ($category)
 				{
-					$cond[] = '(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+					$cond[] = '(c.id = ' . $this->_db->Quote($category->id)
+						. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 				}
 			}
 

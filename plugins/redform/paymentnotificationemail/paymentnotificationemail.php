@@ -3,10 +3,9 @@
  * @package     Redevent.Plugin
  * @subpackage  paymentnotificationemail
  *
- * @copyright   Copyright (C) 2013 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008-2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
-
 
 defined('JPATH_BASE') or die;
 
@@ -21,11 +20,9 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 /**
  * Specific parameters for redEVENT.
  *
- * @package     Redevent.Plugin
- * @subpackage  paymentnotificationemail
- * @since       2.5
+ * @since  2.5
  */
-class plgRedformPaymentnotificationemail extends JPlugin
+class PlgRedformPaymentnotificationemail extends JPlugin
 {
 	/**
 	 * The plugin identifier.

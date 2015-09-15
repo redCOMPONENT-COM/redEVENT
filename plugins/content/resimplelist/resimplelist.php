@@ -25,15 +25,18 @@ RedeventBootstrap::bootstrap();
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-include_once('resimplelist/model.php');
+include_once 'resimplelist/model.php';
 
-class plgContentRESimplelist extends JPlugin
+/**
+ * Class plgContentRESimplelist
+ *
+ * @since  2.5
+ */
+class PlgContentResimplelist extends JPlugin
 {
-	protected $_db;
+	protected $customs;
 
-	protected $_customs;
-
-	protected $_model;
+	protected $model;
 
 	/**
 	 * Constructor
@@ -63,8 +66,7 @@ class plgContentRESimplelist extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins/content/resimplelist/resimplelist.css');
+		RHelperAsset::load('resimplelist.css', 'plg_content_resimplelist');
 
 		// Do we have matches for the plugin
 		if (!preg_match_all('/{RESimplelist([\s]+[^}]*)*}/i', $article->text, $matches, PREG_SET_ORDER))
@@ -118,9 +120,9 @@ class plgContentRESimplelist extends JPlugin
 	 */
 	protected function _getList($settings = array())
 	{
-		$this->_model = new plgReSimplistModel;
-		$this->_model->setLimit($this->params->get('max_events', 20));
-		$this->_model->setLimitStart(0);
+		$this->model = new plgReSimplistModel;
+		$this->model->setLimit($this->params->get('max_events', 20));
+		$this->model->setLimitStart(0);
 
 		$filtercustoms = array();
 
@@ -129,15 +131,15 @@ class plgContentRESimplelist extends JPlugin
 			switch ($key)
 			{
 				case 'archived':
-					$this->_model->setState($key, 1);
+					$this->model->setState($key, 1);
 					break;
 
 				case 'featured':
-					$this->_model->setState($key, 1);
+					$this->model->setState($key, 1);
 					break;
 
 				case 'type':
-					$this->_model->setState($key, $val[0]);
+					$this->model->setState($key, $val[0]);
 					break;
 
 				case 'city':
@@ -151,12 +153,13 @@ class plgContentRESimplelist extends JPlugin
 					{
 						$parts = explode(",", $v);
 
-						foreach ($parts as $p) {
+						foreach ($parts as $p)
+						{
 							$values[] = trim($p);
 						}
 					}
 
-					$this->_model->setState($key, $values);
+					$this->model->setState($key, $values);
 					break;
 
 				default:
@@ -171,10 +174,10 @@ class plgContentRESimplelist extends JPlugin
 
 		if (count($filtercustoms))
 		{
-			$this->_model->setState('customs', $filtercustoms);
+			$this->model->setState('customs', $filtercustoms);
 		}
 
-		$res = $this->_model->getData();
+		$res = $this->model->getData();
 
 		if (!$res)
 		{
@@ -375,20 +378,7 @@ class plgContentRESimplelist extends JPlugin
 	 */
 	protected function _formatdate($date, $time)
 	{
-		if (!RedeventHelperDate::isValidDate($date))
-		{
-			return JText::_('OPEN DATE');
-		}
-
-		if (!$time)
-		{
-			$time = '00:00:00';
-		}
-
-		// Format date
-		$formatdate = strftime($this->params->get('date_format', '%b %d, %Y'), strtotime($date . ' ' . $time));
-
-		return $formatdate;
+		return RedeventHelperDate::formatdate($date, $time, $this->params->get('date_format', 'M d, Y'));
 	}
 
 	/**
@@ -403,15 +393,7 @@ class plgContentRESimplelist extends JPlugin
 	 */
 	protected function _formattime($date, $time)
 	{
-		if (!$time)
-		{
-			return;
-		}
-
-		// Format time
-		$formattime = strftime($this->params->get('time_format', '%H:%I'), strtotime( $date . ' ' . $time));
-
-		return $formattime;
+		return RedeventHelperDate::formattime($date, $time, $this->params->get('time_format', 'H:i'));
 	}
 
 	/**
@@ -442,12 +424,12 @@ class plgContentRESimplelist extends JPlugin
 	 */
 	protected function _getCustom($dbfield)
 	{
-		if (is_null($this->_customs))
+		if (is_null($this->customs))
 		{
-			$this->_customs = $this->_model->getListCustomFields();
+			$this->customs = $this->model->getListCustomFields();
 		}
 
-		foreach ((array) $this->_customs as $f)
+		foreach ((array) $this->customs as $f)
 		{
 			if ('custom' . $f->id == $dbfield)
 			{

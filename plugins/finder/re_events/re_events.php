@@ -21,7 +21,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  * @subpackage  Finder.re_events
  * @since       2.5
  */
-class plgFinderRe_events extends FinderIndexerAdapter
+class PlgFinderRe_Events extends FinderIndexerAdapter
 {
 	/**
 	 * The plugin identifier.
@@ -229,7 +229,6 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		{
 			$this->pluginDisable($pks);
 		}
-
 	}
 
 	/**
@@ -337,7 +336,6 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		return $sql;
 	}
 
-
 	/**
 	 * Method to check the existing access level for items
 	 *
@@ -399,7 +397,6 @@ class plgFinderRe_events extends FinderIndexerAdapter
 
 		return $sql;
 	}
-
 
 	/**
 	 * Method to get a content item to index.

@@ -7,7 +7,6 @@
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-
 defined('JPATH_BASE') or die;
 
 // Import library dependencies
@@ -20,7 +19,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage  Config.Example
  * @since       2.5
  */
-class plgRedevent_configExample extends JPlugin
+class PlgRedevent_ConfigExample extends JPlugin
 {
 	/**
 	 * The plugin identifier.
@@ -33,7 +32,7 @@ class plgRedevent_configExample extends JPlugin
 	/**
 	 * Alters component parameters
 	 *
-	 * @param   JRegistry  $params  parameters
+	 * @param   JRegistry  &$params  parameters
 	 *
 	 * @return bool true on success
 	 */
