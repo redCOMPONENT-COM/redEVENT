@@ -83,29 +83,6 @@ class RedeventTags
 		{
 			$this->db = JFactory::getDbo();
 		}
-
-		$eventid = JFactory::getApplication()->input->getInt('id', 0);
-		$this->setEventId($eventid);
-
-		$xref = JFactory::getApplication()->input->getInt('xref');
-		$this->setXref($xref);
-
-		// If no xref specified. try to get one associated to the event id, published if possible !
-		if (!$this->xref)
-		{
-			$this->initXref();
-		}
-
-		if ($this->xref)
-		{
-			$db = $this->db;
-			$query = $db->getQuery(true)
-				->select('eventid, venueid, maxattendees, maxwaitinglist, published')
-				->from('#__redevent_event_venue_xref')
-				->where('id = ' . $this->xref);
-			$db->setQuery($query);
-			list($this->eventid, $this->venueid, $this->maxattendees, $this->maxwaitinglist, $this->published) = $db->loadRow();
-		}
 	}
 
 	/**
@@ -1387,7 +1364,7 @@ class RedeventTags
 	 */
 	private function getTag_date()
 	{
-		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		return RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 	}
 
 	/**
@@ -1397,7 +1374,7 @@ class RedeventTags
 	 */
 	private function getTag_enddate()
 	{
-		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+		return RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 	}
 
 	/**
@@ -1411,11 +1388,11 @@ class RedeventTags
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 
 			if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 			{
-				$tmp .= ' - ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+				$tmp .= ' - ' . RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 			}
 		}
 
@@ -1433,7 +1410,7 @@ class RedeventTags
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 
 		return $tmp;
@@ -1450,7 +1427,7 @@ class RedeventTags
 
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 
 		return $tmp;
@@ -1463,21 +1440,21 @@ class RedeventTags
 	 */
 	private function getTag_startenddatetime()
 	{
-		$tmp = RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		$tmp = RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 
 		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
 		{
-			$tmp .= ' - ' . RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' - ' . RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
 		}
 
 		return $tmp;
@@ -1490,7 +1467,7 @@ class RedeventTags
 	 */
 	private function getTag_duration()
 	{
-		return RedeventHelper::getEventDuration($this->getEvent()->getData());
+		return RedeventHelperDate::getEventDuration($this->getEvent()->getData());
 	}
 
 	/**
@@ -2074,13 +2051,14 @@ class RedeventTags
 	{
 		$res = '';
 
-		if (strtotime($this->getEvent()->getData()->registrationend))
+		if (RedeventHelperDate::isValidDate($this->getEvent()->getData()->registrationend))
 		{
 			$elsettings = RedeventHelper::config();
-			$res = strftime(
-				$elsettings->get('formatdate', '%d.%m.%Y') . ' ' . $elsettings->get('formattime', '%H:%M'),
-				strtotime($this->getEvent()->getData()->registrationend)
-			);
+			$timezone = new DateTimeZone(JFactory::getUser()->getParam('timezone', JFactory::getConfig()->get('offset')));
+			$date = new JDate($this->getEvent()->getData()->registrationend, new DateTimeZone('UTC'));
+			$date->setTimezone($timezone);
+
+			return $date->format($elsettings->get('formatdate', 'd.m.Y') . ' ' . $elsettings->get('formattime', 'H:i'), true);
 		}
 
 		return $res;
@@ -2588,7 +2566,7 @@ class RedeventTags
 			$title = urlencode(
 				$this->getEvent()->getData()->title
 				. ' '
-				. RedeventHelperOutput::formatdate(
+				. RedeventHelperDate::formatdate(
 					$this->getEvent()->getData()->dates,
 					$this->getEvent()->getData()->times
 				)

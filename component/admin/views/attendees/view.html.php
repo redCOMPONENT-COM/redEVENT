@@ -182,7 +182,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 		$rf_fields = $this->get('RedFormFrontFields');
 		$form = $this->get('Form');
 
-		$event->dates = RedeventHelper::isValidDate($event->dates)
+		$event->dates = RedeventHelperDate::isValidDate($event->dates)
 			? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime($event->dates))
 			: JText::_('COM_REDEVENT_OPEN_DATE');
 

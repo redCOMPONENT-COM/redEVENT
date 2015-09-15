@@ -406,7 +406,7 @@ class RedeventHelperOutput
 
 		$mapLink = JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id=' . $data->venueid);
 
-		$output = RLayoutHelper::render('mapicon', array('link' => $mapLink, 'attributes' => $attributes), null, array('client' => 0));
+		$output = RedeventLayoutHelper::render('mapicon', array('link' => $mapLink, 'attributes' => $attributes), null, array('client' => 0));
 
 		return $output;
 	}
@@ -477,7 +477,7 @@ class RedeventHelperOutput
 
 		RHelperAsset::load('pinpoint.js');
 
-		$output = RLayoutHelper::render('pinpoint', null, null, array('client' => 0));
+		$output = RedeventLayoutHelper::render('pinpoint', null, null, array('client' => 0));
 
 		return $output;
 	}
@@ -523,26 +523,12 @@ class RedeventHelperOutput
 	 * @param   string  $time  time to format in a format accepted by strtotime
 	 *
 	 * @return string
+	 *
+	 * @deprecated
 	 */
 	public static function formatdate($date, $time)
 	{
-		$settings = RedeventHelper::config();
-
-		if (!RedeventHelper::isValidDate($date))
-		{
-			return JText::_('COM_REDEVENT_OPEN_DATE');
-		}
-
-		if (!$time)
-		{
-			$time = '00:00:00';
-		}
-
-		// Format date
-		$date = JFactory::getDate($date . ' ' . $time);
-		$formatdate = $date->format($settings->get('formatdate', 'd.m.Y'));
-
-		return $formatdate;
+		return RedeventHelperDate::formatdate($date, $time);
 	}
 
 	/**
@@ -552,21 +538,12 @@ class RedeventHelperOutput
 	 * @param   string  $time  time to format in a format accepted by strtotime
 	 *
 	 * @return string
+	 *
+	 * @deprecated
 	 */
 	public static function formattime($date, $time)
 	{
-		$settings = RedeventHelper::config();
-
-		if (!$time)
-		{
-			return;
-		}
-
-		// Format time
-		$date = JFactory::getDate($date . ' ' . $time);
-		$formattime = $date->format($settings->get('formattime', 'H:i'));
-
-		return $formattime;
+		return RedeventHelperDate::formattime($date, $time);
 	}
 
 	/**
@@ -576,88 +553,12 @@ class RedeventHelperOutput
 	 * @param   boolean  $showend  show end
 	 *
 	 * @return string
+	 *
+	 * @deprecated
 	 */
 	public static function formatEventDateTime($event, $showend = null)
 	{
-		if (!RedeventHelper::isValidDate($event->dates))
-		{
-			// Open dates
-			$date = '<span class="event-date open-date">' . JText::_('COM_REDEVENT_OPEN_DATE') . '</span>';
-
-			return $date;
-		}
-
-		$settings = RedeventHelper::config();
-
-		if (is_null($showend))
-		{
-			$showend = $settings->get('lists_showend', 1);
-		}
-
-		$date_start = self::formatdate($event->dates, $event->times);
-		$time_start = '';
-		$date_end = '';
-		$time_end = '';
-
-		// Is this a full day(s) event ?
-		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
-
-		if (!$allday)
-		{
-			$time_start = self::formattime($event->dates, $event->times);
-		}
-
-		if ($allday)
-		{
-			if ($showend && RedeventHelper::isValidDate($event->enddates))
-			{
-				if (strtotime($event->enddates . ' -1 day') != strtotime($event->dates)
-					&& strtotime($event->enddates) != strtotime($event->dates))
-				{
-					$date_end = self::formatdate(strftime('Y-m-d', strtotime($event->enddates. ' -1 day')), $event->endtimes);
-				}
-			}
-		}
-		elseif ($showend)
-		{
-			if (RedeventHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
-			{
-				$date_end = self::formatdate($event->enddates, $event->endtimes);
-				$time_end = self::formattime($event->dates, $event->endtimes);
-			}
-			else
-			{
-				// Same day, just display end time after start time
-				$time_start .= ' ' . self::formattime($event->dates, $event->endtimes);
-			}
-		}
-
-		$date = '<span class="event-date">';
-		$date .= '<span class="event-start">';
-		$date .= '<span class="event-day">' . $date_start . '</span>';
-
-		if ($settings->get('lists_show_time', 0) == 1 && $time_start)
-		{
-			$date .= ' <span class="event-time">' . $time_start . '</span>';
-		}
-
-		$date .= '</span>';
-
-		if ($date_end)
-		{
-			$date .= ' <span class="event-end"><span class="event-day">' . $date_end . '</span>';
-
-			if ($settings->get('lists_show_time', 0) == 1 && $time_end)
-			{
-				$date .= ' <span class="event-time">' . $time_end . '</span>';
-			}
-
-			$date .= '</span>';
-		}
-
-		$date .= '</span>';
-
-		return $date;
+		return RedeventHelperDate::getISODate($event, $showend);
 	}
 
 	/**
@@ -667,24 +568,12 @@ class RedeventHelperOutput
 	 * @param   string  $time  time to format in a format accepted by strtotime
 	 *
 	 * @return string
+	 *
+	 * @deprecated
 	 */
 	public static function getISODate($date, $time)
 	{
-		if ($date && strtotime($date))
-		{
-			$txt = $date;
-		}
-		else
-		{
-			return false;
-		}
-
-		if ($time)
-		{
-			$txt .= 'T' . $time;
-		}
-
-		return $txt;
+		return RedeventHelperDate::getISODate($date, $time);
 	}
 
 	/**
@@ -694,39 +583,12 @@ class RedeventHelperOutput
 	 * @param   string  $time  time to format in a format accepted by strtotime
 	 *
 	 * @return array
+	 *
+	 * @deprecated
 	 */
 	public static function getIcalDateArray($date, $time = null)
 	{
-		if ($time)
-		{
-			$sec = strtotime($date . ' ' . $time);
-		}
-		else
-		{
-			$sec = strtotime($date);
-		}
-
-		if (!$sec)
-		{
-			return false;
-		}
-
-		// Format date
-		$parsed = strftime('%Y-%m-%d %H:%M:%S', $sec);
-
-		$date = array('year' => (int) substr($parsed, 0, 4),
-			'month' => (int) substr($parsed, 5, 2),
-			'day' => (int) substr($parsed, 8, 2));
-
-		// Format time
-		if (substr($parsed, 11, 8) != '00:00:00')
-		{
-			$date['hour'] = substr($parsed, 11, 2);
-			$date['min'] = substr($parsed, 14, 2);
-			$date['sec'] = substr($parsed, 17, 2);
-		}
-
-		return $date;
+		return RedeventHelperDate::getIcalDateArray($date, $time);
 	}
 
 	/**

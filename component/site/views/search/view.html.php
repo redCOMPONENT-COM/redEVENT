@@ -124,8 +124,9 @@ class RedeventViewSearch extends RedeventViewSessionlist
 	{
 		$config = RedeventHelper::config();
 		$rows = $this->rows;
+		$total = $this->get('total');
 
-		if (count($rows) == 1 && $config->get('redirect_search_unique_result_to_details', 0))
+		if ($total == 1 && $config->get('redirect_search_unique_result_to_details', 0))
 		{
 			if ($this->get('state')->get('results_type') == 0)
 			{

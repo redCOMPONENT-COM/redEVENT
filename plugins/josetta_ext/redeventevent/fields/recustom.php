@@ -6,13 +6,6 @@
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
-/**
- * @version     $Id: josetta.php 315 2012-02-21 12:31:10Z josetta2 $
- * @package     Josetta
- * @copyright   Diffubox (c) 2012
- * @copyright   weeblr, llc (c) 2012
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
- */
 
 defined('JPATH_PLATFORM') or die;
 
@@ -26,13 +19,8 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 /**
  * Form Field class for the Joomla Platform.
  * Supports an HTML select list of categories
- *
- * @package     Joomla.Platform
- * @subpackage  Form
- * @since       11.1
 */
 class JFormFieldRECustom extends JFormField {
-
 
 	public $type = 'recustom';
 

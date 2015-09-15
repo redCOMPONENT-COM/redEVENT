@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    2.0
  */
-class RedeventModelSearch extends RedeventModelBaseeventlist
+class RedeventModelSearch extends RedeventModelBasesessionlist
 {
 	/**
 	 * the query
@@ -147,7 +147,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		if (empty($this->filter))
 		{
 			// Get the paramaters of the active menu item
-			$mainframe = JFactory::getApplication();
+			$params = JFactory::getApplication()->getParams('com_redevent');
 
 			$filter_continent = $this->getState('filter_continent');
 			$filter_country   = $this->getState('filter_country');
@@ -159,6 +159,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 			$filter_date_to       = $this->getState('filter_date_to');
 			$filter_venuecategory = $this->getState('filter_venuecategory');
 			$filter_category      = $this->getState('filter_category');
+			$filter_multicategory = $this->getState('filter_multicategory');
 			$filter_event         = $this->getState('filter_event');
 
 			$customs              = $this->getState('filtercustom');
@@ -180,7 +181,14 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 				$filterOr[] = 'LOWER(a.title) LIKE ' . $filter;
 				$filterOr[] = 'LOWER(x.title) LIKE ' . $filter;
 
-				$where[] = implode(' OR ', $filterOr);
+				if ($params->get('filter_text_search_descriptions', 0))
+				{
+					$filterOr[] = 'a.datdescription LIKE ' . $filter;
+					$filterOr[] = 'a.summary LIKE ' . $filter;
+					$filterOr[] = 'x.details LIKE ' . $filter;
+				}
+
+				$where[] = '(' . implode(' OR ', $filterOr) . ')';
 			}
 
 			// Filter date
@@ -219,6 +227,35 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 			}
 
 			// Filter category
+			if ($filter_multicategory)
+			{
+				$or = array();
+
+				foreach ($filter_multicategory as $cat)
+				{
+					$category = $this->getCategory((int) $cat);
+
+					if ($category)
+					{
+						$or[] = '(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
+					}
+				}
+
+				if (!empty($or))
+				{
+					$where[] = '(' . implode(' OR ', $or) . ')';
+				}
+			}
+			elseif ($cat = $this->getState('filter_category'))
+			{
+				$category = $this->getCategory((int) $cat);
+
+				if ($category)
+				{
+					$where[] = '(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
+				}
+			}
+
 			if ($filter_category)
 			{
 				$category = $this->getCategory((int) $filter_category);

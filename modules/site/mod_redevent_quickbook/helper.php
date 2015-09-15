@@ -75,7 +75,7 @@ class ModRedeventQuickbookHelper
 		}
 
 		// Get the model to get the sessions of the event
-		$model = JModel::getInstance('Baseeventlist', 'RedeventModel');
+		$model = JModel::getInstance('Basesessionlist', 'RedeventModel');
 		$model->setState('filter_event', $eventId);
 		$model->setState('limit', 0);
 
@@ -128,13 +128,13 @@ class ModRedeventQuickbookHelper
 		{
 			$value = $s->xref;
 
-			if (!RedeventHelper::isValidDate($s->dates))
+			if (!RedeventHelperDate::isValidDate($s->dates))
 			{
 				$date = JText::_('COM_REDEVENT_OPEN_DATE');
 			}
 			else
 			{
-				$date = strftime($params->get('formatdate', '%d/%m/%Y'), strtotime($s->dates . ' ' . $s->times));
+				$date = RedeventHelperDate::formatdate($s->dates, $s->times);
 			}
 
 			$text = $date . ' - ' . $s->venue;

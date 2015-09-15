@@ -36,7 +36,7 @@ class RedeventViewMoreinfo extends RViewSite
 
 		if ($this->getLayout() == 'final')
 		{
-			parent::display($tpl);
+			return parent::display($tpl);
 		}
 
 		$xref = JFactory::getApplication()->input->getInt('xref');

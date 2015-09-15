@@ -13,6 +13,7 @@
 
 	<taskdef name="gitversion" classname="build.phingext.GitVersionTask"/>
 	<taskdef name="gitdate" classname="build.phingext.GitDateTask"/>
+	<taskdef name="extractversion" classname="build.ExtractVersionTask" />
 
 	<!--
 	====================================================================================================
@@ -62,7 +63,9 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		<zip basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.zip" includeemptydirs="true"/>
+		<!-- Create the package -->
+		<extractversion path="${dirs.tmp}/component" />
+		<zip basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${extensionversion}.zip" includeemptydirs="true" />
 
 		<!-- Create the package redEVENTB2B -->
 		<copy todir="${dirs.tmp}/redeventb2b">
@@ -76,7 +79,9 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		<zip basedir="${dirs.tmp}/redeventb2b" destfile="${dirs.release}/com_redeventb2b-${version}.zip" includeemptydirs="true"/>
+		<!-- Create the package -->
+		<extractversion path="${dirs.tmp}/redeventb2b" />
+		<zip basedir="${dirs.tmp}/redeventb2b" destfile="${dirs.release}/com_redeventb2b-${extensionversion}.zip" includeemptydirs="true" />
 
 		<!-- Create the package redEVENTSYNC -->
 		<copy todir="${dirs.tmp}/redeventsync">
@@ -90,7 +95,9 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		<zip basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${version}.zip" includeemptydirs="true"/>
+		<!-- Create the package -->
+		<extractversion path="${dirs.tmp}/redeventsync" />
+		<zip basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${extensionversion}.zip" includeemptydirs="true" />
 
 		<!-- admin modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
@@ -137,7 +144,6 @@
 			</fileset>
 		</zip>
 
-
 		<delete dir="${dirs.tmp}" quiet="yes" includeemptydirs="false"/>
 	</target>
 
@@ -169,7 +175,8 @@
 		</copy>
 		<mkdir dir="${dirs.release}/${myp}"/>
 		<!-- Create the package -->
-		<zip basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.zip"
+		<extractversion path="${dirs.tmp}/${myp}/${prefix}${dirname}" />
+		<zip basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${extensionversion}.zip"
 			 includeemptydirs="true"/>
 	</target>
 

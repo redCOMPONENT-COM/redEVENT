@@ -29,7 +29,7 @@ $colspan = 10;
 	<table class="adminlist">
 		<tr>
 		  	<td width="80%">
-				<b><?php echo JText::_('COM_REDEVENT_DATE' ).':'; ?></b>&nbsp;<?php echo (RedeventHelper::isValidDate($this->event->dates) ? $this->event->dates : JText::_('COM_REDEVENT_OPEN_DATE')); ?><br />
+				<b><?php echo JText::_('COM_REDEVENT_DATE' ).':'; ?></b>&nbsp;<?php echo (RedeventHelperDate::isValidDate($this->event->dates) ? $this->event->dates : JText::_('COM_REDEVENT_OPEN_DATE')); ?><br />
 				<b><?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).':'; ?></b>&nbsp;<?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
 			</td>
 		  </tr>

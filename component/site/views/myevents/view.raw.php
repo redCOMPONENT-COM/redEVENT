@@ -30,6 +30,9 @@ class RedeventViewMyevents extends RViewSite
 			case 'managedevents':
 				return $this->displayEvents($tpl);
 
+			case 'managedsessions':
+				return $this->displaySessions($tpl);
+
 			case 'managedvenues':
 				return $this->displayVenues($tpl);
 
@@ -62,26 +65,71 @@ class RedeventViewMyevents extends RViewSite
 			return false;
 		}
 
+		$model = RModel::getFrontInstance('Myevents');
+
 		$acl = RedeventUserAcl::getInstance();
 
-		$state = $this->get('state');
-		$limitstart   = $state->get('limitstart');
-		$limit        = $state->get('limit');
-		$filter_event = $state->get('filter_event');
+		$state = $model->getState();
 
 		// Get data from model
-		$events = $this->get('Events');
-		$events_pageNav = $this->get('EventsPagination');
+		$items = $model->getItems();
+		$pageNav = $model->getPagination();
 
 		// Sorting and filtering
 		$lists = $this->buildSortLists();
-		$lists['limitstart'] = $state->get('limitstart');
+		$lists['limitstart'] = $state->get('list.start');
+
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
+
+		$this->assignRef('events', $items);
+		$this->assignRef('params', $params);
+		$this->assignRef('events_pageNav', $pageNav);
+		$this->assignRef('acl',         $acl);
+		$this->assignRef('lists',      $lists);
+
+		$this->setLayout('default');
+		echo $this->loadTemplate('events');
+
+		return true;
+	}
+
+	/**
+	 * Specialize MyItems layout
+	 *
+	 * @param   string  $tpl  template file to load
+	 *
+	 * @return void
+	 */
+	protected function displaySessions($tpl)
+	{
+		$user      = JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$params    = $mainframe->getParams();
+
+		if (!$user->get('id'))
+		{
+			return false;
+		}
+
+		$model = RModel::getFrontInstance('Mysessions');
+
+		$acl = RedeventUserAcl::getInstance();
+
+		$state = $model->getState();
+		$filter_event = $state->get('filter_event');
+
+		// Get data from model
+		$sessions = $model->getItems();
+		$sessions_pageNav = $model->getPagination();
+
+		// Sorting and filtering
+		$lists = $this->buildSortLists();
+		$lists['limitstart'] = $state->get('list.start');
 
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_select_event')));
 
 		if ($ev = $this->get('EventsOptions'))
 		{
-			$hasManagedEvents = count($ev);
 			$options = array_merge($options, $ev);
 		}
 
@@ -89,9 +137,9 @@ class RedeventViewMyevents extends RViewSite
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
-		$this->assignRef('events', $events);
+		$this->assignRef('sessions', $sessions);
 		$this->assignRef('params', $params);
-		$this->assignRef('events_pageNav', $events_pageNav);
+		$this->assignRef('sessions_pageNav', $sessions_pageNav);
 		$this->assignRef('acl',         $acl);
 		$this->assignRef('lists',      $lists);
 
@@ -100,7 +148,7 @@ class RedeventViewMyevents extends RViewSite
 		$this->assign('columns',        $cols);
 
 		$this->setLayout('default');
-		echo $this->loadTemplate('events');
+		echo $this->loadTemplate('sessions');
 
 		return true;
 	}
@@ -125,22 +173,21 @@ class RedeventViewMyevents extends RViewSite
 
 		$acl = RedeventUserAcl::getInstance();
 
-		$state = $this->get('state');
-		$limitstart   = $state->get('limitstart_venues');
-		$limit        = $state->get('limit');
+		$model = RModel::getFrontInstance('Myvenues');
+		$state = $model->getState();
 
 		// Get data from model
-		$venues = $this->get('Venues');
-		$pageNav = $this->get('VenuesPagination');
+		$items = $model->getItems();
+		$pageNav = $model->getPagination();
 
 		// Sorting and filtering
 		$lists = $this->buildSortLists();
 
-		$lists['limitstart_venues'] = $state->get('limitstart_venues');
+		$lists['limitstart'] = $state->get('list.start');
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
-		$this->assignRef('venues', $venues);
+		$this->assignRef('venues', $items);
 		$this->assignRef('params', $params);
 		$this->assignRef('venues_pageNav', $pageNav);
 		$this->assignRef('acl',         $acl);
@@ -172,20 +219,21 @@ class RedeventViewMyevents extends RViewSite
 
 		$acl = RedeventUserAcl::getInstance();
 
-		$state = $this->get('state');
+		$model = RModel::getFrontInstance('Myattending');
+		$state = $model->getState();
 
 		// Get data from model
-		$attending = $this->get('Attending');
-		$pageNav = $this->get('AttendingPagination');
+		$items = $model->getItems();
+		$pageNav = $model->getPagination();
 
 		// Sorting and filtering
 		$lists = $this->buildSortLists();
 
-		$lists['limitstart_attending'] = $state->get('limitstart_attending');
+		$lists['limitstart'] = $state->get('list.start');
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
-		$this->assignRef('attending', $attending);
+		$this->assignRef('attending', $items);
 		$this->assignRef('params', $params);
 		$this->assignRef('attending_pageNav', $pageNav);
 		$this->assignRef('acl',         $acl);
@@ -217,20 +265,21 @@ class RedeventViewMyevents extends RViewSite
 
 		$acl = RedeventUserAcl::getInstance();
 
-		$state = $this->get('state');
+		$model = RModel::getFrontInstance('Myattended');
+		$state = $model->getState();
 
 		// Get data from model
-		$attended = $this->get('Attended');
-		$pageNav = $this->get('AttendedPagination');
+		$items = $model->getItems();
+		$pageNav = $model->getPagination();
 
 		// Sorting and filtering
 		$lists = $this->buildSortLists();
 
-		$lists['limitstart_attended'] = $state->get('limitstart_attended');
+		$lists['limitstart'] = $state->get('list.start');
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
-		$this->assignRef('attended', $attended);
+		$this->assignRef('attended', $items);
 		$this->assignRef('params', $params);
 		$this->assignRef('attended_pageNav', $pageNav);
 		$this->assignRef('acl',         $acl);
@@ -249,8 +298,6 @@ class RedeventViewMyevents extends RViewSite
 	 */
 	protected function buildSortLists()
 	{
-		$elsettings = RedeventHelper::config();
-
 		$filter_order = JFactory::getApplication()->input->getCmd('filter_order', 'x.dates');
 		$filter_order_Dir = JFactory::getApplication()->input->getWord('filter_order_Dir', 'ASC');
 
@@ -311,9 +358,9 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @return string html
 	 */
-	public static function eventeditbutton($id, $xref)
+	public static function eventeditbutton($id, $xref = null)
 	{
-		$acl = &RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditEvent($id))
 		{
@@ -352,6 +399,29 @@ class RedeventViewMyevents extends RViewSite
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref=' . $id;
 		$output	= '<a href="' . JRoute::_($link) . '" class="deletelink hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
+
+		return $output;
+	}
+
+	/**
+	 * Creates the event delete button
+	 *
+	 * @param   int  $id  event id
+	 *
+	 * @return string html
+	 */
+	public static function eventdeletebutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+
+		$image = RHelperAsset::load('no.png', null, array('alt' => JText::_('COM_REDEVENT_DELETE_EVENT')));
+
+		$overlib = JText::_('COM_REDEVENT_DELETE_EVENT_TIP');
+		$text = JText::_('COM_REDEVENT_DELETE_EVENT');
+
+		$return = base64_encode(RedeventHelperRoute::getMyeventsRoute());
+		$link = 'index.php?option=com_redevent&task=editevent.delete&id=' . $id . '&return=' . $return;
+		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;
 	}

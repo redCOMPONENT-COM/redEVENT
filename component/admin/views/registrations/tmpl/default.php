@@ -47,7 +47,7 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 </script>
 <form action="index.php?option=com_redevent&view=registrations" class="admin" id="adminForm" method="post" name="adminForm">
 <?php
-echo RLayoutHelper::render(
+echo RedeventLayoutHelper::render(
 	'searchtools.default',
 	array(
 		'view' => $this,
@@ -121,7 +121,7 @@ echo RLayoutHelper::render(
 		<?php foreach ($this->items as $i => $row) :
 			$displaydate = JHTML::Date($row->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 
-			$eventdate = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
+			$eventdate = RedeventHelperDate::formatdate($row->dates, null, $this->params->get('backend_formatdate', 'd.m.Y'));
 			$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->xref,
 					$row->title . '<br/>' . $eventdate,
 					'class="hasTooltip" title="' . JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE') . '"') . '<br/>@' . $row->venue . '</br>' . JText::_('COM_REDEVENT_AUTHOR') . ': ' . $row->creator;
@@ -178,7 +178,7 @@ echo RLayoutHelper::render(
 					<?php echo $row->pricegroup; ?>
 				</td>
 				<td class="price <?php echo($row->paid ? 'paid' : 'unpaid'); ?>" width="auto">
-					<?php echo RLayoutHelper::render(
+					<?php echo RedeventLayoutHelper::render(
 						'attendees.paymentinfo',
 						$row
 					);

@@ -23,7 +23,7 @@ $search = $this->state->get('filter.search');
 ?>
 <form action="index.php?option=com_redevent&view=sessions&layout=element&tmpl=component&function=<?php echo $function; ?>" id="adminForm" method="post" name="adminForm">
 	<?php
-	echo RLayoutHelper::render(
+	echo RedeventLayoutHelper::render(
 		'searchtools.default',
 		array(
 			'view' => $this,
@@ -89,21 +89,25 @@ $search = $this->state->get('filter.search');
 			<?php $n = count($this->items); ?>
 			<?php foreach ($this->items as $i => $row) :
 				/* Get the date */
-				$date = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
-				$enddate  = (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->enddates));
+				$date = RedeventHelperDate::formatdate($row->dates, $row->times, $this->params->get('backend_formatdate', 'd.m.Y'));
+				$enddate  = (!RedeventHelperDate::isValidDate($row->enddates) || $row->enddates == $row->dates)
+					? ''
+					: RedeventHelperDate::formatdate($row->enddates, $row->endtimes, $this->params->get('backend_formatdate', 'd.m.Y'));
 				$displaydate = $date. ($enddate ? ' - '.$enddate: '');
-				$endreg = (!RedeventHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->registrationend )));
+				$endreg = (!RedeventHelperDate::isValidDate($row->registrationend) ? '-' : RedeventHelperDate::formatdate($row->registrationend, null, $this->params->get('backend_formatdate', 'd.m.Y') . ' H:i'));
 
 				$displaytime = '';
-				/* Get the time */
-				if (isset($row->times) && $row->times != '00:00:00') {
-					$displaytime = strftime( $this->params->get('formattime', '%H:%M'), strtotime( $row->times ));
 
-					if (isset($row->endtimes) && $row->endtimes != '00:00:00') {
-						$displaytime .= ' - '.strftime( $this->params->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
+				/* Get the time */
+				if (RedeventHelperDate::isValidTime($row->times) && $row->times != '00:00:00')
+				{
+					$displaytime = RedeventHelperDate::formattime($row->times, $this->params->get('formattime', 'H:i'));
+
+					if (RedeventHelperDate::isValidTime($row->endtimes) && $row->endtimes != '00:00:00')
+					{
+						$displaytime .= ' - ' . RedeventHelperDate::formattime($row->endtimes, $this->params->get('formattime', 'H:i'));
 					}
 				}
-
 				$featured = $this->featured($row, $i);
 
 				$venuelink = JRoute::_( 'index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);

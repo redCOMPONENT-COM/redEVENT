@@ -46,7 +46,13 @@ class RedeventControllerMoreinfo extends RedeventControllerFront
 			$mailer->IsHTML(true);
 
 			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', RedeventHelper::getSessionFullTitle($details)));
-			$mailer->AddAddress($app->getCfg('mailfrom'), $app->getCfg('sitename'));
+
+			$helper = new RedeventHelperMoreinforecipients($xref);
+
+			foreach ($helper->getRecipients() as $recipient)
+			{
+				$mailer->AddAddress($recipient['email'], empty($recipient['name']) ? '' : $recipient['name']);
+			}
 
 			$mailer->AddReplyTo(array($email, $this->input->get('name')));
 
@@ -97,6 +103,8 @@ class RedeventControllerMoreinfo extends RedeventControllerFront
 		}
 
 		// Confirm sending
-		$this->setRedirect('index.php?option=com_redevent&view=moreinfo&layout=final&xref=' . $xref);
+		$return = 'index.php?option=com_redevent&view=moreinfo&tmpl=component&layout=final&xref=' . $xref;
+		$return = $this->input->get('tmpl') ? $return . '&tmpl=' . $this->input->get('tmpl') : $return;
+		$this->setRedirect($return);
 	}
 }

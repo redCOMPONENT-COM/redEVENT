@@ -62,9 +62,9 @@ defined('_JEXEC') or die('Restricted access');
 						       class="select-session-radio"
 							<?php echo $this->isFull($row) ? 'disabled="disabled"' : ''; ?>/>
 					</td>
-					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
-					<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
-					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
+					<td><?php echo RedeventHelperDate::formatdate($row->dates, false); ?></td>
+					<td><?php echo RedeventHelperDate::formattime($row->dates, $row->times); ?></td>
+					<td><?php echo RedeventHelperDate::getEventDuration($row); ?></td>
 					<td><?php echo RedeventHelper::getSessionFullTitle($row); ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td><?php echo $row->city; ?></td>

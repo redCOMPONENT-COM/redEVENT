@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    2.0
  */
-class RedEventModelWeek extends RedeventModelBaseeventlist
+class RedEventModelWeek extends RedeventModelBasesessionlist
 {
 	protected $week;
 

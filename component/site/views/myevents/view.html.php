@@ -35,9 +35,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		}
 
 		// Initialize variables
-		$document   = JFactory::getDocument();
-		$elsettings = RedeventHelper::config();
-		$pathway    = $mainframe->getPathWay();
+		$config = RedeventHelper::config();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();
 		$acl        = RedeventUserAcl::getInstance();
@@ -50,24 +48,15 @@ class RedeventViewMyevents extends RedeventViewFront
 		JText::script("COM_REDEVENT_CONFIRM_DELETE_DATE");
 		JText::script("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING");
 
-		$state = $this->get('state');
-
 		// Get variables
-		$filter_event = $state->get('filter_event');
 		$task = JFactory::getApplication()->input->getWord('task');
 		$pop = JFactory::getApplication()->input->getBool('pop');
 
-		// Get data from model
-		$events = $this->get('Events');
-		$venues = $this->get('Venues');
-		$attending = $this->get('Attending');
-		$attended = $this->get('Attended');
-
-		// Paginations
-		$events_pageNav = $this->get('EventsPagination');
-		$venues_pageNav = $this->get('VenuesPagination');
-		$attending_pageNav = $this->get('AttendingPagination');
-		$attended_pageNav = $this->get('AttendedPagination');
+		$modelEvents = RModel::getFrontInstance('Myevents');
+		$modelSessions = RModel::getFrontInstance('Mysessions');
+		$modelAttended = RModel::getFrontInstance('Myattended');
+		$modelAttending = RModel::getFrontInstance('Myattending');
+		$modelVenues = RModel::getFrontInstance('Myvenues');
 
 		// Params
 		$params->def('page_title', $item ? $item->title : 'COM_REDEVENT_VIEW_MYEVENTS_TITLE');
@@ -96,47 +85,47 @@ class RedeventViewMyevents extends RedeventViewFront
 			$uri->delVar('filter_type');
 		}
 
-		$lists['limitstart'] = $state->get('limitstart');
-		$lists['limitstart_venues'] = $state->get('limitstart_venues');
-		$lists['limitstart_attending'] = $state->get('limitstart_attending');
-		$lists['limitstart_attended'] = $state->get('limitstart_attended');
+		// Pagination will be done by ajax, so all are set to 0 when loading the initial page
+		$lists['limitstart'] = 0;
 
 		// Events filter
 		$hasManagedEvents = false;
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_select_event')));
 
-		if ($ev = $this->get('EventsOptions'))
+		if ($ev = $modelSessions->getEventsOptions())
 		{
 			$hasManagedEvents = count($ev);
 			$options = array_merge($options, $ev);
 		}
 
-		$lists['filter_event'] = JHTML::_('select.genericlist', $options, 'filter_event', '', 'value', 'text', $filter_event);
+		$lists['filter_event'] = JHTML::_('select.genericlist', $options, 'filter_event', '', 'value', 'text', $modelSessions->getState()->get('filter'));
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
-		$this->assignRef('events', $events);
-		$this->assignRef('venues', $venues);
-		$this->assignRef('attending', $attending);
-		$this->assignRef('attended', $attended);
-		$this->assignRef('task', $task);
-		$this->assignRef('params', $params);
-		$this->assignRef('events_pageNav', $events_pageNav);
-		$this->assignRef('venues_pageNav', $venues_pageNav);
-		$this->assignRef('attending_pageNav', $attending_pageNav);
-		$this->assignRef('attended_pageNav', $attended_pageNav);
-		$this->assignRef('elsettings', $elsettings);
-		$this->assignRef('pagetitle',  $pagetitle);
-		$this->assignRef('lists',      $lists);
-		$this->assignRef('acl',         $acl);
-		$this->assignRef('hasManagedEvents', $hasManagedEvents);
-		$this->assign('canAddXref',  $acl->canAddXref());
-		$this->assign('canAddEvent', $acl->canAddEvent());
-		$this->assign('canAddVenue', $acl->canAddVenue());
+		$this->events = $modelEvents->getItems();
+		$this->sessions = $modelSessions->getItems();
+		$this->venues = $modelVenues->getItems();
+		$this->attending = $modelAttending->getItems();
+		$this->attended = $modelAttended->getItems();
+		$this->task = $task;
+		$this->params = $params;
+		$this->events_pageNav = $modelEvents->getPagination();
+		$this->sessions_pageNav = $modelSessions->getPagination();
+		$this->venues_pageNav = $modelVenues->getPagination();
+		$this->attending_pageNav = $modelAttending->getPagination();
+		$this->attended_pageNav = $modelAttended->getPagination();
+		$this->config = $config;
+		$this->pagetitle = $pagetitle;
+		$this->lists = $lists;
+		$this->acl = $acl;
+		$this->hasManagedEvents = $hasManagedEvents;
+		$this->canAddXref = $acl->canAddXref();
+		$this->canAddEvent = $acl->canAddEvent();
+		$this->canAddVenue = $acl->canAddVenue();
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);
-		$this->assign('columns',        $cols);
+		$this->columns = $cols;
 
 		parent::display($tpl);
 	}
@@ -148,8 +137,6 @@ class RedeventViewMyevents extends RedeventViewFront
 	 */
 	protected function _buildSortLists()
 	{
-		$elsettings = RedeventHelper::config();
-
 		$filter_order = JFactory::getApplication()->input->getCmd('filter_order', 'x.dates');
 		$filter_order_Dir = JFactory::getApplication()->input->getWord('filter_order_Dir', 'ASC');
 
@@ -196,21 +183,21 @@ class RedeventViewMyevents extends RedeventViewFront
 		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_XREF');
 
-		$link 	= RedeventHelperRoute::getEditXrefRoute($id, $xref);
+		$link 	= RedeventHelperRoute::getEditSessionTaskRoute($id, $xref);
 		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;
 	}
 
 	/**
-	 * Creates the event edit button
+	 * Creates the event delete button
 	 *
 	 * @param   int  $id    event id
 	 * @param   int  $xref  session id
 	 *
 	 * @return string html
 	 */
-	public static function eventeditbutton($id, $xref)
+	public static function eventeditbutton($id, $xref = null)
 	{
 		$acl = RedeventUserAcl::getInstance();
 
@@ -226,7 +213,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$overlib = JText::_('COM_REDEVENT_EDIT_EVENT_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_EVENT');
 
-		$link 	= RedeventHelperRoute::getEditEventRoute($id, $xref) . '&referer=myevents';
+		$link 	= RedeventHelperRoute::getEditEventRoute($id, $xref);
 		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;
@@ -249,6 +236,29 @@ class RedeventViewMyevents extends RedeventViewFront
 		$text = JText::_('COM_REDEVENT_DELETE_XREF');
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref=' . $id;
+		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
+
+		return $output;
+	}
+
+	/**
+	 * Creates the event delete button
+	 *
+	 * @param   int  $id  event id
+	 *
+	 * @return string html
+	 */
+	public static function eventdeletebutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+
+		$image = RHelperAsset::load('no.png', null, array('alt' => JText::_('COM_REDEVENT_DELETE_EVENT')));
+
+		$overlib = JText::_('COM_REDEVENT_DELETE_EVENT_TIP');
+		$text = JText::_('COM_REDEVENT_DELETE_EVENT');
+
+		$return = base64_encode(RedeventHelperRoute::getMyeventsRoute());
+		$link = 'index.php?option=com_redevent&task=editevent.delete&id=' . $id . '&return=' . $return;
 		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;

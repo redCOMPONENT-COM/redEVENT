@@ -952,7 +952,7 @@ class RedeventAttendee extends JObject
 		// TODO: use the route helper !
 		$url = JRoute::_(
 			JURI::root()
-			. 'index.php?option=com_redevent&controller=registration&task=activate'
+			. 'index.php?option=com_redevent&task=registration.activate'
 			. '&confirmid=' . str_replace(".", "_", $this->data->uip)
 			. 'x' . $this->data->xref
 			. 'x' . $this->data->uid
@@ -963,7 +963,7 @@ class RedeventAttendee extends JObject
 
 		$cancellinkurl = JRoute::_(
 			JURI::root()
-			. 'index.php?option=com_redevent&task=cancelreg'
+			. 'index.php?option=com_redevent&task=registration.emailcancelregistration'
 			. '&rid=' . $this->data->id
 			. '&xref=' . $this->data->xref
 			. '&submit_key=' . $this->data->submit_key

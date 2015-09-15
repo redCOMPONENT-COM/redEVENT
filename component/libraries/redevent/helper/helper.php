@@ -205,51 +205,12 @@ class RedeventHelper
 	 * @param   object  $event  object having properties dates, enddates, times, endtimes
 	 *
 	 * @return string
+	 *
+	 * @deprecated
 	 */
 	public static function getEventDuration($event)
 	{
-		if (!static::isValidDate($event->dates))
-		{
-			return '-';
-		}
-
-		// All day events if start or end time is null or 00:00:00
-		if (empty($event->times) || $event->times == '00:00:00' || empty($event->endtimes) || $event->endtimes == '00:00:00')
-		{
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
-			{
-				// Same day
-
-				return '1' . ' ' . JText::_('COM_REDEVENT_Day');
-			}
-			else
-			{
-				$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
-
-				return $days . ' ' . JText::_('COM_REDEVENT_Days');
-			}
-		}
-		else
-		{
-			// There is start and end times
-			$start = strtotime($event->dates . ' ' . $event->times);
-
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
-			{
-				// Same day, return hours and minutes
-				$end = strtotime($event->dates . ' ' . $event->endtimes);
-				$duration = $end - $start;
-
-				return floor($duration / 3600) . JText::_('COM_REDEVENT_LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
-			}
-			else
-			{
-				// Not same day, display in days
-				$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
-
-				return $days . ' ' . JText::_('COM_REDEVENT_Days');
-			}
-		}
+		return RedeventHelperDate::getEventDuration($event);
 	}
 
 	/**
@@ -464,7 +425,7 @@ class RedeventHelper
 				return false;
 			}
 		}
-		elseif (static::isValidDate($session->dates) && strtotime($session->dates . ' ' . $session->times) < time())
+		elseif (RedeventHelperDate::isValidDate($session->dates) && strtotime($session->dates . ' ' . $session->times) < time())
 		{
 			// It's separated from previous case so that it is not checked if a registration end was set
 			// REGISTRATION IS OVER
@@ -491,7 +452,7 @@ class RedeventHelper
 			return '-';
 		}
 
-		if ((static::isValidDate($session->registrationend) && strtotime($session->registrationend) < time())
+		if ((RedeventHelperDate::isValidDate($session->registrationend) && strtotime($session->registrationend) < time())
 			|| strtotime($session->dates . ' ' . $session->times) < time())
 		{
 			return '-';
@@ -515,32 +476,11 @@ class RedeventHelper
 	 *
 	 * @return bool
 	 *
-	 * @throws Exception
+	 * @deprecated
 	 */
 	public static function isOver($session, $day_check = true)
 	{
-		if (!(property_exists($session, 'dates') && property_exists($session, 'times')
-			&& property_exists($session, 'enddates') && property_exists($session, 'endtimes')))
-		{
-			throw new Exception('Missing object properties');
-		}
-
-		if (!static::isValidDate($session->dates))
-		{
-			// Open dates
-			return false;
-		}
-
-		$cmp = $day_check ? strtotime('today') : time();
-
-		if (static::isValidDate($session->enddates . ' ' . $session->endtimes))
-		{
-			return strtotime($session->enddates . ' ' . $session->endtimes) < $cmp;
-		}
-		else
-		{
-			return strtotime($session->dates . ' ' . $session->times) < $cmp;
-		}
+		return RedeventHelperDate::isOver($session, $day_check);
 	}
 
 	/**
@@ -692,14 +632,14 @@ class RedeventHelper
 			$categories[] = $c->name;
 		}
 
-		if (!static::isValidDate($session->dates))
+		if (!RedeventHelperDate::isValidDate($session->dates))
 		{
 			// No start date...
 			return false;
 		}
 
 		// Make end date same as start date if not set
-		if (!static::isValidDate($session->enddates))
+		if (!RedeventHelperDate::isValidDate($session->enddates))
 		{
 			$session->enddates = $session->dates;
 		}
@@ -935,7 +875,7 @@ class RedeventHelper
 	 */
 	public static function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
 	{
-		$params = JComponentHelper::getParams('com_redevent');
+		$params = static::config();
 
 		$delimiter_esc = preg_quote($delimiter, '/');
 		$enclosure_esc = preg_quote($enclosure, '/');
@@ -1039,7 +979,7 @@ class RedeventHelper
 	 */
 	public static function registrationexpiration()
 	{
-		$settings = JComponentHelper::getParams('com_redevent');
+		$settings = static::config();
 
 		if (!$settings->get('registration_expiration', 0))
 		{

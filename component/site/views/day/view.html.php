@@ -32,7 +32,7 @@ class RedeventViewDay extends RedeventViewSessionlist
 
 		$day = $this->get('Day');
 
-		$daydate = strftime($settings->get('formatdate', '%d.%m.%Y'), strtotime($day));
+		$daydate = RedeventHelperDate::formatdate($day);
 
 		$print_link = JRoute::_('index.php?view=day&tmpl=component&pop=1');
 

@@ -8,12 +8,12 @@
  * autotweetredevent is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License 2
  * as published by the Free Software Foundation.
-
+ *
  * autotweetredevent is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with autotweetredevent; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -110,7 +110,8 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 
 		$date = strtotime($res->dates) ? JFactory::getDate($res->dates) : false;
 
-		$this->postStatusMessage($res->id,
+		$this->postStatusMessage(
+			$res->id,
 			JFactory::getDate()->toFormat(),
 			$res->title . '@' . $res->venue . ($date ? $date->format(' \o\n Y-m-d') : ''),
 			'eventsession',
@@ -139,11 +140,11 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 
 		// Return values
 		$data = array (
-				'title'		=> $event->title,
-				'text'		=> $this->getFulltext($event),
-				'url'		=> JURI::root().RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref),
+				'title' => $event->title,
+				'text' => $this->getFulltext($event),
+				'url' => JURI::root() . RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref),
 				'fulltext' => $this->getFulltext($event),
-				'is_valid'		=> true,
+				'is_valid' => true,
 		);
 
 		if ($event->image)
@@ -156,15 +157,15 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 		$ev['street'] = $event->street;
 		$ev['city'] = $event->city;
 
-		if (RedeventHelper::isValidDate($event->dates))
+		if (RedeventHelperDate::isValidDate($event->dates))
 		{
-			$date = RedeventHelperOutput::formattime($event->dates, $event->times);
+			$date = RedeventHelperDate::formattime($event->dates, $event->times);
 			$ev['start_time'] = $date;
 		}
 
-		if (RedeventHelper::isValidDate($event->enddates))
+		if (RedeventHelperDate::isValidDate($event->enddates))
 		{
-			$date = RedeventHelperOutput::formattime($event->enddates, $event->endtimes);
+			$date = RedeventHelperDate::formattime($event->enddates, $event->endtimes);
 			$ev['end_time'] = $date;
 		}
 

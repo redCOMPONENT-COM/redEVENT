@@ -27,10 +27,10 @@ $rows = $displayData['rows'];
 				<span class="summary"><?php echo JHTML::_('link', JRoute::_($detaillink), RedeventHelper::getSessionFullTitle($row)); ?></span> @ <span class="location"><?php echo JHTML::_('link', JRoute::_($venuelink), $row->venue); ?></span>
 			</p>
 			<p class="rf_thumbevent_date">
-				<span class="dtstart"><?php echo RedeventHelperOutput::formatdate($row->dates, $row->times); ?></span>
+				<span class="dtstart"><?php echo RedeventHelperDate::formatdate($row->dates, $row->times); ?></span>
 				<?php
-				if (RedeventHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
-					echo ' - <span class="dtend">' . RedeventHelperOutput::formatdate($row->enddates, $row->endtimes) . '</span>';
+				if (RedeventHelperDate::isValidDate($row->enddates) && $row->enddates != $row->dates) :
+					echo ' - <span class="dtend">' . RedeventHelperDate::formatdate($row->enddates, $row->endtimes) . '</span>';
 				endif;
 				?>
 			</p>

@@ -148,7 +148,7 @@ class RedeventAjaxPagination extends RPagination
 	 */
 	protected function _item_active(RPaginationObject $item)
 	{
-		return RLayoutHelper::render('reajaxpagination.item.active', $item);
+		return RedeventLayoutHelper::render('reajaxpagination.item.active', $item);
 	}
 
 	/**
@@ -162,6 +162,6 @@ class RedeventAjaxPagination extends RPagination
 	 */
 	protected function _item_inactive(RPaginationObject $item)
 	{
-		return RLayoutHelper::render('reajaxpagination.item.inactive', $item);
+		return RedeventLayoutHelper::render('reajaxpagination.item.inactive', $item);
 	}
 }

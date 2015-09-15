@@ -45,11 +45,11 @@ class RedeventFeedRsscalitem
 			$item->addElement('ev:type', implode(', ', $category));
 		}
 
-		if (RedeventHelper::isValidDate($session->dates))
+		if (RedeventHelperDate::isValidDate($session->dates))
 		{
 			$date = $session->dates;
 
-			if (RedeventHelper::isValidTime($session->times))
+			if (RedeventHelperDate::isValidTime($session->times))
 			{
 				$date .= ' ' . $session->times;
 			}
@@ -57,11 +57,11 @@ class RedeventFeedRsscalitem
 			$item->addElement('ev:startdate', JFactory::getDate($date)->toISO8601());
 		}
 
-		if (RedeventHelper::isValidDate($session->enddates))
+		if (RedeventHelperDate::isValidDate($session->enddates))
 		{
 			$date = $session->enddates;
 
-			if (RedeventHelper::isValidTime($session->endtimes))
+			if (RedeventHelperDate::isValidTime($session->endtimes))
 			{
 				$date .= ' ' . $session->endtimes;
 			}

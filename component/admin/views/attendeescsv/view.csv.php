@@ -84,7 +84,7 @@ class RedeventViewAttendeescsv extends RViewCsv
 			{
 				$data = array(
 					$r->title,
-					RedeventHelper::isValidDate($r->dates) ? $r->dates : JText::_('COM_REDEVENT_OPEN_DATE'),
+					RedeventHelperDate::isValidDate($r->dates) ? $r->dates : JText::_('COM_REDEVENT_OPEN_DATE'),
 					$r->venue,
 				);
 

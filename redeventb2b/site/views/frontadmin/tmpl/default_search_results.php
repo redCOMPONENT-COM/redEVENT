@@ -60,14 +60,14 @@ defined('_JEXEC') or die('Restricted access');
 				if ($this->useracl->canEditXref($row->xref))
 				{
 					$editsessionlink = JHtml::link(RedeventHelperRoute::getEditXrefRoute($row->id, $row->xref).'&tmpl=component'
-						, RedeventHelperOutput::formatdate($row->dates, false)
+						, RedeventHelperDate::formatdate($row->dates, false)
 						, array('class' => 'xrefmodal hasTip',
 							'title' => JText::_('COM_REDEVENT_EDIT_XREF'),
 							'tip' => JText::_('COM_REDEVENT_EDIT_XREF_TIP')));
 				}
 				else
 				{
-					$editsessionlink = RedeventHelperOutput::formatEventDateTime($row, false);
+					$editsessionlink = RedeventHelperDate::formatEventDateTime($row, false);
 				}
 			?>
 				<tr xref="<?php echo $row->xref; ?>">
@@ -77,8 +77,8 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo $this->isFull($row) ? 'disabled="disabled"' : ''; ?>/>
 					</td>
 					<td><?php echo $editsessionlink; ?></td>
-					<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
-					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
+					<td><?php echo RedeventHelperDate::formattime($row->dates, $row->times); ?></td>
+					<td><?php echo RedeventHelperDate::getEventDuration($row); ?></td>
 					<td><?php echo RedeventHelper::getSessionFullTitle($row); ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td><?php echo $row->city; ?></td>

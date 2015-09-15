@@ -78,7 +78,7 @@ class Redeventb2bModelFrontadmininfo extends JModelLegacy
 				$details->event_title,
 				$details->course_code . ($details->session_code ? '-' . $details->session_code : ''),
 				$details->venue,
-				RedeventHelperOutput::formatdate($details->dates, false)
+				RedeventHelperDate::formatdate($details->dates, false)
 			)
 		);
 

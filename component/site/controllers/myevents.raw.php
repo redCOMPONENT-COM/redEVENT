@@ -52,6 +52,17 @@ class RedeventControllerMyevents extends JControllerLegacy
 	}
 
 	/**
+	 * return sessions html table
+	 *
+	 * @return void
+	 */
+	public function managedsessions()
+	{
+		$this->input->set('layout', 'managedsessions');
+		$this->display();
+	}
+
+	/**
 	 * return venues html table
 	 *
 	 * @return void

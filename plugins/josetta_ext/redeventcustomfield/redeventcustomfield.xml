@@ -7,9 +7,10 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2013 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.1</version>
+	<tag>##VERSION##</tag>
 	<description></description>
-	
+
 	<files>
 		<filename>definitions.xml</filename>
 		<filename>fields_common.xml</filename>

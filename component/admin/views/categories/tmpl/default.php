@@ -52,7 +52,7 @@ if (($saveOrder) && ($this->canEditState))
 </script>
 <form action="index.php?option=com_redevent&view=categories" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
-	echo RLayoutHelper::render(
+	echo RedeventLayoutHelper::render(
 		'searchtools.default',
 		array(
 			'view' => $this,

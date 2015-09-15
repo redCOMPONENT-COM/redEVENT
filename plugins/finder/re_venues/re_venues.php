@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redEVENT
+ * @package     RedEVENT
  * @subpackage  Finder.re_venues
  *
  * @copyright   Copyright redEVENT (C) 2008-2012 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -17,11 +17,11 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
 /**
  * Finder adapter for redEVENT venues.
  *
- * @package     redEVENT
+ * @package     RedEVENT
  * @subpackage  Finder.re_venues
  * @since       2.5
  */
-class plgFinderRe_venues extends FinderIndexerAdapter
+class PlgFinderRe_Venues extends FinderIndexerAdapter
 {
 	/**
 	 * The plugin identifier.
@@ -178,7 +178,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 	 * to queue the item to be indexed later.
 	 *
 	 * @param   string   $context  The context of the content passed to the plugin.
-	 * @param   JTable   $row     A JTable object
+	 * @param   JTable   $row      A JTable object
 	 * @param   boolean  $isNew    If the content is just about to be created
 	 *
 	 * @return  boolean  True on success.
@@ -236,7 +236,6 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		{
 			$this->pluginDisable($pks);
 		}
-
 	}
 
 	/**
@@ -282,7 +281,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		$item->addTaxonomy('Category', $item->category, $item->cat_state, $item->cat_access);
 
 		// Add the language taxonomy data.
-		//$item->addTaxonomy('Language', $item->language);
+		// $item->addTaxonomy('Language', $item->language);
 
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
@@ -317,6 +316,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 	protected function getListQuery($sql = null)
 	{
 		$db = JFactory::getDbo();
+
 		// Check if we can use the supplied SQL query.
 		$sql = $sql instanceof JDatabaseQuery ? $sql : $db->getQuery(true);
 		$sql->select('a.id, a.venue AS title, a.alias, a.locdescription AS summary');
@@ -325,7 +325,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		$sql->select('a.published AS state, a.created AS start_date');
 		$sql->select('a.url, a.company, a.street, a.plz as zip, a.city, a.state AS venue_state, a.country');
 		$sql->select('a.access');
- 		$sql->select('c.name AS category, c.published AS cat_state, c.access AS cat_access');
+		$sql->select('c.name AS category, c.published AS cat_state, c.access AS cat_access');
 
 		// Handle the alias CASE WHEN portion of the query
 		$case_when_item_alias = ' CASE WHEN ';
@@ -334,7 +334,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		$a_id = $sql->castAsChar('a.id');
 		$case_when_item_alias .= $sql->concatenate(array($a_id, 'a.alias'), ':');
 		$case_when_item_alias .= ' ELSE ';
-		$case_when_item_alias .= $a_id.' END as slug';
+		$case_when_item_alias .= $a_id . ' END as slug';
 		$sql->select($case_when_item_alias);
 
 		$sql->select('u.name AS author');
@@ -346,7 +346,6 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 
 		return $sql;
 	}
-
 
 	/**
 	 * Method to check the existing access level for items
@@ -363,12 +362,19 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		$this->old_access = $row->access;
 	}
 
+	/**
+	 * check Category Access
+	 *
+	 * @param   Object  $row  row data
+	 *
+	 * @return void
+	 */
 	protected function checkCategoryAccess($row)
 	{
 		$query = $this->db->getQuery(true);
 		$query->select($this->db->quoteName('access'));
 		$query->from($this->db->quoteName('#__redevent_venues_categories'));
-		$query->where($this->db->quoteName('id') . ' = ' . (int)$row->id);
+		$query->where($this->db->quoteName('id') . ' = ' . (int) $row->id);
 		$this->db->setQuery($query);
 
 		// Store the access level to determine if it changes
@@ -386,10 +392,13 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 	protected function getStateQuery()
 	{
 		$sql = $this->db->getQuery(true);
+
 		// Item ID
 		$sql->select('a.id');
+
 		// Item and category published state
 		$sql->select('a.' . $this->state_field . ' AS state, c.published AS cat_state');
+
 		// Item and category access levels
 		$sql->select('a.access, c.access AS cat_access');
 		$sql->from($this->table . ' AS a');

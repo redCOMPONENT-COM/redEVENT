@@ -13,11 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Class plgReSimplistModel
  *
- * @package     Redevent.Frontend
- * @subpackage  Plugins
- * @since       2.5
+ * @since  2.5
  */
-class plgReSimplistModel extends RedeventModelBaseeventlist
+class PlgReSimplistModel extends RedeventModelBasesessionlist
 {
 	/**
 	 * Constructor
@@ -59,9 +57,6 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 	 */
 	protected function _buildWhere($query)
 	{
-		$user = JFactory::getUser();
-		$gid = (int) max($user->getAuthorisedViewLevels());
-
 		$where = array();
 
 		// First thing we need to do is to select only needed events
@@ -73,6 +68,7 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 		{
 			$where[] = ' x.published = 1 ';
 		}
+
 		if ($this->getState('featured'))
 		{
 			$where[] = ' x.featured = 1 ';
@@ -81,53 +77,65 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 		if ($ev = $this->getState('eventid'))
 		{
 			$cond = array();
+
 			foreach ($ev as $e)
 			{
 				$cond[] = ' a.id = ' . $this->_db->Quote($e);
 			}
+
 			$where[] = '(' . implode(' OR ', $cond) . ')';
 		}
 
 		if ($cat = $this->getState('filter_category'))
 		{
 			$category = $this->getCategory((int) $cat);
+
 			if ($category)
 			{
-				$where[] = '(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+				$where[] = '(c.id = ' . $this->_db->Quote($category->id)
+					. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 			}
 		}
 
 		if ($cats = $this->getState('categoryid'))
 		{
 			$cond = array();
+
 			foreach ($cats as $c)
 			{
 				$category = $this->getCategory((int) $c);
+
 				if ($category)
 				{
-					$cond[] = '(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+					$cond[] = '(c.id = ' . $this->_db->Quote($category->id)
+						. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 				}
 			}
+
 			$where[] = '(' . implode(' OR ', $cond) . ')';
 		}
 
 		if ($cities = $this->getState('city'))
 		{
 			$city_cond = array();
+
 			foreach ($cities as $c)
 			{
 				$city_cond[] = ' STRCMP(l.city, ' . $this->_db->Quote($c) . ') = 0 ';
 			}
+
 			$where[] = '(' . implode(' OR ', $city_cond) . ')';
 		}
 
 		if ($venues = $this->getState('venueid'))
 		{
 			$cond = array();
+
 			foreach ($venues as $v)
 			{
 				$cond[] = ' l.id = ' . $this->_db->Quote($v);
 			}
+
 			$where[] = '(' . implode(' OR ', $cond) . ')';
 		}
 
@@ -140,7 +148,7 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 					$prefix = 'a.';
 					$where[] = ' a.' . $f . ' = ' . $this->_db->Quote($v);
 				}
-				else if ($field = $this->_getXrefCustom($f))
+				elseif ($field = $this->_getXrefCustom($f))
 				{
 					$prefix = 'x.';
 					$where[] = ' x.' . $f . ' = ' . $this->_db->Quote($v);
@@ -149,17 +157,19 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 				{
 					continue;
 				}
+
 				$where[] = $prefix . $f . ' LIKE ' . $this->_db->Quote("%$v%");
 			}
 		}
 
 		$sstate = $this->getState('type');
 		$now = strftime('%Y-%m-%d %H:%M');
+
 		if ($sstate == 'past')
 		{
 			$where[] = '(x.dates > 0 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now) . ')';
 		}
-		else if ($sstate == 'future')
+		elseif ($sstate == 'future')
 		{
 			$where[] = '(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')';
 		}
@@ -170,13 +180,14 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 	/**
 	 * return object if the field is a event custom field
 	 *
-	 * @param string $name db field name (custom<id>)
+	 * @param   string  $name  db field name (custom<id>)
 	 *
 	 * @return mixed object or false if not exists
 	 */
 	protected function _getCustom($name)
 	{
 		$fields = $this->getCustomFields();
+
 		foreach ($fields as $f)
 		{
 			if ('custom' . $f->id == $name)
@@ -184,19 +195,21 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 				return $f;
 			}
 		}
+
 		return false;
 	}
 
 	/**
 	 * return object if the field is a session custom field
 	 *
-	 * @param string $name db field name (custom<id>)
+	 * @param   string  $name  db field name (custom<id>)
 	 *
 	 * @return mixed object or false if not exists
 	 */
 	protected function _getXrefCustom($name)
 	{
 		$fields = $this->getXrefCustomFields();
+
 		foreach ($fields as $f)
 		{
 			if ('custom' . $f->id == $name)
@@ -204,6 +217,7 @@ class plgReSimplistModel extends RedeventModelBaseeventlist
 				return $f;
 			}
 		}
+
 		return false;
 	}
 }

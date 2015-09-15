@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  redevent
  * @since       2.0
  */
-class RedeventModelVenuecategory extends RedeventModelBaseeventlist
+class RedeventModelVenuecategory extends RedeventModelBasesessionlist
 {
 	/**
 	 * category id

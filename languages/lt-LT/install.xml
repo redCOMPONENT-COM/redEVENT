@@ -7,17 +7,17 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.3</version>
+	<tag>##VERSION##</tag>
 	<description>redevent lt-LT</description>
-		
+
 	<fileset>
 		<files folder="admin" target="administrator/language">
 			<folder>lt-LT</folder>
 		</files>
-	<!--
+
 		<files folder="site" target="language">
 			<folder>lt-LT</folder>
 		</files>
-		  -->
 	</fileset>
 </extension>

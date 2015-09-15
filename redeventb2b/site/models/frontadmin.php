@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent
  * @since    2.5
  */
-class Redeventb2bModelFrontadmin extends RedeventModelBaseeventlist
+class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 {
 	/**
 	 * caching for sessions
@@ -300,11 +300,13 @@ class Redeventb2bModelFrontadmin extends RedeventModelBaseeventlist
 	 */
 	public function getEventsOptions()
 	{
-		$db      = JFactory::getDbo();
+		$db      = $this->_db;
 		$query = $db->getQuery(true);
 
-		$ids = array_merge($this->useracl->getCanEditEvents(),
-			$this->useracl->getEventsCanViewAttendees());
+		$ids = array_merge(
+			$this->useracl->getCanEditEvents(),
+			$this->useracl->getEventsCanViewAttendees()
+		);
 		$ids = array_unique($ids);
 
 		if (!$ids)
@@ -823,12 +825,12 @@ class Redeventb2bModelFrontadmin extends RedeventModelBaseeventlist
 			$query->where('c.id = ' . JRequest::getInt('filter_category'));
 		}
 
-		if ($from = $this->getState('filter_from') && RedeventHelper::isValidDate($this->getState('filter_from')))
+		if ($from = $this->getState('filter_from') && RedeventHelperDate::isValidDate($this->getState('filter_from')))
 		{
 			$query->where('DATE(x.dates) >= ' . $db->quote($this->getState('filter_from')));
 		}
 
-		if ($to = $this->getState('filter_to') && RedeventHelper::isValidDate($this->getState('filter_to')))
+		if ($to = $this->getState('filter_to') && RedeventHelperDate::isValidDate($this->getState('filter_to')))
 		{
 			$query->where('x.dates > 0 AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
 		}

@@ -1,42 +1,33 @@
 <?php
 /**
  * @version     2.5
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 - 2010 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @package     Redevent
+ * @subpackage  Redevent.Josetta
+ * @copyright   redEVENT (C) 2008 - 2015 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
  * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-defined( '_JEXEC' ) or die( '' );
+defined('_JEXEC') or die('');
 
-// include base class of josettadefinition.
+// Include base class of josettad efinition.
 require_once JPATH_ADMINISTRATOR . '/components/com_josetta/classes/extensionplugin.php';
 
 /**
  * Josetta! translation Plugin
  *
- * @package		Josetta
- * @subpackage	josetta.redeventcustomfield
+ * @since  2.5
  */
 class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 {
 	protected $_context = 'com_redevent_customfield';
 	protected $_defaultTable = 'redevent_fields';
 
+	/**
+	 * constructor
+	 *
+	 * @param   string  &$subject  subject
+	 * @param   array   $config    config
+	 */
 	public function __construct(&$subject, $config = array())
 	{
 		parent::__construct($subject, $config);
@@ -46,16 +37,19 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 	/**
 	 * Load language files that may be needed by the extension being
 	 * translated
+	 *
+	 * @return void
 	 */
 	public function loadLanguages()
 	{
-		// load Joomla global language files
 		parent::loadLanguages();
 
 		$language = JFactory::getLanguage();
-		// load the administrator english language of the component
-		$language->load('com_redevent', JPATH_ADMINISTRATOR.'/components/com_redevent', 'en-GB', true);
-		// load the administrator default language of the component
+
+		// Load the administrator english language of the component
+		$language->load('com_redevent', JPATH_ADMINISTRATOR . '/components/com_redevent', 'en-GB', true);
+
+		// Load the administrator default language of the component
 		$language->load('com_redevent', JPATH_ADMINISTRATOR, null, true);
 	}
 
@@ -71,23 +65,43 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 	{
 		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_customfields'));
 		$items[] = $item;
+
 		return $items;
 	}
 
+	/**
+	 * set path
+	 *
+	 * @return void
+	 */
 	protected function _setPath()
 	{
 		$this->_path = JPATH_PLUGINS . '/josetta_ext/' . $this->_name;
 	}
 
+	/**
+	 * Get table
+	 *
+	 * @return RTable
+	 */
 	protected function _getTable()
 	{
 		// Set the table directory
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_redevent/tables');
+		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
 		$table = RTable::getAdminInstance('Customfield');
 
 		return $table;
 	}
 
+	/**
+	 * onJosettaSaveItem
+	 *
+	 * @param   string  $context  context
+	 * @param   object  $item     item
+	 * @param   array   &$errors  errors
+	 *
+	 * @return bool|void
+	 */
 	public function onJosettaSaveItem($context, $item, &$errors)
 	{
 		if (($context != $this->_context))

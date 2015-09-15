@@ -7,24 +7,29 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.2</version>
+	<tag>##VERSION##</tag>
 	<description>PLG_RESIMPLELIST_PLUGIN_DESC</description>
 
 	<files>
 		<filename plugin="resimplelist">resimplelist.php</filename>
 		<folder>resimplelist</folder>
-		<filename>resimplelist.css</filename>
 		<filename>index.html</filename>
 		<folder>language</folder>
 		<folder>resimplelist</folder>
 	</files>
+
+	<!-- media files -->
+	<media folder="media" destination="plg_content_resimplelist">
+		<folder>css</folder>
+	</media>
 
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="max_events" type="text" default="20" label="PLG_RESIMPLELIST_MAX_EVENTS_LABEL"
 					   description="PLG_RESIMPLELIST_MAX_EVENTS_DESC"/>
-				<field name="date_format" type="text" default="%b %d, %Y" label="PLG_RESIMPLELIST_DATEFORMAT_LABEL"
+				<field name="date_format" type="text" default="M d, Y" label="PLG_RESIMPLELIST_DATEFORMAT_LABEL"
 					   description="PLG_RESIMPLELIST_DATEFORMAT_DESC"/>
 				<field name="show_end" type="radio" default="1" label="PLG_RESIMPLELIST_SHOWEND_LABEL"
 					   description="PLG_RESIMPLELIST_SHOWEND_DESC">
@@ -36,7 +41,7 @@
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="time_format" type="text" default="%l:%M%P" label="PLG_RESIMPLELIST_TIMEFORMAT_LABEL"
+				<field name="time_format" type="text" default="H:i" label="PLG_RESIMPLELIST_TIMEFORMAT_LABEL"
 					   description="PLG_RESIMPLELIST_TIMEFORMAT_DESC"/>
 			</fieldset>
 		</fields>

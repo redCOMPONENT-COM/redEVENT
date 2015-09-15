@@ -431,7 +431,7 @@ class RedeventHelperRoute
 	{
 		$parts = array(
 			"option" => "com_redevent",
-			"task"   => "editsession.edit"
+			"view"   => "editsession"
 		);
 
 		if (!empty($id))
@@ -442,6 +442,55 @@ class RedeventHelperRoute
 		if ($xref)
 		{
 			$parts['s_id'] = $xref;
+		}
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Get task route to add session
+	 *
+	 * @param   int  $id  event id
+	 *
+	 * @return string
+	 */
+	public static function getAddSessionTaskRoute($id = null)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => "editsession",
+			"task"   => "editsession.add"
+		);
+
+		if (!empty($id))
+		{
+			$parts['e_id'] = $id;
+		}
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Get task route to edit session
+	 *
+	 * @param   int  $id         event id
+	 * @param   int  $sessionId  session id
+	 *
+	 * @return string
+	 */
+	public static function getEditSessionTaskRoute($id = null, $sessionId = 0)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => "editsession",
+			"task"   => "editsession.edit"
+		);
+
+		$parts['s_id'] = $sessionId;
+
+		if (!empty($id))
+		{
+			$parts['e_id'] = $id;
 		}
 
 		return self::buildUrl($parts);
@@ -516,6 +565,27 @@ class RedeventHelperRoute
 	/**
 	 * Get route
 	 *
+	 * @param   int     $registrationId  session id
+	 * @param   string  $xref            xref
+	 * @param   string  $task            task
+	 *
+	 * @return string
+	 */
+	public static function getCancelRegistrationRoute($registrationId, $xref, $task = 'registration.cancelreg')
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"task"   => $task,
+			"rid"   => $registrationId,
+			"xref" => $xref,
+		);
+
+		return 'index.php?' . JURI::buildQuery($parts);
+	}
+
+	/**
+	 * Get route
+	 *
 	 * @param   int     $xref  session id
 	 * @param   string  $task  task
 	 *
@@ -557,6 +627,28 @@ class RedeventHelperRoute
 		}
 
 		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Return item id associated to a view
+	 *
+	 * @param   string  $viewName  view name
+	 *
+	 * @return int|bool false on failure
+	 */
+	public static function getViewItemId($viewName)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => $viewName
+		);
+
+		if ($item = self::_findItem($parts))
+		{
+			return $item->id;
+		}
+
+		return false;
 	}
 
 	/**

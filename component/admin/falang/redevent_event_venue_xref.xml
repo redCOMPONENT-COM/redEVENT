@@ -2,7 +2,7 @@
 <falang type="contentelement">
 	<name>redEVENT - Sessions</name>
 	<author>redCOMPONENT</author>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.1</version>
 	<description>Translations for redEVENT events sessions</description>
 	<reference>
 		<table name="redevent_event_venue_xref">

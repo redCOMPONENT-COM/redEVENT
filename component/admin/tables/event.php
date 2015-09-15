@@ -95,11 +95,17 @@ class RedeventTableEvent extends RedeventTable
 			return false;
 		}
 
-		if ($app->isAdmin() && !empty($this->review_message) && !strstr($this->review_message, '[redform]'))
+		if ($app->isAdmin() && !empty($this->review_message))
 		{
-			$this->setError(JText::_('COM_REDEVENT_WARNING_REDFORM_TAG_MUST_BE_INCLUDED_IN_REVIEW_SCREEN_IF_NOT_EMPTY'));
+			$tagHelper = new RedeventTags;
+			$fullReviewMessage = $tagHelper->replaceLibraryTags($this->review_message);
 
-			return false;
+			if (!strstr($fullReviewMessage, '[redform]'))
+			{
+				$this->setError(JText::_('COM_REDEVENT_WARNING_REDFORM_TAG_MUST_BE_INCLUDED_IN_REVIEW_SCREEN_IF_NOT_EMPTY'));
+
+				return false;
+			}
 		}
 
 		// Prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]

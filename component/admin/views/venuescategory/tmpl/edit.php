@@ -111,7 +111,7 @@ JHtml::_('rjquery.chosen', 'select');
 					</div>
 				</div>
 				<div class="span3">
-					<?php echo RLayoutHelper::render('joomla.edit.metadata', $this); ?>
+					<?php echo RedeventLayoutHelper::render('joomla.edit.metadata', $this); ?>
 				</div>
 			</div>
 		</div>

@@ -29,6 +29,8 @@ defined('_JEXEC') or die('Restricted access');
 */
 class ModRedeventFiltersHelper
 {
+	private $model;
+
 	/**
 	 * Return form for display
 	 *
@@ -43,14 +45,13 @@ class ModRedeventFiltersHelper
 		$result = new stdclass;
 
 		if (!($input->get('option') == 'com_redevent'
-			&& ($input->get('view') == 'simplelist'))
-		)
+			&& ($input->get('view') == 'simplelist')))
 		{
 			// We are only displaying this module whe user is viewing an event list
 			return false;
 		}
 
-		$model = self::getModel();
+		$model = $this->getModel();
 
 		if ($params->get('category_filter'))
 		{
@@ -77,16 +78,14 @@ class ModRedeventFiltersHelper
 	 */
 	public function getModel()
 	{
-		static $model;
-
-		if (!($model))
+		if (!($this->model))
 		{
 			$input = JFactory::getApplication()->input;
 			$view = $input->getCmd('view', 'simplelist');
 
-			$model = RModel::getFrontInstance(ucfirst($view));
+			$this->model = RModel::getFrontInstance(ucfirst($view));
 		}
 
-		return $model;
+		return $this->model;
 	}
 }

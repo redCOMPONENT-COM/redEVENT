@@ -57,6 +57,7 @@ class RedeventModelEditevent extends RModelAdmin
 		if (!$pk)
 		{
 			$data = $this->mergeTemplateData($data);
+			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
 		}
 
 		$result = parent::save($data);

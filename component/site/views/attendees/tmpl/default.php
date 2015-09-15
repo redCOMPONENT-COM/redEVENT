@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php echo RedeventHelperOutput::xrefattendeesbutton($this->session->xref); ?>
 		<?php endif; ?></h2>
 		<div class="session-info">
-			<?php echo RedeventHelperOutput::formatEventDateTime($this->session, false) . ' @ ' . $this->session->venue; ?>
+			<?php echo RedeventHelperDate::formatEventDateTime($this->session, false) . ' @ ' . $this->session->venue; ?>
 		</div>
 		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->session->xref, JText::_('COM_REDEVENT_CSV_export'));?>
 

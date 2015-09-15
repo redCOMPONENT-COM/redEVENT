@@ -1,44 +1,30 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redFORM
- * @copyright redFORM (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Plugins
+ * @subpackage  RedformPayment
+ *
+ * @copyright   Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die('Restricted access');
 
 // Import library dependencies
 jimport('joomla.event.plugin');
 
-class plgRedform_PaymentFiltervenue extends JPlugin {
-
-	public function __construct(&$subject, $config = array())
-	{
-		parent::__construct($subject, $config);
-	}
-
+/**
+ * Class plgRedform_PaymentFiltervenue
+ *
+ * @since  2.5
+ */
+class PlgRedform_PaymentFiltervenue extends JPlugin
+{
 	/**
 	 * filters available gateways based on venue
 	 *
-	 * @param   array   $gateways  current allowed gateways
-	 * @param   object  $details   submission details
+	 * @param   array   &$gateways  current allowed gateways
+	 * @param   object  $details    submission details
 	 *
 	 * @return boolean
 	 */
@@ -79,6 +65,7 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 
 		// Intersect !
 		$filtered = array();
+
 		foreach ($gateways as $g)
 		{
 			if (in_array($g->value, $allowed))
@@ -86,6 +73,7 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 				$filtered[] = $g;
 			}
 		}
+
 		$gateways = $filtered;
 
 		return true;
@@ -124,6 +112,7 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 
 		// Intersect !
 		$filtered = array();
+
 		foreach ($gateways as $g)
 		{
 			if (in_array($g->value, $allowed))
@@ -131,6 +120,7 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 				$filtered[] = $g;
 			}
 		}
+
 		$gateways = $filtered;
 
 		return true;

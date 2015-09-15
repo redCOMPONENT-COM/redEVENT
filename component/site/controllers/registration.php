@@ -58,7 +58,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		for ($i = 1; $i < $nbPosted + 1; $i++)
 		{
-			$selectedPricegroups[] = $this->input->getInt('sessionprice_' . $i);
+			$selectedPricegroups[] = $this->input->getInt('sessionprice_' . $i, ($i > 1 ? $selectedPricegroups[0] : 0));
 		}
 
 		if (!$xref)
@@ -272,6 +272,29 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	}
 
 	/**
+	 * first step in unreg process by email
+	 *
+	 * @return void
+	 */
+	public function emailcancelregistration()
+	{
+		$xref = $this->input->getInt('xref');
+
+		if (!RedeventHelper::canUnregister($xref))
+		{
+			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
+
+			return;
+		}
+
+		// Display the unreg form confirmation
+		$this->input->set('view', 'registration');
+		$this->input->set('layout', 'cancel');
+
+		parent::display();
+	}
+
+	/**
 	 * Deletes a registered user
 	 *
 	 * @return void
@@ -284,10 +307,11 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$task = $app->input->getCmd('task');
 		$id = $app->input->getInt('id', 0);
 		$xref = $app->input->getInt('xref', 0);
+		$rid = $app->input->getInt('rid', 0);
 
 		$params = $app->getParams('com_redevent');
 
-		if ($this->cancelRegistration())
+		if ($this->cancelRegistration($rid, $xref))
 		{
 			if ($task == 'managedelreguser')
 			{
@@ -333,16 +357,35 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 */
 	public function cancelreg()
 	{
-		$submit_key = $this->input->get('submit_key');
-		$xref = $this->input->getInt('xref');
+		$xref = $this->input->getInt('xref', 0);
+		$rid = $this->input->getInt('rid', 0);
 
-		$model = $this->getModel('registration');
-		$model->setXref($xref);
-		$model->cancel($submit_key);
-		$eventdata = $model->getSessionDetails();
+		if ($this->cancelRegistration($rid, $xref))
+		{
+			$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
+		}
+		else
+		{
+			$this->setMessage($this->getError(), 'error');
+		}
 
-		$msg = JText::_('COM_REDEVENT_Registration_cancelled');
-		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
+		$return = $this->input->getString('return');
+
+		if ($return)
+		{
+			$return = base64_decode($return);
+		}
+		else
+		{
+			$xref = $this->input->getInt('xref');
+			$model = $this->getModel('registration');
+			$model->setXref($xref);
+			$eventdata = $model->getSessionDetails();
+
+			$return = RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref);
+		}
+
+		$this->setRedirect(JRoute::_($return));
 	}
 
 	/**
@@ -601,15 +644,84 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	}
 
 	/**
+	 * Cancel active user registration
+	 *
+	 * @return void
+	 */
+	public function canceluser()
+	{
+		$user = JFactory::getUser();
+		$xref = $this->input->getInt('xref');
+
+		try
+		{
+			if (!$user)
+			{
+				throw new InvalidArgumentException('User not logged');
+			}
+
+			if (!$xref)
+			{
+				throw new InvalidArgumentException('Missing session id');
+			}
+
+			$registration = RTable::getAdminInstance('Attendee');
+			$registration->load(array('xref' => $xref, 'uid' => $user->get('id'), 'cancelled' => 0, ));
+
+			if (!$registration->id)
+			{
+				throw new InvalidArgumentException('Registration not found');
+			}
+
+			if ($this->cancelRegistration($registration->id, $xref))
+			{
+				$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
+			}
+			else
+			{
+				throw new RuntimeException($this->getError());
+			}
+		}
+		catch (Exception $e)
+		{
+			$this->setMessage($e->getMessage(), 'error');
+		}
+
+		$return = $this->input->getString('return');
+
+		if ($return)
+		{
+			$return = base64_decode($return);
+		}
+		elseif ($xref)
+		{
+			$model = $this->getModel('registration');
+			$model->setXref($xref);
+			$eventdata = $model->getSessionDetails();
+
+			$return = RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref);
+		}
+		else
+		{
+			$return = 'index.php';
+		}
+
+		$this->setRedirect(JRoute::_($return));
+	}
+
+	/**
 	 * Ajax cancel registration
 	 *
 	 * @return void
 	 */
 	public function ajaxcancelregistration()
 	{
+		$xref = $this->input->getInt('xref', 0);
+		$rid = $this->input->getInt('rid', 0);
+
 		$resp = new stdClass;
 
-		if ($this->cancelRegistration())
+		if ($this->cancelRegistration($rid, $xref))
 		{
 			$resp->status = 1;
 		}
@@ -648,19 +760,21 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	/**
 	 * Actually do the cancel work (with notifications)
 	 *
+	 * @param   int  $rid   registration id
+	 * @param   int  $xref  session id
+	 *
 	 * @return bool
+	 *
+	 * @TODO: there are to much registration cancellation function !
 	 */
-	protected function cancelRegistration()
+	protected function cancelRegistration($rid, $xref)
 	{
 		$app = JFactory::getApplication();
-
-		$rid = $app->input->getInt('rid', 0);
-		$xref = $app->input->getInt('xref', 0);
 
 		// Get/Create the model
 		$model = $this->getModel('Registration', 'RedeventModel');
 
-		if (!$model->cancelregistration($rid, $xref))
+		if (!$model->cancelregistration($rid))
 		{
 			$msg = $model->getError();
 			$this->setError($msg);

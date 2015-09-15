@@ -8,7 +8,8 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>Copyright (C) 2015 redCOMPONENT.com. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later, see LICENSE.</license>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.1</version>
+	<tag>##VERSION##</tag>
 	<description>redEVENT B2B library</description>
 	<files>
 		<filename>bootstrap.php</filename>

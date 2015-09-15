@@ -1,0 +1,5 @@
+{
+	"wwwDir"           : "/path/to/joomla/root",
+	"browserSyncProxy" : "localhost",
+	"browser"          : "default"
+}

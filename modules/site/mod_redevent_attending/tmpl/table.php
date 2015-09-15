@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 </thead>
 <tbody>
 <?php foreach ($list as $item) :  ?>
-	<?php $isover = (RedeventHelper::isOver($item) ? ' isover' : ''); ?>
+	<?php $isover = (RedeventHelperDate::isOver($item) ? ' isover' : ''); ?>
 	<tr class="<?php echo $isover; ?>">
 		<td class="event-date">
 			<?php echo $item->dateinfo; ?>

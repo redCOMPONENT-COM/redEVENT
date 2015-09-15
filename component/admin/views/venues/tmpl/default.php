@@ -50,7 +50,7 @@ if (($saveOrder) && ($this->canEdit))
 </script>
 <form action="index.php?option=com_redevent&view=venues" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
-	echo RLayoutHelper::render(
+	echo RedeventLayoutHelper::render(
 		'searchtools.default',
 		array(
 			'view' => $this,
@@ -213,7 +213,7 @@ if (($saveOrder) && ($this->canEdit))
 							}
 							else
 							{
-								$catlink    = 'index.php?option=com_redevent&amp;controller=venuescategories&amp;task=edit&amp;cid[]='.$cat->id;
+								$catlink = 'index.php?option=com_redevent&task=venuescategory.edit&id=' . $cat->id;
 								?>
 								<span class="editlinktip hasTooltip" title="<?php echo JText::_('COM_REDEVENT_EDIT_CATEGORY' );?>::<?php echo $cat->name; ?>">
 								<a href="<?php echo $catlink; ?>">

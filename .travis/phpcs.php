@@ -25,8 +25,8 @@ fwrite(STDOUT, "\033[32;1mInitializing PHP_CodeSniffer checks.\033[0m\n");
 
 // Files
 $files = array(
-	REPO_BASE . '/component',
-//	REPO_BASE . '/plugins',
+//	REPO_BASE . '/component',
+	REPO_BASE . '/plugins',
 //	REPO_BASE . '/modules',
 );
 
@@ -36,11 +36,15 @@ $ignored = array(
 	REPO_BASE . '/component/admin/falang',
 	REPO_BASE . '/component/admin/layouts/*',
 	REPO_BASE . '/component/admin/tables/*',
+	REPO_BASE . '/component/libraries/redevent/layouts/*',
 	REPO_BASE . '/component/site/views/*/tmpl/*',
 	REPO_BASE . '/component/site/layouts/*',
 	REPO_BASE . '/component/site/classes/*',
 	REPO_BASE . '/component/site/sef_ext/*',
-	REPO_BASE . '/component/media'
+	REPO_BASE . '/component/media',
+	REPO_BASE . '/plugins/**/media/*',
+	REPO_BASE . '/plugins/jomsocial/*',
+	REPO_BASE . '/plugins/josetta_ext/*',
 );
 
 // Build the options for the sniffer

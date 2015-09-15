@@ -22,7 +22,7 @@ $colnames = array_map('trim', $colnames);
 <?php else:
 	$k = 0;
 	foreach ($rows as $row) :
-		$isover = (RedeventHelper::isOver($row) ? ' isover' : '');
+		$isover = (RedeventHelperDate::isOver($row) ? ' isover' : '');
 		?>
 		<tr class="sectiontableentry<?php echo ($k + 1) . $params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?><?php echo $isover; ?>">
 
@@ -30,7 +30,7 @@ $colnames = array_map('trim', $colnames);
 				<?php switch ($col):
 					case 'date': ?>
 						<td class="re_date">
-							<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
+							<?php echo RedeventHelperDate::formatEventDateTime($row);	?>
 						</td>
 						<?php break;?>
 

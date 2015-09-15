@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+
+table.plg_resimplelist {
+	border: 1px solid #E5E5E5;
+	border-collapse: collapse;
+	font-size: 1em;
+	margin: 1em 1px;
+	width: 99%;
+}
+
+table.plg_resimplelist th {
+	background-color: #EFEFEF;
+	border-bottom: 1px solid #E5E5E5;
+	border-right: 1px solid #E5E5E5;
+	color: #000000;
+	font-weight: bold;
+	padding: 0.4em;
+	text-align: left;
+	white-space: nowrap;
+}
+
+table.plg_resimplelist th img {
+	border: medium none;
+	margin: 0 0 5px 5px;
+	vertical-align: middle;
+}
+
+table.plg_resimplelist td {
+	border-bottom: 1px solid #E5E5E5;
+	border-right: 1px solid #E5E5E5;
+	padding: 0.4em;
+	vertical-align: top;
+}
+
+table.plg_resimplelist tr.sectiontableentry2 td {
+	background: none repeat scroll 0 0 #F4F4F4;
+}
+
+table.plg_resimplelist tr:hover td {
+	background: none repeat scroll 0 0 #F8F8F8;
+}

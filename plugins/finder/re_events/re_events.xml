@@ -7,9 +7,10 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>##VERSION##</version>
+	<version>3.0.b.3.1</version>
+	<tag>##VERSION##</tag>
   <description>PLG_FINDER_RE_EVENTS_XML_DESCRIPTION</description>
-  
+
 	<files>
 		<file plugin="re_events">re_events.php</file>
 		<filename>index.html</filename>

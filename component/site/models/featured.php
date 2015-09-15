@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Redevent
  * @since       2.5
  */
-class RedeventModelFeatured extends RedeventModelBaseeventlist
+class RedeventModelFeatured extends RedeventModelBasesessionlist
 {
 	/**
 	 * Build the where clause
