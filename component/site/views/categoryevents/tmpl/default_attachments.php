@@ -22,6 +22,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+RHtml::_('rbootstrap.tooltip');
 ?>
 
 <?php if ($this->category->attachments && count($this->category->attachments)):?>

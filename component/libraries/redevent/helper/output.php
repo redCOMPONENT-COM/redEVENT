@@ -29,7 +29,7 @@ class RedeventHelperOutput
 
 		if ($allowed)
 		{
-			JHTML::_('behavior.tooltip');
+			RHtml::_('rbootstrap.tooltip');
 
 			if ($params->get('icons', 1))
 			{
@@ -173,7 +173,7 @@ class RedeventHelperOutput
 			return '';
 		}
 
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		if ($params->get('icons', 1))
 		{
@@ -193,7 +193,7 @@ class RedeventHelperOutput
 
 		$link = JRoute::_('index.php?option=com_redevent&view=archive');
 
-		$output = RHtml::tooltip($tip, $title, $image, null, $link);
+		$output = RHtml::tooltip($tip, $title, null, $image, $link);
 
 		return $output;
 	}
@@ -212,7 +212,7 @@ class RedeventHelperOutput
 	{
 		if ($allowedtoedit)
 		{
-			JHTML::_('behavior.tooltip');
+			RHtml::_('rbootstrap.tooltip');
 
 			switch ($view)
 			{
@@ -273,7 +273,7 @@ class RedeventHelperOutput
 	 */
 	public static function xrefattendeesbutton($id)
 	{
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		$image = RHelperAsset::load(
 			'attendees.png',
@@ -285,7 +285,7 @@ class RedeventHelperOutput
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES');
 		$link = RedeventHelperRoute::getManageAttendees($id);
 
-		$output = RHtml::tooltip($tip, $text, $image, null, $link);
+		$output = RHtml::tooltip($tip, $text, null, $image, $link);
 
 		return $output;
 	}
@@ -302,7 +302,7 @@ class RedeventHelperOutput
 	{
 		if ($params->get('show_print_icon'))
 		{
-			JHTML::_('behavior.tooltip');
+			RHtml::_('rbootstrap.tooltip');
 
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 
@@ -350,7 +350,8 @@ class RedeventHelperOutput
 	{
 		if ($params->get('show_email_icon'))
 		{
-			JHTML::_('behavior.tooltip');
+			RHtml::_('rbootstrap.tooltip');
+
 			$uri = JURI::getInstance();
 			$base = $uri->toString(array('scheme', 'host', 'port'));
 			$link = $base . JRoute::_('index.php?option=com_redevent&view=' . $view . '&id=' . $slug, false);

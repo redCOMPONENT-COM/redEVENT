@@ -176,7 +176,7 @@ class RedeventViewMyevents extends RedeventViewFront
 			return '';
 		}
 
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		$image = RHelperAsset::load('calendar_edit.png', null, array('alt' => JText::_('COM_REDEVENT_EDIT_XREF')));
 
@@ -206,7 +206,7 @@ class RedeventViewMyevents extends RedeventViewFront
 			return '';
 		}
 
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		$image = RHelperAsset::load('calendar_edit.png', null, array('alt' => JText::_('COM_REDEVENT_EDIT_EVENT')));
 
@@ -228,7 +228,7 @@ class RedeventViewMyevents extends RedeventViewFront
 	 */
 	public static function xrefdeletebutton($id)
 	{
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		$image = RHelperAsset::load('no.png', null, array('alt' => JText::_('COM_REDEVENT_DELETE_XREF')));
 
@@ -273,7 +273,7 @@ class RedeventViewMyevents extends RedeventViewFront
 	 */
 	public static function xrefattendeesbutton($id)
 	{
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		$image = RHelperAsset::load('attendees.png', null, array('alt' => JText::_('COM_REDEVENT_EDIT_ATTENDEES')));
 
@@ -294,7 +294,7 @@ class RedeventViewMyevents extends RedeventViewFront
 	 */
 	public static function venueeditbutton($id)
 	{
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
 		$image = RHelperAsset::load('edit_venue.png', null, array('alt' => JText::_('COM_REDEVENT_EDIT_VENUE')));
 
