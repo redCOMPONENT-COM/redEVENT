@@ -137,7 +137,7 @@ class plgRedeventMaerskregistration extends JPlugin
 
 		foreach ($answers->getFields() as $a)
 		{
-			if (in_array($a->id, $fieldIds))
+			if (in_array($a->field_id, $fieldIds))
 			{
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true);
