@@ -92,23 +92,6 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 			$success->addChild('CustomerID',      $rmUser->rm_customerid);
 		}
 
-		$companyAddress = array();
-
-		if ($rmUser->organization_address1)
-		{
-			$companyAddress[] = $rmUser->organization_address1;
-		}
-
-		if ($rmUser->organization_address2)
-		{
-			$companyAddress[] = $rmUser->organization_address1;
-		}
-
-		if ($rmUser->organization_address3)
-		{
-			$companyAddress[] = $rmUser->organization_address3;
-		}
-
 		$success->addChild('Firstname',    $rmUser->rm_firstname);
 		$success->addChild('Lastname',     $rmUser->rm_lastname);
 		$success->addChild('Address1',     $rmUser->rm_address1);
@@ -128,11 +111,39 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 
 		$success->addChild('Phonenumber',  $rmUser->rm_phone);
 		$success->addChild('Mobilephonenumber', $rmUser->rm_mobile);
-		$success->addChild('CompanyCvrNr',      $rmUser->organization_vat);
-		$success->addChild('CompanyName',      $rmUser->organization);
-		$success->addChild('CompanyZip',      $rmUser->organization_zip);
-		$success->addChild('CompanyAddress',      implode(', ', $companyAddress));
-		$success->addChild('CompanyPhone',      $rmUser->organization_phone);
+
+		$companies = $rmUser->getOrganizations();
+
+		if (!empty($companies))
+		{
+			$companyUser = reset($companies);
+			$company = RedmemberApi::getOrganization($companyUser['organization_id']);
+
+			$companyAddress = array();
+
+			if ($company->organization_address1)
+			{
+				$companyAddress[] = $company->organization_address1;
+			}
+
+			if ($company->organization_address2)
+			{
+				$companyAddress[] = $company->organization_address2;
+			}
+
+			if ($company->organization_address3)
+			{
+				$companyAddress[] = $company->organization_address3;
+			}
+
+			$success->addChild('CompanyCvrNr',      $company->organization_vat);
+			$success->addChild('CompanyName',      $company->name);
+			$success->addChild('CompanyZip',      $company->organization_zip);
+			$success->addChild('CompanyAddress',      implode(', ', $companyAddress));
+			$success->addChild('CompanyPhone',      $company->organization_phone);
+		}
+
+
 
 		$this->appendElement($response, $success);
 
