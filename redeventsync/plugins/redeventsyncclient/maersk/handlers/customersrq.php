@@ -102,7 +102,7 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		$success->addChild('Countrycode',  $rmUser->rm_countrycode);
 		$success->addChild('Emailaddress', $rmUser->email);
 		$success->addChild('Nationality', $rmUser->rm_nationality);
-		$success->addChild('TitleRank', $rmUser->titlerank);
+		$success->addChild('TitleRank', $rmUser->title_rank);
 
 		if ($dob = $this->parent->convertDateToPicasso($rmUser->rm_birthday))
 		{

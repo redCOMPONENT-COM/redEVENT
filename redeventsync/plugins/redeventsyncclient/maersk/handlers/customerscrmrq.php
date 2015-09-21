@@ -93,7 +93,7 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$data['rm_zipcode'] = (string) $customer->Zipcode;
 		$data['rm_countrycode'] = (string) $customer->Countrycode;
 		$data['rm_nationality'] = (string) $customer->Nationality;
-		$data['rm_titlerank'] = (string) $customer->TitleRank;
+		$data['title_rank'] = (string) $customer->TitleRank;
 
 		if ($dob = $this->parent->convertDateFromPicasso((string) $customer->Birthdate))
 		{
@@ -339,7 +339,7 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$message->addChild('Countrycode',  $rmUser->rm_countrycode);
 		$message->addChild('Emailaddress', $rmUser->email);
 		$message->addChild('Nationality', $rmUser->rm_nationality);
-		$message->addChild('TitleRank', $rmUser->rm_titlerank);
+		$message->addChild('TitleRank', $rmUser->title_rank);
 
 		if ($dob = $this->parent->convertDateToPicasso($rmUser->rm_birthday))
 		{
