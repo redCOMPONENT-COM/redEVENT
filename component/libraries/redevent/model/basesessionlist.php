@@ -501,8 +501,6 @@ class RedeventModelBasesessionlist extends RModel
 	{
 		$app = JFactory::getApplication();
 
-		$user		= JFactory::getUser();
-
 		// Get the paramaters of the active menu item
 		$params 	= $app->getParams();
 
