@@ -28,6 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation');
 
 $fieldsOrdering = array(
+	'title_rank',
 	'rm_firstname',
 	'rm_lastname',
 	'email',
