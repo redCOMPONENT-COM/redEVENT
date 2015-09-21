@@ -39,7 +39,8 @@
 			<option value="3">COM_REDEVENT_BOTH</option>
 		</field>
 		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT"
-			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"/>
+			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"
+				showon="mailinform:1,2,3"/>
 
 		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION"
 			   description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
