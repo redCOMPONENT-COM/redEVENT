@@ -26,10 +26,6 @@ class RedeventTags
 
 	private $submitkey;
 
-	private $maxattendees;
-
-	private $maxwaitinglist;
-
 	private $published;
 
 	protected $eventlinks = null;
@@ -2151,7 +2147,7 @@ class RedeventTags
 	 */
 	private function getTag_eventplaces()
 	{
-		return $this->maxattendees;
+		return $this->getEvent()->getData()->maxattendees;
 	}
 
 	/**
@@ -2161,7 +2157,7 @@ class RedeventTags
 	 */
 	private function getTag_waitinglistplaces()
 	{
-		return $this->maxwaitinglist;
+		return $this->getEvent()->getData()->maxwaitinglist;
 	}
 
 	/**
