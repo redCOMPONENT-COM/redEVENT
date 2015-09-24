@@ -61,7 +61,7 @@ class RedeventViewSignup extends RViewSite
 		$tags = new RedeventTags;
 		$tags->setXref(JRequest::getInt('xref'));
 
-		$message = $tags->ReplaceTags($course->submission_type_email_pdf);
+		$message = $tags->replaceTags($course->submission_type_email_pdf);
 
 		// Convert urls
 		$htmlmsg = RedeventHelperOutput::ImgRelAbs($message);

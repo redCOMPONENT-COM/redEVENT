@@ -72,6 +72,9 @@ class RedeventModelEditeventnotify extends RModel
 
 				$state = $event->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
 
+				$replacer = new RedeventTags;
+				$replacer->setEventId($event->id);
+
 				if (!$this->isNew)
 				{
 					$modified_ip = getenv('REMOTE_ADDR');
@@ -81,7 +84,8 @@ class RedeventModelEditeventnotify extends RModel
 						$user->name, $user->username, $user->email, $modified_ip, $edited,
 						$event->datdescription, $state
 					);
-					$mail->setSubject(JText::sprintf('COM_REDEVENT_FRONTEND_EDITED_EVENT_NOTIFICATION_SUBJECT_S', $SiteName));
+					$mailbody = $replacer->replaceTags($mailbody);
+					$subject = $replacer->replaceTags(JText::sprintf('COM_REDEVENT_FRONTEND_EDITED_EVENT_NOTIFICATION_SUBJECT_S', $SiteName));
 				}
 				else
 				{
@@ -91,11 +95,13 @@ class RedeventModelEditeventnotify extends RModel
 						$user->name, $user->username, $user->email, $event->author_ip, $created,
 						$event->datdescription, $state
 					);
-					$mail->setSubject(JText::sprintf('COM_REDEVENT_FRONTEND_NEW_EVENT_NOTIFICATION_SUBJECT_S', $SiteName));
+					$mailbody = $replacer->replaceTags($mailbody);
+					$subject = $replacer->replaceTags(JText::sprintf('COM_REDEVENT_FRONTEND_NEW_EVENT_NOTIFICATION_SUBJECT_S', $SiteName));
 				}
 
 				$mail->addRecipient($recipients);
 				$mail->setSender(array($MailFrom, $FromName));
+				$mail->setSubject($subject);
 				$mail->setBody($mailbody);
 
 				$sent = $mail->Send();

@@ -126,7 +126,7 @@ if ($this->row->venueid != 0) {
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
 				<?php $review_txt =  trim(strip_tags($this->row->review_message));
-				echo $this->tags->ReplaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))) ); ?>
+				echo $this->tags->replaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))) ); ?>
   		</div>
 
   	<?php endif; ?>
@@ -139,7 +139,7 @@ if ($this->row->venueid != 0) {
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_SESSION_DETAILS' ); ?></h2>
   		<div class="description event_desc">
-			<?php echo $this->tags->ReplaceTags($this->row->details); ?>
+			<?php echo $this->tags->replaceTags($this->row->details); ?>
   		</div>
 
   	<?php endif; ?>

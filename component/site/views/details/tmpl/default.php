@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 	<!-- Details EVENT -->
 	<?php
 	$review_txt = trim(strip_tags($this->row->review_message));
-	echo $this->tags->ReplaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))));
+	echo $this->tags->replaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))));
 
 	if ($this->view_attendees_list) : ?>
 		<!-- Registration -->

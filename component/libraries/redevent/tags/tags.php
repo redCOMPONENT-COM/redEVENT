@@ -192,7 +192,7 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
-	public function ReplaceTags($text, $options = null)
+	public function replaceTags($text, $options = null)
 	{
 		if ($options)
 		{
@@ -703,7 +703,7 @@ class RedeventTags
 		ob_start();
 		?>
 		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
-			<?php echo $this->ReplaceTags($event->submission_type_formal_offer); ?>
+			<?php echo $this->replaceTags($event->submission_type_formal_offer); ?>
 			<input type="hidden" name="task" value="signup"/>
 			<input type="hidden" name="option" value="com_redevent"/>
 			<input type="hidden" name="view" value="signup"/>
@@ -731,7 +731,7 @@ class RedeventTags
 		ob_start();
 		?>
 		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
-			<?php echo $this->ReplaceTags($event->submission_type_email); ?>
+			<?php echo $this->replaceTags($event->submission_type_email); ?>
 			<input type="hidden" name="task" value="signup"/>
 			<input type="hidden" name="option" value="com_redevent"/>
 			<input type="hidden" name="view" value="signup"/>
@@ -1356,39 +1356,50 @@ class RedeventTags
 	/**
 	 * Parses a tag
 	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
 	 * @return string
 	 */
-	private function getTag_date()
+	private function getTag_date(RedeventTagsParsed $tag)
 	{
-		return RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		$format = $tag->getParam('format') ?: null;
+
+		return RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
 	}
 
 	/**
 	 * Parses a tag
 	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
 	 * @return string
 	 */
-	private function getTag_enddate()
+	private function getTag_enddate(RedeventTagsParsed $tag)
 	{
-		return RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+		$format = $tag->getParam('format') ?: null;
+
+		return RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
 	}
 
 	/**
 	 * Parses a tag
 	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
 	 * @return string
 	 */
-	private function getTag_time()
+	private function getTag_time(RedeventTagsParsed $tag)
 	{
+		$format = $tag->getParam('format') ?: null;
 		$tmp = "";
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
 
 			if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 			{
-				$tmp .= ' - ' . RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+				$tmp .= ' - ' . RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
 			}
 		}
 
@@ -1398,15 +1409,18 @@ class RedeventTags
 	/**
 	 * Parses a tag
 	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
 	 * @return string
 	 */
-	private function getTag_starttime()
+	private function getTag_starttime(RedeventTagsParsed $tag)
 	{
+		$format = $tag->getParam('format') ?: null;
 		$tmp = "";
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
 		}
 
 		return $tmp;
@@ -1415,15 +1429,18 @@ class RedeventTags
 	/**
 	 * Parses a tag
 	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
 	 * @return string
 	 */
-	private function getTag_endtime()
+	private function getTag_endtime(RedeventTagsParsed $tag)
 	{
+		$format = $tag->getParam('format') ?: null;
 		$tmp = "";
 
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
 		}
 
 		return $tmp;
@@ -1432,25 +1449,28 @@ class RedeventTags
 	/**
 	 * Parses a tag
 	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
 	 * @return string
 	 */
-	private function getTag_startenddatetime()
+	private function getTag_startenddatetime(RedeventTagsParsed $tag)
 	{
-		$tmp = RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		$format = $tag->getParam('format') ?: null;
+		$tmp = RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
 		}
 
 		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
 		{
-			$tmp .= ' - ' . RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' - ' . RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
 		}
 
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes, $format);
 		}
 
 		return $tmp;
@@ -1568,7 +1588,7 @@ class RedeventTags
 		// Check that there is no loop with the tag inclusion
 		if (strpos($this->getEvent()->getData()->details, '[info]') === false)
 		{
-			$info = $this->ReplaceTags($this->getEvent()->getData()->details);
+			$info = $this->replaceTags($this->getEvent()->getData()->details);
 		}
 		else
 		{
@@ -2415,7 +2435,7 @@ class RedeventTags
 		// Check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_webform) == 0)
 		{
-			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_webform);
+			$text = $this->replaceTags($this->getEvent()->getData()->submission_type_webform);
 		}
 		else
 		{
@@ -2483,7 +2503,7 @@ class RedeventTags
 		// Check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_phone) == 0)
 		{
-			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_phone);
+			$text = $this->replaceTags($this->getEvent()->getData()->submission_type_phone);
 		}
 		else
 		{

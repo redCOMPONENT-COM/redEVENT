@@ -165,7 +165,7 @@ class RedeventModelSignup extends RModel
 		$q = "SELECT submission_type_email_body, submission_type_email_subject FROM #__redevent_events WHERE id = " . $this->id;
 		$db->setQuery($q);
 		$email_settings = $db->loadObject();
-		$message = $tags->ReplaceTags($email_settings->submission_type_email_body);
+		$message = $tags->replaceTags($email_settings->submission_type_email_body);
 
 		// Convert urls
 		$message = RedeventHelperOutput::ImgRelAbs($message);
@@ -173,7 +173,7 @@ class RedeventModelSignup extends RModel
 		$this->mailer->setBody($message);
 
 		/* Set the subject */
-		$this->mailer->setSubject($tags->ReplaceTags($email_settings->submission_type_email_subject));
+		$this->mailer->setSubject($tags->replaceTags($email_settings->submission_type_email_subject));
 
 		/* Sent out the mail */
 		if (!$this->mailer->Send())
@@ -223,11 +223,11 @@ class RedeventModelSignup extends RModel
 		$this->mailer->AddAddress(JFactory::getApplication()->input->get('subemailaddress'), JFactory::getApplication()->input->get('subemailname'));
 
 		/* Set the subject */
-		$this->mailer->setSubject($tags->ReplaceTags($details->submission_type_formal_offer_subject));
+		$this->mailer->setSubject($tags->replaceTags($details->submission_type_formal_offer_subject));
 
 		/* Add the body to the mail */
 		/* Read the template */
-		$message = $tags->ReplaceTags($details->submission_type_formal_offer_body);
+		$message = $tags->replaceTags($details->submission_type_formal_offer_body);
 
 		// Convert urls
 		$message = RedeventHelperOutput::ImgRelAbs($message);

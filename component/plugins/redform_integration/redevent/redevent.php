@@ -139,7 +139,7 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 		$replacer->setSubmitkey($table->submit_key);
 		$replacer->setXref($table->xref);
 
-		$text = $replacer->ReplaceTags($text);
+		$text = $replacer->replaceTags($text);
 	}
 
 	/**

@@ -29,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php if (!$this->result) { ?><div id="result"><?php echo JText::_('COM_REDEVENT_SIGNUP_RESULT_NOK'); ?></div><?php } ?>
 <?php } ?>
 <form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
-	<?php echo $this->tags->ReplaceTags($this->page); ?>
+	<?php echo $this->tags->replaceTags($this->page); ?>
 	<input type="hidden" name="task" value="signup" />
 	<input type="hidden" name="option" value="com_redevent" />
 	<input type="hidden" name="view" value="signup" />
