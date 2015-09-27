@@ -72,7 +72,15 @@ class RedeventModelEditeventnotify extends RModel
 
 				$state = $event->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
 
-				$replacer = new RedeventTags;
+				$replaceOptionsExtra = array(
+					'[state]' => $state,
+					'[editor_ip]' => getenv('REMOTE_ADDR'),
+					'[editor_name]' => $user->name,
+					'[editor_username]' => $user->username,
+					'[editor_email]' => $user->email,
+				);
+
+				$replacer = new RedeventTags(array('extra' => $replaceOptionsExtra));
 				$replacer->setEventId($event->id);
 
 				if (!$this->isNew)
@@ -82,7 +90,7 @@ class RedeventModelEditeventnotify extends RModel
 					$mailbody = JText::sprintf('COM_REDEVENT_FRONTEND_EDITED_EVENT_NOTIFICATION_BODY_S',
 						$event->title,
 						$user->name, $user->username, $user->email, $modified_ip, $edited,
-						$event->datdescription, $state
+						$event->summary, $state
 					);
 					$mailbody = $replacer->replaceTags($mailbody);
 					$subject = $replacer->replaceTags(JText::sprintf('COM_REDEVENT_FRONTEND_EDITED_EVENT_NOTIFICATION_SUBJECT_S', $SiteName));
@@ -93,7 +101,7 @@ class RedeventModelEditeventnotify extends RModel
 					$mailbody = JText::sprintf('COM_REDEVENT_FRONTEND_NEW_EVENT_NOTIFICATION_BODY_S',
 						$event->title,
 						$user->name, $user->username, $user->email, $event->author_ip, $created,
-						$event->datdescription, $state
+						$event->summary, $state
 					);
 					$mailbody = $replacer->replaceTags($mailbody);
 					$subject = $replacer->replaceTags(JText::sprintf('COM_REDEVENT_FRONTEND_NEW_EVENT_NOTIFICATION_SUBJECT_S', $SiteName));
@@ -139,27 +147,44 @@ class RedeventModelEditeventnotify extends RModel
 			$state 	= $event->published ?
 				JText::sprintf('COM_REDEVENT_USER_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_EVENT_UNPUBLISHED');
 
+			$replaceOptionsExtra = array(
+				'[state]' => $state,
+				'[editor_ip]' => getenv('REMOTE_ADDR'),
+				'[editor_name]' => $user->name,
+				'[editor_username]' => $user->username,
+				'[editor_email]' => $user->email,
+			);
+
+			$replacer = new RedeventTags(array('extra' => $replaceOptionsExtra));
+			$replacer->setEventId($event->id);
+
 			if (!$this->isNew)
 			{
 				$edited = JHTML::Date($event->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_EDITED_EVENT_BODY',
 					$user->name, $edited,
-					$event->title, $event->datdescription, $state
+					$event->title, $event->summary, $state
 				);
 				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_USER_MAIL_EDITED_EVENT_SUBJECT'));
+
+				$subject = $replacer->replaceTags($SiteName . JText::_('COM_REDEVENT_USER_MAIL_EDITED_EVENT_SUBJECT'));
+				$mailbody = $replacer->replaceTags($mailbody);
 			}
 			else
 			{
 				$created = JHTML::Date($event->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_EVENT_BODY',
 					$user->name, $user->username, $created,
-					$event->title, $event->datdescription, $state
+					$event->title, $event->summary, $state
 				);
-				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_USER_MAIL_NEW_EVENT_SUBJECT'));
+
+				$subject = $replacer->replaceTags($SiteName . JText::_('COM_REDEVENT_USER_MAIL_NEW_EVENT_SUBJECT'));
+				$mailbody = $replacer->replaceTags($mailbody);
 			}
 
 			$usermail->addRecipient($user->email);
 			$usermail->setSender(array($MailFrom, $FromName));
+			$usermail->setSubject($subject);
 			$usermail->setBody($mailbody);
 
 			$sent = $usermail->Send();
@@ -174,20 +199,13 @@ class RedeventModelEditeventnotify extends RModel
 	/**
 	 * return session info
 	 *
-	 * @return mixed
+	 * @return RedeventEntityEvent
 	 */
 	private function getEvent()
 	{
 		if (!$this->event)
 		{
-			$query = $this->_db->getQuery(true);
-
-			$query->select('e.published, e.modified, e.created, e.author_ip, e.title, e.datdescription')
-				->from('#__redevent_events AS e')
-				->where('e.id = ' . $this->eventId);
-
-			$this->_db->setQuery($query, 0, 1);
-			$this->event = $this->_db->loadObject();
+			$this->event = RedeventEntityEvent::getInstance($this->eventId)->loadItem();
 		}
 
 		return $this->event;

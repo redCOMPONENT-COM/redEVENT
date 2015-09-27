@@ -66,6 +66,8 @@ class RedeventTags
 	 */
 	public function __construct($options = null)
 	{
+		$this->options = array();
+
 		if (is_array($options))
 		{
 			$this->addOptions($options);
@@ -185,6 +187,21 @@ class RedeventTags
 	}
 
 	/**
+	 * Set an option value
+	 *
+	 * @param   string  $name   option name
+	 * @param   mixed   $value  value
+	 *
+	 * @return RedeventTags
+	 */
+	public function setOption($name, $value)
+	{
+		$this->options[$name] = $value;
+
+		return $this;
+	}
+
+	/**
 	 * Substitute tags with the correct info
 	 *
 	 * @param   string  $text     text to replace
@@ -270,6 +287,9 @@ class RedeventTags
 
 		// First, let's do the library tags replacement
 		$text = $this->replaceLibraryTags($text);
+
+		// Then extra
+		$recurse |= $this->replaceExtra($text);
 
 		// Check for plugins
 		JPluginHelper::importPlugin('redform');
@@ -359,7 +379,7 @@ class RedeventTags
 			$text = str_replace($search, $replace, $text, $count);
 
 			// Check if tags where replaced, in which case we should run it again
-			$recurse = $count ? true : false;
+			$recurse |= $count > 0;
 		}
 
 		// Then the custom fields tags
@@ -401,6 +421,7 @@ class RedeventTags
 		if (count($search))
 		{
 			$text = str_ireplace($search, $replace, $text, $count);
+			$recurse |= $count > 0;
 		}
 
 		// Recurse if we did replacement(s), possibly expanding new tags
@@ -410,6 +431,27 @@ class RedeventTags
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Do extra replacements from options
+	 *
+	 * @param   string  &$text  haystack
+	 *
+	 * @return bool  true if a replacement was done
+	 */
+	private function replaceExtra(&$text)
+	{
+		if ($this->getOption('extra') && is_array($this->getOption('extra')))
+		{
+			$search = array_keys($this->getOption('extra'));
+			$replace = $this->getOption('extra');
+			$text = str_replace($search, $replace, $text, $count);
+
+			return $count > 0;
+		}
+
+		return false;
 	}
 
 	/**
@@ -1351,6 +1393,62 @@ class RedeventTags
 	private function getTag_code()
 	{
 		return $this->getEvent()->getData()->course_code;
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
+	private function getTag_event_created(RedeventTagsParsed $tag)
+	{
+		$format = $tag->getParam('format') ?: null;
+
+		return RedeventHelperDate::formatdatetime($this->getEvent()->getData()->event_created, $format);
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
+	private function getTag_event_modified(RedeventTagsParsed $tag)
+	{
+		$format = $tag->getParam('format') ?: null;
+
+		return RedeventHelperDate::formatdatetime($this->getEvent()->getData()->event_modified, $format);
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
+	private function getTag_session_created(RedeventTagsParsed $tag)
+	{
+		$format = $tag->getParam('format') ?: null;
+
+		return RedeventHelperDate::formatdatetime($this->getEvent()->getData()->session_created, $format);
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
+	private function getTag_session_modified(RedeventTagsParsed $tag)
+	{
+		$format = $tag->getParam('format') ?: null;
+
+		return RedeventHelperDate::formatdatetime($this->getEvent()->getData()->session_modified, $format);
 	}
 
 	/**

@@ -124,8 +124,8 @@ class RedeventModelEventhelper extends RModel
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select('x.*, x.id AS xref, x.title as session_title');
-			$query->select('a.*, a.id AS did');
+			$query->select('x.*, x.id AS xref, x.title as session_title, x.created AS session_created, x.modified AS session_modified');
+			$query->select('a.*, a.id AS did, a.created AS event_created, a.modified AS event_modified');
 			$query->select('v.id AS venue_id, v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state');
 			$query->select('v.locdescription as venue_description, v.map, v.url as venueurl');
 			$query->select('v.city, v.latitude, v.longitude, v.company AS venue_company, v.venue_code');

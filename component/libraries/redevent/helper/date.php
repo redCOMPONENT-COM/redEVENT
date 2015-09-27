@@ -180,6 +180,30 @@ class RedeventHelperDate
 	}
 
 	/**
+	 * Formats date
+	 *
+	 * @param   string  $datetime  date to format in a format accepted by strtotime
+	 * @param   string  $format    format, optional
+	 *
+	 * @return string
+	 */
+	public static function formatdatetime($datetime, $format = null)
+	{
+		$settings = RedeventHelper::config();
+
+		if (!static::isValidDate($datetime))
+		{
+			return JText::_('COM_REDEVENT_OPEN_DATE');
+		}
+
+		// Format date
+		$date = JFactory::getDate($datetime);
+		$formatdate = $date->format($format ?: $settings->get('formatdate', 'd.m.Y'));
+
+		return $formatdate;
+	}
+
+	/**
 	 * Formats time
 	 *
 	 * @param   string  $date    date to format in a format accepted by strtotime
