@@ -101,7 +101,8 @@ gulp.task('watch:' + baseTask,
 	[
 		'watch:' + baseTask + ':frontend',
 		'watch:' + baseTask + ':backend',
-		'watch:' + baseTask + ':plugins'
+		'watch:' + baseTask + ':plugins',
+		'watch:' + baseTask + ':media'
 		//'watch:' + baseTask + ':scripts',
 		//'watch:' + baseTask + ':less'
 	],
@@ -129,6 +130,12 @@ gulp.task('watch:' + baseTask + ':backend', function() {
 gulp.task('watch:' + baseTask + ':plugins', function() {
 	gulp.watch(extPath + '/plugins/**',
 		['copy:' + baseTask + ':plugins']);
+});
+
+// Watch: plugins
+gulp.task('watch:' + baseTask + ':media', function() {
+	gulp.watch(extPath + '/media/**',
+		['copy:' + baseTask + ':media']);
 });
 
 //// Watch: LESS
