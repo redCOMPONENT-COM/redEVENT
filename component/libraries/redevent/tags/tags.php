@@ -1553,22 +1553,23 @@ class RedeventTags
 	 */
 	private function getTag_startenddatetime(RedeventTagsParsed $tag)
 	{
-		$format = $tag->getParam('format') ?: null;
-		$tmp = RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
+		$formatDate = $tag->getParam('formatDate') ?: null;
+		$formatTime = $tag->getParam('formatTime') ?: null;
+		$tmp = RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $formatDate);
 
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $formatTime);
 		}
 
 		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
 		{
-			$tmp .= ' - ' . RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
+			$tmp .= ' - ' . RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $formatDate);
 		}
 
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes, $format);
+			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes, $formatTime);
 		}
 
 		return $tmp;
