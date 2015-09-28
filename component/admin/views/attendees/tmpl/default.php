@@ -18,16 +18,21 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 $user = JFactory::getUser();
 $userId = $user->id;
 $search = $this->state->get('filter.search');
+$formId = $this->session->redform_id;
 
 JHtml::_('behavior.modal', 'a.answersmodal');
 
 RHelperAsset::load('redevent-backend.css', 'com_redevent');
+
+JHtml::_('behavior.modal');
+RHelperAsset::load('backend/attendeesmove.js');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function (pressbutton)
 	{
 		submitbutton(pressbutton);
 	}
+
 	submitbutton = function (pressbutton)
 	{
 		var form = document.adminForm;
@@ -42,6 +47,13 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 			if (r == true)    form.submit();
 			else return false;
 		}
+		else if (pressbutton == 'attendees.move')
+		{
+			attendeesMove.selectDestination(form, <?php echo $formId; ?>);
+
+			return false;
+		}
+
 		form.submit();
 	}
 </script>
@@ -227,6 +239,7 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 		<?php echo $this->pagination->getPaginationLinks(null, array('showLimitBox' => false)); ?>
 	<?php endif; ?>
 	<input type="hidden" name="task" value=""/>
+	<input type="hidden" name="xref" value="<?php echo $this->session->id; ?>"/>
 	<input type="hidden" name="boxchecked" value="0"/>
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>

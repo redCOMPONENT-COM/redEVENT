@@ -124,6 +124,11 @@ class RedeventViewSessions extends RedeventViewAdmin
 	 */
 	public function getTitle()
 	{
+		if ($this->getLayout() == 'element')
+		{
+			return JText::_('COM_REDEVENT_SELECT_SESSION');
+		}
+
 		// Set toolbar items for the page
 		if ($this->event)
 		{

@@ -194,32 +194,4 @@ class RedeventViewAttendees extends RedeventViewAdmin
 
 		parent::display($tpl);
 	}
-
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  mixed  A string if successful, otherwise a Error object.
-	 */
-	public function _displaymove($tpl = null)
-	{
-		RHelperAsset::load('backend.css');
-
-		$cid = JFactory::getApplication()->input->get('cid', array(), 'post', 'array');
-
-		$event = $this->get('Event');
-
-		// Add toolbar
-		JToolBarHelper::title(JText::_('COM_REDEVENT_REGISTRATIONS'), 'users');
-		JToolBarHelper::apply('applymove');
-		JToolBarHelper::cancel('cancelmove');
-
-		// Assign data to template
-		$this->assignRef('form_id',  JFactory::getApplication()->input->getInt('form_id'));
-		$this->assignRef('cid',      $cid);
-		$this->assignRef('session',  $event);
-
-		parent::display($tpl);
-	}
 }
