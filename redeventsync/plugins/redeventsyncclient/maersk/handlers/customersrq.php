@@ -142,8 +142,15 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 			$success->addChild('CompanyAddress',      implode(', ', $companyAddress));
 			$success->addChild('CompanyPhone',      $company->organization_phone);
 		}
-
-
+		else
+		{
+			// Needed for Picasso...
+			$success->addChild('CompanyCvrNr', '');
+			$success->addChild('CompanyName', '');
+			$success->addChild('CompanyZip', '');
+			$success->addChild('CompanyAddress', '');
+			$success->addChild('CompanyPhone', '');
+		}
 
 		$this->appendElement($response, $success);
 
