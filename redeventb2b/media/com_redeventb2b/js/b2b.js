@@ -384,64 +384,7 @@ var redb2b = (function() {
 				}
 			});
 
-			document.id('book-course').addEvent('click', function () {
-				if (!document.id('book-xref').get('value')) {
-					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
-					return false;
-				}
-
-				if (selected.length > placesleft) {
-					var text = Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT");
-					text = text.substitute({
-						'left': placesleft,
-						'selected': selected.length,
-						'remove': selected.length - placesleft
-					});
-					alert(text);
-					return;
-				}
-
-				var orgId = document.id('filter_organization').get('value');
-				req = new Request.JSON({
-					url: 'index.php?option=com_redeventb2b&task=frontadmin.quickbook&tmpl=component&from=b2b&org=' + orgId,
-					data: document.id('selected_users'),
-					method: 'post',
-					onRequest: function () {
-						document.id('attendees-tbl').set('spinner').spin();
-						document.id('selected_users').set('spinner').spin();
-					},
-					onFailure: function () {
-						alert('Something went wrong');
-						document.id('attendees-tbl').unspin();
-						document.id('selected_users').unspin();
-						getMembersList();
-					},
-					onSuccess: function (response) {
-						document.id('attendees-tbl').unspin();
-						document.id('selected_users').unspin();
-						if (response.status == 1) {
-							placesleft -= selected.length;
-							getMembersList();
-							addGoogleAnalyticsTrans(response);
-							alert(response.message);
-						}
-						else if (response.regs.length) {
-							var errors = new Array();
-							for (var i = 0; i < response.regs.length; i++) {
-								var r = response.regs[i];
-								if (r.status == 0) {
-									errors.push(r.error);
-								}
-							}
-							alert(errors.join("\n"));
-						}
-						else {
-							alert(response.error);
-						}
-					}
-				});
-				req.send();
-			});
+			document.id('book-course').addEvent('click', bookAttendees);
 
 			/**
 			 * remove session
@@ -674,6 +617,65 @@ var redb2b = (function() {
 
 			refreshTips();
 		};
+
+		var bookAttendees = function(){
+			if (!document.id('book-xref').get('value')) {
+				alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
+				return false;
+			}
+
+			if (selected.length > placesleft) {
+				var text = Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT");
+				text = text.substitute({
+					'left': placesleft,
+					'selected': selected.length,
+					'remove': selected.length - placesleft
+				});
+				alert(text);
+				return;
+			}
+
+			var orgId = document.id('filter_organization').get('value');
+			req = new Request.JSON({
+				url: 'index.php?option=com_redeventb2b&task=frontadmin.quickbook&tmpl=component&from=b2b&org=' + orgId,
+				data: document.id('selected_users'),
+				method: 'post',
+				onRequest: function () {
+					document.id('attendees-tbl').set('spinner').spin();
+					document.id('selected_users').set('spinner').spin();
+				},
+				onFailure: function () {
+					alert('Something went wrong');
+					document.id('attendees-tbl').unspin();
+					document.id('selected_users').unspin();
+					getMembersList();
+				},
+				onSuccess: function (response) {
+					document.id('attendees-tbl').unspin();
+					document.id('selected_users').unspin();
+					if (response.status == 1) {
+						placesleft -= selected.length;
+						getMembersList();
+						addGoogleAnalyticsTrans(response);
+						alert(response.message);
+					}
+					else if (response.regs.length) {
+						var errors = new Array();
+						for (var i = 0; i < response.regs.length; i++) {
+							var r = response.regs[i];
+							if (r.status == 0) {
+								errors.push(r.error);
+							}
+						}
+						alert(errors.join("\n"));
+					}
+					else {
+						alert(response.error);
+					}
+				}
+			});
+			req.send();
+		}
 
 		/**
 		 * get sessions according to search filter
@@ -1168,7 +1170,7 @@ var redb2b = (function() {
 		};
 
 		var addGoogleAnalyticsTrans = function (response) {
-			if (!ga) {
+			if (typeof ga == 'undefined') {
 				return;
 			}
 
