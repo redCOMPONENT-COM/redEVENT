@@ -231,6 +231,18 @@ class plgRedeventMaerskregistration extends JPlugin
 	}
 
 	/**
+	 * Remap b2b posted data for redmember user save
+	 *
+	 * @param   array  &$data  data
+	 *
+	 * @return void;
+	 */
+	public function onRemapB2bUserData(&$data)
+	{
+		$data['name'] = (!empty($data['rm_firstname']) ? $data['rm_firstname'] . ' ' : '') . $data['rm_lastname'];
+	}
+
+	/**
 	 * Handle the notification sending
 	 *
 	 * @param   int   $registrationId  registration id
