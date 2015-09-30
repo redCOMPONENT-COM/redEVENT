@@ -93,12 +93,12 @@ class RedeventViewPayment extends RViewSite
 		switch ($state)
 		{
 			case 'processing':
-				$text = $tags->ReplaceTags($row->paymentprocessing);
+				$text = $tags->replaceTags($row->paymentprocessing);
 				$this->addTracking();
 				break;
 
 			case 'accepted':
-				$text = $tags->ReplaceTags($row->paymentaccepted);
+				$text = $tags->replaceTags($row->paymentaccepted);
 				$this->addTracking();
 				$model->checkAndConfirm();
 

@@ -496,7 +496,7 @@ class RedeventModelAttendees extends RModelList
 
 			$query->update('#__redevent_register')
 				->set('xref = ' . $dest)
-				->where('r.id IN (' . implode(', ', $cid) . ')');
+				->where('id IN (' . implode(', ', $cid) . ')');
 
 			$this->_db->setQuery($query);
 

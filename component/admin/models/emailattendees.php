@@ -148,8 +148,8 @@ class RedeventModelEmailattendees extends RModel
 
 		$taghelper = new RedeventTags;
 		$taghelper->setXref($this->getState('sessionId'));
-		$subject = $taghelper->ReplaceTags($subject);
-		$body    = $taghelper->ReplaceTags($body);
+		$subject = $taghelper->replaceTags($subject);
+		$body    = $taghelper->replaceTags($body);
 
 		$mailer = JFactory::getMailer();
 		$mailer->setSubject($subject);

@@ -192,8 +192,8 @@ class RedeventController extends RedeventControllerFront
 
 				foreach ($attendees as $sid => $a)
 				{
-					$msubject = $tags->ReplaceTags($subject, array('sids' => array($sid)));
-					$mbody = '<html><body>' . $tags->ReplaceTags($body) . '</body></html>';
+					$msubject = $tags->replaceTags($subject, array('sids' => array($sid)));
+					$mbody = '<html><body>' . $tags->replaceTags($body) . '</body></html>';
 
 					// Convert urls
 					$mbody = RedeventHelperOutput::ImgRelAbs($mbody);

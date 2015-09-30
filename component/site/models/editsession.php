@@ -243,6 +243,23 @@ class RedeventModelEditsession extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		// Autofill created_by and modified_by information
+		$now = JDate::getInstance();
+		$nowFormatted = $now->toSql();
+		$userId = JFactory::getUser()->get('id');
+
+		if ((empty($data['id']) || !$data['id']) && empty($data['created_by']))
+		{
+			$data['created_by']   = $userId;
+			$data['created'] = $nowFormatted;
+		}
+
+		if (empty($data['modified_by']))
+		{
+			$data['modified_by'] = $userId;
+			$data['modified'] = $nowFormatted;
+		}
+
 		if (!parent::save($data))
 		{
 			return false;

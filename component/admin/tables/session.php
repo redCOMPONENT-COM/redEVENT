@@ -44,6 +44,36 @@ class RedeventTableSession extends RedeventTable
 	private $beforeDeleteSessions;
 
 	/**
+	 * @var  integer
+	 */
+	public $created_by;
+
+	/**
+	 * @var  string
+	 */
+	public $created;
+
+	/**
+	 * @var  integer
+	 */
+	public $modified_by;
+
+	/**
+	 * @var  string
+	 */
+	public $modified;
+
+	/**
+	 * @var  integer
+	 */
+	public $checked_out;
+
+	/**
+	 * @var  string
+	 */
+	public $checked_out_time;
+
+	/**
 	 * Checks that the object is valid and able to be stored.
 	 *
 	 * This method checks that the parent_id is non-zero and exists in the database.
