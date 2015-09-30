@@ -9,7 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="b2b-login" class="akeeba-bootstrap">
 	<div class="img-wrapper"><img src="/templates/redweb/images/logo.png" /></div>
-	
+
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_B2B_LOGIN_TITLE'); ?></h2>
 
 	<form action="<?php echo JRoute::_('index.php', true, $this->params->get('secure', 0)); ?>" method="post" id="login-form" >
@@ -28,9 +28,8 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGIN') ?>" />
 					</div>
 				</div>
-				<input type="hidden" name="option" value="com_redevent" />
-				<input type="hidden" name="controller" value="frontadminlogin" />
-				<input type="hidden" name="task" value="login" />
+				<input type="hidden" name="option" value="com_redeventb2b" />
+				<input type="hidden" name="task" value="frontadminlogin.login" />
 				<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
 				<?php echo JHtml::_('form.token'); ?>
 			</fieldset>
