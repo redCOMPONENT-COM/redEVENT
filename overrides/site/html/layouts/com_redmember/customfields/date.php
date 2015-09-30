@@ -92,7 +92,7 @@ $spans[] = '<span class="rm_date_month_select"><label>' . JText::_('COM_REDMEMBE
 $spans[] = '<span class="rm_date_year_select"><label>' . JText::_('COM_REDMEMBER_YEAR') . '</label>' . $yearSel . '</span>';
 $spans = implode('', $spans);
 
-RHelperAsset::load('threefieldsdate', 'com_redeventb2b');
+RHelperAsset::load('threefieldsdate.js', 'com_redeventb2b');
 ?>
 <div class="form-group">
 	<div class="redmember_customfield_date rm_3boxdaypick">
