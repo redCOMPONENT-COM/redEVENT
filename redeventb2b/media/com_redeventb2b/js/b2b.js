@@ -276,7 +276,7 @@ var redb2b = (function() {
 				var form = document.id('member-update');
 
 				if (!form.validate()) {
-					alert('Please fix errors to submit');
+					alert(Joomla.JText._('COM_REDEVENTB2B_EDIT_MEMBER_JS_VALIDATION_ERROR'));
 					return false;
 				}
 
@@ -336,21 +336,36 @@ var redb2b = (function() {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.unregister)', function (e) {
 				var confirmText = this.getProperty('confirmtext');
+				var element = this;
+
 				if (confirm(confirmText)) {
 					var registerId = this.getParent('tr').getProperty('rid');
 					var orgId = document.id('filter_organization').get('value');
+
+					var view = this.getParent('#editmember-booked') ? 'editmember' : 'main';
+
 					req = new Request.JSON({
 						url: 'index.php?option=com_redeventb2b&task=frontadmin.cancelreg&tmpl=component&from=b2b',
 						data: {'rid': registerId, 'org': orgId},
 						method: 'post',
 						onRequest: function () {
-							document.id('attendees-tbl').set('spinner').spin();
+							if (view == 'main') {
+								document.id('attendees-tbl').set('spinner').spin();
+							}
 						},
 						onSuccess: function (response) {
-							document.id('attendees-tbl').set('spinner').unspin();
+							if (view == 'main') {
+								document.id('attendees-tbl').set('spinner').unspin();
+							}
+
 							if (response.status == 1) {
+								if (view == 'main') {
+									placesleft++;
+								}
+								else {
+									element.getParent('tr').remove();
+								}
 								getMembersList();
-								placesleft++;
 							}
 							else {
 								alert(response.error);
