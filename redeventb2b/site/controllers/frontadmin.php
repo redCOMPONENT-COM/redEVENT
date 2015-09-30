@@ -59,7 +59,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getEventsOptions();
 
 		echo json_encode($options);
@@ -93,7 +93,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getVenuesOptions();
 
 		echo json_encode($options);
@@ -110,7 +110,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getCategoriesOptions();
 
 		echo json_encode($options);
@@ -146,7 +146,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'Redeventb2bModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getUsersOptions();
 
 		echo json_encode($options);
