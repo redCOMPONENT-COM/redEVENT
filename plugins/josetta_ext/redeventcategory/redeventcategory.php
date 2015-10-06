@@ -12,6 +12,18 @@ defined('_JEXEC') or die('');
 // Include base class of josettad efinition.
 require_once JPATH_ADMINISTRATOR . '/components/com_josetta/classes/extensionplugin.php';
 
+// Load redEVENT library
+$redeventLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
+
+if (!file_exists($redeventLoader))
+{
+	throw new Exception(JText::_('COM_REDEVENT_INIT_FAILED'), 404);
+}
+
+include_once $redeventLoader;
+
+RedeventBootstrap::bootstrap();
+
 /**
  * Josetta! translation Plugin
  *
@@ -122,7 +134,7 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 	{
 		// Set the table directory
 		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
-		$table = RTable::getAdminInstance('Category');
+		$table = RTable::getAdminInstance('Category', array(), 'com_redevent');
 
 		return $table;
 	}
@@ -185,7 +197,7 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 		switch ($originalFieldTitle)
 		{
 			case 'parent_id':
-				$table = RTable::getAdminInstance('category');
+				$table = RTable::getAdminInstance('category', array(), 'com_redevent');
 				$table->load($originalItem->parent_id);
 				$displayText = $table->name;
 				break;
