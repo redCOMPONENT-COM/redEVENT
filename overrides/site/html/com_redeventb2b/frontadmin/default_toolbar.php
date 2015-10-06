@@ -62,8 +62,8 @@ JFactory::getDocument()->addScriptDeclaration($script);
 		</form>
 	</li>
 	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn myaccount', 'uid' => JFactory::getUser()->get('id'))); ?></li>
-	<li><?php echo JHTML::link($support, JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>
-	<li><?php echo JHTML::link($contact, JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>	<li>
+	<li><?php echo JHTML::link($support, JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn modal', 'rel' => "{handler: 'iframe', size: {x: 780, y:600}}")); ?></li>
+	<li><?php echo JHTML::link($contact, JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn modal', 'rel' => "{handler: 'iframe', size: {x: 780, y:600}}")); ?></li>	<li>
 		<?php
 		$return = JRoute::_(Redeventb2bHelperRoute::getFrontadminloginRoute());
 		echo JHTML::link('index.php?option=com_users&task=user.logout&' . JSession::getFormToken() . '=1'
