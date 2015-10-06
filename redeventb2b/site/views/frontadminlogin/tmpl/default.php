@@ -28,9 +28,8 @@ defined('_JEXEC') or die('Restricted access');
 				</p>
 			<?php endif; ?>
 			<input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGIN') ?>" />
-			<input type="hidden" name="option" value="com_redevent" />
-			<input type="hidden" name="controller" value="frontadminlogin" />
-			<input type="hidden" name="task" value="login" />
+			<input type="hidden" name="option" value="com_redeventb2b" />
+			<input type="hidden" name="task" value="frontadminlogin.login" />
 			<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
 			<?php echo JHtml::_('form.token'); ?>
 		</fieldset>

@@ -21,7 +21,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined ('_JEXEC') or die('Restricted access');
 
 /**
  * redEVENT Component b2b Controller
@@ -59,7 +59,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getEventsOptions();
 
 		echo json_encode($options);
@@ -93,7 +93,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getVenuesOptions();
 
 		echo json_encode($options);
@@ -110,7 +110,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getCategoriesOptions();
 
 		echo json_encode($options);
@@ -146,7 +146,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$model = $this->getModel('Frontadmin', 'Redeventb2bModel');
+		$model = $this->getModel('Frontadmin');
 		$options = $model->getUsersOptions();
 
 		echo json_encode($options);
@@ -180,6 +180,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		$app->close();
 	}
 
+	/**
+	 * Get attendees list
+	 *
+	 * @return void
+	 */
 	public function getattendees()
 	{
 		$app = JFactory::getApplication();
@@ -204,6 +209,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		JFactory::getApplication()->close();
 	}
 
+	/**
+	 * Show edit member view
+	 *
+	 * @return void
+	 */
 	public function editmember()
 	{
 		$app = JFactory::getApplication();
@@ -219,6 +229,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		}
 	}
 
+	/**
+	 * Close modal for create member
+	 *
+	 * @return void
+	 */
 	public function closemodalmember()
 	{
 		$this->viewName  = 'frontadmin';
@@ -228,6 +243,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		$this->display();
 	}
 
+	/**
+	 * Show booked members
+	 *
+	 * @return void
+	 */
 	public function getmemberbooked()
 	{
 		$app = JFactory::getApplication();
@@ -243,6 +263,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		JFactory::getApplication()->close();
 	}
 
+	/**
+	 * Show member previous bookings
+	 *
+	 * @return void
+	 */
 	public function getmemberprevious()
 	{
 		$app = JFactory::getApplication();
@@ -416,6 +441,14 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		JFactory::getApplication()->close();
 	}
 
+	/**
+	 * Send cancellation notifications
+	 *
+	 * @param   int  $rid    attendee id
+	 * @param   int  $orgId  organization id
+	 *
+	 * @return void
+	 */
 	private function sendCancellationNotifications($rid, $orgId)
 	{
 		$model = $this->getModel('Frontadmincancellationnotification');
@@ -656,6 +689,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 			}
 
 			$data = array_merge($dataForm, $customDataClean);
+
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onRemapB2bUserData', array(&$data));
+
 			$rmUser->save($data);
 
 			$resp->status = 1;
@@ -663,7 +701,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		catch (Exception $e)
 		{
 			$resp->status = 0;
-			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED') . ': ' . $e->getMessage();
+			$resp->error  = $e->getMessage();
 		}
 
 		if ($this->input->get('type') == 'json')
@@ -698,6 +736,17 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		}
 	}
 
+	/**
+	 * Typical view method for MVC based architecture
+	 *
+	 * This function is provide as a default implementation, in most cases
+	 * you will need to override it in your own controllers.
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController  A JController object to support chaining.
+	 */
 	public function display($cachable = false, $urlparams = array())
 	{
 		if (isset($this->viewName))
@@ -712,6 +761,4 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		return parent::display($cachable, $urlparams);
 	}
-
-
 }
