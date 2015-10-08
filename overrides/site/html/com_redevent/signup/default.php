@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-$title = $this->course->session_title ?: $this->course->event_title;
+$title = $this->course->event_title;
 ?>
 <?php if (isset($this->fullpage)): ?>
 <div id="redevent" class="el_webformsignup">
