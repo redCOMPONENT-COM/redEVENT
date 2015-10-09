@@ -4,6 +4,7 @@
 	<property file="build/build.properties"/>
 
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
+	<property name="comp.name" value="redevent"/>
 	<property name="dirs.root" value="."/>
 	<property name="dirs.tmp" value="tmp"/>
 	<property name="dirs.release" value="release"/>
