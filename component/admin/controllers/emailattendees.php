@@ -51,6 +51,7 @@ class RedeventControllerEmailattendees extends JControllerLegacy
 		$fromname = $this->input->get('fromname', '', 'string');
 		$replyto  = $this->input->get('replyto', '', 'string');
 		$body = $this->input->get('body', '', 'raw');
+		$filters = $this->input->get('filter', array(), 'array');
 
 		$model = $this->getModel('Emailattendees');
 
@@ -63,7 +64,7 @@ class RedeventControllerEmailattendees extends JControllerLegacy
 			$this->setMessage($model->getError(), 'error');
 		}
 
-		$this->setRedirect('index.php?option=com_redevent&view=attendees');
+		$this->setRedirect('index.php?option=com_redevent&view=attendees&filter[session]=' . $filters['session']);
 	}
 
 	/**
