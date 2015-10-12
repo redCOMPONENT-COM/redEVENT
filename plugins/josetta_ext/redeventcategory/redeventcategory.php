@@ -133,7 +133,6 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 	protected function _getTable()
 	{
 		// Set the table directory
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
 		$table = RTable::getAdminInstance('Category', array(), 'com_redevent');
 
 		return $table;

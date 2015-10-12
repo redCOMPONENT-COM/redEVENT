@@ -90,8 +90,7 @@ class plgJosetta_extRedeventVenueCategory extends JosettaClassesExtensionplugin
 	protected function _getTable()
 	{
 		// Set the table directory
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
-		$table = RTable::getAdminInstance('VenueCategory');
+		$table = RTable::getAdminInstance('Venuescategory', array(), 'com_redevent');
 
 		return $table;
 	}
@@ -139,7 +138,7 @@ class plgJosetta_extRedeventVenueCategory extends JosettaClassesExtensionplugin
 		switch ($originalFieldTitle)
 		{
 			case 'parent_id':
-				$table = JTable::getInstance('venuecategory', 'RedeventTable');
+				$table = RTable::getAdminInstance('Venuescategory', array(), 'com_redevent');
 				$table->load($originalItem->parent_id);
 				$displayText = $table->name;
 				break;
