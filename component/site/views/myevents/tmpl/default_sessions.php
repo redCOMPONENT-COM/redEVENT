@@ -207,7 +207,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(RedeventHelper::getSessionCode($row)); ?></td>
 				<?php endif; ?>
 				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered.($row->maxattendees ? '/'.$row->maxattendees : ''); ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
-				<td headers="el_edit" align="left" valign="top"><?php echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>

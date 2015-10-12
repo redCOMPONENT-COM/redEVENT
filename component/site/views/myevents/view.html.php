@@ -169,7 +169,7 @@ class RedeventViewMyevents extends RedeventViewFront
 	 */
 	public static function xrefeditbutton($id, $xref)
 	{
-		$acl = &RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditXref($xref))
 		{
