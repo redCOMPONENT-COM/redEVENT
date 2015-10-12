@@ -158,7 +158,7 @@ class RedeventHelperDate
 	 *
 	 * @return string
 	 */
-	public static function formatdate($date, $time, $format = null)
+	public static function formatdate($date, $time = null, $format = null)
 	{
 		$settings = RedeventHelper::config();
 
