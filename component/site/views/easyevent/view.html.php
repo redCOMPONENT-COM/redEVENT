@@ -28,8 +28,11 @@ class RedeventViewEasyevent extends RViewSite
 	{
 		$app = JFactory::getApplication();
 
+		echo '<pre>'; echo print_r($this, true); echo '</pre>'; exit;
+
 		$this->item = $this->get('Item');
-		$this->form = $this->get('Form');
+		$this->eventForm = $this->get('eventForm');
+		$this->sessionForm = $this->get('sessionForm');
 		$this->return = $app->input->get('return');
 		$this->customfields = $this->get('Customfields');
 		$this->roles = $this->get('SessionRoles');
