@@ -9,17 +9,6 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
 
-JFactory::getDocument()->addScriptDeclaration("
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
-		{
-			" . $this->form->getField('details')->save() . "
-			Joomla.submitform(task);
-		}
-	}
-");
-
 if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
 {
 	JFactory::getDocument()->addScriptDeclaration(<<<JS
@@ -87,32 +76,80 @@ $form = $this->form;
 				</button>
 			</div>
 		</div>
-
 		<div class="row-fluid">
-			<div class="span12">
-				<fieldset class="form-horizontal">
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $form->getLabel('title', 'event'); ?>
+			<fieldset class="form-horizontal">
+					<div class="span12">
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('title', 'event'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('title', 'event'); ?>
+							</div>
 						</div>
-						<div class="controls">
-							<?php echo $form->getInput('title', 'event'); ?>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('categories', 'event'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('categories', 'event'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('venueid'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('venueid'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('dates'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('dates'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('times'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('times'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('enddates'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('enddates'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('endtimes'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('endtimes'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('datdescription', 'event'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('datdescription', 'event'); ?>
+							</div>
 						</div>
 					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $form->getLabel('categories', 'event'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $form->getInput('categories', 'event'); ?>
-						</div>
-					</div>
-				</fieldset>
-			</div>
+			</fieldset>
 		</div>
 
 		<input type="hidden" name="option" value="<?php echo $option; ?>">
 		<input type="hidden" name="s_id" value="<?php echo $this->item->id; ?>">
+		<?php echo $form->getInput('id', 'event'); ?>
 		<input type="hidden" name="task" value="">
 		<?php if ($this->return): ?>
 			<input type="hidden" name="return" value="<?php echo $this->return; ?>" />

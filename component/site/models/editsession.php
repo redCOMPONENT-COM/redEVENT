@@ -127,6 +127,14 @@ class RedeventModelEditsession extends RModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
+		if (empty($data['eventid']))
+		{
+			if (isset($data['event']['id']) && $data['event']['title'])
+			{
+				$form->setFieldAttribute('eventid', 'required', 'false');
+			}
+		}
+
 		// First get the data from form itself
 		if (!$validData = parent::validate($form, $data, $group))
 		{
@@ -247,12 +255,14 @@ class RedeventModelEditsession extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
+
 		// Autofill created_by and modified_by information
 		$now = JDate::getInstance();
 		$nowFormatted = $now->toSql();
 		$userId = JFactory::getUser()->get('id');
 
-		if ((empty($data['id']) || !$data['id']) && empty($data['created_by']))
+		if (!$pk && empty($data['created_by']))
 		{
 			$data['created_by']   = $userId;
 			$data['created'] = $nowFormatted;
@@ -262,6 +272,16 @@ class RedeventModelEditsession extends RModelAdmin
 		{
 			$data['modified_by'] = $userId;
 			$data['modified'] = $nowFormatted;
+		}
+
+		if (empty($data['eventid']) && !$this->saveEvent($data))
+		{
+			return false;
+		}
+
+		if (!$pk)
+		{
+			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
 		}
 
 		if (!parent::save($data))
@@ -287,6 +307,29 @@ class RedeventModelEditsession extends RModelAdmin
 		$isNew = isset($data['id']) && $data['id'] ? false : true;
 		$notify = RModel::getFrontInstance('Editsessionnotify');
 		$notify->notify($this->getState($this->getName() . '.id'), $isNew);
+
+		return true;
+	}
+
+	/**
+	 * Try to save event
+	 *
+	 * @param   array  &$data  post data
+	 *
+	 * @return boolean
+	 */
+	private function saveEvent(&$data)
+	{
+		$model = RModel::getFrontInstance('editevent', array(), 'com_redevent');
+
+		if (!$model->save($data['event']))
+		{
+			$this->setError($model->getError());
+
+			return false;
+		}
+
+		$data['eventid'] = $model->getState('editevent.id');
 
 		return true;
 	}

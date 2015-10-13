@@ -65,7 +65,23 @@ class RedeventControllerEditsession extends RControllerForm
 	 */
 	public function save($key = null, $urlVar = null)
 	{
+		if (!$this->saveEvent())
+		{
+			return false;
+		}
+
 		return parent::save('id', 's_id');
+	}
+
+	private function saveEvent()
+	{
+		// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		$data  = $this->input->post->get('jform', array(), 'array');
+		$eventData = isset($data['event']) ? $data['event'] : false;
+
+		return true;
 	}
 
 	/**
