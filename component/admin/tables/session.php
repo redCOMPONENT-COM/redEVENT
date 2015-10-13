@@ -74,6 +74,16 @@ class RedeventTableSession extends RedeventTable
 	public $checked_out_time;
 
 	/**
+	 * @var  int
+	 */
+	public $eventid;
+
+	/**
+	 * @var  array
+	 */
+	public $event;
+
+	/**
 	 * Checks that the object is valid and able to be stored.
 	 *
 	 * This method checks that the parent_id is non-zero and exists in the database.
@@ -83,7 +93,7 @@ class RedeventTableSession extends RedeventTable
 	 */
 	public function check()
 	{
-		if (!$this->eventid)
+		if (!$this->eventid && !$this->event)
 		{
 			$this->setError(JText::_('COM_REDEVENT_SESSION_EVENTID_IS_REQUIRED'));
 
@@ -196,6 +206,53 @@ class RedeventTableSession extends RedeventTable
 		}
 
 		return parent::store($updateNulls);
+	}
+
+	/**
+	 * Method to load a row from the database by primary key and bind the fields
+	 * to the JTable instance properties.
+	 *
+	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
+	 *                           set the instance property value is used.
+	 * @param   boolean  $reset  True to reset the default values before loading the new row.
+	 *
+	 * @return  boolean  True if successful. False if row not found.
+	 */
+	public function load($keys = null, $reset = true)
+	{
+		if (parent::load($keys, $reset))
+		{
+			if (!$this->loadEvent())
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Load the associated event
+	 *
+	 * @return  boolean
+	 */
+	private function loadEvent()
+	{
+		if (!empty($this->eventid))
+		{
+			$table = RTable::getAdminInstance('Event', array(), 'com_redevent');
+
+			if (!$table->load($this->eventid))
+			{
+				return false;
+			}
+
+			$this->event = $table->getProperties();
+		}
+
+		return true;
 	}
 
 	/**

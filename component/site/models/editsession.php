@@ -181,6 +181,10 @@ class RedeventModelEditsession extends RModelAdmin
 			{
 				$field->value = $data->$prop;
 			}
+			elseif (isset($data->event->$prop))
+			{
+				$field->value = $data->event->$prop;
+			}
 
 			$fields[] = $field;
 		}
@@ -218,7 +222,7 @@ class RedeventModelEditsession extends RModelAdmin
 
 		$query->select('f.*')
 			->from('#__redevent_fields AS f')
-			->where('f.object_key = ' . $this->_db->Quote("redevent.xref"))
+			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR ' . 'f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
 			->order('f.ordering');
 
 		$this->_db->setQuery($query);

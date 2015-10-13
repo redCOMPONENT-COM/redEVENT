@@ -398,5 +398,60 @@
 
 	</fieldset>
 
+	<fields name="event">
+		<fieldset name="event_details">
+			<field
+					name="id"
+					type="hidden"
+					default="0"
+					readonly="true"
+					/>
 
+			<field
+					name="title"
+					type="text"
+					default=""
+					label="COM_REDEVENT_EVENT_TITLE"
+					description ="COM_REDEVENT_EVENT_TITLE"
+					required="true"
+					class="inputbox" />
+
+			<field
+					name="categories"
+					type="remanagedcategorylist"
+					label="COM_REDEVENT_CATEGORY"
+					description ="COM_REDEVENT_CATEGORY"
+					required="true"
+					multiple="true"
+					size="10"
+					class="inputbox" />
+
+			<field
+					name="datdescription"
+					type="editor"
+					label="COM_REDEVENT_EVENT_DESCRIPTION"
+					description="COM_REDEVENT_EVENT_DESCRIPTION"
+					class="inputbox"
+					filter="safehtml"
+					buttons="true"
+					hide="readmore,pagebreak"/>
+
+			<field
+					name="summary"
+					type="editor"
+					label="COM_REDEVENT_EVENT_SUMMARY"
+					description="COM_REDEVENT_EVENT_SUMMARY_DESC"
+					class="inputbox"
+					filter="safehtml"
+					buttons="false"/>
+
+			<field
+					name="datimage"
+					type="rmedia"
+					label="COM_REDEVENT_CHOOSE_IMAGE"
+					description="COM_REDEVENT_CHOOSE_IMAGE"
+					class="inputbox"
+					directory="redevent/events"/>
+		</fieldset>
+	</fields>
 </form>
