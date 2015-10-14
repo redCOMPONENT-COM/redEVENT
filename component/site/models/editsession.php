@@ -158,9 +158,18 @@ class RedeventModelEditsession extends RModelAdmin
 		{
 			$dbname = 'custom' . $field->id;
 
-			if (isset($data[$dbname]))
+			if (!isset($data[$dbname]))
+			{
+				continue;
+			}
+
+			if ($field->object_key == 'redevent.xref')
 			{
 				$validData[$dbname] = $data[$dbname];
+			}
+			elseif ($field->object_key == 'redevent.event')
+			{
+				$validData['event'][$dbname] = $data[$dbname];
 			}
 		}
 
@@ -194,7 +203,7 @@ class RedeventModelEditsession extends RModelAdmin
 				$field->value = $data->event->$prop;
 			}
 
-			$fields[] = $field;
+			$fields[$c->id] = $field;
 		}
 
 		return $fields;
@@ -372,7 +381,7 @@ class RedeventModelEditsession extends RModelAdmin
 		$recurrence = RTable::getInstance('Recurrence', 'RedeventTable');
 		$recurrenceParser = new RedeventRecurrenceParser;
 
-		if (!$data['recurrence']['recurrenceid'])
+		if (empty($data['recurrence']['recurrenceid']))
 		{
 			$rrule = $recurrenceParser->parsePost($data['recurrence']);
 
@@ -513,6 +522,11 @@ class RedeventModelEditsession extends RModelAdmin
 			$this->setError($this->_db->getErrorMsg());
 
 			return false;
+		}
+
+		if (empty($data['pricegroup']))
+		{
+			return true;
 		}
 
 		// Then recreate them if any

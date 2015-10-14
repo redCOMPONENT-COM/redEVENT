@@ -423,6 +423,8 @@
 					description ="COM_REDEVENT_CATEGORY"
 					required="true"
 					multiple="true"
+					acl_check="true"
+					published="true"
 					size="10"
 					class="inputbox" />
 

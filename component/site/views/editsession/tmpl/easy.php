@@ -143,6 +143,14 @@ $form = $this->form;
 								<?php echo $form->getInput('datdescription', 'event'); ?>
 							</div>
 						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->customfields[1]->getLabel(); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->customfields[1]->render(); ?>
+							</div>
+						</div>
 					</div>
 			</fieldset>
 		</div>
