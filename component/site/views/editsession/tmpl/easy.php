@@ -156,6 +156,7 @@ $form = $this->form;
 		</div>
 
 		<input type="hidden" name="option" value="<?php echo $option; ?>">
+		<input type="hidden" name="layout" value="easy">
 		<input type="hidden" name="s_id" value="<?php echo $this->item->id; ?>">
 		<?php echo $form->getInput('id', 'event'); ?>
 		<input type="hidden" name="task" value="">

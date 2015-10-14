@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    0.9
  */
-class RedeventModelEditsession extends RModelAdmin
+class RedeventModelEditsession extends RedeventModelAdmin
 {
 	protected $formName = 'session';
 
