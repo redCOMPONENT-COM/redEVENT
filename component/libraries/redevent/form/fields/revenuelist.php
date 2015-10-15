@@ -25,6 +25,8 @@ class JFormFieldRevenuelist extends JFormFieldList
 
 	protected $filter_published = '';
 
+	protected $createModal = false;
+
 	/**
 	 * Method to get the field options.
 	 *
@@ -83,6 +85,38 @@ class JFormFieldRevenuelist extends JFormFieldList
 			$this->filter_published = '';
 		}
 
+		if (!empty($element['create_modal']))
+		{
+			$value = (string) $element['create_modal'];
+
+			if (strtolower($element['create_modal'] == "true") || $element['create_modal'] == "1")
+			{
+				$this->createModal = true;
+			}
+		}
+
 		return parent::setup($element, $value, $group);
+	}
+
+	/**
+	 * Method to get the field input markup for a generic list.
+	 * Use the multiple attribute to enable multiselect.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   11.1
+	 */
+	protected function getInput()
+	{
+		$html = parent::getInput();
+
+		$acl = RedeventUserAcl::getInstance();
+
+		if ($this->createModal && $acl->canAddVenue())
+		{
+			$html .= RedeventLayoutHelper::render('form.fields.revenuelist.buttonadd', array('fieldId' => $this->id));
+		}
+
+		return $html;
 	}
 }

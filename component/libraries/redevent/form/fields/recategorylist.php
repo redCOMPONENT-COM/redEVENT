@@ -42,6 +42,12 @@ class JFormFieldRecategorylist extends JFormFieldList
 			$model->setState('filter.acl', $val == 'true' || $val == '1');
 		}
 
+		if (isset($this->element['published']))
+		{
+			$val = (string) $this->element['published'];
+			$model->setState('filter.published', $val == 'true' || $val == '1');
+		}
+
 		$categories = $model->getItems();
 
 		if ($categories)
