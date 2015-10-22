@@ -16,7 +16,7 @@ $uploadMaxFilesize       = (int) $config->get('upload_max_filesize', 2);
 $uploadMaxFilesizeInByte = $uploadMaxFilesize * 1024 * 1024;
 $allowedFileExtension    = $config->get('allowed_file_extension', 'jpg,jpeg,gif,png');
 $allowedMime             = $config->get('allowed_file_mimetype', 'image/jpg,image/jpeg,image/gif,image/png');
-$fieldName               = 'jform[custom' + $id + ']';
+$fieldName               = empty($group) ? 'jform[custom' + $id + ']' : 'jform[' . $group . '][custom' + $id + ']';
 $fieldId                 = 'cform_' . $fieldcode;
 
 $isCroppingEnable = $config->get('enable_cropping_image', '1');

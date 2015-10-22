@@ -77,16 +77,6 @@ class RedeventTableVenue extends RedeventTable
 			$this->alias = $alias;
 		}
 
-		if ($this->map && !($this->latitude || $this->longitude))
-		{
-			if ((!trim($this->street)) || (!trim($this->plz)) || (!trim($this->city)) || (!trim($this->country)))
-			{
-				$this->setError(JText::_('COM_REDEVENT_ADD_ADDRESS'));
-
-				return false;
-			}
-		}
-
 		return true;
 	}
 

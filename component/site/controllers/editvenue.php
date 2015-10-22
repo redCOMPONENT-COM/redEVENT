@@ -16,6 +16,32 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventControllerEditvenue extends RControllerForm
 {
 	/**
+	 * Method to add a new record.
+	 *
+	 * @return  mixed  True if the record can be added, a error object if not.
+	 */
+	public function add()
+	{
+		if (!parent::add())
+		{
+			return false;
+		}
+
+		if ($isModal = $this->input->get('modal', 0))
+		{
+			// Redirect back to the edit screen.
+			$this->setRedirect(
+				$this->getRedirectToItemRoute(
+					$this->getRedirectToItemAppend() . '&tmpl=component&modal=1&layout=modal&fieldId='
+					. $this->input->get('fieldId')
+				)
+			);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Function that allows child controller access to model data
 	 * after the data has been saved.
 	 *
@@ -31,6 +57,15 @@ class RedeventControllerEditvenue extends RControllerForm
 		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onVenueEdited', array($model->getState($this->context . '.id'), $isNew));
+
+		if ($this->input->get('modal', 0))
+		{
+			$venueid = $model->getState($this->context . '.id');
+			$this->setRedirect(
+				'index.php?option=com_redevent&view=editvenue&layout=modal_close&tmpl=component&fieldId=' . $this->input->get('fieldId')
+				. '&venueId=' . $venueid . '&name=' . urlencode($validData['venue'])
+			);
+		}
 
 		parent::postSaveHook($model, $validData);
 	}

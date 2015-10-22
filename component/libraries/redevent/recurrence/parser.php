@@ -49,6 +49,11 @@ class RedeventRecurrenceParser
 	{
 		$this->data = $data;
 
+		if (empty($data['type']))
+		{
+			return '';
+		}
+
 		switch ($data['type'])
 		{
 			case 'DAILY':
