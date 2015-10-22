@@ -801,13 +801,13 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 */
 	public function convertDateToPicasso($redMemberdate)
 	{
-		if (preg_match("/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/", $redMemberdate))
+		if (preg_match("/^([0-9]{1,2})-([0-9]{1,2})-([0-9]{4})$/", $redMemberdate, $matches))
 		{
-			return substr($redMemberdate, 0, 2) . substr($redMemberdate, 3, 2) . substr($redMemberdate, 8, 2);
+			return sprintf("%02d%02d%s", $matches[1], $matches[2], substr($matches[3], 2));
 		}
-		elseif (preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $redMemberdate))
+		elseif (preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$/", $redMemberdate, $matches))
 		{
-			return substr($redMemberdate, 8, 2) . substr($redMemberdate, 5, 2) . substr($redMemberdate, 2, 2);
+			return sprintf("%02d%02d%s", $matches[3], $matches[2], substr($matches[1], 2));
 		}
 
 		return false;
