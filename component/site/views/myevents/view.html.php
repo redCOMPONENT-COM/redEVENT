@@ -236,7 +236,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$text = JText::_('COM_REDEVENT_DELETE_XREF');
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref=' . $id;
-		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
+		$output = RHtml::tooltip($overlib, $text, null, $image, $link, '', 'hasTooltip deletelink');
 
 		return $output;
 	}
@@ -259,7 +259,7 @@ class RedeventViewMyevents extends RedeventViewFront
 
 		$return = base64_encode(RedeventHelperRoute::getMyeventsRoute());
 		$link = 'index.php?option=com_redevent&task=editevent.delete&id=' . $id . '&return=' . $return;
-		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
+		$output = RHtml::tooltip($overlib, $text, null, $image, $link, '', 'hasTooltip deletelink');
 
 		return $output;
 	}
