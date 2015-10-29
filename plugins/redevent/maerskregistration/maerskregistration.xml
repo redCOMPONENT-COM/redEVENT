@@ -27,6 +27,10 @@
                        label="PLG_REDEVENT_MAERSKREGISTRATION_XML_COMMENTSFIELDIDS_LABEL"
                        description="PLG_REDEVENT_MAERSKREGISTRATION_XML_COMMENTSFIELDIDS_DESCRIPTION"
                         />
+				<field name="b2b_notifications_prefix" type="text"
+					   label="PLG_REDEVENT_MAERSKREGISTRATION_XML_B2B_NOTIFICATIONS_PREFIX_LABEL"
+					   description="PLG_REDEVENT_MAERSKREGISTRATION_XML_B2B_NOTIFICATIONS_PREFIX_DESCRIPTION"
+						/>
             </fieldset>
  		</fields>
 	</config>

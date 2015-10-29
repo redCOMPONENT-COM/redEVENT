@@ -273,6 +273,11 @@ class plgRedeventMaerskregistration extends JPlugin
 			$subject = $params->get('registration_notification_subject');
 		}
 
+		if (strtolower($attendee->get('origin')) == 'b2b')
+		{
+			$subject = $this->params->get('b2b_notifications_prefix') . $subject;
+		}
+
 		$attendeeInfo = RedmemberApi::getUser($attendee->getUserId());
 
 		$booker = JFactory::getUser();
