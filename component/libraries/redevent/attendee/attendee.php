@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package  Redevent.Library
  * @since    2.5
+ *
+ * @TODO: convert to an entity
  */
 class RedeventAttendee extends JObject
 {
@@ -63,6 +65,26 @@ class RedeventAttendee extends JObject
 		}
 
 		$this->db = JFactory::getDbo();
+	}
+
+	/**
+	 * Returns a property of the object or the default value if the property is not set.
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $default   The default value.
+	 *
+	 * @return  mixed    The value of the property.
+	 */
+	public function get($property, $default = null)
+	{
+		$data = $this->load();
+
+		if (isset($data->$property))
+		{
+			return $data->$property;
+		}
+
+		return parent::get($property, $default);
 	}
 
 	/**

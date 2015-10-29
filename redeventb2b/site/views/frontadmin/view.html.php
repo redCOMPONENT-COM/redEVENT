@@ -120,7 +120,9 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 			$document->addStyleSheet($params->get('custom_css'));
 		}
 
-		$document->addScript('media/com_redeventb2b/js/b2b.js?v=' . uniqid());
+		RHelperAsset::load('b2b.js');
+
+//		$document->addScript('media/com_redeventb2b/js/b2b.js?v=' . uniqid());
 
 		// For redmember
 		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');
