@@ -605,4 +605,32 @@ class RedeventModelEditsession extends RedeventModelAdmin
 
 		return $res;
 	}
+
+	/**
+	 * Method to test whether a record state can be changed.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
+	 */
+	protected function canEditState($record)
+	{
+		$acl = RedeventUserAcl::getInstance();
+
+		return $acl->canPublishXref($record->id);
+	}
+
+	/**
+	 * Method to test whether a record can be deleted.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
+	 */
+	protected function canDelete($record)
+	{
+		$acl = RedeventUserAcl::getInstance();
+
+		return $acl->canEditXref($record->id);
+	}
 }

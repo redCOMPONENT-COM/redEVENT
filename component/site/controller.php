@@ -87,15 +87,7 @@ class RedeventController extends RedeventControllerFront
 	 */
 	public function deletexref()
 	{
-		$acl = RedeventUserAcl::getInstance();
 		$xref = $this->input->getInt('xref');
-
-		if (!$acl->canEditXref($xref))
-		{
-			$msg = JText::_('COM_REDEVENT_MYEVENTS_DELETE_XREF_NOTE_ALLOWED');
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
-			$this->redirect();
-		}
 
 		$model = $this->getModel('editsession');
 		$pks = array($xref);
