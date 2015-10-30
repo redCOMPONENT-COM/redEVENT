@@ -619,4 +619,18 @@ class RedeventModelEditsession extends RedeventModelAdmin
 
 		return $acl->canPublishXref($record->id);
 	}
+
+	/**
+	 * Method to test whether a record can be deleted.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
+	 */
+	protected function canDelete($record)
+	{
+		$acl = RedeventUserAcl::getInstance();
+
+		return $acl->canEditXref($record->id);
+	}
 }
