@@ -61,7 +61,7 @@ JText::script('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 
 		<div>
 		<?php if ($this->useracl->canAddSession()): ?>
-			<?php echo JHtml::link(RedeventHelperRoute::getEditXrefRoute().'&tmpl=component',
+			<?php echo JHtml::link(RedeventHelperRoute::getAddSessionTaskRoute().'&tmpl=component',
 				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_SESSION'),
 				array('class' => 'btn xrefmodal')); ?>
 		<?php endif; ?>
