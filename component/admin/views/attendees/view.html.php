@@ -83,6 +83,9 @@ class RedeventViewAttendees extends RedeventViewAdmin
 					'emailattendees.email', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', 'send', 'icon-email'
 				)
 			);
+			$firstGroup->addButton(
+				RToolbarBuilder::createCsvButton()
+			);
 
 			$secondGroup->addButton(
 				RToolbarBuilder::createNewButton('attendee.add')

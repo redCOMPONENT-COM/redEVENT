@@ -101,6 +101,11 @@ class RedeventModelAttendees extends RModelList
 
 		$items = $this->addPaymentInfo($items);
 
+		foreach ($items as &$item)
+		{
+			$item->uniqueid = RedeventHelper::getRegistrationUniqueId($item);
+		}
+
 		// Get the storage key.
 		$store = $this->getStoreId();
 
