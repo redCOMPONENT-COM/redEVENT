@@ -290,27 +290,6 @@ class RedeventModelAttendees extends RModelList
 	}
 
 	/**
-	 * Get the filter form
-	 *
-	 * @param   array    $data      data
-	 * @param   boolean  $loadData  load current data
-	 *
-	 * @return  JForm/false  the JForm object or false
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		$form = parent::getForm($data, $loadData);
-
-		if ($form && $this->getState('filter.session'))
-		{
-			$form->setValue('session', 'filter', $this->getState('filter.session'));
-			$form->setFieldAttribute('session', 'event', $this->getSession()->eventid, 'filter');
-		}
-
-		return $form;
-	}
-
-	/**
 	 * Cancel registrations
 	 *
 	 * @param   array  $cid  cids

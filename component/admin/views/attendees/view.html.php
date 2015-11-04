@@ -44,6 +44,13 @@ class RedeventViewAttendees extends RedeventViewAdmin
 			$this->canEdit = true;
 		}
 
+		// We need to do this when ony the get parameter &session is set.
+		if ($this->session)
+		{
+			$this->filterForm->setValue('session', 'filter', $this->session->xref);
+			$this->filterForm->setFieldAttribute('session', 'event', $this->session->eventid, 'filter');
+		}
+
 		parent::display($tpl);
 	}
 
