@@ -37,6 +37,13 @@ class RedeventTableEvent extends RedeventTable
 	protected $_tableFieldState = 'published';
 
 	/**
+	 * Category ids
+	 *
+	 * @var  array
+	 */
+	public $categories;
+
+	/**
 	 * Checks that the object is valid and able to be stored.
 	 *
 	 * This method checks that the parent_id is non-zero and exists in the database.
@@ -111,6 +118,53 @@ class RedeventTableEvent extends RedeventTable
 		// Prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
 		$this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
 		$this->review_message = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->review_message);
+
+		return true;
+	}
+
+	/**
+	 * Method to load a row from the database by primary key and bind the fields
+	 * to the JTable instance properties.
+	 *
+	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
+	 *                           set the instance property value is used.
+	 * @param   boolean  $reset  True to reset the default values before loading the new row.
+	 *
+	 * @return  boolean  True if successful. False if row not found.
+	 */
+	public function load($keys = null, $reset = true)
+	{
+		if (parent::load($keys, $reset))
+		{
+			if (!$this->loadCategories())
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Load categories array
+	 *
+	 * @return bool
+	 */
+	private function loadCategories()
+	{
+		if (empty($this->categories) && $this->id)
+		{
+			$query = $this->_db->getQuery(true)
+				->select('category_id')
+				->from('#__redevent_event_category_xref')
+				->where('event_id = ' . $this->id);
+			$this->_db->setQuery($query);
+
+			$this->categories = $this->_db->loadColumn();
+
+		}
 
 		return true;
 	}

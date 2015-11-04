@@ -77,10 +77,9 @@ class JFormFieldRELanguageVenueCategory extends JFormFieldCategory {
 
 		if(!is_null( $this->element->option))
 		{
-// 			echo '<pre>';print_r($this->element); echo '</pre>';exit;
 			foreach($this->element->option as $option)
 			{
-				$options[] = JHtml::_('select.option', $option->getAttribute( 'value'), JText::_($option->data()));
+				$options[] = JHtml::_('select.option', $option->value, $option->value);
 			}
 		}
 

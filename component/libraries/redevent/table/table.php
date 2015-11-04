@@ -40,4 +40,44 @@ class RedeventTable extends RTable
 
 		return $pk;
 	}
+
+	/**
+	 * Method to bind an associative array or object to the JTable instance.This
+	 * method only binds properties that are publicly accessible and optionally
+	 * takes an array of properties to ignore when binding.
+	 *
+	 * @param   mixed $src    An associative array or object to bind to the JTable instance.
+	 * @param   mixed $ignore An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @throws  InvalidArgumentException
+	 */
+	public function bind($src, $ignore = array())
+	{
+		if (!parent::bind($src, $ignore))
+		{
+			return false;
+		}
+
+		// Autofill created_by and modified_by information
+		$now = JDate::getInstance();
+		$nowFormatted = $now->toSql();
+		$userId = JFactory::getUser()->get('id');
+
+		if (property_exists($this, 'created_by')
+			&& empty($src['created_by']) && (is_null($this->created_by) || empty($this->created_by)))
+		{
+			$src['created_by']   = $userId;
+			$src['created'] = $nowFormatted;
+		}
+
+		if (property_exists($this, 'modified_by') && empty($src['modified_by']))
+		{
+			$src['modified_by']   = $userId;
+			$src['modified'] = $nowFormatted;
+		}
+
+		return true;
+	}
 }

@@ -63,7 +63,7 @@ abstract class JosettaReCategoryHelper
 			// B/C compat.
 			foreach ($items as &$item)
 			{
-				$item->title = $item->catname;
+				$item->title = $item->name;
 			}
 
 			// Indent cat list, for easier reading
@@ -117,7 +117,7 @@ abstract class JosettaReCategoryHelper
 
 			foreach ($items as &$item)
 			{
-				$item->title = $item->catname;
+				$item->title = $item->name;
 			}
 
 			self::$categoriesDataPerLanguage[$hash] = $items;

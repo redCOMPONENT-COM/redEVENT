@@ -10,108 +10,44 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * CSV View class for Attendees screen
  *
- * @TODO: not used at the moment !
- *
  * @package  Redevent.admin
- * @since    0.9
+ * @since    3.0
  */
-class RedEventViewAttendees extends JViewLegacy
+class RedEventViewAttendees extends RViewCsv
 {
 	/**
-	 * Execute and display a template script.
+	 * Get the columns for the csv file.
 	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  mixed  A string if successful, otherwise a Error object.
+	 * @return  array  An associative array of column names as key and the title as value.
 	 */
-	public function display($tpl = null)
+	public function getColumns()
 	{
-		$app = JFactory::getApplication();
-
-		jimport('joomla.filesystem.file');
-
-		$model = $this->getModel();
-		$model->setState('getAllFormFields', true);
-		$model->setState('unlimited', true);
-		$event     = $this->get('Event');
-		$fields    = $model->getFields();
-		$registers = $model->getData();
-
-		$text = "";
-
-		foreach ($fields AS $f)
-		{
-			$cols[] = $f->field_header;
-		}
-
-		$stdcols = array(JText::_('COM_REDEVENT_REGDATE'),
-			JText::_('COM_REDEVENT_IP_ADDRESS'),
-			JText::_('COM_REDEVENT_UNIQUE_ID'),
-			JText::_('COM_REDEVENT_USERNAME'),
-			JText::_('COM_REDEVENT_ACTIVATED'),
-			JText::_('COM_REDEVENT_CANCELLED'),
-			JText::_('COM_REDEVENT_WAITINGLIST'),
-			JText::_('COM_REDEVENT_PRICE'),
-			JText::_('COM_REDEVENT_PRICEGROUP'),
-			JText::_('COM_REDEVENT_PAYMENT'),
+		/**
+		 * Get the columns for the csv file.
+		 *
+		 * @return  array  An associative array of column names as key and the title as value.
+		 */
+		$cols = array(
+			'uregdate' => JText::_('COM_REDEVENT_REGDATE'),
+			'uip' => JText::_('COM_REDEVENT_IP_ADDRESS'),
+			'uniqueid' => JText::_('COM_REDEVENT_UNIQUE_ID'),
+			'username' => JText::_('COM_REDEVENT_USERNAME'),
+			'confirmdate' => JText::_('COM_REDEVENT_ACTIVATED'),
+			'cancelled' => JText::_('COM_REDEVENT_CANCELLED'),
+			'waitinglist' => JText::_('COM_REDEVENT_WAITINGLIST'),
+			'price' => JText::_('COM_REDEVENT_PRICE'),
+			'vat' => JText::_('COM_REDEVENT_VAT'),
+			'pricegroup' => JText::_('COM_REDEVENT_PRICEGROUP'),
+			'paid' => JText::_('COM_REDEVENT_PAYMENT'),
 		);
-		$cols = array_merge($cols, $stdcols);
-		$text .= RedeventHelper::writecsvrow($cols);
 
-		if (count($registers))
+		$redformFields = $this->get('RedformFields');
+
+		foreach ($redformFields AS $f)
 		{
-			foreach ((array) $registers as $r)
-			{
-				$data = array();
-
-				foreach ($fields AS $f)
-				{
-					$cleanfield = 'field_' . $f->id;
-
-					if (isset($r->$cleanfield))
-					{
-						$val = $r->$cleanfield;
-
-						if (stristr($val, '~~~'))
-						{
-							$val = str_replace('~~~', '\n', $val);
-						}
-
-						$data[] = $val;
-					}
-					else
-					{
-						$data[] = '';
-					}
-				}
-
-				$svals = array($r->uregdate,
-					$r->uip,
-					$event->course_code . '-' . $event->xref . '-' . $r->id,
-					$r->name,
-					$r->confirmed,
-					$r->cancelled,
-					$r->waitinglist,
-					$r->price,
-					$r->pricegroup,
-					($r->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID') . ' / ' . $r->status
-						: JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID') . ' / ' . $r->status
-					),
-				);
-				$data = array_merge($data, $svals);
-				$text .= RedeventHelper::writecsvrow($data);
-			}
+			$cols['field_' . $f->field_id] = $f->field_header;
 		}
 
-		$event->dates = RedeventHelperDate::isValidDate($event->dates) ? $event->dates : JText::_('COM_REDEVENT_OPEN_DATE');
-		$title = JFile::makeSafe($event->title . '_' . $event->dates . '_' . $event->venue . '.csv');
-
-		$doc = JFactory::getDocument();
-		$doc->setMimeEncoding('text/csv');
-		header('Content-Disposition: attachment; filename="' . $title . '"');
-
-		echo $text;
-
-		$app->close();
+		return $cols;
 	}
 }

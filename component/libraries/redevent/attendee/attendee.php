@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package  Redevent.Library
  * @since    2.5
+ *
+ * @TODO: convert to an entity
  */
 class RedeventAttendee extends JObject
 {
@@ -63,6 +65,26 @@ class RedeventAttendee extends JObject
 		}
 
 		$this->db = JFactory::getDbo();
+	}
+
+	/**
+	 * Returns a property of the object or the default value if the property is not set.
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $default   The default value.
+	 *
+	 * @return  mixed    The value of the property.
+	 */
+	public function get($property, $default = null)
+	{
+		$data = $this->load();
+
+		if (isset($data->$property))
+		{
+			return $data->$property;
+		}
+
+		return parent::get($property, $default);
 	}
 
 	/**
@@ -439,8 +461,8 @@ class RedeventAttendee extends JObject
 				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');
 			}
 
-			$body = $this->taghelper->ReplaceTags($body);
-			$subject = $this->taghelper->ReplaceTags($subject);
+			$body = $this->taghelper->replaceTags($body);
+			$subject = $this->taghelper->replaceTags($subject);
 		}
 		else
 		{
@@ -455,8 +477,8 @@ class RedeventAttendee extends JObject
 				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');
 			}
 
-			$body = $this->taghelper->ReplaceTags($body);
-			$subject = $this->taghelper->ReplaceTags($subject);
+			$body = $this->taghelper->replaceTags($body);
+			$subject = $this->taghelper->replaceTags($subject);
 		}
 
 		if (empty($subject))
@@ -612,7 +634,7 @@ class RedeventAttendee extends JObject
 		$tags->setXref($this->getXref());
 		$tags->addOptions(array('sids' => array($data->sid)));
 
-		$text = $tags->ReplaceTags($text);
+		$text = $tags->replaceTags($text);
 
 		return $text;
 	}
@@ -970,7 +992,7 @@ class RedeventAttendee extends JObject
 		);
 		$cancellink = '<a href="' . $cancellinkurl . '">' . JText::_('COM_REDEVENT_CANCEL') . '</a>';
 
-		$htmlmsg = $tags->ReplaceTags($body);
+		$htmlmsg = $tags->replaceTags($body);
 		$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
 		$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
 		$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
@@ -979,7 +1001,7 @@ class RedeventAttendee extends JObject
 		$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
 		$mailer->setBody($htmlmsg);
 
-		$subject = $tags->ReplaceTags($subject);
+		$subject = $tags->replaceTags($subject);
 		$mailer->setSubject($subject);
 
 		return $mailer;

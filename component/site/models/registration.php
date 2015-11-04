@@ -727,13 +727,15 @@ class RedeventModelRegistration extends RModel
 		$rmUser = RedmemberApi::getUser();
 
 		// Organization
-		if (isset($data['organization']) && $data['organization'])
+		if (!empty($data['organization']))
 		{
 			$organization = RedmemberApi::getOrganization(array('name' => $data['organization']));
+			$orgData = $data;
+			$orgData['name'] = $data['organization'];
 
 			if (!$organization->id)
 			{
-				$organization->save($data, false);
+				$organization->save($orgData, false);
 			}
 
 			$rmUser->setOrganizations(array(array('organization_id' => $organization->id, 'level' => 1)));

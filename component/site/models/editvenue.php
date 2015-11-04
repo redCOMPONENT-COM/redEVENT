@@ -264,7 +264,7 @@ class RedeventModelEditvenue extends RModelAdmin
 					$row->plz, $row->city, $row->country, $row->locdescription, $state
 				);
 
-				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_NEW_USER_VENUE_MAIL'));
+				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_USER_MAIL_NEW_VENUE_SUBJECT'));
 			}
 
 			$usermail->addRecipient($user->email);

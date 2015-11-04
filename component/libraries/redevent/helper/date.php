@@ -158,7 +158,7 @@ class RedeventHelperDate
 	 *
 	 * @return string
 	 */
-	public static function formatdate($date, $time, $format = null)
+	public static function formatdate($date, $time = null, $format = null)
 	{
 		$settings = RedeventHelper::config();
 
@@ -174,6 +174,30 @@ class RedeventHelperDate
 
 		// Format date
 		$date = JFactory::getDate($date);
+		$formatdate = $date->format($format ?: $settings->get('formatdate', 'd.m.Y'));
+
+		return $formatdate;
+	}
+
+	/**
+	 * Formats date
+	 *
+	 * @param   string  $datetime  date to format in a format accepted by strtotime
+	 * @param   string  $format    format, optional
+	 *
+	 * @return string
+	 */
+	public static function formatdatetime($datetime, $format = null)
+	{
+		$settings = RedeventHelper::config();
+
+		if (!static::isValidDate($datetime))
+		{
+			return JText::_('COM_REDEVENT_OPEN_DATE');
+		}
+
+		// Format date
+		$date = JFactory::getDate($datetime);
 		$formatdate = $date->format($format ?: $settings->get('formatdate', 'd.m.Y'));
 
 		return $formatdate;

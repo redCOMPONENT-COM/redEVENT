@@ -78,6 +78,10 @@ class RedeventModelTags extends RModel
 		$tags[] = new RedeventTagsTag('attachments', JText::_('COM_REDEVENT_TAG_ATTACHMENTS'));
 		$tags[] = new RedeventTagsTag('author_name', JText::_('COM_REDEVENT_TAG_AUTHOR_NAME'));
 		$tags[] = new RedeventTagsTag('author_email', JText::_('COM_REDEVENT_TAG_AUTHOR_EMAIL'));
+		$tags[] = new RedeventTagsTag('event_created', JText::_('COM_REDEVENT_TAG_EVENT_CREATED_DESC'));
+		$tags[] = new RedeventTagsTag('event_modified', JText::_('COM_REDEVENT_TAG_EVENT_MODIFIED_DESC'));
+		$tags[] = new RedeventTagsTag('session_created', JText::_('COM_REDEVENT_TAG_SESSION_CREATED_DESC'));
+		$tags[] = new RedeventTagsTag('session_modified', JText::_('COM_REDEVENT_TAG_SESSION_MODIFIED_DESC'));
 
 		$tags[] = new RedeventTagsTag('venue_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUE'), 'venue');
 		$tags[] = new RedeventTagsTag('venue_code', JText::_('COM_REDEVENT_VENUE_CODE'), 'venue');

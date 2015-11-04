@@ -8,12 +8,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Redevent Component venues csv export/import Controller
+ * Redevent Component events csv export/import Controller
  *
  * @package  Redevent.admin
  * @since    3.0
  */
-class RedeventControllerVenuescsv extends JControllerLegacy
+class RedeventControllerEventscsv extends JControllerLegacy
 {
 	/**
 	 * Get csv export file
@@ -22,7 +22,7 @@ class RedeventControllerVenuescsv extends JControllerLegacy
 	 */
 	public function export()
 	{
-		$this->input->set('view', 'venuescsv');
+		$this->input->set('view', 'eventscsv');
 		$this->input->set('format', 'csv');
 
 		parent::display();

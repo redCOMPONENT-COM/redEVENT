@@ -20,6 +20,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_josetta/classes/extensionplu
 class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 {
 	protected $_context = 'com_redevent_customfield';
+
 	protected $_defaultTable = 'redevent_fields';
 
 	/**
@@ -87,8 +88,7 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 	protected function _getTable()
 	{
 		// Set the table directory
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
-		$table = RTable::getAdminInstance('Customfield');
+		$table = RTable::getAdminInstance('Customfield', array(), 'com_redevent');
 
 		return $table;
 	}

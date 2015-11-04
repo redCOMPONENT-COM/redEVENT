@@ -39,7 +39,8 @@
 			<option value="3">COM_REDEVENT_BOTH</option>
 		</field>
 		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT"
-			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"/>
+			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"
+				showon="mailinform:1,2,3"/>
 
 		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION"
 			   description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
@@ -599,6 +600,14 @@
 		<field name="event_template" type="reeventlist" default="0"
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE"
 			   description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP"/>
+
+		<field name="frontendsubmit_mode" type="radio" default="simple"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_MODE"
+			   description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_MODE_TIP">
+			<option value="simple">COM_REDEVENT_SETTINGS_FRONTEND_EDIT_MODE_SIMPLE</option>
+			<option value="advanced">COM_REDEVENT_SETTINGS_FRONTEND_EDIT_MODE_ADVANCED</option>
+		</field>
 
 		<field name="frontendsubmit_allow_past_dates" type="radio" default="0"
 			   class="btn-group"

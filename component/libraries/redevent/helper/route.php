@@ -486,6 +486,11 @@ class RedeventHelperRoute
 			"task"   => "editsession.edit"
 		);
 
+		if (RedeventHelperConfig::get('frontendsubmit_mode', 'simple') == 'simple')
+		{
+			$parts["layout"] = "easy";
+		}
+
 		$parts['s_id'] = $sessionId;
 
 		if (!empty($id))

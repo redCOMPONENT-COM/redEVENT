@@ -36,9 +36,9 @@ class RedeventModelEmailattendees extends RModel
 		{
 			$this->setState('sessionId', (int) $data['session']);
 
-			$this->setState('confirmed', isset($data['filter.confirmed']) ? $data['filter.confirmed'] : 1);
-			$this->setState('waiting', isset($data['filter.waiting']) ? $data['filter.waiting'] : 0);
-			$this->setState('cancelled', isset($data['filter.cancelled']) ? $data['filter.cancelled'] : 0);
+			$this->setState('confirmed', isset($data['filter.confirmed']) ? $data['filter.confirmed'] : null);
+			$this->setState('waiting', isset($data['filter.waiting']) ? $data['filter.waiting'] : null);
+			$this->setState('cancelled', isset($data['filter.cancelled']) ? $data['filter.cancelled'] : null);
 		}
 
 		if ($cids = JFactory::getApplication()->input->get('cid', array(), 'array'))
@@ -68,7 +68,10 @@ class RedeventModelEmailattendees extends RModel
 		{
 			if ($contacts = $rfcore->getSidContactEmails($sid))
 			{
-				$emails = array_merge($emails, $contacts);
+				foreach ($contacts as $contact)
+				{
+					$emails[$contact['email']] = $contact;
+				}
 			}
 		}
 
@@ -120,9 +123,21 @@ class RedeventModelEmailattendees extends RModel
 		else
 		{
 			$query->where('xref = ' . $this->getState('sessionId'));
-			$query->where('confirmed = ' . $this->getState('confirmed'));
-			$query->where('cancelled = ' . $this->getState('cancelled'));
-			$query->where('waitinglist = ' . $this->getState('waiting'));
+
+			if (is_numeric($this->getState('confirmed')))
+			{
+				$query->where('confirmed = ' . $this->getState('confirmed'));
+			}
+
+			if (is_numeric($this->getState('cancelled')))
+			{
+				$query->where('cancelled = ' . $this->getState('cancelled'));
+			}
+
+			if (is_numeric($this->getState('waiting')))
+			{
+				$query->where('waitinglist = ' . $this->getState('waiting'));
+			}
 		}
 
 		$db->setQuery($query);
@@ -148,8 +163,8 @@ class RedeventModelEmailattendees extends RModel
 
 		$taghelper = new RedeventTags;
 		$taghelper->setXref($this->getState('sessionId'));
-		$subject = $taghelper->ReplaceTags($subject);
-		$body    = $taghelper->ReplaceTags($body);
+		$subject = $taghelper->replaceTags($subject);
+		$body    = $taghelper->replaceTags($body);
 
 		$mailer = JFactory::getMailer();
 		$mailer->setSubject($subject);

@@ -120,7 +120,9 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 			$document->addStyleSheet($params->get('custom_css'));
 		}
 
-		$document->addScript('media/com_redeventb2b/js/b2b.js?v=' . uniqid());
+		RHelperAsset::load('b2b.js');
+
+//		$document->addScript('media/com_redeventb2b/js/b2b.js?v=' . uniqid());
 
 		// For redmember
 		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');
@@ -192,6 +194,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_PUBLISH");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_UNPUBLISH");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST");
+		JText::script("COM_REDEVENTB2B_EDIT_MEMBER_JS_VALIDATION_ERROR");
 		JText::script("COM_REDEVENT_FILTER_SELECT_EVENT");
 		JText::script("COM_REDEVENT_FILTER_SELECT_SESSION");
 		JText::script("COM_REDEVENT_FILTER_SELECT_VENUE");

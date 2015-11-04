@@ -82,8 +82,7 @@ class plgJosetta_extRedeventpricegroup extends JosettaClassesExtensionplugin
 	protected function _getTable()
 	{
 		// Set the table directory
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_redevent/tables');
-		$table = RTable::getAdminInstance('Pricegroup');
+		$table = RTable::getAdminInstance('Pricegroup', array(), 'com_redevent');
 
 		return $table;
 	}

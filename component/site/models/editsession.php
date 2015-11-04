@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Site
  * @since    0.9
  */
-class RedeventModelEditsession extends RModelAdmin
+class RedeventModelEditsession extends RedeventModelAdmin
 {
 	protected $formName = 'session';
 
@@ -127,6 +127,14 @@ class RedeventModelEditsession extends RModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
+		if (empty($data['eventid']))
+		{
+			if (isset($data['event']['id']) && $data['event']['title'])
+			{
+				$form->setFieldAttribute('eventid', 'required', 'false');
+			}
+		}
+
 		// First get the data from form itself
 		if (!$validData = parent::validate($form, $data, $group))
 		{
@@ -150,9 +158,18 @@ class RedeventModelEditsession extends RModelAdmin
 		{
 			$dbname = 'custom' . $field->id;
 
-			if (isset($data[$dbname]))
+			if (!isset($data[$dbname]))
+			{
+				continue;
+			}
+
+			if ($field->object_key == 'redevent.xref')
 			{
 				$validData[$dbname] = $data[$dbname];
+			}
+			elseif ($field->object_key == 'redevent.event')
+			{
+				$validData['event'][$dbname] = $data[$dbname];
 			}
 		}
 
@@ -181,8 +198,12 @@ class RedeventModelEditsession extends RModelAdmin
 			{
 				$field->value = $data->$prop;
 			}
+			elseif (isset($data->event->$prop))
+			{
+				$field->value = $data->event->$prop;
+			}
 
-			$fields[] = $field;
+			$fields[$c->id] = $field;
 		}
 
 		return $fields;
@@ -218,7 +239,7 @@ class RedeventModelEditsession extends RModelAdmin
 
 		$query->select('f.*')
 			->from('#__redevent_fields AS f')
-			->where('f.object_key = ' . $this->_db->Quote("redevent.xref"))
+			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR ' . 'f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
 			->order('f.ordering');
 
 		$this->_db->setQuery($query);
@@ -243,6 +264,35 @@ class RedeventModelEditsession extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
+
+		// Autofill created_by and modified_by information
+		$now = JDate::getInstance();
+		$nowFormatted = $now->toSql();
+		$userId = JFactory::getUser()->get('id');
+
+		if (!$pk && empty($data['created_by']))
+		{
+			$data['created_by']   = $userId;
+			$data['created'] = $nowFormatted;
+		}
+
+		if (empty($data['modified_by']))
+		{
+			$data['modified_by'] = $userId;
+			$data['modified'] = $nowFormatted;
+		}
+
+		if (empty($data['eventid']) && !$this->saveEvent($data))
+		{
+			return false;
+		}
+
+		if (!$pk)
+		{
+			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
+		}
+
 		if (!parent::save($data))
 		{
 			return false;
@@ -266,6 +316,29 @@ class RedeventModelEditsession extends RModelAdmin
 		$isNew = isset($data['id']) && $data['id'] ? false : true;
 		$notify = RModel::getFrontInstance('Editsessionnotify');
 		$notify->notify($this->getState($this->getName() . '.id'), $isNew);
+
+		return true;
+	}
+
+	/**
+	 * Try to save event
+	 *
+	 * @param   array  &$data  post data
+	 *
+	 * @return boolean
+	 */
+	private function saveEvent(&$data)
+	{
+		$model = RModel::getFrontInstance('editevent', array(), 'com_redevent');
+
+		if (!$model->save($data['event']))
+		{
+			$this->setError($model->getError());
+
+			return false;
+		}
+
+		$data['eventid'] = $model->getState('editevent.id');
 
 		return true;
 	}
@@ -308,7 +381,7 @@ class RedeventModelEditsession extends RModelAdmin
 		$recurrence = RTable::getInstance('Recurrence', 'RedeventTable');
 		$recurrenceParser = new RedeventRecurrenceParser;
 
-		if (!$data['recurrence']['recurrenceid'])
+		if (empty($data['recurrence']['recurrenceid']))
 		{
 			$rrule = $recurrenceParser->parsePost($data['recurrence']);
 
@@ -451,6 +524,11 @@ class RedeventModelEditsession extends RModelAdmin
 			return false;
 		}
 
+		if (empty($data['pricegroup']))
+		{
+			return true;
+		}
+
 		// Then recreate them if any
 		foreach ((array) $data['pricegroup'] as $k => $r)
 		{
@@ -526,5 +604,33 @@ class RedeventModelEditsession extends RModelAdmin
 		$res = $this->_db->loadObjectList();
 
 		return $res;
+	}
+
+	/**
+	 * Method to test whether a record state can be changed.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
+	 */
+	protected function canEditState($record)
+	{
+		$acl = RedeventUserAcl::getInstance();
+
+		return $acl->canPublishXref($record->id);
+	}
+
+	/**
+	 * Method to test whether a record can be deleted.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
+	 */
+	protected function canDelete($record)
+	{
+		$acl = RedeventUserAcl::getInstance();
+
+		return $acl->canEditXref($record->id);
 	}
 }

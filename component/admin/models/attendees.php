@@ -101,6 +101,11 @@ class RedeventModelAttendees extends RModelList
 
 		$items = $this->addPaymentInfo($items);
 
+		foreach ($items as &$item)
+		{
+			$item->uniqueid = RedeventHelper::getRegistrationUniqueId($item);
+		}
+
 		// Get the storage key.
 		$store = $this->getStoreId();
 
@@ -496,7 +501,7 @@ class RedeventModelAttendees extends RModelList
 
 			$query->update('#__redevent_register')
 				->set('xref = ' . $dest)
-				->where('r.id IN (' . implode(', ', $cid) . ')');
+				->where('id IN (' . implode(', ', $cid) . ')');
 
 			$this->_db->setQuery($query);
 

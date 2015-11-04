@@ -72,32 +72,48 @@ class RedeventModelEditsessionnotify extends RModel
 			{
 				$mail = JFactory::getMailer();
 
-				$state = $session->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
+				$state = $session->published ? JText::sprintf('COM_REDEVENT_MAIL_SESSION_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_SESSION_UNPUBLISHED');
+
+				$replaceOptionsExtra = array(
+					'[state]' => $state,
+					'[editor_ip]' => getenv('REMOTE_ADDR'),
+					'[editor_name]' => $user->name,
+					'[editor_username]' => $user->username,
+					'[editor_email]' => $user->email,
+				);
+
+				$replacer = new RedeventTags(array('extra' => $replaceOptionsExtra));
+				$replacer->setXref($session->id);
 
 				if (!$this->isNew)
 				{
 					$modified_ip = getenv('REMOTE_ADDR');
 					$edited = JHTML::Date($session->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
-					$mailbody = JText::sprintf('COM_REDEVENT_MAIL_EDIT_EVENT',
+					$mailbody = JText::sprintf('COM_REDEVENT_FRONTEND_EDITED_SESSION_NOTIFICATION_BODY_S',
 						$user->name, $user->username, $user->email, $modified_ip, $edited,
 						$session->title, $date, $session->times,
-						$session->venue, $session->city, $session->datdescription, $state
+						$session->venue, $session->city, $session->summary, $state
 					);
-					$mail->setSubject($SiteName . JText::_('COM_REDEVENT_EDIT_EVENT_MAIL'));
+
+					$subject = $replacer->replaceTags($SiteName . JText::_('COM_REDEVENT_FRONTEND_EDITED_SESSION_NOTIFICATION_SUBJECT_S'));
+					$mailbody = $replacer->replaceTags($mailbody);
 				}
 				else
 				{
 					$created = JHTML::Date($session->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
-					$mailbody = JText::sprintf('COM_REDEVENT_MAIL_NEW_EVENT',
+					$mailbody = JText::sprintf('COM_REDEVENT_FRONTEND_NEW_SESSION_NOTIFICATION_BODY_S',
 						$user->name, $user->username, $user->email, $session->author_ip, $created,
 						$session->title, $date, $session->times,
-						$session->venue, $session->city, $session->datdescription, $state
+						$session->venue, $session->city, $session->summary, $state
 					);
-					$mail->setSubject($SiteName . JText::_('COM_REDEVENT_NEW_EVENT_MAIL'));
+
+					$subject = $replacer->replaceTags($SiteName . JText::_('COM_REDEVENT_FRONTEND_NEW_SESSION_NOTIFICATION_SUBJECT_S'));
+					$mailbody = $replacer->replaceTags($mailbody);
 				}
 
 				$mail->addRecipient($recipients);
 				$mail->setSender(array($MailFrom, $FromName));
+				$mail->setSubject($subject);
 				$mail->setBody($mailbody);
 
 				$sent = $mail->Send();
@@ -133,33 +149,49 @@ class RedeventModelEditsessionnotify extends RModel
 			$usermail = JFactory::getMailer();
 
 			$state 	= $session->published ?
-				JText::sprintf('COM_REDEVENT_USER_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_EVENT_UNPUBLISHED');
+				JText::sprintf('COM_REDEVENT_USER_MAIL_SESSION_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_SESSION_UNPUBLISHED');
+
+			$replaceOptionsExtra = array(
+				'[state]' => $state,
+				'[editor_ip]' => getenv('REMOTE_ADDR'),
+				'[editor_name]' => $user->name,
+				'[editor_username]' => $user->username,
+				'[editor_email]' => $user->email,
+			);
+
+			$replacer = new RedeventTags(array('extra' => $replaceOptionsExtra));
+			$replacer->setXref($session->id);
 
 			$date = $this->formatDate($session);
 
 			if (!$this->isNew)
 			{
 				$edited = JHTML::Date($session->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
-				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_EDIT_EVENT',
+				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_EDITED_SESSION_BODY',
 					$user->name, $user->username, $edited,
 					$session->title, $date, $session->times,
-					$session->venue, $session->city, $session->datdescription, $state
+					$session->venue, $session->city, $session->summary, $state
 				);
-				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_EDIT_USER_EVENT_MAIL'));
+
+				$subject = $replacer->replaceTags($SiteName . JText::_('COM_REDEVENT_USER_MAIL_EDITED_SESSION_SUBJECT'));
+				$mailbody = $replacer->replaceTags($mailbody);
 			}
 			else
 			{
 				$created = JHTML::Date($session->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
-				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_EVENT',
+				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_SESSION_BODY',
 					$user->name, $user->username, $created,
 					$session->title, $date, $session->times,
-					$session->venue, $session->city, $session->datdescription, $state
+					$session->venue, $session->city, $session->summary, $state
 				);
-				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_NEW_USER_EVENT_MAIL'));
+
+				$subject = $replacer->replaceTags($SiteName . JText::_('COM_REDEVENT_USER_MAIL_NEW_SESSION_SUBJECT'));
+				$mailbody = $replacer->replaceTags($mailbody);
 			}
 
 			$usermail->addRecipient($user->email);
 			$usermail->setSender(array($MailFrom, $FromName));
+			$usermail->setSubject($subject);
 			$usermail->setBody($mailbody);
 
 			$sent = $usermail->Send();
@@ -182,7 +214,7 @@ class RedeventModelEditsessionnotify extends RModel
 		{
 			$query = $this->_db->getQuery(true);
 
-			$query->select('e.published, e.modified, e.created, e.author_ip, e.title, e.datdescription')
+			$query->select('x.published, x.modified, x.created, e.author_ip, e.title, e.summary')
 				->select('v.venue, v.city')
 				->select('x.id, x.eventid, x.dates, x.times')
 				->from('#__redevent_event_venue_xref AS x')

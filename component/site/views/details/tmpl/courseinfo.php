@@ -132,7 +132,7 @@ foreach ($this->eventlinks as $key => $event) {
 	 <td colspan="7">
 			<?php $tagsHelper = new RedeventTags(); ?>
 			<?php $tagsHelper->setXref($event->xref); ?>
-	   <?php echo $tagsHelper->ReplaceTags($event->details); ?>
+	   <?php echo $tagsHelper->replaceTags($event->details); ?>
 	 </td>
 	</tr>
 	<?php endif; ?>

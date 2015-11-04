@@ -114,6 +114,35 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	}
 
 	/**
+	 * Tag replacement for redFORM
+	 *
+	 * @param   string      &$text     text to replace
+	 * @param   object      $formData  form data
+	 * @param   RdfAnswers  $answers   answers
+	 *
+	 * @return void
+	 */
+	public function onRedformTagReplace(&$text, $formData, $answers)
+	{
+		$sid = $answers->getSid();
+
+		// Get associated session
+		$table = RTable::getAdminInstance('Attendee', array(), 'com_redevent');
+		$table->load(array('sid' => $sid));
+
+		if (!$table->id)
+		{
+			return;
+		}
+
+		$replacer = new RedeventTags;
+		$replacer->setSubmitkey($table->submit_key);
+		$replacer->setXref($table->xref);
+
+		$text = $replacer->replaceTags($text);
+	}
+
+	/**
 	 * Return fullname(s) associated to sumbission
 	 *
 	 * @param   string  $submit_key  submit_key

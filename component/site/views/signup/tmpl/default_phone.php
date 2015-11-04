@@ -23,4 +23,4 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-echo $this->tags->ReplaceTags($this->page);
+echo $this->tags->replaceTags($this->page);

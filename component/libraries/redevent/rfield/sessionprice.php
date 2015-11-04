@@ -266,4 +266,14 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	{
 		return $this->load()->field;
 	}
+
+	/**
+	 * SKU associated to price
+	 *
+	 * @return string
+	 */
+	public function getSku()
+	{
+		return parent::getSku() ?: 'REGISTRATION';
+	}
 }

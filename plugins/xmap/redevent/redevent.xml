@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<extension type="plugin" group="xmap" version="1.7">
+<extension type="plugin" group="xmap" version="1.7" method="upgrade">
 	<name>PLG_XMAP_REDEVENT</name>
 	<author>redCOMPONENT / adapted from Eventlist plugin by Guillermo Vargas</author>
 	<creationDate>##DATE##</creationDate>

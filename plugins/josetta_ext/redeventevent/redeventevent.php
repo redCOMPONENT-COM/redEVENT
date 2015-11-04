@@ -92,8 +92,7 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 	protected function _getTable()
 	{
 		// Set the table directory
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
-		$table = JTable::getInstance('redevent_events', '');
+		$table = RTable::getAdminInstance('Event', array(), 'com_redevent');
 
 		return $table;
 	}

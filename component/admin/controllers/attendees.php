@@ -105,7 +105,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 
 		$msg = $total . ' ' . JText::_('COM_REDEVENT_ATTENDEES_MOVED');
 
-		$this->setRedirect('index.php?option=com_redevent&view=attendees&xref=' . $dest, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=attendees&filter[session]=' . $dest, $msg);
 	}
 
 	/**
