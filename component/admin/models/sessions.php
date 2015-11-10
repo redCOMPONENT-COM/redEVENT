@@ -114,7 +114,7 @@ class RedeventModelSessions extends RModelList
 	{
 		$query = $this->_db->getQuery(true);
 
-		$query->select('obj.*, 0 AS checked_out')
+		$query->select('obj.*')
 			->select('e.title AS event_title, e.checked_out as event_checked_out, e.registra')
 			->select('v.venue, v.checked_out as venue_checked_out')
 			->from('#__redevent_event_venue_xref AS obj')
