@@ -39,6 +39,12 @@ class JFormFieldRemanagedcategorylist extends JFormFieldList
 		$model->setState('list.direction', 'asc');
 		$model->setState('list.limit', 0);
 
+		if (isset($this->element['published']))
+		{
+			$val = (string) $this->element['published'];
+			$model->setState('filter.published', $val);
+		}
+
 		if (isset($this->element['acl_check']))
 		{
 			$val = (string) $this->element['acl_check'];

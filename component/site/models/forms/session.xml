@@ -424,7 +424,7 @@
 					required="true"
 					multiple="true"
 					acl_check="true"
-					published="true"
+					published="1"
 					size="10"
 					class="inputbox" />
 
