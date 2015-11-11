@@ -1,0 +1,315 @@
+<?php
+/**
+ * @package     Joomla
+ * @subpackage  redEVENT
+ * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license     GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+defined('_JEXEC') or die('Restricted access');
+
+
+//print_r($this->upcomingevents);?>
+
+<div class="featured_events">
+
+	<?php foreach ($this->upcomingevents as $key => $event)
+	{
+		$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref=' . $event->xref . '&id=' . $event->slug);
+		if($event->featured==1)
+		{
+			?>
+			<div class="feature">
+				<div class="row">
+					<div class="time_event">
+						<?php 
+						$dates=new DateTime($event->dates);?>
+						<span class="day"><?php echo $dates->format('d');?></span>
+						<span class="monthyear"><?php echo $dates->format('F').' '.$dates->format('Y');?></span>
+						<span class="time_start_time_end">
+							<?php 
+							$times=new DateTime($event->times);
+							$endtimes=new DateTime($event->times);
+							echo $times->format('G:H').' - '.$endtimes->format('G:H');
+							?>
+						</span>
+					</div>
+					<div class="information_event">
+						<span class="event-title">								
+							<?php echo JHTML::_('link', $event_url,$event->session_title); ?>
+						</span>
+						<div class="clear"></div>
+						<span class="description">
+							<?php echo $event->custom1;?>
+						</span>
+						<span class="event-categories">
+							<?php
+							$type=explode("\n", $event->custom3);
+
+							for($i=0;$i<count($type);$i++)
+							{
+								echo('<span class="event_category"># '.$type[$i].'</span>') ;
+							}
+							?>		
+						</span>	
+						<span class="description_venue">
+							<?php echo $event->details;?>
+						</span>	
+						<span class="readmore"><a href="<?php echo $event_url; ?>"></a></span>				
+					</div>
+
+
+				</div>
+			</div><?php
+		}
+	}
+	?>
+</div>
+<div class="list_events" style="clear:both;">
+	<div class="content_upcoming_events">
+	<div class="header">
+		<div class="col-md-2 col-sm-2 col-xs-12 date">
+			<?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?>
+		</div>
+		<div class="col-md-4 col-sm-4 col-xs-12 navn">
+			<?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?>
+		</div>
+		<div class="col-md-4 col-sm-4 col-xs-12 venue">
+			<!-- Display place display event-->
+			<?php echo JText::_('COM_REDEVENT_EVENT_WHERE'); ?>
+		</div>
+		<div class="col-md-1 col-sm-1 col-xs-12 register">
+			<?php echo JText::_('COM_REDEVENT_EVENT_REGISTER'); ?>
+		</div>
+	</div>
+	<?php
+	$elsettings = RedeventHelper::config();
+	$imagepath = JURI::root() . 'media/com_redevent/images/';
+
+
+	foreach ($this->upcomingevents as $key => $event)
+	{
+
+
+		$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref=' . $event->xref . '&id=' . $event->slug);
+		$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id=' . $event->venueslug);
+		?>
+		<div class="content row">
+			<div class="col-md-2 col-sm-2 col-xs-12 date">
+				<div class="time_event">
+						<?php 
+						$dates=new DateTime($event->dates);?>
+						<span class="day"><?php echo $dates->format('d');?></span>
+						<span class="monthyear"><?php echo $dates->format('F').' '.$dates->format('Y');?></span>
+						<span class="time_start_time_end">
+							<?php 
+							$times=new DateTime($event->times);
+							$endtimes=new DateTime($event->times);
+							echo $times->format('G:H').' - '.$endtimes->format('G:H');
+							?>
+						</span>
+				</div>
+			</div>
+			<div class="col-md-5 col-sm-5 col-xs-12 navn">
+				<div class="information_event">
+						<span class="event-title">								
+							<?php echo JHTML::_('link', $event_url,$event->session_title); ?>
+						</span>
+						<div class="clear"></div>
+						<span class="description_venue">
+							<?php echo $event->details;?>
+						</span>	
+						<span class="event-categories">
+							<?php
+							$type=explode("\n", $event->custom3);
+
+							for($i=0;$i<count($type);$i++)
+							{
+								echo('<span class="event_category"># '.$type[$i].'</span>') ;
+							}
+							?>		
+						</span>	
+						
+							
+					</div>
+
+			</div>
+			<div class="col-md-4 col-sm-4 col-xs-12 venue">
+				<span class="venue_host">
+					<?php echo $event->custom4; ?>
+					<?php //echo $event->locdescription; ?>
+				</span>
+				<span class="venue_address">
+					<?php echo $event->street.',<br/>'.$event->locdescription.' '.$event->city.$event->state; ?>
+				</span>
+			</div>
+			<div class="col-md-1 col-sm-1 col-xs-12 register">
+
+				<?php
+				/* Get the different submission types */
+				$submissiontypes = explode(',', $event->submission_types);
+				$venues_html = '';
+
+				foreach ($submissiontypes as $key => $subtype)
+				{
+					switch ($subtype)
+					{
+						case 'email':
+						$venues_html .= '<div class="vlink email">' . JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=email&xref=' . $event->xref . '&id=' . $event->id), JHTML::_('image', $imagepath . $elsettings->get('signup_email_img', 'email_icon.gif'),  $elsettings->get('signup_email_text'), 'width="24px" height="24px"')) . '</div> ';
+						break;
+
+						case 'phone':
+						$venues_html .= '<div class="vlink phone">' . JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref=' . $event->xref . '&id=' . $event->id), JHTML::_('image', $imagepath . $elsettings->get('signup_phone_img', 'phone_icon.gif'),  $elsettings->get('signup_phone_text'), 'width="24px" height="24px"')) . '</div> ';
+						break;
+
+						case 'external':
+						$venues_html .= '<div class="vlink external hasTooltip" title="' . $elsettings->get('signup_external_text') . '">' . JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath . $elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"') . '</div> ';
+						break;
+
+						case 'webform':
+						if ($event->prices && count($event->prices))
+						{
+							foreach ($event->prices as $p)
+							{
+								$title = ' title="' . $p->name . '<br/>' . addslashes(str_replace("\n", "<br/>", $p->tooltip)) . '"';
+								$img = empty($p->image) ? JHTML::_('image', $imagepath . $elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($elsettings->get('signup_webform_text')))
+								: JHTML::_('image', $p->image,  JText::_($p->name));
+								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
+
+								$venues_html .= '<div class="vlink courseinfo_webform hasTooltip ' . $p->alias . '"' . $title . '>'
+								. JHTML::_('link', $link, $img) . '</div> ';
+							}
+						}
+						else
+						{
+							$venues_html .= '<div class="vlink webform">' . JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug)), JHTML::_('image', $imagepath . $elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($elsettings->get('signup_webform_text')))) . '</div> ';
+						}
+						break;
+
+						case 'formaloffer':
+						$venues_html='<div class="vlink formaloffer">'.'
+						<a href="'.JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref=' . $event->xref . '&id=' . $event->id).'">'.JText::_('COM_REDEVENT_EVENT_REGISTER').'</a>
+						<span class="readmore"><a href="'.$event_url.'"></a></span>	
+
+						</div>';
+						//$venues_html .= '<div class="vlink formaloffer">' 
+						//. JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref=' . $event->xref . '&id=' . $event->id), JHTML::_('image', $imagepath . $elsettings->get('signup_formal_offer_img', 'formal_icon.gif'),  $elsettings->get('signup_formal_offer_text'), 'width="24px" height="24px"')) . '</div> ';
+						break;
+					}
+				}
+
+				echo $venues_html;
+				?>
+			</div>
+		</div>
+
+
+
+
+
+
+		<?php }?>
+	</div>
+	</div>
+	<table class="list_events" style="clear:both;display:none;">
+		<thead>
+			<tr>
+				<th><?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?></th>
+				<th colspan="2"><?php echo JText::_('COM_REDEVENT_EVENT_WHERE'); ?></th>
+				<th>Tilmed</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			$elsettings = RedeventHelper::config();
+			$imagepath = JURI::root() . 'media/com_redevent/images/';
+
+
+			foreach ($this->upcomingevents as $key => $event)
+			{
+
+
+				$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref=' . $event->xref . '&id=' . $event->slug);
+				$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id=' . $event->venueslug);
+				?>
+				<tr>
+					<td><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
+					<td><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
+					<td><?php echo $event->venue; ?></td>
+					<td><?php echo RedeventHelperCountries::getCountryFlag($event->country); ?></td>
+
+					<td>
+						<?php
+						/* Get the different submission types */
+						$submissiontypes = explode(',', $event->submission_types);
+						$venues_html = '';
+
+						foreach ($submissiontypes as $key => $subtype)
+						{
+							switch ($subtype)
+							{
+								case 'email':
+								$venues_html .= '<div class="vlink email">' . JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=email&xref=' . $event->xref . '&id=' . $event->id), JHTML::_('image', $imagepath . $elsettings->get('signup_email_img', 'email_icon.gif'),  $elsettings->get('signup_email_text'), 'width="24px" height="24px"')) . '</div> ';
+								break;
+
+								case 'phone':
+								$venues_html .= '<div class="vlink phone">' . JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref=' . $event->xref . '&id=' . $event->id), JHTML::_('image', $imagepath . $elsettings->get('signup_phone_img', 'phone_icon.gif'),  $elsettings->get('signup_phone_text'), 'width="24px" height="24px"')) . '</div> ';
+								break;
+
+								case 'external':
+								$venues_html .= '<div class="vlink external hasTooltip" title="' . $elsettings->get('signup_external_text') . '">' . JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath . $elsettings->get('signup_external_img', 'external_icon.gif'),  $elsettings->get('signup_external_text')), 'target="_blank"') . '</div> ';
+								break;
+
+								case 'webform':
+								if ($event->prices && count($event->prices))
+								{
+									foreach ($event->prices as $p)
+									{
+										$title = ' title="' . $p->name . '<br/>' . addslashes(str_replace("\n", "<br/>", $p->tooltip)) . '"';
+										$img = empty($p->image) ? JHTML::_('image', $imagepath . $elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($elsettings->get('signup_webform_text')))
+										: JHTML::_('image', $p->image,  JText::_($p->name));
+										$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
+
+										$venues_html .= '<div class="vlink courseinfo_webform hasTooltip ' . $p->alias . '"' . $title . '>'
+										. JHTML::_('link', $link, $img) . '</div> ';
+									}
+								}
+								else
+								{
+									$venues_html .= '<div class="vlink webform">' . JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug)), JHTML::_('image', $imagepath . $elsettings->get('signup_webform_img', 'form_icon.gif'),  JText::_($elsettings->get('signup_webform_text')))) . '</div> ';
+								}
+								break;
+
+								case 'formaloffer':
+								$venues_html='<div class="vlink formaloffer">'.'
+						<a href="'.JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref=' . $event->xref . '&id=' . $event->id).'">'.JText::_('COM_REDEVENT_EVENT_REGISTER').'</a>
+						<span class="readmore"><a href="'.$event_url.'"></a></span>	
+
+						</div>';
+								break;
+							}
+						}
+
+						echo $venues_html;
+						?>
+					</td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
