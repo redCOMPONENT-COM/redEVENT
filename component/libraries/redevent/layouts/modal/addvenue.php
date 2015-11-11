@@ -17,18 +17,6 @@ $cssId = $modal->getAttribute('id');
 
 if ($link = $modal->params->get('link', null))
 {
-//	$styleSheet = "
-//	iframe { border: 0 none; }
-//	.modal {
-//		position: absolute;
-//		left: 40%;
-//	}
-//	.modal-body {
-//		padding: 5px;
-//	}
-//	";
-//	$doc->addStyleDeclaration($styleSheet);
-
 	$jsEvents       = $modal->params->get('events', array());
 	$jsEventsString = '';
 

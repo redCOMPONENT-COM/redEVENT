@@ -44,6 +44,13 @@ class RedeventViewAttendees extends RedeventViewAdmin
 			$this->canEdit = true;
 		}
 
+		// We need to do this when ony the get parameter &session is set.
+		if ($this->session)
+		{
+			$this->filterForm->setValue('session', 'filter', $this->session->xref);
+			$this->filterForm->setFieldAttribute('session', 'event', $this->session->eventid, 'filter');
+		}
+
 		parent::display($tpl);
 	}
 
@@ -82,6 +89,9 @@ class RedeventViewAttendees extends RedeventViewAdmin
 				RToolbarBuilder::createStandardButton(
 					'emailattendees.email', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', 'send', 'icon-email'
 				)
+			);
+			$firstGroup->addButton(
+				RToolbarBuilder::createCsvButton()
 			);
 
 			$secondGroup->addButton(

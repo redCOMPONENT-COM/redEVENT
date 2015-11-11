@@ -17,6 +17,6 @@ $modal = $displayData;
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 	<?php endif; ?>
 	<?php if ($modal->params->get('title', null)) : ?>
-		<h4><?php echo $modal->params->get('title', null); ?></h4>
+		<h4 id="create-venue-modal-label"><?php echo $modal->params->get('title', null); ?></h4>
 	<?php endif; ?>
 </div>

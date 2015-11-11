@@ -65,7 +65,7 @@ class JFormFieldSession extends JFormField
 
 		if ($this->element['event'])
 		{
-			$link .= '&jForm[filter.event]=' . $this->element['event'];
+			$link .= '&eventid=' . $this->element['event'];
 		}
 
 		if ($this->value)

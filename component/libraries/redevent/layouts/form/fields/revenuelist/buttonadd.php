@@ -20,9 +20,7 @@ $link = JRoute::_('index.php?option=com_redevent&task=editvenue.add&modal=1&tmpl
 $modal = RModal::getInstance(
 	array(
 		'attribs' => array(
-			'id'    => $modalId,
-			'class' => 'modal hide',
-			'style' => 'width: 800px; height: 500px;'
+			'id'    => $modalId
 		),
 		'params' => array(
 			'showHeader'      => true,
@@ -39,9 +37,6 @@ RHelperAsset::load('modalAddVenue.js', 'com_redevent');
 
 echo RedeventLayoutHelper::render('modal.addvenue', $modal);
 ?>
-<a class="btn btn-primary modalAjax"
-   data-toggle="modal"
-   title="add"
-   href="#<?php echo $modalId; ?>" rel="{handler: \'iframe\', size: {x: 800, y: 500}}">
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#<?php echo $modalId; ?>">
 	<i class="icon-plus"></i>
-</a>
+</button>

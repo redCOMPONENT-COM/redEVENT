@@ -20,8 +20,15 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 $user = JFactory::getUser();
 $userId = $user->id;
 $search = $this->state->get('filter.search');
+
+$action = "index.php?option=com_redevent&view=sessions&layout=element&tmpl=component&function=" . $function;
+
+if ($eventid = JFactory::getApplication()->input->getInt('eventid'))
+{
+	$action .= '&eventid=' . $eventid;
+}
 ?>
-<form action="index.php?option=com_redevent&view=sessions&layout=element&tmpl=component&function=<?php echo $function; ?>" id="adminForm" method="post" name="adminForm">
+<form action="<?php echo $action; ?>" id="adminForm" method="post" name="adminForm">
 	<?php
 	echo RedeventLayoutHelper::render(
 		'searchtools.default',

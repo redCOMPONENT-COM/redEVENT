@@ -13,5 +13,5 @@ $modal = $displayData;
 
 ?>
 <div class="modal-body">
-	<p>Body</p>
+	<p class="text-center"><?php echo RHelperAsset::load('loading.gif'); ?></p>
 </div>

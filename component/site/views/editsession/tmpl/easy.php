@@ -38,6 +38,16 @@ $action = JRoute::_('index.php?option=' . $option . '&view=' . $viewName);
  * @var RForm
  */
 $form = $this->form;
+
+JFactory::getDocument()->addScriptDeclaration(
+	"var easySubmitButton = function(task) {
+		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
+		{
+			" . $this->form->getField('datdescription', 'event')->save() . "
+			Joomla.submitform(task);
+		}
+	};"
+);
 ?>
 
 <script type="text/javascript">
@@ -66,12 +76,12 @@ $form = $this->form;
 	      id="adminForm">
 		<div class="btn-toolbar">
 			<div class="btn-group">
-				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('editsession.save')">
+				<button type="button" class="btn btn-primary" onclick="easySubmitButton('editsession.save')">
 					<span class="icon-ok"></span>&#160;<?php echo JText::_('JSAVE') ?>
 				</button>
 			</div>
 			<div class="btn-group">
-				<button type="button" class="btn" onclick="Joomla.submitbutton('editsession.cancel')">
+				<button type="button" class="btn" onclick="easySubmitButton('editsession.cancel')">
 					<span class="icon-cancel"></span>&#160;<?php echo JText::_('JCANCEL') ?>
 				</button>
 			</div>

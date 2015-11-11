@@ -114,7 +114,7 @@ class RedeventModelSessions extends RModelList
 	{
 		$query = $this->_db->getQuery(true);
 
-		$query->select('obj.*, 0 AS checked_out')
+		$query->select('obj.*')
 			->select('e.title AS event_title, e.checked_out as event_checked_out, e.registra')
 			->select('v.venue, v.checked_out as venue_checked_out')
 			->from('#__redevent_event_venue_xref AS obj')
@@ -321,7 +321,7 @@ class RedeventModelSessions extends RModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		parent::populateState($ordering, $direction);
+		parent::populateState($ordering ?: 'obj.dates', $direction ?: 'desc');
 
 		$app = JFactory::getApplication();
 
@@ -329,25 +329,5 @@ class RedeventModelSessions extends RModelList
 		{
 			$this->setState('filter.event', $value);
 		}
-	}
-
-	/**
-	 * Get the filter form
-	 *
-	 * @param   array    $data      data
-	 * @param   boolean  $loadData  load current data
-	 *
-	 * @return  JForm/false  the JForm object or false
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		$form = parent::getForm($data, $loadData);
-
-		if ($form && $this->getState('filter.event'))
-		{
-			$form->setValue('event', 'filter', $this->getState('filter.event'));
-		}
-
-		return $form;
 	}
 }
