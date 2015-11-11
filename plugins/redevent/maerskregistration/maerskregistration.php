@@ -320,18 +320,27 @@ class plgRedeventMaerskregistration extends JPlugin
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_INVOICE_CONTACT') .': ' . $bookerInfo->rm_invoice_contact . '</li>';
 		$body .= '</ul>';
 
-		$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_HEADER') . '</h2>';
-		$body .= '<ul>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_NAME') .': ' . $attendeeInfo->organization . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS1') .': ' . $attendeeInfo->organization_address1 . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS2') .': ' . $attendeeInfo->organization_address2 . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS3') .': ' . $attendeeInfo->organization_address3 . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ZIP') .': ' . $attendeeInfo->organization_zip . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COUNTRY') .': ' . $attendeeInfo->organization_country . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_PHONE') .': ' . $attendeeInfo->organization_phone . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_VAT') .': ' . $attendeeInfo->organization_vat . '</li>';
-		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_NOTE') .': ' . $attendeeInfo->organization_note . '</li>';
-		$body .= '</ul>';
+
+		$companies = $attendeeInfo->getOrganizations();
+
+		if (!empty($companies))
+		{
+			$companyUser = reset($companies);
+			$company = RedmemberApi::getOrganization($companyUser['organization_id']);
+
+			$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_HEADER') . '</h2>';
+			$body .= '<ul>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_NAME') .': ' . $company->name . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS1') .': ' . $company->organization_address1 . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS2') .': ' . $company->organization_address2 . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS3') .': ' . $company->organization_address3 . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ZIP') .': ' . $company->organization_zip . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COUNTRY') .': ' . $company->organization_country . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_PHONE') .': ' . $company->organization_phone . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_VAT') .': ' . $company->organization_vat . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_NOTE') .': ' . $company->organization_note . '</li>';
+			$body .= '</ul>';
+		}
 
 		$body .= '</body>
 			</html>';
