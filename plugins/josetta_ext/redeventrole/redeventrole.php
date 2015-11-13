@@ -69,7 +69,7 @@ class plgJosetta_extRedeventrole extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_ROLES'));
+		$item = array(self::_context => 'redEVENT - ' . JText::_('COM_REDEVENT_ROLES'));
 		$items[] = $item;
 		return $items;
 	}
