@@ -69,7 +69,7 @@ class plgJosetta_extRedeventpricegroup extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array(self::_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_pricegroups'));
+		$item = array($this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_pricegroups'));
 		$items[] = $item;
 		return $items;
 	}

@@ -64,7 +64,7 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array(self::_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_customfields'));
+		$item = array($this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_customfields'));
 		$items[] = $item;
 
 		return $items;

@@ -69,7 +69,7 @@ class plgJosetta_extRedeventtextsnippet extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array(self::_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_textsnippets'));
+		$item = array($this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_textsnippets'));
 		$items[] = $item;
 		return $items;
 	}
