@@ -572,7 +572,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$this->appendElement($message, $answers);
 
 		// Payment
-		if ($attendee->paid)
+		if ($attendee->paid && count($attendee->paymentRequests))
 		{
 			foreach ($attendee->paymentRequests as $paymentRequest)
 			{
