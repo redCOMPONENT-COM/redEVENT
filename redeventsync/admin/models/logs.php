@@ -73,6 +73,10 @@ class RedeventsyncModelLogs extends RModelList
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.from');
+		$id .= ':' . $this->getState('filter.to');
+		$id .= ':' . $this->getState('filter.direction');
+		$id .= ':' . $this->getState('filter.type');
 
 		return parent::getStoreId($id);
 	}
@@ -187,7 +191,6 @@ class RedeventsyncModelLogs extends RModelList
 			{
 				$search = $db->Quote('%' . $db->escape($search, true) . '%');
 				$or = array(
-					'obj.type LIKE ' . $search,
 					'obj.message LIKE ' . $search,
 					'obj.transactionid LIKE ' . $search,
 					'obj.status LIKE ' . $search,
@@ -206,6 +209,12 @@ class RedeventsyncModelLogs extends RModelList
 		{
 			$search = $db->quote($filter);
 			$query->where('date <= ' . $search);
+		}
+
+		if ($filter = $this->getState('filter.type'))
+		{
+			$search = $db->Quote('%' . $db->escape($filter, true) . '%');
+			$query->where('obj.type LIKE ' . $search);
 		}
 
 		if (is_numeric($filter = $this->getState('filter.direction')))
