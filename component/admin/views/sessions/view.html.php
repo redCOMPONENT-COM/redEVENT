@@ -71,10 +71,7 @@ class RedeventViewSessions extends RedeventViewAdmin
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
 			$new = RToolbarBuilder::createNewButton('session.add');
-			$copy = RToolbarBuilder::createCopyButton('session.copy');
-
 			$firstGroup->addButton($new);
-			$firstGroup->addButton($copy);
 		}
 
 		if ($user->authorise('core.edit', 'com_redevent'))
