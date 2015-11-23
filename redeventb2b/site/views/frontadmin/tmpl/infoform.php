@@ -35,8 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 		<button type="submit" class="btn btn-default"><?php echo Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_SESSION_INFO_FORM_SUBMIT'); ?></button>
 
 		<input type="hidden" name="xref" value="<?php echo $this->xref?>"/>
-		<input type="hidden" name="controller" value="frontadmin"/>
-		<input type="hidden" name="task" value="submitinfoform"/>
+		<input type="hidden" name="task" value="frontadmin.submitinfoform"/>
 	</form>
 
 </div>

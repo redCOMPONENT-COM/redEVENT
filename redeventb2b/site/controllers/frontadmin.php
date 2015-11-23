@@ -624,7 +624,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		$model = $this->getModel('frontadmininfo');
 
-		$redirect = 'index.php?option=com_redevent&view=frontadmin&layout=infoformfinal';
+		$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoformfinal';
 		$msgType = '';
 
 		try
@@ -634,7 +634,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		}
 		catch (Exception $e)
 		{
-			$redirect = 'index.php?option=com_redevent&view=frontadmin&layout=infoform&xref=' . $xref;
+			$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoform&xref=' . $xref;
 			$msg = $e->getMessage();
 			$msgType = 'error';
 		}
