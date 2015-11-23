@@ -62,7 +62,7 @@ $allColumns = array(
 	),
 	'category' => array(
 		'title' => JText::_('COM_REDEVENT_CATEGORY'),
-		'sort' => 'c.catname',
+		'sort' => 'c.name',
 		'id' => 'el_category'
 	),
 	'picture' => array(
