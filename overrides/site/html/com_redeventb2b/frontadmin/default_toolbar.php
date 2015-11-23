@@ -65,7 +65,7 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	<li><?php echo JHTML::link($support, JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn modal', 'rel' => "{handler: 'iframe', size: {x: 780, y:600}}")); ?></li>
 	<li><?php echo JHTML::link($contact, JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn modal', 'rel' => "{handler: 'iframe', size: {x: 780, y:600}}")); ?></li>	<li>
 		<?php
-		$return = JRoute::_(Redeventb2bHelperRoute::getFrontadminloginRoute());
+		$return = JRoute::_('index.php');
 		echo JHTML::link('index.php?option=com_users&task=user.logout&' . JSession::getFormToken() . '=1'
 			. '&return=' . base64_encode($return),
 			JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT'), array('class' => 'btn'));
