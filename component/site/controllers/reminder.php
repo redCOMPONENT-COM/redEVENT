@@ -15,7 +15,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerReminder extends RedeventControllerFront
 {
-	const TIMESTAMP_FILE = JPATH_COMPONENT_SITE . '/paymentreminder.txt';
+	/**
+	 * Would be a const with php 5.6+
+	 *
+	 * @var string
+	 */
+	private static $timestampFile = JPATH_COMPONENT_SITE . '/paymentreminder.txt';
 
 	/**
 	 * Task handler
@@ -42,7 +47,7 @@ class RedeventControllerReminder extends RedeventControllerFront
 			echo $e->getMessage();
 		}
 
-		touch(self::TIMESTAMP_FILE);
+		touch(self::$timestampFile);
 	}
 
 	/**
@@ -76,6 +81,6 @@ class RedeventControllerReminder extends RedeventControllerFront
 			return true;
 		}
 
-		return (time() - filemtime(self::TIMESTAMP_FILE)) >= $minimumGap * 60;
+		return (time() - filemtime(self::$timestampFile)) >= $minimumGap * 60;
 	}
 }
