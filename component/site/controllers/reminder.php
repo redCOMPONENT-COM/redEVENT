@@ -15,12 +15,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerReminder extends RedeventControllerFront
 {
-	/**
-	 * Would be a const with php 5.6+
-	 *
-	 * @var string
-	 */
-	private static $timestampFile = JPATH_COMPONENT_SITE . '/paymentreminder.txt';
+	const TIMESTAMP_FILE = '/paymentreminder.txt';
 
 	/**
 	 * Task handler
@@ -47,7 +42,7 @@ class RedeventControllerReminder extends RedeventControllerFront
 			echo $e->getMessage();
 		}
 
-		touch(self::$timestampFile);
+		touch(JPATH_COMPONENT_SITE . self::TIMESTAMP_FILE);
 	}
 
 	/**
@@ -76,11 +71,11 @@ class RedeventControllerReminder extends RedeventControllerFront
 		}
 
 		// Check for the modification file, if it isn't there it means we didn't send any reminder yet.
-		if (!file_exists(self::TIMESTAMP_FILE))
+		if (!file_exists(JPATH_COMPONENT_SITE . self::TIMESTAMP_FILE))
 		{
 			return true;
 		}
 
-		return (time() - filemtime(self::$timestampFile)) >= $minimumGap * 60;
+		return (time() - filemtime(JPATH_COMPONENT_SITE . self::TIMESTAMP_FILE)) >= $minimumGap * 60;
 	}
 }
