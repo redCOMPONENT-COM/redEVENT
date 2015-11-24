@@ -65,7 +65,7 @@ class RedeventControllerReminder extends RedeventControllerFront
 		}
 
 		// Check if there is a minimal gap between reminders
-		if (!$minimumGap = (int) $params->get('check_payment_reminder_every', 60 * 24))
+		if (!$minimumGap = (int) $params->get('payment_reminder_min_delay', 60 * 24))
 		{
 			return true;
 		}
