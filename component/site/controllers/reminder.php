@@ -15,8 +15,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerReminder extends RedeventControllerFront
 {
-	const TIMESTAMP_FILE = '/paymentreminder.txt';
-
 	/**
 	 * Task handler
 	 *
@@ -24,58 +22,33 @@ class RedeventControllerReminder extends RedeventControllerFront
 	 */
 	public function payment()
 	{
-		if (!$this->canSendPaymentReminder())
-		{
-			echo "Not enough time since last time reminders were sent.";
-
-			return;
-		}
-
 		$model = $this->getModel('Paymentreminder');
+		$sent = $this->input->getInt('sent');
+		$total = $this->input->getInt('total');
 
 		try
 		{
-			$model->send();
+			$total = $total ?: $model->getTotal();
+			$new = $model->send(null, $this->input->getInt('force', 0));
 		}
 		catch (RuntimeException $e)
 		{
 			echo $e->getMessage();
+
+			return;
 		}
 
-		touch(JPATH_COMPONENT_SITE . self::TIMESTAMP_FILE);
-	}
+		$sent += $new;
+		echo JText::sprintf("COM_REDEVENT_PAYMENT_REMINDER_D_REMINDERS_SENT", $sent, $total);
 
-	/**
-	 * Check if we should actually send reminders
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 */
-	private function canSendPaymentReminder()
-	{
-		jimport('joomla.filesystem.file');
-		$app = JFactory::getApplication();
-		$params = $app->getParams('com_redevent');
-
-		// Check if sending is forced
-		if ($this->input->getInt('force', 0))
+		// We only send a few emails at a time, to prevent execution time issue.
+		if ($new)
 		{
-			return true;
-		}
+			$uri = JURI::getInstance();
+			$uri->setVar('sent', $sent);
+			$uri->setVar('total', $total);
 
-		// Check if there is a minimal gap between reminders
-		if (!$minimumGap = (int) $params->get('payment_reminder_min_delay', 60 * 24))
-		{
-			return true;
+			$this->setRedirect($uri->toString());
 		}
-
-		// Check for the modification file, if it isn't there it means we didn't send any reminder yet.
-		if (!file_exists(JPATH_COMPONENT_SITE . self::TIMESTAMP_FILE))
-		{
-			return true;
-		}
-
-		return (time() - filemtime(JPATH_COMPONENT_SITE . self::TIMESTAMP_FILE)) >= $minimumGap * 60;
 	}
 }
