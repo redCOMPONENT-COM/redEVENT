@@ -45,38 +45,12 @@ ini_set('display_errors', 1);
 require_once JPATH_BASE . '/components/com_redevent/classes/output.class.php';
 require_once JPATH_BASE . '/components/com_redevent/helpers/helper.php';
 require_once 'model.php';
+require_once 'helper.php';
 
 $model = new DumpModel();
 $sessions = $model->getItems();
 
-function formatDate($session)
-{
-	if (!redEVENTHelper::isValidDate($session->dates))
-	{
-		return 'Open date';
-	}
-
-	$date = new DateTime($session->dates);
-
-	return $date->format('d-m-Y');
-}
-
-function buildLink($session)
-{
-	$target = $session->custom13;
-
-	if (strstr($target, 'http') !== false)
-	{
-		return $target;
-	}
-
-	if (strpos($target, '/') !== 0)
-	{
-		$target = "/" . $target;
-	}
-
-	return 'https://kurser.ibc.dk' . $target;
-}
+DumpHelper::sortSessions($sessions);
 ?>
 <html>
 <head>
@@ -94,6 +68,7 @@ function buildLink($session)
 			<th>Title</th>
 			<th>Categories</th>
 			<th>Date</th>
+			<th>Mødested</th>
 			<th>Attendees</th>
 			<th>Niveau</th>
 			<th>State</th>
@@ -106,13 +81,14 @@ function buildLink($session)
 	<tbody>
 		<?php foreach ($sessions as $s): ?>
 	<tr>
-		<td><a href="<?php echo buildLink($s); ?>"><?php echo $s->title; ?></a></td>
+		<td><a href="<?php echo DumpHelper::buildLink($s); ?>"><?php echo $s->title; ?></a></td>
 		<td><?php echo implode('<br/>', $s->categories); ?></td>
-		<td><?php echo formatDate($s); ?></td>
+		<td><?php echo DumpHelper::formatDate($s); ?></td>
+		<td><?php echo $s->venue; ?></td>
 		<td><?php echo $s->registered; ?></td>
 		<td><?php echo str_replace("\n", "<br/>", $s->custom5); ?></td>
-		<td><?php echo $s->published ? 'published' : 'unpublished'; ?></td>
-		<td><?php echo str_replace("\n", "<br/>", $s->custom6); ?></td>
+		<td><?php echo DumpHelper::getState($s); ?></td>
+		<td><?php echo str_replace("\n", "<br/>", $s->custom8); ?></td>
 		<td><?php echo !empty($s->prices) ? implode('<br/>', array_map(function($item) { return $item->price; }, $s->prices)) : '0'; ?></td>
 		<td><?php echo !empty($s->prices) ? implode('<br/>', array_map(function($item) { return round($item->price * 0.35); }, $s->prices)) : '0'; ?></td>
 	</tr>

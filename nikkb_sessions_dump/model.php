@@ -19,16 +19,28 @@ class DumpModel
 		$sessions = $this->addAttendees($sessions);
 		$sessions = $this->addPrices($sessions);
 
+		// Filter sessions from "Webinarer" and "Events"
+		$sessions = array_filter(
+				$sessions,
+				function($session)
+				{
+					return (!in_array("Webinarer", $session->categories) && !in_array("Events", $session->categories));
+				}
+		);
+
 		return $sessions;
 	}
 
 	private function getSessions()
 	{
 		$query = $this->db->getQuery(true)
-			->select('e.title, x.id, x.dates, x.enddates, x.times, x.endtimes, x.eventid, x.published')
-			->select('x.custom5, x.custom6, e.custom13')
+			->select('e.title, x.id, x.dates, x.enddates, x.times, x.endtimes, x.eventid')
+			->select('e.published AS event_state, x.published AS session_state')
+			->select('x.custom5, x.custom8, e.custom13')
+			->select('v.venue')
 			->from('#__redevent_event_venue_xref AS x')
 			->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
+			->innerJoin('#__redevent_venues AS v ON v.id = x.venueid')
 			->order('x.dates ASC, e.title ASC');
 
 		$this->db->setQuery($query);
@@ -66,6 +78,14 @@ class DumpModel
 			$sessions[$row->session_id]->categories[] = $row->catname;
 		}
 
+		// Sort categories
+		foreach ($sessions as $session)
+		{
+			$categories = $session->categories;
+			sort($categories);
+			$session->categories = $categories;
+		}
+
 		return $sessions;
 	}
 
@@ -81,7 +101,7 @@ class DumpModel
 			$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
 				. ' FROM #__redevent_register AS r '
 				. ' WHERE r.xref = '. $this->db->Quote($r->id)
-				. ' AND r.confirmed = 1 '
+//				. ' AND r.confirmed = 1 '
 				. ' AND r.cancelled = 0 '
 				. ' GROUP BY r.waitinglist '
 			;
