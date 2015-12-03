@@ -26,7 +26,7 @@ class DumpModel
 	{
 		$query = $this->db->getQuery(true)
 			->select('e.title, x.id, x.dates, x.enddates, x.times, x.endtimes, x.eventid, x.published')
-			->select('x.custom5, x.custom6')
+			->select('x.custom5, x.custom6, e.custom13')
 			->from('#__redevent_event_venue_xref AS x')
 			->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
 			->order('x.dates ASC, e.title ASC');
