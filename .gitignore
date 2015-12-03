@@ -1,2 +1,10 @@
 reminder.txt
 release
+
+.travis/
+build/
+composer.lock
+gulp-config.json
+node_modules/
+redCORE/
+vendor/

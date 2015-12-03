@@ -114,7 +114,7 @@ function buildLink($session)
 		<td><?php echo $s->published ? 'published' : 'unpublished'; ?></td>
 		<td><?php echo str_replace("\n", "<br/>", $s->custom6); ?></td>
 		<td><?php echo !empty($s->prices) ? implode('<br/>', array_map(function($item) { return $item->price; }, $s->prices)) : '0'; ?></td>
-		<td><?php echo !empty($s->prices) ? implode('<br/>', array_map(function($item) { return round($item->price * 0.65); }, $s->prices)) : '0'; ?></td>
+		<td><?php echo !empty($s->prices) ? implode('<br/>', array_map(function($item) { return round($item->price * 0.35); }, $s->prices)) : '0'; ?></td>
 	</tr>
 <?php endforeach; ?>
 </tbody>
