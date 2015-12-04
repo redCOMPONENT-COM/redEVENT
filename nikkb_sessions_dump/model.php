@@ -2,6 +2,8 @@
 
 class DumpModel
 {
+	private $items;
+
 	/**
 	 * @var JDatabase
 	 */

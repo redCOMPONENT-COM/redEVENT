@@ -2,14 +2,20 @@
 
 class DumpHelper
 {
-	public static function sortSessions(&$sessions)
+	public static function sortRows(&$rows)
 	{
 		// Sort sessions
 		usort(
-			$sessions,
+			$rows,
 			function($a, $b)
 			{
-				// First by category
+				// First by active status
+				if ($a->active !== $b->active)
+				{
+					return $a->active ? -1 : 1;
+				}
+
+				// Then by category
 				if ($diff = strcmp($a->categories[0], $b->categories[0]))
 				{
 					return $diff;
@@ -17,13 +23,13 @@ class DumpHelper
 
 				// Then by date
 				// First check they are valid
-				if (!(redEVENTHelper::isValidDate($a->dates) && redEVENTHelper::isValidDate($b->dates)))
+				if (!(redEVENTHelper::isValidDate($a->dates[0]) && redEVENTHelper::isValidDate($b->dates[0])))
 				{
-					return redEVENTHelper::isValidDate($a->dates) ? -1 : 1;
+					return redEVENTHelper::isValidDate($a->dates[0]) ? -1 : 1;
 				}
 
 				// Then compare valid dates
-				if ($diff = strtotime($a->dates . ' ' . $a->times) - strtotime($b->dates . ' ' . $b->times))
+				if ($diff = strtotime($a->dates[0] . ' ' . $a->times[0]) - strtotime($b->dates[0] . ' ' . $b->times[0]))
 				{
 					return $diff;
 				}
@@ -34,47 +40,53 @@ class DumpHelper
 		);
 	}
 
-	public static function formatDate($session)
+	public static function formatDates($row)
 	{
-		if (!redEVENTHelper::isValidDate($session->dates))
+		$dates = array();
+
+		foreach ($row->dates as $date)
 		{
-			return 'Open date';
+			if (!redEVENTHelper::isValidDate($date))
+			{
+				$dates[] = 'Open date';
+				continue;
+			}
+
+			$date = new DateTime($date);
+
+			$dates[] =  $date->format('d-m-Y');
 		}
 
-		$date = new DateTime($session->dates);
-
-		return $date->format('d-m-Y');
+		return $dates;
 	}
 
-	public static function buildLink($session)
+	public static function groupSessions($sessions)
 	{
-		$target = $session->custom13;
+		$grouped = array();
 
-		if (strstr($target, 'http') !== false)
+		// Group sessions by event
+		foreach ($sessions as $s)
 		{
-			return $target;
+			if (empty($grouped[$s->eventid]))
+			{
+				$grouped[$s->eventid] = new Tablerow;
+			}
+
+			$grouped[$s->eventid]->add($s);
 		}
 
-		if (strpos($target, '/') !== 0)
-		{
-			$target = "/" . $target;
-		}
+		self::sortRows($grouped);
 
-		return 'https://kurser.ibc.dk' . $target;
+		return $grouped;
 	}
 
-	public static function getState($session)
+	public static function countActive($rows)
 	{
-		if ($session->event_state == -1 || $session->session_state == -1)
-		{
-			return 'archived';
-		}
-
-		if ($session->event_state == 0 || $session->session_state == 0)
-		{
-			return 'unpublished';
-		}
-
-		return 'published';
+		return array_reduce(
+				$rows,
+				function($carry, $item) {
+					return $item->active ? $carry + 1: $carry;
+				}
+		);
 	}
 }
