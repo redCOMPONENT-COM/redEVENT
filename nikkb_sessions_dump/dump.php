@@ -74,7 +74,7 @@ DumpHelper::sortSessions($sessions);
 			<th>State</th>
 			<th>Varighed</th>
 			<th>Kursuspris</th>
-			<th>Discounted</th>
+			<th>Adwords budget</th>
 		</tr>
 	</thead>
 
