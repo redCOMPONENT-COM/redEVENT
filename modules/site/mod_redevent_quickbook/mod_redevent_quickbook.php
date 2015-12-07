@@ -54,4 +54,18 @@ else
 	$document->addScript(JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook_post.js');
 }
 
+if (RedformHelperAnalytics::isEnabled())
+{
+	$firstSession = reset($data->sessions);
+
+	$label = "display registration form for event " . $firstSession->title;
+
+	$event = new stdclass;
+	$event->category = 'Quick registration module';
+	$event->action = 'display';
+	$event->label = $label;
+	$event->value = null;
+	RedformHelperAnalytics::trackEvent($event);
+}
+
 require(JModuleHelper::getLayoutPath('mod_redevent_quickbook'));
