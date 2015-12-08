@@ -58,9 +58,38 @@ class RedeventRouteItemid
 	 */
 	public function getItemId($query)
 	{
-		$menus = JFactory::getApplication()->getMenu('site');
+		if ($item = $this->getComponentMatch($query))
+		{
+			return $item;
+		}
 
-		if (!$items	= $this->loadMenuItems())
+		if ($item = $this->getSettingsDefault())
+		{
+			return $item;
+		}
+
+		// Still here..
+		$menus = JFactory::getApplication()->getMenu('site');
+		$active = $menus->getActive();
+
+		if ($active && $active->component == 'com_redevent')
+		{
+			return $active;
+		}
+
+		return null;
+	}
+
+	/**
+	 * try to get a match from component menu items
+	 *
+	 * @param   array  $query  query parts
+	 *
+	 * @return object
+	 */
+	private function getComponentMatch($query)
+	{
+		if (!$items = $this->loadMenuItems())
 		{
 			return false;
 		}
@@ -95,26 +124,13 @@ class RedeventRouteItemid
 			}
 		}
 
-		if ($default = $this->getSettingsDefault())
-		{
-			return $default;
-		}
-
-		// Still here..
-		$active = $menus->getActive();
-
-		if ($active && $active->component == 'com_redevent')
-		{
-			return $active;
-		}
-
-		return null;
+		return false;
 	}
 
 	/**
 	 * Get default item from settings
 	 *
-	 * @return bool
+	 * @return object
 	 */
 	private function getSettingsDefault()
 	{
