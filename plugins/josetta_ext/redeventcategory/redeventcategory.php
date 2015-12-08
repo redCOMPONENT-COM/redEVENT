@@ -75,7 +75,7 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_categories'));
+		$item = array($this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_categories'));
 		$items[] = $item;
 
 		return $items;

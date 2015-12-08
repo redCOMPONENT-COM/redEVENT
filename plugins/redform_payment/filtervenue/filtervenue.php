@@ -48,7 +48,7 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->where('r.submit_key = ' . $db->quote($details->key));
+		$query->where('r.submit_key = ' . $db->quote($details->submit_key));
 
 		$db->setQuery($query);
 		$res = $db->loadResult();

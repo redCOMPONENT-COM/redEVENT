@@ -609,6 +609,13 @@
 			<option value="advanced">COM_REDEVENT_SETTINGS_FRONTEND_EDIT_MODE_ADVANCED</option>
 		</field>
 
+		<field name="redirect_after_front_edit" type="list" default="myevents"
+			   label="COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT"
+			   description="COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT_TIP">
+			<option value="myevents">COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT_MYEVENTS</option>
+			<option value="viewitem">COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT_VIEWITEM</option>
+		</field>
+
 		<field name="frontendsubmit_allow_past_dates" type="radio" default="0"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ALLOW_PAST_DATES"
@@ -763,6 +770,14 @@
 			   default="You are registered to [event_title]@[venue_title] on [date]"
 			   label="COM_REDEVENT_SETTINGS_REMINDER_BODY_LABEL"
 			   description="COM_REDEVENT_SETTINGS_REMINDER_BODY_DESC"/>
+
+		<field type="spacer" hr="true"/>
+
+		<field name="payment_reminder_min_delay" type="text" size="10"
+			   default="1440"
+			   label="COM_REDEVENT_SETTINGS_PAYMENT_REMINDER_MIN_DELAY_LABEL"
+			   description="COM_REDEVENT_SETTINGS_PAYMENT_REMINDER_MIN_DELAY_DESC"/>
+
 	</fieldset>
 
 	<fieldset name="COM_REDEVENT_SETTINGS_ATTACHMENTS" label="COM_REDEVENT_SETTINGS_ATTACHMENTS"

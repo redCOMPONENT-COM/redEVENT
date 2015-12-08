@@ -61,8 +61,9 @@ class RedeventHelperSessionadmins
 	{
 		$this->xref = $xref;
 		$event = $this->getSessionDetails();
+		$venue = RedeventEntityVenue::load($event->venueid);
 
-		return $event->contactAdminEmail;
+		return $venue->contactAdminEmail ?: $venue->venue_email;
 	}
 
 	/**

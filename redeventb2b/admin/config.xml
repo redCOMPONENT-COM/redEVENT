@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
+	<fieldset name="COM_REDEVENTB2B_SETTINGS_GA" label="COM_REDEVENTB2B_SETTINGS_GA" description="COM_REDEVENTB2B_SETTINGS_GA_DESC">
+		<field name="gacode" type="text" label="COM_REDEVENTB2B_SETTINGS_GACODE" description="COM_REDEVENTB2B_SETTINGS_GACODE_DESC" />
+		<field name="gaaffiliation" type="text" label="COM_REDEVENTB2B_SETTINGS_GAAFFILIATION" description="COM_REDEVENTB2B_SETTINGS_GAAFFILIATION_DESC" />
+	</fieldset>
+
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"

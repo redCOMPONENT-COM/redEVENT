@@ -29,7 +29,7 @@ class RedEventModelOrganization extends RModelAdmin
 		$query = $this->_db->getQuery(true)
 			->select($this->_db->qn('name'))
 			->from($this->_db->qn('#__redmember_organization'))
-			->where($this->_db->qn('id') . ' = ' . $this->_db->q($item->id));
+			->where($this->_db->qn('id') . ' = ' . $this->_db->q($item->organization_id));
 
 		$this->_db->setQuery($query);
 		$item->name = $this->_db->loadResult();

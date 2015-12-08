@@ -143,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `status` tinyint(4) DEFAULT 0,
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+`payment_reminder_sent` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`),
 KEY `xref` (`xref`),
 KEY `sessionpricegroup_id` (`sessionpricegroup_id`),

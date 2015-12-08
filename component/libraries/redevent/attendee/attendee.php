@@ -110,22 +110,14 @@ class RedeventAttendee extends JObject
 		{
 			$answers = $this->getAnswers();
 
-			foreach ($answers as $a)
+			if ($username = $answers->getUsername())
 			{
-				if ($a->fieldtype == 'username' && $a->answer)
-				{
-					$this->username = $a->answer;
-
-					return $this->username;
-				}
+				$this->username = $username;
 			}
-
 			// Still there... look for user ?
-			if ($this->load()->uid)
+			elseif ($this->load()->uid)
 			{
 				$this->username = JFactory::getUser()->get('username');
-
-				return $this->username;
 			}
 		}
 
@@ -156,39 +148,31 @@ class RedeventAttendee extends JObject
 	 */
 	public function setFullname($name)
 	{
-		if (!$this->fullname)
-		{
-			$answers = $this->getAnswers();
-
-			foreach ($answers as $a)
-			{
-				if ($a->fieldtype == 'fullname' && $a->answer)
-				{
-					$this->fullname = $a->answer;
-
-					return $this->fullname;
-				}
-			}
-
-			// Still there... look for user ?
-			if ($this->load()->uid)
-			{
-				$this->fullname = JFactory::getUser()->get('name');
-
-				return $this->fullname;
-			}
-		}
-
 		$this->fullname = $name;
 	}
 
 	/**
-	 * Get username
+	 * Get full name
 	 *
 	 * @return string
 	 */
 	public function getFullname()
 	{
+		if (!$this->fullname)
+		{
+			$answers = $this->getAnswers();
+
+			if ($name = $answers->getFullname())
+			{
+				$this->fullname = $name;
+			}
+			// Still there... look for user ?
+			elseif ($this->load()->uid)
+			{
+				$this->fullname = JFactory::getUser()->get('name');
+			}
+		}
+
 		return $this->fullname;
 	}
 
@@ -215,11 +199,11 @@ class RedeventAttendee extends JObject
 		{
 			$answers = $this->getAnswers();
 
-			foreach ($answers as $a)
+			foreach ($answers->getSubmitterEmails() as $a)
 			{
-				if ($a->fieldtype == 'email' && JMailHelper::isEmailAddress($a->getValue()))
+				if (JMailHelper::isEmailAddress($a))
 				{
-					$this->email = $a->getValue();
+					$this->email = $a;
 
 					return $this->email;
 				}
@@ -269,8 +253,8 @@ class RedeventAttendee extends JObject
 		if (empty($this->data))
 		{
 			$query = ' SELECT r.* '
-				. ' FROM #__redevent_register AS r '
-				. ' WHERE r.id = ' . $this->db->Quote($this->id);
+					. ' FROM #__redevent_register AS r '
+					. ' WHERE r.id = ' . $this->db->Quote($this->id);
 			$this->db->setQuery($query);
 			$res = $this->db->loadObject();
 			$this->data = $res;
@@ -295,9 +279,9 @@ class RedeventAttendee extends JObject
 
 		// First, changed status to confirmed
 		$query = ' UPDATE #__redevent_register '
-			. ' SET confirmed = 1, confirmdate = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
-			. '   , paymentstart = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
-			. ' WHERE id = ' . $this->id;
+				. ' SET confirmed = 1, confirmdate = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
+				. '   , paymentstart = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
+				. ' WHERE id = ' . $this->id;
 		$this->db->setQuery($query);
 		$res = $this->db->query();
 
@@ -364,9 +348,9 @@ class RedeventAttendee extends JObject
 		$query = $this->db->getQuery(true);
 
 		$query->update('#__redevent_register')
-			->set('waitinglist = ' . $waiting)
-			->set('paymentstart = NOW()')
-			->where('id = ' . $this->db->Quote($this->id));
+				->set('waitinglist = ' . $waiting)
+				->set('paymentstart = NOW()')
+				->where('id = ' . $this->db->Quote($this->id));
 
 		$this->db->setQuery($query);
 
@@ -555,11 +539,11 @@ class RedeventAttendee extends JObject
 		}
 
 		$subject = $waiting
-			? $params->get('wl_notify_admin_waiting_subject')
-			: $params->get('wl_notify_admin_attending_subject');
+				? $params->get('wl_notify_admin_waiting_subject')
+				: $params->get('wl_notify_admin_attending_subject');
 		$body = $waiting
-			? $params->get('wl_notify_admin_waiting_body')
-			: $params->get('wl_notify_admin_attending_body');
+				? $params->get('wl_notify_admin_waiting_body')
+				: $params->get('wl_notify_admin_attending_body');
 
 		$mailer = $this->prepareEmail($subject, $body);
 
@@ -665,7 +649,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * get redform answers for this attendee
 	 *
-	 * @return array
+	 * @return RdfAnswers
 	 */
 	protected function getAnswers()
 	{
@@ -692,25 +676,25 @@ class RedeventAttendee extends JObject
 		if (!isset(self::$sessions[$xref]))
 		{
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
-				. ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
-				. ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, '
-				. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
-				. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
-				. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
-				. ' v.venue, v.email as venue_email,'
-				. ' u.name AS creator_name, u.email AS creator_email, '
-				. ' a.confirmation_message, a.review_message, '
-				. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.name AS catname, c.published, c.access,"
-				. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-				. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-				. ' FROM #__redevent_events AS a'
-				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-				. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
-				. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-				. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
-				. ' WHERE x.id = ' . $xref;
+					. ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
+					. ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, '
+					. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
+					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
+					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
+					. ' v.venue, v.email as venue_email,'
+					. ' u.name AS creator_name, u.email AS creator_email, '
+					. ' a.confirmation_message, a.review_message, '
+					. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.name AS catname, c.published, c.access,"
+					. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
+					. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+					. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
+					. ' FROM #__redevent_events AS a'
+					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
+					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
+					. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+					. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+					. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
+					. ' WHERE x.id = ' . $xref;
 			$this->db->setQuery($query);
 			self::$sessions[$xref] = $this->db->loadObject();
 		}
@@ -764,11 +748,11 @@ class RedeventAttendee extends JObject
 		if (!isset(self::$attending[$this->getXref()]))
 		{
 			$query = ' SELECT r.id '
-				. ' FROM #__redevent_register AS r '
-				. ' WHERE r.xref = ' . $this->getXref()
-				. '   AND r.confirmed = 1 '
-				. '   AND r.cancelled = 0 '
-				. '   AND r.waitinglist = 0 ';
+					. ' FROM #__redevent_register AS r '
+					. ' WHERE r.xref = ' . $this->getXref()
+					. '   AND r.confirmed = 1 '
+					. '   AND r.cancelled = 0 '
+					. '   AND r.waitinglist = 0 ';
 			$this->db->setQuery($query);
 			self::$attending[$this->getXref()] = $this->db->loadColumn();
 		}
@@ -784,6 +768,18 @@ class RedeventAttendee extends JObject
 	protected function addToAttending()
 	{
 		self::$attending[$this->getXref()][] = $this->id;
+	}
+
+	/**
+	 * Get attendee contact emails
+	 *
+	 * @return array
+	 */
+	public function getContactEmails()
+	{
+		$rfcore = RdfCore::getInstance();
+
+		return $rfcore->getSidContactEmails($this->load()->sid);
 	}
 
 	/**
@@ -810,9 +806,7 @@ class RedeventAttendee extends JObject
 
 			/* Load the mailer */
 			$mailer = $this->prepareEmail($subject, $body);
-
-			$rfcore = RdfCore::getInstance();
-			$emails = $rfcore->getSidContactEmails($this->load()->sid);
+			$emails = $this->getContactEmails();
 
 			foreach ($emails as $email)
 			{
@@ -858,8 +852,8 @@ class RedeventAttendee extends JObject
 		}
 
 		$subject = $unreg ?
-			$params->get('unregistration_notification_subject')
-			: $params->get('registration_notification_subject');
+				$params->get('unregistration_notification_subject')
+				: $params->get('registration_notification_subject');
 
 		$body = '<HTML><HEAD>
 			<STYLE TYPE="text/css">
@@ -973,22 +967,22 @@ class RedeventAttendee extends JObject
 		/* build activation link */
 		// TODO: use the route helper !
 		$url = JRoute::_(
-			JURI::root()
-			. 'index.php?option=com_redevent&task=registration.activate'
-			. '&confirmid=' . str_replace(".", "_", $this->data->uip)
-			. 'x' . $this->data->xref
-			. 'x' . $this->data->uid
-			. 'x' . $this->data->id
-			. 'x' . $this->data->submit_key
+				JURI::root()
+				. 'index.php?option=com_redevent&task=registration.activate'
+				. '&confirmid=' . str_replace(".", "_", $this->data->uip)
+				. 'x' . $this->data->xref
+				. 'x' . $this->data->uid
+				. 'x' . $this->data->id
+				. 'x' . $this->data->submit_key
 		);
 		$activatelink = '<a href="' . $url . '">' . JText::_('COM_REDEVENT_Activate') . '</a>';
 
 		$cancellinkurl = JRoute::_(
-			JURI::root()
-			. 'index.php?option=com_redevent&task=registration.emailcancelregistration'
-			. '&rid=' . $this->data->id
-			. '&xref=' . $this->data->xref
-			. '&submit_key=' . $this->data->submit_key
+				JURI::root()
+				. 'index.php?option=com_redevent&task=registration.emailcancelregistration'
+				. '&rid=' . $this->data->id
+				. '&xref=' . $this->data->xref
+				. '&submit_key=' . $this->data->submit_key
 		);
 		$cancellink = '<a href="' . $cancellinkurl . '">' . JText::_('COM_REDEVENT_CANCEL') . '</a>';
 

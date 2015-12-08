@@ -38,12 +38,13 @@ $action = JRoute::_('index.php?option=' . $option . '&view=' . $viewName);
  * @var RForm
  */
 $form = $this->form;
+$descriptionField = $this->form->getField('datdescription', 'event');
 
 JFactory::getDocument()->addScriptDeclaration(
 	"var easySubmitButton = function(task) {
 		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
 		{
-			" . $this->form->getField('datdescription', 'event')->save() . "
+			" . ($descriptionField ? $descriptionField->save() : '') . "
 			Joomla.submitform(task);
 		}
 	};"

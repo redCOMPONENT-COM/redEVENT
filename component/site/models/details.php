@@ -149,7 +149,7 @@ class RedeventModelDetails extends RModel
 			$query->select('x.id AS xref, x.title as session_title');
 			$query->select('x.*');
 
-			$query->select('v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
+			$query->select('v.venue, v.email AS venue_email, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
 
 			$query->select('c.name AS catname, c.published, c.access');
 
@@ -199,7 +199,7 @@ class RedeventModelDetails extends RModel
 		}
 		elseif ($this->id)
 		{
-			$query->where('x.eventid = ' . $this->id);
+			$query->where('a.id = ' . $this->id);
 		}
 
 		return $query;
