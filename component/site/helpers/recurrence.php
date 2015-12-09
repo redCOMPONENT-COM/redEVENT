@@ -27,688 +27,637 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventHelperRecurrence
 {
-	/**
-	 * parses the data from editxref form, and returns the corresponding rrule
-	 *
-	 * @param array posted data
-	 *
-	 * @return string rrule
-	 */
-	public static function parsePost($data)
-	{
-		$rrule = '';
-		switch ($data['recurrence_type'])
-		{
-			case 'DAILY':
-				$rrule = self::_parseDaily($data);
-				break;
-			case 'WEEKLY':
-				$rrule = self::_parseWeekly($data);
-				break;
-			case 'MONTHLY':
-				$rrule = self::_parseMonthly($data);
-				break;
-			case 'YEARLY':
-				$rrule = self::_parseYearly($data);
-				break;
-			case 'NONE':
-			default:
-				$rrule = '';
-				break;
-		}
 
-		return $rrule;
-	}
+  /**
+   * parses the data from editxref form, and returns the corresponding rrule
+   *
+   * @param array posted data
+   * @return string rrule
+   */
+  function parsePost($data)
+  {
+    $rrule = '';
+    switch($data['recurrence_type'])
+    {
+      case 'DAILY':
+        $rrule = RedeventHelperRecurrence::_parseDaily($data);
+        break;
+      case 'WEEKLY':
+        $rrule = RedeventHelperRecurrence::_parseWeekly($data);
+        break;
+      case 'MONTHLY':
+        $rrule = RedeventHelperRecurrence::_parseMonthly($data);
+        break;
+      case 'YEARLY':
+        $rrule = RedeventHelperRecurrence::_parseYearly($data);
+        break;
+      case 'NONE':
+      default:
+        $rrule = '';
+        break;
+    }
 
-	/**
-	 * returns daily parsed rule
-	 *
-	 * @param array posted data
-	 *
-	 * @return string rrule
-	 */
-	protected static function _parseDaily($data)
-	{
-		$rrule = "RRULE:FREQ=DAILY;INTERVAL=" . $data['recurrence_interval'] . ';';
+    return $rrule;
+  }
 
-		if ($data['rutype'] == 'count')
-		{
-			$rrule .= "COUNT=" . $data['recurrence_repeat_count'];
-		}
-		else
-		{
-			$rrule .= "UNTIL=" . self::convertDate($data['recurrence_repeat_until']);
-		}
-		return $rrule;
-	}
+  /**
+   * returns daily parsed rule
+   *
+   * @param array posted data
+   * @return string rrule
+   */
+  function _parseDaily($data)
+  {
+    $rrule = "RRULE:FREQ=DAILY;INTERVAL=" .$data['recurrence_interval'].';';
 
-	/**
-	 * returns weekly parsed rule
-	 *
-	 * @param array posted data
-	 *
-	 * @return string rrule
-	 */
-	protected static function _parseWeekly($data)
-	{
-		$params = & JComponentHelper::getParams('com_redevent');
+    if ($data['rutype'] == 'count')
+    {
+      $rrule .= "COUNT=". $data['recurrence_repeat_count'];
+    }
+    else
+    {
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']);
+    }
+    return $rrule;
+  }
 
-		$rrule = "RRULE:FREQ=WEEKLY;INTERVAL=" . $data['recurrence_interval'] . ';';
+  /**
+   * returns weekly parsed rule
+   *
+   * @param array posted data
+   * @return string rrule
+   */
+  function _parseWeekly($data)
+  {
+    $params   = & JComponentHelper::getParams('com_redevent');
 
-		// limit
-		if ($data['rutype'] == 'count')
-		{
-			$rrule .= "COUNT=" . $data['recurrence_repeat_count'] . ';';
-		}
-		else
-		{
-			$rrule .= "UNTIL=" . self::convertDate($data['recurrence_repeat_until']) . ';';
-		}
-		// week start
-		$rrule .= "WKST=" . $params->get('week_start', 'MO') . ';';
-		// selected days
-		if (isset($data['wweekdays']))
-		{
-			$rrule .= "BYDAY=" . implode(',', $data['wweekdays']) . ';';
-		}
-		return $rrule;
-	}
+    $rrule = "RRULE:FREQ=WEEKLY;INTERVAL=" .$data['recurrence_interval'].';';
 
-	/**
-	 * returns monthly parsed rule
-	 *
-	 * @param array posted data
-	 *
-	 * @return string rrule
-	 */
-	protected static function _parseMonthly($data)
-	{
-		$params = & JComponentHelper::getParams('com_redevent');
+    // limit
+    if ($data['rutype'] == 'count')
+    {
+      $rrule .= "COUNT=". $data['recurrence_repeat_count'].';';
+    }
+    else
+    {
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';
+    }
+    // week start
+    $rrule .= "WKST=". $params->get('week_start', 'MO').';';
+    // selected days
+    if (isset($data['wweekdays'])) {
+    	$rrule .= "BYDAY=". implode(',', $data['wweekdays']).';';
+    }
+    return $rrule;
+  }
 
-		$rrule = "RRULE:FREQ=MONTHLY;INTERVAL=" . $data['recurrence_interval'] . ';';
+  /**
+   * returns monthly parsed rule
+   *
+   * @param array posted data
+   * @return string rrule
+   */
+  function _parseMonthly($data)
+  {
+    $params   = & JComponentHelper::getParams('com_redevent');
 
-		// limit
-		if ($data['rutype'] == 'count')
-		{
-			$rrule .= "COUNT=" . $data['recurrence_repeat_count'] . ';';
-		}
-		else
-		{
-			$rrule .= "UNTIL=" . self::convertDate($data['recurrence_repeat_until']) . ';';
-		}
+    $rrule = "RRULE:FREQ=MONTHLY;INTERVAL=" .$data['recurrence_interval'].';';
 
-		if ($data['monthtype'] == 'byday')
-		{
-			// week start
-			$rrule .= "WKST=" . $params->get('week_start', 'MO') . ';';
-			// selected weeks, normal order
-			$days = array();
-			if (isset($data['mweeks']))
-			{
-				foreach ($data['mweeks'] as $week)
-				{
-					foreach ($data['mweekdays'] as $day)
-					{
-						$days[] = $week . $day;
-					}
-				}
-			}
-			if (isset($data['mrweeks']))
-			{
-				foreach ($data['mrweeks'] as $week)
-				{
-					foreach ($data['mrweekdays'] as $day)
-					{
-						$days[] = '-' . $week . $day;
-					}
-				}
-			}
-			if (count($days))
-			{
-				$rrule .= "BYDAY=" . implode(',', $days) . ';';
-			}
-		}
+    // limit
+    if ($data['rutype'] == 'count')
+    {
+      $rrule .= "COUNT=". $data['recurrence_repeat_count'].';';
+    }
+    else
+    {
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';
+    }
 
-		if ($data['monthtype'] == 'bymonthday')
-		{
-			$days = array();
-			$reverse = (isset($data['reverse_bymonthday'])) ? true : false;
-			foreach (explode(',', $data['bymonthdays']) as $day)
-			{
-				$days[] = ($reverse ? '-' : '') . ((int) $day);
-			}
-			$rrule .= "BYDAY=" . implode(',', $days) . ';';
-		}
+    if ($data['monthtype'] == 'byday')
+    {
+      // week start
+      $rrule .= "WKST=". $params->get('week_start', 'MO').';';
+      // selected weeks, normal order
+      $days = array();
+      if (isset($data['mweeks']))
+      {
+	      foreach($data['mweeks'] as $week)
+	      {
+	        foreach ($data['mweekdays'] as $day)
+	        {
+	          $days[] = $week.$day;
+	        }
+	      }
+      }
+      if (isset($data['mrweeks']))
+      {
+	      foreach($data['mrweeks'] as $week)
+	      {
+	        foreach ($data['mrweekdays'] as $day)
+	        {
+	          $days[] = '-'.$week.$day;
+	        }
+	      }
+      }
+      if (count($days)) {
+      	$rrule .= "BYDAY=". implode(',', $days).';';
+      }
+    }
 
-		return $rrule;
-	}
+    if ($data['monthtype'] == 'bymonthday')
+    {
+      $days = array();
+      $reverse = (isset($data['reverse_bymonthday'])) ? true : false;
+      foreach(explode(',', $data['bymonthdays']) as $day)
+      {
+          $days[] = ($reverse ? '-' : '').((int) $day);
+      }
+      $rrule .= "BYDAY=". implode(',', $days).';';
+    }
 
-	/**
-	 * returns monthly parsed rule
-	 *
-	 * @param array posted data
-	 *
-	 * @return string rrule
-	 */
-	protected static function _parseYearly($data)
-	{
-		$params = & JComponentHelper::getParams('com_redevent');
+    return $rrule;
+  }
 
-		$rrule = "RRULE:FREQ=YEARLY;INTERVAL=" . $data['recurrence_interval'] . ';';
+/**
+   * returns monthly parsed rule
+   *
+   * @param array posted data
+   * @return string rrule
+   */
+  function _parseYearly($data)
+  {
+    $params   = & JComponentHelper::getParams('com_redevent');
 
-		// limit
-		if ($data['rutype'] == 'count')
-		{
-			$rrule .= "COUNT=" . $data['recurrence_repeat_count'] . ';';
-		}
-		else
-		{
-			$rrule .= "UNTIL=" . self::convertDate($data['recurrence_repeat_until']) . ';';
-		}
+    $rrule = "RRULE:FREQ=YEARLY;INTERVAL=" .$data['recurrence_interval'].';';
 
-		$days = array();
-		$reverse = (isset($data['reverse_byyearday'])) ? true : false;
-		foreach (explode(',', $data['byyeardays']) as $day)
-		{
-			$days[] = ($reverse ? '-' : '') . ((int) $day);
-		}
-		$rrule .= "BYDAY=" . implode(',', $days) . ';';
+    // limit
+    if ($data['rutype'] == 'count')
+    {
+      $rrule .= "COUNT=". $data['recurrence_repeat_count'].';';
+    }
+    else
+    {
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';
+    }
 
-		return $rrule;
-	}
+      $days = array();
+      $reverse = (isset($data['reverse_byyearday'])) ? true : false;
+      foreach(explode(',', $data['byyeardays']) as $day)
+      {
+          $days[] = ($reverse ? '-' : '').((int) $day);
+      }
+      $rrule .= "BYDAY=". implode(',', $days).';';
 
-	/**
-	 * return rrule as fields to be put in form
-	 *
-	 * @param string $rrule
-	 *
-	 * @return array fields
-	 */
-	public static function getRule($rrule = null)
-	{
-		$rules = new rruleFields();
+    return $rrule;
+  }
 
-		if (!$rrule)
-		{
-			return $rules;
-		}
+  /**
+   * return rrule as fields to be put in form
+   *
+   * @param string $rrule
+   * @return array fields
+   */
+  function getRule($rrule = null)
+  {
+    $rules = new rruleFields();
 
-		$parts = explode(';', $rrule);
-		foreach ($parts as $p)
-		{
-			if (!strpos($p, '='))
-			{
-				continue;
-			}
-			list($element, $value) = explode('=', $p);
-			switch ($element)
-			{
-				case 'RRULE:FREQ':
-					$rules->type = $value;
-					break;
-				case 'INTERVAL':
-					$rules->interval = $value;
-					break;
-				case 'COUNT':
-					$rules->until_type = 'count';
-					$rules->count = $value;
-					break;
-				case 'UNTIL':
-					$rules->until_type = 'until';
-					$rules->until = self::icalDatetotime($value);
-					break;
-				case 'BYDAY':
-					$days = explode(',', $value);
-					foreach ($days as $d)
-					{
-						preg_match('/([-]*)([0-9]*)([A-Z]*)/', $d, $res);
-						$revert = ($res[1] == '-');
-						if ($res[2] && $res[3])
-						{ // has number and day
-							if ($rules->type == 'MONTHLY')
-							{
-								$rules->monthtype = 'byday';
-							}
-							if ($revert)
-							{
-								if (!in_array($res[2], $rules->rweeks))
-								{
-									$rules->rweeks[] = $res[2];
-								}
-								if (!in_array($res[3], $rules->rweekdays))
-								{
-									$rules->rweekdays[] = $res[3];
-								}
-							}
-							else
-							{
-								if (!in_array($res[2], $rules->weeks))
-								{
-									$rules->weeks[] = $res[2];
-								}
-								if (!in_array($res[3], $rules->weekdays))
-								{
-									$rules->weekdays[] = $res[3];
-								}
-							}
-						}
-						else if ($res[2])
-						{ // only number
-							$rules->bydays[] = $res[2];
-							if ($rules->type == 'MONTHLY')
-							{
-								$rules->monthtype = 'bymonthdays';
-							}
-							if ($revert)
-							{
-								$rules->reverse_bydays = 1;
-							}
-						}
-						else if ($res[3])
-						{ // only day
-							if ($rules->type == 'MONTHLY')
-							{
-								$rules->monthtype = 'byday';
-							}
-							if ($revert)
-							{
-								if (!in_array($res[3], $rules->rweekdays))
-								{
-									$rules->rweekdays[] = $res[3];
-								}
-							}
-							else
-							{
-								if (!in_array($res[3], $rules->weekdays))
-								{
-									$rules->weekdays[] = $res[3];
-								}
-							}
-						}
-					}
-					break;
-				default:
-					break;
-			}
-		}
+    if (!$rrule) {
+      return $rules;
+    }
+
+    $parts = explode(';', $rrule);
+    foreach ($parts as $p)
+    {
+      if (!strpos($p, '=')) {
+        continue;
+      }
+      list($element, $value) = explode('=', $p);
+      switch ($element)
+      {
+        case 'RRULE:FREQ':
+          $rules->type = $value;
+          break;
+        case 'INTERVAL':
+          $rules->interval = $value;
+          break;
+        case 'COUNT':
+          $rules->until_type = 'count';
+          $rules->count = $value;
+          break;
+        case 'UNTIL':
+          $rules->until_type = 'until';
+          $rules->until = RedeventHelperRecurrence::icalDatetotime($value);
+          break;
+        case 'BYDAY':
+          $days = explode(',', $value);
+          foreach ($days as $d)
+          {
+            preg_match('/([-]*)([0-9]*)([A-Z]*)/', $d, $res);
+            $revert = ($res[1] == '-');
+            if ($res[2] && $res[3]) { // has number and day
+              if ($rules->type == 'MONTHLY') {
+                $rules->monthtype = 'byday';
+              }
+              if ($revert) {
+                if (!in_array($res[2], $rules->rweeks)) {
+                  $rules->rweeks[] = $res[2];
+                }
+                if (!in_array($res[3], $rules->rweekdays)) {
+                  $rules->rweekdays[] = $res[3];
+                }
+              }
+              else {
+                if (!in_array($res[2], $rules->weeks)) {
+                  $rules->weeks[] = $res[2];
+                }
+                if (!in_array($res[3], $rules->weekdays)) {
+                  $rules->weekdays[] = $res[3];
+                }
+              }
+            }
+            else if ($res[2]) { // only number
+              $rules->bydays[] = $res[2];
+              if ($rules->type == 'MONTHLY') {
+                $rules->monthtype = 'bymonthdays';
+              }
+              if ($revert) {
+                $rules->reverse_bydays = 1;
+              }
+            }
+            else if ($res[3]) { // only day
+              if ($rules->type == 'MONTHLY') {
+                $rules->monthtype = 'byday';
+              }
+              if ($revert) {
+                if (!in_array($res[3], $rules->rweekdays)) {
+                  $rules->rweekdays[] = $res[3];
+                }
+              }
+              else {
+                if (!in_array($res[3], $rules->weekdays)) {
+                  $rules->weekdays[] = $res[3];
+                }
+              }
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    }
 //     echo '<pre>';print_r($rules); echo '</pre>';exit;
-		return $rules;
-	}
+    return $rules;
+  }
 
-	protected static function convertDate($date)
-	{
-		$convert = strftime('%Y%m%dT%H%M%S', strtotime($date));
-		return $convert;
-	}
+  function convertDate($date)
+  {
+    $convert = strftime('%Y%m%dT%H%M%S', strtotime($date));
+    return $convert;
+  }
 
-	protected static function icalDatetotime($date)
-	{
-		if (preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})(Z?)/', $date, $res))
-		{
-			$res = mktime($res[4], $res[5], $res[6], $res[2], $res[3], $res[1]);
-			return strftime('%Y-%m-%d %H:%M:%S', $res);
-		}
-		else
-		{
-			return false;
-		}
-	}
+  function icalDatetotime($date)
+  {
+    if (preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})(Z?)/', $date, $res))
+    {
+      $res = mktime($res[4], $res[5], $res[6], $res[2], $res[3], $res[1]);
+      return strftime('%Y-%m-%d %H:%M:%S', $res);
+    }
+    else {
+      return false;
+    }
+  }
 
-	public static function getnext($recurrence, $last_xref, JRegistry $params = null)
-	{
-		$rule = self::getRule($recurrence);
+  function getnext($recurrence, $last_xref, JRegistry $params = null)
+  {
+    $rule = RedeventHelperRecurrence::getRule($recurrence);
 
-		if ($params === null)
-		{
-			$params = & JComponentHelper::getParams('com_redevent');
-		}
-		$week_start = $params->get('week_start', 'SU');
+    if ($params === null) {
+    	$params = & JComponentHelper::getParams('com_redevent');
+    }
+    $week_start = $params->get('week_start', 'SU');
 
 //     echo '<pre>';print_r($rule); echo '</pre>';exit;
 //    print_r($last_xref);
 
-		$new = false;
+    $new = false;
 
-		// check the count
-		if ($rule->until_type == 'count' && $last_xref->count >= $rule->count)
-		{
-			return false;
-		}
+    // check the count
+    if ($rule->until_type == 'count' && $last_xref->count >= $rule->count) {
+      return false;
+    }
 
-		$days_name = array('SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday', 'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday');
-		$days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
-		$xref_start = strtotime($last_xref->dates);
+    $days_name = array('SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday', 'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday');
+    $days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
+    $xref_start = strtotime($last_xref->dates);
 
-		// get the next start timestamp
-		switch ($rule->type)
-		{
-			case 'DAILY':
-				$next_start = strtotime($last_xref->dates . " +" . $rule->interval . " day");
-				break;
+    // get the next start timestamp
+    switch ($rule->type)
+    {
+      case 'DAILY':
+        $next_start = strtotime($last_xref->dates." +". $rule->interval ." day");
+        break;
 
-			case 'WEEKLY':
-				// calculate next dates for all set weekdays
-				$next = array();
-				if (!$rule->weekdays || !count($rule->weekdays))
-				{ // force to the day of previous session
-					$rule->weekdays = array(array_search(date('N', strtotime($last_xref->dates)), $days_number));
-				}
-				foreach ($rule->weekdays as $d)
-				{
-					if ($week_start == 'SU')
-					{
-						$current = strftime('%w', $xref_start);
-					}
-					else
-					{
-						$current = strftime('%u', $xref_start);
-					}
-					if ($days_number[$d] > $current)
-					{
-						$next[] = strtotime('+1 ' . $days_name[$d], strtotime($last_xref->dates));
-					}
-					else if ($days_number[$d] == $current)
-					{ // same day, look in next intervall, after this day
-						$next[] = strtotime('+' . $rule->interval . ' ' . $days_name[$d], strtotime($last_xref->dates) + 3600 * 24);
-					}
-					else
-					{ // in next intervall
-						$next[] = strtotime('+' . $rule->interval . ' ' . $days_name[$d], strtotime($last_xref->dates));
-					}
-				}
-				// the next one is the lowest value
-				$next_start = min($next);
-				break;
+      case 'WEEKLY':
+        // calculate next dates for all set weekdays
+        $next = array();
 
-			case 'MONTHLY':
-				if ($rule->monthtype == 'byday')
-				{
-					// first day of this month
-					$first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
-					// last day of this month
-					$last_this = mktime(0, 0, 0, strftime('%m', $xref_start) + 1, 0, strftime('%Y', $xref_start));
-					// first day of +interval month
-					$first_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + $rule->interval, 1, strftime('%Y', $xref_start));
-					// last day of this month
-					$last_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + 1 + $rule->interval, 0, strftime('%Y', $xref_start));
+	      if ($week_start == 'SU') {
+		      $current = strftime('%w', $xref_start);
+		      $days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6);
+	      }
+	      else {
+		      $current = strftime('%u', $xref_start);
+		      $days_number = array('MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
+	      }
 
-					$days = array();
-					//          print_r($rule);
-					foreach ($rule->weeks as $week)
-					{
-						foreach ($rule->weekdays as $day)
-						{
-							$int_day = strtotime($week . ' ' . $days_name[$day], $first_this);
-							if ($int_day > $xref_start && $int_day <= $last_this)
-							{
-								$days[] = $int_day;
-							}
-							$int_day = strtotime($week . ' ' . $days_name[$day], $first_next_interval);
-							if ($int_day > $xref_start && $int_day <= $last_next_interval)
-							{
-								$days[] = $int_day;
-							}
-						}
-					}
-					foreach ($rule->rweeks as $week)
-					{
-						foreach ($rule->rweekdays as $day)
-						{
-							$int_day = strtotime('-' . $week . ' ' . $days_name[$day], $last_this + 24 * 3600);
-							if ($int_day > $xref_start && $int_day >= $first_this)
-							{
-								$days[] = $int_day;
-							}
-							$int_day = strtotime('-' . $week . ' ' . $days_name[$day], $last_next_interval + 24 * 3600);
-							if ($int_day > $xref_start && $int_day >= $first_next_interval)
-							{
-								$days[] = $int_day;
-							}
-						}
-					}
-					$next_start = min($days);
-				}
-				else
-				{
-					$current = strftime('%d', strtotime($last_xref->dates));
+        if (!$rule->weekdays || !count($rule->weekdays)) { // force to the day of previous session
+        	$rule->weekdays = array(array_search(date('N', strtotime($last_xref->dates)), $days_number));
+        }
+        foreach ($rule->weekdays as $d)
+        {
+          if ($days_number[$d] > $current) {
+            $next[] = strtotime('+1 '. $days_name[$d], strtotime($last_xref->dates));
+          }
+          else if ($days_number[$d] == $current) { // same day, look in next intervall, after this day
+            $next[] = strtotime('+'. $rule->interval .' '. $days_name[$d], strtotime($last_xref->dates)+3600*24);
+          }
+          else { // in next intervall
+            $next[] = strtotime('+'. $rule->interval .' '. $days_name[$d], strtotime($last_xref->dates));
+          }
+        }
+        // the next one is the lowest value
+        $next_start = min($next);
+        break;
 
-					if (!$rule->bydays || !count($rule->bydays))
-					{ // force to the day of previous session
-						$rule->bydays = array(date('d', strtotime($last_xref->dates)));
-					}
+      case 'MONTHLY':
+        if ($rule->monthtype == 'byday')
+        {
+        		// first day of this month
+        		$first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
+        		// last day of this month
+        		$last_this = mktime(0, 0, 0, strftime('%m', $xref_start)+1, 0, strftime('%Y', $xref_start));
+        		// first day of +interval month
+        		$first_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + $rule->interval, 1, strftime('%Y', $xref_start));
+        		// last day of this month
+        		$last_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start)+1 + $rule->interval, 0, strftime('%Y', $xref_start));
 
-					if (!$rule->reverse_bydays)
-					{
-						sort($rule->bydays);
-						$next_day = null;
-						foreach ($rule->bydays as $day)
-						{
-							if ($day > $current)
-							{
-								$next_day = $day;
-								break;
-							}
-						}
+        		$days = array();
+        		//          print_r($rule);
+        		foreach ($rule->weeks as $week)
+        		{
+        			foreach ($rule->weekdays as $day)
+        			{
+        				$int_day = strtotime($week. ' ' . $days_name[$day], $first_this);
+        				if ($int_day > $xref_start && $int_day <= $last_this) {
+        					$days[] = $int_day;
+        				}
+        				$int_day = strtotime($week. ' ' . $days_name[$day], $first_next_interval);
+        				if ($int_day > $xref_start && $int_day <= $last_next_interval) {
+        					$days[] = $int_day;
+        				}
+        			}
+        		}
+        		foreach ($rule->rweeks as $week)
+        		{
+        			foreach ($rule->rweekdays as $day)
+        			{
+        				$int_day = strtotime('-'.$week. ' ' . $days_name[$day], $last_this + 24*3600);
+        				if ($int_day > $xref_start && $int_day >= $first_this) {
+        					$days[] = $int_day;
+        				}
+        				$int_day = strtotime('-'.$week. ' ' . $days_name[$day], $last_next_interval + 24*3600);
+        				if ($int_day > $xref_start && $int_day >= $first_next_interval) {
+        					$days[] = $int_day;
+        				}
+        			}
+        		}
+        		$next_start = min($days);
+        }
+        else
+        {
+          $current = strftime('%d', strtotime($last_xref->dates));
 
-						if ($next_day == null) // not this month => this month + interval month!
-						{
-							$year_month = strftime('%Y-%m', strtotime(date("Y-m-1", strtotime($last_xref->dates)) . ' + ' . $rule->interval . " months"));
-							$next_start = strtotime($year_month . '-' . $rule->bydays[0]);
-						}
-						else
-						{
-							$year_month = strftime('%Y-%m', strtotime($last_xref->dates));
-							$next_start = strtotime($year_month . '-' . $next_day);
-						}
-					}
-					else
-					{
-						$current_sec = strtotime($last_xref->dates);
-						$next = array();
+          if (!$rule->bydays || !count($rule->bydays)) { // force to the day of previous session
+          	$rule->bydays = array(date('d', strtotime($last_xref->dates)));
+          }
 
-						foreach ($rule->bydays as $day)
-						{
-							// we need to check the dates for this month, and the +interval month
-							$dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) . ' + 1 months -' . $day . ' day');
-							if ($dd > $current_sec)
-							{
-								$next[] = $dd;
-							}
-							$dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) . ' +' . (1 + $rule->interval) . ' months -' . $day . ' days', strtotime($last_xref->dates));
-							if ($dd > $current_sec)
-							{
-								$next[] = $dd;
-							}
-						}
-						// the next is the closest, lower value
-						$next_start = min($next);
-					}
-				}
-				break;
+          if (!$rule->reverse_bydays)
+          {
+            sort($rule->bydays);
+            $next_day = null;
+            foreach ($rule->bydays as $day)
+            {
+              if ($day > $current) {
+                $next_day = $day;
+                break;
+              }
+            }
 
-			case 'YEARLY':
-				$current = strtotime($last_xref->dates);
+            if ($next_day == null) // not this month => this month + interval month!
+            {
+              $year_month = strftime('%Y-%m', strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' + '. $rule->interval ." months"));
+              $next_start = strtotime($year_month.'-'.$rule->bydays[0]);
+            }
+            else {
+              $year_month = strftime('%Y-%m', strtotime($last_xref->dates));
+              $next_start = strtotime($year_month.'-'.$next_day);
+            }
+          }
+          else
+          {
+            $current_sec = strtotime($last_xref->dates);
+            $next = array();
 
-				if (empty($rule->bydays)) // in that case, use current date, plus a year
-				{
-					$next_start = mktime(0, 0, 0, strftime('%m', $current), strftime('%d', $current), strftime('%Y', $current) + $rule->interval);
-				}
-				else
-				{
-					if (!$rule->reverse_bydays)
-					{
-						sort($rule->bydays);
-						$next_day = $rule->bydays[0];
-						foreach ($rule->bydays as $day)
-						{
-							if ($day > $current)
-							{
-								$next_day = $day;
-								break;
-							}
-						}
-						if ($next_day == $rule->bydays[0]) // not this year => this year + interval year!
-						{
-							$next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)) + 1);
-						}
-						else
-						{
-							$next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
-						}
-					}
-					else
-					{
-						// total days in this year
-						$total = strftime('%j', mktime(0, 0, 0, 1, 0, strftime('%Y', strtotime($last_xref->dates)) + 1));
-						$rev_days = array();
-						// get number in proper order
-						rsort($rule->bydays);
-						foreach ($rule->bydays as $day)
-						{
-							$rev_days[] = $total - $day + 1;
-						}
+            foreach ($rule->bydays as $day)
+            {
+              // we need to check the dates for this month, and the +interval month
+              $dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' + 1 months -'.$day. ' day');
+              if ($dd > $current_sec) {
+                $next[] = $dd;
+              }
+              $dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' +'.(1 + $rule->interval).' months -'.$day. ' days', strtotime($last_xref->dates));
+              if ($dd > $current_sec) {
+                $next[] = $dd;
+              }
+            }
+            // the next is the closest, lower value
+            $next_start = min($next);
+          }
+        }
+        break;
 
-						$next_day = null;
-						foreach ($rev_days as $day)
-						{
-							if ($day > $current)
-							{
-								$next_day = $day;
-								break;
-							}
-						}
+      case 'YEARLY':
+        $current = strtotime($last_xref->dates);
 
-						if ($next_day == null) // not this year => this year + interval year!
-						{
-							$next_start = mktime(0, 0, 0, 1, -$rule->bydays[0], strftime('%Y', strtotime($last_xref->dates)) + 1 + $rule->interval);
-						}
-						else
-						{
-							$next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
-						}
-					}
-				}
-				break;
+        if (empty($rule->bydays)) // in that case, use current date, plus a year
+        {
+          $next_start = mktime(0, 0, 0, strftime('%m', $current), strftime('%d', $current), strftime('%Y',  $current) + $rule->interval);
+        }
+        else
+        {
+	        if (!$rule->reverse_bydays)
+	        {
+	          sort($rule->bydays);
+	          $next_day = $rule->bydays[0];
+	          foreach ($rule->bydays as $day)
+	          {
+	            if ($day > $current) {
+	              $next_day = $day;
+	              break;
+	            }
+	          }
+	          if ($next_day == $rule->bydays[0]) // not this year => this year + interval year!
+	          {
+	            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)) + 1);
+	          }
+	          else {
+	            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
+	          }
+	        }
+	        else
+	        {
+	          // total days in this year
+	          $total = strftime('%j', mktime(0, 0, 0, 1, 0, strftime('%Y', strtotime($last_xref->dates)) + 1));
+	          $rev_days = array();
+	          // get number in proper order
+	          rsort($rule->bydays);
+	          foreach ($rule->bydays as $day) {
+	            $rev_days[] = $total - $day + 1;
+	          }
 
-			case 'NONE':
-			default:
-				break;
-		}
+	          $next_day = null;
+	          foreach ($rev_days as $day)
+	          {
+	            if ($day > $current) {
+	              $next_day = $day;
+	              break;
+	            }
+	          }
 
-		if (!isset($next_start) || !$next_start)
-		{
-			return false;
-		}
+	          if ($next_day == null) // not this year => this year + interval year!
+	          {
+	            $next_start = mktime(0, 0, 0, 1, -$rule->bydays[0], strftime('%Y', strtotime($last_xref->dates)) + 1 + $rule->interval);
+	          }
+	          else {
+	            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
+	          }
+	        }
+        }
+        break;
 
-		// check the until rule
-		if ($rule->until_type == 'until' && strtotime(strftime('%Y-%m-%d', $next_start) . ' ' . $last_xref->times) > strtotime($rule->until))
-		{
-			return false;
-		}
+      case 'NONE':
+      default:
+        break;
+    }
 
-		$delta = $next_start - strtotime($last_xref->dates);
-		if (!$delta)
-		{ // no delta, so same session...
-			return false;
-		}
+    if (!isset($next_start) || !$next_start) {
+      return false;
+    }
 
-		// return the new occurence
-		$new = clone $last_xref;
+    // check the until rule
+    if ($rule->until_type == 'until' && strtotime(strftime('%Y-%m-%d', $next_start).' '.$last_xref->times) > strtotime($rule->until)) {
+      return false;
+    }
 
-		unset($new->id);
+    $delta = $next_start - strtotime($last_xref->dates);
+    if (!$delta) { // no delta, so same session...
+    	return false;
+    }
 
-		$new->dates = strftime('%Y-%m-%d', $next_start);
-		if (strtotime($last_xref->enddates))
-		{
-			$new->enddates = strftime('%Y-%m-%d', strtotime($last_xref->enddates) + $delta);
-		}
-		if (strtotime($last_xref->registrationend))
-		{
-			$new->registrationend = strftime('%Y-%m-%d', strtotime($last_xref->registrationend) + $delta);
-		}
-		$new->count++;
+    // return the new occurence
+    $new = clone $last_xref;
+
+    unset($new->id);
+
+    $new->dates = strftime('%Y-%m-%d', $next_start);
+    if (strtotime($last_xref->enddates)) {
+      $new->enddates = strftime('%Y-%m-%d', strtotime($last_xref->enddates) + $delta);
+    }
+    if (strtotime($last_xref->registrationend)) {
+      $new->registrationend = strftime('%Y-%m-%d', strtotime($last_xref->registrationend) + $delta);
+    }
+    $new->count++;
 
 //     echo '<pre>';print_r($new); echo '</pre>';exit;
 //    print_r($new);
 //    exit;
-		return $new;
-	}
+    return $new;
+  }
 
 }
 
-class rruleFields
-{
+class rruleFields {
 
-	/**
-	 * type of recurence: NONE, DAILY,WEEKLY, MONTHLY, YEARLY
-	 * @var string
-	 */
-	var $type = 'NONE';
+  /**
+   * type of recurence: NONE, DAILY,WEEKLY, MONTHLY, YEARLY
+   * @var string
+   */
+  var $type = 'NONE';
 
-	/**
-	 * interval of repeatition
-	 * @var int
-	 */
-	var $interval = 1;
+  /**
+   * interval of repeatition
+   * @var int
+   */
+  var $interval = 1;
 
-	/**
-	 * type of repeatition limit: count (count), or until date (until)
-	 * @var unknown_type
-	 */
-	var $until_type = 'count';
+  /**
+   * type of repeatition limit: count (count), or until date (until)
+   * @var unknown_type
+   */
+  var $until_type = 'count';
 
-	/**
-	 * number of repeats
-	 * @var int
-	 */
-	var $count = 10;
+  /**
+   * number of repeats
+   * @var int
+   */
+  var $count = 10;
 
-	/**
-	 * repeat limit date
-	 * @var string
-	 */
-	var $until = null;
+  /**
+   * repeat limit date
+   * @var string
+   */
+  var $until = null;
 
-	/**
-	 * selected days for weekly repeat (list SU, MO, ...)
-	 * @var array
-	 */
-	var $weekdays = array();
-	/**
-	 * selected days for weekly repeat reverted (list SU, MO, ...)
-	 * @var array
-	 */
-	var $rweekdays = array();
+  /**
+   * selected days for weekly repeat (list SU, MO, ...)
+   * @var array
+   */
+  var $weekdays = array();
+  /**
+   * selected days for weekly repeat reverted (list SU, MO, ...)
+   * @var array
+   */
+  var $rweekdays = array();
 
-	/**
-	 * type of rule for month freq: bymonthday (int list: bymonthday), or by weekdays (byday)
-	 * @var string
-	 */
-	var $monthtype = 'bymonthday';
+  /**
+   * type of rule for month freq: bymonthday (int list: bymonthday), or by weekdays (byday)
+   * @var string
+   */
+  var $monthtype = 'bymonthday';
 
-	/**
-	 * array of days number
-	 * @var array
-	 */
-	var $bydays = array();
+  /**
+   * array of days number
+   * @var array
+   */
+  var $bydays = array();
 
-	/**
-	 * count days from end
-	 * @var int
-	 */
-	var $reverse_bydays = 0;
+  /**
+   * count days from end
+   * @var int
+   */
+  var $reverse_bydays = 0;
 
-	/**
-	 * array of weeks numbers (1, 2, ...)
-	 * @var string
-	 */
-	var $weeks = array();
+  /**
+   * array of weeks numbers (1, 2, ...)
+   * @var string
+   */
+  var $weeks = array();
 
-	/**
-	 * array of weeks numbers (1, 2, ...), counted from end of the month
-	 * @var string
-	 */
-	var $rweeks = array();
+  /**
+   * array of weeks numbers (1, 2, ...), counted from end of the month
+   * @var string
+   */
+  var $rweeks = array();
 
 }
 

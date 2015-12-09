@@ -2,3 +2,12 @@ reminder.txt
 release
 
 build/build.properties
+
+
+.travis/
+build/
+composer.lock
+gulp-config.json
+node_modules/
+redCORE/
+vendor/
