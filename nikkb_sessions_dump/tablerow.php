@@ -105,12 +105,24 @@ class Tablerow
 		$this->sessions[] = $row;
 	}
 
+	/**
+	 * Get price of most recent session
+	 *
+	 * @return int
+	 */
 	private function getPrice()
 	{
-		$first = $this->sessions[0];
+		$sessions = array_reverse($this->sessions);
 
-		// One and only one price for all sessions of same event
-		return !empty($first->prices) ? $first->prices[0]->price : 0;
+		foreach ($sessions as $session)
+		{
+			if (!empty($session->prices))
+			{
+				return $session->prices[0]->price;
+			}
+		}
+
+		return 0;
 	}
 
 	private function getLink()

@@ -118,7 +118,7 @@ class DumpModel
 	}
 
 	/**
-	 * adds registered (int) and waiting (int) properties to rows.
+	 * adds prices to rows.
 	 *
 	 * @return array
 	 */
