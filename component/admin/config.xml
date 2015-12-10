@@ -797,6 +797,8 @@
 			  description="COM_REDEVENT_SETTINGS_SEO">
 		<field name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID"
 			   description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
+		<field name="default_details_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_DETAILS_ITEMID"
+			   description="COM_REDEVENT_SETTINGS_DEFAULT_DETAILS_ITEMID_DESC"/>
 		<field type="spacer" label="COM_REDEVENT_SETTINGS_SEO_SEPARATOR_sh404sef"/>
 		<field name="sh404sef_always_include_menu_title" type="radio" default="0"
 			   class="btn-group"
