@@ -52,6 +52,7 @@ class RedeventViewRegistration extends JViewLegacy
 
 		if ($this->getLayout() == 'confirmed')
 		{
+			$this->addTracking();
 			$message = $event->confirmation_message;
 			$document->setTitle($event->title . ' - ' . JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
 		}
@@ -190,5 +191,34 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assignRef('action',     JRoute::_('index.php?option=com_redevent&xref=' . $xref . '&rid=' . $rid));
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add google analytics
+	 *
+	 * @return void
+	 */
+	protected function addTracking()
+	{
+		if (RedformHelperAnalytics::isEnabled())
+		{
+			$submit_key = JFactory::getApplication()->input->get('submit_key');
+			$details = $this->get('SessionDetails');
+
+			$options = array();
+			$options['affiliation'] = 'redevent';
+			$options['sku'] = $details->title;
+			$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title
+					. ($details->session_title ? ' / ' . $details->session_title : '');
+
+			$cats = array();
+			foreach ($details->categories as $c)
+			{
+				$cats[] = $c->catname;
+			}
+			$options['category'] = implode(', ', $cats);
+
+			RedformHelperAnalytics::recordTrans($submit_key, $options);
+		}
 	}
 }
