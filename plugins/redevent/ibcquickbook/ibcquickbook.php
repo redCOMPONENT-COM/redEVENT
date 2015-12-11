@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
+JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
+
 /**
  * Class plgRedeventRedeventsync
  *
@@ -58,14 +60,13 @@ class plgRedeventIbcquickbook extends JPlugin
 	 *
 	 * @return bool
 	 */
-	public function onBeforeRegistration($xref, &$redformResponse, &$notification)
+	public function onBeforeRegistration($xref, &$redformResponse, &$notification, $options)
 	{
 		$this->xref = $xref;
 		$this->setSidFromResponse($redformResponse);
 
 		// We need to match response to real registration form, if not the same as submitted form
-		$redformResponse = $this->newRedFormResponse($redformResponse);
-
+		$redformResponse = $this->newRedFormResponse($redformResponse, $options);
 
 		// Keep track !
 		$this->isQuickbookRegistration = JFactory::getApplication()->input->getInt('fromQuickbook', 0);
@@ -94,6 +95,10 @@ class plgRedeventIbcquickbook extends JPlugin
 		if ($this->isQuickbookRegistration)
 		{
 			echo $this->params->get('notification');
+
+			$this->xref = $xref;
+
+			echo $this->getAnalytics();
 
 			JFactory::getApplication()->close();
 		}
@@ -254,9 +259,10 @@ class plgRedeventIbcquickbook extends JPlugin
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select('e.*, x.dates');
+			$query->select('e.*, x.dates, v.venue');
 			$query->from('#__redevent_events AS e');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
+			$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
 			$query->where('x.id = ' . $this->xref);
 
 			$db->setQuery($query);
@@ -285,7 +291,7 @@ class plgRedeventIbcquickbook extends JPlugin
 	 *
 	 * @return void
 	 */
-	private function newRedFormResponse($redformResponse)
+	private function newRedFormResponse($redformResponse, $options)
 	{
 		$xrefFormId = $this->getXrefFormId();
 		$submittedFormId = JFactory::getApplication()->input->getInt('form_id', 0);
@@ -311,7 +317,7 @@ class plgRedeventIbcquickbook extends JPlugin
 		}
 
 		// Get new response
-		return $this->getRedFormCore()->saveAnswers('redevent', null, $data);
+		return $this->getRedFormCore()->saveAnswers('redevent', $options, $data);
 	}
 
 	private function map($data, $field)
@@ -434,5 +440,25 @@ class plgRedeventIbcquickbook extends JPlugin
 			'com_redevent'
 		);
 		JLog::add($text, JLog::DEBUG, 'com_redevent');
+	}
+
+	private function getAnalytics()
+	{
+		$submit_key = JFactory::getApplication()->input->get('submit_key');
+		$details = $this->getSessionDetails();
+
+		$options = array();
+		$options['affiliation'] = 'redevent';
+		$options['sku'] = $details->title;
+		$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title;
+		$options['category'] = 'registration';
+
+		require_once JPATH_SITE . '/libraries/redform/helper/analytics.php';
+
+		$js = RedformHelperAnalytics::recordTrans($submit_key, $options);
+
+		$html = '<script type="text/javascript">' . $js . '</script>' . "\n";
+
+		return $html;
 	}
 }

@@ -15,6 +15,7 @@ document.addEvent('domready', function(){
 		var req = new Request({
 			url: el.getParent('form').getProperty('action'),
 			data: el.getParent('form'),
+			evalScripts: true,
 			onRequest : function(){
 				el.getParent('form').set('spinner').spin();
 				el.removeEvents('click');

@@ -112,7 +112,7 @@ class RedEventControllerRegistration extends RedEventController
 		}
 
 		// First, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $prices, $regPricegroup->currency);
+		$options = array('baseprice' => $prices, 'currency' => $regPricegroup->currency);
 
 		if ($review)
 		{
@@ -133,7 +133,7 @@ class RedEventControllerRegistration extends RedEventController
 
 		// Trigger before registration plugin, that can alter redform data, or even stop the registration process
 		$notification = false;
-		$dispatcher->trigger('onBeforeRegistration', array($xref, &$result, &$notification));
+		$dispatcher->trigger('onBeforeRegistration', array($xref, &$result, &$notification, $options));
 
 		if ($notification)
 		{
