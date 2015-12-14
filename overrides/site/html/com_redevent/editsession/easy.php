@@ -24,6 +24,75 @@ if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
 
 				return val >= today;
 			});
+
+			// Make sure end date is not before start date
+			document.formvalidator.setHandler('datesafter', function(value) {
+				var regex = /201[0-9]-[0-1][0-9]-[0-3][0-9]/;
+				if (!regex.test(value)) {
+					return true;
+				}
+
+				var start = document.id('jform_dates').get('value');
+
+				if (!regex.test(start))
+				{
+					document.id('jform_enddates').setCustomValidity('End date cannot be set if start date is not')
+					return false;
+				}
+
+				var startDate = new Date(start);
+				var endDate = new Date(value);
+
+				if (startDate > endDate)
+				{
+					document.id('jform_enddates').setCustomValidity('End date cannot be set after start date')
+					return false;
+				}
+
+				document.id('jform_enddates').setCustomValidity('');
+
+				return true;
+			});
+
+			document.formvalidator.setHandler('timesafter', function(value) {
+				var regexDate = /201[0-9]-[0-1][0-9]-[0-3][0-9]/;
+				var regexTime = /[0-2][0-9]:[0-5][0-9](:[0-5][0-9])*/;
+
+				var startDate = document.id('jform_dates').get('value');
+				var startTime = document.id('jform_times').get('value');
+
+				if (!(regexDate.test(startDate) && regexTime.test(startTime)))
+				{
+					document.id('jform_enddates').setCustomValidity('End date time cannot be set if start date time is not')
+					return false;
+				}
+
+				var endDate = document.id('jform_enddates').get('value');
+				var endTime = document.id('jform_endtimes').get('value');
+
+				if (!regexDate.test(endDate))
+				{
+					endDate = startDate;
+				}
+
+				if (!regexTime.test(endTime))
+				{
+					endTime = '00:00:00';
+				}
+
+				var fullStart = new Date(startDate + ' ' + startTime);
+				var fullEnd = new Date(endDate + ' ' + endTime);
+
+				if (fullStart > fullEnd)
+				{
+					document.id('jform_endtimes').setCustomValidity('End time cannot be set after start time')
+					return false;
+				}
+
+				document.id('jform_endtimes').setCustomValidity('');
+
+				return true;
+			});
 		});
 JS
 	);
@@ -57,6 +126,15 @@ JFactory::getDocument()->addScriptDeclaration(
 		}
 	};"
 );
+
+// Specific validation
+$enddatesClassAttributeClassAttribute = $form->getFieldAttribute('enddates', 'class');
+$enddatesClassAttributeClassAttribute = $timesClassAttribute ? $timesClassAttribute . ' ' . 'validate-datesafter' : 'validate-datesafter';
+$form->setFieldAttribute('enddates', 'class', $enddatesClassAttributeClassAttribute);
+
+$timesClassAttribute = $form->getFieldAttribute('endtimes', 'class');
+$timesClassAttribute = $timesClassAttribute ? $timesClassAttribute . ' ' . 'validate-timesafter' : 'validate-timesafter';
+$form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 ?>
 
 <script type="text/javascript">
@@ -233,15 +311,6 @@ JFactory::getDocument()->addScriptDeclaration(
 								</div>
 								<span class="required">*</span>
 							</div>
-							<div class="controls input-group clockpicker" data-autoclose="true" style="display:none;">
-
-
-								<?php echo $form->getInput('times'); ?>
-								<span class="input-group-addon">
-							        <span class="glyphicon glyphicon-time"></span>
-							    </span>
-
-							</div>
 						</div>
 					</div>
 
@@ -266,13 +335,6 @@ JFactory::getDocument()->addScriptDeclaration(
 									<?php echo $form->getInput('endtimes'); ?>
 									<button type="button" class="btn input-group-addons" id="jform_times_img"><span class="glyphicon glyphicon-time"></span></button>
 								</div>
-								<span class="required">*</span>
-							</div>
-							<div class="controls input-group clockpicker" data-autoclose="true" style="display:none;">
-								<?php echo $form->getInput('endtimes'); ?>
-								<span class="input-group-addon">
-							        <span class="glyphicon glyphicon-time"></span>
-							    </span>
 								<span class="required">*</span>
 							</div>
 						</div>
