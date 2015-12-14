@@ -70,7 +70,6 @@ class RedeventModelEditevent extends RModelAdmin
 			$helper = new RedeventHelperAttachment;
 			$helper->store('event' . $id);
 
-
 			$isNew = isset($data['id']) && $data['id'] ? false : true;
 			$notify = RModel::getFrontInstance('Editeventnotify');
 			$notify->notify($id, $isNew);
