@@ -63,10 +63,43 @@ class RedeventRouteDetails
 			return $item;
 		}
 
+		if ($item = $this->getDetailsDefault())
+		{
+			return $item;
+		}
+
 		if ($item = $this->matchCategory())
 		{
 			return $item;
 		}
+	}
+
+	/**
+	 * Get default item from settings
+	 *
+	 * @return object
+	 */
+	private function getDetailsDefault()
+	{
+		$params = JComponentHelper::getParams('com_redevent');
+		$default = (int) $params->get('default_details_itemid');
+
+		if (!$default)
+		{
+			return false;
+		}
+
+		$menus = JFactory::getApplication()->getMenu('site');
+
+		foreach ($menus->getItems(array(), array()) as $item)
+		{
+			if ($item->id == $default)
+			{
+				return $item;
+			}
+		}
+
+		return false;
 	}
 
 	/**

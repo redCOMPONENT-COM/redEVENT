@@ -198,9 +198,9 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			{
 				$field->value = $data->$prop;
 			}
-			elseif (isset($data->event->$prop))
+			elseif (isset($data->event[$prop]))
 			{
-				$field->value = $data->event->$prop;
+				$field->value = $data->event[$prop];
 			}
 
 			$fields[$c->id] = $field;
@@ -329,7 +329,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	 */
 	private function saveEvent(&$data)
 	{
-		$model = RModel::getFrontInstance('editevent', array(), 'com_redevent');
+		$model = RModel::getFrontInstance('editevent', array('ignore_request' => true), 'com_redevent');
 
 		if (!$model->save($data['event']))
 		{
