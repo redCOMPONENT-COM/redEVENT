@@ -198,9 +198,9 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			{
 				$field->value = $data->$prop;
 			}
-			elseif (isset($data->event->$prop))
+			elseif (isset($data->event[$prop]))
 			{
-				$field->value = $data->event->$prop;
+				$field->value = $data->event[$prop];
 			}
 
 			$fields[$c->id] = $field;
