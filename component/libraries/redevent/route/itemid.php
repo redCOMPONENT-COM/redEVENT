@@ -101,27 +101,39 @@ class RedeventRouteItemid
 			$view = 'details';
 		}
 
-		if ($view == 'details')
+		switch ($view)
 		{
-			$helper = new RedeventRouteDetails($this->menuItems, $query);
+			case 'details':
+				$helper = new RedeventRouteDetails($this->menuItems, $query);
 
-			if ($item = $helper->getItem())
-			{
-				return $item;
-			}
-		}
-		else
-		{
-			foreach ($items as $item)
-			{
-				if ($view && (@$item->query['view'] == $view))
+				if ($item = $helper->getItem())
 				{
-					if (!isset($query['id']) || (int) @$item->query['id'] == (int) @$query['id'])
+					return $item;
+				}
+
+				break;
+
+			case 'venueevents':
+				$helper = new RedeventRouteVenue($this->menuItems, $query);
+
+				if ($item = $helper->getItem())
+				{
+					return $item;
+				}
+
+				break;
+
+			default:
+				foreach ($items as $item)
+				{
+					if ($view && (@$item->query['view'] == $view))
 					{
-						return $item;
+						if (!isset($query['id']) || (int) @$item->query['id'] == (int) @$query['id'])
+						{
+							return $item;
+						}
 					}
 				}
-			}
 		}
 
 		return false;
