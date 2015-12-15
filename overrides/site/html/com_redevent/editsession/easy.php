@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
 
+RHelperAsset::load('editsession.js');
+
 if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
 {
 	JFactory::getDocument()->addScriptDeclaration(<<<JS
@@ -23,75 +25,6 @@ if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
 				var val = new Date(value);
 
 				return val >= today;
-			});
-
-			// Make sure end date is not before start date
-			document.formvalidator.setHandler('datesafter', function(value) {
-				var regex = /201[0-9]-[0-1][0-9]-[0-3][0-9]/;
-				if (!regex.test(value)) {
-					return true;
-				}
-
-				var start = document.id('jform_dates').get('value');
-
-				if (!regex.test(start))
-				{
-					document.id('jform_enddates').setCustomValidity('End date cannot be set if start date is not')
-					return false;
-				}
-
-				var startDate = new Date(start);
-				var endDate = new Date(value);
-
-				if (startDate > endDate)
-				{
-					document.id('jform_enddates').setCustomValidity('End date cannot be set after start date')
-					return false;
-				}
-
-				document.id('jform_enddates').setCustomValidity('');
-
-				return true;
-			});
-
-			document.formvalidator.setHandler('timesafter', function(value) {
-				var regexDate = /201[0-9]-[0-1][0-9]-[0-3][0-9]/;
-				var regexTime = /[0-2][0-9]:[0-5][0-9](:[0-5][0-9])*/;
-
-				var startDate = document.id('jform_dates').get('value');
-				var startTime = document.id('jform_times').get('value');
-
-				if (!(regexDate.test(startDate) && regexTime.test(startTime)))
-				{
-					document.id('jform_enddates').setCustomValidity('End date time cannot be set if start date time is not')
-					return false;
-				}
-
-				var endDate = document.id('jform_enddates').get('value');
-				var endTime = document.id('jform_endtimes').get('value');
-
-				if (!regexDate.test(endDate))
-				{
-					endDate = startDate;
-				}
-
-				if (!regexTime.test(endTime))
-				{
-					endTime = '00:00:00';
-				}
-
-				var fullStart = new Date(startDate + ' ' + startTime);
-				var fullEnd = new Date(endDate + ' ' + endTime);
-
-				if (fullStart > fullEnd)
-				{
-					document.id('jform_endtimes').setCustomValidity('End time cannot be set after start time')
-					return false;
-				}
-
-				document.id('jform_endtimes').setCustomValidity('');
-
-				return true;
 			});
 		});
 JS
@@ -126,15 +59,6 @@ JFactory::getDocument()->addScriptDeclaration(
 		}
 	};"
 );
-
-// Specific validation
-$enddatesClassAttributeClassAttribute = $form->getFieldAttribute('enddates', 'class');
-$enddatesClassAttributeClassAttribute = $timesClassAttribute ? $timesClassAttribute . ' ' . 'validate-datesafter' : 'validate-datesafter';
-$form->setFieldAttribute('enddates', 'class', $enddatesClassAttributeClassAttribute);
-
-$timesClassAttribute = $form->getFieldAttribute('endtimes', 'class');
-$timesClassAttribute = $timesClassAttribute ? $timesClassAttribute . ' ' . 'validate-timesafter' : 'validate-timesafter';
-$form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 ?>
 
 <script type="text/javascript">
@@ -147,7 +71,7 @@ $form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 				jQuery(this).find("label").off('click');
 			}
 		});
-		//jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('.charleft').text( '150');
+
 		jQuery('.redevent-edit-form.style-1 .title-event .controls input').keyup(function () {
 			var left = 150 - jQuery(this).val().length;
 			if (left < 0) {
@@ -197,7 +121,7 @@ $form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 
 
 
-		jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text( '100');
+
 		jQuery('.redevent-edit-form.style-1 .customfield-ved .controls input').keyup(function () {
 			var left = 100 - jQuery(this).val().length;
 			if (left < 0) {
@@ -205,8 +129,21 @@ $form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 			}
 			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text( left);
 		});
+		if(jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('input').val()=='')
+		{
+			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text( '100');
+		}
+		else
+		{
+			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('input').val().length;
+			var length_title_left=100 - length_title_input;
+			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text(length_title_left);
+		}
 
-		jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text( '250');
+
+
+
+
 		jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea').keyup(function () {
 			var left = 250 - jQuery(this).val().length;
 			if (left < 0) {
@@ -214,7 +151,22 @@ $form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 			}
 			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text( left);
 		});
-		jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text( '250');
+
+		if(jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('textarea').val()=='')
+		{
+			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text( '100');
+
+		}
+		else
+		{
+			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('textarea').val().length;
+			var length_title_left=250 - length_title_input;
+			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text(length_title_left);
+		}
+
+
+
+
 		jQuery('.redevent-edit-form.style-1 .customfield-note .controls textarea').keyup(function () {
 			var left = 250 - jQuery(this).val().length;
 			if (left < 0) {
@@ -223,6 +175,17 @@ $form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text( left);
 		});
 
+		if(jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('textarea').val()=='')
+		{
+			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text( '100');
+
+		}
+		else
+		{
+			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('textarea').val().length;
+			var length_title_left=250 - length_title_input;
+			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text(length_title_left);
+		}
 
 
 
@@ -311,6 +274,7 @@ $form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 								</div>
 								<span class="required">*</span>
 							</div>
+
 						</div>
 					</div>
 
@@ -337,6 +301,7 @@ $form->setFieldAttribute('endtimes', 'class', $timesClassAttribute);
 								</div>
 								<span class="required">*</span>
 							</div>
+
 						</div>
 					</div>
 
