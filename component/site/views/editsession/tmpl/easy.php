@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
 
+RHelperAsset::load('editsession.js');
+
 if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
 {
 	JFactory::getDocument()->addScriptDeclaration(<<<JS
