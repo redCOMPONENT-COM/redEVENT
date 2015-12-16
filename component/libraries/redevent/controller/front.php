@@ -77,7 +77,7 @@ class RedeventControllerFront extends JControllerLegacy
 		$post = $_POST;
 		$filterInput = JFilterInput::getInstance();
 
-		$uri = JFactory::getUri();
+		$uri = JUri::getInstance();
 
 		// Do not modify it if not proper view...
 		$myuri = clone $uri;

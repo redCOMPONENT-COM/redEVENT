@@ -24,6 +24,13 @@ class RedeventEntitySession extends RedeventEntityBase
 	private $event;
 
 	/**
+	 * Associated venue
+	 *
+	 * @var RedeventEntityVenue
+	 */
+	private $venue;
+
+	/**
 	 * Return associated event
 	 *
 	 * @return RedeventEntityEvent
@@ -41,5 +48,25 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return $this->event;
+	}
+
+	/**
+	 * Return associated venue
+	 *
+	 * @return RedeventEntityVenue
+	 */
+	public function getVenue()
+	{
+		if (!$this->venue)
+		{
+			$item = $this->getItem();
+
+			if (!empty($item))
+			{
+				$this->venue = RedeventEntityVenue::getInstance($item->venueid)->loadItem();
+			}
+		}
+
+		return $this->venue;
 	}
 }

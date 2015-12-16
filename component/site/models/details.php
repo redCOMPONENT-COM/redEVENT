@@ -199,7 +199,7 @@ class RedeventModelDetails extends RModel
 		}
 		elseif ($this->id)
 		{
-			$query->where('x.eventid = ' . $this->id);
+			$query->where('a.id = ' . $this->id);
 		}
 
 		return $query;

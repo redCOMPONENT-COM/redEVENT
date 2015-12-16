@@ -58,13 +58,28 @@ class RedeventControllerEditvenue extends RControllerForm
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onVenueEdited', array($model->getState($this->context . '.id'), $isNew));
 
+		$venueid = $model->getState($this->context . '.id');
+
 		if ($this->input->get('modal', 0))
 		{
-			$venueid = $model->getState($this->context . '.id');
 			$this->setRedirect(
 				'index.php?option=com_redevent&view=editvenue&layout=modal_close&tmpl=component&fieldId=' . $this->input->get('fieldId')
 				. '&venueId=' . $venueid . '&name=' . urlencode($validData['venue'])
 			);
+		}
+		else
+		{
+			$config = RedeventHelper::config();
+
+			if (!$this->input->get('return') && $config->get('redirect_after_front_edit') == "viewitem")
+			{
+				$venue = RedeventEntityVenue::load($venueid);
+
+				if ($venue->published)
+				{
+					$this->setRedirect(RedeventHelperRoute::getVenueEventsRoute($venueid));
+				}
+			}
 		}
 
 		parent::postSaveHook($model, $validData);

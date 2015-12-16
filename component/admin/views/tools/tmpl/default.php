@@ -31,6 +31,12 @@ $icons = array(
         'icon' => 'icon-48-cleaneventimg.png',
         'text' => JText::_('COM_REDEVENT_TOOLS_CSV'),
         'desc' => JText::_('COM_REDEVENT_TOOLS_CSV_DESC'),
+        'access' => 'core.edit'),
+    array(
+        'link' => JURI::root() . 'index.php?option=com_redevent&task=reminder.payment&tmpl=component',
+        'icon' => 'icon-48-cleaneventimg.png',
+        'text' => JText::_('COM_REDEVENT_TOOLS_PAYMENT_REMINDER'),
+        'desc' => JText::_('COM_REDEVENT_TOOLS_PAYMENT_REMINDER_DESC'),
         'access' => 'core.edit')
 );
 ?>
