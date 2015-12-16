@@ -205,7 +205,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 				
 				<td headers="el_edit" align="left" valign="top" class="userscount"><?php echo $row->registered.($row->maxattendees ? '/'.$row->maxattendees : ''); ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
-				<td headers="el_edit" align="left" valign="top" class="el_edit_events"><?php echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top" class="el_edit_events"><?php 
+
+				$editsessionLink = RedeventHelperRoute::getEditSessionTaskRoute($row->slug, $row->xref);
+				?><a href="<?php echo $editsessionLink; ?>" class=""></a><?php 
+
+				//echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top" class="publishevents_col">
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>

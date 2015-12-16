@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php if (!empty($this->sessions)): ?>
 
-	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_SESSIONS'); ?></h2>
+	<h2><?php echo JText::_('COM_REDEVENT_MYEVENTS_MANAGED_EVENTS'); ?></h2>
 	<div id="result_sessions">
 	<?php echo $this->loadTemplate('sessions'); ?>
 	</div>
