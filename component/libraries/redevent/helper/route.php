@@ -669,15 +669,6 @@ class RedeventHelperRoute
 		{
 			$parts['Itemid'] = $item->id;
 		}
-		else
-		{
-			$params = JComponentHelper::getParams('com_redevent');
-
-			if ($params->get('default_itemid'))
-			{
-				$parts['Itemid'] = intval($params->get('default_itemid'));
-			}
-		}
 
 		// Language filter ?
 		return 'index.php?' . JURI::buildQuery($parts);
@@ -695,70 +686,9 @@ class RedeventHelperRoute
 	 */
 	protected static function _findItem($query)
 	{
-		$app = JFactory::getApplication();
-		$component = JComponentHelper::getComponent('com_redevent');
-		$menus	= $app->getMenu('site');
-		$items	= $menus->getItems('component_id', $component->id);
-		$user 	= JFactory::getUser();
+		$finder = RedeventRouteItemid::getInstance();
 
-		$view = isset($query['view']) ? $query['view'] : null;
-
-		if (!$view && isset($query['controller']) && $query['controller'] == 'registration')
-		{
-			$view = 'details';
-		}
-
-		if ($items)
-		{
-			foreach ($items as $item)
-			{
-				if ($view && (@$item->query['view'] == $view))
-				{
-					switch ($view)
-					{
-						case 'details':
-							if (isset($query['xref']) && (int) $query['xref'] == (int) @$item->query['xref'])
-							{
-								return $item;
-							}
-							// Needs a second round to check just for 'id'
-							break;
-						default:
-							if (!isset($query['id']) || (int) @$item->query['id'] == (int) @$query['id'])
-							{
-								return $item;
-							}
-					}
-				}
-			}
-
-			// Second round for view with optional params
-			foreach ($items as $item)
-			{
-				if (isset($view) && (@$item->query['view'] == $view))
-				{
-					switch ($view)
-					{
-						case 'details':
-							if (isset($query['id']) && (int) $query['id'] == (int) @$item->query['id'])
-							{
-								return $item;
-							}
-							break;
-					}
-				}
-			}
-		}
-
-		// Still here..
-		$active = $menus->getActive();
-
-		if ($active && $active->component == 'com_redevent')
-		{
-			return $active;
-		}
-
-		return null;
+		return $finder->getItemid($query);
 	}
 
 	/**

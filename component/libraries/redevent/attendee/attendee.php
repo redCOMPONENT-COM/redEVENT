@@ -771,6 +771,18 @@ class RedeventAttendee extends JObject
 	}
 
 	/**
+	 * Get attendee contact emails
+	 *
+	 * @return array
+	 */
+	public function getContactEmails()
+	{
+		$rfcore = RdfCore::getInstance();
+
+		return $rfcore->getSidContactEmails($this->load()->sid);
+	}
+
+	/**
 	 * Send e-mail confirmations
 	 *
 	 * @return boolean
@@ -794,9 +806,7 @@ class RedeventAttendee extends JObject
 
 			/* Load the mailer */
 			$mailer = $this->prepareEmail($subject, $body);
-
-			$rfcore = RdfCore::getInstance();
-			$emails = $rfcore->getSidContactEmails($this->load()->sid);
+			$emails = $this->getContactEmails();
 
 			foreach ($emails as $email)
 			{

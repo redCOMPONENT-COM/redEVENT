@@ -60,6 +60,10 @@ class RedeventBootstrap
 
 			// Use bootstrap3
 			/* RHtmlMedia::setFramework('bootstrap3'); */
+
+			// Load library language
+			$lang = JFactory::getLanguage();
+			$lang->load('lib_redevent', __DIR__);
 		}
 	}
 }

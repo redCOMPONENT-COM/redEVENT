@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
 
+RHelperAsset::load('editsession.js');
+
 JFactory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
 	{
