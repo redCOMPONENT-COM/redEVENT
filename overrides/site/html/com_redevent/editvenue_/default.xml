@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_REDEVENT_Venue_submission">
+		<message>
+			<![CDATA[COM_REDEVENT_Venue_SUBMISSION_DESC]]>
+		</message>
+	</layout>
+</metadata>
