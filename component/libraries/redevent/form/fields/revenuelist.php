@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JFormHelper::loadFieldClass('list');
 
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 /**
  * redEVENT venue form field
  *
@@ -87,9 +89,9 @@ class JFormFieldRevenuelist extends JFormFieldList
 
 		if (!empty($element['create_modal']))
 		{
-			$value = (string) $element['create_modal'];
+			$val = (string) $element['create_modal'];
 
-			if (strtolower($element['create_modal'] == "true") || $element['create_modal'] == "1")
+			if (strtolower($val == "true") || $val == "1")
 			{
 				$this->createModal = true;
 			}

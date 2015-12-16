@@ -63,6 +63,27 @@ class RedeventModelEvent extends RModelAdmin
 	}
 
 	/**
+	 * Method for getting the form from the model.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed  A JForm object on success, false on failure
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = parent::getForm($data, $loadData);
+
+		// Do not allow to modify the registration form once there are attendees
+		if ($form->getValue('id') && $this->hasAttendees($form->getValue('id')))
+		{
+			$form->setFieldAttribute('redform_id', 'disabled', '1');
+		}
+
+		return $form;
+	}
+
+	/**
 	 * Method to get the category data
 	 *
 	 * @param   int  $eventId  event id
@@ -198,5 +219,26 @@ class RedeventModelEvent extends RModelAdmin
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Check if event has attendeees
+	 *
+	 * @param   int  $event_id  event id
+	 *
+	 * @return bool
+	 */
+	private function hasAttendees($event_id)
+	{
+		$query = $this->_db->getQuery(true)
+				->select('r.id')
+				->from('#__redevent_register AS r')
+				->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref')
+				->where('x.eventid = ' . (int) $event_id);
+
+		$this->_db->setQuery($query, 0, 1);
+		$res = $this->_db->loadResult();
+
+		return $res ? true : false;
 	}
 }
