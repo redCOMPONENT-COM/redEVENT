@@ -1235,7 +1235,7 @@ class RedeventHelper
 	 *
 	 * @return array
 	 */
-	public static function getEventCustomFields($published)
+	public static function getEventCustomFields($published = 1)
 	{
 		static $fields;
 
