@@ -64,6 +64,34 @@ JFactory::getDocument()->addScriptDeclaration(
 <script type="text/javascript">
 	jQuery(document).ready(function()
 	{
+		var inputs;
+		var maxlengths;
+		var controls;
+		var findelement;
+		function set_max_limit_for_element(inputs,maxlengths,controls,findelement)
+		{
+			jQuery(inputs).attr('maxlength',maxlengths );
+			/*Set limit text when keyup*/
+			jQuery(inputs).keyup(function () {
+			var left = maxlengths - jQuery(this).val().length;
+			if (left < 0) {
+				left = 0;
+			}
+			jQuery(controls).find('.charleft').text( left);
+			});
+
+			if(jQuery(controls).find('input').val()=='')
+			{
+				jQuery(controls).find('.charleft').text( maxlengths);
+			}
+			else
+			{
+				var length_title_input=jQuery(controls).find(findelement).val().length;
+				var length_title_left=maxlengths - length_title_input;
+				jQuery(controls).find('.charleft').text( length_title_left);
+			}
+
+		}
 		// Disable click function on btn-group
 		jQuery(".btn-group").each(function(index){
 			if (jQuery(this).hasClass('disabled'))
@@ -71,121 +99,16 @@ JFactory::getDocument()->addScriptDeclaration(
 				jQuery(this).find("label").off('click');
 			}
 		});
-
-		jQuery('.redevent-edit-form.style-1 .title-event .controls input').keyup(function () {
-			var left = 150 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('.charleft').text( left);
-		});
-
-		if(jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('input').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('.charleft').text( '150');
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('input').val().length;
-			var length_title_left=150 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('.charleft').text( length_title_left);
-		}
-
-
-
-
+		/*Set max limit*/
+		
+		set_max_limit_for_element('.redevent-edit-form.style-1 .title-event .controls input',70,'.redevent-edit-form.style-1 .title-event .controls ','input');
 		jQuery('select').select2();
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-hos .controls input',70,'.redevent-edit-form.style-1 .customfield-hos .controls','input');
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-ved .controls input',70,'.redevent-edit-form.style-1 .customfield-ved .controls','input');
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea',250,'.redevent-edit-form.style-1 .customfield-short-intro .controls','textarea');
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-note .controls textarea',250,'.redevent-edit-form.style-1 .customfield-note .controls','textarea');
+		
 
-
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-hos .controls input').keyup(function () {
-			var left = 100 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('.charleft').text( left);
-		});
-		if(jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('input').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('.charleft').text( '100');
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('input').val().length;
-			var length_title_left=100 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('.charleft').text(length_title_left);
-		}
-
-
-
-
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-ved .controls input').keyup(function () {
-			var left = 100 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text( left);
-		});
-		if(jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('input').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text( '100');
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('input').val().length;
-			var length_title_left=100 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text(length_title_left);
-		}
-
-
-
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea').keyup(function () {
-			var left = 250 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text( left);
-		});
-
-		if(jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('textarea').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text( '100');
-
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('textarea').val().length;
-			var length_title_left=250 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text(length_title_left);
-		}
-
-
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-note .controls textarea').keyup(function () {
-			var left = 250 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text( left);
-		});
-
-		if(jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('textarea').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text( '100');
-
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('textarea').val().length;
-			var length_title_left=250 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text(length_title_left);
-		}
 
 
 
