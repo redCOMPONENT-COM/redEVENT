@@ -92,6 +92,10 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			$class = ($class ? ' ' : '') . 'validate-futuredate';
 			$form->setFieldAttribute('dates', 'class', $class);
 
+			$class = $form->getFieldAttribute('times', 'class');
+			$class = ($class ? ' ' : '') . 'validate-futuretime';
+			$form->setFieldAttribute('times', 'class', $class);
+
 			$class = $form->getFieldAttribute('registrationend', 'class');
 			$class = ($class ? ' ' : '') . 'validate-futuredate';
 			$form->setFieldAttribute('registrationend', 'class', $class);

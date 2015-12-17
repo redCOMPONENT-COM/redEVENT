@@ -4,6 +4,37 @@
  * @license    GNU/GPL, see LICENSE.php
  */
 window.addEvent('domready', function(){
+	document.formvalidator.setHandler('futuredate', function(value) {
+		if (!value) {
+			return true;
+		}
+
+		var today = new Date();
+		today = new Date(today.toDateString());
+		var val = new Date(value);
+
+		return val >= today;
+	});
+
+	document.formvalidator.setHandler('futuretime', function(value) {
+		var regexTime = /[0-2][0-9]:[0-5][0-9](:[0-5][0-9])*/;
+
+		if (!value || value == '00:00:00' || value == '00:00') {
+			return true;
+		}
+
+		if (!regexTime.test(value)) {
+			return false;
+		}
+
+		var now = new Date();
+
+		var startDate = document.id('jform_dates').get('value');
+		var val = new Date(startDate + ' ' + value);
+
+		return val >= now;
+	});
+
 	// Make sure end date is not before start date
 	document.formvalidator.setHandler('enddate', function(value) {
 		var regex = /201[0-9]-[0-1][0-9]-[0-3][0-9]/;
