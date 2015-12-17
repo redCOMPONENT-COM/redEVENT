@@ -11,26 +11,6 @@ JHTML::_('behavior.formvalidation');
 
 RHelperAsset::load('editsession.js');
 
-if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
-{
-	JFactory::getDocument()->addScriptDeclaration(<<<JS
-		jQuery(document).ready(function($) {
-			document.formvalidator.setHandler('futuredate', function(value) {
-				if (!value) {
-					return true;
-				}
-
-				var today = new Date();
-				today = new Date(today.toDateString());
-				var val = new Date(value);
-
-				return val >= today;
-			});
-		});
-JS
-	);
-}
-
 $viewName = 'editsession';
 $option   = 'com_redevent';
 
@@ -100,14 +80,14 @@ JFactory::getDocument()->addScriptDeclaration(
 			}
 		});
 		/*Set max limit*/
-		
+
 		set_max_limit_for_element('.redevent-edit-form.style-1 .title-event .controls input',70,'.redevent-edit-form.style-1 .title-event .controls ','input');
 		jQuery('select').select2();
 		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-hos .controls input',70,'.redevent-edit-form.style-1 .customfield-hos .controls','input');
 		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-ved .controls input',70,'.redevent-edit-form.style-1 .customfield-ved .controls','input');
 		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea',250,'.redevent-edit-form.style-1 .customfield-short-intro .controls','textarea');
 		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-note .controls textarea',250,'.redevent-edit-form.style-1 .customfield-note .controls','textarea');
-		
+
 
 
 
