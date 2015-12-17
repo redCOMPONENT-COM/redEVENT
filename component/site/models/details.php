@@ -161,6 +161,16 @@ class RedeventModelDetails extends RModel
 
 			$query->select('u.name AS creator_name, u.email AS creator_email');
 
+			foreach (RedeventHelper::getEventCustomFields() as $custom)
+			{
+				$query->select('a.custom' . $custom->id);
+			}
+
+			foreach (RedeventHelper::getSessionCustomFields() as $custom)
+			{
+				$query->select('x.custom' . $custom->id);
+			}
+
 			$query->from('#__redevent_events AS a');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
 			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
