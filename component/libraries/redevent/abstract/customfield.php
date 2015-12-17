@@ -83,6 +83,11 @@ abstract class RedeventAbstractCustomfield extends JObject
 	public $default_value;
 
 	/**
+	 * @var int
+	 */
+	public $ordering;
+
+	/**
 	 * Returns element form html code
 	 *
 	 * @param   array  $attributes  attributes
