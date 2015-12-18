@@ -558,7 +558,7 @@ class RedeventHelperOutput
 	 */
 	public static function formatEventDateTime($event, $showend = null)
 	{
-		return RedeventHelperDate::getISODate($event, $showend);
+		return RedeventHelperDate::formatEventDateTime($event, $showend);
 	}
 
 	/**
