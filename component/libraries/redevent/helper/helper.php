@@ -1227,4 +1227,93 @@ class RedeventHelper
 
 		return $res;
 	}
+
+	/**
+	 * returns all custom fields for event object
+	 *
+	 * @param   int  $published  filter by published state
+	 *
+	 * @return array
+	 */
+	public static function getEventCustomFields($published = 1)
+	{
+		static $fields;
+
+		if (empty($fields))
+		{
+			$fields = self::getCustomFields('redevent.event', $published);
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * returns all custom fields for session object
+	 *
+	 * @param   int  $published  filter by published state
+	 *
+	 * @return array
+	 */
+	public static function getSessionCustomFields($published = 1)
+	{
+		static $fields;
+
+		if (empty($fields))
+		{
+			$fields = self::getCustomFields('redevent.xref', $published);
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Get custom fields
+	 *
+	 * @param   string  $object_key  filter fields by type of object
+	 * @param   int     $published   filter by published state
+	 *
+	 * @return RedeventAbstractCustomfield
+	 */
+	protected static function getCustomFields($object_key = null, $published = 1)
+	{
+		if ($object_key && !in_array($object_key, array('redevent.event', 'redevent.xref')))
+		{
+			throw new RuntimeException('Unknown Custom field object key');
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('f.*');
+		$query->from('#__redevent_fields AS f');
+
+		$query->where('f.published = ' . (int) $published);
+
+		if ($object_key)
+		{
+			$query->where('f.object_key = ' . $db->Quote($object_key));
+		}
+
+		$query->order('f.ordering ASC');
+
+		$db->setQuery($query);
+
+		if (!$rows = $db->loadObjectList())
+		{
+			return array();
+		}
+
+		$fields = array_map(
+			function($row)
+			{
+				$field = RedeventFactoryCustomfield::getField($row->type);
+				$field->bind($row);
+
+				return $field;
+			},
+			$rows
+		);
+
+		return $fields;
+	}
 }

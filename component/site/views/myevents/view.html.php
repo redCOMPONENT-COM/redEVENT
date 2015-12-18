@@ -288,20 +288,34 @@ class RedeventViewMyevents extends RedeventViewFront
 	/**
 	 * Creates the venue edit button
 	 *
-	 * @param   int  $id  venue id
+	 * @param   int     $id      venue id
+	 * @param   string  $return  return url
 	 *
 	 * @return string html
 	 */
-	public static function venueeditbutton($id)
+	public static function venueeditbutton($id, $return = 'auto')
 	{
 		RHtml::_('rbootstrap.tooltip');
+
+		if ($return == 'auto')
+		{
+			$returnAppend = '&return=' . base64_encode(RedeventHelperRoute::getMyeventsRoute());
+		}
+		elseif ($return)
+		{
+			$returnAppend = '&return=' . base64_encode($return);
+		}
+		else
+		{
+			$returnAppend = '';
+		}
 
 		$image = RHelperAsset::load('edit_venue.png', null, array('alt' => JText::_('COM_REDEVENT_EDIT_VENUE')));
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_VENUE_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_VENUE');
 
-		$link = RedeventHelperRoute::getEditVenueRoute($id . '&return=' . base64_encode(RedeventHelperRoute::getMyeventsRoute()));
+		$link = RedeventHelperRoute::getEditVenueRoute($id) . $returnAppend;
 		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;

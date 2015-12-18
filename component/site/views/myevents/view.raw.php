@@ -128,7 +128,7 @@ class RedeventViewMyevents extends RViewSite
 
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_select_event')));
 
-		if ($ev = $this->get('EventsOptions'))
+		if ($ev = $model->getEventsOptions())
 		{
 			$options = array_merge($options, $ev);
 		}
