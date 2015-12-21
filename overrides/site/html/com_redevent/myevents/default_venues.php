@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       <td headers="el_city" align="left" valign="top"><?php echo $row->city ? $row->city : '-'; ?></td>
       <td headers="el_published" align="center" valign="top" class="publishevents_col">
       	<?php echo $row->published ? '<div class="publishevents">'.JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published' )).'</div>'
-      	                           : '<div class="publishevents">'.JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_Unpublished' )).'</div>' ; ?>
+      	                           : '<div class="unpublishevents">'.JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_Unpublished' )).'</div>' ; ?>
       </td>
       <td headers="el_edit" align="left" valign="top" class="el_edit_events"><?php echo $this->venueeditbutton($row->id); ?></td>
     </tr>
