@@ -92,9 +92,9 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			$class = ($class ? ' ' : '') . 'validate-futuredate';
 			$form->setFieldAttribute('dates', 'class', $class);
 
-			$class = $form->getFieldAttribute('enddates', 'class');
-			$class = ($class ? ' ' : '') . 'validate-futuredate';
-			$form->setFieldAttribute('enddates', 'class', $class);
+			$class = $form->getFieldAttribute('times', 'class');
+			$class = ($class ? ' ' : '') . 'validate-futuretime';
+			$form->setFieldAttribute('times', 'class', $class);
 
 			$class = $form->getFieldAttribute('registrationend', 'class');
 			$class = ($class ? ' ' : '') . 'validate-futuredate';
@@ -198,9 +198,9 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			{
 				$field->value = $data->$prop;
 			}
-			elseif (isset($data->event->$prop))
+			elseif (isset($data->event[$prop]))
 			{
-				$field->value = $data->event->$prop;
+				$field->value = $data->event[$prop];
 			}
 
 			$fields[$c->id] = $field;
@@ -329,7 +329,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	 */
 	private function saveEvent(&$data)
 	{
-		$model = RModel::getFrontInstance('editevent', array(), 'com_redevent');
+		$model = RModel::getFrontInstance('editevent', array('ignore_request' => true), 'com_redevent');
 
 		if (!$model->save($data['event']))
 		{

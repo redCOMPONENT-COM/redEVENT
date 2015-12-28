@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
 
+RHelperAsset::load('editsession.js');
+
 JFactory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
 	{
@@ -19,26 +21,6 @@ JFactory::getDocument()->addScriptDeclaration("
 		}
 	}
 ");
-
-if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
-{
-	JFactory::getDocument()->addScriptDeclaration(<<<JS
-		jQuery(document).ready(function($) {
-			document.formvalidator.setHandler('futuredate', function(value) {
-				if (!value) {
-					return true;
-				}
-
-				var today = new Date();
-				today = new Date(today.toDateString());
-				var val = new Date(value);
-
-				return val >= today;
-			});
-		});
-JS
-	);
-}
 
 $viewName = 'editsession';
 $option   = 'com_redevent';

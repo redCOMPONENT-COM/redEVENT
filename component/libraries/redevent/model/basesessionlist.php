@@ -734,27 +734,7 @@ class RedeventModelBasesessionlist extends RModel
 	 */
 	public function getCustomFields()
 	{
-		if (empty($this->customfields))
-		{
-			$db      = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->select('f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips');
-			$query->from('#__redevent_fields AS f');
-			$query->where('f.published = 1');
-			$query->where('f.object_key = ' . $db->Quote('redevent.event'));
-			$query->order('f.ordering ASC');
-
-			if ($this->getState('filter.language'))
-			{
-				$query->where('(f.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR f.language IS NULL)');
-			}
-
-			$db->setQuery($query);
-			$this->customfields = $db->loadObjectList();
-		}
-
-		return $this->customfields;
+		return RedeventHelper::getEventCustomFields();
 	}
 
 	/**
@@ -764,27 +744,7 @@ class RedeventModelBasesessionlist extends RModel
 	 */
 	public function getXrefCustomFields()
 	{
-		if (empty($this->xrefcustomfields))
-		{
-			$db      = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->select('f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips');
-			$query->from('#__redevent_fields AS f');
-			$query->where('f.published = 1');
-			$query->where('f.object_key = ' . $db->Quote('redevent.xref'));
-			$query->order('f.ordering ASC');
-
-			if ($this->getState('filter.language'))
-			{
-				$query->where('(f.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR f.language IS NULL)');
-			}
-
-			$db->setQuery($query);
-			$this->xrefcustomfields = $db->loadObjectList();
-		}
-
-		return $this->xrefcustomfields;
+		return RedeventHelper::getSessionCustomFields();
 	}
 
 	/**

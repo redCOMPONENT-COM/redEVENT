@@ -609,6 +609,13 @@
 			<option value="advanced">COM_REDEVENT_SETTINGS_FRONTEND_EDIT_MODE_ADVANCED</option>
 		</field>
 
+		<field name="redirect_after_front_edit" type="list" default="myevents"
+			   label="COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT"
+			   description="COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT_TIP">
+			<option value="myevents">COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT_MYEVENTS</option>
+			<option value="viewitem">COM_REDEVENT_SETTINGS_FRONTEND_REDIRECT_AFTER_FRONT_EDIT_VIEWITEM</option>
+		</field>
+
 		<field name="frontendsubmit_allow_past_dates" type="radio" default="0"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ALLOW_PAST_DATES"
@@ -790,6 +797,10 @@
 			  description="COM_REDEVENT_SETTINGS_SEO">
 		<field name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID"
 			   description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
+		<field name="default_details_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_DETAILS_ITEMID"
+			   description="COM_REDEVENT_SETTINGS_DEFAULT_DETAILS_ITEMID_DESC"/>
+		<field name="default_venue_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_VENUE_ITEMID"
+			   description="COM_REDEVENT_SETTINGS_DEFAULT_VENUE_ITEMID_DESC"/>
 		<field type="spacer" label="COM_REDEVENT_SETTINGS_SEO_SEPARATOR_sh404sef"/>
 		<field name="sh404sef_always_include_menu_title" type="radio" default="0"
 			   class="btn-group"
