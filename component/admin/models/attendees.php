@@ -63,7 +63,8 @@ class RedeventModelAttendees extends RModelList
 		{
 			$config['filter_fields'] = array(
 				'r.id', 'x.eventid', 'x.xref',
-				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.uregdate'
+				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.uregdate',
+				'u.username'
 			);
 		}
 

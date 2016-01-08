@@ -48,8 +48,8 @@ class RedeventModelRegistrations extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'r.id', 'r.xref', 'r.eventid', 'r.uregdate',
-				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin'
+				'r.id', 'r.xref', 'r.eventid', 'r.uregdate', 'u.username',
+				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin', 'r.waitinglist', 'e.title'
 			);
 		}
 

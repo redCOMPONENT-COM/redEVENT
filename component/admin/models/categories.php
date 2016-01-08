@@ -52,7 +52,7 @@ class RedeventModelCategories extends RModelList
 				'ordering', 'c.ordering',
 				'published', 'c.published',
 				'id', 'c.id',
-				'access', 'c.access'
+				'access', 'c.access', 'c.language'
 			);
 		}
 
@@ -123,6 +123,7 @@ class RedeventModelCategories extends RModelList
 
 		$order = $this->getState('list.ordering');
 		$dir = $this->getState('list.direction');
+
 		$query->order($db->qn($order) . ' ' . $dir);
 
 		return $query;
