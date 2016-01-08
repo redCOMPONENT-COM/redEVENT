@@ -112,7 +112,7 @@ echo RedeventLayoutHelper::render(
 			<th width="10"><?php echo JText::_('COM_REDEVENT_PRICE'); ?></th>
 			<th class="col-pricegroup" width="auto"><?php echo JText::_('COM_REDEVENT_PRICEGROUP'); ?></th>
 			<th width="auto">
-				<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_PAYMENT', 'p.paid', $listDirn, $listOrder); ?>
+				<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_PAYMENT', 'paid', $listDirn, $listOrder); ?>
 			</th>
 		</tr>
 		</thead>
