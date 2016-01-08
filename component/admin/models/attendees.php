@@ -141,7 +141,7 @@ class RedeventModelAttendees extends RModelList
 		$query->select('pg.name as pricegroup');
 		$query->select('fo.activatepayment');
 		$query->select('u.username, u.name, u.email');
-		$query->select('CASE WHEN pr.id IS NULL THEN 0 ELSE 1 END AS paid');
+		$query->select('CASE WHEN pr.id IS NULL THEN 1 ELSE 0 END AS paid');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id');
 		$query->join('INNER', '#__redevent_events AS a ON x.eventid = a.id');
@@ -150,7 +150,7 @@ class RedeventModelAttendees extends RModelList
 		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
 		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
-		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 1');
+		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 0');
 		$query->group('r.id');
 
 		// Add associated form fields

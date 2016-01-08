@@ -117,7 +117,7 @@ class RedeventModelRegistrations extends RModelList
 		$query->select('e.id AS eventid, e.course_code, e.title');
 		$query->select('v.venue');
 		$query->select('auth.username AS creator');
-		$query->select('CASE WHEN pr.id IS NULL THEN 0 ELSE 1 END AS paid');
+		$query->select('CASE WHEN pr.id IS NULL THEN 1 ELSE 0 END AS paid');
 		$query->from('#__redevent_register AS r');
 		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
@@ -128,7 +128,7 @@ class RedeventModelRegistrations extends RModelList
 		$query->join('LEFT', '#__users AS auth ON auth.id = e.created_by');
 		$query->join('LEFT', '#__rwf_submitters AS s ON r.sid = s.id');
 		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
-		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 1');
+		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 0');
 
 		$this->buildWhere($query);
 
