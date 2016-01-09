@@ -53,17 +53,17 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 		// Generate Categorydescription
 		if (empty ($category->description))
 		{
-			$catdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION');
+			$description = JText::_('COM_REDEVENT_NO_DESCRIPTION');
 		}
 		else
 		{
-			$catdescription = JHTML::_('content.prepare', $category->description);
+			$description = JHTML::_('content.prepare', $category->description);
 		}
 
 		$this->assignRef('category', $category);
 		$this->assignRef('print_link', $print_link);
 		$this->assignRef('dellink', $dellink);
-		$this->assignRef('catdescription', $catdescription);
+		$this->assignRef('description', $description);
 		$this->assignRef('thumb_link', $thumb_link);
 		$this->assignRef('list_link', $list_link);
 

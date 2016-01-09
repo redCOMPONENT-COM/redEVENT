@@ -55,6 +55,13 @@ abstract class RedeventAbstractCustomfield extends JObject
 	 */
 	public $tips;
 
+	/**
+	 * show in lists
+	 *
+	 * @var int
+	 */
+	public $in_lists;
+
 	public $required;
 
 	/**

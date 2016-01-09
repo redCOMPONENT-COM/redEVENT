@@ -118,7 +118,7 @@ class RedeventModelImporteventlist extends RModel
 		$nb_venues = $this->_db->getAffectedRows();
 
 		// Import categories
-		$query = ' INSERT IGNORE INTO #__redevent_categories (id, name, alias, published, catdescription, '
+		$query = ' INSERT IGNORE INTO #__redevent_categories (id, name, alias, published, description, '
 			. ' image, meta_description, meta_keywords) '
 			. ' SELECT id, name, alias, published, catdescription, '
 			. ' concat("images/redevent/categories/", image) AS image, meta_description, meta_keywords FROM #__eventlist_categories ';
@@ -213,7 +213,7 @@ class RedeventModelImporteventlist extends RModel
 
 		// Import categories
 		$query = ' INSERT IGNORE INTO #__redevent_categories (
-                 id, parent_id, name, alias, published, catdescription, image, ordering,
+                 id, parent_id, name, alias, published, description, image, ordering,
                  meta_description, meta_keywords) '
 			. ' SELECT id, parent_id, name, alias, published, catdescription, concat("images/redevent/categories/", image) AS image,
                  ordering, meta_description, meta_keywords FROM #__eventlist_categories ';
