@@ -111,13 +111,15 @@ class RedeventControllerEditevent extends RControllerForm
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onEventEdited', array($model->getState($this->context . '.id'), $isNew));
 
+		$eventId = $model->getState($this->context . '.id');
+
 		if ($isNew)
 		{
 			$useracl = RedeventUserAcl::getInstance();
 
 			if ($useracl->canAddSession())
 			{
-				$this->setRedirect(RedeventHelperRoute::getAddSessionTaskRoute($model->getState($this->context . '.id')));
+				$this->setRedirect(RedeventHelperRoute::getAddSessionTaskRoute($eventId));
 				$this->setMessage(JText::_('COM_REDEVENT_EVENT_SAVED_PLEASE_CREATE_SESSION'), 'success');
 			}
 		}

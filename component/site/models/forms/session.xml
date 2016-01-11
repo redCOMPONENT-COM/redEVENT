@@ -81,7 +81,7 @@
 				format="%Y-%m-%d"
 				label="COM_REDEVENT_ENDDATE"
 				description="COM_REDEVENT_XREF_END_DATE_TIP"
-				class="inputbox"/>
+				class="inputbox validate-enddate"/>
 
 		<field
 				name="endtimes"
@@ -91,7 +91,7 @@
 				description="COM_REDEVENT_XREF_END_TIME_TIP"
 				size="8"
 				maxlength="8"
-				class="inputbox"/>
+				class="inputbox validate-endtime"/>
 
 		<field
 				name="registrationend"
@@ -424,7 +424,7 @@
 					required="true"
 					multiple="true"
 					acl_check="true"
-					published="true"
+					published="1"
 					size="10"
 					class="inputbox" />
 

@@ -336,7 +336,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 			'tip' => $tip
 		);
 
-		$output = JHtml::link('index.php?option=com_redevent&controller=frontadmin&task=getinfoform&tmpl=component&modal=1&xref=' . $row->xref, $image, $attribs);
+		$output = JHtml::link('index.php?option=com_redeventb2b&task=frontadmin.getinfoform&tmpl=component&modal=1&xref=' . $row->xref, $image, $attribs);
 
 		return $output;
 	}
@@ -525,7 +525,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
 		AkeebaStrapper::bootstrap();
 
-		$this->action = 'index.php?option=com_redevent&controller=frontadmin';
+		$this->action = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoform';
 		$this->xref = JFactory::getApplication()->input->getInt('xref', 0);
 
 		parent::display($tpl);

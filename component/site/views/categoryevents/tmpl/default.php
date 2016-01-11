@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php endif; ?>
 
 <div class="catdescription">
-	<?php echo $this->catdescription; ?>
+	<?php echo $this->description; ?>
 </div>
 </div>
 

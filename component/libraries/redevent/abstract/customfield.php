@@ -55,6 +55,13 @@ abstract class RedeventAbstractCustomfield extends JObject
 	 */
 	public $tips;
 
+	/**
+	 * show in lists
+	 *
+	 * @var int
+	 */
+	public $in_lists;
+
 	public $required;
 
 	/**
@@ -81,6 +88,11 @@ abstract class RedeventAbstractCustomfield extends JObject
 	public $value = null;
 
 	public $default_value;
+
+	/**
+	 * @var int
+	 */
+	public $ordering;
 
 	/**
 	 * Returns element form html code

@@ -1064,21 +1064,20 @@ class RedeventTags
 	 */
 	private function getFieldAnswer($id)
 	{
-		$answers = $this->getAnswers();
+		$submission = $this->getAnswers();
 
-		if (!$answers)
+		if (!$submission)
 		{
 			return '';
 		}
 
-		// Only take first answer...
-		$fields = reset($answers);
+		$fields = $submission->getFirstSubmission()->getFields();
 
 		foreach ($fields as $f)
 		{
 			if ($f->field_id == $id)
 			{
-				return $f->answer;
+				return $f->value;
 			}
 		}
 
@@ -1094,21 +1093,20 @@ class RedeventTags
 	 */
 	private function getFormFieldAnswer($id)
 	{
-		$answers = $this->getAnswers();
+		$submission = $this->getAnswers();
 
-		if (!$answers)
+		if (!$submission)
 		{
 			return '';
 		}
 
-		// Only take first answer...
-		$fields = reset($answers);
+		$fields = $submission->getFirstSubmission()->getFields();
 
 		foreach ($fields as $f)
 		{
 			if ($f->id == $id)
 			{
-				return $f->answer;
+				return $f->value;
 			}
 		}
 

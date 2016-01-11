@@ -149,7 +149,7 @@ class RedeventModelDetails extends RModel
 			$query->select('x.id AS xref, x.title as session_title');
 			$query->select('x.*');
 
-			$query->select('v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
+			$query->select('v.venue, v.email AS venue_email, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
 
 			$query->select('c.name AS catname, c.published, c.access');
 
@@ -160,6 +160,16 @@ class RedeventModelDetails extends RModel
 			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as venueslug');
 
 			$query->select('u.name AS creator_name, u.email AS creator_email');
+
+			foreach (RedeventHelper::getEventCustomFields() as $custom)
+			{
+				$query->select('a.custom' . $custom->id);
+			}
+
+			foreach (RedeventHelper::getSessionCustomFields() as $custom)
+			{
+				$query->select('x.custom' . $custom->id);
+			}
 
 			$query->from('#__redevent_events AS a');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
@@ -199,7 +209,7 @@ class RedeventModelDetails extends RModel
 		}
 		elseif ($this->id)
 		{
-			$query->where('x.eventid = ' . $this->id);
+			$query->where('a.id = ' . $this->id);
 		}
 
 		return $query;

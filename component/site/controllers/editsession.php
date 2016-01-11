@@ -71,7 +71,7 @@ class RedeventControllerEditsession extends RControllerForm
 	/**
 	 * Method to cancel an edit.
 	 *
-	 * @param   string $key The name of the primary key of the URL variable.
+	 * @param   string  $key  The name of the primary key of the URL variable.
 	 *
 	 * @return  boolean  True if access level checks pass, false otherwise.
 	 */
@@ -134,6 +134,19 @@ class RedeventControllerEditsession extends RControllerForm
 		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onSessionEdited', array($model->getState($this->context . '.id'), $isNew));
+
+		$config = RedeventHelper::config();
+
+		if (!$this->input->get('return') && $config->get('redirect_after_front_edit') == "viewitem")
+		{
+			$sessionId = $model->getState($this->context . '.id');
+			$session = RedeventEntitySession::load($sessionId);
+
+			if ($session->published)
+			{
+				$this->setRedirect(RedeventHelperRoute::getDetailsRoute($session->eventid, $session->id));
+			}
+		}
 
 		parent::postSaveHook($model, $validData);
 	}
