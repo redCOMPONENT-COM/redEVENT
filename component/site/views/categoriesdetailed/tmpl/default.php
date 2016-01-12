@@ -70,7 +70,7 @@ foreach($this->categories as $category) :
 	</div>
 	<?php endif; ?>
 
-	<div class="catdescription"><?php echo $category->catdescription; ?>
+	<div class="catdescription"><?php echo $category->description; ?>
 		<p>
 			<?php
 				echo JHTML::_('link', JRoute::_($category->linktarget), $category->linktext);

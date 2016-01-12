@@ -53,7 +53,7 @@ class RedeventModelVenues extends RModelList
 				'published', 'obj.published',
 				'id', 'obj.id',
 				'access', 'obj.access',
-				'venue_code', 'obj.venue_code',
+				'venue_code', 'obj.venue_code', 'obj.company', 'obj.city', 'obj.language'
 			);
 		}
 
