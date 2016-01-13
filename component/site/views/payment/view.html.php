@@ -139,7 +139,9 @@ class RedeventViewPayment extends RViewSite
 	 */
 	protected function addTracking()
 	{
-		if (RdfHelperAnalytics::isEnabled())
+		$config = RedeventHelper::config();
+
+		if ($config->get('ga_tracking_on_payment', 0) && RdfHelperAnalytics::isEnabled())
 		{
 			$submit_key = JFactory::getApplication()->input->get('submit_key');
 			$cartReference = RdfCore::getInstance()->getSubmitkeyCartReference($submit_key);
