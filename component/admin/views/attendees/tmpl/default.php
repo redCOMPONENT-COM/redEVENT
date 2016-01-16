@@ -63,7 +63,7 @@ RHelperAsset::load('backend/attendeesmove.js');
 	<?php echo JHtml::link(
 		'index.php?option=com_redevent&task=session.edit&id=' . $this->session->xref,
 		(RedeventHelperDate::isValidDate($this->session->dates) ? $this->session->dates : JText::_('COM_REDEVENT_OPEN_DATE'))
-		); ?> <?php echo JHTML::link(JURI::root() . RedeventHelperRoute::getDetailsRoute($this->session->eventid, $this->session->id),
+		); ?> <?php echo JHTML::link(JURI::root() . RedeventHelperRoute::getDetailsRoute($this->session->eventid, $this->session->xref),
 		JHTML::image('media/com_redevent/images/linkfront.png',
 			JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 	<br />

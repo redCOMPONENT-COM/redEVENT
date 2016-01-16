@@ -145,7 +145,15 @@ class RedeventViewSignup extends RViewSite
 
 				$review_txt = trim(strip_tags($course->review_message));
 
-				$page = $tags->replaceTags($course->submission_type_webform, array('hasreview' => (!empty($review_txt))));
+				$options = array('hasreview' => (!empty($review_txt)));
+
+				// Is pricegroup forced ?
+				if ($pg = $mainframe->input->getInt('pg'))
+				{
+					$options['pricegroupId'] = $pg;
+				}
+
+				$page = $tags->replaceTags($course->submission_type_webform, $options);
 				$print_link = JRoute::_(
 					'index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='
 					. $this->tmp_xref . '&id=' . $this->tmp_id . '&pop=1&tmpl=component'
