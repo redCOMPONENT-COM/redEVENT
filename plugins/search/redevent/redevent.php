@@ -330,7 +330,8 @@ class PlgSearchRedevent extends JPlugin
 				->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug')
 				->select('NULL AS created')
 				->select(' "2" AS browsernav')
-				->from('#__redevent_venues AS v');
+				->from('#__redevent_venues AS v')
+				->where('v.published = 1');
 
 			$this->db->setQuery($query, 0, $limit);
 			$results = $this->db->loadObjectList();
