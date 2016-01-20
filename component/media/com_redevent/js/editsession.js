@@ -30,7 +30,7 @@ window.addEvent('domready', function(){
 		var now = new Date();
 
 		var startDate = document.id('jform_dates').get('value');
-		var val = new Date(startDate + ' ' + value);
+		var val = new Date(startDate + 'T' + value);
 
 		return val >= now;
 	});
@@ -90,8 +90,8 @@ window.addEvent('domready', function(){
 			endTime = '00:00:00';
 		}
 
-		var fullStart = new Date(startDate + ' ' + startTime);
-		var fullEnd = new Date(endDate + ' ' + endTime);
+		var fullStart = new Date(startDate + 'T' + startTime);
+		var fullEnd = new Date(endDate + 'T' + endTime);
 
 		if (fullStart > fullEnd)
 		{
