@@ -140,7 +140,7 @@ class RedeventHelper
 					->select('x.id, x.eventid')
 					->from('#__redevent_event_venue_xref AS x')
 					->where($where_date)
-					->where('x.published = 1');
+					->where('x.published > -1');
 
 				$db->setQuery($query);
 				$xrefs = $db->loadObjectList();
