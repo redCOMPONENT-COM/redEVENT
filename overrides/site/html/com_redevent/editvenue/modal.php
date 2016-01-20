@@ -33,6 +33,12 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 				jQuery(this).find("label").off('click');
 			}
 		});
+		//jQuery("select#jform_country option[value=\"DK\"]").prop('selected', 'selected');
+		jQuery("select#jform_country").find("option:contains('DK')").each(function(){
+	     if( jQuery(this).text() == 'DK - Denmark' ) {
+	        jQuery(this).attr("selected","selected");
+	     }
+ });
 		//jQuery("select").select2();
 	});
 </script>
@@ -46,13 +52,13 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 	
 	
 	<fieldset class="form-horizontal">
-		<?php foreach ($this->form->getFieldset('venue') as $field) : 
+		<?php foreach ($this->form->getFieldset('venue') as $field) : 			
 			if($field->name!='jform[alias]' && $field->name!='jform[venue_code]' && $field->name!='jform[published]'
-				&& $field->name!='jform[language]' && $field->name!='jform[access]' 
+				&& $field->name!='jform[language]' && $field->name!='jform[access]' && $field->name!='jform[status]'
 				):
 			?>
 			
-			<div class="control-group  field">
+			<div class="control-group  field <?php echo $field->name ?>">
 				<div class="control-label">
 					<?php echo $field->label; ?>
 					
@@ -68,8 +74,12 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 	</fieldset>
 
 	<fieldset class="form-horizontal">
-		<?php foreach ($this->form->getFieldset('address') as $field) : ?>
-			<div class="control-group">
+		<?php foreach ($this->form->getFieldset('address') as $field) : 
+			if($field->name!='jform[state]'
+				):
+		?>
+			<div style="display:none;" class="printdata"><?php print_r($field->name);?></div>
+			<div class="control-group <?php echo $field->name ?>">
 				<div class="control-label">
 					<?php echo $field->label; ?>
 				</div>
@@ -77,7 +87,7 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 					<?php echo $field->input; ?>
 				</div>
 			</div>
-		<?php endforeach; ?>
+		<?php endif; endforeach; ?>
 		<div class="control-group">
 			<div class="control-label"></div>
 			<div class="controls">
@@ -86,12 +96,6 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 		</div>
 	</fieldset>
 
-	<!-- <button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('editvenue.save')">
-		<span class="icon-ok"></span>&#160;<?php echo JText::_('JSAVE') ?>
-	</button>
-	<button type="button" class="btn" onclick="Joomla.submitbutton('editvenue.cancel')">
-		<span class="icon-cancel"></span>&#160;<?php echo JText::_('JCANCEL') ?>
-	</button> -->
 	<div class="btn-toolbar">
 		<div class="btn-group">
 			<button type="button" class="btn btn-primary btn-save-event" onclick="Joomla.submitbutton('editvenue.save')">
