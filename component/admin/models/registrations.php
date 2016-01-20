@@ -49,7 +49,10 @@ class RedeventModelRegistrations extends RModelList
 		{
 			$config['filter_fields'] = array(
 				'r.id', 'r.xref', 'r.eventid', 'r.uregdate', 'u.username',
-				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin', 'r.waitinglist', 'e.title', 'paid'
+				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin', 'r.waitinglist', 'e.title', 'paid',
+				'r.origin',
+				// Filters
+				'venue', 'origin', 'xref', 'confirmed', 'waiting', 'cancelled'
 			);
 		}
 
@@ -72,6 +75,8 @@ class RedeventModelRegistrations extends RModelList
 		$id	.= ':' . $this->getState('filter.confirmed');
 		$id .= ':' . $this->getState('filter.waiting');
 		$id	.= ':' . $this->getState('filter.cancelled');
+		$id	.= ':' . $this->getState('filter.origin');
+		$id	.= ':' . $this->getState('filter.venue');
 
 		return parent::getStoreId($id);
 	}
@@ -194,6 +199,16 @@ class RedeventModelRegistrations extends RModelList
 				. ' OR u.username LIKE "%' . $this->getState('filter.search') . '%"'
 				. ' OR u.email LIKE "%' . $this->getState('filter.search') . '%"'
 			. ')');
+		}
+
+		if ($this->getState('filter.origin'))
+		{
+			$query->where('r.origin LIKE "%' . $this->getState('filter.origin') . '%"');
+		}
+
+		if (is_numeric($this->getState('filter.venue')))
+		{
+			$query->where('x.venueid = ' . $this->getState('filter.venue'));
 		}
 
 		if ($this->getState('filter.session'))

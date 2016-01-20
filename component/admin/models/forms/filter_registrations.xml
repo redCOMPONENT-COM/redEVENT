@@ -49,6 +49,24 @@
 			<option value="0">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CANCELLED_OPTION_ACTIVE</option>
 			<option value="1">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CANCELLED_OPTION_CANCELLED</option>
 		</field>
+		<field
+			name="origin"
+			type="redevent.origin"
+			label="COM_REDEVENT_FORMS_FILTER_REGISTRATION_ORIGIN"
+			onchange="this.form.submit();"
+			default=""
+		>
+			<option value="">COM_REDEVENT_FORMS_FILTER_REGISTRATION_ORIGIN</option>
+		</field>
+		<field
+				name="venue"
+				type="revenuelist"
+				label="COM_REDEVENT_FORMS_FILTER_REGISTRATION_VENUE"
+				onchange="this.form.submit();"
+				default=""
+		>
+			<option value="">COM_REDEVENT_VENUE</option>
+		</field>
 	</fields>
 	<fields name="list">
 		<field
