@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 $data = $displayData;
 $properties = $data->getInputProperties();
 ?>
-<?php if (!empty($properties['readonly'])): ?>
+<?php if ($data->readonly || !empty($properties['readonly'])): ?>
 	<?php
 		$option = $data->getSelectedOption();
 		$properties = $data->getInputProperties();
