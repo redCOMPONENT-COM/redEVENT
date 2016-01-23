@@ -21,6 +21,10 @@ document.addEvent('domready', function(){
 				el.removeEvents('click');
 			},
 			onSuccess : function(response) {
+				fbq('track', 'Lead', {
+					content_name: ' + 'jQuery(".articlecontent h1").text()' + ', 
+				});
+				
 				el.getParent('form').unspin();
 				var resp = new Element('div').set('html', response);
 				SqueezeBox.initialize();
