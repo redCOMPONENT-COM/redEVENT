@@ -54,7 +54,7 @@ class RedeventModelSessions extends RModelList
 				'language', 'obj.language',
 				'dates', 'obj.dates',
 				'session_code', 'obj.session_code',
-				'obj.featured', 'obj.registrationend', 'v.venue',
+				'obj.featured', 'obj.registrationend', 'v.venue', 'obj.note',
 			);
 		}
 

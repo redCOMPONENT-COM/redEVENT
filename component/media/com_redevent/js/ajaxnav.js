@@ -18,6 +18,7 @@ var red_ajaxnav = (function($) {
 		}).done(function(data) {
 			var newdiv = $('<div/>').html(data);
 			form.replaceWith(newdiv);
+			jQuery('.hasTooltip').tooltip({"html": true,"container": "body"});
 		});
 	};
 

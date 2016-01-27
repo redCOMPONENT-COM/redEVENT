@@ -151,7 +151,7 @@
 				label="COM_REDEVENT_Details"
 				description="COM_REDEVENT_XREF_DETAILS_INFO"
 				class="inputbox"
-				filter="safehtml"
+				filter="JComponentHelper::filterText"
 				buttons="true"
 				hide="readmore,pagebreak"
 				/>
@@ -434,7 +434,7 @@
 					label="COM_REDEVENT_EVENT_DESCRIPTION"
 					description="COM_REDEVENT_EVENT_DESCRIPTION"
 					class="inputbox"
-					filter="safehtml"
+					filter="JComponentHelper::filterText"
 					buttons="true"
 					hide="readmore,pagebreak"/>
 
@@ -444,7 +444,7 @@
 					label="COM_REDEVENT_EVENT_SUMMARY"
 					description="COM_REDEVENT_EVENT_SUMMARY_DESC"
 					class="inputbox"
-					filter="safehtml"
+					filter="JComponentHelper::filterText"
 					buttons="false"/>
 
 			<field

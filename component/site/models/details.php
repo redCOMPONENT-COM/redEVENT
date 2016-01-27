@@ -151,7 +151,7 @@ class RedeventModelDetails extends RModel
 
 			$query->select('v.venue, v.email AS venue_email, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
 
-			$query->select('c.name AS catname, c.published, c.access');
+			$query->select('c.name AS catname, c.access');
 
 			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 			$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');

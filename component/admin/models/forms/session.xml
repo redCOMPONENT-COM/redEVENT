@@ -144,7 +144,7 @@
             label="COM_REDEVENT_Details"
             description="COM_REDEVENT_XREF_DETAILS_INFO"
             class="inputbox"
-            filter="safehtml"
+            filter="JComponentHelper::filterText"
             buttons="true"
             hide="readmore,pagebreak"
             />

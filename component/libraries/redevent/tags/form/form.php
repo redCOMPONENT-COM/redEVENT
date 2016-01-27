@@ -37,6 +37,11 @@ class RedeventTagsFormForm
 	protected $db;
 
 	/**
+	 * @var int
+	 */
+	protected $pricegroupId = 0;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   RModel  $dataModel  data model for session details
@@ -47,6 +52,20 @@ class RedeventTagsFormForm
 		$this->model = $dataModel;
 		$this->input = JFactory::getApplication()->input;
 		$this->db = JFactory::getDbo();
+	}
+
+	/**
+	 * Set pricegroup id
+	 *
+	 * @param   int  $id  pricegroup id
+	 *
+	 * @return RedeventTagsFormForm
+	 */
+	public function setPricegroupId($id)
+	{
+		$this->pricegroupId = (int) $id;
+
+		return $this;
 	}
 
 	/**
@@ -257,36 +276,38 @@ class RedeventTagsFormForm
 		$isReview = $this->input->get('task') == 'review';
 		$submit_key = $this->input->get('submit_key');
 
-		$selectedPricegroup = false;
+		// If a review, we already have sessionpricegroup_id set in user session data
+		$sessionPricegroupIds = $isReview ? JFactory::getApplication()->getUserState('spgids' . $submit_key) : null;
 
-		// If a review, we already have pricegroup_ida set in user session data
-		$pricegroupIds = $isReview ? JFactory::getApplication()->getUserState('spgids' . $submit_key) : null;
+		if (!empty($sessionPricegroupIds))
+		{
+			$sessionPricegroupId = (int) $sessionPricegroupIds[0];
 
-		if (!empty($pricegroupIds))
-		{
-			$pricegroupId = intval($pricegroupIds[0]);
-		}
-		else
-		{
-			$pricegroupId = $this->input->getInt('pg', 0);
-		}
-
-		if (count($sessionPriceGroups) == 1)
-		{
-			$selectedPricegroup = current($sessionPriceGroups);
-		}
-		elseif ($pricegroupId)
-		{
-			foreach ($sessionPriceGroups as $price)
+			foreach ($sessionPriceGroups as $sessionPriceGroup)
 			{
-				if ($price->id == $pricegroupId)
+				if ($sessionPriceGroup->id == $sessionPricegroupId)
 				{
-					$selectedPricegroup = $price;
-					break;
+					return $sessionPriceGroup;
 				}
 			}
 		}
 
-		return $selectedPricegroup;
+		// Otherwise check if set
+		if (count($sessionPriceGroups) == 1)
+		{
+			$selectedPricegroup = current($sessionPriceGroups);
+		}
+		elseif ($this->pricegroupId)
+		{
+			foreach ($sessionPriceGroups as $sessionPriceGroup)
+			{
+				if ($sessionPriceGroup->pricegroup_id == $this->pricegroupId)
+				{
+					return $sessionPriceGroup;
+				}
+			}
+		}
+
+		return false;
 	}
 }
