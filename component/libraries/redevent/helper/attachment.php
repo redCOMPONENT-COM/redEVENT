@@ -184,18 +184,19 @@ class RedeventHelperAttachment extends JObject
 		// First list files in the folder
 		$files = JFolder::files($path, null, false, false, array('index.html'));
 
-		// Then get info for files from db
-		$fnames = array();
-
-		foreach ($files as $f)
-		{
-			$fnames[] = $db->quote($f);
-		}
-
-		if (!count($fnames))
+		if (!count($files))
 		{
 			return array();
 		}
+
+		// Then get info for files from db
+		$fnames = array_map(
+			function($item) use ($db)
+			{
+				return $db->quote($item);
+			},
+			$files
+		);
 
 		$query = $db->getQuery(true);
 
@@ -204,7 +205,7 @@ class RedeventHelperAttachment extends JObject
 		$query->where('file IN (' . implode(',', $fnames) . ')');
 		$query->where('object = ' . $db->Quote($object));
 
-		if (!is_null($aid) && count($aid))
+		if (!empty($aid))
 		{
 			$query->where('access IN (' . implode(',', $aid) . ')');
 		}
