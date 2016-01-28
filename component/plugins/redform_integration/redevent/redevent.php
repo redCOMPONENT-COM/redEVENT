@@ -93,6 +93,8 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 			$date
 		);
 
+		$paymentDetailFields->paymentIntroText = $attendee->replaceTags(JText::_('PLG_REDFORM_INTEGRATION_REDFORM_PAYMENT_INTRO_DESC'));
+
 		$paymentDetailFields->uniqueid = $uniqueId;
 
 		return true;
