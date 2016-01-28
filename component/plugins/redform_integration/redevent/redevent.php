@@ -9,6 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Import library dependencies
 jimport('joomla.plugin.plugin');
+jimport('redevent.bootstrap');
 
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
@@ -53,58 +54,42 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 			return false;
 		}
 
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$attendees = RedeventEntityAttendee::loadBySubmitKey($submit_key);
 
-		$query->select('e.title, x.dates, x.enddates, x.times, x.endtimes, e.course_code, r.id AS attendee_id');
-		$query->select('v.venue, x.id AS xref');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
-		$query->join('LEFT', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->where('r.submit_key = ' . $db->Quote($submit_key));
-
-		$db->setQuery($query);
-		$res = $db->loadObject();
-
-		if (!$res)
+		if (!$attendees)
 		{
 			throw new Exception('Registration not found for specified key');
 		}
 
-		if ($res->dates && strtotime($res->dates))
-		{
-			if ($res->times && $res->times != '00:00:00')
-			{
-				$date = strftime('%c', strtotime($res->dates . ' ' . $res->times));
-			}
-			else
-			{
-				$date = strftime('%x', strtotime($res->dates));
-			}
-		}
-		else
-		{
-			$date = JText::_('PLG_REDFORM_INTEGRATION_REDFORM_OPEN_DATE');
-		}
+		$attendee = reset($attendees);
+		$session = $attendee->getSession();
 
-		$uniqueId = RedeventHelper::getRegistrationUniqueId($res);
+		$date = $session->getFormattedStartDate();
+
+		$uniqueId = $attendee->getRegistrationUniqueId();
 
 		$paymentDetailFields = new stdclass;
-		$paymentDetailFields->title = JText::sprintf('PLG_REDFORM_INTEGRATION_REDFORM_TITLE',
+
+		$paymentDetailFields->title = $attendee->replaceTags(JText::_('PLG_REDFORM_INTEGRATION_REDFORM_TITLE'));
+
+		// Legacy sprintf replacement
+		$paymentDetailFields->title = sprintf(
+			$paymentDetailFields->title,
 			$uniqueId,
-			$res->title,
-			$res->venue,
+			$session->getEvent()->title,
+			$session->getVenue()->venue,
 			$date
 		);
 
-		$fullname = $this->getFullname($submit_key);
+		$paymentDetailFields->adminDesc = $attendee->replaceTags(JText::_('PLG_REDFORM_INTEGRATION_REDFORM_ADMIN_DESC'));
 
-		$paymentDetailFields->adminDesc = JText::sprintf('PLG_REDFORM_INTEGRATION_REDFORM_ADMIN_DESC',
+		// Legacy sprintf replacement
+		$paymentDetailFields->adminDesc = JText::sprintf(
+			$paymentDetailFields->adminDesc,
 			$uniqueId,
-			$fullname,
-			$res->title,
-			$res->venue,
+			$this->getFullname($submit_key),
+			$session->getEvent()->title,
+			$session->getVenue()->venue,
 			$date
 		);
 
