@@ -164,7 +164,7 @@ class RedeventHelperDate
 
 		if (!static::isValidDate($date))
 		{
-			return JText::_('COM_REDEVENT_OPEN_DATE');
+			return JText::_('LIB_REDEVENT_OPEN_DATE');
 		}
 
 		if (static::isValidTime($time))
