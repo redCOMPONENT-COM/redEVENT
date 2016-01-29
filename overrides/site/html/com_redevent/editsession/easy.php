@@ -275,7 +275,7 @@ JFactory::getDocument()->addScriptDeclaration(
 						<div style="clear:both;" class="charleft badge shl-char-counter-title-joomla-be badge-success" title="Show recommended character count: stay green!"></div>
 
 					</div>
-					
+
 				</div>
 
 
