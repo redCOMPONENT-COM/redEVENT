@@ -910,6 +910,23 @@
 			<option value="0">COM_REDEVENT_EVENTS</option>
 			<option value="1">COM_REDEVENT_SESSIONS</option>
 		</field>
+
+		<field type="spacer" hr="true"/>
+		<field type="spacer" label="COM_REDEVENT_SETTINGS_GOOGLE_ANALYTICS_SPACER"/>
+		<field name="ga_tracking_on_confirm" type="radio" default="1"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_GA_TRACKING_ON_CONFIRM_LABEL"
+			   description="COM_REDEVENT_SETTINGS_GA_TRACKING_ON_CONFIRM_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+		<field name="ga_tracking_on_payment" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_GA_TRACKING_ON_PAYMENT_LABEL"
+			   description="COM_REDEVENT_SETTINGS_GA_TRACKING_ON_PAYMENT_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
 	</fieldset>
 
 	<fieldset name="COM_REDEVENT_SETTINGS_SOCIAL" label="COM_REDEVENT_SETTINGS_SOCIAL"

@@ -34,6 +34,8 @@ class RedeventViewDetails extends JViewLegacy
 
 		$document = JFactory::getDocument();
 		$user = JFactory::getUser();
+		$userAcl = RedeventUserAcl::getInstance();
+
 		$elsettings = RedeventHelper::config();
 
 		$acl = RedeventUserAcl::getInstance();
@@ -57,6 +59,11 @@ class RedeventViewDetails extends JViewLegacy
 			echo $e->getMessage();
 
 			return;
+		}
+
+		if (!$row->published && !$userAcl->canEditXref($row->id))
+		{
+			JFactory::getApplication()->redirect('index.php', JText::_('COM_REDEVENT_NOT_ALLOWED'), 'error');
 		}
 
 		$registers = $this->get('Registers');

@@ -593,13 +593,22 @@ abstract class RedeventEntityBase
 	/**
 	 * Get item from the database
 	 *
+	 * @param   boolean  $checkExists  check if item exists, throw exception otherwise
+	 *
 	 * @return  mixed  Object / null
+	 *
+	 * @throws  InvalidArgumentException
 	 */
-	public function getItem()
+	public function getItem($checkExists = false)
 	{
 		if (empty($this->item))
 		{
 			$this->loadItem();
+		}
+
+		if ($checkExists && !$this->item->id)
+		{
+			throw new InvalidArgumentException('Cannot load Entity');
 		}
 
 		return $this->item;

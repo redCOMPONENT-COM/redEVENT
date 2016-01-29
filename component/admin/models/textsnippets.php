@@ -49,7 +49,7 @@ class RedeventModelTextsnippets extends RModelList
 		{
 			$config['filter_fields'] = array(
 				'text_name', 'obj.text_name',
-				'id', 'c.id',
+				'id', 'obj.id',
 				'language', 'obj.language'
 			);
 		}

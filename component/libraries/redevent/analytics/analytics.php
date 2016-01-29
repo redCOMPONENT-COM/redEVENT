@@ -21,10 +21,15 @@ class RedeventAnalytics
 	 *
 	 * @param   string  $submit_key  submit key
 	 *
-	 * @return true on success
+	 * @return void
 	 */
 	public function addTransactionJs($submit_key)
 	{
+		if (!RdfHelperAnalytics::isEnabled())
+		{
+			return;
+		}
+
 		$cartReference = RdfCore::getSubmitkeyCartReference($submit_key);
 		$options = $this->buildOptions($submit_key);
 

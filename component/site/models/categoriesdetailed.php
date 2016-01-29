@@ -58,17 +58,15 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 	 */
 	public function setParent($id)
 	{
-		$sub = ' SELECT id, lft, rgt FROM #__redevent_categories WHERE id = ' . $this->_db->Quote((int) $id);
-		$this->_db->setQuery($sub);
-		$obj = $this->_db->loadObject();
+		$parent = RedeventEntityCategory::load($id);
 
-		if (!$obj)
+		if (!$parent->isValid())
 		{
 			JError::raiseWarning(0, JText::_('COM_REDEVENT_PARENT_CATEGORY_NOT_FOUND'));
 		}
 		else
 		{
-			$this->parent = $obj;
+			$this->parent = $parent;
 			$this->categories = null;
 		}
 
@@ -103,14 +101,14 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 				$category->assignedevents = $this->_getEventsTotal($category);
 
 				// Generate description
-				if (empty ($category->catdescription))
+				if (empty ($category->description))
 				{
-					$category->catdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION');
+					$category->description = JText::_('COM_REDEVENT_NO_DESCRIPTION');
 				}
 				else
 				{
 					// Execute plugins
-					$category->catdescription = JHTML::_('content.prepare', $category->catdescription);
+					$category->description = JHTML::_('content.prepare', $category->description);
 				}
 
 				// Create target link

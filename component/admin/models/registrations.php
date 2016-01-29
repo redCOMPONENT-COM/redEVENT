@@ -48,8 +48,11 @@ class RedeventModelRegistrations extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'r.id', 'r.xref', 'r.eventid', 'r.uregdate',
-				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin'
+				'r.id', 'r.xref', 'r.eventid', 'r.uregdate', 'u.username',
+				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin', 'r.waitinglist', 'e.title', 'paid',
+				'r.origin',
+				// Filters
+				'venue', 'origin', 'xref', 'confirmed', 'waiting', 'cancelled'
 			);
 		}
 
@@ -72,6 +75,8 @@ class RedeventModelRegistrations extends RModelList
 		$id	.= ':' . $this->getState('filter.confirmed');
 		$id .= ':' . $this->getState('filter.waiting');
 		$id	.= ':' . $this->getState('filter.cancelled');
+		$id	.= ':' . $this->getState('filter.origin');
+		$id	.= ':' . $this->getState('filter.venue');
 
 		return parent::getStoreId($id);
 	}
@@ -117,6 +122,7 @@ class RedeventModelRegistrations extends RModelList
 		$query->select('e.id AS eventid, e.course_code, e.title');
 		$query->select('v.venue');
 		$query->select('auth.username AS creator');
+		$query->select('CASE WHEN pr.id IS NULL THEN 1 ELSE 0 END AS paid');
 		$query->from('#__redevent_register AS r');
 		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
@@ -127,6 +133,7 @@ class RedeventModelRegistrations extends RModelList
 		$query->join('LEFT', '#__users AS auth ON auth.id = e.created_by');
 		$query->join('LEFT', '#__rwf_submitters AS s ON r.sid = s.id');
 		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
+		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 0');
 
 		$this->buildWhere($query);
 
@@ -192,6 +199,16 @@ class RedeventModelRegistrations extends RModelList
 				. ' OR u.username LIKE "%' . $this->getState('filter.search') . '%"'
 				. ' OR u.email LIKE "%' . $this->getState('filter.search') . '%"'
 			. ')');
+		}
+
+		if ($this->getState('filter.origin'))
+		{
+			$query->where('r.origin LIKE "%' . $this->getState('filter.origin') . '%"');
+		}
+
+		if (is_numeric($this->getState('filter.venue')))
+		{
+			$query->where('x.venueid = ' . $this->getState('filter.venue'));
 		}
 
 		if ($this->getState('filter.session'))

@@ -17,6 +17,10 @@ if (!file_exists($redcoreLoader) || !JPluginHelper::isEnabled('system', 'redcore
 
 include_once $redcoreLoader;
 
+// Load library language
+$lang = JFactory::getLanguage();
+$lang->load('lib_redevent', __DIR__);
+
 /**
  * Redevent bootstrap class
  *
@@ -60,10 +64,6 @@ class RedeventBootstrap
 
 			// Use bootstrap3
 			/* RHtmlMedia::setFramework('bootstrap3'); */
-
-			// Load library language
-			$lang = JFactory::getLanguage();
-			$lang->load('lib_redevent', __DIR__);
 		}
 	}
 }

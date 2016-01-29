@@ -151,7 +151,7 @@ class RedeventModelDetails extends RModel
 
 			$query->select('v.venue, v.email AS venue_email, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
 
-			$query->select('c.name AS catname, c.published, c.access');
+			$query->select('c.name AS catname, c.access');
 
 			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 			$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
@@ -160,6 +160,16 @@ class RedeventModelDetails extends RModel
 			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as venueslug');
 
 			$query->select('u.name AS creator_name, u.email AS creator_email');
+
+			foreach (RedeventHelper::getEventCustomFields() as $custom)
+			{
+				$query->select('a.custom' . $custom->id);
+			}
+
+			foreach (RedeventHelper::getSessionCustomFields() as $custom)
+			{
+				$query->select('x.custom' . $custom->id);
+			}
 
 			$query->from('#__redevent_events AS a');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');

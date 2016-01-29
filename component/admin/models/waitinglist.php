@@ -205,10 +205,9 @@ class RedeventModelWaitinglist extends RModel
 			->where('waitinglist = 1')
 			->where('confirmed = 1')
 			->where('cancelled = 0')
-			->order('confirmdate')
-			->limit($this->move_off);
+			->order('confirmdate');
 
-		$this->_db->setQuery($query);
+		$this->_db->setQuery($query, 0, $this->move_off);
 		$this->move_off_ids = $this->_db->loadColumn();
 
 		if (!count($this->move_off_ids))
@@ -246,10 +245,9 @@ class RedeventModelWaitinglist extends RModel
 			->where('waitinglist = 0')
 			->where('confirmed = 1')
 			->where('cancelled = 0')
-			->order('confirmdate DESC')
-			->limit($this->move_on);
+			->order('confirmdate DESC');
 
-		$this->_db->setQuery($query);
+		$this->_db->setQuery($query, 0, $this->move_on);
 		$this->move_on_ids = $this->_db->loadColumn();
 
 		if (!count($this->move_on_ids))

@@ -61,10 +61,10 @@
 		</field>
 
 		<field>
-			<id>catdescription</id>
+			<id>description</id>
 			<name>COM_REDEVENT_DESCRIPTION</name>
 			<description>COM_REDEVENT_DESCRIPTION</description>
-			<column>catdescription</column>
+			<column>description</column>
 			<type>editor</type>
 			<translate>yes</translate>
 			<display>yes</display>

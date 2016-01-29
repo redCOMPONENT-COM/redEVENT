@@ -38,7 +38,7 @@
             description="COM_REDEVENT_TEXT_FIELD_DESCRIPTION"
 			default=""
 			class="inputbox"
-            filter="raw"
+            filter="JComponentHelper::filterText"
             buttons="true"
             hide="readmore,pagebreak"/> />
 </form>

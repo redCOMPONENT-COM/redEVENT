@@ -1137,6 +1137,11 @@ class RedeventTags
 	{
 		$tag = new RedeventTagsFormForm($this->getEvent());
 
+		if ($pg = $this->getOption('pricegroupId'))
+		{
+			$tag->setPricegroupId($pg);
+		}
+
 		return $tag->getHtml($this->getOption('hasreview'));
 	}
 

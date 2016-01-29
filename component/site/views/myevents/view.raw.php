@@ -128,7 +128,7 @@ class RedeventViewMyevents extends RViewSite
 
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_select_event')));
 
-		if ($ev = $this->get('EventsOptions'))
+		if ($ev = $model->getEventsOptions())
 		{
 			$options = array_merge($options, $ev);
 		}
@@ -330,22 +330,22 @@ class RedeventViewMyevents extends RViewSite
 	 */
 	public static function xrefeditbutton($id, $xref)
 	{
-		$acl = &RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditXref($xref))
 		{
 			return '';
 		}
 
-		JHTML::_('behavior.tooltip');
+		RHtml::_('rbootstrap.tooltip');
 
-		$image = JHTML::_('image', 'media/com_redevent/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_XREF'));
+		$image = RHelperAsset::load('calendar_edit.png', null, array('alt' => JText::_('COM_REDEVENT_EDIT_XREF')));
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_XREF');
 
-		$link 	= 'index.php?option=com_redevent&view=editevent&layout=eventdate&id=' . $id . '&xref=' . $xref;
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
+		$link 	= RedeventHelperRoute::getEditSessionTaskRoute($id, $xref);
+		$output = RHtml::tooltip($overlib, $text, null, $image, $link);
 
 		return $output;
 	}
