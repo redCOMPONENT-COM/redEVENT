@@ -12,8 +12,8 @@ extract($displayData);
 
 $fieldcode = $id;
 
-$uploadMaxFilesize       = (int) $config->get('upload_max_filesize', 2);
-$uploadMaxFilesizeInByte = $uploadMaxFilesize * 1024 * 1024;
+$uploadMaxFilesize       = (int) $config->get('attachments_maxsize', 1000);
+$uploadMaxFilesizeInByte = $uploadMaxFilesize * 1024;
 $allowedFileExtension    = $config->get('allowed_file_extension', 'jpg,jpeg,gif,png');
 $allowedMime             = $config->get('allowed_file_mimetype', 'image/jpg,image/jpeg,image/gif,image/png');
 $fieldName               = empty($group) ? 'jform[custom' + $id + ']' : 'jform[' . $group . '][custom' + $id + ']';
