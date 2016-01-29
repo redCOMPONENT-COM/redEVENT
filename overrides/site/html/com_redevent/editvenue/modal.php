@@ -10,17 +10,12 @@ JHTML::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select');
 JHtml::_('formbehavior.chosen', 'select');
 
-JFactory::getDocument()->addScriptDeclaration("
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'editvenue.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
-		{
-			" . $this->form->getField('locdescription')->save() . "
-			Joomla.submitform(task);
-		}
-	};
-");
 $fieldId = JFactory::getApplication()->input->get('fieldId');
+
+if (!$this->form->getValue('country'))
+{
+	$this->form->setValue('country', null, 'DK');
+}
 ?>
 
 <script type="text/javascript">
@@ -33,6 +28,7 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 				jQuery(this).find("label").off('click');
 			}
 		});
+
 		//jQuery("select#jform_country option[value=\"DK\"]").prop('selected', 'selected');
 		jQuery("select#jform_country").find("option:contains('DK')").each(function(){
 	     if( jQuery(this).text() == 'DK - Denmark' ) {
@@ -49,19 +45,27 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
       method="post" name="adminForm" class="form-validate"
       id="adminForm">
 
-	
-	
+
+
 	<fieldset class="form-horizontal">
-		<?php foreach ($this->form->getFieldset('venue') as $field) : 			
-			if($field->name!='jform[alias]' && $field->name!='jform[venue_code]' && $field->name!='jform[published]'
-				&& $field->name!='jform[language]' && $field->name!='jform[access]' && $field->name!='jform[status]'
-				):
-			?>
-			
+		<?php foreach ($this->form->getFieldset('venue') as $field) :
+			if ($field->name == 'jform[locdescription]'): ?>
 			<div class="control-group  field <?php echo $field->name ?>">
 				<div class="control-label">
 					<?php echo $field->label; ?>
-					
+				</div>
+				<div class="controls">
+					<textarea name="jform[locdescription]"
+					          class="locdescription" cols="50" rows="10"><?php echo $this->item->locdescription; ?></textarea>
+				</div>
+			</div>
+			<?php elseif($field->name!='jform[alias]' && $field->name!='jform[venue_code]' && $field->name!='jform[published]'
+				&& $field->name!='jform[language]' && $field->name!='jform[access]' && $field->name!='jform[status]'
+				):
+			?>
+			<div class="control-group  field <?php echo $field->name ?>">
+				<div class="control-label">
+					<?php echo $field->label; ?>
 				</div>
 				<div class="controls">
 				<?php echo $field->input; ?>
@@ -74,11 +78,12 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 	</fieldset>
 
 	<fieldset class="form-horizontal">
-		<?php foreach ($this->form->getFieldset('address') as $field) : 
-			if($field->name!='jform[state]'
-				):
-		?>
-			<div style="display:none;" class="printdata"><?php print_r($field->name);?></div>
+		<?php foreach ($this->form->getFieldset('address') as $field) :
+			if ($field->name == 'jform[locdescription]'): ?>
+				<textarea name="jform[locdescription]" class="locdescription">
+					<?php echo $this->item->locdescription; ?>
+				</textarea>
+			<?php elseif ($field->name != 'jform[state]'): ?>
 			<div class="control-group <?php echo $field->name ?>">
 				<div class="control-label">
 					<?php echo $field->label; ?>
