@@ -19,26 +19,6 @@ JFactory::getDocument()->addScriptDeclaration("
 		}
 	}
 ");
-
-if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
-{
-	JFactory::getDocument()->addScriptDeclaration(<<<JS
-		jQuery(document).ready(function($) {
-			document.formvalidator.setHandler('futuredate', function(value) {
-				if (!value) {
-					return true;
-				}
-
-				var today = new Date();
-				today = new Date(today.toDateString());
-				var val = new Date(value);
-
-				return val >= today;
-			});
-		});
-JS
-	);
-}
 ?>
 
 <script type="text/javascript">
@@ -65,7 +45,7 @@ JS
 	      action="<?php echo JRoute::_('index.php?option=com_redevent&view=editsession&s_id=' . $this->item->id); ?>"
 	      method="post" name="adminForm" class="form-validate"
 	      id="adminForm">
-		
+
 		<ul class="nav nav-tabs" id="userTab">
 			<li class="active">
 				<a href="#eventmain" data-toggle="tab">

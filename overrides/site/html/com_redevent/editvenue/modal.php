@@ -38,6 +38,7 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 	     if( jQuery(this).text() == 'DK - Denmark' ) {
 	        jQuery(this).attr("selected","selected");
 	     }
+	    jQuery('input.required').addClass('invalid');
  });
 		//jQuery("select").select2();
 	});
@@ -75,11 +76,10 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 
 	<fieldset class="form-horizontal">
 		<?php foreach ($this->form->getFieldset('address') as $field) : 
-			if($field->name!='jform[state]'
-				):
+			if($field->name!='jform[state]'):
 		?>
 			<div style="display:none;" class="printdata"><?php print_r($field->name);?></div>
-			<div class="control-group <?php echo $field->name ?>">
+			<div class="control-group <?php if($field->name=='jform[map]' || $field->name=='jform[latitude]' || $field->name=='jform[longitude]'):echo 'hidden'; endif; ?>">
 				<div class="control-label">
 					<?php echo $field->label; ?>
 				</div>
@@ -87,7 +87,7 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 					<?php echo $field->input; ?>
 				</div>
 			</div>
-		<?php endif; endforeach; ?>
+		<?php endif;endforeach; ?>
 		<div class="control-group">
 			<div class="control-label"></div>
 			<div class="controls">

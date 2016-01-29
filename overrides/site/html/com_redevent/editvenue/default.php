@@ -50,11 +50,10 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 	
 	
 		<?php foreach ($this->form->getFieldset('venue') as $field) : 
-			if($field->name!='jform[alias]' && $field->name!='jform[venue_code]' && $field->name!='jform[published]'
+			if($field->name!='jform[alias]' && $field->name!='jform[venue_code]'
 				&& $field->name!='jform[language]' && $field->name!='jform[access]' 
 				):
 			?>
-			
 			<div class="control-group  field">
 				<div class="control-label">
 					<?php echo $field->label; ?>
@@ -67,6 +66,9 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 				<?php endif;?>
 				</div>
 			</div>
+			
+
+			
 		<?php endif; endforeach; ?>
 
 
