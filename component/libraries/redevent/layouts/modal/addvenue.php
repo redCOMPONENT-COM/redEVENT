@@ -21,12 +21,13 @@ if ($link = $modal->params->get('link', null))
 
 	$script[] = '	(function($) {';
 	$script[] = '		$(document).ready(function() {';
-	$script[] = '		$("#' . $cssId . '"").on("show", function () {';
-	$script[] = '			$("#' . $cssId . ' .modal-body").html("<iframe class="iframe" src="' . $link . '" width="' .
-		$modal->params->get('width', '100%') . '" scrolling="yes" ' . $jsEventsString . '"></iframe>");';
+	$script[] = '		$(\'#' . $cssId . '\').on(\'show\', function () {';
+	$script[] = '			$(\'#' . $cssId . ' .modal-body\').html(\'<iframe class="iframe" src="' . $link . '" width="' .
+		$modal->params->get('width', '100%') . '" height="' . $modal->params->get('height', '100%') . '"></iframe>\');';
 	$script[] = '			});';
 	$script[] = '		});';
 	$script[] = '	})( jQuery );';
+
 
 	$doc->addScriptDeclaration(implode("\n", $script));
 }

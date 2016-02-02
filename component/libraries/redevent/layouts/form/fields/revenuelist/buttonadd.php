@@ -29,7 +29,8 @@ $modal = RModal::getInstance(
 			'showFooter'      => false,
 			'showHeaderClose' => true,
 			'title' => $modalTitle,
-			'link' => $link
+			'link' => $link,
+			'height' => '400px' // As the content is obtained through ajax, it's not calculated right
 		)
 	),
 	$modalId
