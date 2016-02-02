@@ -34,6 +34,14 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 			}
 		});
 	});
+
+	function venueSubmit(task)
+	{
+		if (task == 'editvenue.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
+		{
+			Joomla.submitform(task);
+		}
+	}
 </script>
 
 
@@ -42,10 +50,10 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
       method="post" name="adminForm" class="form-validate"
       id="adminForm">
 
-	<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('editvenue.save')">
+	<button type="button" class="btn btn-primary" onclick="venueSubmit('editvenue.save')">
 		<span class="icon-ok"></span>&#160;<?php echo JText::_('JSAVE') ?>
 	</button>
-	<button type="button" class="btn" onclick="Joomla.submitbutton('editvenue.cancel')">
+	<button type="button" class="btn" onclick="venueSubmit('editvenue.cancel')">
 		<span class="icon-cancel"></span>&#160;<?php echo JText::_('JCANCEL') ?>
 	</button>
 
@@ -81,10 +89,10 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 		</div>
 	</fieldset>
 
-	<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('editvenue.save')">
+	<button type="button" class="btn btn-primary" onclick="venueSubmit('editvenue.save')">
 		<span class="icon-ok"></span>&#160;<?php echo JText::_('JSAVE') ?>
 	</button>
-	<button type="button" class="btn" onclick="Joomla.submitbutton('editvenue.cancel')">
+	<button type="button" class="btn" onclick="venueSubmit('editvenue.cancel')">
 		<span class="icon-cancel"></span>&#160;<?php echo JText::_('JCANCEL') ?>
 	</button>
 
@@ -92,5 +100,6 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
 	<input type="hidden" name="option" value="com_redevent" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="fieldId" value="<?php echo $fieldId; ?>" />
+	<input type="hidden" name="modal" value="1" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
