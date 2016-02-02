@@ -120,6 +120,11 @@ class RedeventControllerEditvenue extends RControllerForm
 	{
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
 
+		if ($isModal = $this->input->get('modal', 0))
+		{
+			$append .= '&modal=1&layout=modal';
+		}
+
 		if ($itemId = $this->input->get('Itemid'))
 		{
 			$append .= '&Itemid=' . $itemId;

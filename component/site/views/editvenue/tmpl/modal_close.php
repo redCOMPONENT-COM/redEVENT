@@ -14,3 +14,4 @@ $venueName = JFactory::getApplication()->input->get('name', '', 'string');
 <script type="text/javascript">
 	parent.window.updateRevenuelist('<?php echo $fieldId; ?>', '<?php echo $venueId; ?>', '<?php echo $venueName; ?>');
 </script>
+<div><?php echo JText::_('COM_REDEVENT_VENUE_EDIT_MODAL_YOU_CAN_NOW_CLOSE'); ?></div>
