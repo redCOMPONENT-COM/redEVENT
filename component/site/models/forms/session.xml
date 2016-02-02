@@ -10,6 +10,13 @@
 				/>
 
 		<field
+				name="dummy"
+				type="ruser"
+				label="user"
+				description="COM_REDEVENT_CHOOSE_IMAGE"
+				class="inputbox"/>
+
+		<field
 				name="eventid"
 				type="reeventlist"
 				label="COM_REDEVENT_SESSION_EVENT_LABEL"
