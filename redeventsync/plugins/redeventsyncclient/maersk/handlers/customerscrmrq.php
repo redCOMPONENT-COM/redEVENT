@@ -107,8 +107,9 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		{
 			$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
 			$data['email'] = (string) $customer->Emailaddress;
-			$data['username'] = $data['email'];
 		}
+
+		$data['username'] = $data['email'];
 
 		$companyData = array(
 			'name' => (string) $customer->CompanyName,
