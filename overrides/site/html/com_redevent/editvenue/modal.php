@@ -16,7 +16,10 @@ if (!$this->form->getValue('country'))
 {
 	$this->form->setValue('country', null, 'DK');
 }
+
 $this->form->setValue('categories', null, '1');
+
+
 ?>
 
 <script type="text/javascript">
@@ -29,6 +32,7 @@ $this->form->setValue('categories', null, '1');
 				jQuery(this).find("label").off('click');
 			}
 		});
+
 		
 		var maxlengths;
 		var controls;
@@ -78,6 +82,16 @@ $this->form->setValue('categories', null, '1');
 		set_placeholder('.edit-venue .jform_url input','Webadressen skal være i dette format -http://www.google.dk');
 		set_placeholder('.edit-venue .jform_company .controls input','Virksomhed knyttet til dette mødested');
 		jQuery('.edit-venue .jform_locdescription textarea').attr('maxlength', '150');
+
+
+		//jQuery("select#jform_country option[value=\"DK\"]").prop('selected', 'selected');
+		jQuery("select#jform_country").find("option:contains('DK')").each(function(){
+	     if( jQuery(this).text() == 'DK - Denmark' ) {
+	        jQuery(this).attr("selected","selected");
+	     }
+ });
+		//jQuery("select").select2();
+
 	});
 
 	function venueSubmit(task)
@@ -95,17 +109,26 @@ $this->form->setValue('categories', null, '1');
       id="adminForm">
 
 
+
 	
 	<fieldset class="form-horizontal">
 		<?php foreach ($this->form->getFieldset('venue') as $field) :
 		//print_r($field);die();
 			if ($field->name == 'jform[locdescription]'): ?>
 			<div class="control-group  field <?php echo $field->id ?>">
+
+
+	<fieldset class="form-horizontal">
+		<?php foreach ($this->form->getFieldset('venue') as $field) :
+			if ($field->name == 'jform[locdescription]'): ?>
+			<div class="control-group  field <?php echo $field->name ?>">
+
 				<div class="control-label">
 					<?php echo $field->label; ?>
 				</div>
 				<div class="controls">
 					<textarea name="jform[locdescription]"
+
 					          class="locdescription" cols="50" rows="2"><?php echo $this->item->locdescription; ?></textarea>
 					<div style="clear:both;" class="charleft badge shl-char-counter-title-joomla-be badge-success" title="Show recommended character count: stay green!"></div>
 
@@ -116,6 +139,16 @@ $this->form->setValue('categories', null, '1');
 				):
 			?>
 			<div class="control-group  field <?php echo $field->id ?>">
+
+					          class="locdescription" cols="50" rows="10"><?php echo $this->item->locdescription; ?></textarea>
+				</div>
+			</div>
+			<?php elseif($field->name!='jform[alias]' && $field->name!='jform[venue_code]' && $field->name!='jform[published]'
+				&& $field->name!='jform[language]' && $field->name!='jform[access]' && $field->name!='jform[status]'
+				):
+			?>
+			<div class="control-group  field <?php echo $field->name ?>">
+
 				<div class="control-label">
 					<?php echo $field->label; ?>
 				</div>
@@ -137,8 +170,11 @@ $this->form->setValue('categories', null, '1');
 				<textarea name="jform[locdescription]" class="locdescription">
 					<?php echo $this->item->locdescription; ?>
 				</textarea>
+
 			<?php elseif ($field->name != 'jform[state]' && $field->name!='jform[latitude]' && $field->name!='jform[longitude]' && $field->name!='jform[map]'): ?>
 			<div class="control-group <?php echo $field->id ?>">
+			<?php elseif ($field->name != 'jform[state]'): ?>
+			<div class="control-group <?php echo $field->name ?>">
 				<div class="control-label">
 					<?php echo $field->label; ?>
 				</div>
@@ -147,13 +183,18 @@ $this->form->setValue('categories', null, '1');
 				</div>
 			</div>
 		<?php endif; endforeach; ?>
+
 		<div class="control-group hidden">
+
+		<div class="control-group">
+
 			<div class="control-label"></div>
 			<div class="controls">
 				<?php echo RedeventHelperOutput::pinpointicon($this->item); ?>
 			</div>
 		</div>
 	</fieldset>
+
 	<div class="row">
 	<div class="btn-toolbar">
 		<div class="btn-group">

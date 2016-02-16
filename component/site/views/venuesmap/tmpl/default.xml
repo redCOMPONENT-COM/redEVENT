@@ -13,7 +13,7 @@
 		       default=""
 		       label="COM_REDEVENT_INTROTEXT_FIELD"
 		       description="COM_REDEVENT_INTROTEXT_FIELD_TIP"
-		       filter="safehtml"/>
+		       filter="JComponentHelper::filterText"/>
       <field name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
         <option value="0">COM_REDEVENT_Hide</option>
         <option value="1">COM_REDEVENT_Show</option>

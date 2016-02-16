@@ -201,6 +201,7 @@ class RedeventModelCalendar extends RModel
 		// Get the paramaters of the active menu item
 		$params = $app->getParams();
 
+		$query->where('x.published = 1');
 		$query->where(' a.published <> 0 ');
 
 		// Category must be published too

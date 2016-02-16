@@ -53,6 +53,7 @@ class RedeventModelCustomfields extends RModelList
 				'language', 'obj.language',
 				'ordering', 'obj.ordering',
 				'type', 'obj.type',
+				'obj.published', 'obj.tag', 'obj.object_key', 'obj.searchable', 'obj.in_lists', 'obj.frontend_edit', 'obj.language'
 			);
 		}
 

@@ -33,6 +33,7 @@ class RedeventViewRegistration extends JViewLegacy
 		{
 			$message = $event->confirmation_message;
 			$document->setTitle($event->title . ' - ' . JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
+			$this->addTracking();
 		}
 		elseif ($this->getLayout() == 'review')
 		{
@@ -171,5 +172,38 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assignRef('action',     JRoute::_('index.php?option=com_redevent&xref=' . $xref . '&rid=' . $rid));
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add google analytics
+	 *
+	 * @return void
+	 */
+	protected function addTracking()
+	{
+		$config = RedeventHelper::config();
+
+		if ($config->get('ga_tracking_on_confirm', 1) && RdfHelperAnalytics::isEnabled())
+		{
+			$submit_key = JFactory::getApplication()->input->get('submit_key');
+			$details = $this->get('SessionDetails');
+
+			$options = array();
+			$options['affiliation'] = 'redevent-b2b';
+			$options['sku'] = $details->title;
+			$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title
+				. ($details->session_name ? ' / ' . $details->session_name : '');
+
+			$cats = array();
+
+			foreach ($details->categories as $c)
+			{
+				$cats[] = $c->name;
+			}
+
+			$options['category'] = implode(', ', $cats);
+
+			RdfHelperAnalytics::recordSubmission($submit_key, $options);
+		}
 	}
 }

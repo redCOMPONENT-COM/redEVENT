@@ -113,7 +113,7 @@
             label="COM_REDEVENT_EVENT_DESCRIPTION"
             description="COM_REDEVENT_EVENT_DESCRIPTION"
             class="inputbox"
-            filter="safehtml"
+            filter="JComponentHelper::filterText"
             buttons="true"
             hide="readmore,pagebreak"/>
 
@@ -123,7 +123,7 @@
             label="COM_REDEVENT_EVENT_SUMMARY"
             description="COM_REDEVENT_EVENT_SUMMARY_DESC"
             class="inputbox"
-            filter="safehtml"
+            filter="JComponentHelper::filterText"
             buttons="false"/>
 
         <field
@@ -251,7 +251,7 @@
                 label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
                 description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -262,7 +262,7 @@
                 label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
                 description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -273,7 +273,7 @@
                 label="COM_REDEVENT_REVIEW_SCREEN"
                 description="COM_REDEVENT_REVIEW_SCREEN_INFO"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -284,7 +284,7 @@
                 label="COM_REDEVENT_CONFIRMATION"
                 description="COM_REDEVENT_CONFIRMATION_INFO"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -295,7 +295,7 @@
                 label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
                 description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -314,7 +314,7 @@
                 label="COM_REDEVENT_SUBMISSION_EMAIL_EMAIL_BODY"
                 description="COM_REDEVENT_SUBMISSION_EMAIL_EMAIL_BODY"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -347,7 +347,7 @@
                 label="COM_REDEVENT_SUBMISSION_EMAIL_PDF_CONTENT"
                 description="COM_REDEVENT_SUBMISSION_EMAIL_PDF_CONTENT_TIP"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -358,7 +358,7 @@
                 label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
                 description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -377,7 +377,7 @@
                 label="COM_REDEVENT_FORMAL_OFFER_BODY"
                 description="COM_REDEVENT_FORMAL_OFFER_BODY"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -399,7 +399,7 @@
                 label="COM_REDEVENT_WEBFORM_PRINT_FORMAL_OFFER"
                 description="COM_REDEVENT_WEBFORM_PRINT_FORMAL_OFFER_TIP"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -444,7 +444,7 @@
             label="COM_REDEVENT_NOTIFY_BODY"
             description="COM_REDEVENT_NOTIFY_BODY_NOTE"
             class="inputbox"
-            filter="safehtml"
+            filter="JComponentHelper::filterText"
             buttons="true"
             hide="readmore,pagebreak"
             />
@@ -475,7 +475,7 @@
             label="COM_REDEVENT_NOTIFY_CONFIRM_BODY"
             description=""
             class="inputbox"
-            filter="safehtml"
+            filter="JComponentHelper::filterText"
             buttons="true"
             hide="readmore,pagebreak"
             />
@@ -497,7 +497,7 @@
                 label="COM_REDEVENT_NOTIFY_ATTENDING_BODY"
                 description="COM_REDEVENT_NOTIFY_ATTENDING_NOTE"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -517,7 +517,7 @@
                 label="COM_REDEVENT_NOTIFY_ON_LIST_BODY"
                 description="COM_REDEVENT_NOTIFY_ON_LIST_NOTE"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -531,7 +531,7 @@
                 label="COM_REDEVENT_PAYMENTPROCESSING"
                 description="COM_REDEVENT_PAYMENTPROCESSING_TIP"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
@@ -543,7 +543,7 @@
                 label="COM_REDEVENT_PAYMENTACCEPTED"
                 description="COM_REDEVENT_PAYMENTACCEPTED_INFO"
                 class="inputbox"
-                filter="safehtml"
+                filter="JComponentHelper::filterText"
                 buttons="true"
                 hide="readmore,pagebreak"
                 />

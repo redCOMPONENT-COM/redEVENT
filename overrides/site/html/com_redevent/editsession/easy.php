@@ -11,26 +11,6 @@ JHTML::_('behavior.formvalidation');
 
 RHelperAsset::load('editsession.js');
 
-if (RedeventHelper::config()->get('frontendsubmit_allow_past_dates', 0) == 0)
-{
-	JFactory::getDocument()->addScriptDeclaration(<<<JS
-		jQuery(document).ready(function($) {
-			document.formvalidator.setHandler('futuredate', function(value) {
-				if (!value) {
-					return true;
-				}
-
-				var today = new Date();
-				today = new Date(today.toDateString());
-				var val = new Date(value);
-
-				return val >= today;
-			});
-		});
-JS
-	);
-}
-
 $viewName = 'editsession';
 $option   = 'com_redevent';
 
@@ -64,6 +44,34 @@ JFactory::getDocument()->addScriptDeclaration(
 <script type="text/javascript">
 	jQuery(document).ready(function()
 	{
+		var inputs;
+		var maxlengths;
+		var controls;
+		var findelement;
+		function set_max_limit_for_element(inputs,maxlengths,controls,findelement)
+		{
+			jQuery(inputs).attr('maxlength',maxlengths );
+			/*Set limit text when keyup*/
+			jQuery(inputs).keyup(function () {
+			var left = maxlengths - jQuery(this).val().length;
+			if (left < 0) {
+				left = 0;
+			}
+			jQuery(controls).find('.charleft').text( left);
+			});
+
+			if(jQuery(controls).find('input').val()=='')
+			{
+				jQuery(controls).find('.charleft').text( maxlengths);
+			}
+			else
+			{
+				var length_title_input=jQuery(controls).find(findelement).val().length;
+				var length_title_left=maxlengths - length_title_input;
+				jQuery(controls).find('.charleft').text( length_title_left);
+			}
+
+		}
 		// Disable click function on btn-group
 		jQuery(".btn-group").each(function(index){
 			if (jQuery(this).hasClass('disabled'))
@@ -71,121 +79,16 @@ JFactory::getDocument()->addScriptDeclaration(
 				jQuery(this).find("label").off('click');
 			}
 		});
+		/*Set max limit*/
 
-		jQuery('.redevent-edit-form.style-1 .title-event .controls input').keyup(function () {
-			var left = 150 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('.charleft').text( left);
-		});
-
-		if(jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('input').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('.charleft').text( '150');
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('input').val().length;
-			var length_title_left=150 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .title-event .controls ').find('.charleft').text( length_title_left);
-		}
-
-
-
-
+		set_max_limit_for_element('.redevent-edit-form.style-1 .title-event .controls input',100,'.redevent-edit-form.style-1 .title-event .controls ','input');
 		jQuery('select').select2();
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-hos .controls input',70,'.redevent-edit-form.style-1 .customfield-hos .controls','input');
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-ved .controls input',70,'.redevent-edit-form.style-1 .customfield-ved .controls','input');
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea',250,'.redevent-edit-form.style-1 .customfield-short-intro .controls','textarea');
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-note .controls textarea',250,'.redevent-edit-form.style-1 .customfield-note .controls','textarea');
 
 
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-hos .controls input').keyup(function () {
-			var left = 100 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('.charleft').text( left);
-		});
-		if(jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('input').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('.charleft').text( '100');
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('input').val().length;
-			var length_title_left=100 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-hos .controls ').find('.charleft').text(length_title_left);
-		}
-
-
-
-
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-ved .controls input').keyup(function () {
-			var left = 100 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text( left);
-		});
-		if(jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('input').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text( '100');
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('input').val().length;
-			var length_title_left=100 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-ved .controls ').find('.charleft').text(length_title_left);
-		}
-
-
-
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea').keyup(function () {
-			var left = 250 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text( left);
-		});
-
-		if(jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('textarea').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text( '100');
-
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('textarea').val().length;
-			var length_title_left=250 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-short-intro .controls ').find('.charleft').text(length_title_left);
-		}
-
-
-
-
-		jQuery('.redevent-edit-form.style-1 .customfield-note .controls textarea').keyup(function () {
-			var left = 250 - jQuery(this).val().length;
-			if (left < 0) {
-				left = 0;
-			}
-			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text( left);
-		});
-
-		if(jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('textarea').val()=='')
-		{
-			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text( '100');
-
-		}
-		else
-		{
-			var length_title_input=jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('textarea').val().length;
-			var length_title_left=250 - length_title_input;
-			jQuery('.redevent-edit-form.style-1 .customfield-note .controls ').find('.charleft').text(length_title_left);
-		}
 
 
 
@@ -308,7 +211,7 @@ JFactory::getDocument()->addScriptDeclaration(
 
 					<div class="control-group categories groupWrapper form-group">
 						<div class="control-label">
-							<?php echo $form->getLabel('categories', 'event'); ?>
+							<label>Vælg relevante kategorier</label>
 						</div>
 						<div class="controls">
 							<?php echo $form->getInput('categories', 'event'); ?><span class="required">*</span>
@@ -317,7 +220,7 @@ JFactory::getDocument()->addScriptDeclaration(
 
 					<div class="control-group customfield-sted groupWrapper form-group">
 						<div class="control-label">
-							<?php echo $form->getLabel('venueid'); ?>
+							<label>Vælg mødested</label>
 						</div>
 						<div class="controls">
 							<?php echo $form->getInput('venueid'); ?><span class="required">*</span>
@@ -328,7 +231,7 @@ JFactory::getDocument()->addScriptDeclaration(
 					<!-- Hos .... -->
 					<div class="control-group customfield-hos groupWrapper form-group">
 						<div class="control-label">
-							<?php echo $this->customfields[9]->getLabel(); ?>
+							<label>Ved</label>
 						</div>
 						<div class="controls">
 							<?php echo $this->customfields[9]->render(); ?><span class="required">*</span>
@@ -339,7 +242,7 @@ JFactory::getDocument()->addScriptDeclaration(
 					<!-- ved ...-->
 					<div class="control-group customfield-ved groupWrapper form-group">
 						<div class="control-label">
-							<?php echo $this->customfields[1]->getLabel(); ?>
+							<label>Oplægsholder / kontaktperson</label>
 						</div>
 						<div class="controls">
 							<?php echo $this->customfields[1]->render(); ?><span class="required">*</span>
@@ -363,15 +266,13 @@ JFactory::getDocument()->addScriptDeclaration(
 					</div>
 				<?php endif; ?>
 				<div class="control-group customfield-note form-group">
-
+					<div class="control-label">
+						<label for="12" id="12-lbl" title="" data-original-title="Image">Bemærk</label>
+					</div>
 					<div class="controls">
 
 						<?php echo $this->customfields[11]->render(); ?>
 						<div style="clear:both;" class="charleft badge shl-char-counter-title-joomla-be badge-success" title="Show recommended character count: stay green!"></div>
-
-					</div>
-					<div class="control-label">
-						<label for="12" id="12-lbl" title="" data-original-title="Image">F.eks. information om at huske bærbar eller at der serveres kaffe og sandwiches</label>
 
 					</div>
 

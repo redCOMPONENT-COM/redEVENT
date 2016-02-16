@@ -51,6 +51,74 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return formatted start date
+	 *
+	 * @param   string  $dateFormat  php date() format
+	 * @param   string  $timeFormat  php date() format
+	 *
+	 * @return string
+	 */
+	public function getFormattedStartDate($dateFormat = null, $timeFormat = null)
+	{
+		$item = $this->loadItem();
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			return JText::_('LIB_REDEVENT_OPEN_DATE');
+		}
+
+		if (RedeventHelperDate::isValidTime($item->times))
+		{
+			if (!is_null($dateFormat))
+			{
+				$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
+			}
+			else
+			{
+				$format = null;
+			}
+
+			return RedeventHelperDate::formatdatetime($item->dates . ' ' . $item->times, $format);
+		}
+
+		return RedeventHelperDate::formatdate($item);
+	}
+
+	/**
+	 * Return formatted end date
+	 *
+	 * @param   string  $dateFormat  php date() format
+	 * @param   string  $timeFormat  php date() format
+	 *
+	 * @return string
+	 */
+	public function getFormattedEndDate($dateFormat = null, $timeFormat = null)
+	{
+		$item = $this->loadItem();
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			return JText::_('LIB_REDEVENT_OPEN_DATE');
+		}
+
+		if (RedeventHelperDate::isValidTime($item->times))
+		{
+			if (!is_null($dateFormat))
+			{
+				$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
+			}
+			else
+			{
+				$format = null;
+			}
+
+			return RedeventHelperDate::formatdatetime($item->dates . ' ' . $item->times, $format);
+		}
+
+		return RedeventHelperDate::formatdate($item);
+	}
+
+	/**
 	 * Return associated venue
 	 *
 	 * @return RedeventEntityVenue
