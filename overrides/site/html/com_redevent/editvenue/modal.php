@@ -69,7 +69,6 @@ $this->form->setValue('categories', null, '1');
 				jQuery(this).find("label").off('click');
 			}
 		});
-		//jQuery('select').select2();
 		set_max_limit_for_element('.edit-venue .jform_venue input',50,'.edit-venue .jform_venue .controls ','input');
 		set_max_limit_for_element('.edit-venue .jform_locdescription textarea',150,'.edit-venue .jform_locdescription .controls ','textarea');
 		set_placeholder('.edit-venue .jform_venue .controls input','Mødested');
