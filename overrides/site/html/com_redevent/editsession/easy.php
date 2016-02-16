@@ -20,21 +20,21 @@ $action = JRoute::_('index.php?option=' . $option . '&view=' . $viewName);
  * @var RForm
  */
 $form = $this->form;
+$descriptionField = $this->form->getField('datdescription', 'event');
 $imageField = $this->customfields[12];
 
 $short_intro=$this->customfields[6];
 
 $sted=$this->customfields[3];
 $full_description=$this->customfields[4];
-$note=$this->customfields[5];
+$note=$this->customfields[11];
 $ved=$this->customfields[0];
 
-//print_r($this->customfields);die();
 JFactory::getDocument()->addScriptDeclaration(
-		"var easySubmitButton = function(task) {
+	"var easySubmitButton = function(task) {
 		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
 		{
-			" . $this->form->getField('datdescription', 'event')->save() . "
+			" . ($descriptionField ? $descriptionField->save() : '') . "
 			Joomla.submitform(task);
 		}
 	};"
@@ -48,6 +48,7 @@ JFactory::getDocument()->addScriptDeclaration(
 		var maxlengths;
 		var controls;
 		var findelement;
+		var text_placeholder;
 		function set_max_limit_for_element(inputs,maxlengths,controls,findelement)
 		{
 			jQuery(inputs).attr('maxlength',maxlengths );
@@ -72,6 +73,10 @@ JFactory::getDocument()->addScriptDeclaration(
 			}
 
 		}
+		function set_placeholder(input,text_placeholder)
+		{
+			jQuery(input).attr('placeholder',text_placeholder) ;
+		}
 		// Disable click function on btn-group
 		jQuery(".btn-group").each(function(index){
 			if (jQuery(this).hasClass('disabled'))
@@ -80,15 +85,28 @@ JFactory::getDocument()->addScriptDeclaration(
 			}
 		});
 		/*Set max limit*/
-
-		set_max_limit_for_element('.redevent-edit-form.style-1 .title-event .controls input',100,'.redevent-edit-form.style-1 .title-event .controls ','input');
 		jQuery('select').select2();
+		set_max_limit_for_element('.redevent-edit-form.style-1 .title-event .controls input',50,'.redevent-edit-form.style-1 .title-event .controls ','input');
+		set_placeholder('.redevent-edit-form.style-1 .title-event .controls input','Arrangements navn');
+		
+
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea',150,'.redevent-edit-form.style-1 .customfield-short-intro .controls','textarea');
+		set_placeholder('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea','Kort beskrivelse');
+
+
+
+		
 		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-hos .controls input',70,'.redevent-edit-form.style-1 .customfield-hos .controls','input');
+		
+
+
+
+
+
 		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-ved .controls input',70,'.redevent-edit-form.style-1 .customfield-ved .controls','input');
-		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-short-intro .controls textarea',250,'.redevent-edit-form.style-1 .customfield-short-intro .controls','textarea');
-		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-note .controls textarea',250,'.redevent-edit-form.style-1 .customfield-note .controls','textarea');
-
-
+		set_max_limit_for_element('.redevent-edit-form.style-1 .customfield-note .controls textarea',150,'.redevent-edit-form.style-1 .customfield-note .controls','textarea');
+		set_placeholder('.redevent-edit-form.style-1 .customfield-note .controls textarea','F.eks. information om at huske bærbar eller at der serveres kaffe og sandwiches');
+		
 
 
 
@@ -102,39 +120,33 @@ JFactory::getDocument()->addScriptDeclaration(
 		<?php echo $this->getTitle(); ?>
 	</h1>
 <?php endif; ?>
+
 <div class="redevent-edit-form style-1">
-
-
 	<form enctype="multipart/form-data"
 	      action="<?php echo $action; ?>"
 	      method="post" name="adminForm" class="form-validate"
 	      id="adminForm">
-		<div class="short-description"><?php echo JText::_('JTEXT_CREATE_EVENT');?></div>
-
-
-
-
-
-
-		<div class="detail-edit-event">
-			<div class="form edititem">
-				<div class="control-group title-event form-group">
+	      <div class="short-description"><?php echo JText::_('JTEXT_CREATE_EVENT');?></div>
+	      <div class="detail-edit-event">
+	      	<div class="form edititem">
+	      		<div class="control-group title-event form-group">
 					<div class="control-label title-event">
-						<?php echo $this->form->getLabel('title', 'event'); ?>
+						<?php echo $form->getLabel('title', 'event'); ?>
 					</div>
 					<div class="controls">
-						<?php echo $this->form->getInput('title', 'event'); ?><span class="required">*</span>
+						<?php echo $form->getInput('title', 'event'); ?><span class="required">*</span>
 						<div style="clear:both;" class="charleft badge shl-char-counter-title-joomla-be badge-success" title="Show recommended character count: stay green!"></div>
 					</div>
 				</div>
-
-
 				<div class="control-group customfield-short-intro form-group">
 					<div class="control-label">
 						<?php echo $short_intro->getLabel(); ?>
 					</div>
 					<div class="controls">
-						<?php echo $short_intro->render(); ?><span class="required">*</span>
+						<?php 
+							echo $short_intro->render();
+
+						?><span class="required">*</span>
 						<div style="clear:both;" class="charleft badge shl-char-counter-title-joomla-be badge-success" title="Show recommended character count: stay green!"></div>
 
 					</div>
@@ -143,7 +155,11 @@ JFactory::getDocument()->addScriptDeclaration(
 				<!-- Image -->
 				<div class="control-group customfield-images form-group">
 					<div class="control-label">
-						<label for="12" id="12-lbl" title="" data-original-title="Image">Billede til arrangements oversigten</label>
+						<label for="12" id="12-lbl" title="" data-original-title="Image">
+						<?php //echo JText::_('JTEXT_REDEVENT_IMAGE_UPLOAD');
+							echo $imageField->getLabel();
+
+						?></label>
 					</div>
 					<div class="controls">
 						<?php echo $imageField->render(); ?>
@@ -167,7 +183,6 @@ JFactory::getDocument()->addScriptDeclaration(
 
 						<div style="" class="customfield-time  form-group">
 							<div class="control-label">
-								<?php //echo $date_time->getLabel(); ?>
 								<?php echo $form->getLabel('times'); ?>
 							</div>
 							<div class="controls control-time">
@@ -211,7 +226,7 @@ JFactory::getDocument()->addScriptDeclaration(
 
 					<div class="control-group categories groupWrapper form-group">
 						<div class="control-label">
-							<label>Vælg relevante kategorier</label>
+							<label><?php echo $form->getLabel('categories', 'event'); ?></label>
 						</div>
 						<div class="controls">
 							<?php echo $form->getInput('categories', 'event'); ?><span class="required">*</span>
@@ -220,7 +235,7 @@ JFactory::getDocument()->addScriptDeclaration(
 
 					<div class="control-group customfield-sted groupWrapper form-group">
 						<div class="control-label">
-							<label>Vælg mødested</label>
+							<label><?php echo $form->getLabel('venueid');?></label>
 						</div>
 						<div class="controls">
 							<?php echo $form->getInput('venueid'); ?><span class="required">*</span>
@@ -231,7 +246,9 @@ JFactory::getDocument()->addScriptDeclaration(
 					<!-- Hos .... -->
 					<div class="control-group customfield-hos groupWrapper form-group">
 						<div class="control-label">
-							<label>Ved</label>
+							<label><?php 
+							echo $this->customfields[9]->getLabel();
+							?></label>
 						</div>
 						<div class="controls">
 							<?php echo $this->customfields[9]->render(); ?><span class="required">*</span>
@@ -242,7 +259,12 @@ JFactory::getDocument()->addScriptDeclaration(
 					<!-- ved ...-->
 					<div class="control-group customfield-ved groupWrapper form-group">
 						<div class="control-label">
-							<label>Oplægsholder / kontaktperson</label>
+							<label><?php 
+
+							
+							echo $this->customfields[1]->getLabel();
+
+							?></label>
 						</div>
 						<div class="controls">
 							<?php echo $this->customfields[1]->render(); ?><span class="required">*</span>
@@ -254,20 +276,18 @@ JFactory::getDocument()->addScriptDeclaration(
 
 				</div>
 
-				<?php if ($this->params->get('edit_description', 0)) :?>
-					<div class="control-group  customfield-full-description form-group">
-						<div class="control-label">
-							<label for="12" id="12-lbl" title="" data-original-title="Image">Arrangements beskrivelse</label>
+				<div class="control-group  customfield-full-description form-group">
+					<div class="control-label">
+						<?php echo $form->getLabel('datdescription', 'event'); ?>
 
-						</div>
-						<div class="controls table-responsive">
-							<?php echo $form->getInput('datdescription', 'event'); ?><span class="required">*</span>
-						</div>
 					</div>
-				<?php endif; ?>
+					<div class="controls table-responsive">
+						<?php echo $form->getInput('datdescription', 'event'); ?><span class="required">*</span>
+					</div>
+				</div>
 				<div class="control-group customfield-note form-group">
 					<div class="control-label">
-						<label for="12" id="12-lbl" title="" data-original-title="Image">Bemærk</label>
+						<label for="12" id="12-lbl" title="" data-original-title="Image"><?php echo $this->customfields[11]->getLabel();?></label>
 					</div>
 					<div class="controls">
 
@@ -278,10 +298,9 @@ JFactory::getDocument()->addScriptDeclaration(
 
 				</div>
 
-
-			</div>
-		</div>
-
+	      	</div>
+	      </div>
+	
 
 		<input type="hidden" name="option" value="<?php echo $option; ?>">
 		<input type="hidden" name="layout" value="easy">
@@ -306,6 +325,6 @@ JFactory::getDocument()->addScriptDeclaration(
 		</div>
 
 
-
+		
 	</form>
 </div>
