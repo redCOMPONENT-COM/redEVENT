@@ -96,13 +96,30 @@ class Tablerow
 				return $this->getPrice();
 
 			case 'budget':
-				return 0.35 * $this->getPrice();
+				return $this->getBudget();
 		}
 	}
 
 	public function add($row)
 	{
 		$this->sessions[] = $row;
+	}
+
+	/**
+	 * Get adwords budget
+	 *
+	 * @return int
+	 */
+	private function getBudget()
+	{
+		$price = $this->getPrice();
+
+		if (in_array('AMU', $this->niveau))
+		{
+			return $price * 0.2;
+		}
+
+		return $price * 0.35;
 	}
 
 	/**
@@ -118,7 +135,9 @@ class Tablerow
 		{
 			if (!empty($session->prices))
 			{
-				return $session->prices[0]->price;
+				$prices = JArrayHelper::getColumn($session->prices, 'price');
+
+				return max($prices);
 			}
 		}
 
