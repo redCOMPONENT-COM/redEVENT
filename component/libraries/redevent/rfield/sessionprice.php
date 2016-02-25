@@ -79,7 +79,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	{
 		if (!$this->value)
 		{
-			return false;
+			return count($this->options) == 1 ? reset($this->options) : false;
 		}
 
 		foreach ($this->options as $option)
@@ -206,6 +206,11 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		if ($placeholder = $this->getParam('placeholder'))
 		{
 			$properties['placeholder'] = addslashes($placeholder);
+		}
+
+		if (count($this->getOptions()) < 2)
+		{
+			$properties['readonly'] = 1;
 		}
 
 		return $properties;

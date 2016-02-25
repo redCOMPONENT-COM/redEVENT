@@ -413,6 +413,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$query->from('#__redevent_venues AS v');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.venueid = v.id');
 		$query->where('v.id IN (' . implode(',', $allowed) . ')');
+		$query->where('v.published = 1');
 		$query->order('v.venue');
 
 		if ($this->getState('filter_event'))

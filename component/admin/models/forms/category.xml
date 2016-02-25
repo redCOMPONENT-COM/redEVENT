@@ -81,7 +81,7 @@
 		label="COM_REDEVENT_DESCRIPTION"
 		description="COM_REDEVENT_DESCRIPTION"
 		class="inputbox"
-		filter="safehtml"
+		filter="JComponentHelper::filterText"
 		buttons="true"
 		hide="readmore,pagebreak"/>
 
@@ -90,9 +90,7 @@
 		type="session"
 		label="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE"
 		description="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE_TIP"
-		class="inputbox"
-		filter="safehtml"
-		buttons="false"/>
+		class="inputbox"/>
 
 	<field
 		name="image"

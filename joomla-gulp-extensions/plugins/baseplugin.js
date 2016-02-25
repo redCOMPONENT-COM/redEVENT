@@ -17,13 +17,13 @@ module.exports.addPlugin = function (group, name) {
 	var mediaPath = extPath + '/media';
 
 	// Clean
-	gulp.task('clean:' + baseTask, function(cb) {
-		del(config.wwwDir + '/plugins/' + group + '/' + name, {force : true}, cb);
+	gulp.task('clean:' + baseTask, function() {
+		del.sync(config.wwwDir + '/plugins/' + group + '/' + name, {force : true});
 	});
 
 	// Clean: Media
-	gulp.task('clean:' + baseTask + ':media', function(cb) {
-		del(config.wwwDir + '/media/' + 'plg_' + group + '_' + name, {force: true}, cb);
+	gulp.task('clean:' + baseTask + ':media', function() {
+		del.sync(config.wwwDir + '/media/' + 'plg_' + group + '_' + name, {force: true});
 	});
 
 	// Copy

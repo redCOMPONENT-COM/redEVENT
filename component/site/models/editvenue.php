@@ -99,6 +99,13 @@ class RedeventModelEditvenue extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
+
+		if (!$pk)
+		{
+			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
+		}
+
 		$result = parent::save($data);
 
 		if ($result)

@@ -17,24 +17,17 @@ $cssId = $modal->getAttribute('id');
 
 if ($link = $modal->params->get('link', null))
 {
-	$jsEvents       = $modal->params->get('events', array());
-	$jsEventsString = '';
-
-	foreach ($jsEvents as $event => $function)
-	{
-		$jsEventsString .= $event . '="' . $function . '(this)" ';
-	}
-
 	$script   = array();
 
 	$script[] = '	(function($) {';
 	$script[] = '		$(document).ready(function() {';
 	$script[] = '		$(\'#' . $cssId . '\').on(\'show\', function () {';
 	$script[] = '			$(\'#' . $cssId . ' .modal-body\').html(\'<iframe class="iframe" src="' . $link . '" width="' .
-		$modal->params->get('width', '100%') . '" scrolling="yes" ' . $jsEventsString . '"></iframe>\');';
+		$modal->params->get('width', '100%') . '" height="' . $modal->params->get('height', '100%') . '"></iframe>\');';
 	$script[] = '			});';
 	$script[] = '		});';
 	$script[] = '	})( jQuery );';
+
 
 	$doc->addScriptDeclaration(implode("\n", $script));
 }
