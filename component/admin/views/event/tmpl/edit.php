@@ -9,7 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
-JHtml::_('rjquery.chosen', 'select');
+JHtml::_('rjquery.chosen', 'select', array('width' => '150px'));
 
 $fieldSets = $this->form->getFieldsets('params');
 ?>
