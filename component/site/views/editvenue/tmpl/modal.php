@@ -50,10 +50,10 @@ $fieldId = JFactory::getApplication()->input->get('fieldId');
       method="post" name="adminForm" class="form-validate"
       id="adminForm">
 
-	<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('editvenue.save')">
+	<button type="button" class="btn btn-primary" onclick="venueSubmit('editvenue.save')">
 		<span class="icon-ok"></span>&#160;<?php echo JText::_('JSAVE') ?>
 	</button>
-	<button type="button" class="btn" onclick="Joomla.submitbutton('editvenue.cancel')">
+	<button type="button" class="btn" onclick="venueSubmit('editvenue.cancel')">
 		<span class="icon-cancel"></span>&#160;<?php echo JText::_('JCANCEL') ?>
 	</button>
 

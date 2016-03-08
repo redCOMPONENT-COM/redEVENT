@@ -295,13 +295,13 @@ class RedeventTagsFormForm
 		// Otherwise check if set
 		if (count($sessionPriceGroups) == 1)
 		{
-			$selectedPricegroup = current($sessionPriceGroups);
+			return current($sessionPriceGroups);
 		}
 		elseif ($this->pricegroupId)
 		{
 			foreach ($sessionPriceGroups as $sessionPriceGroup)
 			{
-				if ($sessionPriceGroup->pricegroup_id == $this->pricegroupId)
+				if ($sessionPriceGroup->id == $this->pricegroupId)
 				{
 					return $sessionPriceGroup;
 				}
