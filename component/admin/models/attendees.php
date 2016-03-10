@@ -313,31 +313,16 @@ class RedeventModelAttendees extends RModelList
 
 			$this->_db->execute();
 
-			// Upate waiting list for all cancelled regs
-			$db = $this->_db;
-			$query = $db->getQuery(true);
+			// Update waiting list for all cancelled regs
+			$updated = $this->getRowsByIds($cid);
+			$sessionIds = array_unique(JArrayHelper::getColumn($updated, 'xref'));
+			$this->updateWaitingLists($sessionIds);
 
-			$query->select('xref');
-			$query->from('#__redevent_register');
-			$query->where('id IN (' . implode(', ', $cid) . ')');
-
-			$db->setQuery($query);
-			$xrefs = $db->loadColumn();
-
-			$xrefs = array_unique($xrefs);
-
-			// Now update waiting list for all updated sessions
-			foreach ($xrefs as $xref)
+			// Generate negative payment request if already paid
+			foreach (JArrayHelper::getColumn($updated, 'sid') as $sid)
 			{
-				$model_wait = RModel::getAdminInstance('Waitinglist');
-				$model_wait->setXrefId($xref);
-
-				if (!$model_wait->UpdateWaitingList())
-				{
-					$this->setError($model_wait->getError());
-
-					return false;
-				}
+				$helper = new RdfPaymentTurnsubmission($sid);
+				$helper->turn();
 			}
 		}
 
@@ -366,31 +351,8 @@ class RedeventModelAttendees extends RModelList
 			$this->_db->execute();
 
 			// Update waiting list for all un-cancelled regs
-			$db      = $this->_db;
-			$query = $db->getQuery(true);
-
-			$query->select('xref');
-			$query->from('#__redevent_register');
-			$query->where('id IN (' . implode(', ', $cid) . ')');
-
-			$db->setQuery($query);
-			$xrefs = $db->loadColumn();
-
-			$xrefs = array_unique($xrefs);
-
-			// Now update waiting list for all updated sessions
-			foreach ($xrefs as $xref)
-			{
-				$model_wait = RModel::getAdminInstance('Waitinglist');
-				$model_wait->setXrefId($xref);
-
-				if (!$model_wait->UpdateWaitingList())
-				{
-					$this->setError($model_wait->getError());
-
-					return false;
-				}
-			}
+			$sessionIds = $this->getAttendeesSessionIds($cid);
+			$this->updateWaitingLists($sessionIds);
 		}
 
 		return true;
@@ -433,21 +395,9 @@ class RedeventModelAttendees extends RModelList
 	 */
 	private function getAttendeesSessionIds($pks)
 	{
-		// Sanitize input.
-		JArrayHelper::toInteger($pks);
-		$pk = RHelperArray::quote($pks);
-		$pk = implode(',', $pk);
+		$rows = $this->getRowsByIds($pks);
 
-		$query = $this->_db->getQuery(true);
-
-		$query->select('DISTINCT xref');
-		$query->from('#__redevent_register');
-		$query->where('id IN (' . $pk . ')');
-
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadColumn();
-
-		return $res;
+		return $rows ? array_unique(JArrayHelper::getColumn($rows, 'xref')) : false;
 	}
 
 	/**
@@ -461,9 +411,9 @@ class RedeventModelAttendees extends RModelList
 	{
 		foreach ($sessionIds as $sessionId)
 		{
-			$model_wait = $this->getModel('waitinglist');
-			$model_wait->setXrefId($sessionId);
-			$model_wait->UpdateWaitingList();
+			$model = RModel::getAdminInstance('Waitinglist');
+			$model->setXrefId($sessionId);
+			$model->UpdateWaitingList();
 		}
 	}
 
@@ -622,5 +572,34 @@ class RedeventModelAttendees extends RModelList
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Get rows by ids
+	 *
+	 * @param   int[]  $ids  ids
+	 *
+	 * @return mixed
+	 */
+	private function getRowsByIds($ids)
+	{
+		if (!$ids)
+		{
+			return false;
+		}
+
+		JArrayHelper::toInteger($ids);
+		$id = RHelperArray::quote($ids);
+		$id = implode(',', $id);
+
+		$query = $this->_db->getQuery(true)
+			->select('*')
+			->from('#__redevent_register')
+			->where('id IN (' . $id . ')');
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+
+		return $res;
 	}
 }

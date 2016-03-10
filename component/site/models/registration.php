@@ -619,6 +619,10 @@ class RedeventModelRegistration extends RModel
 			throw new RuntimeException(JText::_('COM_REDEVENT_ERROR_CANNOT_DELETE_REGISTRATION'));
 		}
 
+		// Turn submission in redFORM
+		$helper = new RdfPaymentTurnsubmission($submitterinfo->sid);
+		$helper->turn();
+
 		return true;
 	}
 
