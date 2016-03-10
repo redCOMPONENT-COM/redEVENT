@@ -24,6 +24,11 @@ class RedeventEntitySession extends RedeventEntityBase
 	private $event;
 
 	/**
+	 * @var array
+	 */
+	private $pricegroups;
+
+	/**
 	 * Associated venue
 	 *
 	 * @var RedeventEntityVenue
@@ -116,6 +121,56 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return RedeventHelperDate::formatdate($item);
+	}
+
+	/**
+	 * Return initialized RedeventRfieldSessionprice
+	 *
+	 * @return RedeventRfieldSessionprice
+	 */
+	public function getPricefield()
+	{
+		$field = new RedeventRfieldSessionprice;
+		$field->setOptions($this->getPricegroups());
+		$title = $this->getEvent()->title . ($this->title ? ' - ' . $this->title : '');
+		$field->setPaymentRequestItemLabel(JText::sprintf('COM_REDEVENT_REGISTRATION_PRICE_ITEM_LABEL_S', $title));
+
+		return $field;
+	}
+
+	/**
+	 * Return RedeventEntitySessionpricegroups
+	 *
+	 * @return   RedeventEntitySessionpricegroup[]
+	 */
+	public function getPricegroups()
+	{
+		if (!$this->pricegroups)
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('sp.*');
+			$query->from('#__redevent_sessions_pricegroups AS sp');
+			$query->where('sp.xref = ' . $db->Quote($this->id));
+
+			$db->setQuery($query);
+			$items = $db->loadObjectList();
+
+			$this->pricegroups = array_map(
+				function($item)
+				{
+					$pricegroup = RedeventEntitySessionpricegroup::getInstance();
+					$pricegroup->bind($item);
+
+					return $pricegroup;
+				},
+				$items
+			);
+		}
+
+		return $this->pricegroups;
+
 	}
 
 	/**

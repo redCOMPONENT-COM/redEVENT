@@ -82,7 +82,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$model = $this->getModel('registration');
 		$model->setXref($xref);
 
-		$details = $model->getSessionDetails();
+		$session = RedeventEntitySession::load($xref);
 
 		// Get prices associated to pricegroups
 		$currency = null;
@@ -92,7 +92,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		$i = 1;
 
-		if ($pricegroups = $model->getPricegroups())
+		if ($pricegroups = $session->getPricegroups())
 		{
 			foreach ($selectedPricegroups as $regPricegroup)
 			{
@@ -104,21 +104,15 @@ class RedeventControllerRegistration extends RedeventControllerFront
 					return false;
 				}
 
-				$pg = RTable::getAdminInstance('Sessionpricegroup', array(), 'com_redevent');
-				$pg->load($regPricegroup);
-
-				$field = new RedeventRfieldSessionprice;
-				$field->setOptions($pricegroups);
+				$field = $session->getPricefield();
 				$field->setValue($regPricegroup);
-				$field->setPaymentRequestItemLabel(JText::sprintf('COM_REDEVENT_REGISTRATION_PRICE_ITEM_LABEL_S', $details->full_title));
 				$field->setFormIndex($i);
 
 				$extrafields[$i++] = array($field);
-				$currency = $pg->currency;
 			}
 
 			$options['extrafields'] = $extrafields;
-			$options['currency'] = $currency;
+			$options['currency'] = $session->getEvent()->getForm()->currency;;
 		}
 
 		if ($review)
@@ -145,7 +139,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				}
 				else
 				{
-					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)));
+					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($session->eventid, $xref)));
 				}
 
 				return false;
@@ -164,7 +158,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			}
 			else
 			{
-				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)));
+				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($session->eventid, $xref)));
 			}
 
 			return false;
@@ -199,7 +193,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			// Redform saved fine, now add the attendees
 			$user = JFactory::getUser();
 
-			if (!$user->get('id') && $details->juser)
+			if (!$user->get('id') && $session->getEvent()->juser)
 			{
 				if ($new = $model->createUser($result->posts[0]['sid']))
 				{
@@ -217,7 +211,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				if (!$res = $model->setOrigin('frontend')->register($user, $rfpost['sid'], $result->submit_key, $pricegroup))
 				{
 					$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
-					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
+					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($session->eventid, $xref)), $msg, 'error');
 
 					return false;
 				}
@@ -225,7 +219,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				$dispatcher->trigger('onAttendeeCreated', array($res->id));
 			}
 
-			if ($details->notify)
+			if ($session->getEvent()->notify)
 			{
 				$model->sendNotificationEmail($submit_key);
 			}
@@ -242,7 +236,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 			$gateway = $app->input->get('gw');
 
-			$rfredirect = $rfcore->getFormRedirect($details->redform_id);
+			$rfredirect = $rfcore->getFormRedirect($session->getEvent()->redform_id);
 
 			if ($rfredirect)
 			{
@@ -470,23 +464,24 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		$model = $this->getModel('registration');
 		$model->setXref($this->input->getInt('xref'));
-		$details = $model->getSessionDetails();
+		$session = RedeventEntitySession::load($xref);
 
 		$submit_key = $this->input->get('submit_key');
 
-		$pricegroup = $this->input->getInt('sessionpricegroup_id');
-		$regPricegroup = $model->getRegistrationPrice($pricegroup);
+		$registrationPricegroupId = $this->input->getInt('sessionprice_1');
 
-		if (!$regPricegroup)
+		if (!$registrationPricegroupId)
 		{
 			$this->setMessage(JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE'), 'error');
 			$this->redirect();
 		}
 
-		$price = $regPricegroup->price;
+		$priceField = $session->getPricefield();
+		$priceField->setValue($registrationPricegroupId);
+		$priceField->setFormIndex(1);
 
 		// First, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $price, 'currency' => $regPricegroup->currency, 'edit' => 1);
+		$options = array('extrafields' => array(array($priceField)), 'currency' => $session->getEvent()->getForm()->currency, 'edit' => 1);
 		$rfcore = RdfCore::getInstance();
 
 		try
@@ -510,8 +505,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$this->input->set('submit_key', $result->submit_key);
 		$sid = $result->posts[0]['sid'];
 
-		// Redform save fine, now save corresponding bookings
-		if (!$model->update($sid, $result->submit_key, $regPricegroup->id))
+		// Redform save fined, now save corresponding bookings
+		if (!$model->update($sid, $result->submit_key, $registrationPricegroupId))
 		{
 			$this->setMessage(JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_UPDATE_FAILED'), 'error');
 			$this->redirect();

@@ -25,7 +25,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	/**
 	 * Set options from sessions price groups
 	 *
-	 * @param   array  $sessionpriceGroups  session price groups
+	 * @param   RedeventEntitySessionpricegroups[]  $sessionpriceGroups  session price groups
 	 *
 	 * @return void
 	 */
@@ -77,6 +77,11 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	 */
 	public function getSelectedOption()
 	{
+		if (empty($this->options))
+		{
+			return false;
+		}
+
 		if (!$this->value)
 		{
 			return count($this->options) == 1 ? reset($this->options) : false;
@@ -89,6 +94,8 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 				return $option;
 			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -181,7 +188,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		$properties['size'] = $this->getParam('size', 25);
 		$properties['maxlength'] = $this->getParam('maxlength', 250);
 
-		if ($this->load()->readonly && !$app->isAdmin())
+		if ($this->isReadonly())
 		{
 			$properties['readonly'] = 'readonly';
 		}
@@ -191,7 +198,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 			$properties['vat'] = $this->getParam('vat');
 		}
 
-		if ($this->load()->validate && !$this->load()->readonly)
+		if ($this->isRequired())
 		{
 			if ($properties['class'])
 			{
@@ -206,11 +213,6 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		if ($placeholder = $this->getParam('placeholder'))
 		{
 			$properties['placeholder'] = addslashes($placeholder);
-		}
-
-		if (count($this->getOptions()) < 2)
-		{
-			$properties['readonly'] = 1;
 		}
 
 		return $properties;
@@ -280,5 +282,28 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	public function getSku()
 	{
 		return parent::getSku() ?: 'REGISTRATION';
+	}
+
+
+	/**
+	 * Is required ?
+	 *
+	 * @return bool
+	 */
+	public function isReadonly()
+	{
+		$app = JFactory::getApplication();
+
+		return ($this->load()->readonly && !$app->isAdmin()) || (count($this->getOptions()) < 2);
+	}
+
+	/**
+	 * Is required ?
+	 *
+	 * @return bool
+	 */
+	public function isRequired()
+	{
+		return $this->load()->validate && !$this->isReadonly();
 	}
 }
