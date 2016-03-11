@@ -306,7 +306,7 @@ class RedeventModelDetails extends RModel
 				->select('s.submit_key, s.id')
 				->from('#__redevent_register AS r')
 				->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
-				->join('INNER', '#__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id')
+				->join('INNER', '#__rwf_forms_' . $this->details->redform_id . ' AS a ON s.answer_id = a.id')
 				->where('r.xref = ' . $this->xref)
 				->where('r.confirmed = 1')
 				->where('r.cancelled = 0')
