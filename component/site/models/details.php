@@ -281,7 +281,7 @@ class RedeventModelDetails extends RModel
 		}
 
 		/* At least 1 redFORM field must be selected to show the user data from */
-		if ((!empty($this->details->showfields) || $admin) && $this->details->redform_id > 0)
+		if ((!empty($this->details->showfields) || $admin || $all_fields) && $this->details->redform_id > 0)
 		{
 			$fields = $this->getFormFields($all_fields);
 
@@ -292,41 +292,34 @@ class RedeventModelDetails extends RModel
 				return null;
 			}
 
-			if (count($fields))
+			$table_fields = array();
+			$fields_names = array();
+
+			foreach ($fields as $key => $field)
 			{
-				$table_fields = array();
-				$fields_names = array();
-
-				foreach ($fields as $key => $field)
-				{
-					$table_fields[] = 'a.field_' . $field->id;
-					$fields_names['field_' . $field->id] = $field->field_header ?: $field->field;
-				}
-
-				$query = $this->_db->getQuery(true)
-					->select(implode(', ', $table_fields))
-					->select('s.submit_key, s.id')
-					->from('#__redevent_register AS r')
-					->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
-					->join('INNER', '#__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id')
-					->where('r.xref = ' . $this->xref)
-					->where('r.confirmed = 1')
-					->where('r.cancelled = 0')
-					->order('r.confirmdate');
-
-				$this->_db->setQuery($query);
-				$answers = $this->_db->loadObjectList();
-
-				if ($answers === false)
-				{
-					RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_registered_users') . ' ' . $this->_db->getErrorMsg());
-
-					return null;
-				}
+				$table_fields[] = 'a.field_' . $field->fieldId;
+				$fields_names['field_' . $field->fieldId] = $field->field_header ?: $field->field;
 			}
-			else
+
+			$query = $this->_db->getQuery(true)
+				->select(implode(', ', $table_fields))
+				->select('s.submit_key, s.id')
+				->from('#__redevent_register AS r')
+				->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
+				->join('INNER', '#__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id')
+				->where('r.xref = ' . $this->xref)
+				->where('r.confirmed = 1')
+				->where('r.cancelled = 0')
+				->order('r.confirmdate');
+
+			$this->_db->setQuery($query);
+			$answers = $this->_db->loadObjectList();
+
+			if ($answers === false)
 			{
-				$answers = array();
+				RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_registered_users') . ' ' . $this->_db->getErrorMsg());
+
+				return null;
 			}
 
 			// Add the answers to submitters list
@@ -367,38 +360,36 @@ class RedeventModelDetails extends RModel
 	/**
 	 * returns the fields to be shown in attendees list
 	 *
-	 * @param   boolean  $all_fields  get all fields
+	 * @param   boolean  $getAll  get all fields
 	 *
 	 * @return array
 	 */
-	public function getFormFields($all_fields = false)
+	public function getFormFields($getAll = false)
 	{
 		// Make sure the init is done
 		$this->getDetails();
 
-		if (empty($this->details->showfields))
+		if (empty($this->details->showfields) && !$getAll)
 		{
 			return false;
 		}
 
-		$query = $this->_db->getQuery(true);
+		$fields = RdfEntityForm::load($this->details->redform_id)->getFormFields();
 
-		$query->select('f.id, f.field, ff.form_id, f.field_header')
-			->from('#__rwf_fields AS f')
-			->join('LEFT', '#__rwf_form_field AS ff ON ff.field_id = f.id')
-			->where('ff.form_id = ' . $this->_db->Quote($this->details->redform_id))
-			->where('ff.published = 1')
-			->order('ff.ordering');
-
-		if (!$all_fields)
+		if (!$getAll)
 		{
-			$query->where('f.id in (' . $this->details->showfields . ')');
+			// Only return allowed fields
+			$allowed = explode(",", $this->details->showfields);
+			$fields = array_filter(
+				$fields,
+				function($item) use ($allowed)
+				{
+					return in_array($item->fieldId, $allowed);
+				}
+			);
 		}
 
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-
-		return $res;
+		return $fields;
 	}
 
 	/**

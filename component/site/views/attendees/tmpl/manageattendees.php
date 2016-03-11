@@ -47,7 +47,7 @@ if ($this->manage_attendees) {
 	<div id="redevent" class="event_id<?php echo $this->session->eventid; ?> el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.RedeventHelper::getSessionFullTitle($this->session); ?></h2>
 
-		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->session->xref, JText::_('COM_REDEVENT_CSV_export'));?>
+		<?php echo JHTML::link('index.php?option=com_redevent&view=attendees&format=csv&xref='. $this->session->xref, JText::_('COM_REDEVENT_CSV_export'));?>
 
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>

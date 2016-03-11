@@ -25,23 +25,6 @@ class RedeventViewAttendees extends RViewSite
 	 */
 	public function display($tpl = null)
 	{
-		if ($this->getLayout() == 'exportattendees')
-		{
-			return $this->displayAttendees($tpl);
-		}
-
-		echo 'layout not found';
-	}
-
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
-	 */
-	public function displayAttendees($tpl = null)
-	{
 		jimport('joomla.filesystem.file');
 
 		$model = $this->getModel();

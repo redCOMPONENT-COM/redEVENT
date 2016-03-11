@@ -15,16 +15,4 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerAttendees extends RedeventControllerFront
 {
-	/**
-	 * Task handler
-	 *
-	 * @return void
-	 */
-	public function exportattendees()
-	{
-		$this->input->set('view', 'attendees');
-		$this->input->set('layout', 'exportattendees');
-
-		parent::display();
-	}
 }
