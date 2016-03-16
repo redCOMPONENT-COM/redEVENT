@@ -153,22 +153,16 @@ function redeventBuildRoute(&$query)
 			break;
 
 		case 'attendees':
-			if (isset($query['controller']))
+			if (isset($query['xref']))
 			{
-				$segments[] = $query['controller'];
-				unset($query['controller']);
+				$segments[] = $query['xref'];
+				unset($query['xref']);
 			}
 
 			if (isset($query['task']))
 			{
 				$segments[] = $query['task'];
 				unset($query['task']);
-			}
-
-			if (isset($query['xref']))
-			{
-				$segments[] = $query['xref'];
-				unset($query['xref']);
 			}
 
 			break;
@@ -399,17 +393,12 @@ function redeventParseRoute($segments)
 
 			if ($count > 1)
 			{
-				$vars['controller'] = $segments[1];
+				$vars['xref'] = $segments[1];
 			}
 
 			if ($count > 2)
 			{
 				$vars['task'] = $segments[2];
-			}
-
-			if ($count > 3)
-			{
-				$vars['xref'] = $segments[3];
 			}
 
 			break;
