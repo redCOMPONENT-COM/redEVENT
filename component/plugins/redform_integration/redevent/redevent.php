@@ -39,9 +39,9 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	/**
 	 * returns a title for the object reference in redform
 	 *
-	 * @param   string  $object_key            should be 'redevent' for this plugin to do something
-	 * @param   string  $submit_key            submit ley
-	 * @param   object  &$paymentDetailFields  object to return
+	 * @param   string                     $object_key            should be 'redevent' for this plugin to do something
+	 * @param   string                     $submit_key            submit ley
+	 * @param   RdfPaymentInfointegration  &$paymentDetailFields  object to return
 	 *
 	 * @return bool true on success
 	 *
@@ -67,8 +67,6 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 		$date = $session->getFormattedStartDate();
 
 		$uniqueId = $attendee->getRegistrationUniqueId();
-
-		$paymentDetailFields = new stdclass;
 
 		$paymentDetailFields->title = $attendee->replaceTags(JText::_('PLG_REDFORM_INTEGRATION_REDFORM_TITLE'));
 
