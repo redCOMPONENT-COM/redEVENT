@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="redEVENT" default="site" basedir=".">
 
-	<property file="build/build.properties"/>
+	<property file="build.properties"/>
 
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
 	<property name="comp.name" value="redevent"/>
-	<property name="dirs.root" value="."/>
+	<property name="dirs.root" value=".."/>
 	<property name="dirs.tmp" value="tmp"/>
 	<property name="dirs.release" value="release"/>
 	<property name="www.template.site" value="protostar"/>
 	<property name="www.template.admin" value="hathor"/>
 	<property name="version" value="dev"/>
 
-	<taskdef name="gitversion" classname="build.phingext.GitVersionTask"/>
-	<taskdef name="gitdate" classname="build.phingext.GitDateTask"/>
-	<taskdef name="extractversion" classname="build.ExtractVersionTask" />
+	<taskdef name="gitversion" classname="phingext.GitVersionTask"/>
+	<taskdef name="gitdate" classname="phingext.GitDateTask"/>
+	<taskdef name="extractversion" classname="phingext.ExtractVersionTask" />
 
 	<!--
 	====================================================================================================
@@ -46,7 +46,7 @@
 	====================================================================================================
 	-->
 
-	<target name="release" description="Installation Package for Joomla! 1.6+"
+	<target name="release" description="Installation Package for Joomla!"
 			depends="setup-properties">
 
 		<delete dir="${dirs.release}" quiet="yes" includeemptydirs="false"/>
