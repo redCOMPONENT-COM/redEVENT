@@ -20,7 +20,9 @@ gulp.task('release',
 	[
 		'release:redevent',
 		'release:plugins',
-		'release:languages'
+		'release:languages',
+		'release:redeventsync',
+		'release:redeventb2b'
 	], function() {
 		fs.readFile( '../component/redevent.xml', function(err, data) {
 			parser.parseString(data, function (err, result) {
@@ -50,6 +52,38 @@ gulp.task('release:redevent', function (cb) {
 			// We will output where release package is going so it is easier to find
 			console.log('Creating new release file in: ' + path.join(config.release_dir, fileName));
 			gulp.src('../component/**/*')
+				.pipe(zip(fileName))
+				.pipe(gulp.dest(config.release_dir))
+				.on('end', cb);
+		});
+	});
+});
+
+gulp.task('release:redeventsync', function (cb) {
+	fs.readFile( '../redeventsync/redeventsync.xml', function(err, data) {
+		parser.parseString(data, function (err, result) {
+			var version = result.extension.version[0];
+			var fileName = config.skipVersion ? 'redeventsync.zip' : 'redeventsync-v' + version + '.zip';
+
+			// We will output where release package is going so it is easier to find
+			console.log('Creating new release file in: ' + path.join(config.release_dir, fileName));
+			gulp.src('../redeventsync/**/*')
+				.pipe(zip(fileName))
+				.pipe(gulp.dest(config.release_dir))
+				.on('end', cb);
+		});
+	});
+});
+
+gulp.task('release:redeventb2b', function (cb) {
+	fs.readFile( '../redeventb2b/redeventb2b.xml', function(err, data) {
+		parser.parseString(data, function (err, result) {
+			var version = result.extension.version[0];
+			var fileName = config.skipVersion ? 'redeventb2b.zip' : 'redeventb2b-v' + version + '.zip';
+
+			// We will output where release package is going so it is easier to find
+			console.log('Creating new release file in: ' + path.join(config.release_dir, fileName));
+			gulp.src('../redeventb2b/**/*')
 				.pipe(zip(fileName))
 				.pipe(gulp.dest(config.release_dir))
 				.on('end', cb);
