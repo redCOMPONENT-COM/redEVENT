@@ -2,7 +2,7 @@
 	"components" : ["redevent", "redeventb2b", "redeventsync"],
 	"libraries" : ["redevent", "redeventb2b", "redeventsync"],
 	"modules" : {
-		"frontend" : [
+		"site" : [
 			"mod_redevent",
 			"mod_redevent_all_events",
 			"mod_redevent_attending",
@@ -20,7 +20,7 @@
 		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
-		"jomsocial" : ["plg_js_redevent"],
+		"jomsocial" : ["redevent"],
 		"josetta_ext" : [
 			"redeventcategory",
 			"redeventcustomfield",
@@ -32,7 +32,7 @@
 			"redeventvenue",
 			"redeventvenuecategory"
 		],
-		"redevent" : ["redevent_jomsocial", "redmemberlogin", "redeventsync"],
+		"redevent" : ["jomsocial", "redmemberlogin"],
 		"redform" : ["paymentnotificationemail"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
