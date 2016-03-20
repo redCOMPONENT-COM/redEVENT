@@ -19,8 +19,8 @@ var parser      = new xml2js.Parser();
 gulp.task('release',
 	[
 		'release:redevent',
-		'release:plugins'
-		//'release:languages'
+		'release:plugins',
+		'release:languages'
 	], function() {
 		fs.readFile( '../component/redevent.xml', function(err, data) {
 			parser.parseString(data, function (err, result) {
@@ -64,3 +64,34 @@ gulp.task('release:plugins',
 gulp.task('release:modules',
 	jgulp.src.modules.getModulesTasks('release:modules', 'site')
 );
+
+gulp.task('release:languages', function() {
+	var langPath = '../languages';
+	var releaseDir = path.join(config.release_dir, 'language');
+
+	var folders = fs.readdirSync(langPath)
+		.map(function(file){
+			return path.join(langPath, file);
+		})
+		.filter(function(file) {
+			return fs.statSync(file).isDirectory();
+		});
+
+	var tasks = folders.map(function(directory) {
+		return fs.readFile(path.join(directory, 'install.xml'), function(err, data) {
+			parser.parseString(data, function (err, result) {
+				var lang = path.basename(directory);
+				var version = result.extension.version[0];
+				var fileName = config.skipVersion ? extension.name + '_' + lang + '.zip' : extension.name + '_' + lang + '-v' + version + '.zip';
+
+				return gulp.src([
+						directory + '/**'
+					])
+					.pipe(zip(fileName))
+					.pipe(gulp.dest(releaseDir));
+			});
+		});
+	});
+
+	return tasks;
+});
