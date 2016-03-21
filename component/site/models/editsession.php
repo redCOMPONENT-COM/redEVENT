@@ -127,12 +127,18 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
+		// Special cases for easy layout.
 		if (empty($data['eventid']))
 		{
 			if (isset($data['event']['id']) && $data['event']['title'])
 			{
 				$form->setFieldAttribute('eventid', 'required', 'false');
 			}
+		}
+		elseif (!isset($data['eventid']))
+		{
+			$form->setFieldAttribute('title', 'required', 'true', 'event');
+			$form->setFieldAttribute('categories', 'required', 'true', 'event');
 		}
 
 		// First get the data from form itself

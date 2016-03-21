@@ -420,7 +420,6 @@
 					default=""
 					label="COM_REDEVENT_EVENT_TITLE"
 					description ="COM_REDEVENT_EVENT_TITLE"
-					required="true"
 					class="inputbox" />
 
 			<field
@@ -428,7 +427,6 @@
 					type="remanagedcategorylist"
 					label="COM_REDEVENT_CATEGORY"
 					description ="COM_REDEVENT_CATEGORY"
-					required="true"
 					multiple="true"
 					acl_check="true"
 					published="1"
