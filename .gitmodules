@@ -4,3 +4,6 @@
 [submodule ".travis/coding-standards/Joomla"]
 	path = .travis/coding-standards/Joomla
 	url = https://github.com/joomla/coding-standards.git
+[submodule "build/redFORM"]
+	path = build/redFORM
+	url = git@github.com:redCOMPONENT-COM/redFORM.git
