@@ -16,7 +16,7 @@ var uglify      = require('gulp-uglify');
 var zip         = require('gulp-zip');
 
 var baseTask  = 'components.redevent';
-var extPath   = './component';
+var extPath   = '../component';
 var mediaPath = extPath + '/media/com_redevent';
 var pluginsPath = extPath + '/plugins';
 

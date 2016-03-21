@@ -16,7 +16,7 @@ var uglify      = require('gulp-uglify');
 var zip         = require('gulp-zip');
 
 var baseTask  = 'components.redeventsync';
-var extPath   = './redeventsync';
+var extPath   = '../redeventsync';
 var mediaPath = extPath + '/media/com_redeventsync';
 
 // Clean

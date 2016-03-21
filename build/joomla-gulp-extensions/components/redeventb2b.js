@@ -16,7 +16,7 @@ var uglify      = require('gulp-uglify');
 var zip         = require('gulp-zip');
 
 var baseTask  = 'components.redeventb2b';
-var extPath   = './redeventb2b';
+var extPath   = '../redeventb2b';
 var mediaPath = extPath + '/media/com_redeventb2b';
 
 // Clean

@@ -16,8 +16,8 @@ var parser      = new xml2js.Parser();
 var path       	= require('path');
 
 module.exports.addModule = function (name) {
-	var baseTask  = 'modules.frontend.' + name;
-	var extPath   = '../modules/frontend/' + name;
+	var baseTask  = 'modules.backend.' + name;
+	var extPath   = '../modules/backend/' + name;
 	var mediaPath = extPath + '/media';
 
 	// Clean
@@ -85,7 +85,7 @@ module.exports.addModule = function (name) {
 					var fileName = config.skipVersion ? name + '.zip' : name + '-v' + version + '.zip';
 
 					// We will output where release package is going so it is easier to find
-					var releasePath = path.join(config.release_dir, 'modules/frontend');
+					var releasePath = path.join(config.release_dir, 'modules/backend');
 					console.log('Creating new release file in: ' + releasePath);
 					return gulp.src([
 							extPath + '/**'

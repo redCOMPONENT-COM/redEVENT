@@ -96,7 +96,7 @@ gulp.task('release:plugins',
 );
 
 gulp.task('release:modules',
-	jgulp.src.modules.getModulesTasks('release:modules', 'site')
+	jgulp.src.modules.getModulesTasks('release:modules', 'frontend')
 );
 
 gulp.task('release:languages', function() {

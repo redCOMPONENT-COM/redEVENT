@@ -2,7 +2,7 @@
 	"components" : ["redevent", "redeventb2b", "redeventsync"],
 	"libraries" : ["redevent", "redeventb2b", "redeventsync"],
 	"modules" : {
-		"site" : [
+		"frontend" : [
 			"mod_redevent",
 			"mod_redevent_all_events",
 			"mod_redevent_attending",
