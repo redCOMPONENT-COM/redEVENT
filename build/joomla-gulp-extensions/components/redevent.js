@@ -33,23 +33,23 @@ gulp.task('clean:' + baseTask,
 });
 
 // Clean: frontend
-gulp.task('clean:' + baseTask + ':frontend', function(cb) {
-	del(config.wwwDir + '/components/com_redevent', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':frontend', function() {
+	del.sync(config.wwwDir + '/components/com_redevent', {force : true});
 });
 
 // Clean: backend
-gulp.task('clean:' + baseTask + ':backend', function(cb) {
-	del(config.wwwDir + '/administrator/components/com_redevent', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':backend', function() {
+	del.sync(config.wwwDir + '/administrator/components/com_redevent', {force : true});
 });
 
 // Clean: media
-gulp.task('clean:' + baseTask + ':media', function(cb) {
-	del(config.wwwDir + '/media/com_redevent', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':media', function() {
+	del.sync(config.wwwDir + '/media/com_redevent', {force : true});
 });
 
 // Clean: plugins
-gulp.task('clean:' + baseTask + ':plugins', function(cb) {
-	del(config.wwwDir + '/plugins/redform_integration/redevent', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':plugins', function() {
+	del.sync(config.wwwDir + '/plugins/redform_integration/redevent', {force : true});
 });
 
 // Copy
@@ -66,6 +66,7 @@ gulp.task('copy:' + baseTask,
 
 // Copy: frontend
 gulp.task('copy:' + baseTask + ':frontend', ['clean:' + baseTask + ':frontend'], function() {
+	console.log(extPath + '/site/**');
 	return gulp.src(extPath + '/site/**')
 		.pipe(gulp.dest(config.wwwDir + '/components/com_redevent'));
 });
