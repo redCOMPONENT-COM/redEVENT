@@ -995,7 +995,6 @@ class RedeventModelBasesessionlist extends RModel
 		$query->where('(c.access IN (' . $gids . '))');
 		$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . '))');
 
-
 		if ($filter_venue = $this->getState('filter_venue'))
 		{
 			$query->where(' l.id = ' . $this->_db->Quote($filter_venue));

@@ -7,12 +7,15 @@
  * @license    GNU General Public License
  */
 
+// Register library prefix
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 /**
  * Test class for recurrence.
  *
  * @package  Redevent.UnitTest
  */
-class recurrenceTest extends JoomlaTestCase
+class recurrenceTest extends TestCaseDatabase
 {
 	/**
 	 * Data provider

@@ -2,7 +2,7 @@
 /**
  * Command line script for executing PHPCS during a Travis build.
  *
- * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -10,25 +10,18 @@
 (php_sapi_name() == 'cli' ?: die('CLI only'));
 
 // Script defines
-define('REPO_BASE', dirname(__DIR__));
+define('REPO_BASE', dirname(dirname(__DIR__)));
 
 // Require Composer autoloader
-if (!file_exists(REPO_BASE . '/vendor/autoload.php'))
+if (!file_exists(REPO_BASE . '/tests/vendor/autoload.php'))
 {
 	fwrite(STDOUT, "\033[37;41mThis script requires Composer to be set up, please run 'composer install' first.\033[0m\n");
 }
 
-require REPO_BASE . '/vendor/autoload.php';
+require REPO_BASE . '/tests/vendor/autoload.php';
 
 // Welcome message
 fwrite(STDOUT, "\033[32;1mInitializing PHP_CodeSniffer checks.\033[0m\n");
-
-// Files
-$files = array(
-//	REPO_BASE . '/component',
-	REPO_BASE . '/plugins',
-//	REPO_BASE . '/modules',
-);
 
 // Ignored files
 $ignored = array(
@@ -49,10 +42,15 @@ $ignored = array(
 
 // Build the options for the sniffer
 $options = array(
-	'files'        => $files,
-	'standard'     => array(__DIR__ . '/coding-standards/Joomla'),
+	'files'        => array(
+		REPO_BASE . '/component',
+		REPO_BASE . '/plugins'
+	),
+	'standard'     => array( REPO_BASE . '/tests/checkers/phpcs/Joomla'),
 	'ignored'      => $ignored,
-	'showProgress' => true
+	'showProgress' => true,
+	'verbosity' => false,
+	'extensions' => array('php')
 );
 
 // Instantiate the sniffer

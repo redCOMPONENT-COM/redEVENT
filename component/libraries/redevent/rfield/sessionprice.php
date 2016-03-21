@@ -284,7 +284,6 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		return parent::getSku() ?: 'REGISTRATION';
 	}
 
-
 	/**
 	 * Is required ?
 	 *
