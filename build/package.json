@@ -35,6 +35,7 @@
     "gulp-util": "^3.0.7",
     "gulp-zip": "^3.0.2",
     "joomla-gulp": "julienV/joomla-gulp#function-exports",
+    "redform": "redCOMPONENT-COM/redFORM#develop",
     "merge-stream": "^1.0.0",
     "path": "^0.12.7",
     "require-dir": "^0.3.0",

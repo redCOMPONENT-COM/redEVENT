@@ -5,6 +5,12 @@
 	"require"    : {
 		"php": ">=5.3.10"
 	},
+	"repositories": [
+		{
+			"type": "git",
+			"url": "git@github.com:redCOMPONENT-COM/redFORM.git"
+		}
+	],
 	"require-dev": {
 		"squizlabs/php_codesniffer": "1.*",
 		"phpmd/phpmd": "*",
@@ -13,6 +19,7 @@
 		"joomla-projects/joomla-browser": "v3.4.8.2",
 		"codegyre/robo": "~0.6",
 		"redcomponent/robo": "dev-master",
+		"redCOMPONENT-COM/redFORM": "dev-develop",
 		"flow/jsonpath": "dev-master",
 		"fzaninotto/faker": "^1.5",
 		"joomla-projects/selenium-server-standalone": "v2.51.0",

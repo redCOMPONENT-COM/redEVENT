@@ -276,22 +276,22 @@ class RoboFile extends \Robo\Tasks
 		     ->arg($this->testsFolder . 'acceptance/install/')
 		     ->run()
 		     ->stopOnFail();
-
-		$this->taskCodecept()
-		     ->arg('--steps')
-		     ->arg('--debug')
-		     ->arg('--fail-fast')
-		     ->arg($this->testsFolder . 'acceptance/administrator/')
-		     ->run()
-		     ->stopOnFail();
-
-		$this->taskCodecept()
-		     ->arg('--steps')
-		     ->arg('--debug')
-		     ->arg('--fail-fast')
-		     ->arg($this->testsFolder . 'acceptance/uninstall/')
-		     ->run()
-		     ->stopOnFail();
+//
+//		$this->taskCodecept()
+//		     ->arg('--steps')
+//		     ->arg('--debug')
+//		     ->arg('--fail-fast')
+//		     ->arg($this->testsFolder . 'acceptance/administrator/')
+//		     ->run()
+//		     ->stopOnFail();
+//
+//		$this->taskCodecept()
+//		     ->arg('--steps')
+//		     ->arg('--debug')
+//		     ->arg('--fail-fast')
+//		     ->arg($this->testsFolder . 'acceptance/uninstall/')
+//		     ->run()
+//		     ->stopOnFail();
 
 		$this->killSelenium();
 	}
