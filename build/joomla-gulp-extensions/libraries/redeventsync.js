@@ -15,7 +15,7 @@ var zip         = require('gulp-zip');
 
 var name = 'redeventsync';
 var baseTask  = 'libraries.' + name;
-var extPath   = './redeventsync/libraries/' + name;
+var extPath   = '../redeventsync/libraries/' + name;
 var mediaPath = extPath + '/media/' + name;
 
 // Clean
