@@ -29,18 +29,18 @@ gulp.task('clean:' + baseTask,
 });
 
 // Clean: library
-gulp.task('clean:' + baseTask + ':library', function(cb) {
-	del(config.wwwDir + '/libraries/' + name, {force : true}, cb);
+gulp.task('clean:' + baseTask + ':library', function() {
+	del.sync(config.wwwDir + '/libraries/' + name, {force : true});
 });
 
 // Clean: manifest
-gulp.task('clean:' + baseTask + ':manifest', function(cb) {
-	del(config.wwwDir + '/administrator/manifests/libraries/' + name + '.xml', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':manifest', function() {
+	del.sync(config.wwwDir + '/administrator/manifests/libraries/' + name + '.xml', {force : true});
 });
 
 // Clean: media
-gulp.task('clean:' + baseTask + ':media', function(cb) {
-	del(config.wwwDir + '/media/' + name, {force : true}, cb);
+gulp.task('clean:' + baseTask + ':media', function() {
+	del.sync(config.wwwDir + '/media/' + name, {force : true});
 });
 
 // Copy
