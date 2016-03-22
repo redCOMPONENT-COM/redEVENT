@@ -15,7 +15,7 @@ class InstallExtensionCest
 		$path = $I->getConfiguration('install packages url');
 		$buildPath = dirname(dirname(dirname(__DIR__))) . '/build';
 
-		$I->installExtensionFromUrl('https://github.com/redCOMPONENT-COM/redCORE/releases/download/1.8.1/redCORE-v1.8.1.zip');
+		$I->installExtensionFromFolder($buildPath . '/redFORM/build/redCORE/extensions');
 		$I->installExtensionFromFolder($buildPath . '/redFORM/component');
 		$I->installExtensionFromUrl($path . 'redevent.zip');
 	}

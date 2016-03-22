@@ -23,6 +23,7 @@ before_script:
 - sudo apt-get install fluxbox -y --force-yes
 - fluxbox &
 - sleep 3 # give fluxbox some time to start
+- git submodule update --init --recursive
 - cd build
 - npm install gulp -g # install globally so that it's available to robo
 - npm install

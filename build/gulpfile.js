@@ -8,7 +8,7 @@ var xml2js      = require('xml2js');
 var fs          = require('fs');
 var path        = require('path');
 var del         = require('del');
-var redcore     = requireDir('./redCORE/build/gulp-redcore', {recurse: true});
+var redcore     = requireDir('./redFORM/build/redCORE/build/gulp-redcore', {recurse: true});
 
 var jgulp = requireDir('./node_modules/joomla-gulp', {recurse: true});
 var dir = requireDir('./joomla-gulp-extensions', {recurse: true});
