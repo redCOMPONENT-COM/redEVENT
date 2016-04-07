@@ -82,14 +82,6 @@ JFactory::getDocument()->addScriptDeclaration(
 						</div>
 						<div class="control-group">
 							<div class="control-label">
-								<?php echo $form->getLabel('dummy'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $form->getInput('dummy'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
 								<?php echo $form->getLabel('categories', 'event'); ?>
 							</div>
 							<div class="controls">
@@ -142,14 +134,6 @@ JFactory::getDocument()->addScriptDeclaration(
 							</div>
 							<div class="controls">
 								<?php echo $form->getInput('datdescription', 'event'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->customfields[1]->getLabel(); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->customfields[1]->render(); ?>
 							</div>
 						</div>
 					</div>

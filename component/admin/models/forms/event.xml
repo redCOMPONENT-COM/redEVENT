@@ -212,7 +212,7 @@
 
         <field
                 name="showfields"
-                type="RedformField"
+                type="redform.field"
 				filterform="redform_id"
                 class="inputbox"
                 multiple="true"

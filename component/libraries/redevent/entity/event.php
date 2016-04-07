@@ -40,4 +40,21 @@ class RedeventEntityEvent extends RedeventEntityBase
 
 		return $this->creator;
 	}
+
+	/**
+	 * Return associated redform form
+	 *
+	 * @return RdfEntityForm
+	 */
+	public function getForm()
+	{
+		$item = $this->getItem();
+
+		if (!empty($item))
+		{
+			return RdfEntityForm::load($item->redform_id);
+		}
+
+		return false;
+	}
 }

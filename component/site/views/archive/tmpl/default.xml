@@ -15,16 +15,12 @@
 			</field>
 
 			<field name="category_id" type="recategorylist" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC">
-                <option value="0">JSelect</option>
-            </field>
-      <field name="venue_id" type="revenue" default="0" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE" />
+				<option value="0">JSelect</option>
+			</field>
 
-			<field name="display_limit"
-			       type="text" size="5"
-			       default=""
-			       label="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT"
-			       description="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT_TIP"
-			       />
+			<field name="venue_id" type="revenuelist" default="0" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE">
+				<option value="0">JSelect</option>
+			</field>
 
 			<field name="show_pagination" type="list"
 				description="JGLOBAL_PAGINATION_DESC"

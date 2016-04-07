@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="community" method="upgrade">
+	<name>PLG_JOMSOCIAL_REDEVENT</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>3.0.b.3.1</version>
+	<tag>##VERSION##</tag>
+	<isapplication>true</isapplication>
+	<description>PLG_JOMSOCIAL_REDEVENT_XML_DESCRIPTION</description>
+
+	<files>
+		<filename plugin="redevent">redevent.php</filename>
+		<filename>redevent/favicon.png</filename>
+		<filename>redevent/style.css</filename>
+    <filename>index.html</filename>
+    <folder>language</folder>
+  </files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="coreapp" type="list" default="0" label="Core Application" description="Causes this application to not appearin the users applications list but it will allow this application to appear in the user profile automatically if selected.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this plugin">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+		    <field type="spacer" hr="true" name="spacer"/>
+		    <field name="showattending" type="list" default="1" label="Show Attending" description="Select whether to show the events the user is registered to">
+		      <option value="1">Yes</option>
+		      <option value="0">No</option>
+		    </field>
+		    <field name="showmanaging" type="list" default="1" label="Show Managing" description="Select whether to show the events the user is managing">
+		      <option value="1">Yes</option>
+		      <option value="0">No</option>
+		    </field>
+		    <field name="dateformat" type="text" default="%d/%m/%Y" label="Date Format" description="date format for event. See php function strftime for details"/>
+  		</fieldset>
+ 		</fields>
+	</config>
+
+</extension>

@@ -27,6 +27,21 @@ class RedeventViewArchive extends RedeventViewSessionlist
 	 */
 	public function display($tpl = null)
 	{
+		$app = JFactory::getApplication();
+		$params = $app->getParams();
+
+		$app     = JFactory::getApplication();
+		$active  = $app->getMenu()->getActive();
+		$title   = null;
+
+		if ($active && strpos($active->link, 'option=com_redevent&view=archive'))
+		{
+			$model = $this->getModel();
+			$model->setState('filter_order_Dir', strtoupper($app->input->getCmd('filter_order_Dir', $params->get('archive_ordering', 'ASC'))) == 'DESC' ? 'DESC' : 'ASC');
+			$model->setState('filter_category', $app->input->get('filter_category', $params->get('category_id', 0), 'int'));
+			$model->setState('filter_venue', $app->input->get('filter_venue', $params->get('venue_id', 0), 'int'));
+		}
+
 		$this->prepareView();
 
 		$mainframe = JFactory::getApplication();

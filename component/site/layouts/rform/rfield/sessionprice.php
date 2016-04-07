@@ -12,28 +12,32 @@ defined('_JEXEC') or die;
 $data = $displayData;
 $properties = $data->getInputProperties();
 ?>
-<?php if ($data->readonly || !empty($properties['readonly'])): ?>
-	<?php
-		$option = $data->getSelectedOption();
-		$properties = $data->getInputProperties();
-		$properties['type'] = 'hidden';
-		$properties['value'] = $option->value;
-		$properties['price'] = $option->price;
-		$properties['vat'] = $option->vat;
-		$properties['readonly'] = 'readonly';
-	?>
-	<input <?php echo $data->propertiesToString($properties); ?>/>
-	<?php echo $option->currency . ' ' . $option->price; ?>
+<?php if (!count($data->options)): ?>
+	<?php echo JText::_('COM_REDEVENT_EVENT_PRICE_FREE'); ?>
 <?php else: ?>
-	<div class="fieldoptions">
+	<?php if ($data->readonly || !empty($properties['readonly'])): ?>
+		<?php
+			$option = $data->getSelectedOption();
+			$properties = $data->getInputProperties();
+			$properties['type'] = 'hidden';
+			$properties['value'] = $option->value;
+			$properties['price'] = $option->price;
+			$properties['vat'] = $option->vat;
+			$properties['readonly'] = 'readonly';
+		?>
+		<input <?php echo $data->propertiesToString($properties); ?>/>
+		<?php echo $option->currency . ' ' . $option->price; ?>
+	<?php else: ?>
+		<div class="fieldoptions">
 
-		<?php foreach ($data->options as $option): ?>
-			<div class="fieldoption">
-				<?php $properties = $data->getOptionProperties($option); ?>
-				<input <?php echo $data->propertiesToString($properties); ?>/>
-				<?php echo $option->label; ?>
-			</div>
-		<?php endforeach; ?>
+			<?php foreach ($data->options as $option): ?>
+				<div class="fieldoption">
+					<?php $properties = $data->getOptionProperties($option); ?>
+					<input <?php echo $data->propertiesToString($properties); ?>/>
+					<?php echo $option->label; ?>
+				</div>
+			<?php endforeach; ?>
 
-	</div>
+		</div>
+	<?php endif; ?>
 <?php endif; ?>
