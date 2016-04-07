@@ -32,7 +32,8 @@
 			"redeventvenue",
 			"redeventvenuecategory"
 		],
-		"redevent" : ["jomsocial", "redmemberlogin"],
+		"redevent" : ["jomsocial", "redmemberlogin", "maerskregistration", "notifycompanyadmin"],
+		"redevent_config" : ["maersk"],
 		"redform" : ["paymentnotificationemail"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],

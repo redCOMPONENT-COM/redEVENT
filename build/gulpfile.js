@@ -20,6 +20,7 @@ gulp.task('release',
 	[
 		'release:redevent',
 		'release:plugins',
+		'release:modules',
 		'release:languages',
 		'release:redeventsync',
 		'release:redeventb2b'
