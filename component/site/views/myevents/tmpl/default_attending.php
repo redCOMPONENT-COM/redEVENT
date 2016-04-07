@@ -157,7 +157,7 @@ $cancelCol = array_reduce(
 	<input type="hidden" name="limitstart" value="<?php echo $this->lists['limitstart']; ?>" class="redajax_limitstart" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" class="redajax_order"/>
 	<input type="hidden" name="filter_order_Dir" value="" class="redajax_order_dir"/>
-	<input type="hidden" name="task" value="myevents.attending" />
+	<input type="hidden" name="task" value="myevents.attending"/>
 
 </form>
 
