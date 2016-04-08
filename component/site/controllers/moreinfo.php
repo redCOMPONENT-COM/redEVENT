@@ -42,7 +42,7 @@ class RedeventControllerMoreinfo extends RedeventControllerFront
 
 		if ($xref && $email && JMailHelper::isEmailAddress($email))
 		{
-			$mailer = JFactory::getMailer();
+			$mailer = RdfHelper::getMailer();
 			$mailer->IsHTML(true);
 
 			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', RedeventHelper::getSessionFullTitle($details)));
