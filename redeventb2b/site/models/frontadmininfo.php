@@ -69,7 +69,7 @@ class Redeventb2bModelFrontadmininfo extends JModelLegacy
 
 		$details = $this->getSessionDetails();
 
-		$mailer = JFactory::getMailer();
+		$mailer = RdfHelper::getMailer();
 		$mailer->IsHTML(true);
 		$mailer->AddReplyTo(array($user->get('email'), $user->get('name')));
 

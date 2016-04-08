@@ -106,7 +106,7 @@ class RedeventModelSignup extends RModel
 		$mainframe = JFactory::getApplication();
 		jimport('joomla.mail.helper');
 		/* Start the mailer object */
-		$this->mailer = JFactory::getMailer();
+		$this->mailer = RdfHelper::getMailer();
 		$this->mailer->isHTML(true);
 		$this->mailer->From = $mainframe->getCfg('mailfrom');
 		$this->mailer->FromName = $mainframe->getCfg('sitename');

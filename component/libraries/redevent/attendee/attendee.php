@@ -474,7 +474,7 @@ class RedeventAttendee extends JObject
 		// Update image paths in body
 		$body = RedeventHelperOutput::ImgRelAbs($body);
 
-		$mailer = JFactory::getMailer();
+		$mailer = RdfHelper::getMailer();
 
 		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
 		$mailer->setSender($sender);
@@ -953,7 +953,7 @@ class RedeventAttendee extends JObject
 		$mainframe = JFactory::getApplication();
 
 		/* Load the mailer */
-		$mailer = JFactory::getMailer();
+		$mailer = RdfHelper::getMailer();
 		$mailer->isHTML(true);
 		$mailer->From = $mainframe->getCfg('mailfrom');
 		$mailer->FromName = $mainframe->getCfg('sitename');

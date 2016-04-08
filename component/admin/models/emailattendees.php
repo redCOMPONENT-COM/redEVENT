@@ -166,7 +166,7 @@ class RedeventModelEmailattendees extends RModel
 		$subject = $taghelper->replaceTags($subject);
 		$body    = $taghelper->replaceTags($body);
 
-		$mailer = JFactory::getMailer();
+		$mailer = RdfHelper::getMailer();
 		$mailer->setSubject($subject);
 		$mailer->MsgHTML('<html><body>' . $body . '</body></html>');
 

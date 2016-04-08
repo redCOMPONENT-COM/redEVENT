@@ -123,7 +123,7 @@ class PlgRedformPaymentnotificationemail extends JPlugin
 	private function getMailer()
 	{
 		$app = JFactory::getApplication();
-		$mailer = JFactory::getMailer();
+		$mailer = RdfHelper::getMailer();
 
 		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
 		$mailer->setSender($sender);
