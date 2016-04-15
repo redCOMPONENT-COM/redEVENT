@@ -132,30 +132,49 @@ class RedeventsyncModelLogs extends RModelList
 	 */
 	public function archiveold()
 	{
+		$params = JComponentHelper::getParams('com_redeventsync');
+
+		// How many do we archive at once
+		$limit = 30000;
+
 		$db = $this->_db;
-
-		// Until it gets possible to do insert select in joomla...
-//		$query = 'INSERT INTO ' . $db->quoteName('#__redeventsync_archive')
-//			. ' SELECT * FROM ' . $db->quoteName('#__redeventsync_logs')
-//			. ' WHERE DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30';
-//		$db->setQuery($query);
-
-		$queryInsert = $db->getQuery(true)
-			->insert($db->quoteName('#__redeventsync_archive'));
 
 		$querySelect = $db->getQuery(true)
 			->select('*')
 			->from($db->quoteName('#__redeventsync_logs'))
-			->where('DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30');
+			->where('DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30')
+			->order('date ASC');
 
-		$db->setQuery($queryInsert . '' . $querySelect);
-		$db->execute();
+		$db->setQuery($querySelect, 0, $limit);
+		$rows = $db->loadAssocList();
+
+		if (!$rows)
+		{
+			return 0;
+		}
+
+		$defaultFolder = JPATH_ADMINISTRATOR . '/components/com_redeventsync/archive';
+		$folder = $params->get('archive_path') ?: $defaultFolder;
+		$folder = file_exists($folder) ? $folder : $defaultFolder;
+
+		$date = JFactory::getDate(end($rows)['date']);
+		$fp = fopen($folder . '/archive_' . $date->format('Ymd-his') . '.csv', 'w');
+
+		fputcsv($fp, array_keys($rows[0]));
+
+		foreach ($rows as $row)
+		{
+			fputcsv($fp, $row);
+		}
+
+		fclose($fp);
 
 		$affected = $db->getAffectedRows();
 
 		$queryDelete = $db->getQuery(true)
 			->delete($db->quoteName('#__redeventsync_logs'))
-			->where('DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30');
+			->where('DATEDIFF(NOW() , ' . $db->quoteName('date') . ') > 30')
+			->order('date ASC LIMIT ' . $limit);
 
 		$db->setQuery($queryDelete);
 		$db->execute();

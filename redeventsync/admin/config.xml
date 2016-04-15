@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
+	<fieldset name="general" label="COM_REDEVENTSYNC_SETTINGS_GENERAL_LABEL"
+			  description="COM_REDEVENTSYNC_SETTINGS_GENERAL_DESC">
+		<field
+				name="archive_path"
+				type="text"
+				label="COM_REDEVENTSYNC_SETTINGS_ARCHIVE_PATH_LABEL"
+				description="COM_REDEVENTSYNC_SETTINGS_ARCHIVE_PATH_DESC"
+		/>
+	</fieldset>
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
@@ -14,5 +23,5 @@
 			filter="rules"
 			component="com_redeventsync"
 			section="component" />
-	</fieldset>	
+	</fieldset>
 </config>

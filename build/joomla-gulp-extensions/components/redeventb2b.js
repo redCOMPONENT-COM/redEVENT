@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 
-var config = require('../../gulp-config.json');
+var config = require('../../config.js');
 
 // Dependencies
 var browserSync = require('browser-sync');
@@ -31,18 +31,18 @@ gulp.task('clean:' + baseTask,
 });
 
 // Clean: frontend
-gulp.task('clean:' + baseTask + ':frontend', function(cb) {
-	del(config.wwwDir + '/components/com_redeventb2b', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':frontend', function() {
+	del.sync(config.wwwDir + '/components/com_redeventb2b', {force : true});
 });
 
 // Clean: backend
-gulp.task('clean:' + baseTask + ':backend', function(cb) {
-	del(config.wwwDir + '/administrator/components/com_redeventb2b', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':backend', function() {
+	del.sync(config.wwwDir + '/administrator/components/com_redeventb2b', {force : true});
 });
 
 // Clean: media
-gulp.task('clean:' + baseTask + ':media', function(cb) {
-	del(config.wwwDir + '/media/com_redeventb2b', {force : true}, cb);
+gulp.task('clean:' + baseTask + ':media', function() {
+	del.sync(config.wwwDir + '/media/com_redeventb2b', {force : true});
 });
 
 // Copy
