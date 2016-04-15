@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 
-var config = require('../../gulp-config.json');
+var config = require('../../config.js');
 
 // Dependencies
 var browserSync = require('browser-sync');
@@ -21,13 +21,13 @@ module.exports.addModule = function (name) {
 	var mediaPath = extPath + '/media';
 
 	// Clean
-	gulp.task('clean:' + baseTask, ['clean:' + baseTask + ':media'], function(cb) {
-		del(config.wwwDir + '/modules/' + name, {force: true}, cb);
+	gulp.task('clean:' + baseTask, ['clean:' + baseTask + ':media'], function() {
+		del.sync(config.wwwDir + '/modules/' + name, {force: true});
 	});
 
 	// Clean: Media
-	gulp.task('clean:' + baseTask + ':media', function(cb) {
-		del(config.wwwDir + '/media/' + name, {force: true}, cb);
+	gulp.task('clean:' + baseTask + ':media', function() {
+		del.sync(config.wwwDir + '/media/' + name, {force: true});
 	});
 
 	// Copy
