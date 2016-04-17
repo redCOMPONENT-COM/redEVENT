@@ -21,12 +21,14 @@ $action = JRoute::_('index.php?option=' . $option . '&view=' . $viewName);
  */
 $form = $this->form;
 $descriptionField = $this->form->getField('datdescription', 'event');
+$sessionDetailsField = $this->form->getField('details');
 
 JFactory::getDocument()->addScriptDeclaration(
 	"var easySubmitButton = function(task) {
 		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
 		{
-			" . ($descriptionField ? $descriptionField->save() : '') . "
+			" . ($descriptionField && $this->params->get('edit_description')? $descriptionField->save() : '') . "
+			" . ($sessionDetailsField && $this->params->get('edit_session_details')? $sessionDetailsField->save() : '') . "
 			Joomla.submitform(task);
 		}
 	};"
