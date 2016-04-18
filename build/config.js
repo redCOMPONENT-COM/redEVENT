@@ -16,6 +16,4 @@ if (argv.testRelease)
 
 config.skipVersion = argv.skipVersion ? 1 : 0;
 
-config.gitVersion = argv.gitVersion ? 1 : 0;;
-
 module.exports = config;

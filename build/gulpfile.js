@@ -10,6 +10,7 @@ var path        = require('path');
 var del         = require('del');
 var exec        = require('child_process').exec;
 var redcore     = requireDir('./redCORE/build/gulp-redcore', {recurse: true});
+var replace     = require('gulp-replace');
 
 var jgulp = requireDir('./node_modules/joomla-gulp', {recurse: true});
 var dir = requireDir('./joomla-gulp-extensions', {recurse: true});
@@ -18,7 +19,14 @@ var parser      = new xml2js.Parser();
 
 var gitDescribe = '';
 
-gulp.task('clean:release', ['git_version'], function(){
+var dateFormat = require('dateformat');
+var now = new Date();
+
+gulp.task('prepare:release', ['clean:release', 'git_version'], function(){
+	return del(config.release_dir, {force: true});
+});
+
+gulp.task('clean:release', function(){
 	return del(config.release_dir, {force: true});
 });
 
@@ -39,7 +47,7 @@ gulp.task('release',
 	], function() {
 		fs.readFile( '../component/redevent.xml', function(err, data) {
 			parser.parseString(data, function (err, result) {
-				var version = getVersion(result);
+				var version = getGitVersion(result);
 				var fileName = config.skipVersion ? extension.name + '_ALL_UNZIP_FIRST.zip' : extension.name + '-v' + version + '_ALL_UNZIP_FIRST.zip';
 				del.sync(path.join(config.release_dir, fileName), {force: true});
 
@@ -56,15 +64,17 @@ gulp.task('release',
 	}
 );
 
-gulp.task('release:redevent', ['clean:release'], function (cb) {
+gulp.task('release:redevent', ['prepare:release'], function (cb) {
 	fs.readFile( '../component/redevent.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
-			var version = result.extension.version[0];
+			var version = getGitVersion(result);
 			var fileName = config.skipVersion ? extension.name + '.zip' : extension.name + '-v' + version + '.zip';
 
 			// We will output where release package is going so it is easier to find
 			console.log('Creating new release file in: ' + path.join(config.release_dir, fileName));
 			gulp.src('../component/**/*')
+				.pipe(replace(/(##VERSION##)/g, gitDescribe))
+				.pipe(replace(/(##DATE##)/g, dateFormat(now, "dddd, mmmm dS, yyyy")))
 				.pipe(zip(fileName))
 				.pipe(gulp.dest(config.release_dir))
 				.on('end', cb);
@@ -72,7 +82,7 @@ gulp.task('release:redevent', ['clean:release'], function (cb) {
 	});
 });
 
-gulp.task('release:redeventsync', ['clean:release'], function (cb) {
+gulp.task('release:redeventsync', ['prepare:release'], function (cb) {
 	fs.readFile( '../redeventsync/redeventsync.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
 			var version = result.extension.version[0];
@@ -88,7 +98,7 @@ gulp.task('release:redeventsync', ['clean:release'], function (cb) {
 	});
 });
 
-gulp.task('release:redeventb2b', ['clean:release'], function (cb) {
+gulp.task('release:redeventb2b', ['prepare:release'], function (cb) {
 	fs.readFile( '../redeventb2b/redeventb2b.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
 			var version = result.extension.version[0];
@@ -112,7 +122,7 @@ gulp.task('release:modules',
 	jgulp.src.modules.getModulesTasks('release:modules', 'frontend')
 );
 
-gulp.task('release:languages', ['clean:release'], function() {
+gulp.task('release:languages', ['prepare:release'], function() {
 	var langPath = '../languages';
 	var releaseDir = path.join(config.release_dir, 'language');
 
@@ -149,11 +159,8 @@ function getGitDescribe(cb) {
 	})
 }
 
-function getVersion(xml) {
-	if (config.gitVersion && gitDescribe) {
-		return gitDescribe;
-	}
-	else {
-		return xml.extension.version[0];
-	}
+function getGitVersion(xml) {
+	if (!gitDescribe) throw "git describe not initialized";
+
+	return gitDescribe;
 }
