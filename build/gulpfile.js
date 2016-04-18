@@ -161,8 +161,7 @@ function getGitDescribe(cb) {
 
 function getGitVersion(xml) {
 	if (!gitDescribe) {
-		//throw "git describe not initialized";
-		return 'dummy';
+		throw "git describe not initialized";
 	}
 
 	return gitDescribe;
