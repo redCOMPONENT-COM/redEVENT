@@ -8,12 +8,25 @@ var xml2js      = require('xml2js');
 var fs          = require('fs');
 var path        = require('path');
 var del         = require('del');
+var exec        = require('child_process').exec;
 var redcore     = requireDir('./redCORE/build/gulp-redcore', {recurse: true});
 
 var jgulp = requireDir('./node_modules/joomla-gulp', {recurse: true});
 var dir = requireDir('./joomla-gulp-extensions', {recurse: true});
 
 var parser      = new xml2js.Parser();
+
+var gitDescribe = '';
+
+gulp.task('clean:release', ['git_version'], function(){
+	return del(config.release_dir, {force: true});
+});
+
+gulp.task('git_version', function(){
+	return getGitDescribe(function(str) {
+		gitDescribe = str;
+	});
+});
 
 // Override of the release script
 gulp.task('release',
@@ -26,7 +39,7 @@ gulp.task('release',
 	], function() {
 		fs.readFile( '../component/redevent.xml', function(err, data) {
 			parser.parseString(data, function (err, result) {
-				var version = result.extension.version[0];
+				var version = getVersion(result);
 				var fileName = config.skipVersion ? extension.name + '_ALL_UNZIP_FIRST.zip' : extension.name + '-v' + version + '_ALL_UNZIP_FIRST.zip';
 				del.sync(path.join(config.release_dir, fileName), {force: true});
 
@@ -43,7 +56,7 @@ gulp.task('release',
 	}
 );
 
-gulp.task('release:redevent', function (cb) {
+gulp.task('release:redevent', ['clean:release'], function (cb) {
 	fs.readFile( '../component/redevent.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
 			var version = result.extension.version[0];
@@ -59,7 +72,7 @@ gulp.task('release:redevent', function (cb) {
 	});
 });
 
-gulp.task('release:redeventsync', function (cb) {
+gulp.task('release:redeventsync', ['clean:release'], function (cb) {
 	fs.readFile( '../redeventsync/redeventsync.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
 			var version = result.extension.version[0];
@@ -75,7 +88,7 @@ gulp.task('release:redeventsync', function (cb) {
 	});
 });
 
-gulp.task('release:redeventb2b', function (cb) {
+gulp.task('release:redeventb2b', ['clean:release'], function (cb) {
 	fs.readFile( '../redeventb2b/redeventb2b.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
 			var version = result.extension.version[0];
@@ -99,7 +112,7 @@ gulp.task('release:modules',
 	jgulp.src.modules.getModulesTasks('release:modules', 'frontend')
 );
 
-gulp.task('release:languages', function() {
+gulp.task('release:languages', ['clean:release'], function() {
 	var langPath = '../languages';
 	var releaseDir = path.join(config.release_dir, 'language');
 
@@ -129,3 +142,18 @@ gulp.task('release:languages', function() {
 
 	return tasks;
 });
+
+function getGitDescribe(cb) {
+	exec('git describe', function (err, stdout, stderr) {
+		cb(stdout.split('\n').join(''))
+	})
+}
+
+function getVersion(xml) {
+	if (config.gitVersion && gitDescribe) {
+		return gitDescribe;
+	}
+	else {
+		return xml.extension.version[0];
+	}
+}
