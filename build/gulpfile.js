@@ -47,7 +47,7 @@ gulp.task('release',
 	], function() {
 		fs.readFile( '../component/redevent.xml', function(err, data) {
 			parser.parseString(data, function (err, result) {
-				var version = getGitVersion(result);
+				var version = gitDescribe;
 				var fileName = config.skipVersion ? extension.name + '_ALL_UNZIP_FIRST.zip' : extension.name + '-v' + version + '_ALL_UNZIP_FIRST.zip';
 				del.sync(path.join(config.release_dir, fileName), {force: true});
 
@@ -67,14 +67,14 @@ gulp.task('release',
 gulp.task('release:redevent', ['prepare:release'], function (cb) {
 	fs.readFile( '../component/redevent.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
-			var version = getGitVersion(result);
+			var version = gitDescribe;
 			var fileName = config.skipVersion ? extension.name + '.zip' : extension.name + '-v' + version + '.zip';
 
 			// We will output where release package is going so it is easier to find
 			console.log('Creating new release file in: ' + path.join(config.release_dir, fileName));
 			gulp.src('../component/**/*')
-				.pipe(replace(/(##VERSION##)/g, gitDescribe))
-				// .pipe(replace(/(##DATE##)/g, dateFormat(now, "dddd, mmmm dS, yyyy")))
+				// .pipe(replace(/(##VERSION##)/g, gitDescribe))
+				.pipe(replace(/(##DATE##)/g, dateFormat(now, "dddd, mmmm dS, yyyy")))
 				.pipe(zip(fileName))
 				.pipe(gulp.dest(config.release_dir))
 				.on('end', cb);
@@ -157,12 +157,4 @@ function getGitDescribe(cb) {
 	exec('git describe', function (err, stdout, stderr) {
 		cb(stdout.split('\n').join(''))
 	})
-}
-
-function getGitVersion(xml) {
-	if (!gitDescribe) {
-		throw "git describe not initialized";
-	}
-
-	return gitDescribe;
 }
