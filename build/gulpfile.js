@@ -73,8 +73,8 @@ gulp.task('release:redevent', ['prepare:release'], function (cb) {
 			// We will output where release package is going so it is easier to find
 			console.log('Creating new release file in: ' + path.join(config.release_dir, fileName));
 			gulp.src('../component/**/*')
-				.pipe(replace(/(##VERSION##)/g, gitDescribe))
-				.pipe(replace(/(##DATE##)/g, dateFormat(now, "dddd, mmmm dS, yyyy")))
+				// .pipe(replace(/(##VERSION##)/g, gitDescribe))
+				// .pipe(replace(/(##DATE##)/g, dateFormat(now, "dddd, mmmm dS, yyyy")))
 				.pipe(zip(fileName))
 				.pipe(gulp.dest(config.release_dir))
 				.on('end', cb);
@@ -160,7 +160,10 @@ function getGitDescribe(cb) {
 }
 
 function getGitVersion(xml) {
-	if (!gitDescribe) throw "git describe not initialized";
+	if (!gitDescribe) {
+		//throw "git describe not initialized";
+		return 'dummy';
+	}
 
 	return gitDescribe;
 }
