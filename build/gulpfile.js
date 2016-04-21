@@ -38,6 +38,7 @@ gulp.task('git_version', function(){
 gulp.task('release',
 	[
 		'release:redevent',
+		'release:modules',
 		'release:plugins',
 		'release:languages',
 		'release:redeventsync',
