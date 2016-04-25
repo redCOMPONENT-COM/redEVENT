@@ -21,12 +21,14 @@ $action = JRoute::_('index.php?option=' . $option . '&view=' . $viewName);
  */
 $form = $this->form;
 $descriptionField = $this->form->getField('datdescription', 'event');
+$sessionDetailsField = $this->form->getField('details');
 
 JFactory::getDocument()->addScriptDeclaration(
 	"var easySubmitButton = function(task) {
 		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
 		{
-			" . ($descriptionField ? $descriptionField->save() : '') . "
+			" . ($descriptionField && $this->params->get('edit_description')? $descriptionField->save() : '') . "
+			" . ($sessionDetailsField && $this->params->get('edit_session_details')? $sessionDetailsField->save() : '') . "
 			Joomla.submitform(task);
 		}
 	};"
@@ -80,6 +82,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('title', 'event'); ?>
 							</div>
 						</div>
+						<?php if ($this->params->get('edit_categories')): ?>
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('categories', 'event'); ?>
@@ -88,6 +91,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('categories', 'event'); ?>
 							</div>
 						</div>
+						<?php endif; ?>
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('venueid'); ?>
@@ -128,6 +132,19 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('endtimes'); ?>
 							</div>
 						</div>
+
+						<?php if (($this->params->get('edit_image', 1) == 2) || ($this->params->get('edit_image', 1) == 1)) : ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('datimage', 'event'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('datimage', 'event'); ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ($this->params->get('edit_description')): ?>
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('datdescription', 'event'); ?>
@@ -136,6 +153,17 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('datdescription', 'event'); ?>
 							</div>
 						</div>
+						<?php endif; ?>
+						<?php if ($this->params->get('edit_session_details')): ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $form->getLabel('details'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $form->getInput('details'); ?>
+								</div>
+							</div>
+						<?php endif; ?>
 					</div>
 			</fieldset>
 		</div>

@@ -65,6 +65,7 @@
 			<filename>index.html</filename>
 			<filename>controller.php</filename>
 			<filename>redeventsync.php</filename>
+			<folder>archive</folder>
 			<folder>controllers</folder>
 			<folder>language</folder>
 			<folder>layouts</folder>

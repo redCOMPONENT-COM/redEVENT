@@ -131,8 +131,8 @@
             type="rmedia"
             label="COM_REDEVENT_CHOOSE_IMAGE"
             description="COM_REDEVENT_CHOOSE_IMAGE"
-            class="inputbox"
-            directory="redevent/events"/>
+            directory="redevent/events"
+            preview="true"/>
 
 
         <field

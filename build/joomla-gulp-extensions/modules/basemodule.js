@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 
-var config = require('../../gulp-config.json');
+var config = require('../../config.js');
 
 // Dependencies
 var browserSync = require('browser-sync');
@@ -76,7 +76,7 @@ module.exports.addModule = function (name) {
 	});
 
 	// Release: plugin
-	gulp.task('release:' + baseTask, function (cb) {
+	gulp.task('release:' + baseTask, ['prepare:release'], function (cb) {
 		fs.readFile(extPath + '/' + name + '.xml', function(err, data) {
 			if (err) console.log(err);
 			parser.parseString(data, function (err, result) {
