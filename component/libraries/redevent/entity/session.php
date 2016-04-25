@@ -19,6 +19,13 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Associated event
 	 *
+	 * @var RedeventEntityAttendee[]
+	 */
+	private $attendees;
+
+	/**
+	 * Associated event
+	 *
 	 * @var RedeventEntityEvent
 	 */
 	private $event;
@@ -36,6 +43,36 @@ class RedeventEntitySession extends RedeventEntityBase
 	private $venue;
 
 	/**
+	 * Return associated attendees
+	 *
+	 * @return RedeventEntityAttendee[]
+	 */
+	public function getAttendees()
+	{
+		if (is_null($this->attendees))
+		{
+			$item = $this->getItem();
+
+			if (!empty($item))
+			{
+				$model = RModel::getAdminInstance('attendees', array('ignore_request' => true), 'com_redevent');
+				$model->setState('filter.session');
+
+				$attendees = $model->getItems();
+
+				$this->attendees = $attendees ? array_map(
+					function($element)
+					{
+						return RedeventEntityAttendee::load($element->id);
+					}, $attendees
+				) : false;
+			}
+		}
+
+		return $this->attendees;
+	}
+
+	/**
 	 * Return associated event
 	 *
 	 * @return RedeventEntityEvent
@@ -48,7 +85,7 @@ class RedeventEntitySession extends RedeventEntityBase
 
 			if (!empty($item))
 			{
-				$this->event = RedeventEntityEvent::getInstance($item->eventid)->loadItem();
+				$this->event = RedeventEntityEvent::load($item->eventid);
 			}
 		}
 

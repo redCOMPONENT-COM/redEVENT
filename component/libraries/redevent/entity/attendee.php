@@ -17,6 +17,20 @@ defined('_JEXEC') or die;
 class RedeventEntityAttendee extends RedeventEntityBase
 {
 	/**
+	 * redform answers
+	 *
+	 * @var RdfAnswers
+	 */
+	protected $answers;
+
+	/**
+	 * email from form submission
+	 *
+	 * @var string
+	 */
+	protected $email;
+
+	/**
 	 * @var RedeventTags
 	 */
 	private $replacer;
@@ -30,6 +44,37 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	 * @var JUser
 	 */
 	private $user;
+
+	/**
+	 * Get email
+	 *
+	 * @return string
+	 */
+	public function getEmail()
+	{
+		if (!$this->email)
+		{
+			$answers = $this->getAnswers();
+
+			foreach ($answers->getSubmitterEmails() as $a)
+			{
+				if (JMailHelper::isEmailAddress($a))
+				{
+					$this->email = $a;
+
+					return $this->email;
+				}
+			}
+
+			// Still there... look for user ?
+			if ($this->getUser())
+			{
+				$this->email = $this->getUser()->get('email');
+			}
+		}
+
+		return $this->email;
+	}
 
 	/**
 	 * Generate unique id from registration data
@@ -149,6 +194,25 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		}
 
 		return RTable::getAdminInstance($name, array(), $this->getComponent());
+	}
+
+	/**
+	 * get redform answers for this attendee
+	 *
+	 * @return RdfAnswers
+	 */
+	protected function getAnswers()
+	{
+		if (empty($this->answers))
+		{
+			$item = $this->getItem();
+
+			$rfcore = RdfCore::getInstance();
+			$sidsanswers = $rfcore->getAnswers(array($item->sid));
+			$this->answers = $sidsanswers->getSubmissionBySid($item->sid);
+		}
+
+		return $this->answers;
 	}
 
 	/**
