@@ -19,7 +19,7 @@
 
     <config>
         <fields name="params">
-            <fieldset name="extra" label="extra">
+            <fieldset name="basic" label="extra">
                 <field name="b2b_sessions_display_num"
                        type="list"
                        default="15"
