@@ -97,15 +97,9 @@
 		type="rmedia"
 		label="COM_REDEVENT_CHOOSE_IMAGE"
 		description="COM_REDEVENT_CHOOSE_IMAGE"
-		directory="redevent/categories"/>
-
-	<field
-		name="image"
-		type="rmedia"
-		label="COM_REDEVENT_CHOOSE_IMAGE"
-		description="COM_REDEVENT_CHOOSE_IMAGE"
-		class="inputbox"
-		directory="redevent/categories"/>
+		directory="redevent/categories"
+		preview="true"
+	/>
 
     <field
             name="access"

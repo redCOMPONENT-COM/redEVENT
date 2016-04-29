@@ -35,6 +35,23 @@ class RedeventEntitySessionpricegroup extends RedeventEntityBase
 	}
 
 	/**
+	 * Proxy item properties for __isset
+	 *
+	 * @param   string  $property  Property tried to access
+	 *
+	 * @return  mixed   $this->item->property if it exists
+	 */
+	public function __isset($property)
+	{
+		if ($property == 'currency')
+		{
+			return null != $this->getSession()->getEvent()->getForm();
+		}
+
+		return parent::__get($property);
+	}
+
+	/**
 	 * Return associated event
 	 *
 	 * @return RedeventEntityEvent
