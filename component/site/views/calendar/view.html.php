@@ -63,6 +63,9 @@ class RedeventViewCalendar extends RedeventViewFront
 		$this->assignRef('settings', $settings);
 		$this->assignRef('cal', $cal);
 
+		$this->year = $year;
+		$this->month = $month;
+
 		parent::display($tpl);
 	}
 

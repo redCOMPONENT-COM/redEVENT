@@ -194,3 +194,23 @@ foreach ($this->rows as $row)
 </div>
 
 <div class="clr"/></div>
+
+<!-- start: exports -->
+<div class="events-exports">
+	<?php if ($this->params->get('events_rsscal', 0)): ?>
+		<span class="events-rsscal">
+			<?php echo JHTML::link(JRoute::_(RedeventHelperRoute::getCalendarRoute($this->year, $this->month) . '&format=feed'),
+				RHelperAsset::load('rsscal2.0.png', null, array('title' => JText::_('COM_REDEVENT_EXPORT_RSSCAL')))
+			); ?>
+		</span>
+	<?php endif; ?>
+
+	<?php if ($this->params->get('events_ical', 1)): ?>
+		<span class="events-ical">
+			<?php echo JHTML::link(JRoute::_(RedeventHelperRoute::getCalendarRoute($this->year, $this->month) . '&format=raw&layout=ics'),
+				RHelperAsset::load('iCal2.0.png', null, array('title' => JText::_('COM_REDEVENT_EXPORT_ICS')))
+			); ?>
+		</span>
+	<?php endif; ?>
+</div>
+<!-- end: exports -->
