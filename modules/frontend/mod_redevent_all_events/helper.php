@@ -16,8 +16,8 @@ defined('_JEXEC') or die('Restricted access');
  * @package     Redevent.Frontend
  * @subpackage  Modules
  * @since       0.9
-*/
-class modRedeventAlleventsHelper
+ */
+class ModRedeventAlleventsHelper
 {
 	/**
 	 * Method to get the events
@@ -82,7 +82,8 @@ class modRedeventAlleventsHelper
 
 			if ($title_length && $length > $title_length)
 			{
-				$rows[$k]->title_short = '<span class="hasTooltip" title="' . $row->title . '">' . htmlspecialchars(substr($row->title, 0, $title_length) . '...', ENT_COMPAT, 'UTF-8') . '</span>';
+				$rows[$k]->title_short = '<span class="hasTooltip" title="' . $row->title . '">'
+					. htmlspecialchars(substr($row->title, 0, $title_length) . '...', ENT_COMPAT, 'UTF-8') . '</span>';
 			}
 			else
 			{

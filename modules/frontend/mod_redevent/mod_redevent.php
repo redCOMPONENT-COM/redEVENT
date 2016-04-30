@@ -23,7 +23,7 @@ include_once $redeventLoader;
 RedeventBootstrap::bootstrap();
 
 // Get helper
-require_once (dirname(__FILE__).'/helper.php');
+require_once 'helper.php';
 
 $list = modRedEventHelper::getList($params);
 
@@ -45,7 +45,7 @@ if ($layout == '_:table')
 	$cols = array_map('trim', $cols);
 	$cols = array_map('strtolower', $cols);
 
-	$customfields = modRedEventHelper::getCustomFields();
+	$customfields = ModRedEventHelper::getCustomFields();
 }
 
-require(JModuleHelper::getLayoutPath('mod_redevent', $layout));
+require JModuleHelper::getLayoutPath('mod_redevent', $layout);

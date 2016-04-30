@@ -16,13 +16,14 @@ defined('_JEXEC') or die('Restricted access');
  * @package     Redevent.Frontend
  * @subpackage  Modules
  * @since       0.9
-*/
-class modRedEventHelper
+ */
+class ModRedEventHelper
 {
 	/**
 	 * Method to get the events
 	 *
-	 * @access public
+	 * @param   array  &$params  parameters
+	 *
 	 * @return array
 	 */
 	public static function getList(&$params)
@@ -210,7 +211,8 @@ class modRedEventHelper
 			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref));
 			$rows[$k]->dateinfo 	= self::_builddateinfo($row, $params);
 			$rows[$k]->city		= htmlspecialchars($row->city, ENT_COMPAT, 'UTF-8');
-			$rows[$k]->venueurl 	= !empty($row->url) ? self::_format_url($row->url) : JRoute::_(RedeventHelperRoute::getVenueEventsRoute($row->venueslug), false);
+			$rows[$k]->venueurl 	= !empty($row->url)
+				? self::_format_url($row->url) : JRoute::_(RedeventHelperRoute::getVenueEventsRoute($row->venueslug), false);
 		}
 
 		return $rows;
@@ -219,7 +221,9 @@ class modRedEventHelper
 	/**
 	 * Method to a formated and structured string of date infos
 	 *
-	 * @access public
+	 * @param   object  $row      data
+	 * @param   array   &$params  parameters
+	 *
 	 * @return string
 	 */
 	protected static function _builddateinfo($row, &$params)
@@ -230,16 +234,20 @@ class modRedEventHelper
 		}
 
 		$date 		= self::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
-		$enddate 	= RedeventHelperDate::isValidDate($row->enddates) ? self::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y')) : null;
-		$time		= ($row->times && $row->times != '00:00:00') ? self::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M')) : null;
+		$enddate 	= RedeventHelperDate::isValidDate($row->enddates)
+			? self::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y'))
+			: null;
+		$time		= ($row->times && $row->times != '00:00:00')
+			? self::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M'))
+			: null;
 		$dateinfo	= '<span class="event-start">' . $date . '</span>';
 
-		if ( isset($enddate) && $params->get('show_enddate', 1) && $row->dates != $row->enddates)
+		if (isset($enddate) && $params->get('show_enddate', 1) && $row->dates != $row->enddates)
 		{
 			$dateinfo .= ' - <span class="event-end">' . $enddate . '</span>';
 		}
 
-		if ( isset($time) && $params->get('show_time', 1) )
+		if (isset($time) && $params->get('show_time', 1))
 		{
 			$dateinfo .= ' <span class="event-time">' . $time . '</span>';
 		}
@@ -250,7 +258,8 @@ class modRedEventHelper
 	/**
 	 * Method to get a valid url
 	 *
-	 * @access public
+	 * @param   string  $url  url
+	 *
 	 * @return string
 	 */
 	protected static function _format_url($url)
@@ -266,7 +275,10 @@ class modRedEventHelper
 	/**
 	 * Method to format date information
 	 *
-	 * @access public
+	 * @param   string  $date    date
+	 * @param   string  $time    time
+	 * @param   string  $format  format
+	 *
 	 * @return string
 	 */
 	protected static function _format_date($date, $time, $format)

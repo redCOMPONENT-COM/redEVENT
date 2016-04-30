@@ -23,9 +23,9 @@ include_once $redeventLoader;
 RedeventBootstrap::bootstrap();
 
 // Get helper
-require_once (dirname(__FILE__).'/helper.php');
+require_once 'helper.php';
 
-$list = modRedEventCategoriesHelper::getList($params);
+$list = ModRedEventCategoriesHelper::getList($params);
 
 // Check if any results returned
 $items = count($list);
@@ -47,4 +47,4 @@ else
 	$currents = array();
 }
 
-require(JModuleHelper::getLayoutPath('mod_redevent_categories'));
+require JModuleHelper::getLayoutPath('mod_redevent_categories');

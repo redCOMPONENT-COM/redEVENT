@@ -23,30 +23,36 @@ include_once $redeventLoader;
 
 RedeventBootstrap::bootstrap();
 
-// get module helper
-require_once (dirname(__FILE__).'/helper.php');
+// Get module helper
+require_once 'helper.php';
 
-$list = modRedeventTeaserHelper::getList($params);
+$list = ModRedeventTeaserHelper::getList($params);
 
-$document 	= JFactory::getDocument();
-$document->addStyleSheet(JURI::base(true).'/modules/mod_redevent_teaser/tmpl/mod_redevent_teaser.css');
+$document = JFactory::getDocument();
+$document->addStyleSheet(JURI::base(true) . '/modules/mod_redevent_teaser/tmpl/mod_redevent_teaser.css');
 
-if ($params->get('color') == 1) {
-$document->addStyleSheet(JURI::base(true).'/modules/mod_redevent_teaser/tmpl/red.css');
-}
-if ($params->get('color') == 2) {
-$document->addStyleSheet(JURI::base(true).'/modules/mod_redevent_teaser/tmpl/blue.css');
-}
-if ($params->get('color') == 3) {
-$document->addStyleSheet(JURI::base(true).'/modules/mod_redevent_teaser/tmpl/green.css');
+if ($params->get('color') == 1)
+{
+	$document->addStyleSheet(JURI::base(true) . '/modules/mod_redevent_teaser/tmpl/red.css');
 }
 
+if ($params->get('color') == 2)
+{
+	$document->addStyleSheet(JURI::base(true) . '/modules/mod_redevent_teaser/tmpl/blue.css');
+}
 
-// check if any results returned
+if ($params->get('color') == 3)
+{
+	$document->addStyleSheet(JURI::base(true) . '/modules/mod_redevent_teaser/tmpl/green.css');
+}
+
+
+// Check if any results returned
 $items = count($list);
 
-if (!$items) {
+if (!$items)
+{
 	return;
 }
 
-require(JModuleHelper::getLayoutPath('mod_redevent_teaser', $params->get('layout')));
+require JModuleHelper::getLayoutPath('mod_redevent_teaser', $params->get('layout'));

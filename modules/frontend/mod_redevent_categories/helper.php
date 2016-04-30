@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Modules
  * @since       2.0
  */
-class modRedEventCategoriesHelper
+class ModRedEventCategoriesHelper
 {
 	/**
 	 * Get items
@@ -202,8 +202,7 @@ class modRedEventCategoriesHelper
 
 		ob_start();
 		?>
-		<li class="<?php echo $opened_class; ?>"><?php echo JHTML::link($link, $txt); ?>
-		</li>
+		<li class="<?php echo $opened_class; ?>"><?php echo JHTML::link($link, $txt); ?></li>
 		<?php
 		$html = ob_get_contents();
 		ob_end_clean();

@@ -22,8 +22,7 @@ include_once $redeventLoader;
 
 RedeventBootstrap::bootstrap();
 
-// get helper
-require_once (dirname(__FILE__).'/helper.php');
+require_once 'helper.php';
 
 $user = JFactory::getUser();
 
@@ -34,10 +33,10 @@ if (!$user->get('id'))
 	return;
 }
 
-$list = modRedEventAttendingHelper::getList($params);
+$list = ModRedeventAttendingHelper::getList($params);
 
-$offset = JFactory::getApplication()->input->getInt('reattoffset', (int) $params->get( 'offset', '0' ));
-$type = JFactory::getApplication()->input->getInt('reattspan', $params->get( 'type', '0' ));
+$offset = JFactory::getApplication()->input->getInt('reattoffset', (int) $params->get('offset', '0'));
+$type = JFactory::getApplication()->input->getInt('reattspan', $params->get('type', '0'));
 $uri = JFactory::getUri();
 
 $curi = clone $uri;
@@ -46,16 +45,16 @@ $curi->setVar('reattspan', $type);
 
 $select = modRedEventAttendingHelper::getSelect($params);
 
-// quick links to previous and next
+// Quick links to previous and next
 $prevuri = clone $curi;
-$prevuri->setVar('reattoffset', $offset-1);
+$prevuri->setVar('reattoffset', $offset - 1);
 $previous = htmlspecialchars($prevuri->toString());
 
 $nexturi = clone $curi;
-$nexturi->setVar('reattoffset', $offset+1);
+$nexturi->setVar('reattoffset', $offset + 1);
 $next = htmlspecialchars($nexturi->toString());
 
 RHelperAsset::load('mod_redevent_attending.js', 'mod_redevent_attending');
 RHelperAsset::load('mod_redevent_attending.css', 'mod_redevent_attending');
 
-require(JModuleHelper::getLayoutPath('mod_redevent_attending', $params->get('layout', 'table')));
+require JModuleHelper::getLayoutPath('mod_redevent_attending', $params->get('layout', 'table'));

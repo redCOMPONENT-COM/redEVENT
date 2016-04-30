@@ -41,6 +41,8 @@ $ignored = array(
 	REPO_BASE . '/plugins/**/media/*',
 	REPO_BASE . '/plugins/jomsocial/*',
 	REPO_BASE . '/plugins/josetta_ext/*',
+	REPO_BASE . '/modules/frontend/mod_rokminievents',
+	REPO_BASE . '/modules/frontend/mod_redevent_categories/helper.php',
 );
 
 // Build the options for the sniffer
@@ -49,6 +51,7 @@ $options = array(
 		REPO_BASE . '/component',
 		REPO_BASE . '/redeventb2b',
 		REPO_BASE . '/redeventsync',
+		REPO_BASE . '/modules',
 		REPO_BASE . '/plugins'
 	),
 	'standard'     => array( REPO_BASE . '/tests/checkers/phpcs/Joomla'),
