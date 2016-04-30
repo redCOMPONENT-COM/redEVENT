@@ -24,6 +24,34 @@ class RedeventHelperRoute
 	 *
 	 * @return url
 	 */
+	public static function getCalendarRoute($year = null, $month = nul)
+	{
+		$parts = array("option" => "com_redevent",
+			"view"   => "calendar"
+		);
+
+		if ($year)
+		{
+			$parts['yearID'] = $year;
+		}
+
+		if ($month)
+		{
+			$parts['monthID'] = $month;
+		}
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * return link to details view of specified event
+	 *
+	 * @param   int     $id    event id
+	 * @param   int     $xref  session id
+	 * @param   string  $task  task
+	 *
+	 * @return url
+	 */
 	public static function getDetailsRoute($id = 0, $xref = 0, $task = null)
 	{
 		$parts = array("option" => "com_redevent",
