@@ -1,36 +1,17 @@
 <?php
 /**
- * @version     2.5
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redeventb2b.site
+ * @copyright  Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
-defined('_JEXEC') or die ('Restricted access');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * HTML View class for the frontend admin View
  *
- * @package     Joomla
- * @subpackage  redevent
- * @since       2.0
-*/
+ * @since  2.0
+ */
 class Redeventb2bViewFrontadmin extends RViewAdmin
 {
 	/**
@@ -88,8 +69,6 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
 
-//		RHtmlMedia::setFramework('bootstrap3');
-
 		$mainframe = JFactory::getApplication();
 
 		$user = JFactory::getUser();
@@ -121,8 +100,6 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		}
 
 		RHelperAsset::load('b2b.js');
-
-//		$document->addScript('media/com_redeventb2b/js/b2b.js?v=' . uniqid());
 
 		// For redmember
 		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');
@@ -212,6 +189,13 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		parent::display($tpl);
 	}
 
+	/**
+	 * Creates the search View
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
 	protected function displaySearchSessions($tpl = null)
 	{
 		$useracl = RedeventUserAcl::getInstance();
@@ -237,6 +221,13 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		parent::display($tpl);
 	}
 
+	/**
+	 * Creates the bookings View
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
 	protected function displayBookings($tpl = null)
 	{
 		$useracl = RedeventUserAcl::getInstance();
@@ -344,7 +335,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 	/**
 	 * Check if event is full
 	 *
-	 * @param $row
+	 * @param   object  $row  row
 	 *
 	 * @return bool
 	 */
@@ -364,7 +355,6 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 
 		return false;
 	}
-
 
 	/**
 	 * Creates the attendees edit button
@@ -394,6 +384,13 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		return $output;
 	}
 
+	/**
+	 * Creates the attendees View
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
 	protected function displayAttendees($tpl= null)
 	{
 		$model = $this->getModel('FrontadminMembers');
@@ -408,6 +405,13 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		parent::display($tpl);
 	}
 
+	/**
+	 * Creates the edit member View
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
 	protected function displayEditMember($tpl= null)
 	{
 		$document = JFactory::getDocument();
@@ -425,6 +429,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		{
 			RedeventHelperLog::simpleLog('edit member view missing orgid');
 			echo 'edit member view missing orgid';
+
 			return;
 		}
 
@@ -468,6 +473,13 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		parent::display($tpl);
 	}
 
+	/**
+	 * Creates the member booked View
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
 	protected function displayMemberBooked($tpl= null)
 	{
 		$booked = $this->get('MemberBooked');
@@ -490,6 +502,13 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		parent::display($tpl);
 	}
 
+	/**
+	 * Creates the member prevous bookings View
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
 	protected function displayMemberPrevious($tpl= null)
 	{
 		$booked = $this->get('MemberPrevious');

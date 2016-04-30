@@ -27,7 +27,7 @@ class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 	/**
 	 * Method to log in a user.
 	 *
-	 * @since	1.6
+	 * @return void
 	 */
 	public function login()
 	{
@@ -42,7 +42,8 @@ class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 		$data['password'] = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
 		// Set the return URL if empty.
-		if (empty($data['return'])) {
+		if (empty($data['return']))
+		{
 			$data['return'] = 'index.php?option=com_redeventb2b&view=frontadmin';
 		}
 
@@ -60,13 +61,16 @@ class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 		$credentials['password'] = $data['password'];
 
 		// Perform the log in.
-		if (true === $app->login($credentials, $options)) {
+		if (true === $app->login($credentials, $options))
+		{
 			// Success
 			$app->setUserState('users.login.form.data', array());
 			$app->redirect(JRoute::_($app->getUserState('users.login.form.return'), false));
-		} else {
+		}
+		else
+		{
 			// Login failed !
-			$data['remember'] = (int)$options['remember'];
+			$data['remember'] = (int) $options['remember'];
 			$app->setUserState('users.login.form.data', $data);
 			$app->redirect(JRoute::_('index.php?option=com_redeventb2b&view=frontadminlogin', false));
 		}
@@ -75,7 +79,7 @@ class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 	/**
 	 * Method to log out a user.
 	 *
-	 * @since	1.6
+	 * @return void
 	 */
 	public function logout()
 	{
@@ -87,17 +91,22 @@ class Redeventb2bControllerFrontadminlogin extends JControllerLegacy
 		$error = $app->logout();
 
 		// Check if the log out succeeded.
-		if (!($error instanceof Exception)) {
+		if (!($error instanceof Exception))
+		{
 			// Get the return url from the request and validate that it is internal.
 			$return = JRequest::getVar('return', '', 'method', 'base64');
 			$return = base64_decode($return);
-			if (!JURI::isInternal($return)) {
+
+			if (!JURI::isInternal($return))
+			{
 				$return = '';
 			}
 
 			// Redirect the user.
 			$app->redirect(JRoute::_($return, false));
-		} else {
+		}
+		else
+		{
 			$app->redirect(JRoute::_('index.php?option=com_redevent&view=frontadminlogin', false));
 		}
 	}

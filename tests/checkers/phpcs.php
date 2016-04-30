@@ -25,7 +25,7 @@ fwrite(STDOUT, "\033[32;1mInitializing PHP_CodeSniffer checks.\033[0m\n");
 
 // Ignored files
 $ignored = array(
-	REPO_BASE . '/component/admin/views/*/tmpl/*',
+	REPO_BASE . '*/tmpl/*',
 	REPO_BASE . '/component/admin/falang',
 	REPO_BASE . '/component/admin/layouts/*',
 	REPO_BASE . '/component/admin/tables/*',
@@ -35,6 +35,7 @@ $ignored = array(
 	REPO_BASE . '/component/site/classes/*',
 	REPO_BASE . '/component/site/sef_ext/*',
 	REPO_BASE . '/component/media',
+	REPO_BASE . '/redeventb2b*/layouts/*',
 	REPO_BASE . '/plugins/**/media/*',
 	REPO_BASE . '/plugins/jomsocial/*',
 	REPO_BASE . '/plugins/josetta_ext/*',
@@ -44,6 +45,7 @@ $ignored = array(
 $options = array(
 	'files'        => array(
 		REPO_BASE . '/component',
+		REPO_BASE . '/redeventb2b',
 		REPO_BASE . '/plugins'
 	),
 	'standard'     => array( REPO_BASE . '/tests/checkers/phpcs/Joomla'),

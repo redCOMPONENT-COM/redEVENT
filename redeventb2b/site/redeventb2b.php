@@ -26,7 +26,7 @@ include_once $loader;
 Redeventb2bBootstrap::bootstrap();
 
 $language = JFactory::getLanguage();
-$language->load('com_redevent' , JPATH_SITE . '/components/com_redevent', $language->getTag(), true);
+$language->load('com_redevent', JPATH_SITE . '/components/com_redevent', $language->getTag(), true);
 
 try
 {

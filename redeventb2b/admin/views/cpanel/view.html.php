@@ -8,6 +8,11 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * Class Redeventb2bViewCpanel
+ *
+ * @since  2.5
+ */
 class Redeventb2bViewCpanel extends Redeventb2bViewAdmin
 {
 	/**

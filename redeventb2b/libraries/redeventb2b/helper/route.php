@@ -25,7 +25,8 @@ class Redeventb2bHelperRoute
 		$parts = array( "option" => "com_redeventb2b",
 			"view"   => 'frontadmin'
 		);
-		return self::buildUrl( $parts );
+
+		return self::buildUrl($parts);
 	}
 
 	/**
@@ -38,7 +39,8 @@ class Redeventb2bHelperRoute
 		$parts = array( "option" => "com_redeventb2b",
 			"view"   => 'frontadminlogin'
 		);
-		return self::buildUrl( $parts );
+
+		return self::buildUrl($parts);
 	}
 
 	/**
