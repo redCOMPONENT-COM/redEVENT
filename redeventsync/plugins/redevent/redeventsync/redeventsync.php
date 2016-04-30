@@ -30,7 +30,7 @@ ResyncBootstrap::bootstrap();
  * @package  Redcomponent.redeventsync
  * @since    2.5
  */
-class plgRedeventRedeventsync extends JPlugin
+class PlgRedeventRedeventsync extends JPlugin
 {
 	/**
 	 * constructor

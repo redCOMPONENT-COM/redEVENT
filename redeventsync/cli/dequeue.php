@@ -122,12 +122,16 @@ class RedeventsyncDequeue extends JApplicationCli
 		{
 			$this->dequeueMessage($message);
 
-			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeued');
+			ResyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeued'
+			);
 			$this->out('Send message ' . $message->id . ': success');
 		}
 		else
 		{
-			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeueing failed');
+			ResyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeueing failed'
+			);
 			$this->out('Send message ' . $message->id . ': error');
 		}
 	}
