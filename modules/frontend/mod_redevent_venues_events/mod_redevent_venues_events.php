@@ -22,9 +22,9 @@ include_once $redeventLoader;
 
 RedeventBootstrap::bootstrap();
 
-require_once(dirname(__FILE__).'/helper.php');
+require_once 'helper.php';
 
-$list = modRedEventVenuesEventsHelper::getList($params);
+$list = ModRedEventVenuesEventsHelper::getList($params);
 
 if (!count($list))
 {
@@ -36,4 +36,4 @@ JHTML::_('behavior.tooltip');
 RHelperAsset::load('mod_redevent_venues_events.css', 'mod_redevent_venues_events');
 RHelperAsset::load('mod_redevent_venues_events.js', 'mod_redevent_venues_events');
 
-require(JModuleHelper::getLayoutPath('mod_redevent_venues_events'));
+require JModuleHelper::getLayoutPath('mod_redevent_venues_events');

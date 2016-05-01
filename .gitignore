@@ -70,3 +70,4 @@ tests/checkers/phpcs/*
 !.gitignore
 !index.html
 !index.php
+

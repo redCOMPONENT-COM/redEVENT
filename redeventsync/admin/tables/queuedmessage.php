@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * @package     Redeventsync
  * @subpackage  Admin
  * @copyright   Redeventsync (C) 2008-2015 Julien Vonthron. All rights reserved.

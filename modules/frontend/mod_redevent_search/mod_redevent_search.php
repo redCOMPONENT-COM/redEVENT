@@ -1,38 +1,26 @@
 <?php
 /**
- * @version 2.0
- * @package Joomla
- * @subpackage RedEvent search module
- * @copyright (C) 2011 redCOMPONENT.com
- * @license GNU/GPL, see LICENCE.php
- * RedEvent is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * RedEvent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with RedEvent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redeventsync.modules
+ * @subpackage  Mod_redevent_search
+ *
+ * @copyright   Copyright (C) 2013 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 // Register library prefix
 JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
-require_once (dirname(__FILE__).'/helper.php');
+require_once dirname(__FILE__) . '/helper.php';
 
 $app = JFactory::getApplication();
 
 RHelperAsset::load('mod_redevent_search.css', 'mod_redevent_search');
 
-$helper = new modRedEventSearchHelper();
+$helper = new ModRedEventSearchHelper;
 
 $elsettings = RedeventHelper::config();
 
@@ -46,6 +34,7 @@ $lists = array();
 $lists['filter'] = $input->get('filter');
 
 $sortselects = array();
+
 if ($params->get('filter_type_event', 1))
 {
 	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT'));
@@ -112,9 +101,9 @@ $query = $input->getString('query', '');
 
 if ($search == 'ajax' && $query)
 {
-	$helper->getAjaxSearch($query);
+	echo $helper->getAjaxSearch($query);
 	$app->close();
 }
 
 // DISPLAY
-require(JModuleHelper::getLayoutPath('mod_redevent_search', $params->get('layout', 'default')));
+require JModuleHelper::getLayoutPath('mod_redevent_search', $params->get('layout', 'default'));

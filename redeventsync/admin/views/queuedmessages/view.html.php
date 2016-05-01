@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Redeventsync
- * @subpackage  Admin
- * @copyright   Redeventsync (C) 2008-2015 Julien Vonthron. All rights reserved.
- * @license     GNU General Public License version 2 or later
+ * @package    Redeventsync.admin
+ *
+ * @copyright  Copyright (C) 2013 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die();
@@ -69,7 +69,11 @@ class RedeventsyncViewQueuedmessages extends ResyncView
 
 		if ($user->authorise('core.manage', 'com_redeventsync'))
 		{
-			$firstGroup->addButton(RToolbarBuilder::createStandardButton('queuedmessages.process', JText::_('COM_REDEVENTSYNC_BUTTON_QUEUED_MESSAGES_SEND'), 'btn', '', true));
+			$firstGroup->addButton(
+				RToolbarBuilder::createStandardButton(
+					'queuedmessages.process', JText::_('COM_REDEVENTSYNC_BUTTON_QUEUED_MESSAGES_SEND'), 'btn', '', true
+				)
+			);
 		}
 
 		if ($user->authorise('core.create', 'com_redeventsync'))

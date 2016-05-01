@@ -22,9 +22,9 @@ include_once $redeventLoader;
 
 RedeventBootstrap::bootstrap();
 
-require_once (dirname(__FILE__) . '/helper.php');
+require_once 'helper.php';
 
-$list = modRedEventAllEventsHelper::getList($params);
+$list = ModRedeventAlleventsHelper::getList($params);
 
 if (!count($list))
 {
@@ -34,4 +34,4 @@ if (!count($list))
 JHTML::_('behavior.tooltip');
 RHelperAsset::load('mod_redevent_all_events.css', 'mod_redevent_all_events');
 
-require(JModuleHelper::getLayoutPath('mod_redevent_all_events'));
+require JModuleHelper::getLayoutPath('mod_redevent_all_events');

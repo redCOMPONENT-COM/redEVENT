@@ -12,8 +12,23 @@
  *
  * @package  Redevent.UnitTest
  */
-class recurrenceTest extends JoomlaTestCase
+class recurrenceTest extends TestCaseDatabase
 {
+	/**
+	 * This method is called before the first test of this test class is run.
+	 *
+	 * @return  void
+	 *
+	 * @since   12.1
+	 */
+	public static function setUpBeforeClass()
+	{
+		// Register library prefix
+		JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
+		parent::setUpBeforeClass();
+	}
+
 	/**
 	 * Data provider
 	 *

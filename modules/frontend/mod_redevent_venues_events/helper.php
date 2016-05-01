@@ -16,8 +16,8 @@ defined('_JEXEC') or die('Restricted access');
  * @package     Redevent.Frontend
  * @subpackage  Modules
  * @since       2.5
-*/
-class modRedEventVenuesEventsHelper
+ */
+class ModRedEventVenuesEventsHelper
 {
 	/**
 	 * Get items
@@ -47,7 +47,6 @@ class modRedEventVenuesEventsHelper
 			->where('c.access IN (' . implode(',', $user_gid) . ')')
 			->group('a.id, l.id')
 			->order('a.title ASC');
-
 
 		$catid = $params->get('catid');
 
@@ -114,30 +113,37 @@ class modRedEventVenuesEventsHelper
 	/**
 	 * Method to get a valid url
 	 *
+	 * @param   string  $url  url
+	 *
 	 * @return string
 	 */
 	private function _format_url($url)
 	{
-		if(!empty($url) && strtolower(substr($url, 0, 7)) != "http://") {
-			$url = 'http://'.$url;
+		if (!empty($url) && strtolower(substr($url, 0, 7)) != "http://")
+		{
+			$url = 'http://' . $url;
 		}
+
 		return $url;
 	}
 
 	/**
 	 * returns events venues as options
 	 *
-	 * @param array $sessions
+	 * @param   array  $sessions  sessions data
+	 *
 	 * @return array $options for select
 	 */
 	public function getVenuesEventsOptions($sessions)
 	{
 		$options = array(JHTML::_('select.option', '', JText::_('MOD_REDEVENT_VENUES_EVENTS_SELECT_EVENT')));
+
 		foreach ($sessions as $s)
 		{
 			$link = RedeventHelperRoute::getDetailsRoute($s->id, $s->xref);
 			$options[] = JHTML::_('select.option', JRoute::_($link), $s->title);
 		}
+
 		return $options;
 	}
 }

@@ -8,6 +8,11 @@
 
 defined('_JEXEC') or die();
 
+/**
+ * Class RedeventsyncModelSync
+ *
+ * @since  2.5
+ */
 class RedeventsyncModelSync extends RModel
 {
 	/**

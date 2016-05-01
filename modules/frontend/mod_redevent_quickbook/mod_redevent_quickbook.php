@@ -7,12 +7,10 @@
  * RedEvent is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License 2
  * as published by the Free Software Foundation.
-
  * RedEvent is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
  * You should have received a copy of the GNU General Public License
  * along with RedEvent; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -26,7 +24,7 @@ RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 // Get helper
-require_once (dirname(__FILE__) . '/helper.php');
+require_once 'helper.php';
 
 require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
 require_once JPATH_SITE . '/components/com_redevent/classes/image.class.php';
@@ -34,7 +32,8 @@ require_once JPATH_SITE . '/components/com_redevent/classes/image.class.php';
 $data = modRedEventQuickbookHelper::getData($params);
 
 // Check if any results returned
-if (!$data) {
+if (!$data)
+{
 	return;
 }
 
@@ -56,4 +55,4 @@ else
 	RHelperAsset::load('mod_redevent_quickbook_post.js', 'mod_redevent_quickbook');
 }
 
-require(JModuleHelper::getLayoutPath('mod_redevent_quickbook'));
+require JModuleHelper::getLayoutPath('mod_redevent_quickbook');

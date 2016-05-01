@@ -23,54 +23,57 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-/**
-* cleanup
-* taken from PHP documentation comments
-*
-* @author Lybegard Karl-Olof
-* @since 0.9
-*/
-function quoted_printable_encode($input) {
+if (!function_exists('quoted_printable_encode'))
+{
+	/**
+	* cleanup
+	* taken from PHP documentation comments
+	*
+	* @author Lybegard Karl-Olof
+	* @since 0.9
+	*/
+	function quoted_printable_encode($input) {
 
-	$text1 = strip_tags($input, "<br><p>");
-	$text1 = preg_replace('@([\r\n])[\s]+@',' ', $text1);    // Strip out white space
-	$text1 = html_entity_decode($text1, ENT_QUOTES, "ISO-8859-15");
-	$text1 = str_replace("<br />", "\r", $text1);
-	$text1 = str_replace("<br/>" , "\r", $text1);
-	$text1 = str_replace("<p>"   , "\r", $text1);
-	$text1 = str_replace("</p>"  , "\r", $text1);
+		$text1 = strip_tags($input, "<br><p>");
+		$text1 = preg_replace('@([\r\n])[\s]+@',' ', $text1);    // Strip out white space
+		$text1 = html_entity_decode($text1, ENT_QUOTES, "ISO-8859-15");
+		$text1 = str_replace("<br />", "\r", $text1);
+		$text1 = str_replace("<br/>" , "\r", $text1);
+		$text1 = str_replace("<p>"   , "\r", $text1);
+		$text1 = str_replace("</p>"  , "\r", $text1);
 
-	$hex 		= array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
-	$lines 		= preg_split("/(?:\r\n|\r|\n)/", $text1);
-	$linebreak 	= '=0D=0A';
-	$escape 	= '=';
-	$output 	= '';
+		$hex 		= array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
+		$lines 		= preg_split("/(?:\r\n|\r|\n)/", $text1);
+		$linebreak 	= '=0D=0A';
+		$escape 	= '=';
+		$output 	= '';
 
-	for ($j=0;$j<count($lines);$j++) {
-		$line 		= $lines[$j];
-		$linlen 	= strlen($line);
-		$newline 	= '';
+		for ($j=0;$j<count($lines);$j++) {
+			$line 		= $lines[$j];
+			$linlen 	= strlen($line);
+			$newline 	= '';
 
-		for($i = 0; $i < $linlen; $i++) {
-			$c 		= substr($line, $i, 1);
-			$dec 	= ord($c);
+			for($i = 0; $i < $linlen; $i++) {
+				$c 		= substr($line, $i, 1);
+				$dec 	= ord($c);
 
-			if ( ($dec == 32) && ($i == ($linlen - 1)) ) { // convert space at eol only
-				$c = '=20';
-			} elseif ( ($dec == 61) || ($dec < 32 ) || ($dec > 126) ) { // always encode "\t", which is *not* required
-				$h2 = floor($dec/16);
-				$h1 = floor($dec%16);
-				$c 	= $escape.$hex["$h2"] . $hex["$h1"];
+				if ( ($dec == 32) && ($i == ($linlen - 1)) ) { // convert space at eol only
+					$c = '=20';
+				} elseif ( ($dec == 61) || ($dec < 32 ) || ($dec > 126) ) { // always encode "\t", which is *not* required
+					$h2 = floor($dec/16);
+					$h1 = floor($dec%16);
+					$c 	= $escape.$hex["$h2"] . $hex["$h1"];
+				}
+
+				$newline .= $c;
+			} // end of for
+			$output .= $newline;
+			if ($j<count($lines)-1) {
+				$output .= $linebreak;
 			}
-
-			$newline .= $c;
-		} // end of for
-		$output .= $newline;
-		if ($j<count($lines)-1) {
-			$output .= $linebreak;
 		}
+		return trim($output);
 	}
-	return trim($output);
 }
 
 /**
