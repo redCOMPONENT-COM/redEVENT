@@ -22,6 +22,12 @@ class AcceptanceTester extends \Codeception\Actor
         $this->fillTinyMceEditor('id', $id, $content);
     }
 
+    public function checkForPhpNoticesOrWarningsOrExceptions($page = null)
+    {
+        $this->checkForPhpNoticesOrWarnings($page);
+        $this->dontSeeInPageSource('Exception');
+    }
+
     public function fillTinyMceEditorByName($name, $content) {
         $this->fillTinyMceEditor('name', $name, $content);
     }
