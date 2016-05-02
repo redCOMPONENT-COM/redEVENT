@@ -23,8 +23,8 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 	/**
 	 * filters available gateways based on venue
 	 *
-	 * @param   array   &$gateways  current allowed gateways
-	 * @param   object  $details    submission details
+	 * @param   array           &$gateways  current allowed gateways
+	 * @param   RdfPaymentInfo  $details    submission details
 	 *
 	 * @return boolean
 	 */
@@ -36,7 +36,7 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 		}
 
 		// First check that if this is redEVENT submission
-		if (!isset($details->integration) || $details->integration !== 'redevent')
+		if ($details->integration !== 'redevent')
 		{
 			return true;
 		}
