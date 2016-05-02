@@ -21,52 +21,58 @@
  */
 
 // requires mootools
-window.addEvent('domready', function(){
+(function($){
 
-	$$('.dynfilter').addEvent('change', function() {
-		this.form.submit();
-		return true;
-	});
-
-
-	// show/hide filters in views
-	if ($('el-events-filters'))
-	{
-		if ($('f-showfilters') && $('f-showfilters').value > 0) {
-			$('el-events-filters').setStyle('display', 'block');
-		}
-		else {
-			$('el-events-filters').setStyle('display', 'none');
-		}
-		if ($('filters-toggle'))
-		{
-			$('filters-toggle').addEvent('click', function(){
-				if ($('el-events-filters').getStyle('display') == 'none')
-				{
-					$('el-events-filters').setStyle('display', 'block');
-					$('f-showfilters').value = 1;
-				}
-				else
-				{
-					$('el-events-filters').setStyle('display', 'none');
-					$('f-showfilters').value = 0;
-				}
-			});
-		}
-	}
-
-	if ($('filters-reset'))
-	{
-		$('filters-reset').addEvent('click', function(){
-			$('el-events-filters').getElements('input').each(function(el){
-				el.value = '';
-			});
-			$('el-events-filters').getElements('select').each(function(el){
-				el.value = '';
-			});
+	$(document).ready(function() {
+		$('.dynfilter').change(function() {
 			this.form.submit();
 			return true;
 		});
-	}
-});
+
+
+
+		// show/hide filters in views
+		if ($('#el-events-filters'))
+		{
+			if ($('#f-showfilters') && $('#f-showfilters').val() > 0) {
+				$('#el-events-filters').css('display', 'block');
+			}
+			else {
+				$('#el-events-filters').css('display', 'none');
+			}
+			if ($('#filters-toggle'))
+			{
+				$('#filters-toggle').click(function(){
+					if ($('#el-events-filters').css('display') == 'none')
+					{
+						$('#el-events-filters').css('display', 'block');
+						$('#f-showfilters').val(1);
+					}
+					else
+					{
+						$('#el-events-filters').css('display', 'none');
+						$('#f-showfilters').val(0);
+					}
+				});
+			}
+		}
+
+		if ($('#filters-reset'))
+		{
+			$('#filters-reset').click(function(){
+				$('#el-events-filters').find('input').each(function(el){
+					$(el).val('');
+				});
+
+				$('#el-events-filters').find('select').each(function(el){
+					$(el).val('');
+				});
+
+				this.form.submit();
+
+				return true;
+			});
+		}
+	});
+})(jQuery);
 

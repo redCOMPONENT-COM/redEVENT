@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Modules
  * @since       2.0
  */
-class modredeventcalhelper
+class Modredeventcalhelper
 {
 	/**
 	 * Get items
@@ -40,7 +40,8 @@ class modredeventcalhelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month')
+		$query->select('x.dates, x.times, x.enddates,a.title')
+			->select('DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month')
 			->select('l.venue')
 			->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
 			->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug')
@@ -53,8 +54,11 @@ class modredeventcalhelper
 			->where('a.published = 1')
 			->where('l.published = 1')
 			->where('c.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . ')')
-			->where('( x.dates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend)
-				. '         OR (x.enddates IS NOT NULL and x.enddates > "0000-00-00" AND x.enddates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend).') ) ')
+			->where(
+				'(x.dates BETWEEN ' . $db->Quote($monthstart) . ' AND ' . $db->Quote($monthend)
+				. ' OR (x.enddates IS NOT NULL AND x.enddates > "0000-00-00" AND x.enddates BETWEEN '
+				. $db->Quote($monthstart) . ' AND ' . $db->Quote($monthend) . ') ) '
+			)
 			->group('x.id');
 
 		if (JFactory::getApplication()->getLanguageFilter())
@@ -87,7 +91,7 @@ class modredeventcalhelper
 		foreach ($events as $event)
 		{
 			// Cope with no end date set i.e. set it to same as start date
-			if  (($event->enddates == '0000-00-00') or (is_null($event->enddates)))
+			if ($event->enddates == '0000-00-00' or is_null($event->enddates))
 			{
 				$eyear = $event->start_year;
 				$emonth = $event->start_month;

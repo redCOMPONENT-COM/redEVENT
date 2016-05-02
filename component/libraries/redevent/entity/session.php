@@ -207,7 +207,6 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return $this->pricegroups;
-
 	}
 
 	/**

@@ -43,12 +43,6 @@ class Redeventb2bBootstrap
 			// Bootstraps redCORE
 			RBootstrap::bootstrap();
 
-			// For Joomla! 2.5 compatibility we load bootstrap2
-//			if (version_compare(JVERSION, '3.0', '<') && JFactory::getApplication()->isAdmin() && JFactory::getApplication()->input->get('view') == 'config')
-//			{
-//				RHtmlMedia::setFramework('bootstrap2');
-//			}
-
 			// Register library prefix
 			RLoader::registerPrefix('Redeventb2b', __DIR__);
 			RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');

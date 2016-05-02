@@ -112,7 +112,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			}
 
 			$options['extrafields'] = $extrafields;
-			$options['currency'] = $session->getEvent()->getForm()->currency;;
+			$options['currency'] = $session->getEvent()->getForm()->currency;
 		}
 
 		if ($review)

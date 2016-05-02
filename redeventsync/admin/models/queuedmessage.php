@@ -52,12 +52,16 @@ class RedeventsyncModelQueuedmessage extends RModelAdmin
 			{
 				$this->dequeueMessage($message);
 
-				ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeued');
+				ResyncHelperMessagelog::log(
+					REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeued'
+				);
 				$app->enqueueMessage('Send message ' . $message->id . ': success');
 			}
 			else
 			{
-				ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeueing failed');
+				ResyncHelperMessagelog::log(
+					REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeueing failed'
+				);
 				$app->enqueueMessage('Error Sending message ' . $message->id . ': error', 'error');
 			}
 		}

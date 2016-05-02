@@ -1,7 +1,7 @@
 <?php
 /**
- * @package    Redevent.site
- * @copyright  Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @package    Redeventb2b.site
+ * @copyright  Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 

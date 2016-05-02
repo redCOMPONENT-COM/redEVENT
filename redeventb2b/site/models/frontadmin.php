@@ -1,25 +1,10 @@
 <?php
 /**
- * @package    RedEVENT
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license    GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redeventb2b.site
+ * @copyright  Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
@@ -36,15 +21,21 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 	 * @var array
 	 */
 	protected $sessions = null;
+
 	protected $pagination_sessions = null;
+
 	protected $total_sessions = null;
 
 	protected $booked = null;
+
 	protected $pagination_booked = null;
+
 	protected $total_booked = null;
 
 	protected $previous = null;
+
 	protected $pagination_previous = null;
+
 	protected $total_previous = null;
 
 	protected $uid = null;
@@ -61,6 +52,11 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 	 */
 	protected $useracl = null;
 
+	/**
+	 * Redeventb2bModelFrontadmin constructor.
+	 *
+	 * @param   array  $config  config
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -86,16 +82,29 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		// Bookings filter
 		$this->setState(
 			'filter_organization',
-			$app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    $this->getUserDefaultOrganization(), 'int')
+			$app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',
+				'filter_organization',    $this->getUserDefaultOrganization(), 'int')
 		);
-		$this->setState('filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
+		$this->setState(
+			'filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',
+			'filter_person',    '', 'string')
+		);
 
 		$this->setState('filter_bookings_state', $app->input->get('filter_bookings_state', 1));
 
 		// Manage sessions filters
-		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
-		$this->setState('filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',    'filter_from',    '', 'string'));
-		$this->setState('filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',    'filter_to',    '', 'string'));
+		$this->setState(
+			'filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',
+			'filter_session',    0, 'int')
+		);
+		$this->setState(
+			'filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',
+			'filter_from',    '', 'string')
+		);
+		$this->setState(
+			'filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',
+			'filter_to',    '', 'string')
+		);
 
 		// Sessions
 		$this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
@@ -106,6 +115,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$this->setState('bookings_order_dir', strtoupper(JRequest::getCmd('bookings_order_dir', 'DESC')) == 'DESC' ? 'DESC' : 'ASC');
 
 		$bookings_limitstart		= JRequest::getVar('bookings_limitstart', 0, '', 'int');
+
 		// In case limit has been changed, adjust it
 		$bookings_limitstart = ($limit != 0 ? (floor($bookings_limitstart / $limit) * $limit) : 0);
 		$this->setState('bookings_limitstart', $bookings_limitstart);
@@ -114,7 +124,8 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$this->setState('booked_order',     JRequest::getCmd('booked_order', 'x.dates'));
 		$this->setState('booked_order_dir', strtoupper(JRequest::getCmd('booked_order_dir', 'DESC')) == 'DESC' ? 'DESC' : 'ASC');
 
-		$booked_limitstart		= JRequest::getVar('booked_limitstart', 0, '', 'int');
+		$booked_limitstart = JRequest::getVar('booked_limitstart', 0, '', 'int');
+
 		// In case limit has been changed, adjust it
 		$booked_limitstart = ($limit != 0 ? (floor($booked_limitstart / $limit) * $limit) : 0);
 		$this->setState('booked_limitstart', $booked_limitstart);
@@ -122,12 +133,18 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$this->setState('previous_order',     JRequest::getCmd('previous_order', 'x.dates'));
 		$this->setState('previous_order_dir', strtoupper(JRequest::getCmd('previous_order_dir', 'DESC')) == 'DESC' ? 'DESC' : 'ASC');
 
-		$previous_limitstart		= JRequest::getVar('previous_limitstart', 0, '', 'int');
+		$previous_limitstart = JRequest::getVar('previous_limitstart', 0, '', 'int');
+
 		// In case limit has been changed, adjust it
 		$previous_limitstart = ($limit != 0 ? (floor($previous_limitstart / $limit) * $limit) : 0);
 		$this->setState('previous_limitstart', $previous_limitstart);
 	}
 
+	/**
+	 * Get acl
+	 *
+	 * @return RedeventUserAcl
+	 */
 	public function getUseracl()
 	{
 		return $this->useracl;
@@ -165,7 +182,9 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		if (empty($this->pagination_sessions))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_sessions = new RedeventAjaxPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_sessions = new RedeventAjaxPagination(
+				$this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit')
+			);
 		}
 
 		return $this->pagination_sessions;
@@ -200,7 +219,9 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new RedeventAjaxPagination($this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit'));
+			$this->pagination_booked = new RedeventAjaxPagination(
+				$this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit')
+			);
 		}
 
 		return $this->pagination_booked;
@@ -235,7 +256,9 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new RedeventAjaxPagination($this->getTotalMemberBooked(), $this->getState('booked_limitstart'), $this->getState('limit'));
+			$this->pagination_booked = new RedeventAjaxPagination(
+				$this->getTotalMemberBooked(), $this->getState('booked_limitstart'), $this->getState('limit')
+			);
 		}
 
 		return $this->pagination_booked;
@@ -253,7 +276,9 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		if (empty($this->pagination_previous))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_previous = new RedeventAjaxPagination($this->getTotalMemberPrevious(), $this->getState('previous_limitstart'), $this->getState('limit'));
+			$this->pagination_previous = new RedeventAjaxPagination(
+				$this->getTotalMemberPrevious(), $this->getState('previous_limitstart'), $this->getState('limit')
+			);
 		}
 
 		return $this->pagination_previous;
@@ -389,7 +414,6 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$res = $db->loadObjectList();
 
 		return $res;
-
 	}
 
 	/**
@@ -628,7 +652,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		// Join over the language
 		$query->select('lg.title AS language_title, lg.sef AS language_sef');
-		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = a.language');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS lg ON lg.lang_code = a.language');
 
 		// Join over
 		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
@@ -672,6 +696,11 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		return $query;
 	}
 
+	/**
+	 * Get member current bookings
+	 *
+	 * @return array|null
+	 */
 	public function getMemberBooked()
 	{
 		// Lets load the content if it doesn't already exist
@@ -686,6 +715,11 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		return $this->booked;
 	}
 
+	/**
+	 * Build query booked
+	 *
+	 * @return JDatabaseQuery
+	 */
 	protected function _buildQueryMemberBooked()
 	{
 		$query = $this->_buildQueryBookings();
@@ -694,16 +728,21 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$query->where('r.cancelled = 0');
 
 		$now = strftime('%Y-%m-%d %H:%M');
- 		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
+		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
- 		$filter_order = $this->getState('booked_order');
- 		$filter_order_dir = $this->getState('booked_order_dir');
- 		$query->clear('order');
- 		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
+		$filter_order = $this->getState('booked_order');
+		$filter_order_dir = $this->getState('booked_order_dir');
+		$query->clear('order');
+		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
 
 		return $query;
 	}
 
+	/**
+	 * Get member past bookings
+	 *
+	 * @return array|null
+	 */
 	public function getMemberPrevious()
 	{
 		// Lets load the content if it doesn't already exist
@@ -718,6 +757,11 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		return $this->previous;
 	}
 
+	/**
+	 * Build query past bookings
+	 *
+	 * @return JDatabaseQuery
+	 */
 	protected function _buildQueryMemberPrevious()
 	{
 		$query = $this->_buildQueryBookings();
@@ -763,7 +807,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		// Join over the language
 		$query->select('lg.title AS language_title, lg.sef AS language_sef');
-		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = a.language');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS lg ON lg.lang_code = a.language');
 
 		// Get the WHERE and ORDER BY clauses for the query
 		$query = $this->_buildSessionsListWhere($query);
@@ -891,7 +935,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$query->from('#__redevent_register');
 		$query->where('id = ' . $register_id);
 
-		$db->setQuery($query, 0 ,1);
+		$db->setQuery($query, 0, 1);
 		$res = $db->loadObject();
 
 		if (!$res)
@@ -928,8 +972,10 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		if (!$res = $this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
+
 			return false;
 		}
+
 		return true;
 	}
 
@@ -950,8 +996,10 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		if (!$res = $this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
+
 			return false;
 		}
+
 		return true;
 	}
 
@@ -973,6 +1021,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		if (!$res = $this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
+
 			return false;
 		}
 
@@ -982,9 +1031,11 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 	/**
 	 * returns user info
 	 *
-	 * @todo: get info from redmember !!
+	 * @param   int  $uid  user id
 	 *
 	 * @return object
+	 *
+	 * @todo: get info from redmember !!
 	 */
 	public function getMemberInfo($uid = null)
 	{

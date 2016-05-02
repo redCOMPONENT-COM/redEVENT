@@ -1,14 +1,19 @@
 <?php
 /**
- * @package     redcomponent.redeventsync
- * @subpackage  com_redeventsync
- * @copyright   Copyright (C) 2013 redCOMPONENT.com
- * @license	    GNU General Public License version 2 or later
+ * @package    Redeventsync.admin
+ *
+ * @copyright  Copyright (C) 2013 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 // Protect from unauthorized access
 defined('_JEXEC') or die;
 
+/**
+ * Class RedeventsyncViewSync
+ *
+ * @since  2.5
+ */
 class RedeventsyncViewSync extends ResyncView
 {
 	/**

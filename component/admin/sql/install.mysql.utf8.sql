@@ -1,3 +1,94 @@
+CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object` varchar(255) NOT NULL,
+  `file` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `icon` varchar(255) DEFAULT NULL,
+  `frontend` tinyint(1) NOT NULL default '1',
+  `access` tinyint(3) NOT NULL,
+  `ordering` int(11) NOT NULL default '0',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  `added_by` int(11) NOT NULL default '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`parent_id` int(11) unsigned NOT NULL default '0',
+`name` varchar(255) NOT NULL default '',
+`alias` varchar(100) NOT NULL default '',
+`description` mediumtext NOT NULL,
+`meta_keywords` text NOT NULL,
+`meta_description` text NOT NULL,
+`color` varchar(100) NOT NULL default '',
+`image` varchar(100) NOT NULL default '',
+`published` tinyint(1) NOT NULL default '0',
+`checked_out` int(11) NOT NULL default '0',
+`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+`access` int(11) unsigned NOT NULL default '0',
+`ordering` int(11) NOT NULL default '0',
+`lft` int(11) NOT NULL default '0',
+`rgt` int(11) NOT NULL default '0',
+`event_template` int(11) NOT NULL default '0',
+`language` char(7) NOT NULL,
+`asset_id` int(10) NOT NULL DEFAULT '0',
+PRIMARY KEY  (`id`),
+KEY `parent_id` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `continent` varchar(2) NOT NULL DEFAULT '',
+  `iso2` varchar(2) NOT NULL DEFAULT '',
+  `iso3` varchar(3) NOT NULL DEFAULT '',
+  `un` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `iso2` (`iso2`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_event_category_xref` (
+  `event_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  UNIQUE KEY `event_category` (`event_id`,`category_id`)
+) COMMENT='Event Category Cross reference' DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  `alias` varchar(255) default NULL,
+  `session_code` varchar(100) NOT NULL,
+  `eventid` int(11) unsigned NOT NULL,
+  `venueid` int(11) unsigned NOT NULL,
+  `dates` date NOT NULL,
+  `enddates` date NOT NULL,
+  `times` time NOT NULL,
+  `endtimes` time NOT NULL,
+  `registrationend` datetime NOT NULL,
+  `external_registration_url` VARCHAR(255) NULL DEFAULT NULL,
+  `note` VARCHAR(50) NULL default NULL,
+  `details` text NOT NULL,
+  `icaldetails` text NOT NULL,
+  `icalvenue` text NOT NULL,
+  `maxattendees` int(11) NOT NULL default '0',
+  `maxwaitinglist` int(11) NOT NULL default '0',
+  `course_credit` int(11) NOT NULL,
+  `course_price` decimal(12,2) default '0.00',
+  `published` tinyint(1) NOT NULL default '0',
+  `featured` tinyint(1) NOT NULL default '0',
+  `created` datetime NOT NULL,
+  `created_by` int(11) unsigned NOT NULL default '0',
+  `modified` datetime NOT NULL,
+  `modified_by` int(11) unsigned NOT NULL default '0',
+  `checked_out` int(11) NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `language` char(7) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `eventid` (`eventid`),
+  KEY `venueid` (`venueid`)
+) COMMENT='Event Venue Cross reference' DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `title` varchar(100) NOT NULL default '',
@@ -63,6 +154,171 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `object_key` varchar(50) NOT NULL,
+  `tag` varchar(100) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `ordering` int(11) DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `min` int(5) NOT NULL,
+  `max` int(5) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `tips` text NOT NULL,
+  `required` tinyint(1) DEFAULT '0',
+  `searchable` tinyint(1) DEFAULT '1',
+  `frontend_edit` TINYINT( 1 ) NULL DEFAULT '0',
+  `in_lists` tinyint(1) DEFAULT '0',
+  `options` text,
+  `fieldcode` varchar(255) NOT NULL,
+  `default_value` varchar(255) NOT NULL,
+  `checked_out` int(11) NOT NULL,
+  `checked_out_time` datetime NOT NULL,
+  `language` char(7) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `object_key` (`object_key`),
+  KEY `idx_language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_organizations` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `organization_id` int(11) NOT NULL,
+  `b2b_attendee_notification_mailflow` tinyint(4) NOT NULL DEFAULT '0',
+  `b2b_orgadmin_mailflow_confirmation_subject_tag` VARCHAR(30),
+  `b2b_orgadmin_mailflow_cancellation_subject_tag` VARCHAR(30),
+  `b2b_orgadmin_mailflow_confirmation_body_tag` VARCHAR(30),
+  `b2b_orgadmin_mailflow_cancellation_body_tag` VARCHAR(30),
+  `b2b_cancellation_period` tinyint(4) NOT NULL DEFAULT '15',
+  `checked_out` int(11) NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `organization_id` (`organization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`name` varchar(150) NOT NULL default '',
+`alias` varchar(150) NOT NULL default '',
+`tooltip` varchar(255) NOT NULL default '',
+`image` varchar(100) NOT NULL default '',
+`adminonly` tinyint(1) NOT NULL default '0',
+`ordering` int(11) NOT NULL default '0',
+`checked_out` int(11) NOT NULL default '0',
+`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+`language` char(7) NOT NULL,
+PRIMARY KEY  (`id`),
+  KEY `idx_language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_recurrences` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rrule` text NOT NULL DEFAULT '',
+  `ended` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_register` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`xref` int(11) NOT NULL default '0',
+`uid` int(11) NOT NULL default '0',
+`sid` int(11) NOT NULL default '0',
+`cancelled` tinyint(1) NOT NULL default '0',
+`sessionpricegroup_id` int(11) NOT NULL default '0',
+`waitinglist` tinyint(2) NOT NULL default '0',
+`confirmed` tinyint(2) NOT NULL default '0',
+`confirmdate` datetime NULL default NULL,
+`paymentstart` datetime NULL default NULL,
+`uregdate` varchar(50) NOT NULL default '',
+`uip` varchar(15) NOT NULL default '',
+`submit_key` varchar(45) NOT NULL,
+`comments` varchar(255) NOT NULL,
+`origin` varchar(15) NOT NULL default '',
+`status` tinyint(4) DEFAULT 0,
+`checked_out` int(11) NOT NULL default '0',
+`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+`payment_reminder_sent` datetime NOT NULL default '0000-00-00 00:00:00',
+PRIMARY KEY  (`id`),
+KEY `xref` (`xref`),
+KEY `sessionpricegroup_id` (`sessionpricegroup_id`),
+KEY `submit_key` (`submit_key`),
+KEY `sid` (`sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `xref_id` int(11) NOT NULL,
+  `recurrence_id` int(11) NOT NULL,
+  `count` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `recurrence_repeat` (`xref_id`,`recurrence_id`),
+  KEY `xref_id` (`xref_id`),
+  KEY `recurrence_id` (`recurrence_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_roles` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`name` varchar(150) NOT NULL default '',
+`description` mediumtext NOT NULL,
+`ordering` int(11) NOT NULL default '0',
+`checked_out` int(11) NOT NULL default '0',
+`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+`language` char(7) NOT NULL,
+PRIMARY KEY  (`id`),
+KEY `idx_language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_roles_redmember` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`role_id` int(11) NOT NULL default '0',
+`usertype` int(11) NOT NULL default '0',
+`fields` mediumtext NULL,
+PRIMARY KEY  (`id`),
+KEY  (`role_id`),
+KEY  (`usertype`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`xref` int(11) NOT NULL default '0',
+`pricegroup_id` int(11) NOT NULL default '0',
+`price` DECIMAL(10,2) NOT NULL default '0',
+`vatrate` DECIMAL(10,2) NOT NULL default '0',
+`sku` VARCHAR(255) NOT NULL,
+`currency` VARCHAR(10) NOT NULL,
+PRIMARY KEY  (`id`),
+KEY  (`xref`),
+KEY  (`pricegroup_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_sessions_roles` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`xref` int(11) NOT NULL default '0',
+`role_id` int(11) NOT NULL default '0',
+`user_id` int(11) NOT NULL default '0',
+PRIMARY KEY  (`id`),
+KEY `xref` (`xref`),
+KEY `role_id` (`role_id`),
+KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `text_name` varchar(255) default NULL,
+  `text_description` varchar(255) default NULL,
+  `text_field` text,
+  `language` char(7) NOT NULL,
+  `checked_out` int(11) NOT NULL default '0',
+  `checked_out_time` datetime default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `text_name` (`text_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
+  `venue_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  UNIQUE KEY `venue_category` (`venue_id`,`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `venue` varchar(50) NOT NULL default '',
@@ -100,178 +356,6 @@ PRIMARY KEY  (`id`),
 KEY `idx_language` (`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`parent_id` int(11) unsigned NOT NULL default '0',
-`name` varchar(255) NOT NULL default '',
-`alias` varchar(100) NOT NULL default '',
-`description` mediumtext NOT NULL,
-`meta_keywords` text NOT NULL,
-`meta_description` text NOT NULL,
-`color` varchar(100) NOT NULL default '',
-`image` varchar(100) NOT NULL default '',
-`published` tinyint(1) NOT NULL default '0',
-`checked_out` int(11) NOT NULL default '0',
-`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-`access` int(11) unsigned NOT NULL default '0',
-`ordering` int(11) NOT NULL default '0',
-`lft` int(11) NOT NULL default '0',
-`rgt` int(11) NOT NULL default '0',
-`event_template` int(11) NOT NULL default '0',
-`language` char(7) NOT NULL,
-`asset_id` int(10) NOT NULL DEFAULT '0',
-PRIMARY KEY  (`id`),
-KEY `parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_register` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`xref` int(11) NOT NULL default '0',
-`uid` int(11) NOT NULL default '0',
-`sid` int(11) NOT NULL default '0',
-`cancelled` tinyint(1) NOT NULL default '0',
-`sessionpricegroup_id` int(11) NOT NULL default '0',
-`waitinglist` tinyint(2) NOT NULL default '0',
-`confirmed` tinyint(2) NOT NULL default '0',
-`confirmdate` datetime NULL default NULL,
-`paymentstart` datetime NULL default NULL,
-`uregdate` varchar(50) NOT NULL default '',
-`uip` varchar(15) NOT NULL default '',
-`submit_key` varchar(45) NOT NULL,
-`comments` varchar(255) NOT NULL,
-`origin` varchar(15) NOT NULL default '',
-`status` tinyint(4) DEFAULT 0,
-`checked_out` int(11) NOT NULL default '0',
-`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-`payment_reminder_sent` datetime NOT NULL default '0000-00-00 00:00:00',
-PRIMARY KEY  (`id`),
-KEY `xref` (`xref`),
-KEY `sessionpricegroup_id` (`sessionpricegroup_id`),
-KEY `submit_key` (`submit_key`),
-KEY `sid` (`sid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_roles` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`name` varchar(150) NOT NULL default '',
-`description` mediumtext NOT NULL,
-`ordering` int(11) NOT NULL default '0',
-`checked_out` int(11) NOT NULL default '0',
-`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-`language` char(7) NOT NULL,
-PRIMARY KEY  (`id`),
-KEY `idx_language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_sessions_roles` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`xref` int(11) NOT NULL default '0',
-`role_id` int(11) NOT NULL default '0',
-`user_id` int(11) NOT NULL default '0',
-PRIMARY KEY  (`id`),
-KEY `xref` (`xref`),
-KEY `role_id` (`role_id`),
-KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_roles_redmember` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`role_id` int(11) NOT NULL default '0',
-`usertype` int(11) NOT NULL default '0',
-`fields` mediumtext NULL,
-PRIMARY KEY  (`id`),
-KEY  (`role_id`),
-KEY  (`usertype`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`name` varchar(150) NOT NULL default '',
-`alias` varchar(150) NOT NULL default '',
-`tooltip` varchar(255) NOT NULL default '',
-`image` varchar(100) NOT NULL default '',
-`adminonly` tinyint(1) NOT NULL default '0',
-`ordering` int(11) NOT NULL default '0',
-`checked_out` int(11) NOT NULL default '0',
-`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-`language` char(7) NOT NULL,
-PRIMARY KEY  (`id`),
-  KEY `idx_language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`xref` int(11) NOT NULL default '0',
-`pricegroup_id` int(11) NOT NULL default '0',
-`price` DECIMAL(10,2) NOT NULL default '0',
-`vatrate` DECIMAL(10,2) NOT NULL default '0',
-`sku` VARCHAR(255) NOT NULL,
-`currency` VARCHAR(10) NOT NULL,
-PRIMARY KEY  (`id`),
-KEY  (`xref`),
-KEY  (`pricegroup_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
-  `id` int(11) NOT NULL,
-  `lastupdate` varchar(20) NOT NULL default '',
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `title` varchar(255) default NULL,
-  `alias` varchar(255) default NULL,
-  `session_code` varchar(100) NOT NULL,
-  `eventid` int(11) unsigned NOT NULL,
-  `venueid` int(11) unsigned NOT NULL,
-  `dates` date NOT NULL,
-  `enddates` date NOT NULL,
-  `times` time NOT NULL,
-  `endtimes` time NOT NULL,
-  `registrationend` datetime NOT NULL,
-  `external_registration_url` VARCHAR(255) NULL DEFAULT NULL,
-  `note` VARCHAR(50) NULL default NULL,
-  `details` text NOT NULL,
-  `icaldetails` text NOT NULL,
-  `icalvenue` text NOT NULL,
-  `maxattendees` int(11) NOT NULL default '0',
-  `maxwaitinglist` int(11) NOT NULL default '0',
-  `course_credit` int(11) NOT NULL,
-  `course_price` decimal(12,2) default '0.00',
-  `published` tinyint(1) NOT NULL default '0',
-  `featured` tinyint(1) NOT NULL default '0',
-  `created` datetime NOT NULL,
-  `created_by` int(11) unsigned NOT NULL default '0',
-  `modified` datetime NOT NULL,
-  `modified_by` int(11) unsigned NOT NULL default '0',
-  `checked_out` int(11) NOT NULL default '0',
-  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  `language` char(7) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `eventid` (`eventid`),
-  KEY `venueid` (`venueid`)
-) COMMENT='Event Venue Cross reference' DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_event_category_xref` (
-  `event_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  UNIQUE KEY `event_category` (`event_id`,`category_id`)
-) COMMENT='Event Category Cross reference' DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `text_name` varchar(255) default NULL,
-  `text_description` varchar(255) default NULL,
-  `text_field` text,
-  `language` char(7) NOT NULL,
-  `checked_out` int(11) NOT NULL default '0',
-  `checked_out_time` datetime default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `text_name` (`text_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
 CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `parent_id` int(11) unsigned NOT NULL default '0',
@@ -292,97 +376,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `asset_id` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
-  `venue_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  UNIQUE KEY `venue_category` (`venue_id`,`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `object_key` varchar(50) NOT NULL,
-  `tag` varchar(100) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `ordering` int(11) DEFAULT '0',
-  `published` tinyint(1) NOT NULL DEFAULT '0',
-  `min` int(5) NOT NULL,
-  `max` int(5) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `tips` text NOT NULL,
-  `required` tinyint(1) DEFAULT '0',
-  `searchable` tinyint(1) DEFAULT '1',
-  `frontend_edit` TINYINT( 1 ) NULL DEFAULT '0',
-  `in_lists` tinyint(1) DEFAULT '0',
-  `options` text,
-  `fieldcode` varchar(255) NOT NULL,
-  `default_value` varchar(255) NOT NULL,
-  `checked_out` int(11) NOT NULL,
-  `checked_out_time` datetime NOT NULL,
-  `language` char(7) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `object_key` (`object_key`),
-  KEY `idx_language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `continent` varchar(2) NOT NULL DEFAULT '',
-  `iso2` varchar(2) NOT NULL DEFAULT '',
-  `iso3` varchar(3) NOT NULL DEFAULT '',
-  `un` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `iso2` (`iso2`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_recurrences` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rrule` text NOT NULL DEFAULT '',
-  `ended` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `xref_id` int(11) NOT NULL,
-  `recurrence_id` int(11) NOT NULL,
-  `count` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `recurrence_repeat` (`xref_id`,`recurrence_id`),
-  KEY `xref_id` (`xref_id`),
-  KEY `recurrence_id` (`recurrence_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `object` varchar(255) NOT NULL,
-  `file` varchar(255) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `icon` varchar(255) DEFAULT NULL,
-  `frontend` tinyint(1) NOT NULL default '1',
-  `access` tinyint(3) NOT NULL,
-  `ordering` int(11) NOT NULL default '0',
-  `added` datetime NOT NULL default '0000-00-00 00:00:00',
-  `added_by` int(11) NOT NULL default '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_organizations` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `organization_id` int(11) NOT NULL,
-  `b2b_attendee_notification_mailflow` tinyint(4) NOT NULL DEFAULT '0',
-  `b2b_orgadmin_mailflow_confirmation_subject_tag` VARCHAR(30),
-  `b2b_orgadmin_mailflow_cancellation_subject_tag` VARCHAR(30),
-  `b2b_orgadmin_mailflow_confirmation_body_tag` VARCHAR(30),
-  `b2b_orgadmin_mailflow_cancellation_body_tag` VARCHAR(30),
-  `b2b_cancellation_period` tinyint(4) NOT NULL DEFAULT '15',
-  `checked_out` int(11) NOT NULL default '0',
-  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `organization_id` (`organization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `un`, `name`) VALUES

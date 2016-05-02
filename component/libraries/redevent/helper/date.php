@@ -24,22 +24,10 @@ class RedeventHelperDate
 	 */
 	public static function isValidDate($date)
 	{
-		if (is_null($date))
-		{
-			return false;
-		}
+		$format = strlen($date) > 10 ? 'Y-m-d H:i:s' : 'Y-m-d';
+		$d = DateTime::createFromFormat($format, $date);
 
-		if ($date == '0000-00-00' || $date == '0000-00-00 00:00:00')
-		{
-			return false;
-		}
-
-		if (!strtotime($date))
-		{
-			return false;
-		}
-
-		return true;
+		return $d && $d->format($format) == $date;
 	}
 
 	/**
@@ -51,12 +39,10 @@ class RedeventHelperDate
 	 */
 	public static function isValidTime($time)
 	{
-		if (is_null($time))
-		{
-			return false;
-		}
+		$format = strlen($time) > 5 ? 'H:i:s' : 'H:i';
+		$d = DateTime::createFromFormat($format, $time);
 
-		return preg_match('/[0-2]*[0-9]:[0-5][0-9](:[0-5][0-9])*/', $time);
+		return $d && $d->format($format) == $time;
 	}
 
 	/**

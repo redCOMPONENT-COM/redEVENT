@@ -279,8 +279,9 @@ class RedeventModelBasesessionlist extends RModel
 		}
 
 		$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
-		$ordering_def = $open_order ? 'x.dates = 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir
-			: 'x.dates > 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir;
+		$ordering_def = $open_order
+			? 'x.dates = 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir . ', x.times ' . $filter_order_dir
+			: 'x.dates > 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir . ', x.times ' . $filter_order_dir;
 
 		switch ($filter_order)
 		{
@@ -994,7 +995,6 @@ class RedeventModelBasesessionlist extends RModel
 		$query->where('(l.access IN (' . $gids . '))');
 		$query->where('(c.access IN (' . $gids . '))');
 		$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . '))');
-
 
 		if ($filter_venue = $this->getState('filter_venue'))
 		{

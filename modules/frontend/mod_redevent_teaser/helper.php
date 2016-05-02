@@ -16,13 +16,13 @@ defined('_JEXEC') or die('Restricted access');
  * @package     Redevent.Frontend
  * @subpackage  Modules
  * @since       1.0
-*/
-class modRedeventTeaserHelper
+ */
+class ModRedeventTeaserHelper
 {
 	/**
 	 * Method to get the events
 	 *
-	 *
+	 * @param   array  &$params  parameters
 	 *
 	 * @return array
 	 */
@@ -30,8 +30,8 @@ class modRedeventTeaserHelper
 	{
 		$mainframe = JFactory::getApplication();
 
-		$db			=JFactory::getDBO();
-		$user		=JFactory::getUser();
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -49,9 +49,8 @@ class modRedeventTeaserHelper
 			->join('LEFT', '#__redevent_repeats AS r ON r.xref_id = x.id')
 			->group('x.id');
 
-
 		// All upcoming events
-		if ($params->get( 'type', 1 ) == 1)
+		if ($params->get('type', 1) == 1)
 		{
 			$query->where('x.dates >= CURDATE()')
 				->where('x.published = 1')
@@ -59,14 +58,14 @@ class modRedeventTeaserHelper
 		}
 
 		// Archived events only
-		if ($params->get( 'type', 1 ) == 2)
+		if ($params->get('type', 1) == 2)
 		{
 			$query->where('x.published = 11')
 				->order('x.dates DESC, x.times DESC');
 		}
 
 		// Currently running events only
-		if ($params->get( 'type', 1 ) == 3)
+		if ($params->get('type', 1) == 3)
 		{
 			$query->where('(x.dates = CURDATE() OR (x.enddates >= CURDATE() AND x.dates <= CURDATE()))')
 				->where('x.published = 1')
@@ -89,7 +88,7 @@ class modRedeventTeaserHelper
 			$query->where('l.id IN (' . implode(',', $venid) . ')');
 		}
 
-		$state	= JString::strtolower(trim( $params->get('stateloc') ) );
+		$state = JString::strtolower(trim($params->get('stateloc')));
 
 		// Build state selection query statement
 		if ($state)
@@ -104,8 +103,8 @@ class modRedeventTeaserHelper
 				}
 			}
 
-			JArrayHelper::toString( $states );
-			$query->where('(LOWER(l.state) IN ('.implode(',', $states) . ')');
+			JArrayHelper::toString($states);
+			$query->where('(LOWER(l.state) IN (' . implode(',', $states) . ')');
 		}
 
 		if (JFactory::getApplication()->getLanguageFilter())
@@ -117,98 +116,100 @@ class modRedeventTeaserHelper
 		$rows = $db->loadObjectList();
 		$rows = self::_categories($rows);
 
-		//Loop through the result rows and prepare data
-		$i		= 0;
-		$lists	= array();
-		foreach ( $rows as $k => $row )
+		// Loop through the result rows and prepare data
+		$i = 0;
+		$lists = array();
+
+		foreach ($rows as $k => $row)
 		{
-			//create thumbnails if needed and receive imagedata
+			// Create thumbnails if needed and receive imagedata
 			$dimage = RedeventImage::modalimage($row->datimage, $row->title, intval($params->get('picture_size', 30)));
 			$limage = RedeventImage::modalimage($row->locimage, $row->venue, intval($params->get('picture_size', 30)));
 
-			//cut title
-			$length = mb_strlen( $row->title, 'UTF-8' );
+			// Cut title
+			$length = mb_strlen($row->title, 'UTF-8');
 			$title_length = $params->get('cuttitle', 35);
-			if ($title_length && $length > $title_length) {
-				$title = mb_substr($row->title, 0, $title_length, 'UTF-8').'...';
+
+			if ($title_length && $length > $title_length)
+			{
+				$title = mb_substr($row->title, 0, $title_length, 'UTF-8') . '...';
 			}
-			else {
+			else
+			{
 				$title = $row->title;
 			}
 
 			$lists[$i] = new stdclass;
-			$lists[$i]->title			= htmlspecialchars( $title, ENT_COMPAT, 'UTF-8' );
-			$lists[$i]->venue			= htmlspecialchars( $row->venue, ENT_COMPAT, 'UTF-8' );
-			//			$lists[$i]->catname		= htmlspecialchars( $row->catname, ENT_COMPAT, 'UTF-8' );
-			$lists[$i]->state			= htmlspecialchars( $row->state, ENT_COMPAT, 'UTF-8' );
-			$lists[$i]->city	  	= htmlspecialchars( $row->city, ENT_COMPAT, 'UTF-8' );
-			$lists[$i]->eventlink	= $params->get('linkevent', 1) ? JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref) ) : '';
-			$lists[$i]->venuelink	= $params->get('linkvenue', 1) ? JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) ) : '';
+			$lists[$i]->title = htmlspecialchars($title, ENT_COMPAT, 'UTF-8');
+			$lists[$i]->venue = htmlspecialchars($row->venue, ENT_COMPAT, 'UTF-8');
+			$lists[$i]->state = htmlspecialchars($row->state, ENT_COMPAT, 'UTF-8');
+			$lists[$i]->city = htmlspecialchars($row->city, ENT_COMPAT, 'UTF-8');
+			$lists[$i]->eventlink = $params->get('linkevent', 1) ? JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref)) : '';
+			$lists[$i]->venuelink = $params->get('linkvenue', 1) ? JRoute::_(RedeventHelperRoute::getVenueEventsRoute($row->venueslug)) : '';
 			$lists[$i]->categorylink = $params->get('linkcategory', 1) ? self::_getCatLinks($row) : '';
-			$lists[$i]->date 			= self::_format_date($row, $params);
-			$lists[$i]->day 			= self::_format_day($row, $params);
-			$lists[$i]->dayname		= self::_format_dayname($row);
-			$lists[$i]->daynum 		= self::_format_daynum($row);
-			$lists[$i]->month 		= self::_format_month($row);
-			$lists[$i]->year 			= self::_format_year($row);
+			$lists[$i]->date = self::_format_date($row, $params);
+			$lists[$i]->day = self::_format_day($row, $params);
+			$lists[$i]->dayname = self::_format_dayname($row);
+			$lists[$i]->daynum = self::_format_daynum($row);
+			$lists[$i]->month = self::_format_month($row);
+			$lists[$i]->year = self::_format_year($row);
 
-			$lists[$i]->time 			= $row->times ? self::_format_time($row->dates, $row->times, $params) : '' ;
-			$lists[$i]->eventimage		= $dimage;
-			$lists[$i]->venueimage		= $limage;
-			$lists[$i]->slug		= $row->slug;
-			$lists[$i]->xslug		= $row->xslug;
+			$lists[$i]->time = $row->times ? self::_format_time($row->dates, $row->times, $params) : '';
+			$lists[$i]->eventimage = $dimage;
+			$lists[$i]->venueimage = $limage;
+			$lists[$i]->slug = $row->slug;
+			$lists[$i]->xslug = $row->xslug;
 
-			// Hint: Thanks for checking the code. If you want to display the event description in the module use the following command in your layout:
-			// echo $item->eventdescription;
-			// Note that all html elements will be removed
-
-
-			$length = $params->get( 'descriptionlength' );
+			$length = $params->get('descriptionlength');
 			$etc = '...';
 
-			//strip html tags but leave <br /> tags
-			//entferne html tags bis auf Zeilenumbr�che
 			$description = strip_tags($row->summary, "<br>");
 
-			//switch <br /> tags to space character
-			//wandle zeilenumbr�che in leerzeichen um
-			if ($params->get( 'br' ) == 0) {
-			 $description = str_replace('<br />',' ',$description);
+			if ($params->get('br') == 0)
+			{
+				$description = str_replace('<br />', ' ', $description);
 			}
-			//
-			if (strlen($description) > $length) {
+
+			if (strlen($description) > $length)
+			{
 				$length -= strlen($etc);
-				$description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, $length+1));
-				$lists[$i]->eventdescription = substr($description, 0, $length).$etc;
-			} else {
-				$lists[$i]->eventdescription	= $description;
+				$description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, $length + 1));
+				$lists[$i]->eventdescription = substr($description, 0, $length) . $etc;
+			}
+			else
+			{
+				$lists[$i]->eventdescription = $description;
 			}
 
 			$i++;
 		}
+
 		return $lists;
 	}
 
 	/**
 	 * adds categories property to event rows
 	 *
-	 * @param array $rows of events
+	 * @param   array  $rows  rows of events
+	 *
 	 * @return array
 	 */
 	private function _categories($rows)
 	{
-		$db = JFactory::getDBO();
-
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		$events = array();
-		foreach ($rows as $k => $r) {
+
+		foreach ($rows as $k => $r)
+		{
 			$events[] = $r->eventid;
 		}
+
 		$events = array_unique($events);
 
-		if (!count($events)) {
+		if (!count($events))
+		{
 			return $rows;
 		}
 
@@ -220,14 +221,14 @@ class modRedeventTeaserHelper
 			->from('#__redevent_categories as c')
 			->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id')
 			->where('c.published = 1')
-			->where('x.event_id IN (' . implode(", ", $events) .')')
+			->where('x.event_id IN (' . implode(", ", $events) . ')')
 			->where('(c.access IN (' . $gids . '))')
 			->order('c.ordering');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 
-		// get categories per events
+		// Get categories per events
 		$evcats = array();
 
 		foreach ($res as $r)
@@ -236,6 +237,7 @@ class modRedeventTeaserHelper
 			{
 				$evcats[$r->event_id] = array();
 			}
+
 			$evcats[$r->event_id][] = $r;
 		}
 
@@ -255,116 +257,144 @@ class modRedeventTeaserHelper
 	}
 
 	/**
-	 * returns categories links
-	 * @param unknown_type $item
+	 * Returns categories links
+	 *
+	 * @param   object  $item  item
+	 *
+	 * @return array
 	 */
 	private function _getCatLinks($item)
 	{
 		$links = array();
+
 		foreach ((array) $item->categories as $c)
 		{
 			$link = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($c->slug));
 			$links[] = JHTML::link($link, $c->name);
 		}
+
 		return $links;
 	}
 
 	/**
-	 *format days
+	 * format date
 	 *
+	 * @param   object  $row      event data
+	 * @param   array   &$params  module params
+	 *
+	 * @return string
 	 */
 	private function _format_day($row, &$params)
 	{
-		//Get needed timestamps and format
-		$yesterday_stamp	= mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
-		$yesterday 		  	= strftime("%Y-%m-%d", $yesterday_stamp);
-		$today_stamp	  	= mktime(0, 0, 0, date("m") , date("d"), date("Y"));
-		$today 			    	= date('Y-m-d');
-		$tomorrow_stamp 	= mktime(0, 0, 0, date("m") , date("d")+1, date("Y"));
-		$tomorrow 		  	= strftime("%Y-%m-%d", $tomorrow_stamp);
+		// Get needed timestamps and format
+		$yesterday_stamp = mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"));
+		$yesterday = strftime("%Y-%m-%d", $yesterday_stamp);
+		$today_stamp = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+		$today = date('Y-m-d');
+		$tomorrow_stamp = mktime(0, 0, 0, date("m"), date("d") + 1, date("Y"));
+		$tomorrow = strftime("%Y-%m-%d", $tomorrow_stamp);
 
-		$dates_stamp	  	= strtotime($row->dates);
-		$enddates_stamp		= $row->enddates ? strtotime($row->enddates) : null;
+		$dates_stamp = strtotime($row->dates);
+		$enddates_stamp = $row->enddates ? strtotime($row->enddates) : null;
 
-
-		//check if today or tomorrow or yesterday and no current running multiday event
-		if($row->dates == $today && empty($enddates_stamp)) {
-			$result = JText::_( 'MOD_REDEVENT_TEASER_TODAY' );
-		} elseif($row->dates == $tomorrow) {
-			$result = JText::_( 'MOD_REDEVENT_TEASER_TOMORROW' );
-		} elseif($row->dates == $yesterday) {
-			$result = JText::_( 'MOD_REDEVENT_TEASER_YESTERDAY' );
+		// Check if today or tomorrow or yesterday and no current running multiday event
+		if ($row->dates == $today && empty($enddates_stamp))
+		{
+			$result = JText::_('MOD_REDEVENT_TEASER_TODAY');
 		}
-		else {
-
-			//if daymethod show day
-			if($params->get('daymethod', 1) == 1) {
-
-				//single day event
-				$date = strftime('%A', strtotime( $row->dates ));
+		elseif ($row->dates == $tomorrow)
+		{
+			$result = JText::_('MOD_REDEVENT_TEASER_TOMORROW');
+		}
+		elseif ($row->dates == $yesterday)
+		{
+			$result = JText::_('MOD_REDEVENT_TEASER_YESTERDAY');
+		}
+		else
+		{
+			// If daymethod show day
+			if ($params->get('daymethod', 1) == 1)
+			{
+				// Single day event
+				$date = strftime('%A', strtotime($row->dates));
 				$result = JText::sprintf('MOD_REDEVENT_TEASER_ON_DATE', $date);
 
-				//Upcoming multidayevent (From 16.10.2010 Until 18.10.2010)
-				if($dates_stamp > $tomorrow_stamp && $enddates_stamp) {
-					$startdate = strftime('%A', strtotime( $row->dates ));
+				// Upcoming multidayevent (From 16.10.2010 Until 18.10.2010)
+				if ($dates_stamp > $tomorrow_stamp && $enddates_stamp)
+				{
+					$startdate = strftime('%A', strtotime($row->dates));
 					$result = JText::sprintf('MOD_REDEVENT_TEASER_FROM', $startdate);
 				}
 
-				//current multidayevent (Until 18.08.2008)
-				if( $row->enddates && $enddates_stamp > $today_stamp && $dates_stamp <= $today_stamp ) {
-					//format date
-					$result = strftime('%A', strtotime( $row->enddates ));
+				// Current multidayevent (Until 18.08.2008)
+				if ($row->enddates && $enddates_stamp > $today_stamp && $dates_stamp <= $today_stamp)
+				{
+					// Format date
+					$result = strftime('%A', strtotime($row->enddates));
 					$result = JText::sprintf('MOD_REDEVENT_TEASER_UNTIL', $result);
 				}
-
 			}
+			else
+			{
+				// Show day difference
 
-			// show day difference
-			else {
-				//the event has an enddate and it's earlier than yesterday
-				if ($row->enddates && $enddates_stamp < $yesterday_stamp) {
-					$days = round( ($today_stamp - $enddates_stamp) / 86400 );
-					$result = JText::sprintf( 'MOD_REDEVENT_TEASER_ENDED_DAYS_AGO', $days );
+				// The event has an enddate and it's earlier than yesterday
+				if ($row->enddates && $enddates_stamp < $yesterday_stamp)
+				{
+					$days = round(($today_stamp - $enddates_stamp) / 86400);
+					$result = JText::sprintf('MOD_REDEVENT_TEASER_ENDED_DAYS_AGO', $days);
 
-					//the event has an enddate and it's later than today but the startdate is today or earlier than today
-					//means a currently running event with startdate = today
-				} elseif($row->enddates && $enddates_stamp > $today_stamp && $dates_stamp <= $today_stamp) {
-					$days = round( ($enddates_stamp - $today_stamp) / 86400 );
-					$result = JText::sprintf( 'MOD_REDEVENT_TEASER_DAYS_LEFT', $days );
+					// The event has an enddate and it's later than today but the startdate is today or earlier than today
+					// Means a currently running event with startdate = today
+				}
+				elseif ($row->enddates && $enddates_stamp > $today_stamp && $dates_stamp <= $today_stamp)
+				{
+					$days = round(($enddates_stamp - $today_stamp) / 86400);
+					$result = JText::sprintf('MOD_REDEVENT_TEASER_DAYS_LEFT', $days);
 
-					//the events date is earlier than yesterday
-				} elseif($dates_stamp < $yesterday_stamp) {
-					$days = round( ($today_stamp - $dates_stamp) / 86400 );
-					$result = JText::sprintf( 'MOD_REDEVENT_TEASER_DAYS_AGO', $days );
+					// The events date is earlier than yesterday
+				}
+				elseif ($dates_stamp < $yesterday_stamp)
+				{
+					$days = round(($today_stamp - $dates_stamp) / 86400);
+					$result = JText::sprintf('MOD_REDEVENT_TEASER_DAYS_AGO', $days);
 
-					//the events date is later than tomorrow
-				} elseif($dates_stamp > $tomorrow_stamp) {
-					$days = round( ($dates_stamp - $today_stamp) / 86400 );
-					$result = JText::sprintf( 'MOD_REDEVENT_TEASER_DAYS_AHEAD', $days );
+					// The events date is later than tomorrow
+				}
+				elseif ($dates_stamp > $tomorrow_stamp)
+				{
+					$days = round(($dates_stamp - $today_stamp) / 86400);
+					$result = JText::sprintf('MOD_REDEVENT_TEASER_DAYS_AHEAD', $days);
 				}
 			}
 		}
+
 		return $result;
 	}
+
 	/**
 	 * Method to format date information
 	 *
-	 * @access public
+	 * @param   object  $row      event data
+	 * @param   array   &$params  module params
+	 *
 	 * @return string
 	 */
 	private function _format_date($row, &$params)
 	{
-		$enddates_stamp		= $row->enddates ? strtotime($row->enddates) : null;
+		$enddates_stamp = $row->enddates ? strtotime($row->enddates) : null;
 
-		//single day event
-		if (empty($enddates_stamp)) {
-			$date = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates.' '.$row->times ));
+		// Single day event
+		if (empty($enddates_stamp))
+		{
+			$date = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime($row->dates . ' ' . $row->times));
 			$result = JText::sprintf('MOD_REDEVENT_TEASER_ON_DATE', $date);
 		}
-		else {
-			//multidayevent (From 16.10.2008 Until 18.08.2008)
-			$startdate = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
-			$enddate = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
+		else
+		{
+			// Multidayevent (From 16.10.2008 Until 18.08.2008)
+			$startdate = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime($row->dates));
+			$enddate = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime($row->enddates));
 			$result = JText::sprintf('MOD_REDEVENT_TEASER_FROM_UNTIL', $startdate, $enddate);
 		}
 
@@ -374,43 +404,77 @@ class modRedeventTeaserHelper
 	/**
 	 * Method to format time information
 	 *
-	 * @access public
+	 * @param   string  $date     date
+	 * @param   string  $time     time
+	 * @param   array   &$params  module params
+	 *
 	 * @return string
 	 */
 	private function _format_time($date, $time, &$params)
 	{
-		$time = strftime( $params->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));
+		$time = strftime($params->get('formattime', '%H:%M'), strtotime($date . ' ' . $time));
 		$result = JText::sprintf('MOD_REDEVENT_TEASER_TIME_STRING', $time);
+
 		return $result;
 	}
 
-	/*Calendar*/
+	/**
+	 * Method to format day name
+	 *
+	 * @param   object  $row  data
+	 *
+	 * @return string
+	 */
 	private function _format_dayname($row)
 	{
-		$date	  = strtotime($row->dates);
+		$date = strtotime($row->dates);
 		$result = strftime("%A", $date);
+
 		return $result;
 	}
 
+	/**
+	 * Method to format day number
+	 *
+	 * @param   object  $row  data
+	 *
+	 * @return string
+	 */
 	private function _format_daynum($row)
 	{
-		$date	  = strtotime($row->dates);
+		$date = strtotime($row->dates);
 		$result = strftime("%d", $date);
+
 		return $result;
 	}
 
+	/**
+	 * Method to format year
+	 *
+	 * @param   object  $row  data
+	 *
+	 * @return string
+	 */
 	private function _format_year($row)
 	{
-		$date	  = strtotime($row->dates);
+		$date = strtotime($row->dates);
 		$result = strftime("%Y", $date);
+
 		return $result;
 	}
 
+	/**
+	 * Method to format month
+	 *
+	 * @param   object  $row  data
+	 *
+	 * @return string
+	 */
 	private function _format_month($row)
 	{
-		$date	  = strtotime($row->dates);
+		$date = strtotime($row->dates);
 		$result = strftime("%B", $date);
-		/*htmlentities for german month March->M�rz*/
+
 		return htmlentities($result);
 	}
 }

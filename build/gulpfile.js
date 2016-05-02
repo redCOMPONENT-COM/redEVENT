@@ -9,7 +9,6 @@ const fs          = require('fs');
 const path        = require('path');
 const del         = require('del');
 const exec        = require('child_process').exec;
-const redcore     = requireDir('./redCORE/build/gulp-redcore', {recurse: true});
 const replace     = require('gulp-replace');
 const filter      = require('gulp-filter');
 

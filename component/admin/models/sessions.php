@@ -126,10 +126,17 @@ class RedeventModelSessions extends RModelList
 		$this->buildContentWhere($query);
 
 		// Add the list ordering clause.
-		$query->order(
-			$this->_db->escape($this->getState('list.ordering', 'obj.dates')) . ' '
-			. $this->_db->escape($this->getState('list.direction', 'ASC'))
-		);
+		if ($this->getState('list.ordering', 'obj.dates') == 'obj.dates')
+		{
+			$order = 'obj.dates ' . $this->getState('list.direction', 'ASC') . ', obj.times ' . $this->getState('list.direction', 'ASC');
+		}
+		else
+		{
+			$order = $this->getState('list.ordering', 'obj.dates') . ' '
+				. $this->getState('list.direction', 'ASC');
+		}
+
+		$query->order($order);
 
 		return $query;
 	}
