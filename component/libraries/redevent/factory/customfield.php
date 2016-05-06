@@ -22,6 +22,8 @@ abstract class RedeventFactoryCustomfield
 	 * @param   string  $type  field type
 	 *
 	 * @return RedeventAbstractCustomfield
+	 *
+	 * @throws RuntimeException
 	 */
 	public static function getField($type)
 	{
@@ -32,7 +34,23 @@ abstract class RedeventFactoryCustomfield
 
 		$classname = 'RedeventCustomfield' . ucfirst($type);
 
-		return new $classname;
+		$instance = null;
+
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onRedeventGetCustomField', array($classname, &$instance));
+
+		if ($instance instanceof RedeventAbstractCustomfield)
+		{
+			return $instance;
+		}
+
+		if (class_exists($classname))
+		{
+			return new $classname;
+		}
+
+		throw new RuntimeException('Custom field type not found: ' . $type);
 	}
 
 	/**
@@ -52,6 +70,10 @@ abstract class RedeventFactoryCustomfield
 		{
 			$types[] = substr($filename, 0, -4);
 		}
+
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onRedeventGetCustomFieldTypes', array(&$types));
 
 		return $types;
 	}

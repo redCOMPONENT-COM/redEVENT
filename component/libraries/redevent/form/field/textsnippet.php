@@ -15,7 +15,7 @@ JFormHelper::loadFieldClass('list');
  * @package  Redevent.admin
  * @since    3.0
  */
-class RedeventFormFieldtextsnippet extends JFormFieldList
+class RedeventFormFieldTextsnippet extends JFormFieldList
 {
 	/**
 	 * field type
