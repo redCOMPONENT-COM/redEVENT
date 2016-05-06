@@ -2,7 +2,7 @@
 <form>
 
 	<fieldset name="event"
-              addfieldpath="/administrator/components/com_redmailflow/models/fields">
+              addfieldpath="/libraries/redmailflow/form/field">
 
         <field name="id"
                type="hidden"
@@ -134,10 +134,9 @@
             directory="redevent/events"
             preview="true"/>
 
-
         <field
             name="mailflow_id"
-            type="mailflows"
+            type="redmailflow.mailflow"
             label="COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW"
             description="COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW_DESC"
             >

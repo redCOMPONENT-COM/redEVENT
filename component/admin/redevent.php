@@ -29,7 +29,6 @@ require_once $redEVENTLoader;
 
 RedeventBootstrap::bootstrap();
 
-
 // Register backend prefix
 RLoader::registerPrefix('Redevent', __DIR__);
 
