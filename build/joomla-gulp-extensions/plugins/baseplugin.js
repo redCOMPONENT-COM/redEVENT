@@ -22,12 +22,12 @@ module.exports.addPlugin = function (group, name) {
 
 	// Clean
 	gulp.task('clean:' + baseTask, function() {
-		del.sync(config.wwwDir + '/plugins/' + group + '/' + name, {force : true});
+		return del.sync(config.wwwDir + '/plugins/' + group + '/' + name, {force : true});
 	});
 
 	// Clean: Media
 	gulp.task('clean:' + baseTask + ':media', function() {
-		del.sync(config.wwwDir + '/media/' + 'plg_' + group + '_' + name, {force: true});
+		return del.sync(config.wwwDir + '/media/' + 'plg_' + group + '_' + name, {force: true});
 	});
 
 	// Copy
@@ -55,9 +55,8 @@ module.exports.addPlugin = function (group, name) {
 		[
 			'watch:' + baseTask + ':plugin',
 			'watch:' + baseTask + ':media'
-		],
-		function() {
-		});
+		]
+	);
 
 	// Watch: plugin
 	gulp.task('watch:' + baseTask + ':plugin', function() {

@@ -109,21 +109,19 @@ class RedeventEntitySession extends RedeventEntityBase
 			return JText::_('LIB_REDEVENT_OPEN_DATE');
 		}
 
-		if (RedeventHelperDate::isValidTime($item->times))
+		if (!is_null($dateFormat))
 		{
-			if (!is_null($dateFormat))
-			{
-				$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
-			}
-			else
-			{
-				$format = null;
-			}
-
-			return RedeventHelperDate::formatdatetime($item->dates . ' ' . $item->times, $format);
+			$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
+		}
+		else
+		{
+			$format = null;
 		}
 
-		return RedeventHelperDate::formatdate($item);
+		return RedeventHelperDate::formatdatetime(
+			RedeventHelperDate::isValidTime($item->times) ? $item->dates . ' ' . $item->times : $item->dates,
+			$format
+		);
 	}
 
 	/**
