@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Aesir.Plugin
- * @subpackage  Aesir_Field.Redevent_session
+ * @subpackage  Aesir_Field.Redevent_event
  *
  * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -10,24 +10,24 @@
 defined('_JEXEC') or die;
 
 JLoader::import('reditem.library');
-JLoader::registerPrefix('PlgAesir_FieldRedevent_session', __DIR__);
+JLoader::registerPrefix('PlgAesir_FieldRedevent_event', __DIR__);
 
 use Aesir\Plugin\AbstractFieldPlugin;
 use Aesir\Entity\FieldInterface;
 
 /**
- * Redevent_session field
+ * Redevent_event field
  *
  * @since  1.0.0
  */
-final class PlgAesir_FieldRedevent_session extends AbstractFieldPlugin
+final class PlgAesir_FieldRedevent_event extends AbstractFieldPlugin
 {
 	/**
-	 * Type for the form type="redevent_session" tag
+	 * Type for the form type="redevent_event" tag
 	 *
 	 * @var  string
 	 */
-	protected $formFieldType = 'PlgAesir_FieldRedevent_session.session';
+	protected $formFieldType = 'PlgAesir_FieldRedevent_event.event';
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.

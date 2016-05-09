@@ -21,14 +21,14 @@ RedeventBootstrap::bootstrap();
  *
  * @since  1.0.0
  */
-class PlgAesir_FieldRedevent_sessionFormFieldSession extends CustomField
+class PlgAesir_FieldRedevent_eventFormFieldEvent extends CustomField
 {
 	/**
 	 * The form field type.
 	 *
 	 * @var  string
 	 */
-	protected $type = 'session';
+	protected $type = 'event';
 
 	/**
 	 * Get the data that is going to be passed to the layout
@@ -38,6 +38,7 @@ class PlgAesir_FieldRedevent_sessionFormFieldSession extends CustomField
 	protected function getLayoutData()
 	{
 		$data = parent::getLayoutData();
+		$data['options'] = $this->getEventOptions();
 
 		return $data;
 	}
@@ -53,7 +54,7 @@ class PlgAesir_FieldRedevent_sessionFormFieldSession extends CustomField
 
 		$template  = $app->getTemplate();
 
-		$fieldType = 'redevent_session';
+		$fieldType = 'redevent_event';
 
 		$baseAppPath = $app->isSite() ? JPATH_SITE : JPATH_ADMINISTRATOR;
 
@@ -63,6 +64,36 @@ class PlgAesir_FieldRedevent_sessionFormFieldSession extends CustomField
 			$baseAppPath . '/components/' . \JApplicationHelper::getComponentName() . '/layouts',
 			JPATH_SITE . '/plugins/aesir_field/' . $fieldType . '/layouts',
 			JPATH_SITE . '/layouts'
+		);
+	}
+
+	/**
+	 * Get options
+	 *
+	 * @return array
+	 */
+	protected function getEventOptions()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('id AS value, title AS text')
+			->from('#__redevent_events')
+			->order('title ASC');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		if (!$res)
+		{
+			return array();
+		}
+
+		return array_map(
+			function($element)
+			{
+				return JHtml::_('select.option', $element->value, $element->text);
+			},
+			$res
 		);
 	}
 }

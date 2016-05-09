@@ -24,7 +24,6 @@ RHelperAsset::load('lib/jquery-ui/jquery-ui.custom.min.css', 'redcore');
 ?>
 
 <script type="text/javascript">
-
 	(function($){
 		$(document).ready(function(){
 			$('#reset-redevent-session').click(function(){
@@ -33,7 +32,7 @@ RHelperAsset::load('lib/jquery-ui/jquery-ui.custom.min.css', 'redcore');
 		});
 	})(jQuery);
 
-	function RedeventSessionInsertFieldValue(value, text, fieldId) {
+	function redeventSessionInsertFieldValue(value, text, fieldId) {
 		(function($){
 			$("#" + fieldId + "_value").val(value);
 			$("#" + fieldId + "_text").val(text);
@@ -71,7 +70,7 @@ RHelperAsset::load('lib/jquery-ui/jquery-ui.custom.min.css', 'redcore');
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-body">
-				<iframe src="index.php?option=com_redevent&view=sessions&layout=element&tmpl=component&fieldid=<?php echo $fieldId; ?>&function=RedeventSessionInsertFieldValue" frameborder="0" width="100%" height="450px"></iframe>
+				<iframe src="index.php?option=com_redevent&view=sessions&layout=element&tmpl=component&fieldid=<?php echo $fieldId; ?>&function=redeventSessionInsertFieldValue" frameborder="0" width="100%" height="450px"></iframe>
 			</div>
 		</div>
 	</div>
