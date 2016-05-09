@@ -7,7 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Aesir\Entity\Twig;
+use Aesir\Entity\Twig\AbstractTwigEntity;
+use Aesir\Entity\Twig\Traits;
 
 defined('_JEXEC') or die;
 
@@ -16,9 +17,9 @@ defined('_JEXEC') or die;
  *
  * @since  3.3.10
  */
-final class Event extends AbstractTwigEntity
+final class PlgAesir_FieldRedevent_eventEntityTwigEvent extends AbstractTwigEntity
 {
-	use Traits\HasCheckin, Traits\HasFeatured, Traits\HasState;
+	use Traits\HasCheckin, Traits\HasFeatured, Traits\HasState, Traits\HasName;
 
 	/**
 	 * Constructor.
@@ -28,5 +29,15 @@ final class Event extends AbstractTwigEntity
 	public function __construct(\RedeventEntityEvent $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get the item title.
+	 *
+	 * @return  string
+	 */
+	public function getTitle()
+	{
+		return $this->entity->title;
 	}
 }

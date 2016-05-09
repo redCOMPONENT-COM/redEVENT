@@ -12,6 +12,9 @@ defined('_JEXEC') or die;
 JLoader::import('reditem.library');
 JLoader::registerPrefix('PlgAesir_FieldRedevent_event', __DIR__);
 
+JLoader::import('redevent.bootstrap');
+RedeventBootstrap::bootstrap();
+
 use Aesir\Plugin\AbstractFieldPlugin;
 use Aesir\Entity\FieldInterface;
 
@@ -48,6 +51,6 @@ final class PlgAesir_FieldRedevent_event extends AbstractFieldPlugin
 	 */
 	public function onAesirAfterTwigLoad(\Aesir\Twig\Enviroment $twig, \Twig_LoaderInterface $loader = null, $options = array())
 	{
-		exit('here');
+		$twig->addExtension(new PlgAesir_FieldRedevent_eventTwigExtensionEvent);
 	}
 }

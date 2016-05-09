@@ -48,6 +48,5 @@ final class PlgAesir_FieldRedevent_session extends AbstractFieldPlugin
 	 */
 	public function onAesirAfterTwigLoad(\Aesir\Twig\Enviroment $twig, \Twig_LoaderInterface $loader = null, $options = array())
 	{
-		exit('here');
 	}
 }
