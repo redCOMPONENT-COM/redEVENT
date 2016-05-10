@@ -13,20 +13,18 @@ use Aesir\Entity\Twig\Traits;
 defined('_JEXEC') or die;
 
 /**
- * redEVENT Session Twig Entity.
+ * redEVENT Venue Twig Entity.
  *
  * @since  3.3.10
  */
-final class PlgAesir_FieldRedevent_eventEntityTwigSession extends AbstractTwigEntity
+final class PlgAesir_FieldRedevent_eventEntityTwigVenue extends AbstractTwigEntity
 {
-	use Traits\HasCheckin, Traits\HasFeatured, Traits\HasState;
-
 	/**
 	 * Constructor.
 	 *
-	 * @param   \RedeventEntitySession  $entity  The entity
+	 * @param   \RedeventEntityVenue  $entity  The entity
 	 */
-	public function __construct(\RedeventEntitySession $entity)
+	public function __construct(\RedeventEntityVenue $entity)
 	{
 		$this->entity = $entity;
 	}
@@ -58,37 +56,5 @@ final class PlgAesir_FieldRedevent_eventEntityTwigSession extends AbstractTwigEn
 	public function __isset($name)
 	{
 		return isset($this->entity->$name);
-	}
-
-	/**
-	 * Get session price groups
-	 *
-	 * @return   array|bool
-	 */
-	public function getPrices()
-	{
-		$prices = $this->entity->getPricegroups();
-
-		return $prices
-			? array_map(
-				function($entity)
-				{
-					return new PlgAesir_FieldRedevent_eventEntityTwigSessionpricegroup($entity);
-				},
-				$prices
-			)
-			: false;
-	}
-
-	/**
-	 * Get venue twig entity
-	 *
-	 * @return PlgAesir_FieldRedevent_eventEntityTwigVenue
-	 */
-	public function getVenue()
-	{
-		$venue = $this->entity->getVenue();
-
-		return $venue->isValid() ? new PlgAesir_FieldRedevent_eventEntityTwigVenue($venue) : false;
 	}
 }
