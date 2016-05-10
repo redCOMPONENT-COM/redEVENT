@@ -65,14 +65,23 @@ final class PlgAesir_FieldRedevent_eventEntityTwigEvent extends AbstractTwigEnti
 	 *
 	 * @return array|bool
 	 */
-	public function getSessions($published = 1, $featured = 0)
+	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = 0)
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from('#__redevent_event_venue_xref')
-			->where('eventid = ' . $this->entity->id)
-			->order('dates DESC, times DESC');
+			->where('eventid = ' . $this->entity->id);
+
+		switch ($ordering)
+		{
+			case 'dates.desc':
+				$query->order('dates DESC, times DESC');
+				break;
+			case 'dates.asc':
+			default:
+				$query->order('dates ASC, times ASC');
+		}
 
 		if ($published == 1)
 		{
