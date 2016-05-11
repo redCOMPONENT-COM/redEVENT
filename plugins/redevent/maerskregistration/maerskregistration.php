@@ -390,7 +390,7 @@ class plgRedeventMaerskregistration extends JPlugin
 	private function emailCommentUpdated($attendee_id)
 	{
 		$app = JFactory::getApplication();
-		$mailer = JFactory::getMailer();
+		$mailer = RdfHelper::getMailer();
 		$mailer->IsHTML(true);
 
 		if (!$recipient = $this->getVenueContactAdminEmail($attendee_id))
