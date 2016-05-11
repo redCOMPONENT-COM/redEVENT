@@ -792,7 +792,7 @@ class RedeventModelRegistration extends RModel
 
 		$message = html_entity_decode($message, ENT_QUOTES);
 
-		$mail = JFactory::getMailer();
+		$mail = RdfHelper::getMailer();
 		$mail->sendMail($mailfrom, $fromname, $email, $subject, $message);
 
 		// Send notification to all administrators
