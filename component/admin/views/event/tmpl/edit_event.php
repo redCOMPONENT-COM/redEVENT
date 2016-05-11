@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</div>
 
-	<?php if (file_exists(JPATH_SITE . '/components/com_redmailflow') && JComponentHelper::isEnabled('com_redmailflow')): ?>
+	<?php if (file_exists(JPATH_SITE . '/libraries/redmailflow') && JComponentHelper::isEnabled('com_redmailflow')): ?>
 		<div class="control-group">
 			<div class="control-label">
 				<?php echo $this->form->getLabel('mailflow_id'); ?>

@@ -163,7 +163,7 @@ class RedeventModelEditvenue extends RModelAdmin
 
 			$user = JFactory::getUser();
 
-			$mail = JFactory::getMailer();
+			$mail = RdfHelper::getMailer();
 
 			$state = $row->published ? JText::sprintf('COM_REDEVENT_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_VENUE_UNPUBLISHED');
 
@@ -245,7 +245,7 @@ class RedeventModelEditvenue extends RModelAdmin
 			$FromName = $app->getCfg('fromname');
 
 			$user = JFactory::getUser();
-			$usermail = JFactory::getMailer();
+			$usermail = RdfHelper::getMailer();
 
 			$link = JRoute::_(JURI::base() . RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
