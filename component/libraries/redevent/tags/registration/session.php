@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  * @package  Redevent.Library
  * @since    3.0
  */
-class RedeventTagsFormForm
+class RedeventTagsRegistrationSession
 {
 	/**
 	 * @var RdfCore
@@ -22,36 +22,39 @@ class RedeventTagsFormForm
 	private $rfcore;
 
 	/**
-	 * @var RModel
+	 * @var RedeventEntitySession
 	 */
-	private $model;
+	private $session;
 
 	/**
-	 * @var JInput
+	 * @var string
 	 */
-	private $input;
+	private $submitKey;
 
 	/**
-	 * @var JDatabaseDriver
+	 * @var boolean
 	 */
-	protected $db;
+	private $isReview = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $isSingle = false;
 
 	/**
 	 * @var int
 	 */
-	protected $pricegroupId = 0;
+	private $pricegroupId = 0;
 
 	/**
 	 * Constructor
 	 *
-	 * @param   RModel  $dataModel  data model for session details
+	 * @param   int  $sessionId  session id
 	 */
-	public function __construct($dataModel)
+	public function __construct($sessionId)
 	{
 		$this->rfcore = RdfCore::getInstance();
-		$this->model = $dataModel;
-		$this->input = JFactory::getApplication()->input;
-		$this->db = JFactory::getDbo();
+		$this->session = RedeventEntitySession::load($sessionId);
 	}
 
 	/**
@@ -59,7 +62,7 @@ class RedeventTagsFormForm
 	 *
 	 * @param   int  $id  pricegroup id
 	 *
-	 * @return RedeventTagsFormForm
+	 * @return RedeventTagsRegistrationSession
 	 */
 	public function setPricegroupId($id)
 	{
@@ -69,17 +72,30 @@ class RedeventTagsFormForm
 	}
 
 	/**
-	 * Return tag html
+	 * Submit key
 	 *
-	 * @param   boolean  $hasReview  has review
+	 * @param   string  $key  submit key
+	 *
+	 * @return RedeventTagsRegistrationSession
+	 */
+	public function setSubmitKey($key)
+	{
+		$this->submitKey = $key;
+
+		return $this;
+	}
+
+	/**
+	 * Return tag html
 	 *
 	 * @return string
 	 */
-	public function getHtml($hasReview = false)
+	public function getHtml()
 	{
 		try
 		{
-			$html = $this->process($hasReview);
+			$this->checkCanRegister();
+			$html = $this->process();
 		}
 		catch (Exception $e)
 		{
@@ -90,22 +106,47 @@ class RedeventTagsFormForm
 	}
 
 	/**
-	 * Do the work
+	 * Set review state
 	 *
-	 * @param   boolean  $hasReview  has review
+	 * @param   boolean  $value  is review
+	 *
+	 * @return RedeventTagsRegistrationSession
+	 */
+	public function isReview($value)
+	{
+		$this->isReview = $value ? true : false;
+
+		return this;
+	}
+
+	/**
+	 * Set single state
+	 *
+	 * @param   boolean  $value  force single signup
+	 *
+	 * @return RedeventTagsRegistrationSession
+	 */
+	public function isSingle($value)
+	{
+		$this->isSingle = $value ? true : false;
+
+		return this;
+	}
+
+	/**
+	 * Do the work
 	 *
 	 * @return string
 	 *
 	 * @throws Exception
 	 */
-	protected function process($hasReview)
+	private function process()
 	{
-		$isReview = $this->input->get('task') == 'review';
-		$submit_key = $this->input->get('submit_key');
-
 		$form = $this->getRedformForm();
 		$multi = $this->getNumberOfSignup();
-		$prices = $this->model->getPrices();
+		$prices = $this->session->getPricegroups();
+
+		$hasReview = $this->session->getEvent()->hasReview();
 
 		$options = array('extrafields' => array());
 
@@ -139,8 +180,8 @@ class RedeventTagsFormForm
 		}
 
 		$html = '<form action="' . JRoute::_('index.php') . '" class="redform-validate" method="post" name="redform" enctype="multipart/form-data">';
-		$html .= $this->rfcore->getFormFields($this->model->getData()->redform_id, $isReview ? null : $submit_key, $multi, $options);
-		$html .= '<input type="hidden" name="xref" value="' . $this->model->getData()->xref . '"/>';
+		$html .= $this->rfcore->getFormFields($this->session->getEvent()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options);
+		$html .= '<input type="hidden" name="xref" value="' . $this->session->id . '"/>';
 		$html .= '<input type="hidden" name="option" value="com_redevent"/>';
 		$html .= '<input type="hidden" name="task" value="registration.register"/>';
 
@@ -151,7 +192,7 @@ class RedeventTagsFormForm
 
 		$html .= '<div id="submit_button" style="display: block;" class="submitform' . $form->classname . '">';
 
-		if (empty($submit_key))
+		if (empty($this->submitKey))
 		{
 			$html .= '<input type="submit" id="regularsubmit" name="submit" value="' . JText::_('COM_REDEVENT_Submit') . '" />';
 		}
@@ -166,13 +207,13 @@ class RedeventTagsFormForm
 
 		if (RdfHelperAnalytics::isEnabled())
 		{
-			if ($isReview)
+			if ($this->isReview)
 			{
-				$label = "display review registration form for event " . $this->model->getData()->title;
+				$label = "display review registration form for event " . $this->session->getEvent()->title;
 			}
 			else
 			{
-				$label = "display registration form for event " . $this->model->getData()->title;
+				$label = "display registration form for event " . $this->session->getEvent()->title;
 			}
 
 			$event = new stdclass;
@@ -187,6 +228,23 @@ class RedeventTagsFormForm
 	}
 
 	/**
+	 * Check the user can register to the session
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	private function checkCanRegister()
+	{
+		$status = RedeventHelper::canRegister($this->session->id);
+
+		if (!$status->canregister)
+		{
+			throw new Exception($status->status);
+		}
+	}
+
+	/**
 	 * Get number of signup to display
 	 *
 	 * @return int
@@ -196,14 +254,12 @@ class RedeventTagsFormForm
 	private function getNumberOfSignup()
 	{
 		// Multiple signup ?
-		$single = $this->input->getInt('single', 0);
-		$max = $this->model->getData()->max_multi_signup;
+		$max = $this->session->getEvent()->max_multi_signup;
+		$user = JFactory::getUser();
 
-		if ($max && !$single && JFactory::getUser()->get('id'))
+		if ($max && !$this->isSingle && $user->get('id'))
 		{
-			// We must substract current registrations of this user !
-			$nbregs = $this->getUserActiveRegistrationsCount();
-			$multi = $max - $nbregs;
+			$multi = $this->session->getUserNumberOfSignupLeft($user->get('id'));
 
 			if ($multi < 1)
 			{
@@ -220,64 +276,37 @@ class RedeventTagsFormForm
 	}
 
 	/**
-	 * return current number of registrations for current user to this event
-	 *
-	 * @return int
-	 */
-	private function getUserActiveRegistrationsCount()
-	{
-		$user = JFactory::getUser();
-
-		if (!$user)
-		{
-			JError::raiseError(403, 'NO_AUTH');
-		}
-
-		$query = $this->db->getQuery(true);
-
-		$query->select('COUNT(id)')
-			->from('#__redevent_register')
-			->where('uid = ' . $user->get('id'))
-			->where('cancelled = 0')
-			->where('xref = ' . $this->model->getData()->xref);
-
-		$this->db->setQuery($query);
-		$res = $this->db->loadResult();
-
-		return $res;
-	}
-
-	/**
 	 * Get redFORM form
 	 *
-	 * @return object
+	 * @return RdfEntityForm
 	 *
 	 * @throws Exception
 	 */
 	private function getRedformForm()
 	{
-		if (!$this->rfcore->getFormStatus($this->model->getData()->redform_id))
+		$form = $this->session->getEvent()->getForm();
+
+		if (!$form->checkFormStatus())
 		{
-			throw new Exception($this->rfcore->getError(), 500);
+			throw new RuntimeException($form->getStatusMessage(), 500);
 		}
 
-		return $this->rfcore->getForm($this->model->getData()->redform_id);
+		return $form;
 	}
 
 	/**
 	 * Check if a pricegroup is already selected
 	 *
-	 * @param   array  $sessionPriceGroups  session price groups
+	 * @param   RedeventEntitySessionpricegroup[]  $sessionPriceGroups  session price groups
 	 *
-	 * @return mixed
+	 * @return RedeventEntitySessionpricegroup|false if not selected
 	 */
 	private function getSelectedPriceGroup($sessionPriceGroups)
 	{
-		$isReview = $this->input->get('task') == 'review';
-		$submit_key = $this->input->get('submit_key');
+		$isReview = $this->isReview;
 
 		// If a review, we already have sessionpricegroup_id set in user session data
-		$sessionPricegroupIds = $isReview ? JFactory::getApplication()->getUserState('spgids' . $submit_key) : null;
+		$sessionPricegroupIds = $isReview ? JFactory::getApplication()->getUserState('spgids' . $this->submitKey) : null;
 
 		if (!empty($sessionPricegroupIds))
 		{
@@ -297,7 +326,8 @@ class RedeventTagsFormForm
 		{
 			return current($sessionPriceGroups);
 		}
-		elseif ($this->pricegroupId)
+
+		if ($this->pricegroupId)
 		{
 			foreach ($sessionPriceGroups as $sessionPriceGroup)
 			{

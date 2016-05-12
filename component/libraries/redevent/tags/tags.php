@@ -18,28 +18,62 @@ require_once JPATH_SITE . '/components/com_redevent/models/eventhelper.php';
  */
 class RedeventTags
 {
+	/**
+	 * Session id
+	 * @var int
+	 */
 	private $xref;
 
+	/**
+	 * A session id belonging to the event
+	 * @var int
+	 */
+	private $anEventXref;
+
+	/**
+	 * The event id
+	 * @var int
+	 */
 	private $eventid;
 
-	private $venueid;
-
+	/**
+	 * @var string submit key
+	 */
 	private $submitkey;
 
-	private $published;
-
+	/**
+	 * @var array
+	 */
 	protected $eventlinks = null;
 
+	/**
+	 * @var array
+	 */
 	private $libraryTags = null;
 
+	/**
+	 * @var array
+	 */
 	private $customfields = null;
 
+	/**
+	 * @var array
+	 */
 	private $xrefcustomfields = null;
 
+	/**
+	 * @var RdfAnswers
+	 */
 	private $answers = null;
 
+	/**
+	 * @var array
+	 */
 	private $options = null;
 
+	/**
+	 * @var bool
+	 */
 	private $canregister = null;
 
 	/**
@@ -50,7 +84,7 @@ class RedeventTags
 
 	/**
 	 * instance of rfcore
-	 * @var object
+	 * @var RdfCore
 	 */
 	private $rfcore = null;
 
@@ -58,6 +92,11 @@ class RedeventTags
 	 * @var JDatabaseDriver
 	 */
 	private $db;
+
+	/**
+	 * @var JInput
+	 */
+	private $input;
 
 	/**
 	 * constuctor
@@ -81,6 +120,8 @@ class RedeventTags
 		{
 			$this->db = JFactory::getDbo();
 		}
+
+		$this->input = JFactory::getApplication()->input;
 	}
 
 	/**
@@ -93,18 +134,6 @@ class RedeventTags
 	public function setEventId($id)
 	{
 		$this->eventid = intval($id);
-	}
-
-	/**
-	 * Set event object
-	 *
-	 * @param   object  $object  event
-	 *
-	 * @return void
-	 */
-	public function setEventObject($object)
-	{
-		$this->event = $object;
 	}
 
 	/**
@@ -131,12 +160,44 @@ class RedeventTags
 	 */
 	public function getXref()
 	{
-		if (!$this->xref)
+		return $this->xref;
+	}
+
+	/**
+	 * Get a session id associated to event
+	 *
+	 * @return int
+	 */
+	public function getAnXref()
+	{
+		if ($this->xref)
 		{
-			$this->initXref();
+			return $this->xref;
 		}
 
-		return $this->xref;
+		$eventid = $this->eventid;
+
+		if ($eventid && !$this->anEventXref)
+		{
+			$query = $this->db->getQuery(true);
+
+			$query->select('x.id')
+				->from($this->db->qn('#__redevent_event_venue_xref', 'x'))
+				->join('INNER', '#__redevent_events AS e ON e.id = x.eventid')
+				->where('x.published = 1')
+				->where('x.eventid = ' . $this->db->Quote($eventid))
+				->order('x.dates ASC');
+
+			$this->db->setQuery($query);
+			$res = $this->db->loadResult();
+
+			if ($res)
+			{
+				$this->anEventXref = $res;
+			}
+		}
+
+		return $this->anEventXref;
 	}
 
 	/**
@@ -216,23 +277,14 @@ class RedeventTags
 			$this->addOptions($options);
 		}
 
-		$this->submitkey = $this->submitkey ? $this->submitkey : JFactory::getApplication()->input->get('submit_key');
+		$this->submitkey = $this->submitkey ? $this->submitkey : $this->input->get('submit_key');
 
 		$text = $this->replace($text);
 
 		/* Include redFORM */
 		if (strstr($text, '[redform]') && $this->getEvent()->getData()->redform_id > 0)
 		{
-			$status = RedeventHelper::canRegister($this->xref);
-
-			if ($status->canregister)
-			{
-				$redform = $this->getForm($this->getEvent()->getData()->redform_id);
-			}
-			else
-			{
-				$redform = '<span class="registration_error">' . $status->status . '</span>';
-			}
+			$redform = $this->getForm();
 
 			/* second replacement, add the form */
 			/* if done in first one, username in the form javascript is replaced too... */
@@ -240,38 +292,6 @@ class RedeventTags
 		}
 
 		return $text;
-	}
-
-	/**
-	 * tries to pull a xref from the eventid
-	 *
-	 * @return object
-	 */
-	private function initXref()
-	{
-		$eventid = $this->eventid;
-
-		if ($eventid)
-		{
-			$query = $this->db->getQuery(true);
-
-			$query->select('x.id')
-				->from($this->db->qn('#__redevent_event_venue_xref', 'x'))
-				->join('INNER', '#__redevent_events AS e ON e.id = x.eventid')
-				->where('x.published = 1')
-				->where('x.eventid = ' . $this->db->Quote($eventid))
-				->order('x.dates ASC');
-
-			$this->db->setQuery($query);
-			$res = $this->db->loadResult();
-
-			if ($res)
-			{
-				$this->setXref($res);
-			}
-		}
-
-		return $this;
 	}
 
 	/**
@@ -493,8 +513,8 @@ class RedeventTags
 		$this->getEventLinks();
 		$template_path = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/com_redevent';
 
-		$lists['order_Dir'] = JFactory::getApplication()->input->getWord('filter_order_Dir', 'ASC');
-		$lists['order'] = JFactory::getApplication()->input->getCmd('filter_order', 'x.dates');
+		$lists['order_Dir'] = $this->input->getWord('filter_order_Dir', 'ASC');
+		$lists['order'] = $this->input->getCmd('filter_order', 'x.dates');
 		$this->lists = $lists;
 
 		$uri = JFactory::getURI('index.php?option=com_redevent');
@@ -504,7 +524,7 @@ class RedeventTags
 
 		ob_start();
 
-		if (JFactory::getApplication()->input->get('format') == 'pdf')
+		if ($this->input->get('format') == 'pdf')
 		{
 			if (file_exists($template_path . '/details/courseinfo_pdf.php'))
 			{
@@ -547,7 +567,7 @@ class RedeventTags
 
 		ob_start();
 
-		if (!JFactory::getApplication()->input->get('format') == 'pdf')
+		if (!$this->input->get('format') == 'pdf')
 		{
 			if (file_exists($template_path . '/details/default_attachments.php'))
 			{
@@ -713,7 +733,7 @@ class RedeventTags
 		$this->row->did = $event->id;
 		$this->elsettings = RedeventHelper::config();
 
-		if (JFactory::getApplication()->input->get('format') != 'raw')
+		if ($this->input->get('format') != 'raw')
 		{
 			ob_start();
 
@@ -1135,14 +1155,36 @@ class RedeventTags
 	 */
 	private function getForm()
 	{
-		$tag = new RedeventTagsFormForm($this->getEvent());
-
-		if ($pg = $this->getOption('pricegroupId'))
+		if ($this->xref)
 		{
-			$tag->setPricegroupId($pg);
+			$helper = new RedeventTagsRegistrationSession($this->getXref());
+
+			if ($this->input->get('task') == 'review')
+			{
+				$helper->isReview(true);
+			}
+
+			if ($key = $this->input->getString('submit_key'))
+			{
+				$helper->setSubmitKey($key);
+			}
+
+			if ($this->input->getInt('single'))
+			{
+				$helper->isSingle(true);
+			}
+
+			if ($pg = $this->getOption('pricegroupId'))
+			{
+				$helper->setPricegroupId($pg);
+			}
+		}
+		else
+		{
+			$helper = new RedeventTagsRegistrationEvent($this->eventid);
 		}
 
-		return $tag->getHtml($this->getOption('hasreview'));
+		return $helper->getHtml();
 	}
 
 	/**
@@ -2675,8 +2717,7 @@ class RedeventTags
 	 */
 	private function getTag_paymentrequestlink()
 	{
-		$app = JFactory::getApplication();
-		$lang = $app->input->get('lang');
+		$lang = $this->input->get('lang');
 		$link = '';
 
 		if (!empty($this->submitkey))

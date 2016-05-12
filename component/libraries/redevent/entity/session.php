@@ -55,21 +55,40 @@ class RedeventEntitySession extends RedeventEntityBase
 
 			if (!empty($item))
 			{
-				$model = RModel::getAdminInstance('attendees', array('ignore_request' => true), 'com_redevent');
-				$model->setState('filter.session');
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->select('*')
+					->from('#__redevent_register')
+					->where('xref = ' . $this->id);
 
-				$attendees = $model->getItems();
+				$db->setQuery($query);
+				$res = $db->loadObjectList();
 
-				$this->attendees = $attendees ? array_map(
-					function($element)
+				$this->attendees = $res ? array_map(
+					function($row)
 					{
-						return RedeventEntityAttendee::load($element->id);
-					}, $attendees
+						return RedeventEntityAttendee::getInstance($row->id)->bind($row);
+					}, $res
 				) : false;
 			}
 		}
 
 		return $this->attendees;
+	}
+
+	/**
+	 * Check if user can register to session
+	 *
+	 * @param   JUser  $user  user
+	 *
+	 * @return boolean
+	 */
+	public function canRegister($user = null)
+	{
+		$user = $user ?: JFactory::getUser();
+		$status = RedeventHelper::canRegister($this->id, $user->get('id'));
+
+		return $status->canregister;
 	}
 
 	/**
@@ -161,6 +180,32 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Get number of signup left for user
+	 *
+	 * @param   int  $userId  user id
+	 *
+	 * @return int
+	 */
+	public function getUserNumberOfSignupLeft($userId)
+	{
+		// Multiple signup ?
+		$max = $this->getEvent()->max_multi_signup;
+		$user = JUser::getInstance($userId);
+
+		if ($max && $user->id)
+		{
+			// We must substract current registrations of this user !
+			$nbregs = $this->getUserActiveRegistrationsCount($user->id);
+			$allowed = $max - $nbregs;
+
+			return $allowed > 0 ? $allowed : 0;
+		}
+
+		// No max, or user not registered, always allow one place.
+		return 1;
+	}
+
+	/**
 	 * Return initialized RedeventRfieldSessionprice
 	 *
 	 * @return RedeventRfieldSessionprice
@@ -227,5 +272,79 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return $this->venue;
+	}
+
+	/**
+	 * Check if session is full
+	 *
+	 * @return boolean
+	 */
+	public function isFull()
+	{
+		// Check the max registrations and waiting list
+		if ($this->getEvent()->maxattendees)
+		{
+			if (!$attendees = $this->getAttendees())
+			{
+				return false;
+			}
+
+			$registered = 0;
+			$waiting = 0;
+
+			foreach ($attendees as $attendee)
+			{
+				if ((!$attendee->confirmed) || $attendee->cancelled)
+				{
+					continue;
+				}
+
+				if ($attendee->waitinglist)
+				{
+					$waiting++;
+				}
+				else
+				{
+					$registered++;
+				}
+			}
+
+			if ($this->getEvent()->maxattendees <= $registered
+				&& $this->getEvent()->maxwaitinglist <= $waiting)
+			{
+				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * return current number of registrations for current user to this event
+	 *
+	 * @param   int  $userId  user id
+	 *
+	 * @return int
+	 */
+	private function getUserActiveRegistrationsCount($userId)
+	{
+		if (!$attendees = $this->getAttendees())
+		{
+			return false;
+		}
+
+		$count = 0;
+
+		foreach ($attendees as $attendee)
+		{
+			if ($attendee->uid == $userId && $attendee->cancelled == 0)
+			{
+				$count++;
+			}
+		}
+
+		return $count;
 	}
 }
