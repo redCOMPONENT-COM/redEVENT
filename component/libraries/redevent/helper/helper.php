@@ -377,9 +377,9 @@ class RedeventHelper
 	 */
 	public static function canRegister($xref_id, $user_id = null)
 	{
-		$helper = new RedeventRegistrationCanregister;
+		$helper = new RedeventRegistrationCanregister($xref_id);
 
-		return $helper->canRegister($xref_id, $user_id);
+		return $helper->canRegister($user_id);
 	}
 
 	/**

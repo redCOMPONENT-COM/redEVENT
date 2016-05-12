@@ -368,16 +368,20 @@ class RedeventHelperRoute
 	 *
 	 * @return string
 	 */
-	public static function getSignupRoute($type, $id, $xref, $sessionpricegroup = null)
+	public static function getSignupRoute($type, $id, $xref = null, $sessionpricegroup = null)
 	{
 		$parts = array(
 			"option" => "com_redevent",
 			"view"   => "signup",
 			"subtype"   => $type,
 			"task"   => "signup",
-			"id"   => $id,
-			"xref"   => $xref
+			"id"   => $id
 		);
+
+		if ($xref)
+		{
+			$parts['xref'] = $xref;
+		}
 
 		if ($sessionpricegroup)
 		{

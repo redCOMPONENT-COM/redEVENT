@@ -32,11 +32,14 @@ class RedeventViewSignup extends RViewSite
 			return $this->displayEdit();
 		}
 
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
+
+		$this->tmp_xref = $app->input->getInt('xref');
+		$this->tmp_id = $app->input->getInt('id');
 
 		$document = JFactory::getDocument();
-		$params = $mainframe->getParams();
-		$menu = $mainframe->getMenu();
+		$params = $app->getParams();
+		$menu = $app->getMenu();
 		$user = JFactory::getUser();
 		$item = $menu->getActive();
 
@@ -48,8 +51,8 @@ class RedeventViewSignup extends RViewSite
 		$document->setTitle($pagetitle);
 
 		// Print
-		$params->def('print', !$mainframe->getCfg('hidePrint'));
-		$params->def('icons', $mainframe->getCfg('icons'));
+		$params->def('print', !$app->getCfg('hidePrint'));
+		$params->def('icons', $app->getCfg('icons'));
 
 		// Add css file
 		if (!$params->get('custom_css'))
@@ -63,24 +66,11 @@ class RedeventViewSignup extends RViewSite
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		$canRegister = $this->get('RegistrationStatus');
-
-		if ($canRegister->canregister == 0)
-		{
-			echo '<span class="registration_error">' . $canRegister->status . '</span>';
-			echo '<br/>';
-			echo JHTML::link(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xslug), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'));
-
-			return;
-		}
-
 		/* This loads the tags replacer */
 		$tags = new RedeventTags;
-		$tags->setXref($course->xref);
+		$tags->setEventId($this->tmp_id);
+		$tags->setXref($this->tmp_xref);
 		$this->assignRef('tags', $tags);
-
-		$this->tmp_xref = $course->xref;
-		$this->tmp_id = $course->event_id;
 
 		switch (JFactory::getApplication()->input->getCmd('subtype', 'webform'))
 		{
@@ -139,16 +129,14 @@ class RedeventViewSignup extends RViewSite
 
 						// If we are still here, it means weren't redirected yet, so default to regular joomla user manager
 						$uri = JFactory::getURI();
-						$mainframe->redirect('index.php?option=com_users&view=login&return=' . base64_encode($uri->toString()), $message);
+						$app->redirect('index.php?option=com_users&view=login&return=' . base64_encode($uri->toString()), $message);
 					}
 				}
 
-				$review_txt = trim(strip_tags($course->review_message));
-
-				$options = array('hasreview' => (!empty($review_txt)));
+				$options = array();
 
 				// Is pricegroup forced ?
-				if ($pg = $mainframe->input->getInt('pg'))
+				if ($pg = $app->input->getInt('pg'))
 				{
 					$options['pricegroupId'] = $pg;
 				}

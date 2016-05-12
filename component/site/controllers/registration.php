@@ -56,9 +56,28 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$nbPosted = $this->input->getInt('nbactive', 1);
 		$selectedPricegroups = array();
 
-		for ($i = 1; $i < $nbPosted + 1; $i++)
+		if ($xref)
 		{
-			$selectedPricegroups[] = $this->input->getInt('sessionprice_' . $i, ($i > 1 ? $selectedPricegroups[0] : 0));
+			for ($i = 1; $i < $nbPosted + 1; $i++)
+			{
+				$selectedPricegroups[] = $this->input->getInt('sessionprice_' . $i, ($i > 1 ? $selectedPricegroups[0] : 0));
+			}
+		}
+		else
+		{
+			for ($i = 1; $i < $nbPosted + 1; $i++)
+			{
+				if ($eventsessionprice = $this->input->getString('eventsessionprice_' . $i))
+				{
+					$parts = explode("_", $eventsessionprice);
+					$xref = (int) $parts[0];
+
+					if ($parts[1])
+					{
+						$selectedPricegroups[] = (int) $parts[1];
+					}
+				}
+			}
 		}
 
 		if (!$xref)

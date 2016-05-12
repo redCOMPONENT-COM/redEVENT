@@ -158,7 +158,7 @@ class RedeventController extends RedeventControllerFront
 
 		if ($events && count($events))
 		{
-			$mailer = JFactory::getMailer();
+			$mailer = RdfHelper::getMailer();
 			$MailFrom = $app->getCfg('mailfrom');
 			$FromName = $app->getCfg('fromname');
 			$mailer->setSender(array($MailFrom, $FromName));

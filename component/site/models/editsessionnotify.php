@@ -70,7 +70,7 @@ class RedeventModelEditsessionnotify extends RModel
 			}
 			else
 			{
-				$mail = JFactory::getMailer();
+				$mail = RdfHelper::getMailer();
 
 				$state = $session->published ? JText::sprintf('COM_REDEVENT_MAIL_SESSION_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_SESSION_UNPUBLISHED');
 
@@ -146,7 +146,7 @@ class RedeventModelEditsessionnotify extends RModel
 
 		if (($params->get('mailinformuser') == 1) || ($params->get('mailinformuser') == 3))
 		{
-			$usermail = JFactory::getMailer();
+			$usermail = RdfHelper::getMailer();
 
 			$state 	= $session->published ?
 				JText::sprintf('COM_REDEVENT_USER_MAIL_SESSION_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_SESSION_UNPUBLISHED');

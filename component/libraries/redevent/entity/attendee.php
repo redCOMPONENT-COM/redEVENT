@@ -131,11 +131,11 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	}
 
 	/**
-	 * Return array of RdfEntitySubmitter
+	 * Return array of RedeventEntityAttendee
 	 *
 	 * @param   string  $submit_key  submit key
 	 *
-	 * @return array
+	 * @return RedeventEntityAttendee[]
 	 */
 	public static function loadBySubmitKey($submit_key)
 	{
