@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die;
 
-
 $fieldId = $displayData['fieldId'];
 
 $modalTitle = JText::_('COM_REDEVENT_FIELD_VENUELIST_MODAL_ADDVENUE_TITLE');

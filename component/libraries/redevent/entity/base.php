@@ -111,7 +111,7 @@ abstract class RedeventEntityBase
 	 *
 	 * @param   string  $property  Property tried to access
 	 *
-	 * @return  mixed   $this->item->property if it exists
+	 * @return  boolean   true if it exists
 	 */
 	public function __isset($property)
 	{
