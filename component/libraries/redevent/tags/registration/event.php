@@ -82,17 +82,10 @@ class RedeventTagsRegistrationEvent
 			$options['selectPaymentGateway'] = 1;
 		}
 
-		$html = '<form action="' . JRoute::_('index.php') . '" class="redform-validate" method="post" name="redform" enctype="multipart/form-data">';
-		$html .= $this->rfcore->getFormFields($this->event->redform_id, null, 1, $options);
-		$html .= '<input type="hidden" name="option" value="com_redevent"/>';
-		$html .= '<input type="hidden" name="task" value="registration.register"/>';
+		$redformHtml = $this->rfcore->getFormFields($this->event->redform_id, null, 1, $options);
+		$event = $this->event;
 
-		$html .= '<div id="submit_button" style="display: block;" class="submitform' . $form->classname . '">';
-
-		$html .= '<input type="submit" id="regularsubmit" name="submit" value="' . JText::_('COM_REDEVENT_Submit') . '" />';
-
-		$html .= '</div>';
-		$html .= '</form>';
+		$html = RedeventLayoutHelper::render('redevent.registration.event', compact('form', 'redformHtml', 'event'));
 
 		if (RdfHelperAnalytics::isEnabled())
 		{

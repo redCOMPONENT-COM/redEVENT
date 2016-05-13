@@ -146,8 +146,6 @@ class RedeventTagsRegistrationSession
 		$multi = $this->getNumberOfSignup();
 		$prices = $this->session->getPricegroups(true);
 
-		$hasReview = $this->session->getEvent()->hasReview();
-
 		$options = array('extrafields' => array());
 
 		// Multiple pricegroup handling
@@ -179,31 +177,16 @@ class RedeventTagsRegistrationSession
 			}
 		}
 
-		$html = '<form action="' . JRoute::_('index.php') . '" class="redform-validate" method="post" name="redform" enctype="multipart/form-data">';
-		$html .= $this->rfcore->getFormFields($this->session->getEvent()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options);
-		$html .= '<input type="hidden" name="xref" value="' . $this->session->id . '"/>';
-		$html .= '<input type="hidden" name="option" value="com_redevent"/>';
-		$html .= '<input type="hidden" name="task" value="registration.register"/>';
+		$renderData = array(
+			'form' => $form,
+			'redformHtml' => $this->rfcore->getFormFields(
+					$this->session->getEvent()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
+				),
+			'session' => $this->session,
+			'submitKey' => $this->submitKey
+		);
 
-		if ($hasReview)
-		{
-			$html .= '<input type="hidden" name="hasreview" value="1"/>';
-		}
-
-		$html .= '<div id="submit_button" style="display: block;" class="submitform' . $form->classname . '">';
-
-		if (empty($this->submitKey))
-		{
-			$html .= '<input type="submit" id="regularsubmit" name="submit" value="' . JText::_('COM_REDEVENT_Submit') . '" />';
-		}
-		else
-		{
-			$html .= '<input type="submit" id="redformsubmit" name="submit" value="' . JText::_('COM_REDEVENT_Confirm') . '" />';
-			$html .= '<input type="submit" id="redformcancel" name="cancel" value="' . JText::_('COM_REDEVENT_Cancel') . '" />';
-		}
-
-		$html .= '</div>';
-		$html .= '</form>';
+		$html = RedeventLayoutHelper::render('redevent.registration.session', $renderData);
 
 		if (RdfHelperAnalytics::isEnabled())
 		{
