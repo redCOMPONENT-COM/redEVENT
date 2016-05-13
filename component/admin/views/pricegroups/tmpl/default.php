@@ -99,6 +99,9 @@ if (($saveOrder) && ($this->canEdit))
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_NAME', 'obj.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="150">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_ACCESS', 'obj.access', $listDirn, $listOrder); ?>
+				</th>
+				<th width="150">
 					<?php echo JHTML::_('rsearchtools.sort', 'JGRID_HEADING_LANGUAGE', 'obj.language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10">
@@ -143,6 +146,9 @@ if (($saveOrder) && ($this->canEdit))
 						<?php else : ?>
 							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=pricegroup.edit&id=' . $row->id, $itemTitle); ?>
 						<?php endif; ?>
+					</td>
+					<td>
+						<?php echo $row->access_level; ?>
 					</td>
 					<td>
 						<?php echo $row->language; ?>

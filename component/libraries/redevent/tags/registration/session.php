@@ -144,7 +144,7 @@ class RedeventTagsRegistrationSession
 	{
 		$form = $this->getRedformForm();
 		$multi = $this->getNumberOfSignup();
-		$prices = $this->session->getPricegroups();
+		$prices = $this->session->getPricegroups(true);
 
 		$hasReview = $this->session->getEvent()->hasReview();
 

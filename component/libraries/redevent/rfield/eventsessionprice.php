@@ -121,7 +121,7 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 					continue;
 				}
 
-				if (!$prices = $session->getPricegroups())
+				if (!$prices = $session->getPricegroups(true))
 				{
 					$option = new stdClass;
 					$option->value = $session->id;

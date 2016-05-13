@@ -221,9 +221,12 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return RedeventEntitySessionpricegroups
 	 *
+	 * @param   bool   $filterAcl  filter by price group acl
+	 * @param   JUser  $user       user to filter against
+	 *
 	 * @return   RedeventEntitySessionpricegroup[]
 	 */
-	public function getPricegroups()
+	public function getPricegroups($filterAcl = false, $user = null)
 	{
 		if (!$this->pricegroups)
 		{
@@ -246,6 +249,20 @@ class RedeventEntitySession extends RedeventEntityBase
 					return $pricegroup;
 				},
 				$items
+			);
+		}
+
+		if ($filterAcl)
+		{
+			$user = $user ?: JFactory::getUser();
+			$access = $user->getAuthorisedViewLevels();
+
+			return array_filter(
+				$this->pricegroups,
+				function ($sessionpricegroup) use ($access)
+				{
+					return in_array($sessionpricegroup->getPricegroup()->access, $access);
+				}
 			);
 		}
 

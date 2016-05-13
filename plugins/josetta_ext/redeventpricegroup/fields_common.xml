@@ -35,7 +35,7 @@
 			<display>yes</display>
 			<require>yes</require>
 		</field>
-		
+
 		<field>
 			<id>alias</id>
 			<name>JFIELD_ALIAS_LABEL</name>
@@ -62,13 +62,13 @@
 		</field>
 
 		<field>
-			<id>adminonly</id>
-			<name>COM_REDEVENT_PRICEGROUPS_ADMINONLY</name>
-			<column>adminonly</column>
+			<id>access</id>
+			<name>JFIELD_ACCESS_LABEL</name>
+			<column>access</column>
 			<translate>no</translate>
 			<display>no</display>
 			<require>no</require>
 		</field>
-		
+
 	</fields>
 </josetta>
