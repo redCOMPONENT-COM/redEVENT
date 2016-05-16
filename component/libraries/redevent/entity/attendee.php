@@ -180,23 +180,6 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	}
 
 	/**
-	 * Get the associated table
-	 *
-	 * @param   string  $name  Main name of the Table. Example: Article for ContentTableArticle
-	 *
-	 * @return  RTable
-	 */
-	protected function getTable($name = null)
-	{
-		if (null === $name)
-		{
-			$name = 'register';
-		}
-
-		return RTable::getAdminInstance($name, array(), $this->getComponent());
-	}
-
-	/**
 	 * get redform answers for this attendee
 	 *
 	 * @return RdfAnswers
