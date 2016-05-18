@@ -184,7 +184,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	 *
 	 * @return RdfAnswers
 	 */
-	protected function getAnswers()
+	public function getAnswers()
 	{
 		if (empty($this->answers))
 		{
