@@ -12,6 +12,7 @@ class InstallExtensionCest
 	{
 		$I->wantToTest('redEVENT installation in Joomla 3');
 		$I->doAdministratorLogin();
+
 		$path = $I->getConfiguration('install packages url');
 		$buildPath = dirname(dirname(dirname(__DIR__))) . '/build';
 
