@@ -16,7 +16,7 @@ jimport('redevent.bootstrap');
 RLoader::registerPrefix('Eventnewslettersignup', __DIR__);
 
 /**
- * Specific plugin for ibc for redEVENT.
+ * Specific plugin for acymailing newsletter signup for redEVENT based on event selected newsletters
  *
  * @since  3.0
  */
