@@ -47,7 +47,6 @@ class RedeventRegistrationCanregister
 		$this->initResult();
 	}
 
-
 	/**
 	 * Can the user register
 	 *

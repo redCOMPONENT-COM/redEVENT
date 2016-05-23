@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  *
  * @since  3.3.10
  */
-final class PlgAesir_FieldRedevent_eventEntityTwigSessionpricegroup extends AbstractTwigEntity
+final class PlgAesir_FieldRedevent_EventEntityTwigSessionpricegroup extends AbstractTwigEntity
 {
 	/**
 	 * Constructor.

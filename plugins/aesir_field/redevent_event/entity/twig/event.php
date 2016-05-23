@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  *
  * @since  3.3.10
  */
-final class PlgAesir_FieldRedevent_eventEntityTwigEvent extends AbstractTwigEntity
+final class PlgAesir_FieldRedevent_EventEntityTwigEvent extends AbstractTwigEntity
 {
 	/**
 	 * Constructor.
@@ -83,11 +83,13 @@ final class PlgAesir_FieldRedevent_eventEntityTwigEvent extends AbstractTwigEnti
 	/**
 	 * Return sessions
 	 *
-	 * @param   bool  $published  publish state
+	 * @param   int     $published  publish state
+	 * @param   string  $ordering   ordering
+	 * @param   bool    $featured   filtered featured
 	 *
 	 * @return array|bool
 	 */
-	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = 0)
+	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -105,12 +107,12 @@ final class PlgAesir_FieldRedevent_eventEntityTwigEvent extends AbstractTwigEnti
 				$query->order('dates ASC, times ASC');
 		}
 
-		if ($published == 1)
+		if (is_numeric($published))
 		{
-			$query->where('published = 1');
+			$query->where('published = ' . $published);
 		}
 
-		if ($featured == 1)
+		if ($featured)
 		{
 			$query->where('featured = 1');
 		}
