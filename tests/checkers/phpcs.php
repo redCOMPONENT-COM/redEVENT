@@ -38,6 +38,7 @@ $ignored = array(
 	REPO_BASE . '/redeventb2b/*/layouts/*',
 	REPO_BASE . '/redeventsync/admin/tables/*',
 	REPO_BASE . '/redeventsync/*/layouts/*',
+	REPO_BASE . '/plugins/aesir_field/*/layouts/*',
 	REPO_BASE . '/plugins/**/media/*',
 	REPO_BASE . '/plugins/jomsocial/*',
 	REPO_BASE . '/plugins/josetta_ext/*',

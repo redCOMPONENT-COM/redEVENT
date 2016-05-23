@@ -190,7 +190,6 @@ class RedeventEntityEvent extends RedeventEntityBase
 
 		if (is_null($this->sessions))
 		{
-
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)
 				->select('*')

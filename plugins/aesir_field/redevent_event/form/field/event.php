@@ -21,7 +21,7 @@ RedeventBootstrap::bootstrap();
  *
  * @since  1.0.0
  */
-class PlgAesir_FieldRedevent_eventFormFieldEvent extends CustomField
+class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 {
 	/**
 	 * The form field type.
