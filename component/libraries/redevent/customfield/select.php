@@ -73,8 +73,6 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
-		$app = JFactory::getApplication();
-
 		if ($selected)
 		{
 			$value = $selected;
@@ -108,8 +106,8 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 		{
 			foreach ($options as $opt)
 			{
-				$option = $this->getOptionLabelValue($opt);
-				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
+				$option = $this->getOptionValueText($opt);
+				$option_list[] = JHTML::_('select.option', $option->value, $option->text);
 			}
 		}
 

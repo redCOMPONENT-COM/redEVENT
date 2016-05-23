@@ -40,8 +40,8 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 		{
 			foreach ($options as $opt)
 			{
-				$option = $this->getOptionLabelValue($opt);
-				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
+				$option = $this->getOptionValueText($opt);
+				$option_list[] = JHTML::_('select.option', $option->value, $option->text);
 			}
 		}
 
@@ -90,8 +90,8 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 		{
 			foreach ($options as $opt)
 			{
-				$option = $this->getOptionLabelValue($opt);
-				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
+				$option = $this->getOptionValueText($opt);
+				$option_list[] = JHTML::_('select.option', $option->value, $option->text);
 			}
 		}
 

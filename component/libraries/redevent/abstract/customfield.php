@@ -191,13 +191,13 @@ abstract class RedeventAbstractCustomfield extends JObject
 	}
 
 	/**
-	 * return an object with label and value property for an option (value;label)
+	 * return an object with value and text properties for an option (value;text)
 	 *
 	 * @param   string  $option  option
 	 *
 	 * @return object
 	 */
-	protected function getOptionLabelValue($option)
+	protected function getOptionValueText($option)
 	{
 		$res = new stdClass;
 		$opt = trim($option);
@@ -205,13 +205,13 @@ abstract class RedeventAbstractCustomfield extends JObject
 
 		if (count($parts) == 2)
 		{
-			$res->label = trim($parts[1]);
 			$res->value = trim($parts[0]);
+			$res->text = trim($parts[1]);
 		}
 		else
 		{
-			$res->label = trim($parts[0]);
 			$res->value = trim($parts[0]);
+			$res->text = trim($parts[0]);
 		}
 
 		return $res;
