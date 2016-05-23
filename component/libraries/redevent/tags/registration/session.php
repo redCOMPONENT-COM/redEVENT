@@ -147,6 +147,8 @@ class RedeventTagsRegistrationSession
 		$prices = $this->session->getPricegroups(true);
 
 		$options = array('extrafields' => array());
+		$options['sessionId'] = $this->session->id;
+		$options['eventId'] = $this->session->eventid;
 
 		// Multiple pricegroup handling
 		if (count($prices))

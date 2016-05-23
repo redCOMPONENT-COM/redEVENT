@@ -68,6 +68,7 @@ class RedeventTagsRegistrationEvent
 		$form = $this->getRedformForm();
 
 		$options = array('extrafields' => array());
+		$options['eventId'] = $this->event->id;
 
 		$field = new RedeventRfieldEventsessionprice;
 		$field->setEvent($this->event->id);
