@@ -33,8 +33,9 @@
 			"redeventvenue",
 			"redeventvenuecategory"
 		],
-		"redevent" : ["jomsocial", "redmemberlogin"],
+		"redevent" : ["jomsocial", "redmemberlogin", "eventnewslettersignup"],
 		"redform" : ["paymentnotificationemail"],
+		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
 		"system" : ["autotweetredevent"],
