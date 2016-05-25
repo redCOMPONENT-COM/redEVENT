@@ -12,6 +12,8 @@ JHtml::_('rdropdown.init');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('rjquery.chosen', 'select');
 
+RHelperAsset::load('redevent-backend.css');
+
 $function = JFactory::getApplication()->input->get('function');
 $fieldId = JFactory::getApplication()->input->get('fieldid');
 

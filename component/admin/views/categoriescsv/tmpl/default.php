@@ -7,6 +7,8 @@
  */
 defined('_JEXEC') or die;
 
+RHelperAsset::load('redevent-backend.css');
+
 JHtml::_('rjquery.chosen', 'select');
 ?>
 <script type="text/javascript">

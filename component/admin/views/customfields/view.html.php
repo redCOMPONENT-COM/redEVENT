@@ -130,7 +130,7 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT'));
 
 		// Add css to document
-		RHelperAsset::load('backend.css');
+		RHelperAsset::load('redevent-backend.css');
 
 		// Create the toolbar
 		JToolBarHelper::title(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT'), 'events');

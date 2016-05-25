@@ -12,6 +12,8 @@ JHtml::_('rdropdown.init');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('rjquery.chosen', 'select');
 
+RHelperAsset::load('redevent-backend.css');
+
 $saveOrderUrl = 'index.php?option=com_redevent&task=pricegroups.saveOrderAjax&tmpl=component';
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
