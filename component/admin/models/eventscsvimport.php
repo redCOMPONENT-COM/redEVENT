@@ -15,6 +15,10 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventModelEventscsvimport extends RModel
 {
+	const DUPLICATE_CREATE_NEW = "create_new";
+	const DUPLICATE_IGNORE = "ignore";
+	const DUPLICATE_UPDATE = "update";
+
 	/**
 	 * @var string
 	 */
@@ -58,6 +62,11 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * @var int
 	 */
+	private $ignored_sessions = 0;
+
+	/**
+	 * @var int
+	 */
 	private $createdEvents = 0;
 
 	/**
@@ -73,7 +82,7 @@ class RedeventModelEventscsvimport extends RModel
 	 *
 	 * @return boolean true on success
 	 */
-	public function import($records, $duplicate_method = 'ignore')
+	public function import($records, $duplicate_method = self::DUPLICATE_IGNORE)
 	{
 		$this->duplicateMethod = $duplicate_method;
 		$this->storedTitles = array();
@@ -168,13 +177,13 @@ class RedeventModelEventscsvimport extends RModel
 
 			$ev = RTable::getAdminInstance('Event');
 
-			if ($this->duplicateMethod !== 'create_new' && isset($data['id']) && $data['id'])
+			if ($this->duplicateMethod !== self::DUPLICATE_CREATE_NEW && !empty($data['id']))
 			{
 				// Load existing data
 				$found = $ev->load($data['id']);
 
 				// Discard if set to ignore duplicate
-				if ($found && $this->duplicateMethod == 'ignore')
+				if ($found && $this->duplicateMethod == self::DUPLICATE_IGNORE)
 				{
 					$this->ignored++;
 					$this->storedTitles[$data['id']] = $data['title'];
@@ -201,7 +210,7 @@ class RedeventModelEventscsvimport extends RModel
 			// Bind submitted data
 			$ev->bind($data);
 
-			if ($this->duplicateMethod == 'update' && $found)
+			if ($this->duplicateMethod == self::DUPLICATE_UPDATE && $found)
 			{
 				$updating = 1;
 			}
@@ -255,46 +264,42 @@ class RedeventModelEventscsvimport extends RModel
 	{
 		$app = JFactory::getApplication();
 
-		if (isset($data['xref']) && $data['xref'])
+		if (isset($data['xref']))
 		{
-			$venueid = $this->getVenueId($data['venue'], $data['city']);
-
+			$data['id'] = $data['xref'];
 			$session = RTable::getAdminInstance('Session');
-			$session->bind($data);
+			$session->load($data['xref']);
 
-			$session->id = null;
-			$session->eventid = $eventId;
-			$session->venueid = $venueid;
+			$exists = $session->id > 0;
 
-			// Renamed fields
-			if (isset($data['session_title']))
+			if ($exists && $this->duplicateMethod == self::DUPLICATE_IGNORE)
 			{
-				$session->title = $data['session_title'];
+				$this->ignored_sessions++;
+
+				return true;
 			}
 
-			if (isset($data['session_alias']))
-			{
-				$session->alias = $data['session_alias'];
-			}
+			$venueid = $this->getVenueId($data['venue'], $data['city']);
+			$data['eventid'] = $eventId;
+			$data['venueid'] = $venueid;
 
-			if (isset($data['session_note']))
-			{
-				$session->note = $data['session_note'];
-			}
+			// Remap fields
+			$data['title'] = $data['session_title'] ?: null;
+			$data['alias'] = $data['session_alias'] ?: null;
+			$data['note'] = $data['session_note'] ?: null;
+			$data['details'] = $data['session_details'] ?: null;
+			$data['icaldetails'] = $data['session_icaldetails'] ?: null;
+			$data['published'] = $data['session_published'] ?: null;
 
-			if (isset($data['session_details']))
+			if ($exists && $this->duplicateMethod == self::DUPLICATE_CREATE_NEW)
 			{
-				$session->details = $data['session_details'];
+				$session->reset();
+				$session->bind($data);
+				$session->id = null;
 			}
-
-			if (isset($data['session_icaldetails']))
+			else
 			{
-				$session->icaldetails = $data['session_icaldetails'];
-			}
-
-			if (isset($data['session_published']))
-			{
-				$session->published = $data['session_published'];
+				$session->bind($data);
 			}
 
 			// Check
