@@ -33,7 +33,6 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 	 */
 	public function render($attributes = array())
 	{
-		$html = '';
 		$options = $this->getOptions();
 		$values = explode("\n", $this->value);
 
@@ -59,17 +58,15 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 			$selected = $default;
 		}
 
-		if ($options)
-		{
-			foreach ($options as $option)
-			{
-				$html .= '<input type="checkbox" name="jform[' . $this->fieldname . '][]" value="' . $option->value . '"'
-					. (in_array($option->value, $selected) ? ' checked="checked"' : '') . ' ' . $this->attributesToString($attributes) . '/>'
-					. $option->text;
-			}
-		}
+		$layoutData = array(
+			'id'           => $this->id,
+			'selected'     => $selected,
+			'attributes'   => $this->attributesToString($attributes),
+			'options'      => $options,
+			'field'        => $this,
+		);
 
-		return $html;
+		return RedeventLayoutHelper::render('redevent.customfields.checkbox', $layoutData, null, array('component' => 'com_redevent'));
 	}
 
 	/**
