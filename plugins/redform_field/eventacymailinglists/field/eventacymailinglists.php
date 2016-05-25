@@ -36,8 +36,8 @@ class EventacymailinglistsFieldEventacymailinglists extends RdfRfieldCheckbox
 		$element = RdfLayoutHelper::render(
 			'rform.rfield.' . $this->type,
 			$this,
-			dirname(__DIR__) . '/layouts',
-			array('component' => 'com_redform')
+			null,
+			array('component' => 'com_redform', 'defaultLayoutsPath' => dirname(__DIR__) . '/layouts')
 		);
 
 		return $element;
