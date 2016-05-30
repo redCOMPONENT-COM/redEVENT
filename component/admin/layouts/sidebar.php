@@ -25,6 +25,7 @@ $icons = array(
 	array('view' => 'categories', 'icon' => 'icon-16-categories.png', 'text' => JText::_('COM_REDEVENT_CATEGORIES'), 'access' => 'core.edit'),
 	array('view' => 'venuescategories', 'icon' => 'icon-16-venuescategories.png', 'text' => JText::_('COM_REDEVENT_VENUES_CATEGORIES'), 'access' => 'core.edit'),
 	array('view' => 'registrations', 'icon' => 'icon-16-groups.png', 'text' => JText::_('COM_REDEVENT_REGISTRATIONS'), 'access' => 'core.edit'),
+	array('view' => 'templates', 'icon' => 'icon-16-events.png', 'text' => JText::_('COM_REDEVENT_EVENT_TEMPLATES'), 'access' => 'core.edit'),
 	array('view' => 'textsnippets', 'icon' => 'icon-16-library.png', 'text' => JText::_('COM_REDEVENT_TEXT_LIBRARY'), 'access' => 'core.edit'),
 	array('view' => 'customfields', 'icon' => 'icon-16-customfields.png', 'text' => JText::_('COM_REDEVENT_CUSTOM_FIELDS'), 'access' => 'core.edit'),
 	array('view' => 'roles', 'icon' => 'icon-16-groups.png', 'text' => JText::_('COM_REDEVENT_ROLES'), 'access' => 'core.edit'),
