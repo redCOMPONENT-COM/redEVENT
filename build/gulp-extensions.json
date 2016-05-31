@@ -34,6 +34,7 @@
 		],
 		"redevent" : ["jomsocial", "redmemberlogin", "maerskregistration", "notifycompanyadmin"],
 		"redevent_config" : ["maersk"],
+		"redeventsyncclient" : ["maersk"],
 		"redform" : ["paymentnotificationemail"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
