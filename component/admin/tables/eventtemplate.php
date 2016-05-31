@@ -76,9 +76,6 @@ class RedeventTableEventtemplate extends RedeventTable
 			}
 		}
 
-		// Prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
-		$this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
-
 		return true;
 	}
 
@@ -91,23 +88,6 @@ class RedeventTableEventtemplate extends RedeventTable
 	 */
 	protected function beforeStore($updateNulls = false)
 	{
-		$user = JFactory::getUser();
-
-		// Get the current time in the database format.
-		$time = JFactory::getDate()->toSql();
-
-		$this->modified = $time;
-		$this->modified_by = $user->get('id');
-
-		if (!$this->id)
-		{
-			$params = JComponentHelper::getParams('com_redevent');
-
-			// Get IP, time and user id
-			$this->created = $time;
-			$this->created_by = $user->get('id');
-		}
-
 		if (is_array($this->submission_types))
 		{
 			$this->submission_types = implode(',', $this->submission_types);

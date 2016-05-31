@@ -27,7 +27,7 @@ $fieldSets = $this->form->getFieldsets('params');
 	});
 </script>
 
-<form action="index.php?option=com_redevent&task=event.edit&id=<?php echo $this->item->id ?>"
+<form action="index.php?option=com_redevent&task=eventtemplate.edit&id=<?php echo $this->item->id ?>"
       method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-validate form-horizontal">
 
 	<ul class="nav nav-tabs" id="eventTab">
@@ -36,14 +36,6 @@ $fieldSets = $this->form->getFieldsets('params');
 				<strong><?php echo JText::_('COM_REDEVENT_EVENT_INFO_TAB'); ?></strong>
 			</a>
 		</li>
-
-		<?php if (count($this->customfields)):?>
-			<li>
-				<a href="#customfields" data-toggle="tab">
-					<strong><?php echo JText::_('COM_REDEVENT_CUSTOM_FIELDS'); ?></strong>
-				</a>
-			</li>
-		<?php endif; ?>
 
 		<li>
 			<a href="#registration" data-toggle="tab">
@@ -70,11 +62,6 @@ $fieldSets = $this->form->getFieldsets('params');
 				<strong><?php echo JText::_('COM_REDEVENT_PAYMENT'); ?></strong>
 			</a>
 		</li>
-		<li>
-			<a href="#attachments" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'); ?></strong>
-			</a>
-		</li>
 	</ul>
 
 
@@ -84,14 +71,6 @@ $fieldSets = $this->form->getFieldsets('params');
 				<?php echo $this->loadTemplate('event'); ?>
 			</div>
 		</div>
-
-		<?php if (count($this->customfields)):?>
-			<div class="tab-pane" id="customfields">
-				<div class="row-fluid">
-					<?php echo $this->loadTemplate('customfields'); ?>
-				</div>
-			</div>
-		<?php endif; ?>
 
 		<div class="tab-pane" id="registration">
 			<div class="row-fluid">
@@ -122,13 +101,6 @@ $fieldSets = $this->form->getFieldsets('params');
 				<?php echo $this->loadTemplate('payment'); ?>
 			</div>
 		</div>
-
-		<div class="tab-pane" id="attachments">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('attachments'); ?>
-			</div>
-		</div>
-
 	</div>
 
 	<?php echo $this->form->getInput('id'); ?>
