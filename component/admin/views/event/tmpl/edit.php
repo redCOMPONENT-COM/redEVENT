@@ -51,26 +51,6 @@ $fieldSets = $this->form->getFieldsets('params');
 			</a>
 		</li>
 		<li>
-			<a href="#submission_types" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_SUBMIT_TYPES'); ?></strong>
-			</a>
-		</li>
-		<li>
-			<a href="#activation" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_ACTIVATION'); ?></strong>
-			</a>
-		</li>
-		<li>
-			<a href="#confirmation" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_CONFIRMATION'); ?></strong>
-			</a>
-		</li>
-		<li>
-			<a href="#payment" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_PAYMENT'); ?></strong>
-			</a>
-		</li>
-		<li>
 			<a href="#attachments" data-toggle="tab">
 				<strong><?php echo JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'); ?></strong>
 			</a>
@@ -96,30 +76,6 @@ $fieldSets = $this->form->getFieldsets('params');
 		<div class="tab-pane" id="registration">
 			<div class="row-fluid">
 				<?php echo $this->loadTemplate('registration'); ?>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="submission_types">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('submission_types'); ?>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="activation">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('activation'); ?>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="confirmation">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('confirmation'); ?>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="payment">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('payment'); ?>
 			</div>
 		</div>
 

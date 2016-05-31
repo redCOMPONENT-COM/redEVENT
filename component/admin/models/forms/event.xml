@@ -2,549 +2,157 @@
 <form>
 
 	<fieldset name="event"
-              addfieldpath="/libraries/redmailflow/form/field">
+				addfieldpath="/libraries/redmailflow/form/field">
 
-        <field name="id"
-               type="hidden"
-               default="0"
-               class="readonly"
-               readonly="true"
-                />
+		<field name="id"
+				type="hidden"
+				default="0"
+				class="readonly"
+				readonly="true"
+		/>
 
-        <field
-            name="title"
-            type="text"
-            default=""
-            label="COM_REDEVENT_EVENT_TITLE"
-            description ="COM_REDEVENT_EVENT_TITLE"
-            required="true"
-            class="inputbox" />
+		<field
+				name="title"
+				type="text"
+				default=""
+				label="COM_REDEVENT_EVENT_TITLE"
+				description="COM_REDEVENT_EVENT_TITLE"
+				required="true"
+				class="inputbox"/>
 
-        <field
-            name="alias"
-            type="text"
-            default=""
-            label="COM_REDEVENT_Alias"
-            description ="COM_REDEVENT_Alias"
-            class="inputbox" />
+		<field
+				name="template_id"
+				type="redevent.eventtemplate"
+				label="COM_REDEVENT_EVENT_EVENT_TEMPLATE_LABEL"
+				description="COM_REDEVENT_EVENT_EVENT_TEMPLATE_DESC"
+				required="true"
+				class="inputbox"/>
 
-        <field
-            name="course_code"
-            type="text"
-            default=""
-            label="COM_REDEVENT_COURSE_CODE"
-            description ="COM_REDEVENT_COURSE_CODE"
-            class="inputbox" />
+		<field
+				name="alias"
+				type="text"
+				default=""
+				label="COM_REDEVENT_Alias"
+				description="COM_REDEVENT_Alias"
+				class="inputbox"/>
 
-        <field
-            name="published"
-            type="list"
-            class="inputbox"
-            default="1"
-            size="1"
-            label="JSTATUS"
-            description="JFIELD_PUBLISHED_DESC">
-            <option
-                value="1">
-                JPUBLISHED</option>
-            <option
-                value="0">
-                JUNPUBLISHED</option>
-            <option
-                value="-1">
-                JARCHIVED</option>
-        </field>
+		<field
+				name="course_code"
+				type="text"
+				default=""
+				label="COM_REDEVENT_COURSE_CODE"
+				description="COM_REDEVENT_COURSE_CODE"
+				class="inputbox"/>
 
-        <field
-            name="language"
-            type="contentlanguage"
-            label="JFIELD_LANGUAGE_LABEL"
-            description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
-            class="inputbox">
-            <option value="*">JALL</option>
-        </field>
+		<field
+				name="published"
+				type="list"
+				class="inputbox"
+				default="1"
+				size="1"
+				label="JSTATUS"
+				description="JFIELD_PUBLISHED_DESC">
+			<option
+					value="1">
+				JPUBLISHED
+			</option>
+			<option
+					value="0">
+				JUNPUBLISHED
+			</option>
+			<option
+					value="-1">
+				JARCHIVED
+			</option>
+		</field>
 
-        <field
-            name="created_by"
-            type="user"
-            label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-            description="JGLOBAL_FIELD_CREATED_BY_DESC"
-            class="inputbox"
-            />
+		<field
+				name="language"
+				type="contentlanguage"
+				label="JFIELD_LANGUAGE_LABEL"
+				description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
+				class="inputbox">
+			<option value="*">JALL</option>
+		</field>
 
-        <field
-                name="enable_ical"
-                type="radio"
-                class="inputbox"
-                default="0"
-                size="1"
-                label="COM_REDEVENT_EVENT_ENABLE_ICAL_LABEL"
-                description="">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
+		<field
+				name="created_by"
+				type="user"
+				label="JGLOBAL_FIELD_CREATED_BY_LABEL"
+				description="JGLOBAL_FIELD_CREATED_BY_DESC"
+				class="inputbox"
+		/>
 
-        <field
-                name="categories"
-                type="recategorylist"
-                label="COM_REDEVENT_CATEGORY"
-                description ="COM_REDEVENT_CATEGORY"
-                required="true"
-                multiple="true"
-                size="10"
-                class="inputbox" />
+		<field
+				name="categories"
+				type="recategorylist"
+				label="COM_REDEVENT_CATEGORY"
+				description="COM_REDEVENT_CATEGORY"
+				required="true"
+				multiple="true"
+				size="10"
+				class="inputbox"/>
 
-        <field
-            name="details_layout"
-            type="list"
-            class="inputbox"
-            default="0"
-            size="1"
-            label="COM_REDEVENT_EVENT_LAYOUT"
-            description="COM_REDEVENT_EVENT_LAYOUT_TIP">
-            <option	value="0">COM_REDEVENT_DEFAULT</option>
-            <option	value="1">COM_REDEVENT_EVENT_LAYOUT_TAGS</option>
-            <option	value="2">COM_REDEVENT_EVENT_LAYOUT_FIXED</option>
-        </field>
+		<field
+				name="datdescription"
+				type="editor"
+				label="COM_REDEVENT_EVENT_DESCRIPTION"
+				description="COM_REDEVENT_EVENT_DESCRIPTION"
+				class="inputbox"
+				filter="JComponentHelper::filterText"
+				buttons="true"
+				hide="readmore,pagebreak"/>
 
-        <field
-            name="datdescription"
-            type="editor"
-            label="COM_REDEVENT_EVENT_DESCRIPTION"
-            description="COM_REDEVENT_EVENT_DESCRIPTION"
-            class="inputbox"
-            filter="JComponentHelper::filterText"
-            buttons="true"
-            hide="readmore,pagebreak"/>
+		<field
+				name="summary"
+				type="editor"
+				label="COM_REDEVENT_EVENT_SUMMARY"
+				description="COM_REDEVENT_EVENT_SUMMARY_DESC"
+				class="inputbox"
+				filter="JComponentHelper::filterText"
+				buttons="false"/>
 
-        <field
-            name="summary"
-            type="editor"
-            label="COM_REDEVENT_EVENT_SUMMARY"
-            description="COM_REDEVENT_EVENT_SUMMARY_DESC"
-            class="inputbox"
-            filter="JComponentHelper::filterText"
-            buttons="false"/>
+		<field
+				name="datimage"
+				type="rmedia"
+				label="COM_REDEVENT_CHOOSE_IMAGE"
+				description="COM_REDEVENT_CHOOSE_IMAGE"
+				directory="redevent/events"
+				preview="true"/>
 
-        <field
-            name="datimage"
-            type="rmedia"
-            label="COM_REDEVENT_CHOOSE_IMAGE"
-            description="COM_REDEVENT_CHOOSE_IMAGE"
-            directory="redevent/events"
-            preview="true"/>
+	</fieldset>
 
-        <field
-            name="mailflow_id"
-            type="redmailflow.mailflow"
-            label="COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW"
-            description="COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW_DESC"
-            >
-            <option value="0">COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW_SELECT</option>
-        </field>
-    </fieldset>
-
-    <fieldset name="registra">
-        <field
-                name="registra"
-                type="radio"
-                class="inputbox"
-                default="0"
-                size="1"
-                label="COM_REDEVENT_ENABLE_REGISTRATION"
-                description="COM_REDEVENT_ENABLE_REGISTRATION_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-        <field
-                name="unregistra"
-                type="radio"
-                class="inputbox"
-                default="0"
-                size="1"
-                label="COM_REDEVENT_ENABLE_UNREGISTRATION"
-                description="COM_REDEVENT_ENABLE_UNREGISTRATION_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-        <field
-                name="juser"
-                type="radio"
-                class="inputbox"
-                default="0"
-                size="1"
-                label="COM_REDEVENT_CREATE_JOOMLA_USER"
-                description="COM_REDEVENT_CREATE_JOOMLA_USER_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-                name="redform_id"
-                type="RedformForm"
-                class="inputbox"
-                default="0"
-                size="1"
-                label="COM_REDEVENT_REDFORM_FORM_ID"
-                description="COM_REDEVENT_REDFORM_FORM_ID"
-                />
-        <field
-                name="max_multi_signup"
-                type="text"
-                class="inputbox validate-integer"
-                default="0"
-                size="15"
-                label="COM_REDEVENT_MAX_MULTI_SIGNUP"
-                description="COM_REDEVENT_MAX_MULTI_SIGNUP_TIP"
-                />
-        <field
-                name="show_names"
-                type="radio"
-                class="inputbox"
-                default="0"
-                size="1"
-                label="COM_REDEVENT_SHOW_REGISTERED_FRONTEND"
-                description="COM_REDEVENT_SHOW_REGISTERED_FRONTEND_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-                name="showfields"
-                type="redform.field"
-				filterform="redform_id"
-                class="inputbox"
-                multiple="true"
-                label="COM_REDEVENT_REDFORM_FORM_SELECT_FIELDS"
-                description="COM_REDEVENT_REDFORM_FORM_SELECT_FIELDS_TIP"
-                />
-    </fieldset>
-
-    <fieldset name="submission_types">
-
-        <field
-                name="submission_types"
-                type="checkboxes"
-                class="inputbox"
-                multiple="true"
-                label="COM_REDEVENT_SUBMISSION_TYPES"
-                description="COM_REDEVENT_SUBMISSION_TYPES_TIP"
-                >
-            <option value="external">COM_REDEVENT_EXTERNAL</option>
-            <option value="phone">COM_REDEVENT_PHONE</option>
-            <option value="webform">COM_REDEVENT_WEBFORM</option>
-            <option value="email">COM_REDEVENT_EMAIL</option>
-            <option value="formaloffer">COM_REDEVENT_FORMALOFFER</option>
-        </field>
-
-        <field
-                name="submission_type_external"
-                type="text"
-                class="inputbox validate-url"
-                label="COM_REDEVENT_EXTERNAL_URL_LABEL"
-                description="COM_REDEVENT_EXTERNAL_URL_LABEL_TIP"/>
-
-        <field
-                name="submission_type_phone"
-                type="editor"
-                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
-                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="submission_type_webform"
-                type="editor"
-                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
-                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="review_message"
-                type="editor"
-                label="COM_REDEVENT_REVIEW_SCREEN"
-                description="COM_REDEVENT_REVIEW_SCREEN_INFO"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="confirmation_message"
-                type="editor"
-                label="COM_REDEVENT_CONFIRMATION"
-                description="COM_REDEVENT_CONFIRMATION_INFO"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="submission_type_email"
-                type="editor"
-                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
-                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="submission_type_email_subject"
-                type="text"
-                size="80"
-                label="COM_REDEVENT_EMAIL_SUBJECT"
-                description=""
-                class="inputbox" />
-
-        <field
-                name="submission_type_email_body"
-                type="editor"
-                label="COM_REDEVENT_SUBMISSION_EMAIL_EMAIL_BODY"
-                description="COM_REDEVENT_SUBMISSION_EMAIL_EMAIL_BODY"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="send_pdf_form"
-                type="radio"
-                class="inputbox"
-                default="0"
-                label="COM_REDEVENT_SEND_PDF_FORM"
-                description="COM_REDEVENT_SEND_PDF_FORM_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-                name="pdf_form_data"
-                type="radio"
-                class="inputbox"
-                default="0"
-                label="COM_REDEVENT_PDF_FORM_DATA"
-                description="COM_REDEVENT_PDF_FORM_DATA_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-                name="submission_type_email_pdf"
-                type="editor"
-                label="COM_REDEVENT_SUBMISSION_EMAIL_PDF_CONTENT"
-                description="COM_REDEVENT_SUBMISSION_EMAIL_PDF_CONTENT_TIP"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="submission_type_formal_offer"
-                type="editor"
-                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
-                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="submission_type_formal_offer_subject"
-                type="text"
-                size="80"
-                label="COM_REDEVENT_EMAIL_SUBJECT"
-                description=""
-                class="inputbox" />
-
-        <field
-                name="submission_type_formal_offer_body"
-                type="editor"
-                label="COM_REDEVENT_FORMAL_OFFER_BODY"
-                description="COM_REDEVENT_FORMAL_OFFER_BODY"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="show_submission_type_webform_formal_offer"
-                type="radio"
-                class="inputbox"
-                default="0"
-                label="COM_REDEVENT_SHOW_SUBMIT_AND_PRINT_BUTTON"
-                description="COM_REDEVENT_SHOW_SUBMIT_AND_PRINT_BUTTON_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-                name="submission_type_webform_input"
-                type="editor"
-                label="COM_REDEVENT_WEBFORM_PRINT_FORMAL_OFFER"
-                description="COM_REDEVENT_WEBFORM_PRINT_FORMAL_OFFER_TIP"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-    </fieldset>
-
-    <fieldset name="activation">
-        <field
-            name="notify"
-            type="radio"
-            class="inputbox"
-            default="0"
-            label="COM_REDEVENT_ENABLE_NOTIFICATION"
-            description="COM_REDEVENT_ENABLE_NOTIFICATION_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-            name="activate"
-            type="radio"
-            class="inputbox"
-            default="0"
-            size="1"
-            label="COM_REDEVENT_ENABLE_ACTIVATION"
-            description="COM_REDEVENT_ENABLE_ACTIVATION_TIP">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-            name="notify_subject"
-            type="text"
-            size="80"
-            label="COM_REDEVENT_NOTIFY_SUBJECT"
-            description=""
-            class="inputbox" />
-
-        <field
-            name="notify_body"
-            type="editor"
-            size="80"
-            label="COM_REDEVENT_NOTIFY_BODY"
-            description="COM_REDEVENT_NOTIFY_BODY_NOTE"
-            class="inputbox"
-            filter="JComponentHelper::filterText"
-            buttons="true"
-            hide="readmore,pagebreak"
-            />
-
-        <field
-            name="enable_activation_confirmation"
-            type="radio"
-            class="inputbox"
-            default="0"
-            size="1"
-            label="COM_REDEVENT_XML_EVENT_ENABLE_ACTIVATION_CONFIRMATION_EMAIL_LABEL"
-            description="COM_REDEVENT_XML_EVENT_ENABLE_ACTIVATION_CONFIRMATION_EMAIL_DESC">
-            <option	value="0">JNO</option>
-            <option	value="1">JYES</option>
-        </field>
-
-        <field
-            name="notify_confirm_subject"
-            type="text"
-            size="80"
-            label="COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT"
-            description=""
-            class="inputbox" />
-
-        <field
-            name="notify_confirm_body"
-            type="editor"
-            label="COM_REDEVENT_NOTIFY_CONFIRM_BODY"
-            description=""
-            class="inputbox"
-            filter="JComponentHelper::filterText"
-            buttons="true"
-            hide="readmore,pagebreak"
-            />
-    </fieldset>
-
-    <fieldset name="confirmation">
-        <field
-                name="notify_off_list_subject"
-                type="text"
-                size="80"
-                label="COM_REDEVENT_NOTIFY_ATTENDING_SUBJECT"
-                description=""
-                class="inputbox" />
-
-        <field
-                name="notify_off_list_body"
-                type="editor"
-                size="80"
-                label="COM_REDEVENT_NOTIFY_ATTENDING_BODY"
-                description="COM_REDEVENT_NOTIFY_ATTENDING_NOTE"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="notify_on_list_subject"
-                type="text"
-                size="80"
-                label="COM_REDEVENT_NOTIFY_ON_LIST_SUBJECT"
-                description=""
-                class="inputbox" />
-
-        <field
-                name="notify_on_list_body"
-                type="editor"
-                size="80"
-                label="COM_REDEVENT_NOTIFY_ON_LIST_BODY"
-                description="COM_REDEVENT_NOTIFY_ON_LIST_NOTE"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-    </fieldset>
-
-    <fieldset name="payment">
-        <field
-                name="paymentprocessing"
-                type="editor"
-                size="80"
-                label="COM_REDEVENT_PAYMENTPROCESSING"
-                description="COM_REDEVENT_PAYMENTPROCESSING_TIP"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-
-        <field
-                name="paymentaccepted"
-                type="editor"
-                size="80"
-                label="COM_REDEVENT_PAYMENTACCEPTED"
-                description="COM_REDEVENT_PAYMENTACCEPTED_INFO"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                hide="readmore,pagebreak"
-                />
-    </fieldset>
+	<fieldset name="registra">
+		<field
+				name="registra"
+				type="radio"
+				class="inputbox"
+				default="0"
+				size="1"
+				label="COM_REDEVENT_ENABLE_REGISTRATION"
+				description="COM_REDEVENT_ENABLE_REGISTRATION_TIP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+				name="unregistra"
+				type="radio"
+				class="inputbox"
+				default="0"
+				size="1"
+				label="COM_REDEVENT_ENABLE_UNREGISTRATION"
+				description="COM_REDEVENT_ENABLE_UNREGISTRATION_TIP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+				name="max_multi_signup"
+				type="text"
+				class="inputbox validate-integer"
+				default="0"
+				size="15"
+				label="COM_REDEVENT_MAX_MULTI_SIGNUP"
+				description="COM_REDEVENT_MAX_MULTI_SIGNUP_TIP"
+		/>
+	</fieldset>
 </form>

@@ -26,6 +26,14 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<div class="control-group">
 		<div class="control-label">
+			<?php echo $this->form->getLabel('template_id'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('template_id'); ?>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-label">
 			<?php echo $this->form->getLabel('course_code'); ?>
 		</div>
 		<div class="controls">
@@ -50,14 +58,6 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<div class="control-group">
 		<div class="control-label">
-			<?php echo $this->form->getLabel('enable_ical'); ?>
-		</div>
-		<div class="controls">
-			<?php echo $this->form->getInput('enable_ical'); ?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label">
 			<?php echo $this->form->getLabel('created_by'); ?>
 		</div>
 		<div class="controls">
@@ -78,26 +78,6 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div class="controls">
 			<?php echo $this->form->getInput('datimage'); ?>
-		</div>
-	</div>
-
-	<?php if (file_exists(JPATH_SITE . '/libraries/redmailflow') && JComponentHelper::isEnabled('com_redmailflow')): ?>
-		<div class="control-group">
-			<div class="control-label">
-				<?php echo $this->form->getLabel('mailflow_id'); ?>
-			</div>
-			<div class="controls">
-				<?php echo $this->form->getInput('mailflow_id'); ?>
-			</div>
-		</div>
-	<?php endif; ?>
-
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('details_layout'); ?>
-		</div>
-		<div class="controls">
-			<?php echo $this->form->getInput('details_layout'); ?>
 		</div>
 	</div>
 
