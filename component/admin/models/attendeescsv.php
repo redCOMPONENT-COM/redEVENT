@@ -41,12 +41,11 @@ class RedeventModelAttendeescsv extends RModelAdmin
 	 */
 	public function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = 0, $filter_attending = 0)
 	{
-		$query = $this->_db->getQuery(true);
-
-		$query->select('e.title, e.course_code, x.id as xref, x.dates, v.venue')
+		$query = $this->_db->getQuery(true)
+			->select('e.title, e.course_code, x.id as xref, x.dates, v.venue')
 			->select('r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name, pg.name as pricegroup')
 			->select('s.answer_id, s.id AS submitter_id, s.price, s.currency')
-			->select('p.paid, p.status')
+			->select('CASE WHEN unpaid_pr.id IS NULL THEN 1 ELSE 0 END AS paid')
 			->from('#__redevent_register AS r')
 			->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id')
 			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
@@ -57,11 +56,8 @@ class RedeventModelAttendeescsv extends RModelAdmin
 			->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id')
 			->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id')
 			->join('LEFT', '#__users AS u ON r.uid = u.id')
-			->join(
-				'LEFT',
-				'(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key'
+			->join('LEFT', '#__rwf_payment_request AS unpaid_pr ON unpaid_pr.submission_id = s.id AND unpaid_pr.paid = 0'
 			)
-			->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id')
 			->where('r.confirmed = 1')
 			->where('r.cancelled = 0')
 			->where('s.form_id = ' . (int) $form_id)
