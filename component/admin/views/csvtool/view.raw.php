@@ -37,35 +37,35 @@ class RedEventViewCsvtool extends JView {
 	function display($tpl = null)
 	{
 		jimport('joomla.filesystem.file');
-		
-		
+
 		$model = $this->getModel();
-		
+
 		$events = JRequest::getVar('events_filter', array(), 'post', 'array');
 		JArrayHelper::toInteger($events);
 
-		$attendees = $model->getRegisters(JRequest::getInt('form_filter'), 
-		                                  $events, 
-		                                  JRequest::getInt('category_filter'), 
-		                                  JRequest::getInt('venue_filter'), 
-		                                  JRequest::getInt('state_filter'), 
-		                                  JRequest::getInt('filter_attending'));
-		
+		$attendees = $model->getRegisters(JRequest::getInt('form_filter'),
+			$events,
+			JRequest::getInt('category_filter'),
+			JRequest::getInt('venue_filter'),
+			JRequest::getInt('state_filter'),
+			JRequest::getInt('filter_attending'),
+			JRequest::getInt('attendees_confirmed_filter'));
+
 		$fields    = $model->getFields(JRequest::getInt('form_filter'));
-		
+
 		$cols = array(
-		               JText::_('COM_REDEVENT_EVENT'), 
-		               JText::_('COM_REDEVENT_DATE'), 
-		               JText::_('COM_REDEVENT_VENUE'), 
+		               JText::_('COM_REDEVENT_EVENT'),
+		               JText::_('COM_REDEVENT_DATE'),
+		               JText::_('COM_REDEVENT_VENUE'),
 		               );
 		$text = "";
 		foreach ($fields AS $f) {
 			$cols[] = $f->field_header;
 		}
-		$stdcols = array( 
-		               JText::_('COM_REDEVENT_REGDATE'),  
-		               JText::_('COM_REDEVENT_IP_ADDRESS'), 
-		               JText::_('COM_REDEVENT_UNIQUE_ID'), 
+		$stdcols = array(
+		               JText::_('COM_REDEVENT_REGDATE'),
+		               JText::_('COM_REDEVENT_IP_ADDRESS'),
+		               JText::_('COM_REDEVENT_UNIQUE_ID'),
 		               JText::_('COM_REDEVENT_USERNAME'),
 		               JText::_('COM_REDEVENT_ACTIVATED'),
 		               JText::_('COM_REDEVENT_WAITINGLIST'),
@@ -75,10 +75,10 @@ class RedEventViewCsvtool extends JView {
 		               );
 		$cols = array_merge($cols, $stdcols);
 		$text .= $this->writecsvrow($cols);
-		
+
 		if (count($attendees))
 		{
-			foreach((array) $attendees as $r) 
+			foreach((array) $attendees as $r)
 			{
 				$data = array(
 				               $r->title,
@@ -100,8 +100,8 @@ class RedEventViewCsvtool extends JView {
 						$data[] = '';
 					}
 				}
-				
-				$svals = array( 
+
+				$svals = array(
 				               $r->uregdate,
 				               $r->uip,
 				               $r->course_code .'-'. $r->xref .'-'. $r->id,
@@ -119,15 +119,15 @@ class RedEventViewCsvtool extends JView {
 		else {
 			//$text = "no attendees";
 		}
-		
+
 		$title = JFile::makeSafe('attendees.csv');
 		$doc =& JFactory::getDocument();
 		$doc->setMimeEncoding('text/csv');
 		header('Content-Disposition: attachment; filename="'.$title.'"');
 		echo $text;
 	}
-		
-	function writecsvrow($fields, $delimiter = ',', $enclosure = '"') 
+
+	function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
 	{
     $delimiter_esc = preg_quote($delimiter, '/');
     $enclosure_esc = preg_quote($enclosure, '/');
@@ -140,5 +140,5 @@ class RedEventViewCsvtool extends JView {
     }
 
     return join($delimiter, $output) . "\n";
-	} 
+	}
 }

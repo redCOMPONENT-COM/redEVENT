@@ -104,74 +104,94 @@ class RedEventModelcsvtool extends JModel
 	 * @since	0.9
 	 * @todo Complete CB integration
 	 */
-	function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = 0, $filter_attending = 0)
+	function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = null, $filter_attending = null, $attendees_confirmed_filter = null)
 	{
-		// first, get all submissions
-		$query = ' SELECT e.title, e.course_code, x.id as xref, x.dates, v.venue, '
-			. ' r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name, pg.name as pricegroup '
-			. ' FROM #__redevent_register AS r '
-			. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
-			. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
-			. ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-			. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-			. ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid '
-			. ' LEFT JOIN #__redevent_sessions_pricegroups AS spg ON pg.id = r.sessionpricegroup_id '
-			. ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id '
-			. ' LEFT JOIN #__users AS u ON r.uid = u.id '
-			;
-		$where = array();
-		$where[] = ' r.confirmed = 1 ';
-		$where[] = ' r.cancelled = 0 ';
-		$where[] = ' s.form_id = '.$form_id;
+		$query = $this->_db->getQuery(true)
+			->select('r.*, r.id as attendee_id, u.username, u.name, e.id AS eventid, u.email')
+			->select('s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, s.currency')
+			->select('pg.name as pricegroup, fo.activatepayment, p.paid, p.status')
+			->select('e.course_code, e.title, x.dates, x.times, v.venue, x.maxattendees')
+			->select('auth.username AS creator')
+			->from('#__redevent_register AS r')
+			->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id')
+			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
+			->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')
+			->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
+			->join('INNER', '#__rwf_forms AS fo ON fo.id = s.form_id')
+			->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id')
+			->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id')
+			->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id')
+			->join('LEFT', '#__users AS u ON r.uid = u.id')
+			->join('LEFT', '#__users AS auth ON auth.id = e.created_by')
+			->join('LEFT', '(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key')
+			->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id')
+			->where('r.cancelled = 0')
+			->where('s.form_id = ' . $form_id)
+			->group('r.id')
+			->order('e.title, x.dates');
 
-		if ($events && count($events)) {
-			$where[] = 'e.id in ('.implode(',', $events).')';
-		}
-		if ($category_id)	{
-			$where[] = ' xcat.category_id = '.$category_id;
-		}
-		if ($venue_id)	{
-			$where[] = ' x.venueid = '.$venue_id;
-		}
-		switch ($state_filter)
+		if ($events && count($events))
 		{
-			case 0:
-				$where[] = ' x.published = 1 ';
-				break;
-			case 1:
-				$where[] = ' x.published = -1 ';
-				break;
-			case 2:
-				$where[] = ' x.published <> 0 ';
-				break;
+			$query->where('e.id in ('.implode(',', $events).')');
 		}
-		switch ($filter_attending)
-		{
-			case 1:
-				$where[] = ' r.waitinglist = 0 ';
-				break;
-			case 2:
-				$where[] = ' r.waitinglist = 1 ';
-				break;
-		}
-		$query .= ' WHERE '.implode(' AND ', $where);
 
-		$query .= ' GROUP BY r.id ';
-		$query .= ' ORDER BY e.title, x.dates ';
+		if ($category_id)
+		{
+			$query->where('xcat.category_id = ' . $category_id);
+		}
+
+		if ($venue_id)
+		{
+			$query->where('x.venueid = ' . $venue_id);
+		}
+
+		if (is_numeric($state_filter))
+		{
+			switch ($state_filter)
+			{
+				case 0:
+					$query->where('x.published = 1');
+					break;
+				case 1:
+					$query->where('x.published = -1');
+					break;
+				case 2:
+					$query->where('x.published <> 0');
+					break;
+			}
+		}
+
+		if (is_numeric($filter_attending))
+		{
+			switch ($filter_attending)
+			{
+				case 1:
+					$query->where('r.waitinglist = 0');
+					break;
+				case 2:
+					$query->where('r.waitinglist = 1');
+					break;
+			}
+		}
+
+		if (is_numeric($attendees_confirmed_filter))
+		{
+			switch ($attendees_confirmed_filter)
+			{
+				case 1:
+					$query->where('r.confirmed = 1');
+					break;
+				case 2:
+					$query->where('r.confirmed = 0');
+					break;
+			}
+		}
 
 		$this->_db->setQuery($query);
 		$submitters = $this->_db->loadObjectList();
 
-		// get answers
-		$sids = array();
-		if (count($submitters))
-		{
-			foreach ($submitters as $s)
-			{
-				$sids[] = $s->sid;
-			}
-		}
-
+		// Get answers
+		$sids = JArrayHelper::getColumn($submitters, 'sid');
 		$rfcore = new RedformCore();
 		$answers = $rfcore->getSidsAnswers($sids);
 

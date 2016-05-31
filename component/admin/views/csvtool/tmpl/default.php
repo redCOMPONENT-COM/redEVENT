@@ -44,6 +44,10 @@ defined('_JEXEC') or die('Restricted access');
 		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE'); ?></td>
 		<td><?php echo $this->lists['state_filter']; ?></td>
 	</tr>
+	<tr id="export-state-row">
+		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_CONFIRMED_STATE'); ?></td>
+		<td><?php echo $this->lists['attendees_confirmed_filter']; ?></td>
+	</tr>
 	<tr id="export-attendees-state-row">
 		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_LABEL'); ?></td>
 		<td><?php echo $this->lists['filter_attending']; ?></td>

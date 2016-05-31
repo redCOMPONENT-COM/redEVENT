@@ -43,19 +43,19 @@ class RedEventViewCsvtool extends JView {
 		$document	= & JFactory::getDocument();
 		$db			= & JFactory::getDBO();
     $url    = JURI::root();
-		
+
 		JHTML::_('behavior.mootools');
 
 		//prepare document
 		$document->setTitle(JText::_( 'COM_REDEVENT_TOOLS_CSV'));
-		
+
 		//add css to document
 		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/redeventbackend.css');
 		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/csvtool.css');
-		
+
 		// js
 		$document->addScript($url.'/administrator/components/com_redevent/assets/js/csvtool.js');
-		
+
 		//Create Submenu
     ELAdmin::setMenu();
 
@@ -64,34 +64,39 @@ class RedEventViewCsvtool extends JView {
 		JToolBarHelper::back();
 
 		$lists = array();
-		
+
 		$forms = $this->get('FormOptions');
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_FORM')));
 		$options = array_merge($options, $forms);
 		$lists['form_filter'] = JHTML::_('select.genericlist', $options, 'form_filter');
-		
+
 		$forms = ELAdmin::getCategoriesOptions();
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_CATEGORY')));
 		$options = array_merge($options, $forms);
 		$lists['category_filter'] = JHTML::_('select.genericlist', $options, 'category_filter');
-		
+
 		$forms = ELAdmin::getVenuesOptions();
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_VENUE')));
 		$options = array_merge($options, $forms);
 		$lists['venue_filter'] = JHTML::_('select.genericlist', $options, 'venue_filter');
-		
+
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE_PUBLISHED')),
 		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE_ARCHIVED')),
 		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE_ALL')),);
 		$lists['state_filter'] = JHTML::_('select.genericlist', $options, 'state_filter');
-		
+
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_CONFIRMED_ALL')),
+			JHTML::_('select.option', 1, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_CONFIRMED_CONFIRMED')),
+			JHTML::_('select.option', 2, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_CONFIRMED_UNCONFIRMED')),);
+		$lists['attendees_confirmed_filter'] = JHTML::_('select.genericlist', $options, 'attendees_confirmed_filter');
+
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_ALL')),
 		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_ATTENDING')),
 		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_WAITING')),);
 		$lists['filter_attending'] = JHTML::_('select.genericlist', $options, 'filter_attending');
-		
+
 		$this->assignRef('lists', $lists);
-		
+
 		parent::display($tpl);
 	}
 }
