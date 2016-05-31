@@ -178,6 +178,28 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return full title, including event title
+	 *
+	 * @return string
+	 */
+	public function getFullTitle()
+	{
+		$config = RedeventHelper::config();
+
+		if ($config->get('disable_frontend_session_title', 0))
+		{
+			return $this->getEvent()->title;
+		}
+
+		if (!empty($this->title))
+		{
+			return $this->getEvent()->title . ' - ' . $this->title;
+		}
+
+		return $this->getEvent()->title;
+	}
+
+	/**
 	 * Get number of signup left for user
 	 *
 	 * @param   int  $userId  user id

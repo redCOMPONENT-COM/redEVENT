@@ -282,7 +282,7 @@ class RedeventTags
 		$text = $this->replace($text);
 
 		/* Include redFORM */
-		if (strstr($text, '[redform]') && $this->getEvent()->getData()->redform_id > 0)
+		if (strstr($text, '[redform]'))
 		{
 			$redform = $this->getForm();
 

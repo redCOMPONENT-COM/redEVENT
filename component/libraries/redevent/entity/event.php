@@ -32,6 +32,11 @@ class RedeventEntityEvent extends RedeventEntityBase
 	private $sessions;
 
 	/**
+	 * @var RedeventEntityEventtemplate
+	 */
+	private $template;
+
+	/**
 	 * Get event categories
 	 *
 	 * @return RedeventEntityCategory[]
@@ -94,20 +99,38 @@ class RedeventEntityEvent extends RedeventEntityBase
 	}
 
 	/**
+	 * Return event template
+	 *
+	 * @return RedeventEntityEventtemplate
+	 */
+	public function getEventtemplate()
+	{
+		if (!$this->template)
+		{
+			$item = $this->getItem();
+
+			if (!empty($item))
+			{
+				$this->template = RedeventEntityEventtemplate::load($item->template_id);
+			}
+		}
+
+		return $this->template;
+	}
+
+	/**
 	 * Return associated redform form
 	 *
 	 * @return RdfEntityForm
 	 */
 	public function getForm()
 	{
-		$item = $this->getItem();
-
-		if (!empty($item))
+		if (!$template = $this->getEventtemplate())
 		{
-			return RdfEntityForm::load($item->redform_id);
+			return false;
 		}
 
-		return false;
+		return $template->getForm();
 	}
 
 	/**

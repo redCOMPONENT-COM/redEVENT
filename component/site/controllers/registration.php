@@ -255,7 +255,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 			$gateway = $app->input->get('gw');
 
-			$rfredirect = $rfcore->getFormRedirect($session->getEvent()->redform_id);
+			$rfredirect = $rfcore->getFormRedirect($session->getEvent()->getEventtemplate()->redform_id);
 
 			if ($rfredirect)
 			{

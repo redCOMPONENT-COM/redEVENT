@@ -125,6 +125,7 @@ class RedeventModelEventhelper extends RModel
 			$query = $db->getQuery(true);
 
 			$query->select('x.*, x.id AS xref, x.title as session_title, x.created AS session_created, x.modified AS session_modified');
+			$query->select('t.*');
 			$query->select('a.*, a.id AS did, a.created AS event_created, a.modified AS event_modified');
 			$query->select('v.id AS venue_id, v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state');
 			$query->select('v.locdescription as venue_description, v.map, v.url as venueurl');
@@ -140,11 +141,13 @@ class RedeventModelEventhelper extends RModel
 			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug');
 
 			$query->from('#__redevent_events AS a');
+			$query->innerJoin('#__redevent_event_template AS t On t.id = a.template_id');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
+			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
 			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
 			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 			$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
-			$query->join('LEFT', '#__rwf_forms AS f ON f.id = a.redform_id');
+			$query->join('LEFT', '#__rwf_forms AS f ON f.id = t.redform_id');
 			$query->join('LEFT', '#__users AS u ON a.created_by = u.id');
 
 			$this->buildDetailsWhere($query);
@@ -290,7 +293,8 @@ class RedeventModelEventhelper extends RModel
 		$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
 		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-		$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
+		$query->innerJoin('#__redevent_event_template AS t On t.id = e.template_id');
+		$query->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id');
 		$query->where('sp.xref = ' . $db->quote($this->xref));
 		$query->order('p.ordering ASC');
 
