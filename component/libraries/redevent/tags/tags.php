@@ -83,6 +83,13 @@ class RedeventTags
 	private $event = null;
 
 	/**
+	 * Session entity
+	 *
+	 * @var RedeventEntitySession
+	 */
+	private $session = null;
+
+	/**
 	 * instance of rfcore
 	 * @var RdfCore
 	 */
@@ -489,6 +496,21 @@ class RedeventTags
 		}
 
 		return $this->event;
+	}
+
+	/**
+	 * return session entity
+	 *
+	 * @return object
+	 */
+	private function getSession()
+	{
+		if (empty($this->session) && $this->xref)
+		{
+			$this->session = RedeventEntitySession::load($this->xref);
+		}
+
+		return $this->session;
 	}
 
 	/**
@@ -1494,6 +1516,23 @@ class RedeventTags
 		$format = $tag->getParam('format') ?: null;
 
 		return RedeventHelperDate::formatdatetime($this->getEvent()->getData()->session_modified, $format);
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
+	private function getTag_session_details(RedeventTagsParsed $tag)
+	{
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
+		return $session->details;
 	}
 
 	/**

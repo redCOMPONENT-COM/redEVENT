@@ -80,6 +80,7 @@ class RedeventModelTags extends RModel
 		$tags[] = new RedeventTagsTag('author_email', JText::_('COM_REDEVENT_TAG_AUTHOR_EMAIL'));
 		$tags[] = new RedeventTagsTag('event_created', JText::_('COM_REDEVENT_TAG_EVENT_CREATED_DESC'));
 		$tags[] = new RedeventTagsTag('event_modified', JText::_('COM_REDEVENT_TAG_EVENT_MODIFIED_DESC'));
+		$tags[] = new RedeventTagsTag('session_details', JText::_('COM_REDEVENT_TAG_SESSION_DETAILS_DESC'));
 		$tags[] = new RedeventTagsTag('session_created', JText::_('COM_REDEVENT_TAG_SESSION_CREATED_DESC'));
 		$tags[] = new RedeventTagsTag('session_modified', JText::_('COM_REDEVENT_TAG_SESSION_MODIFIED_DESC'));
 
@@ -126,7 +127,7 @@ class RedeventModelTags extends RModel
 		$tags[] = new RedeventTagsTag('userfullname', JText::_('COM_REDEVENT_SUBMISSION_TAG_FULLNAME_DESC'), 'registration');
 		$tags[] = new RedeventTagsTag('username', JText::_('COM_REDEVENT_SUBMISSION_TAG_USERNAME_DESC'), 'registration');
 		$tags[] = new RedeventTagsTag('useremail', JText::_('COM_REDEVENT_SUBMISSION_TAG_USEREMAIL_DESC'), 'registration');
-		$tags[] = new RedeventTagsTag('answer_<field id>', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_FIELD_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('field_<field id>', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_FIELD_DESC'), 'registration');
 
 		$tags[] = new RedeventTagsTag('paymentrequest', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
 		$tags[] = new RedeventTagsTag('paymentrequestlink', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
