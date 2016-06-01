@@ -129,6 +129,30 @@ class Adminredevent extends \AcceptanceTester
 	}
 
 	/**
+	 * Create a session
+	 *
+	 * @param   array  $params  parameters
+	 *
+	 * @return void
+	 */
+	public function createSession($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redevent&view=sessions');
+		$I->waitForText('Sessions', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "session.add")]']);
+		$I->waitForText('Event', 30, ['css' => 'label']);
+
+		$event = isset($params['event']) ? $params['event'] : 'Event 1';
+		$I->selectOptionInChosenByIdUsingJs('jform_eventid', $event);
+
+		$venue = isset($params['venue']) ? $params['venue'] : 'Venue 1';
+		$I->selectOptionInChosenByIdUsingJs('jform_venueid', $venue);
+
+		$I->click(['xpath' => '//button[contains(@onclick, "session.save")]']);
+	}
+
+	/**
 	 * Create a Tag
 	 *
 	 * @param   array  $params  parameters
