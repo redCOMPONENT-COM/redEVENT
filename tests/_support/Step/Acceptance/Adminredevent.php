@@ -86,6 +86,49 @@ class Adminredevent extends \AcceptanceTester
 	}
 
 	/**
+	 * Create a price group
+	 *
+	 * @param   array  $params  parameters
+	 *
+	 * @return void
+	 */
+	public function createPriceGroup($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redevent&view=pricegroups');
+		$I->waitForText('Price groups', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "pricegroup.add")]']);
+		$I->waitForText('Name', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_name'], $params['name']);
+
+		$I->click(['xpath' => '//button[contains(@onclick, "pricegroup.save")]']);
+	}
+
+	/**
+	 * Create a Role
+	 *
+	 * @param   array  $params  parameters
+	 *
+	 * @return void
+	 */
+	public function createRole($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redevent&view=roles');
+		$I->waitForText('Roles', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "role.add")]']);
+		$I->waitForText('Name', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_name'], $params['name']);
+
+		if (!empty($params['description']))
+		{
+			$I->fillTinyMceEditorById('jform_description', $params['description']);
+		}
+
+		$I->click(['xpath' => '//button[contains(@onclick, "role.save")]']);
+	}
+
+	/**
 	 * Create a Tag
 	 *
 	 * @param   array  $params  parameters
