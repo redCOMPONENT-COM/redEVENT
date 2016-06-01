@@ -397,6 +397,7 @@ class RedeventAttendee extends JObject
 		$app = JFactory::getApplication();
 		$data = $this->load();
 		$session = $this->getSessionDetails();
+		$template = $session->getEvent()->getEventtemplate();
 
 		$sid = $data->sid;
 
@@ -429,15 +430,15 @@ class RedeventAttendee extends JObject
 
 		if ($waiting == 0)
 		{
-			if ($session->notify_off_list_subject)
+			if ($template->notify_off_list_subject)
 			{
-				$subject = $session->notify_off_list_subject;
-				$body = $session->notify_off_list_body;
+				$subject = $template->notify_off_list_subject;
+				$body = $template->notify_off_list_body;
 			}
-			elseif ($session->notify_subject)
+			elseif ($template->notify_subject)
 			{
-				$subject = $session->notify_subject;
-				$body = $session->notify_body;
+				$subject = $template->notify_subject;
+				$body = $template->notify_body;
 			}
 			else
 			{
@@ -450,10 +451,10 @@ class RedeventAttendee extends JObject
 		}
 		else
 		{
-			if ($session->notify_on_list_body)
+			if ($template->notify_on_list_body)
 			{
-				$subject = $session->notify_on_list_subject;
-				$body = $session->notify_on_list_body;
+				$subject = $template->notify_on_list_subject;
+				$body = $template->notify_on_list_body;
 			}
 			else
 			{

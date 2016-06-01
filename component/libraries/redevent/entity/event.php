@@ -163,7 +163,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 			throw new RuntimeException('invalid user entity');
 		}
 
-		return strlen(trim(strip_tags($this->review_message))) > 0;
+		return strlen(trim(strip_tags($this->getEventtemplate()->review_message))) > 0;
 	}
 
 	/**

@@ -34,8 +34,6 @@ class RedeventModelEvent extends RModelAdmin
 
 			$categories = $this->getEventCategories($result->id);
 			$result->categories = array_keys($categories);
-
-			$result->showfields = explode(',', $result->showfields);
 		}
 
 		return $result;

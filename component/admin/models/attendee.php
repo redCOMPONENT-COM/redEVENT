@@ -216,7 +216,7 @@ class RedeventModelAttendee extends RModelAdmin
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('pg.price, a.activate');
+		$query->select('pg.price, t.activate');
 		$query->select('CASE WHEN CHAR_LENGTH(pg.currency) THEN pg.currency ELSE f.currency END as currency');
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');

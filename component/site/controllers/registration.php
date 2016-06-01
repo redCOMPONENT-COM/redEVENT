@@ -212,7 +212,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			// Redform saved fine, now add the attendees
 			$user = JFactory::getUser();
 
-			if (!$user->get('id') && $session->getEvent()->juser)
+			if (!$user->get('id') && $session->getEvent()->getEventtemplate()->juser)
 			{
 				if ($new = $model->createUser($result->posts[0]['sid']))
 				{
