@@ -13,6 +13,7 @@ $I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com
 $I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=categories');
 $I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=customfields');
 $I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=events');
+$I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=eventtemplates');
 $I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=logs');
 $I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=organizations');
 $I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=pricegroups');
