@@ -112,6 +112,7 @@ class RedeventModelTags extends RModel
 		$tags[] = new RedeventTagsTag('emailsignup', JText::_('COM_REDEVENT_SUBMISSION_EMAIL_SIGNUP_LINK'), 'registration');
 		$tags[] = new RedeventTagsTag('formalsignup', JText::_('COM_REDEVENT_SUBMISSION_FORMAL_SIGNUP_LINK'), 'registration');
 		$tags[] = new RedeventTagsTag('externalsignup', JText::_('COM_REDEVENT_SUBMISSION_EXTERNAL_SIGNUP_LINK'), 'registration');
+		$tags[] = new RedeventTagsTag('external_registration_url', JText::_('COM_REDEVENT_TAG_EXTERNAL_REGISTRATION_URL'), 'registration');
 		$tags[] = new RedeventTagsTag('phonesignup', JText::_('COM_REDEVENT_SUBMISSION_PHONE_SIGNUP_LINK'), 'registration');
 		$tags[] = new RedeventTagsTag('webformsignuppage', JText::_('COM_REDEVENT_SUBMISSION_WEBFORM_SIGNUP_PAGE'), 'registration');
 		$tags[] = new RedeventTagsTag('emailsignuppage', JText::_('COM_REDEVENT_SUBMISSION_EMAIL_SIGNUP_PAGE'), 'registration');

@@ -2557,6 +2557,23 @@ class RedeventTags
 	/**
 	 * Parses a tag
 	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
+	private function getTag_external_registration_url(RedeventTagsParsed $tag)
+	{
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
+		return $session->external_registration_url;
+	}
+
+	/**
+	 * Parses a tag
+	 *
 	 * @return string
 	 */
 	private function getTag_phonesignup()
