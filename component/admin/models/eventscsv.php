@@ -58,7 +58,7 @@ class RedeventModelEventscsv extends RModelAdmin
 			->select('u.name as creator_name, u.email AS creator_email')
 			->select('v.venue, v.city')
 			->from('#__redevent_events AS e')
-		    ->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
+			->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
 			->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = e.id')
 			->join('LEFT', '#__redevent_venues AS v ON v.id = x.venueid')
 			->join('LEFT', '#__redevent_event_category_xref AS xc ON xc.event_id = e.id')

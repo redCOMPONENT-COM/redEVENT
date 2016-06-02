@@ -50,7 +50,7 @@ class RedeventModelAttendeescsv extends RModelAdmin
 			->from('#__redevent_register AS r')
 			->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id')
 			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
-		    ->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
+			->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
 			->join('INNER', '#__rwf_forms AS fo ON fo.id = t.redform_id')
 			->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
 			->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')

@@ -90,7 +90,9 @@ class RedeventViewEventtemplates extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('eventtemplate.edit');
 			$firstGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('eventtemplatescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false);
+			$importExport = RToolbarBuilder::createStandardButton(
+				'eventtemplatescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false
+			);
 			$secondGroup->addButton($importExport);
 		}
 
