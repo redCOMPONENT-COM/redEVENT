@@ -113,6 +113,12 @@ class Tablerow
 			case 'price':
 				return $this->getPrice();
 
+			case 'amuprice':
+				return $this->getPrice('Amu Pris');
+
+			case 'standardprice':
+				return $this->getPrice('Standard Pris');
+
 			case 'budget':
 				return $this->getBudget();
 		}
@@ -150,20 +156,40 @@ class Tablerow
 	/**
 	 * Get price of most recent session
 	 *
-	 * @return int
+	 * @param   string  $name  name of pris group
+	 *
+	 * @return float
 	 */
-	private function getPrice()
+	private function getPrice($name = null)
 	{
 		$sessions = array_reverse($this->sessions);
 
 		foreach ($sessions as $session)
 		{
-			if (!empty($session->prices))
+			if (!$session_prices = $session->prices)
 			{
-				$prices = JArrayHelper::getColumn($session->prices, 'price');
-
-				return max($prices);
+				return 0;
 			}
+
+			if ($name)
+			{
+				$session_prices = array_filter(
+					$session_prices,
+					function($element) use ($name)
+					{
+						return strcasecmp($element->name, $name) == 0;
+					}
+				);
+			}
+
+			if (!$session_prices)
+			{
+				return 0;
+			}
+
+			$prices = JArrayHelper::getColumn($session_prices, 'price');
+
+			return max($prices);
 		}
 
 		return 0;

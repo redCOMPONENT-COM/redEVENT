@@ -72,7 +72,8 @@
 			<th>Niveau</th>
 			<th>State</th>
 			<th>Varighed</th>
-			<th>Kursuspris</th>
+			<th>AMU Pris</th>
+			<th>Standard Pris</th>
 			<th>Adwords budget</th>
 		</tr>
 	</thead>
@@ -88,7 +89,8 @@
 		<td><?php echo implode(', ', $row->niveau); ?></td>
 		<td><?php echo $row->active ? 'active' : 'inactive'; ?></td>
 		<td><?php echo implode(', ', $row->varighed); ?></td>
-		<td><?php echo $row->price; ?></td>
+		<td><?php echo $row->amuprice; ?></td>
+		<td><?php echo $row->standardprice; ?></td>
 		<td><?php echo $row->budget; ?></td>
 	</tr>
 <?php endforeach; ?>
