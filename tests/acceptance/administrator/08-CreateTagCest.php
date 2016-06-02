@@ -6,9 +6,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-class AddAnEventCest
+class CreateTagCest
 {
-	public function addEvent(\Step\Acceptance\Adminredevent $I)
+	public function addTag(\Step\Acceptance\Adminredevent $I)
 	{
 		$I->wantToTest('Add a tag in redEVENT');
 		$I->doAdministratorLogin();
