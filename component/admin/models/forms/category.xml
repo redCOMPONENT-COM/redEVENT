@@ -86,10 +86,12 @@
 
 	<field
 		name="event_template"
-		type="session"
+		type="redevent.eventtemplate"
 		label="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE"
 		description="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE_TIP"
-		class="inputbox"/>
+		class="inputbox">
+		<option value="">JSELECT</option>
+	</field>
 
 	<field
 		name="image"

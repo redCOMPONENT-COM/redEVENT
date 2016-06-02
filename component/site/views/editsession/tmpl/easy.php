@@ -82,7 +82,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('title', 'event'); ?>
 							</div>
 						</div>
-						<?php if ($this->params->get('edit_categories')): ?>
+
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('categories', 'event'); ?>
@@ -91,7 +91,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('categories', 'event'); ?>
 							</div>
 						</div>
-						<?php endif; ?>
+						
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('venueid'); ?>

@@ -144,7 +144,6 @@ class RedeventModelEventhelper extends RModel
 			$query->innerJoin('#__redevent_event_template AS t On t.id = a.template_id');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
 			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
-			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
 			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 			$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
 			$query->join('LEFT', '#__rwf_forms AS f ON f.id = t.redform_id');
