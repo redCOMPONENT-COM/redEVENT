@@ -92,34 +92,7 @@ RHelperAsset::load('redevent-backend.css');
 
 		<div class="tab-pane" id="registration">
 			<div class="row-fluid">
-				<div class="span9">
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('maxattendees'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('maxattendees'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('maxwaitinglist'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('maxwaitinglist'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('course_credit'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('course_credit'); ?>
-						</div>
-					</div>
-				</div>
+				<?php echo $this->loadTemplate('registration'); ?>
 			</div>
 		</div>
 

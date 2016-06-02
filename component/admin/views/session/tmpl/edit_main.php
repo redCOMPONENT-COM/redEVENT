@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div class="span9">
+<div class="span7">
 	<div class="control-group">
 		<div class="control-label">
 			<?php echo $this->form->getLabel('eventid'); ?>
@@ -30,22 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div class="controls">
 			<?php echo $this->form->getInput('title'); ?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('alias'); ?>
-		</div>
-		<div class="controls">
-			<?php echo $this->form->getInput('alias'); ?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('session_code'); ?>
-		</div>
-		<div class="controls">
-			<?php echo $this->form->getInput('session_code'); ?>
 		</div>
 	</div>
 	<div class="control-group">
@@ -83,19 +67,31 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div class="control-group">
 		<div class="control-label">
-			<?php echo $this->form->getLabel('registrationend'); ?>
+			<?php echo $this->form->getLabel('details'); ?>
 		</div>
 		<div class="controls">
-			<?php echo $this->form->getInput('registrationend'); ?>
+			<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('session.details'); ?></div>
+			<?php echo $this->form->getInput('details'); ?>
 		</div>
 	</div>
+</div>
 
+<div class="span5">
 	<div class="control-group">
 		<div class="control-label">
-			<?php echo $this->form->getLabel('external_registration_url'); ?>
+			<?php echo $this->form->getLabel('alias'); ?>
 		</div>
 		<div class="controls">
-			<?php echo $this->form->getInput('external_registration_url'); ?>
+			<?php echo $this->form->getInput('alias'); ?>
+		</div>
+	</div>
+	
+	<div class="control-group">
+		<div class="control-label">
+			<?php echo $this->form->getLabel('session_code'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('session_code'); ?>
 		</div>
 	</div>
 
@@ -114,16 +110,6 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div class="controls">
 			<?php echo $this->form->getInput('featured'); ?>
-		</div>
-	</div>
-
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('details'); ?>
-		</div>
-		<div class="controls">
-			<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('session.details'); ?></div>
-			<?php echo $this->form->getInput('details'); ?>
 		</div>
 	</div>
 
