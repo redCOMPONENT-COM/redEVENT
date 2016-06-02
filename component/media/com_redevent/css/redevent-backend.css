@@ -18,6 +18,6 @@
 	width: 100% !important;
 }
 
-.redcore input[type=text] {
+.redcore input[type=text], .redcore input[type=url], .redcore input[type=email] {
 	height: 20px !important;
 }
