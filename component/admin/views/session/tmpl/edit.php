@@ -10,6 +10,8 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select');
+
+RHelperAsset::load('redevent-backend.css');
 ?>
 <script type="text/javascript">
 	jQuery(document).ready(function()

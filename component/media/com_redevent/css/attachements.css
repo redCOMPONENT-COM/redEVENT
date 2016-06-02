@@ -1,0 +1,7 @@
+table#re-attachments {
+	border-collapse: collapse;
+}
+
+table#re-attachments td, table#re-attachments th {
+	padding: 10px;
+}

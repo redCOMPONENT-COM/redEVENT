@@ -11,6 +11,8 @@ JHtml::_('rbootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select', array('width' => '150px'));
 
+RHelperAsset::load('redevent-backend.css');
+
 $fieldSets = $this->form->getFieldsets('params');
 ?>
 
