@@ -118,17 +118,30 @@ class RedeventControllerEventscsv extends RControllerForm
 		fclose($handle);
 		$msg .= "<p>total records found: " . count($records) . "<br /></p>\n";
 
+		$msgType = 'message';
+
 		// Database update
 		if (count($records))
 		{
 			$model = $this->getModel('eventscsvimport');
 			$result = $model->import($records, $duplicate_method);
-			$msg .= "<p>total added records: " . $result['added'] . "<br /></p>\n";
-			$msg .= "<p>total updated records: " . $result['updated'] . "<br /></p>\n";
-			$msg .= "<p>total ignored records: " . $result['ignored'] . "<br /></p>\n";
+
+			if ($errors = $model->getErrorMessages())
+			{
+				$msgType = 'warning';
+
+				foreach ($errors as $errorMsg)
+				{
+					$msg .= "<p>" . $errorMsg . "</p>\n";
+				}
+			}
+
+			$msg .= "<p>total added records: " . $result['added'] . "</p>\n";
+			$msg .= "<p>total updated records: " . $result['updated'] . "</p>\n";
+			$msg .= "<p>total ignored records: " . $result['ignored'] . "</p>\n";
 		}
 
-		$this->setRedirect('index.php?option=com_redevent&view=eventscsv', $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=eventscsv', $msg, $msgType);
 	}
 
 	/**

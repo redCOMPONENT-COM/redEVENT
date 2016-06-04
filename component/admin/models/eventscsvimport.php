@@ -37,6 +37,10 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * @var array
 	 */
+	private $templates;
+	/**
+	 * @var array
+	 */
 	private $venues;
 
 	/**
@@ -75,6 +79,16 @@ class RedeventModelEventscsvimport extends RModel
 	private $createdSessions = 0;
 
 	/**
+	 * @var array();
+	 */
+	private $errorMessages = array();
+
+	public function getErrorMessages()
+	{
+		return $this->errorMessages;
+	}
+
+	/**
 	 * insert events/sessions in database
 	 *
 	 * @param   array   $records           array of records to import
@@ -87,16 +101,23 @@ class RedeventModelEventscsvimport extends RModel
 		$this->duplicateMethod = $duplicate_method;
 		$this->storedTitles = array();
 
-		foreach ($records as $r)
+		foreach ($records as $row => $r)
 		{
 			$this->replaceCustoms($r);
 
-			if (!$eventId = $this->storeEvent($r))
+			try
 			{
-				continue;
-			}
+				if (!$eventId = $this->storeEvent($r))
+				{
+					continue;
+				}
 
-			$this->storeSession($r, $eventId);
+				$this->storeSession($r, $eventId);
+			}
+			catch (Exception $e)
+			{
+				$this->errorMessages[] = "row $row: " . $e->getMessage();
+			}
 		}
 
 		$count = array('added' => $this->createdEvents, 'updated' => $this->updated, 'ignored' => $this->ignored);
@@ -206,6 +227,8 @@ class RedeventModelEventscsvimport extends RModel
 			}
 
 			$data['categories'] = $cats_ids;
+
+			$data['template_id'] = $this->getTemplateId($data);
 
 			// Bind submitted data
 			$ev->bind($data);
@@ -404,6 +427,72 @@ class RedeventModelEventscsvimport extends RModel
 		}
 
 		return $this->categories;
+	}
+
+	/**
+	 * Get event template id
+	 *
+	 * @param   array  $data  csv row data
+	 *
+	 * @return int
+	 */
+	private function getTemplateId($data)
+	{
+		$templates = $this->getTemplates();
+
+		if (empty($data['template_name']))
+		{
+			throw new InvalidArgumentException('template_name column is required');
+		}
+
+		if ($id = array_search($data['template_name'], $templates))
+		{
+			return $id;
+		}
+
+		// Try to create if not found
+		$model = RModel::getAdminInstance('Eventtemplate');
+		unset($data['id']);
+		$data['name'] = $data['template_name'];
+
+		if (!$model->save($data))
+		{
+			throw new RuntimeException($model->getError());
+		}
+
+		$id = $model->getState('eventtemplate.id');
+		$this->templates[$id] = $data['template_name'];
+
+		return $id;
+	}
+
+	/**
+	 * Get templates
+	 *
+	 * @return array index by template id
+	 */
+	private function getTemplates()
+	{
+		if (is_null($this->templates))
+		{
+			$this->templates = array();
+
+			$model = RModel::getAdminInstance('Eventtemplates', array('ignore_request' => true));
+			$model->setState('list.limit', 0);
+			$templates = $model->getItems();
+
+			if (!$templates)
+			{
+				return $this->templates;
+			}
+
+			foreach ($templates as $template)
+			{
+				$this->templates[$template->id] = $template->name;
+			}
+		}
+
+		return $this->templates;
 	}
 
 	/**
