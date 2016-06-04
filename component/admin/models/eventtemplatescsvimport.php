@@ -156,7 +156,9 @@ class RedeventModelEventtemplatescsvimport extends RModel
 		if (!$id)
 		{
 			// Doesn't exist, create it
-			require_once JPATH_ADMINISTRATOR . '/components/com_redform/models/form.php';
+			RModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redform/models');
+			RTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redform/tables');
+
 			$formModel = RModelAdmin::getInstance('Form', 'RedformModel');
 			$data = ['formname' => $name];
 
@@ -165,7 +167,8 @@ class RedeventModelEventtemplatescsvimport extends RModel
 				throw new RuntimeException($formModel->getError());
 			}
 
-			$this->forms[$formModel->getState('form.id')] = $name;
+			$id = $formModel->getState('form.id');
+			$this->forms[$id] = $name;
 		}
 
 		return $id;
@@ -200,7 +203,7 @@ class RedeventModelEventtemplatescsvimport extends RModel
 
 			foreach ($rows as $row)
 			{
-				$res[$row->id] = $res->formname;
+				$res[$row->id] = $row->formname;
 			}
 
 			$this->forms = $res;
