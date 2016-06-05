@@ -38,6 +38,7 @@ class RedeventModelEventscsvimport extends RModel
 	 * @var array
 	 */
 	private $templates;
+
 	/**
 	 * @var array
 	 */
@@ -83,6 +84,11 @@ class RedeventModelEventscsvimport extends RModel
 	 */
 	private $errorMessages = array();
 
+	/**
+	 * Return error messages
+	 *
+	 * @return array
+	 */
 	public function getErrorMessages()
 	{
 		return $this->errorMessages;
