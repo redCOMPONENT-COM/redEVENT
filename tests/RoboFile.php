@@ -286,6 +286,14 @@ class RoboFile extends \Robo\Tasks
 		     ->stopOnFail();
 
 		$this->taskCodecept()
+			->arg('--steps')
+			->arg('--debug')
+			->arg('--fail-fast')
+			->arg($this->testsFolder . 'acceptance/frontend/')
+			->run()
+			->stopOnFail();
+
+		$this->taskCodecept()
 		     ->arg('--steps')
 		     ->arg('--debug')
 		     ->arg('--fail-fast')

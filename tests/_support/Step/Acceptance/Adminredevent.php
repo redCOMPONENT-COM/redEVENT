@@ -182,6 +182,41 @@ class Adminredevent extends \AcceptanceTester
 	}
 
 	/**
+	 * Create a template
+	 *
+	 * @param   array  $params  parameters
+	 *
+	 * @return void
+	 */
+	public function createTemplate($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redevent&view=eventtemplates');
+		$I->waitForText('Event Templates', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "eventtemplate.add")]']);
+		$I->waitForText('Name', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_name'], $params['name']);
+
+		if (!empty($params['meta_description']))
+		{
+			$I->fillField(['id' => 'jform_meta_description'], $params['meta_description']);
+		}
+
+		if (!empty($params['meta_keywords']))
+		{
+			$I->fillField(['id' => 'jform_meta_keywords'], $params['meta_keywords']);
+		}
+
+		if (!empty($params['redform']))
+		{
+			$I->click(['xpath' => '//*[@id="eventTab"]/li/a[*/text() = "Registration"]']);
+			$I->selectOptionInChosenByIdUsingJs('jform_redform_id', $params['redform']);
+		}
+
+		$I->click(['xpath' => '//button[contains(@onclick, "eventtemplate.save")]']);
+	}
+
+	/**
 	 * Create a Venue
 	 *
 	 * @param   array  $params  parameters
@@ -231,5 +266,186 @@ class Adminredevent extends \AcceptanceTester
 		}
 
 		$I->click(['xpath' => '//button[contains(@onclick, "venuescategory.save")]']);
+	}
+
+	/**
+	 * Create a section
+	 *
+	 * @param   array  $params  section fields
+	 *
+	 * @return void
+	 */
+	public function createRedformSection($params)
+	{
+
+	}
+
+	/**
+	 * Create a section
+	 *
+	 * @param   array  $params  section fields
+	 *
+	 * @return void
+	 */
+	public function createRedformSectionIfNotExists($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redform&view=sections');
+		$I->waitForText('Sections', 30, ['css' => 'H1']);
+
+		if ($I->isElementPresent('//*[@id="table-items"]//td//*[contains(., "' . $params['name'] . '")]'))
+		{
+			return;
+		}
+
+		$I->createRedformSection($params);
+	}
+
+	/**
+	 * Create a section
+	 *
+	 * @param   array  $params  section fields
+	 *
+	 * @return void
+	 */
+	public function createRedformFieldIfNotExists($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redform&view=fields');
+		$I->waitForText('Fields', 30, ['css' => 'H1']);
+
+		if ($I->isElementPresent('//*[@id="fieldList"]//td//*[contains(., "' . $params['name'] . '")]'))
+		{
+			return;
+		}
+
+		$I->createRedformField($params);
+	}
+
+	/**
+	 * Create a field
+	 *
+	 * @param   array  $params  section fields
+	 *
+	 * @return void
+	 */
+	public function createRedformField($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redform&view=fields');
+		$I->waitForText('Fields', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "field.add")]']);
+		$I->waitForText('Name', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_field'], $params['name']);
+		$I->selectOptionInChosenByIdUsingJs('jform_fieldtype', $params['fieldtype']);
+
+		if (isset($params['field_header']))
+		{
+			$I->fillField(['id' => 'jform_field_header'], $params['field_header']);
+		}
+
+		if (isset($params['tooltip']))
+		{
+			$I->fillField(['id' => 'jform_tooltip'], $params['tooltip']);
+		}
+
+		if (isset($params['default']))
+		{
+			$I->fillField(['id' => 'jform_default'], $params['default']);
+		}
+
+		$I->click(['xpath' => '//button[contains(@onclick, "field.save")]']);
+	}
+
+	/**
+	 * Create a Form if doesn't exist
+	 *
+	 * @param   array  $params  section fields
+	 *
+	 * @return void
+	 */
+	public function createRedformFormIfNotExists($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redform&view=forms');
+		$I->waitForText('Forms', 30, ['css' => 'H1']);
+
+		if ($I->isElementPresent('//*[@id="formList"]//td//*[contains(., "' . $params['name'] . '")]'))
+		{
+			return;
+		}
+
+		$I->createRedformForm($params);
+	}
+
+	/**
+	 * Create a form
+	 *
+	 * @param   array  $params  section fields
+	 *
+	 * @return void
+	 */
+	public function createRedformForm($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redform&view=forms');
+		$I->waitForText('Forms', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "form.add")]']);
+		$I->waitForText('Form name', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_formname'], $params['name']);
+
+		$I->click(['xpath' => '//button[contains(@onclick, "form.save")]']);
+
+		if (!empty($params['fields']))
+		{
+			$I->waitForText('Item successfully saved', 30, ['id' => 'system-message-container']);
+			$I->click('//*[@id="formList"]//td//*[contains(., "' . $params['name'] . '")]');
+			$I->waitForText('Form name', 30, ['css' => 'label']);
+
+			foreach ($params['fields'] as $fieldName)
+			{
+				$I->click(['xpath' => '//*[@id="formTabs"]/li/a[normalize-space(text()) = "Fields"]']);
+
+				$I->click(['xpath' => '//button[contains(@onclick, "formfield.add")]']);
+				$I->waitForText('Form field', 30, ['css' => 'h1']);
+				$I->selectOptionInChosenByIdUsingJs('jform_field_id', $fieldName);
+				$I->click(['xpath' => '//button[contains(@onclick, "formfield.save")]']);
+
+				$I->waitForText('Item successfully saved', 30, ['id' => 'system-message-container']);
+			}
+		}
+
+	}
+
+	/**
+	 * Create a form
+	 *
+	 * @param   array  $params  section fields
+	 *
+	 * @return void
+	 */
+	public function createMinimalRegistrationForm($params)
+	{
+		$I = $this;
+		$I->createRedformSectionIfNotExists(['name' => $params['name']]);
+		$I->createRedformFieldIfNotExists(['name' => 'Name', 'fieldtype' => 'Textfield']);
+		$I->createRedformFieldIfNotExists(['name' => 'Email', 'fieldtype' => 'E-mail']);
+		$I->createRedformFormIfNotExists(['name' => 'Registration', 'fields' => ['Name', 'Email']]);
+	}
+
+	protected function isElementPresent($element)
+	{
+		$I = $this;
+
+		try
+		{
+			$I->seeElement($element);
+		}
+		catch (\PHPUnit_Framework_AssertionFailedError $f)
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
