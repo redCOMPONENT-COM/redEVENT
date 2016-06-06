@@ -70,7 +70,7 @@ $fieldSets = $this->form->getFieldsets('params');
 	<div class="tab-content">
 		<div class="tab-pane active" id="details">
 			<div class="row-fluid">
-				<?php echo $this->loadTemplate('event'); ?>
+				<?php echo $this->loadTemplate('general'); ?>
 			</div>
 		</div>
 

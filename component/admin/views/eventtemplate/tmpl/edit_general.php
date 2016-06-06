@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div class="span9">
+<div class="span7">
 	<div class="control-group">
 		<div class="control-label">
 			<?php echo $this->form->getLabel('name'); ?>
@@ -54,6 +54,22 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 </div>
-<div class="span3">
-	<?php echo RedeventLayoutHelper::render('joomla.edit.metadata', $this); ?>
+<div class="span5">
+	<div class="control-group">
+		<div class="control-label">
+			<?php echo $this->form->getLabel('meta_keywords'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('meta_keywords'); ?>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<div class="control-label">
+			<?php echo $this->form->getLabel('meta_description'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('meta_description'); ?>
+		</div>
+	</div>
 </div>

@@ -87,17 +87,6 @@ class RedeventViewDetails extends JViewLegacy
 		$this->tags->setEventId($row->event_id);
 		$this->tags->setXref($row->xref);
 
-		$this->prepareDocument();
-
-		// Is the user allready registered at the event
-		if ($this->get('Usercheck'))
-		{
-			// Add javascript code for cancel button on attendees layout.
-			JHTML::_('behavior.framework');
-			JText::script('COM_REDEVENT_CONFIRM_CANCEL_REGISTRATION');
-			RHelperAsset::load('frontcancelregistration.js');
-		}
-
 		/* Get the Venue Dates */
 		$this->venuedates = $this->get('VenueDates');
 
@@ -114,6 +103,8 @@ class RedeventViewDetails extends JViewLegacy
 		$this->unreg_check = RedeventHelper::canUnregister($row->xref);
 		$this->uri = JFactory::getUri();
 		$this->lang = JFactory::getLanguage();
+
+		$this->prepareDocument();
 
 		$tpl = JFactory::getApplication()->input->get('tpl', $tpl);
 
@@ -180,18 +171,17 @@ class RedeventViewDetails extends JViewLegacy
 		$document->setDescription(strip_tags($meta_description));
 
 		// More metadata
-		$document->addCustomTag('<meta property="og:title" content="' . RedeventHelper::getSessionFullTitle($row) . '"/>');
+		$document->addCustomTag('<meta property="og:title" content="' . RedeventHelper::getSessionFullTitle($this->row) . '"/>');
 		$document->addCustomTag('<meta property="og:type" content="event"/>');
 		$document->addCustomTag('<meta property="og:url" content="' . htmlspecialchars($this->uri->toString()) . '"/>');
 
-		if ($row->datimage)
+		if ($this->row->datimage)
 		{
-			$document->addCustomTag('<meta property="og:image" content="' . JURI::base() . 'images/redevent/events/' . $row->datimage . '"/>');
+			$document->addCustomTag('<meta property="og:image" content="' . JURI::base() . 'images/redevent/events/' . $this->row->datimage . '"/>');
 		}
 
 		$document->addCustomTag('<meta property="og:site_name" content="' . JFactory::getApplication()->get('sitename') . '"/>');
-		$summary = $row->summary;
-		$document->addCustomTag('<meta property="og:description" content="' . JFilterOutput::cleanText($summary) . '"/>');
+		$document->addCustomTag('<meta property="og:description" content="' . JFilterOutput::cleanText($this->row->summary) . '"/>');
 	}
 
 	/**
@@ -268,6 +258,15 @@ class RedeventViewDetails extends JViewLegacy
 		// Pathway
 		$pathway = $app->getPathWay();
 		$pathway->addItem(RedeventHelper::getSessionFullTitle($this->row), JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug)));
+
+		// Is the user allready registered at the event
+		if ($this->get('Usercheck'))
+		{
+			// Add javascript code for cancel button on attendees layout.
+			JHTML::_('behavior.framework');
+			JText::script('COM_REDEVENT_CONFIRM_CANCEL_REGISTRATION');
+			RHelperAsset::load('frontcancelregistration.js');
+		}
 
 		$this->addMeta();
 		$this->addSocial();

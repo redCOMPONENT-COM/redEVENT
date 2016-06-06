@@ -64,11 +64,11 @@
 		</field>
 
 		<field name="meta_keywords" type="textarea"
-			   label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
+			   label="JFIELD_META_KEYWORDS_LABEL" description="COM_REDEVENT_XML_FORM_EVENTTEMPLATE_META_KEYWORDS_DESC"
 			   rows="3" cols="30" />
 
 		<field name="meta_description" type="textarea"
-			   label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC"
+			   label="JFIELD_META_DESCRIPTION_LABEL" description="COM_REDEVENT_XML_FORM_EVENTTEMPLATE_META_DESCRIPTION_DESC"
 			   rows="3" cols="30" />
 	</fieldset>
 
