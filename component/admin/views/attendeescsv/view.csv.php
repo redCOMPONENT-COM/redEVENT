@@ -103,8 +103,7 @@ class RedeventViewAttendeescsv extends RViewCsv
 					$r->waitinglist,
 					$r->price,
 					$r->pricegroup,
-					($r->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID')
-						. ' / ' . $r->status : JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID') . ' / ' . $r->status),
+					($r->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID') : JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID')),
 				);
 				$data = array_merge($data, $svals);
 				$text .= RedeventHelper::writecsvrow($data);

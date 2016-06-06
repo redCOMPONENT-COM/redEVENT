@@ -38,7 +38,10 @@ class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 	protected function getLayoutData()
 	{
 		$data = parent::getLayoutData();
-		$data['options'] = $this->getEventOptions();
+
+		$options = array(JHtml::_('select.option', '', Jtext::_('JSELECT')));
+		$eventsOptions = $this->getEventOptions();
+		$data['options'] = $eventsOptions ? array_merge($options, $eventsOptions) : $options;
 
 		return $data;
 	}
