@@ -1,0 +1,13 @@
+table#re-roles {
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table#re-roles td, table#re-roles th {
+	padding: 10px;
+}
+
+table#re-roles input {
+	width: 10em;
+}

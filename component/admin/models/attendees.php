@@ -145,8 +145,9 @@ class RedeventModelAttendees extends RModelList
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id');
 		$query->join('INNER', '#__redevent_events AS a ON x.eventid = a.id');
+		$query->join('INNER', '#__redevent_event_template AS t ON t.id =  a.template_id');
 		$query->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id');
-		$query->join('INNER', '#__rwf_forms AS fo ON fo.id = a.redform_id');
+		$query->join('INNER', '#__rwf_forms AS fo ON fo.id = t.redform_id');
 		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
 		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
@@ -246,10 +247,12 @@ class RedeventModelAttendees extends RModelList
 			$query = $this->_db->getQuery(true);
 
 			$query->select('x.eventid, x.maxattendees, x.dates, x.id AS xref')
-				->select('e.title, e.redform_id, e.activate, e.showfields')
+				->select('e.title, t.redform_id, t.activate, t.showfields')
+				->select('t.redform_id')
 				->select('v.venue');
 			$query->from('#__redevent_event_venue_xref AS x');
 			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+			$query->join('INNER', '#__redevent_event_template AS t ON t.id = e.template_id');
 			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
 			$query->where('x.id = ' . $this->getState('filter.session'));
 

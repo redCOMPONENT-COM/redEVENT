@@ -238,10 +238,11 @@ class RedeventModelRegistrations extends RModelList
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('r.id AS rid, e.redform_id,r.xref AS xref_id');
+		$query->select('r.id AS rid, t.redform_id,r.xref AS xref_id');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id');
 		$query->where('r.id IN (' . implode(',', $cid) . ')');
 		$db->setQuery($query);
 		$res = $db->loadObjectList();

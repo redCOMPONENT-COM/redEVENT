@@ -104,6 +104,16 @@ abstract class RedeventEntityBase
 		{
 			return $this->item->$property;
 		}
+
+		if ('slug' == $property && null != $this->item)
+		{
+			if (!empty($this->item->alias))
+			{
+				return $this->id . '-' . $this->item->alias;
+			}
+
+			return $this->id;
+		}
 	}
 
 	/**
@@ -115,6 +125,11 @@ abstract class RedeventEntityBase
 	 */
 	public function __isset($property)
 	{
+		if ('slug' == $property)
+		{
+			return true;
+		}
+
 		return null != $this->item && property_exists($this->item, $property);
 	}
 
@@ -664,7 +679,7 @@ abstract class RedeventEntityBase
 	 *
 	 * @return  string
 	 */
-	protected function getSlug()
+	public function getSlug()
 	{
 		$item = $this->getItem();
 

@@ -80,44 +80,8 @@ class RedeventTableEvent extends RedeventTable
 			$this->alias = $alias;
 		}
 
-		// Check that there is no loop with the tag inclusion
-		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_email) > 0)
-		{
-			$this->setError(JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
-
-			return false;
-		}
-
-		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_phone) > 0)
-		{
-			$this->setError(JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
-
-			return false;
-		}
-
-		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform) > 0)
-		{
-			$this->setError(JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
-
-			return false;
-		}
-
-		if ($app->isAdmin() && !empty($this->review_message))
-		{
-			$tagHelper = new RedeventTags;
-			$fullReviewMessage = $tagHelper->replaceLibraryTags($this->review_message);
-
-			if (!strstr($fullReviewMessage, '[redform]'))
-			{
-				$this->setError(JText::_('COM_REDEVENT_WARNING_REDFORM_TAG_MUST_BE_INCLUDED_IN_REVIEW_SCREEN_IF_NOT_EMPTY'));
-
-				return false;
-			}
-		}
-
 		// Prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
 		$this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
-		$this->review_message = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->review_message);
 
 		return true;
 	}
@@ -196,11 +160,6 @@ class RedeventTableEvent extends RedeventTable
 			$this->author_ip = $params->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 		}
 
-		if (is_array($this->submission_types))
-		{
-			$this->submission_types = implode(',', $this->submission_types);
-		}
-
 		return parent::beforeStore($updateNulls);
 	}
 
@@ -273,11 +232,6 @@ class RedeventTableEvent extends RedeventTable
 			$categories = $src['categories'];
 			JArrayHelper::toInteger($categories);
 			$this->categories = $categories;
-		}
-
-		if (isset($src['showfields']) && is_array($src['showfields']))
-		{
-			$this->showfields = implode(',', $src['showfields']);
 		}
 
 		return true;

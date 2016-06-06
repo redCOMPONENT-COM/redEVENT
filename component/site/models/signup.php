@@ -138,6 +138,8 @@ class RedeventModelSignup extends RModel
 	 * @param   bool   $send_attachment  send attachment
 	 *
 	 * @return bool
+	 *
+	 * @todo: rewrite this function !!!
 	 */
 	public function getSendSignupEmail($tags, $send_attachment)
 	{
@@ -161,10 +163,8 @@ class RedeventModelSignup extends RModel
 
 		/* Add the body to the mail */
 		/* Read the template */
-		$db = JFactory::getDBO();
-		$q = "SELECT submission_type_email_body, submission_type_email_subject FROM #__redevent_events WHERE id = " . $this->id;
-		$db->setQuery($q);
-		$email_settings = $db->loadObject();
+		$event = RedeventEntityEvent::load($this->id);
+		$email_settings = $event->getEventtemplate();
 		$message = $tags->replaceTags($email_settings->submission_type_email_body);
 
 		// Convert urls

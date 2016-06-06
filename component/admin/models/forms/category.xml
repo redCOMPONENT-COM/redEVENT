@@ -86,10 +86,12 @@
 
 	<field
 		name="event_template"
-		type="session"
+		type="redevent.eventtemplate"
 		label="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE"
 		description="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE_TIP"
-		class="inputbox"/>
+		class="inputbox">
+		<option value="">JSELECT</option>
+	</field>
 
 	<field
 		name="image"
@@ -106,6 +108,14 @@
 		label="JFIELD_ACCESS_LABEL"
 		description="JFIELD_ACCESS_DESC"
 		class="inputbox"/>
+
+	<field name="meta_keywords" type="textarea"
+		   label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
+		   rows="3" cols="30" />
+
+	<field name="meta_description" type="textarea"
+		   label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC"
+		   rows="3" cols="30" />
 
 	<field name="asset_id" type="hidden" filter="unset"/>
 

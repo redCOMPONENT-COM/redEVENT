@@ -37,6 +37,14 @@
 			<option value="">COM_REDEVENT_FILTER_VENUE</option>
 		</field>
 		<field
+				name="template"
+				type="redevent.eventtemplate"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_TEMPLATE"
+		>
+			<option value="">COM_REDEVENT_FILTER_TEMPLATE</option>
+		</field>
+		<field
 				name="language"
 				type="language"
 				onchange="this.form.submit();"

@@ -397,6 +397,7 @@ class RedeventAttendee extends JObject
 		$app = JFactory::getApplication();
 		$data = $this->load();
 		$session = $this->getSessionDetails();
+		$template = $session->getEvent()->getEventtemplate();
 
 		$sid = $data->sid;
 
@@ -429,15 +430,15 @@ class RedeventAttendee extends JObject
 
 		if ($waiting == 0)
 		{
-			if ($session->notify_off_list_subject)
+			if ($template->notify_off_list_subject)
 			{
-				$subject = $session->notify_off_list_subject;
-				$body = $session->notify_off_list_body;
+				$subject = $template->notify_off_list_subject;
+				$body = $template->notify_off_list_body;
 			}
-			elseif ($session->notify_subject)
+			elseif ($template->notify_subject)
 			{
-				$subject = $session->notify_subject;
-				$body = $session->notify_body;
+				$subject = $template->notify_subject;
+				$body = $template->notify_body;
 			}
 			else
 			{
@@ -450,10 +451,10 @@ class RedeventAttendee extends JObject
 		}
 		else
 		{
-			if ($session->notify_on_list_body)
+			if ($template->notify_on_list_body)
 			{
-				$subject = $session->notify_on_list_subject;
-				$body = $session->notify_on_list_body;
+				$subject = $template->notify_on_list_subject;
+				$body = $template->notify_on_list_body;
 			}
 			else
 			{
@@ -667,7 +668,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * returns attendee event session info
 	 *
-	 * @return object
+	 * @return RedeventEntitySession
 	 */
 	protected function getSessionDetails()
 	{
@@ -675,28 +676,7 @@ class RedeventAttendee extends JObject
 
 		if (!isset(self::$sessions[$xref]))
 		{
-			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
-					. ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
-					. ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, '
-					. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
-					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
-					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
-					. ' v.venue, v.email as venue_email,'
-					. ' u.name AS creator_name, u.email AS creator_email, '
-					. ' a.confirmation_message, a.review_message, '
-					. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.name AS catname, c.published, c.access,"
-					. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-					. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-					. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-					. ' FROM #__redevent_events AS a'
-					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
-					. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-					. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-					. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
-					. ' WHERE x.id = ' . $xref;
-			$this->db->setQuery($query);
-			self::$sessions[$xref] = $this->db->loadObject();
+			self::$sessions[$xref] = RedeventEntitySession::load($xref);
 		}
 
 		return self::$sessions[$xref];
@@ -789,7 +769,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function sendNotificationEmail()
 	{
-		$eventsettings = $this->getSessionDetails();
+		$eventsettings = $this->getSessionDetails()->getEvent()->getEventtemplate();
 
 		/**
 		 * Send a submission mail to the attendee and/or contact person
@@ -1011,22 +991,14 @@ class RedeventAttendee extends JObject
 		$app = JFactory::getApplication();
 
 		// Get data from the model
-		$row = $this->getSessionDetails();
+		$session = $this->getSessionDetails();
 
 		// Initiate new CALENDAR
-		$vcal = RedeventHelper::getCalendarTool();
-		$vcal->setProperty('unique_id', 'session' . $row->xref . '@' . $app->getCfg('sitename'));
-		$vcal->setConfig("filename", "event" . $row->xref . ".ics");
+		$helper = new RedeventHelperIcal('session' . $session->id . '@' . $app->getCfg('sitename'));
+		$helper->addSession($session);
 
-		RedeventHelper::icalAddEvent($vcal, $row);
+		$path = $app->getCfg('tmp_path') . "/event" . $session->id . ".ics";
 
-		if ($vcal->saveCalendar($app->getCfg('tmp_path'), "event" . $row->xref . ".ics"))
-		{
-			return $app->getCfg('tmp_path') . "/event" . $row->xref . ".ics";
-		}
-		else
-		{
-			return false;
-		}
+		return $helper->write($path) ? $path : false;
 	}
 }

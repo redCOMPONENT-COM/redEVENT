@@ -1,0 +1,11 @@
+table#re-prices {
+	border-collapse: collapse;
+}
+
+table#re-prices td, table#re-prices th {
+	padding: 10px;
+}
+
+table#re-prices input {
+	width: 10em;
+}
