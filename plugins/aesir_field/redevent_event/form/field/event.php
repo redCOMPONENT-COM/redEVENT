@@ -81,6 +81,7 @@ class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 		$query = $db->getQuery(true)
 			->select('id AS value, title AS text')
 			->from('#__redevent_events')
+			->where('published = 1')
 			->order('title ASC');
 
 		$db->setQuery($query);
