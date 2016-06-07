@@ -277,7 +277,24 @@ class Adminredevent extends \AcceptanceTester
 	 */
 	public function createRedformSection($params)
 	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redform&view=sections');
+		$I->waitForText('Sections', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "section.add")]']);
+		$I->waitForText('Name', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_name'], $params['name']);
 
+		if (!empty($params['class']))
+		{
+			$I->fillField(['id' => 'jform_class'], $params['class']);
+		}
+
+		if (!empty($params['description']))
+		{
+			$I->fillTinyMceEditorById('jform_description', $params['description']);
+		}
+
+		$I->click(['xpath' => '//button[contains(@onclick, "section.save")]']);
 	}
 
 	/**
@@ -414,7 +431,6 @@ class Adminredevent extends \AcceptanceTester
 				$I->waitForText('Item successfully saved', 30, ['id' => 'system-message-container']);
 			}
 		}
-
 	}
 
 	/**
