@@ -91,13 +91,21 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('categories', 'event'); ?>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('venueid'); ?>
 							</div>
 							<div class="controls">
 								<?php echo $form->getInput('venueid'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $form->getLabel('allday'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('allday'); ?>
 							</div>
 						</div>
 						<div class="control-group">

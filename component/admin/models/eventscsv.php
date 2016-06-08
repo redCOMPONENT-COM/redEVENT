@@ -41,7 +41,7 @@ class RedeventModelEventscsv extends RModelAdmin
 			->select('e.datimage, e.published, e.registra, e.unregistra, e.max_multi_signup')
 			->select('t.name as template_name')
 			->select('x.title as session_title, x.alias as session_alias, x.id AS xref')
-			->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend')
+			->select('x.allday, x.dates, x.enddates, x.times, x.endtimes, x.registrationend')
 			->select('x.note AS session_note, x.details AS session_details, x.icaldetails AS session_icaldetails')
 			->select('x.maxattendees, x.maxwaitinglist, x.course_credit')
 			->select('x.featured, x.external_registration_url, x.published as session_published')

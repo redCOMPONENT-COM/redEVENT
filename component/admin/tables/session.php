@@ -106,16 +106,6 @@ class RedeventTableSession extends RedeventTable
 			$this->course_credit = null;
 		}
 
-		if ($this->times === '')
-		{
-			$this->times = null;
-		}
-
-		if ($this->endtimes === '')
-		{
-			$this->endtimes = null;
-		}
-
 		$alias = JFilterOutput::stringURLSafe($this->title);
 
 		if (empty($this->alias) && $alias)

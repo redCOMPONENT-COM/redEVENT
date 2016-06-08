@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `venueid` int(11) unsigned NOT NULL,
   `dates` date NOT NULL,
   `enddates` date NOT NULL,
+  `allday` tinyint(1) NOT NULL default '0',
   `times` time NOT NULL,
   `endtimes` time NOT NULL,
   `registrationend` datetime NOT NULL,

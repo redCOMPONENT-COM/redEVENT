@@ -501,7 +501,7 @@ class RedeventTags
 	/**
 	 * return session entity
 	 *
-	 * @return object
+	 * @return RedeventEntitySession
 	 */
 	private function getSession()
 	{
@@ -1544,9 +1544,14 @@ class RedeventTags
 	 */
 	private function getTag_date(RedeventTagsParsed $tag)
 	{
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
 		$format = $tag->getParam('format') ?: null;
 
-		return RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
+		return RedeventHelperDate::formatdate($session->dates, $session->times, $format);
 	}
 
 	/**
@@ -1558,9 +1563,14 @@ class RedeventTags
 	 */
 	private function getTag_enddate(RedeventTagsParsed $tag)
 	{
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
 		$format = $tag->getParam('format') ?: null;
 
-		return RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
+		return RedeventHelperDate::formatdate($session->enddates, $session->endtimes, $format);
 	}
 
 	/**
@@ -1572,20 +1582,31 @@ class RedeventTags
 	 */
 	private function getTag_time(RedeventTagsParsed $tag)
 	{
-		$format = $tag->getParam('format') ?: null;
-		$tmp = "";
-
-		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
+		if (!$session = $this->getSession())
 		{
-			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
-
-			if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
-			{
-				$tmp .= ' - ' . RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
-			}
+			return false;
 		}
 
-		return $tmp;
+		if ($session->allday)
+		{
+			return false;
+		}
+
+		$format = $tag->getParam('format') ?: null;
+
+		if (RedeventHelperDate::isValidTime($session->times))
+		{
+			$time = RedeventHelperDate::formattime($session->dates, $session->times, $format);
+
+			if (RedeventHelperDate::isValidTime($session->endtimes))
+			{
+				$time .= ' - ' . RedeventHelperDate::formattime($session->enddates, $session->endtimes, $format);
+			}
+
+			return $time;
+		}
+
+		return false;
 	}
 
 	/**
@@ -1597,15 +1618,22 @@ class RedeventTags
 	 */
 	private function getTag_starttime(RedeventTagsParsed $tag)
 	{
-		$format = $tag->getParam('format') ?: null;
-		$tmp = "";
-
-		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
+		if (!$session = $this->getSession())
 		{
-			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $format);
+			return false;
 		}
 
-		return $tmp;
+		if ($session->allday)
+		{
+			return false;
+		}
+
+		if (RedeventHelperDate::isValidTime($session->times))
+		{
+			return RedeventHelperDate::formattime($session->dates, $session->times,  $tag->getParam('format') ?: null);
+		}
+
+		return false;
 	}
 
 	/**
@@ -1617,15 +1645,22 @@ class RedeventTags
 	 */
 	private function getTag_endtime(RedeventTagsParsed $tag)
 	{
-		$format = $tag->getParam('format') ?: null;
-		$tmp = "";
-
-		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
+		if (!$session = $this->getSession())
 		{
-			$tmp = RedeventHelperDate::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $format);
+			return false;
 		}
 
-		return $tmp;
+		if ($session->allday)
+		{
+			return false;
+		}
+
+		if (RedeventHelperDate::isValidTime($session->endtimes))
+		{
+			return RedeventHelperDate::formattime($session->enddates, $session->endtimes, $tag->getParam('format') ?: null);
+		}
+
+		return false;
 	}
 
 	/**
@@ -1637,23 +1672,28 @@ class RedeventTags
 	 */
 	private function getTag_startenddatetime(RedeventTagsParsed $tag)
 	{
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
 		$formatDate = $tag->getParam('formatDate') ?: null;
 		$formatTime = $tag->getParam('formatTime') ?: null;
-		$tmp = RedeventHelperDate::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $formatDate);
+		$tmp = RedeventHelperDate::formatdate($session->dates, $session->times, $formatDate);
 
-		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
+		if (RedeventHelperDate::isValidTime($session->times))
 		{
-			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times, $formatTime);
+			$tmp .= ' ' . RedeventHelperDate::formattime($session->dates, $session->times, $formatTime);
 		}
 
-		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
+		if (RedeventHelperDate::isValidDate($session->enddates) && $session->enddates != $session->dates)
 		{
-			$tmp .= ' - ' . RedeventHelperDate::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes, $formatDate);
+			$tmp .= ' - ' . RedeventHelperDate::formatdate($session->enddates, $session->endtimes, $formatDate);
 		}
 
-		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
+		if (RedeventHelperDate::isValidTime($session->endtimes))
 		{
-			$tmp .= ' ' . RedeventHelperDate::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes, $formatTime);
+			$tmp .= ' ' . RedeventHelperDate::formattime($session->dates, $session->endtimes, $formatTime);
 		}
 
 		return $tmp;
@@ -1666,7 +1706,12 @@ class RedeventTags
 	 */
 	private function getTag_duration()
 	{
-		return RedeventHelperDate::getEventDuration($this->getEvent()->getData());
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
+		return RedeventHelperDate::getEventDuration($session);
 	}
 
 	/**

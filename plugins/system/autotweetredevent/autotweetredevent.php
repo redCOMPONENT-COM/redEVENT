@@ -97,7 +97,7 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 		$query = $db->getQuery(true);
 
 		$query->select('a.id, a.title, a.summary, a.datimage AS image');
-		$query->select('x.id as xref, x.dates, x.times, x.enddates, x.endtimes');
+		$query->select('x.id as xref, x.dates, x.allday, x.times, x.enddates, x.endtimes');
 		$query->select('v.venue, v.city, v.street');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->from('#__redevent_events AS a');

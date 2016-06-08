@@ -233,14 +233,14 @@ class ModRedEventHelper
 			return JText::_('MOD_REDEVENT_OPEN_DATE');
 		}
 
-		$date 		= self::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
-		$enddate 	= RedeventHelperDate::isValidDate($row->enddates)
+		$date = self::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
+		$enddate = RedeventHelperDate::isValidDate($row->enddates)
 			? self::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y'))
 			: null;
-		$time		= ($row->times && $row->times != '00:00:00')
+		$time = ($row->times && $row->times != '00:00:00')
 			? self::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M'))
 			: null;
-		$dateinfo	= '<span class="event-start">' . $date . '</span>';
+		$dateinfo = '<span class="event-start">' . $date . '</span>';
 
 		if (isset($enddate) && $params->get('show_enddate', 1) && $row->dates != $row->enddates)
 		{

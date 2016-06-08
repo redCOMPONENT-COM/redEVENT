@@ -145,7 +145,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     				</strong>
 
 					<?php
-					if ($this->params->get('showtime', 1)) :
+					if ($this->params->get('showtime', 1) && !$row->allday) :
 					?>
 						<br />
 						<?php

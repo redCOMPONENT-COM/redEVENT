@@ -202,7 +202,7 @@ class plgCommunityRedevent extends CApplications
 		$limit	= '10';
 
     // events where user is registered
-		$query = 'SELECT a.id, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, a.title, a.created, '
+		$query = 'SELECT a.id, x.dates, x.enddates, x.allday, x.times, x.endtimes, x.id AS xref, a.title, a.created, '
         . ' l.venue, '
         . ' CASE WHEN CHAR_LENGTH( a.alias ) THEN CONCAT_WS(\':\',a.id,a.alias) ELSE a.id END AS slug, '
         . ' CASE WHEN CHAR_LENGTH( l.alias ) THEN CONCAT_WS(\':\',l.id,l.alias) ELSE l.id END AS venueslug '
@@ -236,7 +236,7 @@ class plgCommunityRedevent extends CApplications
     }
 
     // events he created
-    $query = 'SELECT a.id, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, a.title, a.created,'
+    $query = 'SELECT a.id, x.dates, x.enddates, x.allday, x.times, x.endtimes, x.id AS xref, a.title, a.created,'
         . ' l.venue, '
         . ' CASE WHEN CHAR_LENGTH( a.alias ) THEN CONCAT_WS(\':\',a.id,a.alias) ELSE a.id END AS slug, '
         . ' CASE WHEN CHAR_LENGTH( l.alias ) THEN CONCAT_WS(\':\',l.id,l.alias) ELSE l.id END AS venueslug '

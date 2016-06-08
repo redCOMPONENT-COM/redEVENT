@@ -51,6 +51,17 @@
             class="inputbox" />
 
         <field
+            name="allday"
+            type="radio"
+            default="0"
+            label="COM_REDEVENT_SESSION_ALL_DAY_LABEL"
+            description ="COM_REDEVENT_SESSION_ALL_DAY_DESC"
+            class="btn btn-group" >
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
+
+        <field
             name="dates"
             type="calendar"
             format="%Y-%m-%d"
@@ -62,6 +73,7 @@
             name="times"
             type="text"
             default=""
+            showon="allday:0"
             label="COM_REDEVENT_TIME"
             description ="COM_REDEVENT_XREF_START_TIME_TIP"
             size="8"
@@ -81,6 +93,7 @@
             name="endtimes"
             type="text"
             default=""
+            showon="allday:0"
             label="COM_REDEVENT_ENDTIMES"
             description ="COM_REDEVENT_XREF_END_TIME_TIP"
             size="8"

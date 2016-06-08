@@ -34,6 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<div class="control-group">
 		<div class="control-label">
+			<?php echo $this->form->getLabel('allday'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('allday'); ?>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-label">
 			<?php echo $this->form->getLabel('dates'); ?>
 		</div>
 		<div class="controls">
@@ -85,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->form->getInput('alias'); ?>
 		</div>
 	</div>
-	
+
 	<div class="control-group">
 		<div class="control-label">
 			<?php echo $this->form->getLabel('session_code'); ?>

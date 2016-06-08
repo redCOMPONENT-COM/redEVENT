@@ -99,7 +99,7 @@ class RedeventHelperIcal
 		$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
 
 		// All day event if start time is not set
-		if (!$session->times || $session->times == '00:00:00')
+		if ($session->allday)
 		{
 			// All day !
 			$dateparam = array('VALUE' => 'DATE');

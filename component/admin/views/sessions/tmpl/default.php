@@ -92,7 +92,6 @@ $search = $this->state->get('filter.search');
 				<th class="title" width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_DATE', 'obj.dates', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10"><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
 				<th width="40">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_SESSIONS_SESSION_CODE', 'obj.session_code', $listDirn, $listOrder); ?>
 				</th>
@@ -128,26 +127,16 @@ $search = $this->state->get('filter.search');
 			<tbody>
 			<?php $n = count($this->items); ?>
 			<?php foreach ($this->items as $i => $row):
-				/* Get the date */
-				$date = RedeventHelperDate::formatdate($row->dates, $row->times, $this->params->get('backend_formatdate', 'd.m.Y'));
-				$enddate  = (!RedeventHelperDate::isValidDate($row->enddates) || $row->enddates == $row->dates)
-					? ''
-					: RedeventHelperDate::formatdate($row->enddates, $row->endtimes, $this->params->get('backend_formatdate', 'd.m.Y'));
-				$displaydate = $date. ($enddate ? ' - '.$enddate: '');
-				$endreg = (!RedeventHelperDate::isValidDate($row->registrationend) ? '-' : RedeventHelperDate::formatdate($row->registrationend, null, $this->params->get('backend_formatdate', 'd.m.Y') . ' H:i'));
+				$session = RedeventEntitySession::getInstance($row->id);
+				$session->bind($row);
+				$dates = implode('<br>', $session->getFormattedDates(
+						$this->params->get('backend_formatdate', 'd.m.Y'), $this->params->get('formattime', 'H:i')
+					)
+				);
 
-				$displaytime = '';
-
-				/* Get the time */
-				if (RedeventHelperDate::isValidTime($row->times) && $row->times != '00:00:00')
-				{
-					$displaytime = RedeventHelperDate::formattime($row->dates, $row->times);
-
-					if (RedeventHelperDate::isValidTime($row->endtimes) && $row->endtimes != '00:00:00')
-					{
-						$displaytime .= ' - ' . RedeventHelperDate::formattime($row->enddates, $row->endtimes, $this->params->get('formattime', 'H:i'));
-					}
-				}
+				$endreg = RedeventHelperDate::isValidDate($row->registrationend)
+					? RedeventHelperDate::formatdate($row->registrationend, null, $this->params->get('backend_formatdate', 'd.m.Y') . ' H:i')
+					: '-';
 
 				$featured = $this->featured($row, $i);
 
@@ -185,9 +174,9 @@ $search = $this->state->get('filter.search');
 					<?php endif; ?>
 					<td>
 						<?php if (($row->checked_out) || (!$this->canEdit)) : ?>
-							<?php echo $displaydate; ?>
+							<?php echo $dates; ?>
 						<?php else : ?>
-							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=session.edit&id=' . $row->id, $displaydate); ?>
+							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=session.edit&id=' . $row->id, $dates); ?>
 						<?php endif; ?>
 						<span class="linkfront hasTooltip" title="<?php echo JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'); ?>">
 						<?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->eventid, $row->id),
@@ -195,7 +184,6 @@ $search = $this->state->get('filter.search');
 								JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 					</span>
 					</td>
-					<td><?php echo $displaytime; ?></td>
 					<td><?php echo $row->session_code; ?></td>
 
 					<?php if (!$this->event): ?>

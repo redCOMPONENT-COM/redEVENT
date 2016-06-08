@@ -31,7 +31,7 @@ class RedeventHelperDate
 	}
 
 	/**
-	 * return true is a date is valid (not null, or 0000-00...)
+	 * return true is a date is valid (not null, or 0000-00-00...)
 	 *
 	 * @param   string  $time  time string from db
 	 *
@@ -59,7 +59,7 @@ class RedeventHelperDate
 	public static function isOver($session, $day_check = true)
 	{
 		if (!(property_exists($session, 'dates') && property_exists($session, 'times')
-			&& property_exists($session, 'enddates') && property_exists($session, 'endtimes')))
+			&& property_exists($session, 'enddates') && property_exists($session, 'endtimes') && property_exists($session, 'allday')))
 		{
 			throw new Exception('Missing object properties');
 		}
@@ -72,13 +72,13 @@ class RedeventHelperDate
 
 		$cmp = $day_check ? strtotime('today') : time();
 
-		if (static::isValidDate($session->enddates . ' ' . $session->endtimes))
+		if (static::isValidDate($session->enddates))
 		{
-			return strtotime($session->enddates . ' ' . $session->endtimes) < $cmp;
+			return strtotime($session->enddates . ($session->allday ? ' 23:59:59' : ' ' . $session->endtimes)) < $cmp;
 		}
 		else
 		{
-			return strtotime($session->dates . ' ' . $session->times) < $cmp;
+			return strtotime($session->dates . ' ' . ($session->allday ? '' : ' ' . $session->times)) < $cmp;
 		}
 	}
 
@@ -97,12 +97,11 @@ class RedeventHelperDate
 		}
 
 		// All day events if start or end time is null or 00:00:00
-		if (empty($event->times) || $event->times == '00:00:00' || empty($event->endtimes) || $event->endtimes == '00:00:00')
+		if ($event->allday)
 		{
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
+			if (!static::isValidDate($event->enddates) || $event->enddates == $event->dates)
 			{
 				// Same day
-
 				return '1' . ' ' . JText::_('COM_REDEVENT_Day');
 			}
 			else
@@ -117,7 +116,7 @@ class RedeventHelperDate
 			// There is start and end times
 			$start = strtotime($event->dates . ' ' . $event->times);
 
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
+			if (!static::isValidDate($event->enddates) || $event->enddates == $event->dates)
 			{
 				// Same day, return hours and minutes
 				$end = strtotime($event->dates . ' ' . $event->endtimes);
@@ -247,14 +246,12 @@ class RedeventHelperDate
 		$time_end = '';
 
 		// Is this a full day(s) event ?
-		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
-
-		if (!$allday)
+		if (!$event->allday)
 		{
 			$time_start = static::formattime($event->dates, $event->times);
 		}
 
-		if ($allday)
+		if ($event->allday)
 		{
 			if ($showend && static::isValidDate($event->enddates))
 			{

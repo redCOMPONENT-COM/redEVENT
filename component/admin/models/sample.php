@@ -243,6 +243,7 @@ class RedeventModelSample extends RModel
 		$row->times          = '14:00';
 		$row->enddates       = strftime('%Y-%m-%d', strtotime('+4 days'));
 		$row->endtimes       = '15:00';
+		$row->allday         = 0;
 		$row->published      = 1;
 
 		if ($row->check() && $row->store())

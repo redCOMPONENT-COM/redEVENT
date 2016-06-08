@@ -36,7 +36,7 @@ class ModRedeventTeaserHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state')
+		$query->select('a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.allday, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state')
 			->select('CONCAT_WS(",", c.image) AS categories_images')
 			->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
 			->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug')

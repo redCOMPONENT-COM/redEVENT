@@ -90,7 +90,7 @@ class ModRedeventAttendingHelper
 		$order = ' ORDER BY x.dates, x.times';
 		$groupby = ' GROUP BY x.id ';
 
-		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url ,'
+		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.allday, x.times, x.endtimes, l.venue, l.city, l.url ,'
 			. ' CONCAT_WS(",", c.image) AS categories_images,'
 			. ' reg.id AS rid, reg.sid, '
 			. ' CASE WHEN CHAR_LENGTH(x.title) THEN x.title ELSE a.title END as session_title, '

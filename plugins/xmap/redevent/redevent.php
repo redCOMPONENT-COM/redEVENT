@@ -207,7 +207,7 @@ class Xmap_Com_Redevent
 			$db = JFactory::getDBO();
 			$query = $db->getQuery(true);
 
-			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.dates, x.times");
+			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.allday, x.dates, x.times");
 			$query->select("UNIX_TIMESTAMP(e.created) as created, UNIX_TIMESTAMP(e.modified) as modified ");
 			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug');
 			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
@@ -297,7 +297,7 @@ class Xmap_Com_Redevent
 		{
 			$query = $db->getQuery(true);
 
-			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.dates, x.times");
+			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.allday, x.dates, x.times");
 			$query->select("UNIX_TIMESTAMP(e.created) as created, UNIX_TIMESTAMP(e.modified) as modified ");
 			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug');
 			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
@@ -383,7 +383,7 @@ class Xmap_Com_Redevent
 		{
 			$query = $db->getQuery(true);
 
-			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.dates, x.times");
+			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.allday, x.dates, x.times");
 			$query->select("UNIX_TIMESTAMP(e.created) as created, UNIX_TIMESTAMP(e.modified) as modified ");
 			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug');
 			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');

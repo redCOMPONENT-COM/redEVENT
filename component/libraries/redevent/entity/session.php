@@ -112,6 +112,50 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return formatted dates
+	 *
+	 * @param   string  $dateFormat  php date() format
+	 * @param   string  $timeFormat  php date() format
+	 *
+	 * @return array
+	 */
+	public function getFormattedDates($dateFormat = null, $timeFormat = null)
+	{
+		$item = $this->loadItem();
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			return array(JText::_('LIB_REDEVENT_OPEN_DATE'));
+		}
+
+		if (!is_null($dateFormat))
+		{
+			$format = $dateFormat . (!is_null($timeFormat) && $item->allday ? '' : ' ' . $timeFormat);
+		}
+		else
+		{
+			$format = null;
+		}
+
+		$res = array();
+
+		$res[] = RedeventHelperDate::formatdatetime(
+			$item->allday ? $item->dates : $item->dates . ' ' . $item->times,
+			$format
+		);
+
+		if (RedeventHelperDate::isValidDate($item->enddates))
+		{
+			$res[] = RedeventHelperDate::formatdatetime(
+				$item->allday ? $item->enddates : $item->enddates . ' ' . $item->endtimes,
+				$format
+			);
+		}
+
+		return $res;
+	}
+
+	/**
 	 * Return formatted start date
 	 *
 	 * @param   string  $dateFormat  php date() format
