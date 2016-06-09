@@ -54,7 +54,7 @@ class RedeventModelSessions extends RModelList
 				'language', 'obj.language',
 				'dates', 'obj.dates',
 				'session_code', 'obj.session_code',
-				'obj.featured', 'obj.registrationend', 'v.venue', 'obj.note',
+				'obj.featured', 'obj.registrationend', 'v.venue', 'obj.note'
 			);
 		}
 
@@ -76,6 +76,7 @@ class RedeventModelSessions extends RModelList
 		$id	.= ':' . $this->getState('filter.event');
 		$id	.= ':' . $this->getState('filter.venue');
 		$id	.= ':' . $this->getState('filter.category');
+		$id	.= ':' . $this->getState('filter.published');
 
 		return parent::getStoreId($id);
 	}
@@ -175,23 +176,7 @@ class RedeventModelSessions extends RModelList
 			}
 		}
 
-		$filter_state = $this->getState('filter.published', '');
-
-		if (is_numeric($filter_state))
-		{
-			if ($filter_state == '1')
-			{
-				$query->where('obj.published = 1');
-			}
-			elseif ($filter_state == '0' )
-			{
-				$query->where('obj.published = 0');
-			}
-		}
-
-		$filter_state = $this->getState('filter.published');
-
-		switch ($filter_state)
+		switch ($filter_state = $this->getState('filter.published'))
 		{
 			case '0':
 			case '1':
@@ -202,6 +187,7 @@ class RedeventModelSessions extends RModelList
 			case '*':
 				break;
 
+			case '2':
 			default:
 				// Not archived
 				$query->where('(obj.published = 0 OR obj.published = 1)');
