@@ -63,7 +63,7 @@
 
         <field
             name="dates"
-            type="calendar"
+            type="redevent.datetimepicker"
             format="%Y-%m-%d"
             label="COM_REDEVENT_DATE"
             description ="COM_REDEVENT_XREF_START_DATE_TIP"
