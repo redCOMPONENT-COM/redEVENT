@@ -57,17 +57,12 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * @var int
 	 */
-	private $updated = 0;
+	private $updatedEvents = 0;
 
 	/**
 	 * @var int
 	 */
-	private $ignored = 0;
-
-	/**
-	 * @var int
-	 */
-	private $ignored_sessions = 0;
+	private $ignoredEvents = 0;
 
 	/**
 	 * @var int
@@ -78,6 +73,16 @@ class RedeventModelEventscsvimport extends RModel
 	 * @var int
 	 */
 	private $createdSessions = 0;
+
+	/**
+	 * @var int
+	 */
+	private $updatedSessions = 0;
+
+	/**
+	 * @var int
+	 */
+	private $ignoredSessions = 0;
 
 	/**
 	 * @var array();
@@ -126,7 +131,10 @@ class RedeventModelEventscsvimport extends RModel
 			}
 		}
 
-		$count = array('added' => $this->createdEvents, 'updated' => $this->updated, 'ignored' => $this->ignored);
+		$count = array(
+			'added' => $this->createdEvents, 'updated' => $this->updatedEvents, 'ignored' => $this->ignoredEvents,
+			'addedSessions' => $this->createdSessions, 'updatedSession' => $this->updatedSessions, 'ignoredSessions' => $this->ignoredSessions
+		);
 
 		return $count;
 	}
@@ -212,7 +220,7 @@ class RedeventModelEventscsvimport extends RModel
 				// Discard if set to ignore duplicate
 				if ($found && $this->duplicateMethod == self::DUPLICATE_IGNORE)
 				{
-					$this->ignored++;
+					$this->ignoredEvents++;
 					$this->storedTitles[$data['id']] = $data['title'];
 
 					return $data['id'];
@@ -273,7 +281,7 @@ class RedeventModelEventscsvimport extends RModel
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterEventSaved', array($ev->id));
 
-			($updating ? $this->updated++ : $this->createdEvents++);
+			($updating ? $this->updatedEvents++ : $this->createdEvents++);
 
 			return $ev->id;
 		}
@@ -303,7 +311,7 @@ class RedeventModelEventscsvimport extends RModel
 
 			if ($exists && $this->duplicateMethod == self::DUPLICATE_IGNORE)
 			{
-				$this->ignored_sessions++;
+				$this->ignoredSessions++;
 
 				return true;
 			}
@@ -325,9 +333,11 @@ class RedeventModelEventscsvimport extends RModel
 				$session->reset();
 				$session->bind($data);
 				$session->id = null;
+				$isUpdate = false;
 			}
 			else
 			{
+				$isUpdate = $exists;
 				$session->bind($data);
 			}
 
@@ -374,7 +384,14 @@ class RedeventModelEventscsvimport extends RModel
 
 			$session->setPrices($pricegroups);
 
-			$this->createdSessions++;
+			if ($isUpdate)
+			{
+				$this->updatedSession++;
+			}
+			else
+			{
+				$this->createdSessions++;
+			}
 
 			return true;
 		}
