@@ -226,10 +226,9 @@ class RedeventModelEvents extends RModelList
 		{
 			$query = $this->_db->getQuery(true);
 
-			$query->select('c.id, c.name, c.checked_out')
+			$query->select('c.id, c.name, c.checked_out, c.published')
 				->from('#__redevent_categories as c')
 				->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id')
-				->where('c.published = 1')
 				->where('x.event_id = ' . $this->_db->Quote($rows[$i]->id))
 				->order('c.ordering');
 
