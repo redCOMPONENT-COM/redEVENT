@@ -54,7 +54,8 @@ class RedeventFormFieldDatetimepicker extends JFormField
 				break;
 		}
 
-		return RedeventLayoutHelper::render($layout,
+		return RedeventLayoutHelper::render(
+			$layout,
 			array(
 				'field'         => $this,
 				'class'         => $class,
