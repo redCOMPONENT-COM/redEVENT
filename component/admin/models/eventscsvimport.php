@@ -357,32 +357,35 @@ class RedeventModelEventscsvimport extends RModel
 				return false;
 			}
 
+			// Import pricegroups
+			if (isset($data['pricegroups_names']))
+			{
+				$pgs = explode('#!#', $data['pricegroups_names']);
+				$prices = explode('#!#', $data['prices']);
+				$currencies = explode('#!#', $data['currencies']);
+				$pricegroups = array();
+
+				foreach ($pgs as $k => $v)
+				{
+					if (empty($v))
+					{
+						continue;
+					}
+
+					$price = new stdclass;
+					$price->pricegroup_id    = $this->getPgId($v);
+					$price->price = $prices[$k];
+					$price->currency = $currencies[$k];
+					$pricegroups[] = $price;
+				}
+
+				$session->setPrices($pricegroups);
+			}
+
 			// Trigger plugins
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterSessionSaved', array($session->id));
-
-			// Import pricegroups
-			$pgs = explode('#!#', $data['pricegroups_names']);
-			$prices = explode('#!#', $data['prices']);
-			$currencies = explode('#!#', $data['currencies']);
-			$pricegroups = array();
-
-			foreach ($pgs as $k => $v)
-			{
-				if (empty($v))
-				{
-					continue;
-				}
-
-				$price = new stdclass;
-				$price->pricegroup_id    = $this->getPgId($v);
-				$price->price = $prices[$k];
-				$price->currency = $currencies[$k];
-				$pricegroups[] = $price;
-			}
-
-			$session->setPrices($pricegroups);
 
 			if ($isUpdate)
 			{
