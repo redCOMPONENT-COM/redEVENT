@@ -56,7 +56,7 @@
             default="0"
             label="COM_REDEVENT_SESSION_ALL_DAY_LABEL"
             description ="COM_REDEVENT_SESSION_ALL_DAY_DESC"
-            class="btn btn-group" >
+            class="btn-group radio" >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
@@ -64,46 +64,50 @@
         <field
             name="dates"
             type="redevent.datetimepicker"
-            format="%Y-%m-%d"
+            picker="date"
+            dateformat="yy-mm-dd"
             label="COM_REDEVENT_DATE"
             description ="COM_REDEVENT_XREF_START_DATE_TIP"
-            class="inputbox" />
+        />
 
         <field
             name="times"
-            type="text"
-            default=""
+            type="redevent.datetimepicker"
+            picker="time"
+            altTimeformat="HH:mm:ss"
+            timeformat="HH:mm"
             showon="allday:0"
             label="COM_REDEVENT_TIME"
             description ="COM_REDEVENT_XREF_START_TIME_TIP"
-            size="8"
-            maxlength="8"
-            class="inputbox" />
+        />
 
         <field
             name="enddates"
-            type="calendar"
-            format="%Y-%m-%d"
-            filter="user_utc"
+            type="redevent.datetimepicker"
+            picker="date"
+            dateformat="yy-mm-dd"
             label="COM_REDEVENT_ENDDATE"
             description ="COM_REDEVENT_XREF_END_DATE_TIP"
-            class="inputbox" />
+            class="inputbox"
+        />
 
         <field
             name="endtimes"
-            type="text"
-            default=""
+            type="redevent.datetimepicker"
+            picker="time"
+            altTimeformat="HH:mm:ss"
+            timeformat="HH:mm"
             showon="allday:0"
             label="COM_REDEVENT_ENDTIMES"
             description ="COM_REDEVENT_XREF_END_TIME_TIP"
-            size="8"
-            maxlength="8"
-            class="inputbox" />
+        />
 
         <field
             name="registrationend"
-            type="calendar"
-            format="%Y-%m-%d %H:%M"
+            type="redevent.datetimepicker"
+            dateformat="yy-mm-dd"
+            altTimeformat="HH:mm:ss"
+            timeformat="HH:mm"
             filter="user_utc"
             label="COM_REDEVENT_XREF_REGISTRATION_END"
             description ="COM_REDEVENT_XREF_REGISTRATION_END_TIP"

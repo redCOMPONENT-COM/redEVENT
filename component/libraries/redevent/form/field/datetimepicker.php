@@ -10,6 +10,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * RedEvent datetimepicker field form field
  *
+ * Based on https://github.com/trentrichardson/jQuery-Timepicker-Addon
+ *
  * @package  Redevent.admin
  * @since    3.1
  */
@@ -28,16 +30,43 @@ class RedeventFormFieldDatetimepicker extends JFormField
 	 */
 	protected function getInput()
 	{
-		$class = $this->element['class'] ? $this->element['class'] : '';
+		$class = $this->element['class'] ?: '';
+		$picker = $this->element['picker'] ?: '';
+		$dateformat = (string) $this->element['dateformat'] ?: 'yy-mm-dd';
+		$timeformat = (string) $this->element['timeformat'] ?: 'HH:mm:ss';
+		$altDateformat = (string) $this->element['altDateformat'] ?: $dateformat;
+		$altTimeformat = (string) $this->element['altTimeformat'] ?: $timeformat;
+		$showSecond = (string) $this->element['showSecond'] ?: false;
 
-		return RedeventLayoutHelper::render('form.fields.datetimepicker',
+		switch ($picker)
+		{
+			case 'date':
+				$layout = 'form.fields.datetimepicker.datepicker';
+				break;
+
+			case 'time':
+				$layout = 'form.fields.datetimepicker.timepicker';
+				break;
+
+			case 'datetime':
+			default:
+				$layout = 'form.fields.datetimepicker.datetimepicker';
+				break;
+		}
+
+		return RedeventLayoutHelper::render($layout,
 			array(
-				'field'    => $this,
-				'class'    => $class,
-				'id'       => $this->id,
-				'required' => $this->required,
-				'name'     => $this->name,
-				'value'    => $this->value
+				'field'         => $this,
+				'class'         => $class,
+				'id'            => $this->id,
+				'required'      => $this->required,
+				'name'          => $this->name,
+				'dateformat'    => $dateformat,
+				'timeformat'    => $timeformat,
+				'altDateformat' => $altDateformat,
+				'altTimeformat' => $altTimeformat,
+				'showSecond'    => $showSecond,
+				'value'         => $this->value
 			)
 		);
 	}
