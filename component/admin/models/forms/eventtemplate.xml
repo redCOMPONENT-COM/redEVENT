@@ -32,9 +32,8 @@
 		<field
 				name="enable_ical"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
-				size="1"
 				label="COM_REDEVENT_EVENT_ENABLE_ICAL_LABEL"
 				description="COM_REDEVENT_EVENT_ENABLE_ICAL_DESC">
 			<option value="0">JNO</option>
@@ -76,9 +75,8 @@
 		<field
 				name="juser"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
-				size="1"
 				label="COM_REDEVENT_CREATE_JOOMLA_USER"
 				description="COM_REDEVENT_CREATE_JOOMLA_USER_TIP">
 			<option value="0">JNO</option>
@@ -97,9 +95,8 @@
 		<field
 				name="show_names"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
-				size="1"
 				label="COM_REDEVENT_SHOW_REGISTERED_FRONTEND"
 				description="COM_REDEVENT_SHOW_REGISTERED_FRONTEND_TIP">
 			<option value="0">JNO</option>
@@ -218,7 +215,7 @@
 		<field
 				name="send_pdf_form"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
 				label="COM_REDEVENT_SEND_PDF_FORM"
 				description="COM_REDEVENT_SEND_PDF_FORM_TIP">
@@ -229,7 +226,7 @@
 		<field
 				name="pdf_form_data"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
 				label="COM_REDEVENT_PDF_FORM_DATA"
 				description="COM_REDEVENT_PDF_FORM_DATA_TIP">
@@ -281,7 +278,7 @@
 		<field
 				name="show_submission_type_webform_formal_offer"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
 				label="COM_REDEVENT_SHOW_SUBMIT_AND_PRINT_BUTTON"
 				description="COM_REDEVENT_SHOW_SUBMIT_AND_PRINT_BUTTON_TIP">
@@ -305,7 +302,7 @@
 		<field
 				name="notify"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
 				label="COM_REDEVENT_ENABLE_NOTIFICATION"
 				description="COM_REDEVENT_ENABLE_NOTIFICATION_TIP">
@@ -316,9 +313,8 @@
 		<field
 				name="activate"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
-				size="1"
 				label="COM_REDEVENT_ENABLE_ACTIVATION"
 				description="COM_REDEVENT_ENABLE_ACTIVATION_TIP">
 			<option value="0">JNO</option>
@@ -348,9 +344,8 @@
 		<field
 				name="enable_activation_confirmation"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
-				size="1"
 				label="COM_REDEVENT_XML_EVENT_ENABLE_ACTIVATION_CONFIRMATION_EMAIL_LABEL"
 				description="COM_REDEVENT_XML_EVENT_ENABLE_ACTIVATION_CONFIRMATION_EMAIL_DESC">
 			<option value="0">JNO</option>

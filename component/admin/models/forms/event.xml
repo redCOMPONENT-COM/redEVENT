@@ -143,9 +143,8 @@
 		<field
 				name="registra"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
-				size="1"
 				label="COM_REDEVENT_ENABLE_REGISTRATION"
 				description="COM_REDEVENT_ENABLE_REGISTRATION_TIP">
 			<option value="0">JNO</option>
@@ -154,9 +153,8 @@
 		<field
 				name="unregistra"
 				type="radio"
-				class="inputbox"
+				class="btn-group radio"
 				default="0"
-				size="1"
 				label="COM_REDEVENT_ENABLE_UNREGISTRATION"
 				description="COM_REDEVENT_ENABLE_UNREGISTRATION_TIP">
 			<option value="0">JNO</option>
