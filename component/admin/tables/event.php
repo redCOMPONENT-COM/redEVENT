@@ -37,6 +37,20 @@ class RedeventTableEvent extends RedeventTable
 	protected $_tableFieldState = 'published';
 
 	/**
+	 * Field name to keep created date (created_date)
+	 *
+	 * @var  string
+	 */
+	protected $_tableFieldCreatedDate = 'created';
+
+	/**
+	 * Field name to keep latest modified user (modified_date)
+	 *
+	 * @var  string
+	 */
+	protected $_tableFieldModifiedDate = 'modified';
+
+	/**
 	 * Category ids
 	 *
 	 * @var  array
@@ -142,21 +156,9 @@ class RedeventTableEvent extends RedeventTable
 	 */
 	protected function beforeStore($updateNulls = false)
 	{
-		$user = JFactory::getUser();
-
-		// Get the current time in the database format.
-		$time = JFactory::getDate()->toSql();
-
-		$this->modified = $time;
-		$this->modified_by = $user->get('id');
-
 		if (!$this->id)
 		{
 			$params = JComponentHelper::getParams('com_redevent');
-
-			// Get IP, time and user id
-			$this->created = $time;
-			$this->created_by = $user->get('id');
 			$this->author_ip = $params->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 		}
 
