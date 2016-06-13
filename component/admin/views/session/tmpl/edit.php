@@ -143,5 +143,6 @@ RHelperAsset::load('redevent-backend.css');
 	<?php echo $this->form->getInput('recurrenceid'); ?>
 	<?php echo $this->form->getInput('repeat'); ?>
 	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="return" value="<?php echo JFactory::getApplication()->input->get('return'); ?>">
 	<?php echo JHtml::_('form.token'); ?>
 </form>
