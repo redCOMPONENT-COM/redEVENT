@@ -210,7 +210,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 		if ($model->cancelreg($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
-			$this->setRedirect($this->getRedirectToListRoute('&cancelled=1'), $msg);
+			$this->setRedirect($this->getRedirectToListRoute('&filter[cancelled]=1'), $msg);
 
 			foreach ($cid as $attendee_id)
 			{
@@ -240,7 +240,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 		if ($model->uncancelreg($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
-			$this->setRedirect($this->getRedirectToListRoute('&cancelled=0'), $msg);
+			$this->setRedirect($this->getRedirectToListRoute('&filter[cancelled]=0'), $msg);
 
 			foreach ($cid as $attendee_id)
 			{
