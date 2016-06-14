@@ -118,7 +118,7 @@ class RedeventControllerSession extends RedeventControllerForm
 		}
 		else
 		{
-			return JRoute::_('index.php?option=' . $this->option . '&view=event' . $append, false);
+			return JRoute::_('index.php?option=' . $this->option . '&view=sessions' . $append, false);
 		}
 	}
 }
