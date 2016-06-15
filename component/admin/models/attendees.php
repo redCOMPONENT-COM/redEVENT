@@ -356,6 +356,13 @@ class RedeventModelAttendees extends RModelList
 			// Update waiting list for all un-cancelled regs
 			$sessionIds = $this->getAttendeesSessionIds($cid);
 			$this->updateWaitingLists($sessionIds);
+
+			// Update payment request
+			foreach ($cid as $attendeeId)
+			{
+				$attendee = RedeventEntityAttendee::load($attendeeId);
+				$attendee->updatePaymentRequests();
+			}
 		}
 
 		return true;

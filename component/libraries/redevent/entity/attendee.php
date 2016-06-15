@@ -199,6 +199,26 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	}
 
 	/**
+	 * Update attendee payment requests
+	 *
+	 * @return bool|void
+	 */
+	public function updatePaymentRequests()
+	{
+		if (!$this->isValid())
+		{
+			return;
+		}
+
+		$answers = $this->getAnswers();
+
+		$model = new RdfCoreModelSubmissionprice;
+		$model->setAnswers($answers);
+
+		return $model->updatePrice();
+	}
+
+	/**
 	 * Get replacer
 	 *
 	 * @return mixed|RedeventTags
