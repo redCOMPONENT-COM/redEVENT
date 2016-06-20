@@ -189,9 +189,9 @@ class RedeventViewRegistration extends JViewLegacy
 			$details = $this->get('SessionDetails');
 
 			$options = array();
-			$options['affiliation'] = 'redevent-b2b';
-			$options['sku'] = $details->title;
-			$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title
+			$options['affiliation'] = JText::_('COM_REDEVENT_GA_AFFILIATION');
+			$options['sku'] = 'session-signup-' . $details->xref;
+			$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->event_name
 				. ($details->session_name ? ' / ' . $details->session_name : '');
 
 			$cats = array();
