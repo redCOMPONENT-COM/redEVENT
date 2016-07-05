@@ -206,15 +206,21 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 
 		if (count($options))
 		{
-			$option = reset($options);
-			$price = $option->price;
-		}
-		else
-		{
-			$price = $this->getValue();
+			if ($value = $this->getValue())
+			{
+				foreach ($this->options as $option)
+				{
+					if ($option->value == $value)
+					{
+						return $option->price;
+					}
+				}
+
+				throw new RuntimeException('undefined sessionprice value');
+			}
 		}
 
-		return $price;
+		return $this->getValue();
 	}
 
 	/**
