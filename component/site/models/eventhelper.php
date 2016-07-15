@@ -125,8 +125,8 @@ class RedeventModelEventhelper extends RModel
 			$query = $db->getQuery(true);
 
 			$query->select('x.*, x.id AS xref, x.title as session_title, x.created AS session_created, x.modified AS session_modified');
-			$query->select('t.*');
 			$query->select('a.*, a.id AS did, a.created AS event_created, a.modified AS event_modified');
+			$query->select('t.*');
 			$query->select('v.id AS venue_id, v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state');
 			$query->select('v.locdescription as venue_description, v.map, v.url as venueurl');
 			$query->select('v.city, v.latitude, v.longitude, v.company AS venue_company, v.venue_code');
@@ -152,6 +152,7 @@ class RedeventModelEventhelper extends RModel
 			$this->buildDetailsWhere($query);
 
 			$db->setQuery($query);
+
 			$this->event = $db->loadObject();
 
 			if ($this->event)
