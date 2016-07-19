@@ -133,7 +133,7 @@ class JFormFieldSession extends JFormField
 
 		$query->select('e.title, x.dates');
 		$query->from('#__redevent_events AS e');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 		$query->where('x.id = ' . (int) $sessionId);
 
 		$db->setQuery($query, 0, 1);
