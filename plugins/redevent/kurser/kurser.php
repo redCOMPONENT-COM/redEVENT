@@ -59,7 +59,6 @@ class PlgRedeventKurser extends JPlugin
 
 		if ($rows = $this->getData())
 		{
-//			echo '<pre>'; echo print_r($rows, true); echo '</pre>'; exit;
 			foreach ($rows as $row)
 			{
 				$item = ReditemEntityItem::getInstance($row->item_id);
@@ -77,12 +76,15 @@ class PlgRedeventKurser extends JPlugin
 					'',
 					'https://kurser.ibc.dk/media/com_reditem/images/customfield/' . $itemData->billede,
 					'',
-					JRoute::_($item->getMenuLink(), true, -1),
+					$item->getLink(),
+					JRoute::_($item->getLink('inherit', false), true, -1),
 					'',
 					'Add'
 				];
 
 				$text .= RedeventHelper::writecsvrow($new);
+
+				exit($text);
 			}
 		}
 
