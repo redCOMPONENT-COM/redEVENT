@@ -1181,14 +1181,14 @@ class RedeventTags
 		{
 			$helper = new RedeventTagsRegistrationSession($this->getXref());
 
-			if ($this->input->get('task') == 'review')
+			if ($this->getOption('isReview'))
 			{
 				$helper->isReview(true);
 			}
 
-			if ($key = $this->input->getString('submit_key'))
+			if ($this->submitkey)
 			{
-				$helper->setSubmitKey($key);
+				$helper->setSubmitKey($this->submitkey);
 			}
 
 			if ($this->input->getInt('single'))
