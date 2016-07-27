@@ -370,17 +370,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 */
 	public function cancelreg()
 	{
-		$xref = $this->input->getInt('xref', 0);
-		$rid = $this->input->getInt('rid', 0);
-
-		if ($this->cancelRegistration($rid, $xref))
-		{
-			$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
-		}
-		else
-		{
-			$this->setMessage($this->getError(), 'error');
-		}
+		$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
 
 		$return = $this->input->getString('return');
 
