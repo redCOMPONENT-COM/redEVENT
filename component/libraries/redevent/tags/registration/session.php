@@ -116,7 +116,7 @@ class RedeventTagsRegistrationSession
 	{
 		$this->isReview = $value ? true : false;
 
-		return this;
+		return $this;
 	}
 
 	/**
