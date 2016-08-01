@@ -55,26 +55,26 @@ class RedeventModelEditevent extends RModelAdmin
 		if (!$pk)
 		{
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
-		}
 
-		// Set template_id
-		$template_id = RedeventHelper::config()->get('event_template');
+			// Set template_id
+			$template_id = RedeventHelper::config()->get('event_template');
 
-		if (!empty($data['categories']))
-		{
-			foreach ($data['categories'] as $categoryId)
+			if (!empty($data['categories']))
 			{
-				$category = RedeventEntityCategory::load($categoryId);
-
-				if ($category->event_template)
+				foreach ($data['categories'] as $categoryId)
 				{
-					$template_id = $category->event_template;
-					break;
-				}
-			};
-		}
+					$category = RedeventEntityCategory::load($categoryId);
 
-		$data['template_id'] = $template_id;
+					if ($category->event_template)
+					{
+						$template_id = $category->event_template;
+						break;
+					}
+				};
+			}
+
+			$data['template_id'] = $template_id;
+		}
 
 		$result = parent::save($data);
 
