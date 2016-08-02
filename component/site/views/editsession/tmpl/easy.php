@@ -23,6 +23,8 @@ $form = $this->form;
 $descriptionField = $this->form->getField('datdescription', 'event');
 $sessionDetailsField = $this->form->getField('details');
 
+RHelperAsset::load('sessiondates.js');
+
 JFactory::getDocument()->addScriptDeclaration(
 	"var easySubmitButton = function(task) {
 		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
@@ -116,7 +118,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('dates'); ?>
 							</div>
 						</div>
-						<div class="control-group">
+						<div class="control-group timefield">
 							<div class="control-label">
 								<?php echo $form->getLabel('times'); ?>
 							</div>
@@ -132,7 +134,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('enddates'); ?>
 							</div>
 						</div>
-						<div class="control-group">
+						<div class="control-group timefield">
 							<div class="control-label">
 								<?php echo $form->getLabel('endtimes'); ?>
 							</div>
