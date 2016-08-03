@@ -143,6 +143,15 @@ JFactory::getDocument()->addScriptDeclaration(
 							</div>
 						</div>
 
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('registrationend'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('registrationend'); ?>
+							</div>
+						</div>
+
 						<?php if (($this->params->get('edit_image', 1) == 2) || ($this->params->get('edit_image', 1) == 1)) : ?>
 							<div class="control-group">
 								<div class="control-label">
