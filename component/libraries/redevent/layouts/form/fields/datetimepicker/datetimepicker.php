@@ -54,6 +54,12 @@ $script = <<<JS
 			catch (e) {
 				// do nothing
 			}
+			
+			$('#{$id}_v').change(function(){
+				if ($(this).val() == "") {
+					$('#{$id}').val('');
+				}
+			});
 		});
 	})(jQuery);
 JS;
