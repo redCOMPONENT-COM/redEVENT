@@ -15,6 +15,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerEventtemplates extends RControllerAdmin
 {
+	/**
+	 * Batch process event templates
+	 *
+	 * @return void
+	 */
 	public function batch()
 	{
 		// Check for request forgeries
