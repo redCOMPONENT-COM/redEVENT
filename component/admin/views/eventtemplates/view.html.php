@@ -52,6 +52,9 @@ class RedeventViewEventtemplates extends RedeventViewAdmin
 			$this->canEditState = true;
 		}
 
+		// Load fields for batch template
+		$this->filterForm->loadFile('templates_batch', false);
+
 		parent::display($tpl);
 	}
 

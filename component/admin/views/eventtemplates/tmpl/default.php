@@ -1,11 +1,12 @@
 <?php
 /**
- * @package     redevent
- * @subpackage  Template
+ * @package    Redevent
  *
- * @copyright   Copyright (C) 2005 - 2014 redCOMPONENT.com. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
- */defined('_JEXEC') or die;
+ * @copyright  Copyright (C) 2005 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
+ */
+
+defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
 JHtml::_('rdropdown.init');
@@ -134,6 +135,14 @@ $search = $this->state->get('filter.search');
 		</table>
 		<?php echo $this->pagination->getPaginationLinks(null, array('showLimitBox' => false)); ?>
 	<?php endif; ?>
+
+	<!-- Load the batch processing form. -->
+	<?php if ($user->authorise('core.edit', 'com_redevent')): ?>
+			<div id="batchForm">
+				<?php echo $this->loadTemplate('batch'); ?>
+			</div>
+	<?php endif;?>
+
 	<input type="hidden" name="task" value=""/>
 	<input type="hidden" name="boxchecked" value="0"/>
 	<?php echo JHtml::_('form.token'); ?>

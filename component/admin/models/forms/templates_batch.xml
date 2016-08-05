@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="batch-information">
+		<field
+			name="merge_target"
+			type="redevent.eventtemplate"
+			label="COM_REDEVENT_MERGE_TEMPLATES_LABEL"
+			description="COM_REDEVENT_MERGE_TEMPLATES_DESC"
+			class="inputbox"
+			size="1"
+			>
+			<option value="">COM_REDEVENT_MERGE_TEMPLATES_DO_NOTHING</option>
+		</field>
+	</fieldset>
+</form>

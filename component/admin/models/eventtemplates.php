@@ -56,6 +56,37 @@ class RedeventModelEventtemplates extends RModelList
 	}
 
 	/**
+	 * Merge templates
+	 *
+	 * @param   array  $cid     template ids
+	 * @param   int    $target  target template
+	 *
+	 * @return void
+	 */
+	public function mergeTemplates($cid, $target)
+	{
+		// Just in case, remove target from remove list...
+		$remove = array_diff($cid, array($target));
+
+		// First, reassign $target to associated events
+		$query = $this->_db->getQuery(true)
+			->update('#__redevent_events')
+			->set('template_id = ' . $target)
+			->where('template_id IN (' . implode(",", $remove) . ')');
+
+		$this->_db->setQuery($query);
+		$this->_db->execute();
+
+		// Then delete them
+		$query = $this->_db->getQuery(true)
+			->delete('#__redevent_event_template')
+			->where('id IN (' . implode(",", $remove) . ')');
+
+		$this->_db->setQuery($query);
+		$this->_db->execute();
+	}
+
+	/**
 	 * Method to get a JDatabaseQuery object for retrieving the data set from a database.
 	 *
 	 * @return  JDatabaseQuery   A JDatabaseQuery object to retrieve the data set.
