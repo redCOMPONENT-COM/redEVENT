@@ -6,8 +6,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-$submission_types = explode(',', $this->item->submission_types);
 ?>
 
 <div class="section-intro">
@@ -36,7 +34,7 @@ $submission_types = explode(',', $this->item->submission_types);
 					<div class="controls">
 						<input type="checkbox" class="reg-type"
 						       id="submission_type_webform" name="jform[submission_types][]" value="webform"
-							<?php if (in_array('webform', $submission_types)) echo ' checked="checked"'; ?>
+							<?php if (in_array('webform', $this->item->submission_types)) echo ' checked="checked"'; ?>
 							/>
 					</div>
 				</div>
@@ -82,7 +80,7 @@ $submission_types = explode(',', $this->item->submission_types);
 					<div class="controls">
 						<input type="checkbox" class="reg-type"
 						       id="submission_type_external" name="jform[submission_types][]" value="external"
-							<?php if (in_array('external', $submission_types)) echo ' checked="checked"'; ?>
+							<?php if (in_array('external', $this->item->submission_types)) echo ' checked="checked"'; ?>
 							/>
 					</div>
 				</div>
@@ -109,7 +107,7 @@ $submission_types = explode(',', $this->item->submission_types);
 					<div class="controls">
 						<input type="checkbox" class="reg-type"
 						       id="submission_type_phone_check" name="jform[submission_types][]" value="phone"
-							<?php if (in_array('phone', $submission_types)) echo ' checked="checked"'; ?>
+							<?php if (in_array('phone', $this->item->submission_types)) echo ' checked="checked"'; ?>
 							/>
 					</div>
 				</div>
@@ -136,7 +134,7 @@ $submission_types = explode(',', $this->item->submission_types);
 					<div class="controls">
 						<input type="checkbox" class="reg-type"
 						       id="submission_type_email_check" name="jform[submission_types][]" value="email"
-							<?php if (in_array('email', $submission_types)) echo ' checked="checked"'; ?>
+							<?php if (in_array('email', $this->item->submission_types)) echo ' checked="checked"'; ?>
 							/>
 					</div>
 				</div>
@@ -206,7 +204,7 @@ $submission_types = explode(',', $this->item->submission_types);
 					<div class="controls">
 						<input type="checkbox" class="reg-type"
 						       id="submission_type_formaloffer_check" name="jform[submission_types][]" value="formaloffer"
-							<?php if (in_array('formaloffer', $submission_types)) echo ' checked="checked"'; ?>
+							<?php if (in_array('formaloffer', $this->item->submission_types)) echo ' checked="checked"'; ?>
 							/>
 					</div>
 				</div>

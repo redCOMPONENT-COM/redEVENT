@@ -37,6 +37,33 @@ class RedeventModelEventtemplate extends RModelAdmin
 	}
 
 	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer $pk The id of the primary key.
+	 *
+	 * @return  mixed    Object on success, false on failure.
+	 *
+	 * @since   12.2
+	 */
+	public function getItem($pk = null)
+	{
+		$item = parent::getItem($pk);
+
+		if (!is_array($item->submission_types))
+		{
+			$item->submission_types = explode(",", $item->submission_types);
+		}
+
+		if (!is_array($item->showfields))
+		{
+			$item->showfields = explode(",", $item->showfields);
+		}
+
+		return $item;
+	}
+
+
+	/**
 	 * Check if one of the events using this template has attendeees
 	 *
 	 * @param   int  $templateId  template id

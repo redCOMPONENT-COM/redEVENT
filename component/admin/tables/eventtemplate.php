@@ -93,6 +93,11 @@ class RedeventTableEventtemplate extends RedeventTable
 			$this->submission_types = implode(',', $this->submission_types);
 		}
 
+		if (is_array($this->showfields))
+		{
+			$this->showfields = implode(',', $this->showfields);
+		}
+
 		return parent::beforeStore($updateNulls);
 	}
 
@@ -111,11 +116,6 @@ class RedeventTableEventtemplate extends RedeventTable
 		if (!parent::bind($src, $ignore))
 		{
 			return false;
-		}
-
-		if (isset($src['showfields']) && is_array($src['showfields']))
-		{
-			$this->showfields = implode(',', $src['showfields']);
 		}
 
 		return true;
