@@ -89,7 +89,6 @@ class RedeventFormFieldDatetimepicker extends JFormField
 		$altTimeformat = (string) $this->element['altTimeformat'] ?: $timeformat;
 		$showSecond = (string) $this->element['showSecond'] ?: false;
 
-
 		switch ($picker)
 		{
 			case 'date':
