@@ -54,26 +54,8 @@ class RedeventModelEditevent extends RModelAdmin
 
 		if (!$pk)
 		{
+			$data = $this->mergeTemplateData($data);
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
-
-			// Set template_id
-			$template_id = RedeventHelper::config()->get('event_template');
-
-			if (!empty($data['categories']))
-			{
-				foreach ($data['categories'] as $categoryId)
-				{
-					$category = RedeventEntityCategory::load($categoryId);
-
-					if ($category->event_template)
-					{
-						$template_id = $category->event_template;
-						break;
-					}
-				};
-			}
-
-			$data['template_id'] = $template_id;
 		}
 
 		$result = parent::save($data);
@@ -239,5 +221,146 @@ class RedeventModelEditevent extends RModelAdmin
 
 		$return = $app->input->get('return', null, 'base64');
 		$this->setState('return_page', base64_decode($return));
+	}
+
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return  array  The default data is an empty array.
+	 */
+	protected function loadFormData()
+	{
+		$app = JFactory::getApplication();
+
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState(
+			$this->context . '.data',
+			array()
+		);
+
+		if (empty($data))
+		{
+			$id = (int) $this->getState($this->getName() . '.id');
+
+			// Load data from event template
+			if (!$id && $templateId = $app->getParams()->get('event_template', 0))
+			{
+				$data = $this->getItem($templateId);
+				$data->id = null;
+				$data->title = null;
+				$data->alias = null;
+				$data->attachments = null;
+			}
+			else
+			{
+				$data = $this->getItem();
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  array
+	 */
+	private function mergeTemplateData($data)
+	{
+		if ($templateId = $this->getTemplateId($data))
+		{
+			$query = $this->_db->getQuery(true)
+				->select('e.*')
+				->from('#__redevent_events AS e')
+				->where('e.id = ' . (int) $templateId);
+
+			$this->_db->setQuery($query);
+
+			if ($templateData = $this->_db->loadAssoc())
+			{
+				$unset = array_fill_keys(
+					array(
+						'id', 'title', 'alias', 'course_code', 'created_by', 'modified', 'modified_by', 'author_ip', 'created', 'alias', 'alias', 'alias'
+						, 'checked_out', 'checked_out_time', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias'
+					),
+					0
+				);
+				$templateData = array_diff_key($templateData, $unset);
+				$data = array_merge($templateData, $data);
+			}
+
+			if (!isset($data['categories']))
+			{
+				$query = $this->_db->getQuery(true)
+					->select('category_id')
+					->from('#__redevent_event_category_xref')
+					->where('event_id = ' . (int) $templateId);
+
+				$this->_db->setQuery($query);
+				$data['categories'] = $this->_db->loadColumn();
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Get template id
+	 *
+	 * @param   array  $data  posted data
+	 *
+	 * @return mixed
+	 */
+	private function getTemplateId($data)
+	{
+		if (isset($data['categories']))
+		{
+			$categoryids = $data['categories'];
+			JArrayHelper::toInteger($categoryids);
+
+			if (count($categoryids))
+			{
+				$query = $this->_db->getQuery(true)
+					->select('event_template')
+					->from('#__redevent_categories')
+					->where('id IN (' . implode(', ', $categoryids) . ')')
+					->where('event_template > 0');
+
+				$this->_db->setQuery($query);
+
+				if ($res = $this->_db->loadResult())
+				{
+					return $res;
+				}
+			}
+		}
+
+		return JFactory::getApplication()->getParams()->get('event_template', 0);
+	}
+
+
+	/**
+	 * Method to allow derived classes to preprocess the form.
+	 *
+	 * @param   JForm   $form   A JForm object.
+	 * @param   mixed   $data   The data expected for the form.
+	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
+	 *
+	 * @return  void
+	 *
+	 * @throws  Exception if there is an error in the form event.
+	 */
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+		parent::preprocessForm($form, $data, $group);
+
+		$config = RedeventHelper::config();
+
+		if (!$config->get('edit_categories'))
+		{
+			$form->setFieldAttribute('categories', 'required', 'false');
+		}
 	}
 }

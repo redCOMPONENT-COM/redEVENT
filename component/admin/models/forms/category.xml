@@ -86,7 +86,7 @@
 
 	<field
 		name="event_template"
-		type="redevent.eventtemplate"
+		type="reeventlist"
 		label="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE"
 		description="COM_REDEVENT_CATEGORY_EVENT_TEMPLATE_TIP"
 		class="inputbox">

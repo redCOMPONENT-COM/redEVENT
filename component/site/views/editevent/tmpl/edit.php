@@ -91,14 +91,16 @@ JFactory::getDocument()->addScriptDeclaration("
 									</div>
 								</div>
 
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $this->form->getLabel('categories'); ?>
+								<?php if ($this->params->get('edit_categories', 0)): ?>
+									<div class="control-group">
+										<div class="control-label">
+											<?php echo $this->form->getLabel('categories'); ?>
+										</div>
+										<div class="controls">
+											<?php echo $this->form->getInput('categories'); ?>
+										</div>
 									</div>
-									<div class="controls">
-										<?php echo $this->form->getInput('categories'); ?>
-									</div>
-								</div>
+								<?php endif; ?>
 
 								<?php if ($this->canpublish): ?>
 									<div class="control-group">

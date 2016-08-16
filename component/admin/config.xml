@@ -597,7 +597,7 @@
 	<fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit"
 			  description="COM_REDEVENT_SETTINGS_FRONTEND_TIP" addfieldpath="/libraries/redevent/form/field">
 
-		<field name="event_template" type="redevent.eventtemplate" default="0"
+		<field name="event_template" type="reeventlist" default="0"
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE"
 			   description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP"/>
 
@@ -624,6 +624,13 @@
 			<option value="1">Yes</option>
 		</field>
 
+		<field name="edit_categories" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY"
+			   description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY_TIP">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="default_submit_published_state" type="list" default="0"
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DEFAULT_PUBLISH_STATE"
 			   description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DEFAULT_PUBLISH_STATE_TIP">
