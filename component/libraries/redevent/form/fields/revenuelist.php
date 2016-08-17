@@ -37,23 +37,46 @@ class JFormFieldRevenuelist extends JFormFieldList
 	protected function getOptions()
 	{
 		$options = array();
-		$model = RModel::getAdminInstance('Venues', array('ignore_request' => true), 'com_redevent');
-		$model->setState('filter.published', $this->filter_published);
-		$model->setState('list.ordering', 'obj.venue');
-		$model->setState('list.direction', 'asc');
-		$model->setState('list.limit', 0);
 
-		if (isset($this->element['acl_check']))
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('obj.id, obj.venue, obj.language')
+			->from('#__redevent_venues AS obj')
+			->order('obj.venue ASC');
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = obj.access');
+
+		// Join over the language
+		$query->select('lg.title AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS lg ON lg.lang_code = obj.language');
+
+		if (is_numeric($this->filter_published))
 		{
-			$val = (string) $this->element['acl_check'];
-			$model->setState('filter.acl', $val == 'true' || $val == '1');
+			$query->where('obj.published = ' . $this->filter_published);
 		}
 
-		$rows = $model->getItems();
+		if (isset($this->element['acl_check']) && filter_var((string) $this->element['acl_check'], FILTER_VALIDATE_BOOLEAN))
+		{
+			$acl = RedeventUserAcl::getInstance();
+			$ids = $acl->getAllowedForEventsVenues();
 
-		$showLang = isset($this->element['show_lang']) && ($this->element['show_lang'] == 'true' || $this->element['show_lang'] == '1');
+			if (!$ids)
+			{
+				$query->where('0');
+			}
+			else
+			{
+				$query->where('obj.id IN (' . implode(',', $ids) . ')');
+			}
+		}
 
-		if ($rows)
+		$db->setQuery($query);
+
+		$showLang = isset($this->element['show_lang']) && filter_var($this->element['show_lang'], FILTER_VALIDATE_BOOLEAN);
+
+		if ($rows = $db->loadObjectList())
 		{
 			foreach ($rows as $row)
 			{
