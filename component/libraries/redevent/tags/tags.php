@@ -319,7 +319,7 @@ class RedeventTags
 		$recurse |= $this->replaceExtra($text);
 
 		// Check for plugins
-		JPluginHelper::importPlugin('redform');
+		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onRedeventTagsReplace', array($this, &$text, &$recurse));
 
