@@ -38,6 +38,10 @@ class RedeventModelTags extends RModel
 	{
 		$tags = array_merge($this->getStandardTags(), $this->getLibraryTags(), $this->getCustomTags());
 
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = RFactory::getDispatcher();
+		$dispatcher->trigger('onRedeventGetAvailableTags', array(&$tags));
+
 		return $this->tagsBySection($tags);
 	}
 
