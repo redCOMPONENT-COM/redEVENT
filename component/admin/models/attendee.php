@@ -122,8 +122,8 @@ class RedeventModelAttendee extends RModelAdmin
 
 		$query->select('t.redform_id as form_id, a.course_code, x.id as xref')
 			->from('#__redevent_event_venue_xref AS x')
-			->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid')
-			->join('INNER', '#__redevent_event_template AS t ON t.id =  t.template_id')
+			->join('INNER', '#__redevent_events AS a ON a.id = x.eventid')
+			->join('INNER', '#__redevent_event_template AS t ON t.id = a.template_id')
 			->where('x.id = ' . $this->sessionId);
 
 		$this->_db->setQuery($query);
