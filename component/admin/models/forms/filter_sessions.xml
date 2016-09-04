@@ -37,12 +37,14 @@
 				name="published"
 				type="list"
 				onchange="this.form.submit();"
+				default="2"
 				label="COM_REDEVENT_FILTER_PUBLISHED"
 				>
 			<option value="">COM_REDEVENT_FILTER_PUBLISHED</option>
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
 			<option value="-1">JARCHIVED</option>
+			<option value="2">COM_REDEVENT_FILTER_PUBLISHED_NOT_ARCHIVED</option>
 			<option value="*">JALL</option>
 		</field>
 		<field

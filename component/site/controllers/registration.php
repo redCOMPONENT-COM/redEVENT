@@ -56,9 +56,28 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$nbPosted = $this->input->getInt('nbactive', 1);
 		$selectedPricegroups = array();
 
-		for ($i = 1; $i < $nbPosted + 1; $i++)
+		if ($xref)
 		{
-			$selectedPricegroups[] = $this->input->getInt('sessionprice_' . $i, ($i > 1 ? $selectedPricegroups[0] : 0));
+			for ($i = 1; $i < $nbPosted + 1; $i++)
+			{
+				$selectedPricegroups[] = $this->input->getInt('sessionprice_' . $i, ($i > 1 ? $selectedPricegroups[0] : 0));
+			}
+		}
+		else
+		{
+			for ($i = 1; $i < $nbPosted + 1; $i++)
+			{
+				if ($eventsessionprice = $this->input->getString('eventsessionprice_' . $i))
+				{
+					$parts = explode("_", $eventsessionprice);
+					$xref = (int) $parts[0];
+
+					if ($parts[1])
+					{
+						$selectedPricegroups[] = (int) $parts[1];
+					}
+				}
+			}
 		}
 
 		if (!$xref)
@@ -193,7 +212,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			// Redform saved fine, now add the attendees
 			$user = JFactory::getUser();
 
-			if (!$user->get('id') && $session->getEvent()->juser)
+			if (!$user->get('id') && $session->getEvent()->getEventtemplate()->juser)
 			{
 				if ($new = $model->createUser($result->posts[0]['sid']))
 				{
@@ -236,7 +255,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 			$gateway = $app->input->get('gw');
 
-			$rfredirect = $rfcore->getFormRedirect($session->getEvent()->redform_id);
+			$rfredirect = $rfcore->getFormRedirect($session->getEvent()->getEventtemplate()->redform_id);
 
 			if ($rfredirect)
 			{
@@ -351,17 +370,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 */
 	public function cancelreg()
 	{
-		$xref = $this->input->getInt('xref', 0);
-		$rid = $this->input->getInt('rid', 0);
-
-		if ($this->cancelRegistration($rid, $xref))
-		{
-			$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
-		}
-		else
-		{
-			$this->setMessage($this->getError(), 'error');
-		}
+		$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
 
 		$return = $this->input->getString('return');
 

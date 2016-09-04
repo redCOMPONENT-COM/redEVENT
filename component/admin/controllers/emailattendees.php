@@ -76,6 +76,6 @@ class RedeventControllerEmailattendees extends JControllerLegacy
 	{
 		$filters = $this->input->get('filter', array(), 'array');
 
-		$this->setRedirect('index.php?option=com_redevent&view=attendees&sessionId=' . $filters['session']);
+		$this->setRedirect('index.php?option=com_redevent&view=attendees&filter[session]=' . $filters['session']);
 	}
 }

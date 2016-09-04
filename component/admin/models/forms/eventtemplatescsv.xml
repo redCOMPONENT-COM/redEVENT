@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="export"
+			  addfieldpath="/libraries/redevent/form/fields">
+
+	</fieldset>
+
+	<fieldset name="import"
+			  addfieldpath="/libraries/redevent/form/fields">
+		<field
+				name="import"
+				type="file"
+				label="COM_REDEVENT_EVENTS_CSV_IMPORT_FILE"
+				description ="COM_REDEVENT_EVENTS_CSV_IMPORT_FILE"
+				multiple="true"
+				/>
+
+		<field
+				name="duplicate_method"
+				type="radio"
+				label="COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD"
+				description ="COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_TIP"
+				default="ignore">
+			<option value="ignore">COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_OPTION_IGNORE</option>
+			<option value="create_new">COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_OPTION_CREATE_NEW</option>
+			<option value="update">COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_OPTION_UPDATE</option>
+		</field>
+	</fieldset>
+</form>

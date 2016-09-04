@@ -34,8 +34,6 @@ class RedeventModelEvent extends RModelAdmin
 
 			$categories = $this->getEventCategories($result->id);
 			$result->categories = array_keys($categories);
-
-			$result->showfields = explode(',', $result->showfields);
 		}
 
 		return $result;
@@ -60,27 +58,6 @@ class RedeventModelEvent extends RModelAdmin
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Method for getting the form from the model.
-	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return  mixed  A JForm object on success, false on failure
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		$form = parent::getForm($data, $loadData);
-
-		// Do not allow to modify the registration form once there are attendees
-		if ($form->getValue('id') && $this->hasAttendees($form->getValue('id')))
-		{
-			$form->setFieldAttribute('redform_id', 'disabled', '1');
-		}
-
-		return $form;
 	}
 
 	/**

@@ -10,6 +10,8 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select');
+
+RHelperAsset::load('redevent-backend.css');
 ?>
 
 <script type="text/javascript">
@@ -44,7 +46,7 @@ JHtml::_('rjquery.chosen', 'select');
 	<div class="tab-content">
 		<div class="tab-pane active" id="details">
 			<div class="row-fluid">
-				<div class="span9">
+				<div class="span7">
 					<div class="control-group">
 						<div class="control-label">
 							<?php echo $this->form->getLabel('name'); ?>
@@ -63,26 +65,10 @@ JHtml::_('rjquery.chosen', 'select');
 					</div>
 					<div class="control-group">
 						<div class="control-label">
-							<?php echo $this->form->getLabel('published'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('published'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
 							<?php echo $this->form->getLabel('parent_id'); ?>
 						</div>
 						<div class="controls">
 							<?php echo $this->form->getInput('parent_id'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('access'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('access'); ?>
 						</div>
 					</div>
 					<div class="control-group">
@@ -95,14 +81,6 @@ JHtml::_('rjquery.chosen', 'select');
 					</div>
 					<div class="control-group">
 						<div class="control-label">
-							<?php echo $this->form->getLabel('language'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('language'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
 							<?php echo $this->form->getLabel('description'); ?>
 						</div>
 						<div class="controls">
@@ -110,8 +88,49 @@ JHtml::_('rjquery.chosen', 'select');
 						</div>
 					</div>
 				</div>
-				<div class="span3">
-					<?php echo RedeventLayoutHelper::render('joomla.edit.metadata', $this); ?>
+				<div class="span5">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('published'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('published'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('access'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('access'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('language'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('language'); ?>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('meta_keywords'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('meta_keywords'); ?>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('meta_description'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('meta_description'); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

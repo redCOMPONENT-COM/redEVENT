@@ -286,6 +286,14 @@ class RoboFile extends \Robo\Tasks
 		     ->stopOnFail();
 
 		$this->taskCodecept()
+			->arg('--steps')
+			->arg('--debug')
+			->arg('--fail-fast')
+			->arg($this->testsFolder . 'acceptance/frontend/')
+			->run()
+			->stopOnFail();
+
+		$this->taskCodecept()
 		     ->arg('--steps')
 		     ->arg('--debug')
 		     ->arg('--fail-fast')
@@ -379,7 +387,8 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskExec('php checkers/phpcs.php')
 				->printed(true)
-				->run();
+				->run()
+				->stopOnFail();
 	}
 
 	/**
@@ -395,7 +404,7 @@ class RoboFile extends \Robo\Tasks
 		 * When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
 		 * Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
 		 */
-		$version = '3.4.8';
+		$version = '3.6.2';
 
 		$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms3");
 

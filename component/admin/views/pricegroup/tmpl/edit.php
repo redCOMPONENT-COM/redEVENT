@@ -8,6 +8,8 @@
 defined('_JEXEC') or die;
 
 JHtml::_('rjquery.chosen', 'select');
+
+RHelperAsset::load('redevent-backend.css');
 ?>
 <script type="text/javascript">
 	jQuery(document).ready(function()
@@ -59,10 +61,10 @@ JHtml::_('rjquery.chosen', 'select');
 		</div>
 		<div class="control-group">
 			<div class="control-label">
-				<?php echo $this->form->getLabel('adminonly'); ?>
+				<?php echo $this->form->getLabel('access'); ?>
 			</div>
 			<div class="controls">
-				<?php echo $this->form->getInput('adminonly'); ?>
+				<?php echo $this->form->getInput('access'); ?>
 			</div>
 		</div>
 		<div class="control-group">

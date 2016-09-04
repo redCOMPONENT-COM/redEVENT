@@ -53,4 +53,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php  endif; ?>
 <!-- pagination end -->
 
+	<?php if ($this->params->get('events_rsscal', 0) || $this->params->get('events_ical', 1)): ?>
+		<!-- start: exports -->
+		<div class="events-exports">
+			<?php if ($this->params->get('events_rsscal', 0)): ?>
+				<span class="events-rsscal">
+				<?php echo JHTML::link(JRoute::_(RedeventHelperRoute::getDayRoute($this->dayId) . '&format=feed'),
+					JHTML::image('media/com_redevent/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_RSSCAL'))
+				); ?>
+				</span>
+			<?php endif; ?>
+
+			<?php if ($this->params->get('events_ical', 1)): ?>
+				<span class="events-ical">
+					<?php echo JHTML::link(JRoute::_(RedeventHelperRoute::getDayRoute($this->dayId) . '&format=raw&layout=ics'),
+						JHTML::image('media/com_redevent/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
+					); ?>
+				</span>
+			<?php endif; ?>
+		</div>
+		<!-- end: exports -->
+	<?php endif; ?>
 </div>

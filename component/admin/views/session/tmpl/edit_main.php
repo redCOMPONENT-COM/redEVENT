@@ -6,8 +6,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+// Add script to make sure end happens after start
+RHelperAsset::load('sessiondates.js');
 ?>
-<div class="span9">
+<div class="span7">
 	<div class="control-group">
 		<div class="control-label">
 			<?php echo $this->form->getLabel('eventid'); ?>
@@ -34,18 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<div class="control-group">
 		<div class="control-label">
-			<?php echo $this->form->getLabel('alias'); ?>
+			<?php echo $this->form->getLabel('allday'); ?>
 		</div>
 		<div class="controls">
-			<?php echo $this->form->getInput('alias'); ?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('session_code'); ?>
-		</div>
-		<div class="controls">
-			<?php echo $this->form->getInput('session_code'); ?>
+			<?php echo $this->form->getInput('allday'); ?>
 		</div>
 	</div>
 	<div class="control-group">
@@ -53,15 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->form->getLabel('dates'); ?>
 		</div>
 		<div class="controls">
-			<?php echo $this->form->getInput('dates'); ?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('times'); ?>
-		</div>
-		<div class="controls">
-			<?php echo $this->form->getInput('times'); ?>
+			<?php echo $this->form->getInput('dates'); ?> <span class="timefield"><?php echo $this->form->getInput('times'); ?></span>
 		</div>
 	</div>
 	<div class="control-group">
@@ -69,33 +56,37 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->form->getLabel('enddates'); ?>
 		</div>
 		<div class="controls">
-			<?php echo $this->form->getInput('enddates'); ?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('endtimes'); ?>
-		</div>
-		<div class="controls">
-			<?php echo $this->form->getInput('endtimes'); ?>
+			<?php echo $this->form->getInput('enddates'); ?> <span class="timefield"><?php echo $this->form->getInput('endtimes'); ?></span>
 		</div>
 	</div>
 
 	<div class="control-group">
 		<div class="control-label">
-			<?php echo $this->form->getLabel('registrationend'); ?>
+			<?php echo $this->form->getLabel('details'); ?>
 		</div>
 		<div class="controls">
-			<?php echo $this->form->getInput('registrationend'); ?>
+			<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('session.details'); ?></div>
+			<?php echo $this->form->getInput('details'); ?>
+		</div>
+	</div>
+</div>
+
+<div class="span5">
+	<div class="control-group">
+		<div class="control-label">
+			<?php echo $this->form->getLabel('alias'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('alias'); ?>
 		</div>
 	</div>
 
 	<div class="control-group">
 		<div class="control-label">
-			<?php echo $this->form->getLabel('external_registration_url'); ?>
+			<?php echo $this->form->getLabel('session_code'); ?>
 		</div>
 		<div class="controls">
-			<?php echo $this->form->getInput('external_registration_url'); ?>
+			<?php echo $this->form->getInput('session_code'); ?>
 		</div>
 	</div>
 
@@ -114,16 +105,6 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div class="controls">
 			<?php echo $this->form->getInput('featured'); ?>
-		</div>
-	</div>
-
-	<div class="control-group">
-		<div class="control-label">
-			<?php echo $this->form->getLabel('details'); ?>
-		</div>
-		<div class="controls">
-			<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('session.details'); ?></div>
-			<?php echo $this->form->getInput('details'); ?>
 		</div>
 	</div>
 

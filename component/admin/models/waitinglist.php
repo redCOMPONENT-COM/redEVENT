@@ -290,11 +290,12 @@ class RedeventModelWaitinglist extends RModel
 			$query = $this->_db->getQuery(true);
 
 			$query->select('x.maxattendees, x.maxwaitinglist')
-				->select('e.notify_off_list_body, e.notify_off_list_subject')
-				->select('e.notify_on_list_body, e.notify_on_list_subject')
-				->select('e.redform_id')
+				->select('t.notify_off_list_body, t.notify_off_list_subject')
+				->select('t.notify_on_list_body, t.notify_on_list_subject')
+				->select('t.redform_id')
 				->from('#__redevent_event_venue_xref AS x')
-				->join('LEFT', '#__redevent_events e ON x.eventid = e.id')
+				->join('INNER', '#__redevent_events e ON x.eventid = e.id')
+				->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
 				->where('x.id = ' . $this->xref);
 
 			$this->_db->setQuery($query);

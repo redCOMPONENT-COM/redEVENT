@@ -9,6 +9,7 @@
 defined('JPATH_REDCORE') or die;
 
 RHelperAsset::load('xref_roles.js');
+RHelperAsset::load('editroles.css');
 JText::script('COM_REDEVENT_REMOVE');
 
 $data = $displayData;
@@ -19,9 +20,9 @@ JHtml::_('rjquery.chosen', 'select');
 <table class="adminform" id="re-roles">
 	<thead>
 	<tr>
-		<th style="width:40%"><?php echo JText::_('COM_REDEVENT_LAYOUT_ROLES_EDIT_ROLE_NAME'); ?></th>
-		<th style="width:40%"><?php echo JText::_('COM_REDEVENT_LAYOUT_ROLES_EDIT_ROLE_USER'); ?></th>
-		<th style="width:10px">&nbsp;</th>
+		<th><?php echo JText::_('COM_REDEVENT_LAYOUT_ROLES_EDIT_ROLE_NAME'); ?></th>
+		<th><?php echo JText::_('COM_REDEVENT_LAYOUT_ROLES_EDIT_ROLE_USER'); ?></th>
+		<th>&nbsp;</th>
 	</tr>
 	</thead>
 

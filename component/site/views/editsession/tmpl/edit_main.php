@@ -6,6 +6,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+// Add script to make sure end happens after start
+RHelperAsset::load('sessiondates.js');
 ?>
 <div class="span9">
 	<div class="control-group">
@@ -54,13 +57,21 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<div class="control-group">
 		<div class="control-label">
+			<?php echo $this->form->getLabel('allday'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('allday'); ?>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-label">
 			<?php echo $this->form->getLabel('dates'); ?>
 		</div>
 		<div class="controls">
 			<?php echo $this->form->getInput('dates'); ?>
 		</div>
 	</div>
-	<div class="control-group">
+	<div class="control-group timefield">
 		<div class="control-label">
 			<?php echo $this->form->getLabel('times'); ?>
 		</div>
@@ -76,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->form->getInput('enddates'); ?>
 		</div>
 	</div>
-	<div class="control-group">
+	<div class="control-group timefield">
 		<div class="control-label">
 			<?php echo $this->form->getLabel('endtimes'); ?>
 		</div>

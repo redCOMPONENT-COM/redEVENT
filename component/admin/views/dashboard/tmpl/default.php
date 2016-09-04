@@ -19,6 +19,7 @@ $icons = array(
 	array('link' => 'index.php?option=com_redevent&view=venuescategories', 'icon' => 'icon-48-venuescategories.png', 'text' => JText::_('COM_REDEVENT_VENUES_CATEGORIES'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=registrations', 'icon' => 'icon-48-registrations.png', 'text' => JText::_('COM_REDEVENT_REGISTRATIONS'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=textsnippets', 'icon' => 'icon-48-library.png', 'text' => JText::_('COM_REDEVENT_TEXT_LIBRARY'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=eventtemplates', 'icon' => 'icon-48-events.png', 'text' => JText::_('COM_REDEVENT_EVENT_TEMPLATES'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=customfields', 'icon' => 'icon-48-customfields.png', 'text' => JText::_('COM_REDEVENT_CUSTOM_FIELDS'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=roles', 'icon' => 'icon-48-roles.png', 'text' => JText::_('COM_REDEVENT_ROLES'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=pricegroups', 'icon' => 'icon-48-pricegroups.png', 'text' => JText::_('COM_REDEVENT_MENU_PRICEGROUPS'), 'access' => 'core.edit'),

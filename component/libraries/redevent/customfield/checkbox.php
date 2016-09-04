@@ -33,8 +33,7 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 	 */
 	public function render($attributes = array())
 	{
-		$html = '';
-		$options = explode("\n", $this->options);
+		$options = $this->getOptions();
 		$values = explode("\n", $this->value);
 
 		$default_values = explode("\n", $this->default_value);
@@ -59,18 +58,15 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 			$selected = $default;
 		}
 
-		if ($options)
-		{
-			foreach ($options as $opt)
-			{
-				$option = $this->getOptionLabelValue($opt);
-				$html .= '<input type="checkbox" name="jform[' . $this->fieldname . '][]" value="' . $option->value . '"'
-					. (in_array($option->value, $selected) ? ' checked="checked"' : '') . ' ' . $this->attributesToString($attributes) . '/>'
-					. $option->label;
-			}
-		}
+		$layoutData = array(
+			'id'           => $this->id,
+			'selected'     => $selected,
+			'attributes'   => $this->attributesToString($attributes),
+			'options'      => $options,
+			'field'        => $this,
+		);
 
-		return $html;
+		return RedeventLayoutHelper::render('redevent.customfields.checkbox', $layoutData, null, array('component' => 'com_redevent'));
 	}
 
 	/**
@@ -83,8 +79,6 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 	 */
 	public function renderFilter($attributes = array(), $selected = null)
 	{
-		$app = JFactory::getApplication();
-
 		if ($selected)
 		{
 			$value = $selected;
@@ -95,19 +89,40 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 		}
 
 		$html = '';
+		$options = $this->getOptions();
+
+		if ($options)
+		{
+			foreach ($options as $option)
+			{
+				$html .= '<input type="checkbox" name="filtercustom[' . $this->id . '][]" value="' . $option->value . '"'
+					. (in_array($option->value, $value) ? ' checked="checked"' : '')
+					. ' ' . $this->attributesToString($attributes) . '/>' . $option->text;
+			}
+		}
+
+		return $html;
+	}
+
+	/**
+	 * return options
+	 *
+	 * @return array
+	 */
+	protected function getOptions()
+	{
+		$option_list = array();
 		$options = explode("\n", $this->options);
 
 		if ($options)
 		{
 			foreach ($options as $opt)
 			{
-				$option = $this->getOptionLabelValue($opt);
-				$html .= '<input type="checkbox" name="filtercustom[' . $this->id . '][]" value="' . $option->value . '"'
-					. (in_array($option->value, $value) ? ' checked="checked"' : '')
-					. ' ' . $this->attributesToString($attributes) . '/>' . $option->label;
+				$option = $this->getOptionValueText($opt);
+				$option_list[] = JHTML::_('select.option', $option->value, $option->text);
 			}
 		}
 
-		return $html;
+		return $option_list;
 	}
 }

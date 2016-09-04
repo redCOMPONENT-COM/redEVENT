@@ -595,7 +595,7 @@
 	</fieldset>
 
 	<fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit"
-			  description="COM_REDEVENT_SETTINGS_FRONTEND_TIP" addfieldpath="/libraries/redevent/form/fields">
+			  description="COM_REDEVENT_SETTINGS_FRONTEND_TIP" addfieldpath="/libraries/redevent/form/field">
 
 		<field name="event_template" type="reeventlist" default="0"
 			   label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE"

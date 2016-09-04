@@ -50,7 +50,10 @@ abstract class RedeventFactoryCustomfield
 			return new $classname;
 		}
 
-		throw new RuntimeException('Custom field type not found: ' . $type);
+		// Type not found, display a warning and return text custom field
+		JFactory::getApplication()->enqueueMessage('Custom field type not found: ' . $type, 'error');
+
+		return self::getField('text');
 	}
 
 	/**

@@ -10,6 +10,8 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select');
+
+RHelperAsset::load('redevent-backend.css');
 ?>
 <script type="text/javascript">
 	jQuery(document).ready(function()
@@ -90,34 +92,7 @@ JHtml::_('rjquery.chosen', 'select');
 
 		<div class="tab-pane" id="registration">
 			<div class="row-fluid">
-				<div class="span9">
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('maxattendees'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('maxattendees'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('maxwaitinglist'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('maxwaitinglist'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('course_credit'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('course_credit'); ?>
-						</div>
-					</div>
-				</div>
+				<?php echo $this->loadTemplate('registration'); ?>
 			</div>
 		</div>
 
@@ -168,5 +143,6 @@ JHtml::_('rjquery.chosen', 'select');
 	<?php echo $this->form->getInput('recurrenceid'); ?>
 	<?php echo $this->form->getInput('repeat'); ?>
 	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="return" value="<?php echo JFactory::getApplication()->input->get('return'); ?>">
 	<?php echo JHtml::_('form.token'); ?>
 </form>

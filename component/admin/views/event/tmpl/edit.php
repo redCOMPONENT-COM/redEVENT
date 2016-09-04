@@ -7,12 +7,58 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+JHtml::_('behavior.keepalive');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select', array('width' => '150px'));
+JHtml::_('rsearchtools.main');
+
+RHelperAsset::load('redevent-backend.css');
 
 $fieldSets = $this->form->getFieldsets('params');
+
+$tab = JFactory::getApplication()->input->getString('tab');
 ?>
+
+<?php if ($this->item->id) : ?>
+	<script type="text/javascript">
+		(function ($) {
+			$(function () {
+				// Perform the ajax request
+				$.ajax({
+					url: 'index.php?option=com_redevent&task=event.ajaxGetSessions&view=event&id=<?php echo $this->item->id ?>',
+					cache: false,
+					beforeSend: function (xhr) {
+						$('div#sessions .spinner').show();
+					}
+				}).done(function (data) {
+					$('div#sessions .spinner').hide();
+					$('div#sessions div').html(data);
+					$('div#sessions select').chosen();
+					$('div#sessions .chzn-search').hide();
+					$('div#sessions .hasTooltip').tooltip({"animation": true, "html": true, "placement": "top",
+						"selector": false, "title": "", "trigger": "hover focus", "delay": 0, "container": false});
+
+					// Auto submit search fields after loading AJAX
+					$('div#sessions .js-enter-submits').enterSubmits();
+
+					// @TODO: In theory, this is not necessary, but .ajax is not triggering it
+					$("div#sessions").find("script").each(function(){
+						eval($(this).text());
+					});
+				});
+			});
+		})(jQuery);
+	</script>
+	<?php if ($tab) : ?>
+		<script type="text/javascript">
+			jQuery(document).ready(function () {
+				// Show the corresponding tab
+				jQuery('#eventTab a[href="#<?php echo $tab ?>"]').tab('show');
+			});
+		</script>
+	<?php endif; ?>
+<?php endif; ?>
 
 <script type="text/javascript">
 	jQuery(document).ready(function()
@@ -27,7 +73,7 @@ $fieldSets = $this->form->getFieldsets('params');
 	});
 </script>
 
-<form action="index.php?option=com_redevent&task=venue.edit&id=<?php echo $this->item->id ?>"
+<form action="index.php?option=com_redevent&task=event.edit&id=<?php echo $this->item->id ?>"
       method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-validate form-horizontal">
 
 	<ul class="nav nav-tabs" id="eventTab">
@@ -51,28 +97,13 @@ $fieldSets = $this->form->getFieldsets('params');
 			</a>
 		</li>
 		<li>
-			<a href="#submission_types" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_SUBMIT_TYPES'); ?></strong>
-			</a>
-		</li>
-		<li>
-			<a href="#activation" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_ACTIVATION'); ?></strong>
-			</a>
-		</li>
-		<li>
-			<a href="#confirmation" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_CONFIRMATION'); ?></strong>
-			</a>
-		</li>
-		<li>
-			<a href="#payment" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_PAYMENT'); ?></strong>
-			</a>
-		</li>
-		<li>
 			<a href="#attachments" data-toggle="tab">
 				<strong><?php echo JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'); ?></strong>
+			</a>
+		</li>
+		<li>
+			<a href="#sessions" data-toggle="tab">
+				<strong><?php echo JText::_('COM_REDEVENT_SESSIONS'); ?></strong>
 			</a>
 		</li>
 	</ul>
@@ -99,36 +130,17 @@ $fieldSets = $this->form->getFieldsets('params');
 			</div>
 		</div>
 
-		<div class="tab-pane" id="submission_types">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('submission_types'); ?>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="activation">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('activation'); ?>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="confirmation">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('confirmation'); ?>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="payment">
-			<div class="row-fluid">
-				<?php echo $this->loadTemplate('payment'); ?>
-			</div>
-		</div>
-
 		<div class="tab-pane" id="attachments">
 			<div class="row-fluid">
 				<?php echo $this->loadTemplate('attachments'); ?>
 			</div>
 		</div>
 
+		<div class="tab-pane" id="sessions">
+			<div class="row-fluid">
+				<?php echo $this->loadTemplate('sessions'); ?>
+			</div>
+		</div>
 	</div>
 
 	<?php echo $this->form->getInput('id'); ?>

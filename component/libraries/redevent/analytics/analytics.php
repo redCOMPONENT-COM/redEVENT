@@ -58,17 +58,17 @@ class RedeventAnalytics
 	 */
 	private function buildOptions($submit_key)
 	{
-		$details = $this->getSessionDetails($submit_key);
+		$session = $this->getSession($submit_key);
 
 		$options = array();
 		$options['affiliation'] = 'redevent-b2c';
-		$options['sku'] = $details->title;
-		$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title
-			. ($details->session_title ? ' / ' . $details->session_title : '');
+		$options['sku'] = $session->getEvent()->title;
+		$options['productname'] = $session->getVenue()->venue . ' - ' . $session->xref . ' ' . $session->getEvent()->title
+			. ($session->title ? ' / ' . $session->title : '');
 
 		$cats = array();
 
-		foreach ($details->categories as $c)
+		foreach ($session->getEvent()->getCategories() as $c)
 		{
 			$cats[] = $c->name;
 		}
@@ -83,18 +83,17 @@ class RedeventAnalytics
 	 *
 	 * @param   string  $submit_key  submit key
 	 *
-	 * @return mixed
+	 * @return RedeventEntitySession
 	 */
-	private function getSessionDetails($submit_key)
+	private function getSession($submit_key)
 	{
-		$attendeeRow = RTable::getAdminInstance('attendee');
-		$attendeeRow->load(array('submit_key' => $submit_key));
+		$attendees = RedeventEntityAttendee::loadBySubmitKey($submit_key);
 
-		$model = RModel::getFrontInstance('Eventhelper');
-		$model->setXref($attendeeRow->xref);
+		if (!$attendees)
+		{
+			throw new RuntimeException('No attendees found for key ' . $submit_key);
+		}
 
-		$eventInfo = $model->getData();
-
-		return $eventInfo;
+		return reset($attendees)->getSession();
 	}
 }

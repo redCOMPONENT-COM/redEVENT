@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    Redevent.library
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @copyright  redEVENT (C) 2008-2016 redCOMPONENT.com
  * @license    GNU/GPL, see LICENSE.php
  */
 

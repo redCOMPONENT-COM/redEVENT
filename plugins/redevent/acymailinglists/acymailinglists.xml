@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" version="2.5" method="upgrade" group="redevent">
+	<name>PLG_REDEVENT_ACYMAILINGLISTS</name>
+	<author>redCOMPONENT</author>
+	<creationDate>April 2016</creationDate>
+	<copyright>Copyright (C) 2016 redCOMPONENT.com. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<version>3.0.1</version>
+	<description>PLG_REDEVENT_ACYMAILINGLISTS_XML_DESCRIPTION</description>
+
+	<files>
+		<folder>customfield</folder>
+		<folder>language</folder>
+		<filename plugin="acymailinglists">acymailinglists.php</filename>
+	</files>
+
+	<config>
+	</config>
+</extension>

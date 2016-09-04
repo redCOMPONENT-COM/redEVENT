@@ -55,21 +55,40 @@ class RedeventEntitySession extends RedeventEntityBase
 
 			if (!empty($item))
 			{
-				$model = RModel::getAdminInstance('attendees', array('ignore_request' => true), 'com_redevent');
-				$model->setState('filter.session');
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->select('*')
+					->from('#__redevent_register')
+					->where('xref = ' . $this->id);
 
-				$attendees = $model->getItems();
+				$db->setQuery($query);
+				$res = $db->loadObjectList();
 
-				$this->attendees = $attendees ? array_map(
-					function($element)
+				$this->attendees = $res ? array_map(
+					function($row)
 					{
-						return RedeventEntityAttendee::load($element->id);
-					}, $attendees
+						return RedeventEntityAttendee::getInstance($row->id)->bind($row);
+					}, $res
 				) : false;
 			}
 		}
 
 		return $this->attendees;
+	}
+
+	/**
+	 * Check if user can register to session
+	 *
+	 * @param   JUser  $user  user
+	 *
+	 * @return boolean
+	 */
+	public function canRegister($user = null)
+	{
+		$user = $user ?: JFactory::getUser();
+		$status = RedeventHelper::canRegister($this->id, $user->get('id'));
+
+		return $status->canregister;
 	}
 
 	/**
@@ -93,6 +112,50 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return formatted dates
+	 *
+	 * @param   string  $dateFormat  php date() format
+	 * @param   string  $timeFormat  php date() format
+	 *
+	 * @return array
+	 */
+	public function getFormattedDates($dateFormat = null, $timeFormat = null)
+	{
+		$item = $this->loadItem();
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			return array(JText::_('LIB_REDEVENT_OPEN_DATE'));
+		}
+
+		if (!is_null($dateFormat))
+		{
+			$format = $dateFormat . (!is_null($timeFormat) && $item->allday ? '' : ' ' . $timeFormat);
+		}
+		else
+		{
+			$format = null;
+		}
+
+		$res = array();
+
+		$res[] = RedeventHelperDate::formatdatetime(
+			$item->allday ? $item->dates : $item->dates . ' ' . $item->times,
+			$format
+		);
+
+		if (RedeventHelperDate::isValidDate($item->enddates))
+		{
+			$res[] = RedeventHelperDate::formatdatetime(
+				$item->allday ? $item->enddates : $item->enddates . ' ' . $item->endtimes,
+				$format
+			);
+		}
+
+		return $res;
+	}
+
+	/**
 	 * Return formatted start date
 	 *
 	 * @param   string  $dateFormat  php date() format
@@ -109,21 +172,19 @@ class RedeventEntitySession extends RedeventEntityBase
 			return JText::_('LIB_REDEVENT_OPEN_DATE');
 		}
 
-		if (RedeventHelperDate::isValidTime($item->times))
+		if (!is_null($dateFormat))
 		{
-			if (!is_null($dateFormat))
-			{
-				$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
-			}
-			else
-			{
-				$format = null;
-			}
-
-			return RedeventHelperDate::formatdatetime($item->dates . ' ' . $item->times, $format);
+			$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
+		}
+		else
+		{
+			$format = null;
 		}
 
-		return RedeventHelperDate::formatdate($item);
+		return RedeventHelperDate::formatdatetime(
+			RedeventHelperDate::isValidTime($item->times) ? $item->dates . ' ' . $item->times : $item->dates,
+			$format
+		);
 	}
 
 	/**
@@ -161,6 +222,54 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return full title, including event title
+	 *
+	 * @return string
+	 */
+	public function getFullTitle()
+	{
+		$config = RedeventHelper::config();
+
+		if ($config->get('disable_frontend_session_title', 0))
+		{
+			return $this->getEvent()->title;
+		}
+
+		if (!empty($this->title))
+		{
+			return $this->getEvent()->title . ' - ' . $this->title;
+		}
+
+		return $this->getEvent()->title;
+	}
+
+	/**
+	 * Get number of signup left for user
+	 *
+	 * @param   int  $userId  user id
+	 *
+	 * @return int
+	 */
+	public function getUserNumberOfSignupLeft($userId)
+	{
+		// Multiple signup ?
+		$max = $this->getEvent()->max_multi_signup;
+		$user = JUser::getInstance($userId);
+
+		if ($max && $user->id)
+		{
+			// We must substract current registrations of this user !
+			$nbregs = $this->getUserActiveRegistrationsCount($user->id);
+			$allowed = $max - $nbregs;
+
+			return $allowed > 0 ? $allowed : 0;
+		}
+
+		// No max, or user not registered, always allow one place.
+		return 1;
+	}
+
+	/**
 	 * Return initialized RedeventRfieldSessionprice
 	 *
 	 * @return RedeventRfieldSessionprice
@@ -178,9 +287,12 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return RedeventEntitySessionpricegroups
 	 *
+	 * @param   bool   $filterAcl  filter by price group acl
+	 * @param   JUser  $user       user to filter against
+	 *
 	 * @return   RedeventEntitySessionpricegroup[]
 	 */
-	public function getPricegroups()
+	public function getPricegroups($filterAcl = false, $user = null)
 	{
 		if (!$this->pricegroups)
 		{
@@ -206,6 +318,20 @@ class RedeventEntitySession extends RedeventEntityBase
 			);
 		}
 
+		if ($filterAcl)
+		{
+			$user = $user ?: JFactory::getUser();
+			$access = $user->getAuthorisedViewLevels();
+
+			return array_filter(
+				$this->pricegroups,
+				function ($sessionpricegroup) use ($access)
+				{
+					return in_array($sessionpricegroup->getPricegroup()->access, $access);
+				}
+			);
+		}
+
 		return $this->pricegroups;
 	}
 
@@ -227,5 +353,79 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return $this->venue;
+	}
+
+	/**
+	 * Check if session is full
+	 *
+	 * @return boolean
+	 */
+	public function isFull()
+	{
+		// Check the max registrations and waiting list
+		if ($this->getEvent()->maxattendees)
+		{
+			if (!$attendees = $this->getAttendees())
+			{
+				return false;
+			}
+
+			$registered = 0;
+			$waiting = 0;
+
+			foreach ($attendees as $attendee)
+			{
+				if ((!$attendee->confirmed) || $attendee->cancelled)
+				{
+					continue;
+				}
+
+				if ($attendee->waitinglist)
+				{
+					$waiting++;
+				}
+				else
+				{
+					$registered++;
+				}
+			}
+
+			if ($this->getEvent()->maxattendees <= $registered
+				&& $this->getEvent()->maxwaitinglist <= $waiting)
+			{
+				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * return current number of registrations for current user to this event
+	 *
+	 * @param   int  $userId  user id
+	 *
+	 * @return int
+	 */
+	private function getUserActiveRegistrationsCount($userId)
+	{
+		if (!$attendees = $this->getAttendees())
+		{
+			return false;
+		}
+
+		$count = 0;
+
+		foreach ($attendees as $attendee)
+		{
+			if ($attendee->uid == $userId && $attendee->cancelled == 0)
+			{
+				$count++;
+			}
+		}
+
+		return $count;
 	}
 }

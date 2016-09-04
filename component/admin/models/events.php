@@ -51,7 +51,7 @@ class RedeventModelEvents extends RModelList
 				'title', 'obj.title',
 				'published', 'obj.published',
 				'id', 'obj.id', 'obj.language',
-				'cat.id', 'cat.name'
+				'cat.id', 'cat.name', 't.name'
 			);
 		}
 
@@ -96,8 +96,10 @@ class RedeventModelEvents extends RModelList
 		$query = $db->getQuery(true);
 
 		$query->select('obj.*, u.email, u.name AS author, u2.name as editor, x.id AS xref');
+		$query->select('t.name AS template_name');
 		$query->select('cat.checked_out AS cchecked_out, cat.name AS catname');
 		$query->from('#__redevent_events AS obj ');
+		$query->innerJoin('#__redevent_event_template AS t ON t.id = obj.template_id');
 		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = obj.id');
 		$query->join('LEFT', '#__redevent_categories AS cat ON cat.id = xcat.category_id');
 		$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = obj.id');
@@ -188,6 +190,11 @@ class RedeventModelEvents extends RModelList
 			$query->where('loc.id = ' . (int) $venue);
 		}
 
+		if ($template_id = $this->getState('filter.template'))
+		{
+			$query->where('t.id = ' . (int) $template_id);
+		}
+
 		if ($aclCheck = $this->getState('filter.acl'))
 		{
 			$acl = RedeventUserAcl::getInstance();
@@ -219,10 +226,9 @@ class RedeventModelEvents extends RModelList
 		{
 			$query = $this->_db->getQuery(true);
 
-			$query->select('c.id, c.name, c.checked_out')
+			$query->select('c.id, c.name, c.checked_out, c.published')
 				->from('#__redevent_categories as c')
 				->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id')
-				->where('c.published = 1')
 				->where('x.event_id = ' . $this->_db->Quote($rows[$i]->id))
 				->order('c.ordering');
 
@@ -322,15 +328,12 @@ class RedeventModelEvents extends RModelList
 	{
 		$events_id = array();
 
-		foreach ((array) $this->getItems() as $e)
-		{
-			$events_id[] = $e->id;
-		}
-
-		if (empty($events_id))
+		if (!($items = $this->getItems()))
 		{
 			return false;
 		}
+
+		$events_id = JArrayHelper::getColumn($items, 'id');
 
 		$db = $this->_db;
 		$query = $db->getQuery(true);

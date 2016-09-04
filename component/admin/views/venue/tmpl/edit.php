@@ -11,6 +11,8 @@ JHtml::_('rbootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select');
 
+RHelperAsset::load('redevent-backend.css');
+
 $fieldSets = $this->form->getFieldsets('params');
 ?>
 
@@ -66,7 +68,7 @@ $fieldSets = $this->form->getFieldsets('params');
 	<div class="tab-content">
 		<div class="tab-pane active" id="details">
 			<div class="row-fluid">
-				<div class="span9">
+				<div class="span7">
 					<div class="control-group">
 						<div class="control-label">
 							<?php echo $this->form->getLabel('venue'); ?>
@@ -77,10 +79,10 @@ $fieldSets = $this->form->getFieldsets('params');
 					</div>
 					<div class="control-group">
 						<div class="control-label">
-							<?php echo $this->form->getLabel('alias'); ?>
+							<?php echo $this->form->getLabel('categories'); ?>
 						</div>
 						<div class="controls">
-							<?php echo $this->form->getInput('alias'); ?>
+							<?php echo $this->form->getInput('categories'); ?>
 						</div>
 					</div>
 					<div class="control-group">
@@ -89,6 +91,32 @@ $fieldSets = $this->form->getFieldsets('params');
 						</div>
 						<div class="controls">
 							<?php echo $this->form->getInput('venue_code'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('locimage'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('locimage'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('locdescription'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('locdescription'); ?>
+						</div>
+					</div>
+				</div>
+				<div class="span5">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('alias'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('alias'); ?>
 						</div>
 					</div>
 					<div class="control-group">
@@ -117,10 +145,113 @@ $fieldSets = $this->form->getFieldsets('params');
 					</div>
 					<div class="control-group">
 						<div class="control-label">
-							<?php echo $this->form->getLabel('locimage'); ?>
+							<?php echo $this->form->getLabel('meta_keywords'); ?>
 						</div>
 						<div class="controls">
-							<?php echo $this->form->getInput('locimage'); ?>
+							<?php echo $this->form->getInput('meta_keywords'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('meta_description'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('meta_description'); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tab-pane" id="address">
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('street'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('street'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('plz'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('plz'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('city'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('city'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('state'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('state'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('country'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('country'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('map'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('map'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('latitude'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('latitude'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('longitude'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('longitude'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label"></div>
+						<div class="controls">
+							<?php echo RedeventHelperOutput::pinpointicon($this->item); ?>
+						</div>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('url'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('url'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('email'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('email'); ?>
 						</div>
 					</div>
 					<div class="control-group">
@@ -131,126 +262,7 @@ $fieldSets = $this->form->getFieldsets('params');
 							<?php echo $this->form->getInput('company'); ?>
 						</div>
 					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('categories'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('categories'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('locdescription'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('locdescription'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('description'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('description'); ?>
-						</div>
-					</div>
 				</div>
-				<div class="span3">
-					<?php echo RedeventLayoutHelper::render('joomla.edit.metadata', $this); ?>
-				</div>
-			</div>
-		</div>
-
-		<div class="tab-pane" id="address">
-			<div class="row-fluid">
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('street'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('street'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('plz'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('plz'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('city'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('city'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('state'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('state'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('country'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('country'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('url'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('url'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('email'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('email'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('map'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('map'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('latitude'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('latitude'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('longitude'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('longitude'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label"></div>
-					<div class="controls">
-						<?php echo RedeventHelperOutput::pinpointicon($this->item); ?>
-					</div>
-				</div>
-
 			</div>
 		</div>
 

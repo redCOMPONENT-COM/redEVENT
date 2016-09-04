@@ -61,7 +61,6 @@ class RedeventModelDay extends RedeventModelBasesessionlist
 			{
 				$date = $year . '-' . $month . '-' . $tag;
 			}
-
 			else
 			{
 				// Date isn't valid raise notice and use current date

@@ -131,11 +131,11 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	}
 
 	/**
-	 * Return array of RdfEntitySubmitter
+	 * Return array of RedeventEntityAttendee
 	 *
 	 * @param   string  $submit_key  submit key
 	 *
-	 * @return array
+	 * @return RedeventEntityAttendee[]
 	 */
 	public static function loadBySubmitKey($submit_key)
 	{
@@ -180,28 +180,11 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	}
 
 	/**
-	 * Get the associated table
-	 *
-	 * @param   string  $name  Main name of the Table. Example: Article for ContentTableArticle
-	 *
-	 * @return  RTable
-	 */
-	protected function getTable($name = null)
-	{
-		if (null === $name)
-		{
-			$name = 'register';
-		}
-
-		return RTable::getAdminInstance($name, array(), $this->getComponent());
-	}
-
-	/**
 	 * get redform answers for this attendee
 	 *
 	 * @return RdfAnswers
 	 */
-	protected function getAnswers()
+	public function getAnswers()
 	{
 		if (empty($this->answers))
 		{
@@ -213,6 +196,26 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		}
 
 		return $this->answers;
+	}
+
+	/**
+	 * Update attendee payment requests
+	 *
+	 * @return bool|void
+	 */
+	public function updatePaymentRequests()
+	{
+		if (!$this->isValid())
+		{
+			return;
+		}
+
+		$answers = $this->getAnswers();
+
+		$model = new RdfCoreModelSubmissionprice;
+		$model->setAnswers($answers);
+
+		return $model->updatePrice();
 	}
 
 	/**

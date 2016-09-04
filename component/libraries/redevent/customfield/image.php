@@ -76,6 +76,6 @@ class RedeventCustomfieldImage extends RedeventAbstractCustomfield
 			'imagePreview' => $imagePreview,
 		);
 
-		return RedeventLayoutHelper::render('customfields.image', $layoutData, null, array('component' => 'com_redevent'));
+		return RedeventLayoutHelper::render('redevent.customfields.image', $layoutData, null, array('component' => 'com_redevent'));
 	}
 }

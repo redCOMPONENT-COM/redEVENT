@@ -12,6 +12,8 @@ JHtml::_('rdropdown.init');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('rjquery.chosen', 'select');
 
+RHelperAsset::load('redevent-backend.css');
+
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
 $user = JFactory::getUser();
@@ -88,10 +90,13 @@ $search = $this->state->get('filter.search');
 				<th class="title" width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_EVENT_TITLE', 'obj.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="100">
+				<th class="title">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_CATEGORY', 'cat.name', $listDirn, $listOrder); ?>
 				</th>
-				<th width="150">
+				<th class="title">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_EVENT_TEMPLATE', 't.name', $listDirn, $listOrder); ?>
+				</th>
+				<th class="title">
 					<?php echo JText::_('COM_REDEVENT_SESSIONS'); ?>
 				</th>
 				<th width="150">
@@ -178,6 +183,7 @@ $search = $this->state->get('filter.search');
 						}
 						?>
 					</td>
+					<td><?php echo $row->template_name; ?></td>
 					<td>
 						<?php if (isset($this->eventvenues[$row->id])): ?>
 							<?php echo RHtml::tooltip(

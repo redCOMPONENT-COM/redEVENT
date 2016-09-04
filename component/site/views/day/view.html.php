@@ -27,7 +27,7 @@ class RedeventViewDay extends RedeventViewSessionlist
 	{
 		$this->prepareView();
 
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$settings = RedeventHelper::config();
 
 		$day = $this->get('Day');
@@ -36,16 +36,16 @@ class RedeventViewDay extends RedeventViewSessionlist
 
 		$print_link = JRoute::_('index.php?view=day&tmpl=component&pop=1');
 
-		$pathway = $mainframe->getPathWay();
+		$pathway = $app->getPathWay();
 		$pathway->addItem($daydate, '');
 
 		// Check if the user has access to the form
 		$dellink = JFactory::getUser()->authorise('re.createevent');
 
-		$this->assignRef('print_link', $print_link);
-		$this->assignRef('dellink', $dellink);
-		$this->assignRef('daydate', $daydate);
-		$this->assign('action', JRoute::_(RedeventHelperRoute::getDayRoute(JFactory::getApplication()->input->getInt('id'))));
+		$this->print_link = $print_link;
+		$this->dellink = $dellink;
+		$this->daydate = $daydate;
+		$this->dayId = $app->input->getString('id');
 
 		parent::display($tpl);
 	}
@@ -58,6 +58,6 @@ class RedeventViewDay extends RedeventViewSessionlist
 	protected function prepareAction()
 	{
 		parent::prepareAction();
-		$this->assign('action', JRoute::_(RedeventHelperRoute::getDayRoute(JFactory::getApplication()->input->getInt('id'))));
+		$this->action = JRoute::_(RedeventHelperRoute::getDayRoute(JFactory::getApplication()->input->getString('id')));
 	}
 }

@@ -24,100 +24,100 @@ source_lang = en-GB
 # ======================= MODULES ==============================
 [redevent3.site-mod_redevent-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent.ini
-source_file = modules/site/mod_redevent/language/en-GB/en-GB.mod_redevent.ini
+source_file = modules/frontend/mod_redevent/language/en-GB/en-GB.mod_redevent.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent.sys.ini
-source_file = modules/site/mod_redevent/language/en-GB/en-GB.mod_redevent.sys.ini
+source_file = modules/frontend/mod_redevent/language/en-GB/en-GB.mod_redevent.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redevent_all_events-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_all_events.ini
-source_file = modules/site/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.ini
+source_file = modules/frontend/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_all_events-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_all_events.sys.ini
-source_file = modules/site/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.sys.ini
+source_file = modules/frontend/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redevent_attending-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_attending.ini
-source_file = modules/site/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.ini
+source_file = modules/frontend/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_attending-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_attending.sys.ini
-source_file = modules/site/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.sys.ini
+source_file = modules/frontend/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redeventcal-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_calendar.ini
-source_file = modules/site/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.ini
+source_file = modules/frontend/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redeventcal-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_calendar.sys.ini
-source_file = modules/site/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.sys.ini
+source_file = modules/frontend/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redevent_categories-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_categories.ini
-source_file = modules/site/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.ini
+source_file = modules/frontend/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_categories-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_categories.sys.ini
-source_file = modules/site/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.sys.ini
+source_file = modules/frontend/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redevent_filters-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_filters.ini
-source_file = modules/site/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.ini
+source_file = modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_filters-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_filters.sys.ini
-source_file = modules/site/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.sys.ini
+source_file = modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redevent_search-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_search.ini
-source_file = modules/site/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.ini
+source_file = modules/frontend/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_search-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_search.sys.ini
-source_file = modules/site/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.sys.ini
+source_file = modules/frontend/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redevent_teaser-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_teaser.ini
-source_file = modules/site/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.ini
+source_file = modules/frontend/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_teaser-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_teaser.sys.ini
-source_file = modules/site/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.sys.ini
+source_file = modules/frontend/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.sys.ini
 source_lang = en-GB
 
 
 [redevent3.site-mod_redevent_venues_events-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_venues_events.ini
-source_file = modules/site/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.ini
+source_file = modules/frontend/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_venues_events-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_venues_events.sys.ini
-source_file = modules/site/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.sys.ini
+source_file = modules/frontend/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.sys.ini
 source_lang = en-GB
 
 # ======================= PLUGINS ==============================
@@ -180,23 +180,23 @@ source_lang = en-GB
 # ========== JOMSOCIAL =============
 [redevent3.admin-plg_community_redevent-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_community_redevent.ini
-source_file = plugins/jomsocial/plg_js_redevent/language/en-GB/en-GB.plg_community_redevent.ini
+source_file = plugins/jomsocial/redevent/language/en-GB/en-GB.plg_community_redevent.ini
 source_lang = en-GB
 
 [redevent3.admin-plg_community_redevent-sys-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_community_redevent.sys.ini
-source_file = plugins/jomsocial/plg_js_redevent/language/en-GB/en-GB.plg_community_redevent.sys.ini
+source_file = plugins/jomsocial/redevent/language/en-GB/en-GB.plg_community_redevent.sys.ini
 source_lang = en-GB
 
 # ========== REDEVENT =============
 [redevent3.admin-plg_redevent_jomsocial-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_jomsocial.ini
-source_file = plugins/redevent/redevent_jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.ini
+source_file = plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.ini
 source_lang = en-GB
 
 [redevent3.admin-plg_redevent_jomsocial-sys-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_jomsocial.sys.ini
-source_file = plugins/redevent/redevent_jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.sys.ini
+source_file = plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.sys.ini
 source_lang = en-GB
 
 

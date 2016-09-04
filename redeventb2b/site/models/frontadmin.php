@@ -635,8 +635,8 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
-		$query->select('x.session_language');
+		$query->select('x.dates, x.enddates, x.allday, x.times, x.endtimes, x.registrationend');
+		$query->select('x.session_language, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid');
 		$query->select('r.id AS rid, r.status');
@@ -791,8 +791,8 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
-		$query->select('x.session_language');
+		$query->select('x.dates, x.enddates, x.allday, x.times, x.endtimes, x.registrationend');
+		$query->select('x.session_language, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');

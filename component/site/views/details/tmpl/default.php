@@ -49,8 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<!-- Details EVENT -->
 	<?php
-	$review_txt = trim(strip_tags($this->row->review_message));
-	echo $this->tags->replaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))));
+	echo $this->tags->replaceTags($this->row->datdescription);
 
 	if ($this->view_attendees_list) : ?>
 		<!-- Registration -->
@@ -67,17 +66,18 @@ defined('_JEXEC') or die('Restricted access');
 
 				/* Get the date */
 				$date = RedeventHelperDate::formatdate($venuedate->dates);
-				$enddate = (!RedeventHelperDate::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates)
+				$enddate = (!RedeventHelperDate::isValidDate($venuedate->enddates) || $venuedate->enddates == $venuedate->dates)
 					? ''
-					: RedeventHelperDate::formatdate($venuedate->enddates);
-				$displaydate = $date . ($enddate ? ' - ' . $enddate : '');
+					: ' - ' . RedeventHelperDate::formatdate($venuedate->enddates);
+				$displaydate = $date . $enddate;
 
 				$displaytime = '';
-				if (RedeventHelperDate::isValidTime($venuedate->times) && $venuedate->times != '00:00:00')
+
+				if (!$venuedate->allday && RedeventHelperDate::isValidTime($venuedate->times))
 				{
 					$displaytime = RedeventHelperDate::formattime($venuedate->dates, $venuedate->times);
 
-					if (RedeventHelperDate::isValidTime($venuedate->endtimes) && $venuedate->endtimes != '00:00:00')
+					if (RedeventHelperDate::isValidTime($venuedate->endtimes))
 					{
 						$displaytime .= ' - ' . RedeventHelperDate::formattime($venuedate->enddates, $venuedate->endtimes);
 					}

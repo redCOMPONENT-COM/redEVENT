@@ -377,9 +377,9 @@ class RedeventHelper
 	 */
 	public static function canRegister($xref_id, $user_id = null)
 	{
-		$helper = new RedeventRegistrationCanregister;
+		$helper = new RedeventRegistrationCanregister($xref_id);
 
-		return $helper->canRegister($xref_id, $user_id);
+		return $helper->canRegister($user_id);
 	}
 
 	/**
@@ -403,7 +403,7 @@ class RedeventHelper
 
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra')
+		$query->select('x.allday, x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra')
 			->from('#__redevent_event_venue_xref AS x')
 			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
 			->where('x.id = ' . $db->Quote($xref_id));
@@ -653,7 +653,7 @@ class RedeventHelper
 		$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
 
 		// All day event if start time is not set
-		if (!$session->times || $session->times == '00:00:00')
+		if ($session->allday)
 		{
 			// All day !
 			$dateparam = array('VALUE' => 'DATE');

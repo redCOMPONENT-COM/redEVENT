@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+RHelperAsset::load('redevent-backend.css');
+
 JHtml::_('behavior.keepalive');
 JHtml::_('rdropdown.init');
 JHtml::_('rbootstrap.tooltip');
