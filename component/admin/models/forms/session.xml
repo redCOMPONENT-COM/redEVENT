@@ -266,8 +266,9 @@
                     class="inputbox" />
             <field
                     name="repeat_until_date"
-                    type="calendar"
-                    format="Y-m-d"
+                    type="redevent.datetimepicker"
+                    picker="date"
+                    dateformat="yy-mm-dd"
                     label="COM_REDEVENT_REPEAT_UNTIL"
                     description ="COM_REDEVENT_REPEAT_UNTIL_TIP"
                     class="inputbox" />
