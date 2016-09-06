@@ -23,6 +23,7 @@ $icons = array(
 	array('view' => 'sessions', 'icon' => 'icon-16-events.png', 'text' => JText::_('COM_REDEVENT_SESSIONS'), 'access' => 'core.edit'),
 	array('view' => 'venues', 'icon' => 'icon-16-venues.png', 'text' => JText::_('COM_REDEVENT_VENUES'), 'access' => 'core.edit'),
 	array('view' => 'categories', 'icon' => 'icon-16-categories.png', 'text' => JText::_('COM_REDEVENT_CATEGORIES'), 'access' => 'core.edit'),
+	array('view' => 'bundles', 'icon' => 'icon-16-events.png', 'text' => JText::_('COM_REDEVENT_BUNDLES'), 'access' => 'core.edit'),
 	array('view' => 'venuescategories', 'icon' => 'icon-16-venuescategories.png', 'text' => JText::_('COM_REDEVENT_VENUES_CATEGORIES'), 'access' => 'core.edit'),
 	array('view' => 'registrations', 'icon' => 'icon-16-groups.png', 'text' => JText::_('COM_REDEVENT_REGISTRATIONS'), 'access' => 'core.edit'),
 	array('view' => 'eventtemplates', 'icon' => 'icon-16-events.png', 'text' => JText::_('COM_REDEVENT_EVENT_TEMPLATES'), 'access' => 'core.edit'),
