@@ -340,7 +340,6 @@ class RedeventModelEditevent extends RModelAdmin
 		return JFactory::getApplication()->getParams()->get('event_template', 0);
 	}
 
-
 	/**
 	 * Method to allow derived classes to preprocess the form.
 	 *
