@@ -53,10 +53,11 @@ class RedeventViewVenue extends RedeventViewFront
 	 */
 	public function displayGmap($tpl = null)
 	{
+		$config = RedeventHelper::config();
 		$this->prepareView();
 
 		$document = JFactory::getDocument();
-		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
+		$document->addScript('https://maps.google.com/maps/api/js?key=' . $config->get('googlemapsApiKey'));
 		RHelperAsset::load('venuemap.js');
 		JText::script("COM_REDEVENT_GET_DIRECTIONS");
 
