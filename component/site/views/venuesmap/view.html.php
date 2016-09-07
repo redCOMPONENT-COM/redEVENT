@@ -33,7 +33,7 @@ class RedeventViewVenuesmap extends RedeventViewFront
 		$elsettings = RedeventHelper::config();
 
 		JHTML::_('behavior.framework');
-		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
+		$document->addScript('https://maps.google.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
 		RHelperAsset::load('markermanager.js');
 		RHelperAsset::load('site/venuesmap.js');
 

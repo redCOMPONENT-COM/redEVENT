@@ -206,7 +206,7 @@ class RedeventTableCustomfield extends RedeventTable
 
 		$db = $this->_db;
 
-		$query = 'ALTER IGNORE TABLE ' . $db->qn($table) . ' ADD COLUMN ' . $db->qn('custom' . $this->id) . ' TEXT';
+		$query = 'ALTER TABLE ' . $db->qn($table) . ' ADD COLUMN ' . $db->qn('custom' . $this->id) . ' TEXT';
 		$db->setQuery($query);
 		$db->execute();
 
