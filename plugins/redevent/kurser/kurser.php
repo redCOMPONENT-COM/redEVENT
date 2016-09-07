@@ -63,16 +63,22 @@ class PlgRedeventKurser extends JPlugin
 			{
 				$item = ReditemEntityItem::getInstance($row->item_id);
 				$itemData = $item->getDecodedCustomData();
+				$address = '';
+
+				if ($row->city)
+				{
+					$address = $row->city . ', ' . $row->country;
+				}
 
 				$new = [
 					$row->id,
-					$row->title,
-					implode(",", $row->categories),
-					$row->teaser,
+					mb_strimwidth($row->title, 0, 25, '...', "utf-8"),
+					mb_strimwidth(implode(",", $row->categories), 0, 25, '...', "utf-8"),
+					mb_strimwidth($row->teaser, 0, 25, '...', "utf-8"),
 					'',
 					'IBC',
 					'',
-					$row->venue,
+					$address,
 					'',
 					'https://kurser.ibc.dk/media/com_reditem/images/customfield/' . $itemData->billede,
 					'',
@@ -83,8 +89,6 @@ class PlgRedeventKurser extends JPlugin
 				];
 
 				$text .= RedeventHelper::writecsvrow($new);
-
-				exit($text);
 			}
 		}
 
@@ -105,7 +109,8 @@ class PlgRedeventKurser extends JPlugin
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('e.id, e.title, v.venue')
+			->select('e.id, e.title')
+			->select('v.venue, v.city, v.country, v.plz as zip, v.street, v.latitude, v.longitude')
 			->select('k.id AS item_id, k.teaser, k.billede AS image')
 			->from('#__redevent_events AS e')
 			->join('INNER', '#__redevent_event_venue_xref AS x On x.eventid = e.id')
