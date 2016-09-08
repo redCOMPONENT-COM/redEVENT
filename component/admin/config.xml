@@ -471,6 +471,14 @@
 			<option value="1">JYes</option>
 		</field>
 
+		<field name="guestMultipleRegistration" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_REGISTRATION_GUESTMULTIPLEREGISTRATION_LABEL"
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_GUESTMULTIPLEREGISTRATION_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+
 		<field name="registration_default_recipients" type="text" default="" size="80"
 			   label="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS"
 			   description="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS_TIP"/>
