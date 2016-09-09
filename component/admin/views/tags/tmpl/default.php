@@ -9,9 +9,18 @@ defined('_JEXEC') or die('Restricted access');
 
 RHelperAsset::load('redevent-backend.css');
 ?>
-<h2><?php echo JText::_('COM_REDEVENT_TAGS_TITLE'); ?></h2>
 
-<p><?php echo JText::_('COM_REDEVENT_TAGS_LIST_DESCRIPTION'); ?></p>
+<?php if ($field = JFactory::getApplication()->input->getString('field')): ?>
+	<script type="text/javascript">
+		(function($){
+			$(function(){
+				$('td.tagname').click(function(){
+					window.parent.redeventEditorInsertTag($(this).text(), '<?= $field ?>');
+				});
+			})
+		})(jQuery);
+	</script>
+<?php endif; ?>
 
 <?php $active = true; ?>
 <ul class="nav nav-tabs" id="tagsTab">
@@ -40,7 +49,7 @@ RHelperAsset::load('redevent-backend.css');
 					<?php $k = 0; ?>
 					<?php foreach ($tags as $tag): ?>
 					<tr>
-						<td>[<?php echo addslashes($this->escape($tag->name)); ?>]</td>
+						<td class="tagname">[<?php echo addslashes($this->escape($tag->name)); ?>]</td>
 						<td><?php echo $tag->description; ?></td>
 					</tr>
 					<?php $k = 1 - $k; ?>

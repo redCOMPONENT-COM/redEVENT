@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 		<em><?php echo JText::_('COM_REDEVENT_PAYMENTPROCESSING_INFO'); ?></em>
 	</div>
 	<div class="controls">
-		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('paymentprocessing'); ?></div>
+		<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('paymentprocessing')) ?></div>
 		<?php echo $this->form->getInput('paymentprocessing'); ?>
 	</div>
 </div>
@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 		<em><?php echo JText::_('COM_REDEVENT_PAYMENTACCEPTED_INFO'); ?></em>
 	</div>
 	<div class="controls">
-		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('paymentaccepted'); ?></div>
+		<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('paymentaccepted')) ?></div>
 		<?php echo $this->form->getInput('paymentaccepted'); ?>
 	</div>
 </div>
