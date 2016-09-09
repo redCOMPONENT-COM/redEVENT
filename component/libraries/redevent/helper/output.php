@@ -728,4 +728,20 @@ class RedeventHelperOutput
 	{
 		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal-button"');
 	}
+
+	/**
+	 * return the code for tags display
+	 *
+	 * @param   JFormField  $field  field to use tag for, allows filtering
+	 *
+	 * @return html
+	 */
+	public static function getTagsEditorInsertModal(JFormField $field)
+	{
+		RHelperAsset::load('editor-insert-tag.js', 'com_redevent');
+
+		$output = RedeventLayoutHelper::render('redevent.modal.tags', compact('field'));
+
+		return $output;
+	}
 }

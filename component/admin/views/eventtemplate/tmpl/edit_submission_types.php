@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo $this->form->getLabel('submission_type_webform'); ?>
 					</div>
 					<div class="controls">
-						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_webform'); ?></div>
+						<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('submission_type_webform')) ?></div>
 						<?php echo $this->form->getInput('submission_type_webform'); ?>
 					</div>
 				</div>
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo $this->form->getLabel('review_message'); ?>
 					</div>
 					<div class="controls">
-						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('review_message'); ?></div>
+						<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('review_message')) ?></div>
 						<?php echo $this->form->getInput('review_message'); ?>
 					</div>
 				</div>
@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo $this->form->getLabel('confirmation_message'); ?>
 					</div>
 					<div class="controls">
-						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('confirmation_message'); ?></div>
+						<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('confirmation_message')) ?></div>
 						<?php echo $this->form->getInput('confirmation_message'); ?>
 					</div>
 				</div>
@@ -154,7 +154,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo $this->form->getLabel('submission_type_email_subject'); ?>
 					</div>
 					<div class="controls">
-						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_email_subject'); ?></div>
+						<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('submission_type_email_subject')) ?></div>
 						<?php echo $this->form->getInput('submission_type_email_subject'); ?>
 					</div>
 				</div>
@@ -163,7 +163,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo $this->form->getLabel('submission_type_email_body'); ?>
 					</div>
 					<div class="controls">
-						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_email_body'); ?></div>
+						<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('submission_type_email_body')) ?></div>
 						<?php echo $this->form->getInput('submission_type_email_body'); ?>
 					</div>
 				</div>

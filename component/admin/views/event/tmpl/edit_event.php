@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->form->getLabel('datdescription'); ?>
 		</div>
 		<div class="controls">
-			<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('datdescription'); ?></div>
+			<div class="tags-info"><?php echo RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('datdescription')); ?></div>
 			<?php echo $this->form->getInput('datdescription'); ?>
 		</div>
 	</div>
