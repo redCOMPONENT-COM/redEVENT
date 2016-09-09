@@ -65,7 +65,7 @@ RHelperAsset::load('sessiondates.js');
 			<?php echo $this->form->getLabel('details'); ?>
 		</div>
 		<div class="controls">
-			<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('session.details')) ?></div>
+			<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('details')) ?></div>
 			<?php echo $this->form->getInput('details'); ?>
 		</div>
 	</div>
