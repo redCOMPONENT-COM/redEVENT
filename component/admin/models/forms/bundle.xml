@@ -25,10 +25,6 @@
 		class="inputbox" />
 
 	<field
-		name="events"
-		type="hidden"/>
-
-	<field
 		name="description"
 		type="editor"
 		label="COM_REDEVENT_DESCRIPTION"
