@@ -8,6 +8,48 @@ var redeventBundleEvents = (function($){
 	var template, currentRow;
 
 	/**
+	 * Initial load
+	 */
+	var loadRows = function(){
+		var bundleId = $('#jform_id').val();
+
+		if (!bundleId) {
+			return;
+		}
+
+		$.ajax({
+			url: 'index.php?option=com_redevent&task=bundle.events&format=json&id=' + bundleId
+		}).done(function(response){
+			response.forEach(function(row){
+				if (row.sessions.length) {
+					row.sessions.forEach(function(session){
+						data = {
+							'event': {
+								id: row.id,
+								title: row.title
+							},
+							'session': {
+								id: session.id,
+								title: session.formatted_start_date + '@' + session.venue
+							}
+						}
+						addRow(data);
+					});
+				}
+				else {
+					data = {
+						'event': {
+							id: row.id,
+							title: row.title
+						}
+					}
+					addRow(data);
+				}
+			});
+		});
+	};
+
+	/**
 	 * Add a row
 	 *
 	 * @param data
@@ -64,6 +106,8 @@ var redeventBundleEvents = (function($){
 
 	$(function() {
 		template = Handlebars.compile($("#row-template").html());
+
+		loadRows();
 
 		$('#bundle-events').on('click', '.add-row', function() {
 			addRow({});

@@ -16,6 +16,63 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelBundle extends RModelAdmin
 {
 	/**
+	 * Get bundle events
+	 *
+	 * @param   int  $id  bundle id
+	 *
+	 * @return array
+	 */
+	public function getEvents($id)
+	{
+		$query = $this->_db->getQuery(true)
+			->select('e.id AS event_id, e.title, s.session_id')
+			->from('#__redevent_bundle_event AS be')
+			->innerJoin('#__redevent_events AS e On e.id = be.event_id')
+			->leftJoin('#__redevent_bundle_event_session AS s ON s.bundle_event_id = be.id')
+			->leftJoin('#__redevent_event_venue_xref AS x ON x.id = s.session_id')
+			->where('be.bundle_id = ' . $id)
+			->order('e.title, x.dates');
+
+		$this->_db->setQuery($query);
+
+		if (!$res = $this->_db->loadObjectList())
+		{
+			return false;
+		}
+
+		$events = array();
+
+		foreach ($res as $row)
+		{
+			if (!isset($events[$row->event_id]))
+			{
+				$obj = new stdclass;
+				$obj->id = $row->event_id;
+				$obj->title = $row->title;
+				$obj->sessions = array();
+
+				$events[$row->event_id] = $obj;
+			}
+
+			if ($row->session_id)
+			{
+				$session = RedeventEntitySession::load($row->session_id);
+				$data = array(
+					'id' => $session->id,
+					'formatted_start_date' => $session->getFormattedStartDate(),
+					'venue' => $session->getVenue()->venue,
+				);
+
+				$events[$row->event_id]->sessions[] = $data;
+			}
+		}
+
+		$events = array_values($events);
+
+		return $events;
+	}
+
+	/**
 	 * Save bundle events (and optional sessions)
 	 *
 	 * @param   int       $bundle_id  bundle id
