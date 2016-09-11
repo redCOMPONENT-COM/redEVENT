@@ -89,6 +89,10 @@ class RedeventModelBundles extends RModelList
 		$query->select($this->getState('list.select', 'obj.*'));
 		$query->from($db->qn('#__redevent_bundle', 'obj'));
 
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = obj.access');
+
 		// Filter by language
 		$language = $this->getState('filter.language');
 

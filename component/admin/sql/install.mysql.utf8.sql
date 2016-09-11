@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_bundle` (
   `name` varchar(255) NOT NULL default '',
   `alias` varchar(100) NOT NULL default '',
   `description` text NOT NULL,
-  `published` tinyint(1) NOT NULL default '0',
+  `published` tinyint(2) NOT NULL default '0',
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL,
   `access` int(11) unsigned NOT NULL default '0',

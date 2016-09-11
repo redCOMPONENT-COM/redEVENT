@@ -51,6 +51,14 @@ class RedeventViewBundles extends RedeventViewAdmin
 			$this->canEdit = true;
 		}
 
+		// Edit state permission
+		$this->canEditState = false;
+
+		if ($user->authorise('core.edit.state', 'com_redevent'))
+		{
+			$this->canEditState = true;
+		}
+
 		 parent::display($tpl);
 	}
 
