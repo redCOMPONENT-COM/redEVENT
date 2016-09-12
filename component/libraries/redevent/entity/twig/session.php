@@ -1,11 +1,13 @@
 <?php
 /**
- * @package     Redevent.Frontend
- * @subpackage  Plugins
+ * @package     Redevent.Library
+ * @subpackage  Entity.twig
  *
- * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
+
+JLoader::import('reditem.library');
 
 use Aesir\Entity\Twig\AbstractTwigEntity;
 use Aesir\Entity\Twig\Traits;
@@ -15,9 +17,9 @@ defined('_JEXEC') or die;
 /**
  * redEVENT Session Twig Entity.
  *
- * @since  3.3.10
+ * @since  3.2.0
  */
-final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEntity
+final class RedeventEntityTwigSession extends AbstractTwigEntity
 {
 	use Traits\HasCheckin, Traits\HasFeatured, Traits\HasState;
 
@@ -45,7 +47,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 			return $this->entity->$name;
 		}
 
-		throw new RuntimeException('unsupported property in __get: ' . $name);
+		throw new \RuntimeException('unsupported property in __get: ' . $name);
 	}
 
 	/**
@@ -73,7 +75,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 			? array_map(
 				function($entity)
 				{
-					return new PlgAesir_FieldRedevent_eventEntityTwigSessionpricegroup($entity);
+					return new \RedeventEntityTwigSessionpricegroup($entity);
 				},
 				$prices
 			)
@@ -83,12 +85,12 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 	/**
 	 * Get venue twig entity
 	 *
-	 * @return PlgAesir_FieldRedevent_eventEntityTwigVenue
+	 * @return \RedeventEntityTwigVenue
 	 */
 	public function getVenue()
 	{
 		$venue = $this->entity->getVenue();
 
-		return $venue->isValid() ? new PlgAesir_FieldRedevent_eventEntityTwigVenue($venue) : false;
+		return $venue->isValid() ? new \RedeventEntityTwigVenue($venue) : false;
 	}
 }

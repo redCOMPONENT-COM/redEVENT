@@ -1,11 +1,13 @@
 <?php
 /**
- * @package     Redevent.Frontend
- * @subpackage  Plugins
+ * @package     Redevent.Library
+ * @subpackage  Entity.twig
  *
- * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
+
+JLoader::import('reditem.library');
 
 use Aesir\Entity\Twig\AbstractTwigEntity;
 use Aesir\Entity\Twig\Traits;
@@ -13,11 +15,11 @@ use Aesir\Entity\Twig\Traits;
 defined('_JEXEC') or die;
 
 /**
- * redEVENT event Twig Entity.
+ * redEVENT Session price group Twig Entity.
  *
- * @since  3.3.10
+ * @since  3.2.0
  */
-final class PlgAesir_FieldRedevent_EventEntityTwigSessionpricegroup extends AbstractTwigEntity
+final class RedeventEntityTwigSessionpricegroup extends AbstractTwigEntity
 {
 	/**
 	 * Constructor.
@@ -43,7 +45,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSessionpricegroup extends Abst
 			return $this->entity->$name;
 		}
 
-		throw new RuntimeException('unsupported property in __get: ' . $name);
+		throw new \RuntimeException('unsupported property in __get: ' . $name);
 	}
 
 	/**

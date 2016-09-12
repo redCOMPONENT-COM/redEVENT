@@ -12,11 +12,11 @@ use Aesir\Twig\Extension;
 defined('_JEXEC') or die;
 
 /**
- * Event Twig extension.
+ * Bundle Twig extension.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  3.2.0
  */
-class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
+class PlgAesir_FieldRedevent_bundleTwigExtensionBundle extends \Twig_Extension
 {
 	/**
 	 * Inject our filter.
@@ -26,7 +26,7 @@ class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
 	public function getFunctions()
 	{
 		return array(
-			new \Twig_SimpleFunction('redevent_event', array($this, 'getInstance'))
+			new \Twig_SimpleFunction('redevent_bundle', array($this, 'getInstance'))
 		);
 	}
 
@@ -39,9 +39,9 @@ class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
 	 */
 	public function getInstance($id)
 	{
-		$item = \RedeventEntityEvent::load((int) $id);
+		$item = \RedeventEntityBundle::load((int) $id);
 
-		return $item->isLoaded() ? new \RedeventEntityTwigEvent($item) : null;
+		return $item->isLoaded() ? new \RedeventEntityTwigBundle($item) : null;
 	}
 
 	/**
@@ -51,6 +51,6 @@ class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
 	 */
 	public function getName()
 	{
-		return 'redevent_event';
+		return 'redevent_bundle';
 	}
 }
