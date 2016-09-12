@@ -85,6 +85,10 @@ abstract class RedeventHelperAdmin
 						'view' => 'pricegroups', 'link' => 'index.php?option=com_redevent&view=pricegroups', 'icon' => 'icon-usd',
 						'text' => JText::_('COM_REDEVENT_MENU_PRICEGROUPS'), 'access' => 'core.edit'
 					),
+					array(
+						'view' => 'bundles', 'link' => 'index.php?option=com_redevent&view=bundles', 'icon' => 'icon-briefcase',
+						'text' => JText::_('COM_REDEVENT_MENU_BUNDLES'), 'access' => 'core.edit'
+					),
 				)
 			),
 			array(
