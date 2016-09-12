@@ -72,7 +72,5 @@ class RedeventControllerBundle extends RControllerForm
 		{
 			$this->setMessage(JText::_('COM_REDEVENT_BUNDLE_ERROR_SAVING_EVENTS'), 'notice');
 		}
-
-		exit('done');
 	}
 }
