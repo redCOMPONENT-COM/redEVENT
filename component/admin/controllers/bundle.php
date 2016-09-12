@@ -70,7 +70,7 @@ class RedeventControllerBundle extends RControllerForm
 		}
 		catch (Exception $e)
 		{
-			$this->setMessage(JText::_('COM_REDEVENT_BUNDLE_ERROR_SAVING_EVENTS'), 'notice');
+			$this->setMessage(JText::_('COM_REDEVENT_BUNDLE_ERROR_SAVING_EVENTS') . ': ' . $e->getMessage(), 'notice');
 		}
 	}
 }
