@@ -21,3 +21,60 @@
 .redcore input[type=text], .redcore input[type=url], .redcore input[type=email] {
 	height: 20px !important;
 }
+
+.redcore div.tagInsertModal.modal iframe {
+	min-height: 500px;
+}
+
+td.tagname {
+	cursor: pointer;
+}
+
+/**
+ * Dashboard
+ */
+#redevent-cpanel {margin-top: 30px;}
+.redevent-cpanel-icon-wrapper { background: #fff; border: 1px solid #fff; min-height: 120px; position: relative;}
+.redevent-cpanel-icon {position: absolute;top: 50%;left: 50%; margin-right: -50%;transform: translate(-50%, -50%);}
+.redevent-cpanel-icon i {margin: 0px;}
+.redevent-cpanel-text {text-align: center; padding: 10px 5px; font-size: 14px; text-transform: uppercase;}
+.redevent-cpanel-icon-link {color: #333 !important; display: block;}
+.redevent-cpanel-icon-link:hover {text-decoration: none !important;}
+.redevent-cpanel-icon-link:hover .redevent-cpanel-icon {color: #c33;}
+.redevent-cpanel-icon-link:hover .redevent-cpanel-icon-wrapper {border: 1px solid #c33;}
+.redevent-cpanel-icon-link:hover .redevent-cpanel-text {text-decoration: none !important; background-color: #c33;font-weight: bold; color: #fff;}
+.redevent-cpanel-count {position: absolute;top: 25%;right: 20%;font-size: 14px !important;font-weight: bold !important;}
+.redevent-cpanel-icon-link:hover .redevent-cpanel-count {background-color: #c33;}
+#redevent-cpanel h4 {color: white;}
+#redevent-cpanel a.accordion-toggle:hover, #redevent-cpanel a.accordion-toggle:visited {text-decoration: none;}
+#redevent-cpanel .row-fluid {padding: 10px;}
+
+/**
+ * Sidebar
+ */
+.redevent-sidebar .accordion-group {
+	background: #1b1b1b;
+}
+.redevent-sidebar .accordion-heading .accordion-toggle {
+	color: #fefefe;
+	font-weight: bold;
+	text-decoration: none;
+}
+.redevent-sidebar .accordion-body ul.nav {
+	margin: 0px;
+	background: #fff;
+}
+.redevent-sidebar .accordion-body ul.nav > li:first-child a {
+	border-radius: 0px !important;
+}
+.redevent-sidebar .accordion-body ul.nav .redevent-sidebar-item a {
+	border-left: 0px;
+	border-right: 0px;
+	font-weight: normal !important;
+}
+.redevent-sidebar .accordion-body ul.nav .redevent-sidebar-item.active a,
+.redevent-sidebar .accordion-body ul.nav .redevent-sidebar-item a:hover {
+	color: #c33;
+	cursor: hover;
+	font-weight: bold !important;
+}

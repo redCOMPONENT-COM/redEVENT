@@ -221,7 +221,7 @@ class RedeventModelCustomfields extends RModelList
 						$columntype = 'TEXT';
 				}
 
-				$q = 'ALTER IGNORE TABLE ' . $table . ' ADD COLUMN custom' . $row->id . ' ' . $columntype;
+				$q = 'ALTER TABLE ' . $table . ' ADD COLUMN custom' . $row->id . ' ' . $columntype;
 
 				$this->_db->setQuery($q);
 

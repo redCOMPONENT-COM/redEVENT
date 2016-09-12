@@ -145,7 +145,7 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 					default: // for now, let's not restrict the type...
 						$columntype = 'TEXT';
 				}
-				$q = 'ALTER IGNORE TABLE ' . $table . ' ADD COLUMN custom' . $row->id . ' ' . $columntype;
+				$q = 'ALTER TABLE ' . $table . ' ADD COLUMN custom' . $row->id . ' ' . $columntype;
 				$db->setQuery($q);
 				if (!$db->query()) {
 					JError::raiseWarning(0, 'failed adding custom field to table');

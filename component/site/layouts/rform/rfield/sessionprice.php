@@ -26,7 +26,7 @@ $properties = $data->getInputProperties();
 			$properties['readonly'] = 'readonly';
 		?>
 		<input <?php echo $data->propertiesToString($properties); ?>/>
-		<?php echo $option->currency . ' ' . $option->price; ?>
+		<?php echo RedeventHelperOutput::formatprice($option->price, $option->currency); ?>
 	<?php else: ?>
 		<div class="fieldoptions">
 
