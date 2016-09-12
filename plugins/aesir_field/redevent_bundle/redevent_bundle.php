@@ -1,7 +1,7 @@
 .<?php
 /**
  * @package     Aesir.Plugin
- * @subpackage  Aesir_Field.Redevent_event
+ * @subpackage  Aesir_Field.Redevent_bundle
  *
  * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 JLoader::import('reditem.library');
-JLoader::registerPrefix('PlgAesir_FieldRedevent_event', __DIR__);
+JLoader::registerPrefix('PlgAesir_FieldRedevent_bundle', __DIR__);
 
 $redcoreLoader = JPATH_LIBRARIES . '/redcore/bootstrap.php';
 
@@ -28,18 +28,18 @@ use Aesir\Plugin\AbstractFieldPlugin;
 use Aesir\Entity\FieldInterface;
 
 /**
- * Redevent_event field
+ * Redevent_bundle field
  *
  * @since  1.0.0
  */
-final class PlgAesir_FieldRedevent_Event extends AbstractFieldPlugin
+final class PlgAesir_FieldRedevent_bundle extends AbstractFieldPlugin
 {
 	/**
-	 * Type for the form type="redevent_event" tag
+	 * Type for the form type="redevent_bundle" tag
 	 *
 	 * @var  string
 	 */
-	protected $formFieldType = 'PlgAesir_FieldRedevent_event.event';
+	protected $formFieldType = 'PlgAesir_FieldRedevent_bundle.event';
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -60,6 +60,6 @@ final class PlgAesir_FieldRedevent_Event extends AbstractFieldPlugin
 	 */
 	public function onAesirAfterTwigLoad(\Aesir\Twig\Enviroment $twig, \Twig_LoaderInterface $loader = null, $options = array())
 	{
-		$twig->addExtension(new PlgAesir_FieldRedevent_eventTwigExtensionEvent);
+		$twig->addExtension(new PlgAesir_FieldRedevent_bundleTwigExtensionBundle);
 	}
 }

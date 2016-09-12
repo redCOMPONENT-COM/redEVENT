@@ -1,11 +1,13 @@
 <?php
 /**
- * @package     Redevent.Frontend
- * @subpackage  Plugins
+ * @package     Redevent.Library
+ * @subpackage  Entity.twig
  *
- * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
+
+JLoader::import('reditem.library');
 
 use Aesir\Entity\Twig\AbstractTwigEntity;
 use Aesir\Entity\Twig\Traits;
@@ -15,9 +17,9 @@ defined('_JEXEC') or die;
 /**
  * redEVENT event Twig Entity.
  *
- * @since  3.3.10
+ * @since  3.2.0
  */
-final class PlgAesir_FieldRedevent_EventEntityTwigEvent extends AbstractTwigEntity
+final class RedeventEntityTwigEvent extends AbstractTwigEntity
 {
 	/**
 	 * Constructor.
@@ -43,7 +45,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigEvent extends AbstractTwigEnti
 			return $this->entity->$name;
 		}
 
-		throw new RuntimeException('unsupported property in __get: ' . $name);
+		throw new \RuntimeException('unsupported property in __get: ' . $name);
 	}
 
 	/**
@@ -65,7 +67,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigEvent extends AbstractTwigEnti
 	 */
 	public function getSignupform()
 	{
-		$helper = new RedeventTagsRegistrationEvent($this->entity->id);
+		$helper = new \RedeventTagsRegistrationEvent($this->entity->id);
 
 		return $helper->getHtml();
 	}
@@ -77,7 +79,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigEvent extends AbstractTwigEnti
 	 */
 	public function getSignuplink()
 	{
-		return JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->entity->id));
+		return \JRoute::_(\RedeventHelperRoute::getSignupRoute('webform', $this->entity->id));
 	}
 
 	/**
@@ -91,7 +93,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigEvent extends AbstractTwigEnti
 	 */
 	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from('#__redevent_event_venue_xref')
@@ -127,10 +129,10 @@ final class PlgAesir_FieldRedevent_EventEntityTwigEvent extends AbstractTwigEnti
 		return array_map(
 			function($row)
 			{
-				$instance = RedeventEntitySession::getInstance();
+				$instance = \RedeventEntitySession::getInstance();
 				$instance->bind($row);
 
-				return new PlgAesir_FieldRedevent_eventEntityTwigSession($instance);
+				return new \RedeventEntityTwigSession($instance);
 			},
 			$res
 		);

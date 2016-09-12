@@ -21,14 +21,14 @@ RedeventBootstrap::bootstrap();
  *
  * @since  1.0.0
  */
-class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
+class PlgAesir_FieldRedevent_BundleFormFieldBundle extends CustomField
 {
 	/**
 	 * The form field type.
 	 *
 	 * @var  string
 	 */
-	protected $type = 'event';
+	protected $type = 'bundle';
 
 	/**
 	 * Get the data that is going to be passed to the layout
@@ -40,8 +40,8 @@ class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 		$data = parent::getLayoutData();
 
 		$options = array(JHtml::_('select.option', '', Jtext::_('JSELECT')));
-		$eventsOptions = $this->getEventOptions();
-		$data['options'] = $eventsOptions ? array_merge($options, $eventsOptions) : $options;
+		$bundlesOptions = $this->getBundleOptions();
+		$data['options'] = $bundlesOptions ? array_merge($options, $bundlesOptions) : $options;
 
 		return $data;
 	}
@@ -57,7 +57,7 @@ class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 
 		$template  = $app->getTemplate();
 
-		$fieldType = 'redevent_event';
+		$fieldType = 'redevent_bundle';
 
 		$baseAppPath = $app->isSite() ? JPATH_SITE : JPATH_ADMINISTRATOR;
 
@@ -75,14 +75,14 @@ class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 	 *
 	 * @return array
 	 */
-	protected function getEventOptions()
+	protected function getBundleOptions()
 	{
 		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('id AS value, title AS text')
-			->from('#__redevent_events')
+			->select('id AS value, name AS text')
+			->from('#__redevent_bundles')
 			->where('published = 1')
-			->order('title ASC');
+			->order('name ASC');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
