@@ -117,4 +117,19 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 			}
 		);
 	}
+
+	/**
+	 * Get booked places
+	 *
+	 * @return int
+	 */
+	public function getLeft()
+	{
+		if (!$this->entity->maxattendees)
+		{
+			return false;
+		}
+
+		return $this->entity->maxattendees - $this->getBooked();
+	}
 }
