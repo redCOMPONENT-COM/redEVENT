@@ -63,6 +63,26 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Return number of booked places
+	 *
+	 * @return int
+	 */
+	public function getBooked()
+	{
+		return $this->entity->getNumberAttending();
+	}
+
+	/**
+	 * Return number of places left
+	 *
+	 * @return int
+	 */
+	public function getLeft()
+	{
+		return $this->entity->getNumberLeft();
+	}
+
+	/**
 	 * Get session price groups
 	 *
 	 * @return   array|bool
@@ -92,5 +112,15 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 		$venue = $this->entity->getVenue();
 
 		return $venue->isValid() ? new \RedeventEntityTwigVenue($venue) : false;
+	}
+
+	/**
+	 * check if session is full
+	 *
+	 * @return boolean
+	 */
+	public function getFull()
+	{
+		return $this->entity->isFull();
 	}
 }
