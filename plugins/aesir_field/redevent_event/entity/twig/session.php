@@ -91,4 +91,30 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 
 		return $venue->isValid() ? new PlgAesir_FieldRedevent_eventEntityTwigVenue($venue) : false;
 	}
+
+	/**
+	 * Get booked places
+	 *
+	 * @return int
+	 */
+	public function getBooked()
+	{
+		if (!$attendees = $this->entity->getAttendees())
+		{
+			return 0;
+		}
+
+		return array_reduce(
+			$attendees,
+			function($count, $attendee)
+			{
+				if ($attendee->confirmed && !$attendee->cancelled && ! $attendee->waitinglist)
+				{
+					$count++;
+				}
+
+				return $count;
+			}
+		);
+	}
 }
