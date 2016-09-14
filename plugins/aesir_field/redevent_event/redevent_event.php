@@ -1,4 +1,4 @@
-.<?php
+<?php
 /**
  * @package     Aesir.Plugin
  * @subpackage  Aesir_Field.Redevent_event
