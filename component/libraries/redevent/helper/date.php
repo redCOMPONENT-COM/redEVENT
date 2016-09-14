@@ -39,6 +39,11 @@ class RedeventHelperDate
 	 */
 	public static function isValidTime($time)
 	{
+		if (empty($time) || $time == '00:00:00')
+		{
+			return false;
+		}
+
 		$format = strlen($time) > 5 ? 'H:i:s' : 'H:i';
 		$d = DateTime::createFromFormat($format, $time);
 

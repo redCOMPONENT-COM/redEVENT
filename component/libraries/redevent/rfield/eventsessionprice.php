@@ -106,6 +106,9 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 				return false;
 			}
 
+			$dateformat = RedeventHelper::config()->get('formatdate', 'd.m.Y');
+			$timeformat = RedeventHelper::config()->get('formattime', 'H:i');
+
 			$selectOption = new stdClass;
 			$selectOption->value = '';
 			$selectOption->label = JText::_('LIB_REDEVENT_RFIELD_EVENTSESSIONPRICE_OPTION_SELECT_SESSION');
@@ -121,6 +124,8 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 					continue;
 				}
 
+				$placesLeftSuffix = $this->placesLeftSuffix($session);
+
 				if (!$prices = $session->getPricegroups(true))
 				{
 					$option = new stdClass;
@@ -128,8 +133,9 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 					$option->label = JText::sprintf(
 						'LIB_REDEVENT_RFIELD_EVENTSESSIONPRICE_OPTION_SESSION',
 						$session->getVenue()->venue,
-						$session->getFormattedStartDate()
-					);
+						$session->getFormattedStartDate($dateformat, $timeformat)
+					) . $placesLeftSuffix;
+
 					$option->price = 0;
 					$option->currency = '';
 					$option->vat = 0;
@@ -146,9 +152,9 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 					$option->label = JText::sprintf(
 						'LIB_REDEVENT_RFIELD_EVENTSESSIONPRICE_OPTION_SESSION_PRICE',
 						$session->getVenue()->venue,
-						$session->getFormattedStartDate(),
+						$session->getFormattedStartDate($dateformat, $timeformat),
 						$price->getPricegroup()->name
-					);
+					) . $placesLeftSuffix;
 					$option->price = $price->price;
 					$option->currency = $price->currency;
 					$option->vat = $price->vat;
@@ -161,6 +167,41 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 		}
 
 		return $this->options;
+	}
+
+	/**
+	 * Return places left suffix
+	 *
+	 * @param   RedeventEntitySession  $session  session
+	 *
+	 * @return bool|string
+	 */
+	private function placesLeftSuffix(RedeventEntitySession $session)
+	{
+		if (!$session->maxattendees)
+		{
+			return false;
+		}
+
+		$booked = array_reduce(
+			$session->getAttendees(),
+			function ($count, $attendee)
+			{
+				if ($attendee->confirmed && !$attendee->cancelled && !$attendee->waitinglist)
+				{
+					$count++;
+				}
+
+				return $count;
+			}
+		);
+
+		$left = $session->maxattendees - $booked;
+
+		if ($left < 4)
+		{
+			return JText::sprintf('LIB_REDEVENT_RFIELD_EVENTSESSIONPRICE_PLACE_LEFT_SUFFIX_D', $left);
+		}
 	}
 
 	/**
