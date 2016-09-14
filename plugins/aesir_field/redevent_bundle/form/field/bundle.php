@@ -80,7 +80,7 @@ class PlgAesir_FieldRedevent_BundleFormFieldBundle extends CustomField
 		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('id AS value, name AS text')
-			->from('#__redevent_bundles')
+			->from('#__redevent_bundle')
 			->where('published = 1')
 			->order('name ASC');
 

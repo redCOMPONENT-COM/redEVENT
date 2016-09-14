@@ -270,6 +270,71 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return number of booked places
+	 *
+	 * @return int
+	 */
+	public function getNumberAttending()
+	{
+		$attendees = $this->getAttendees();
+
+		return empty($attendees) ? 0 :
+			array_reduce(
+				$attendees,
+				function($count, $attendee)
+				{
+					if ($attendee->isAttending())
+					{
+						$count++;
+					}
+
+					return $count;
+				}
+			);
+	}
+
+	/**
+	 * Return number of persons on waiting list
+	 *
+	 * @return int
+	 */
+	public function getNumberLeft()
+	{
+		$item = $this->getItem();
+
+		if (!$item->maxattendees)
+		{
+			return false;
+		}
+
+		return $item->maxattendees - $this->getNumberAttending();
+	}
+
+	/**
+	 * Return number of persons on waiting list
+	 *
+	 * @return int
+	 */
+	public function getNumberWaiting()
+	{
+		$attendees = $this->getAttendees();
+
+		return empty($attendees) ? 0 :
+			array_reduce(
+				$attendees,
+				function($count, $attendee)
+				{
+					if ($attendee->isWaiting())
+					{
+						$count++;
+					}
+
+					return $count;
+				}
+			);
+	}
+
+	/**
 	 * Return initialized RedeventRfieldSessionprice
 	 *
 	 * @return RedeventRfieldSessionprice
@@ -362,8 +427,10 @@ class RedeventEntitySession extends RedeventEntityBase
 	 */
 	public function isFull()
 	{
+		$item = $this->getItem();
+
 		// Check the max registrations and waiting list
-		if ($this->getEvent()->maxattendees)
+		if ($item->maxattendees)
 		{
 			if (!$attendees = $this->getAttendees())
 			{
@@ -375,12 +442,12 @@ class RedeventEntitySession extends RedeventEntityBase
 
 			foreach ($attendees as $attendee)
 			{
-				if ((!$attendee->confirmed) || $attendee->cancelled)
+				if (!$attendee->isConfirmed())
 				{
 					continue;
 				}
 
-				if ($attendee->waitinglist)
+				if ($attendee->isWaiting())
 				{
 					$waiting++;
 				}
@@ -390,8 +457,8 @@ class RedeventEntitySession extends RedeventEntityBase
 				}
 			}
 
-			if ($this->getEvent()->maxattendees <= $registered
-				&& $this->getEvent()->maxwaitinglist <= $waiting)
+			if ($item->maxattendees <= $registered
+				&& $item->maxwaitinglist <= $waiting)
 			{
 				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
 
