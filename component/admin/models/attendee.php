@@ -288,25 +288,36 @@ class RedeventModelAttendee extends RModelAdmin
 	 */
 	public function getPricegroups()
 	{
-		if (!$this->pricegroups)
+		if (is_null($this->pricegroups))
 		{
 			$db = $this->_db;
 			$query = $db->getQuery(true);
 
-			$query->select('sp.*, p.name, p.alias, p.tooltip, f.currency AS form_currency');
-			$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug');
-			$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
+			$query->select('sp.*');
 			$query->from('#__redevent_sessions_pricegroups AS sp');
 			$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
-			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
-			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-			$query->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id');
-			$query->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id');
 			$query->where('sp.xref = ' . $db->Quote($this->sessionId));
 			$query->order('p.ordering ASC');
 
 			$db->setQuery($query);
-			$this->pricegroups = $db->loadObjectList();
+
+			if (!$res = $db->loadObjectList())
+			{
+				$this->pricegroups = false;
+			}
+			else
+			{
+				$this->pricegroups = array_map(
+					function($result)
+					{
+						$entity = RedeventEntitySessionpricegroup::getInstance($result->id);
+						$entity->bind($result);
+
+						return $entity;
+					},
+					$res
+				);
+			}
 		}
 
 		return $this->pricegroups;
