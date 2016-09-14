@@ -185,6 +185,11 @@ class RedeventViewRegistration extends JViewLegacy
 
 		if ($config->get('ga_tracking_on_confirm', 1) && RdfHelperAnalytics::isEnabled())
 		{
+			if ($this->filterAnalyticsEmails())
+			{
+				return;
+			}
+
 			$submit_key = JFactory::getApplication()->input->get('submit_key');
 			$details = $this->get('SessionDetails');
 
@@ -205,5 +210,39 @@ class RedeventViewRegistration extends JViewLegacy
 
 			RdfHelperAnalytics::recordSubmission($submit_key, $options);
 		}
+	}
+
+	/**
+	 * check if we should filter this registration
+	 *
+	 * @return bool
+	 */
+	private function filterAnalyticsEmails()
+	{
+		if (!$filters = trim(RedeventHelper::config()->get('ga_emails_domain_filter')))
+		{
+			return false;
+		};
+
+		$filters = explode(',', $filters);
+		$filters = array_map('trim', $filters);
+
+		$submissionContactEmails = RdfCore::getInstance()->getSubmissionContactEmails(JFactory::getApplication()->input->get('submit_key'));
+
+		foreach ($submissionContactEmails as $submissionEmails)
+		{
+			foreach ($submissionEmails as $submissionEmail)
+			{
+				foreach ($filters as $filter)
+				{
+					if (strstr($submissionEmail['email'], $filter))
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 }
