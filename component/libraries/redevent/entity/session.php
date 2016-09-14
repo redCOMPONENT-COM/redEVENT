@@ -172,17 +172,15 @@ class RedeventEntitySession extends RedeventEntityBase
 			return JText::_('LIB_REDEVENT_OPEN_DATE');
 		}
 
-		if (!is_null($dateFormat))
+		$format = $dateFormat ?: RedeventHelper::config()->get('formatdate');
+
+		if (!is_null($timeFormat) && !$item->all_day)
 		{
-			$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
-		}
-		else
-		{
-			$format = null;
+			$format .= ' ' . $timeFormat;
 		}
 
 		return RedeventHelperDate::formatdatetime(
-			RedeventHelperDate::isValidTime($item->times) ? $item->dates . ' ' . $item->times : $item->dates,
+			$item->dates . ($item->all_day ? '' : ' ' . $item->times),
 			$format
 		);
 	}
@@ -204,21 +202,19 @@ class RedeventEntitySession extends RedeventEntityBase
 			return JText::_('LIB_REDEVENT_OPEN_DATE');
 		}
 
-		if (RedeventHelperDate::isValidTime($item->times))
+		$format = $dateFormat ?: RedeventHelper::config()->get('formatdate');
+
+		if (!$item->all_day)
 		{
-			if (!is_null($dateFormat))
+			if (!is_null($timeFormat))
 			{
-				$format = $dateFormat . (is_null($timeFormat) ? '' : $timeFormat);
-			}
-			else
-			{
-				$format = null;
+				$format .= ' ' . $timeFormat;
 			}
 
-			return RedeventHelperDate::formatdatetime($item->dates . ' ' . $item->times, $format);
+			return RedeventHelperDate::formatdatetime($item->enddates . ' ' . $item->endtimes, $format);
 		}
 
-		return RedeventHelperDate::formatdate($item);
+		return RedeventHelperDate::formatdatetime($item->enddates, $format);
 	}
 
 	/**
