@@ -45,7 +45,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 			return $this->entity->$name;
 		}
 
-		throw new RuntimeException('unsupported property in __get: ' . $name);
+		throw new \RuntimeException('unsupported property in __get: ' . $name);
 	}
 
 	/**
@@ -77,6 +77,27 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get upcoming sessions
+	 *
+	 * @return RedeventEntityTwigEvent[]
+	 */
+	public function getEvents()
+	{
+		if (!$bundleEvents = $this->entity->getBundleevents())
+		{
+			return false;
+		}
+
+		return array_map(
+			function($bundleEvent)
+			{
+				return new \RedeventEntityTwigEvent($bundleEvent->getEvent());
+			},
+			$bundleEvents
+		);
+	}
+
+	/**
 	 * Get next session
 	 *
 	 * @return RedeventEntityTwigSession
@@ -85,9 +106,51 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	{
 		if ($session = $this->entity->getNextSession())
 		{
-			return new RedeventEntityTwigSession($session);
+			return new \RedeventEntityTwigSession($session);
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return RedeventEntityTwigSession[]
+	 */
+	public function getUpcomings()
+	{
+		if (!$sessions = $this->entity->getUpcomingSessions())
+		{
+			return false;
+		}
+
+		return array_map(
+			function($session)
+			{
+				return new \RedeventEntityTwigSession($session);
+			},
+			$sessions
+		);
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return RedeventEntityTwigVenue[]
+	 */
+	public function getVenues()
+	{
+		if (!$venues = $this->entity->getVenues())
+		{
+			return false;
+		}
+
+		return array_map(
+			function($venue)
+			{
+				return new \RedeventEntityTwigVenue($venue);
+			},
+			$venues
+		);
 	}
 }
