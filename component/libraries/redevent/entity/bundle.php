@@ -22,6 +22,48 @@ class RedeventEntityBundle extends RedeventEntityBase
 	private $bundleEvents;
 
 	/**
+	 * Get bundle max duration
+	 *
+	 * @return int
+	 */
+	public function getDurationMax()
+	{
+		if (!$bundleEvents = $this->getBundleevents())
+		{
+			return false;
+		}
+
+		return array_reduce(
+			$bundleEvents,
+			function ($current, $bundleEvent)
+			{
+				return $current + $bundleEvent->getDurationMax();
+			}
+		);
+	}
+
+	/**
+	 * Get bundle min duration
+	 *
+	 * @return int
+	 */
+	public function getDurationMin()
+	{
+		if (!$bundleEvents = $this->getBundleevents())
+		{
+			return false;
+		}
+
+		return array_reduce(
+			$bundleEvents,
+			function ($current, $bundleEvent)
+			{
+				return $bundleEvent->getDurationMin() + $current;
+			}
+		);
+	}
+
+	/**
 	 * Get next session
 	 *
 	 * @return RedeventEntitySession

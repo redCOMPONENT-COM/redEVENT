@@ -94,9 +94,11 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Get start date/time
 	 *
+	 * @param   bool  $dateOnly  only take day into account
+	 *
 	 * @return JDate
 	 */
-	public function getDateStart()
+	public function getDateStart($dateOnly = false)
 	{
 		$item = $this->getItem(true);
 
@@ -105,15 +107,17 @@ class RedeventEntitySession extends RedeventEntityBase
 			return false;
 		}
 
-		return JFactory::getDate($item->dates . ($this->isAllDay() ? '' : ' ' . $item->times));
+		return JFactory::getDate($item->dates . ($this->isAllDay() || $dateOnly ? '' : ' ' . $item->times));
 	}
 
 	/**
 	 * Get end date/time
 	 *
+	 * @param   bool  $dateOnly  only take day into account
+	 *
 	 * @return JDate
 	 */
-	public function getDateEnd()
+	public function getDateEnd($dateOnly = false)
 	{
 		$item = $this->getItem(true);
 
@@ -124,14 +128,34 @@ class RedeventEntitySession extends RedeventEntityBase
 
 		if (RedeventHelperDate::isValidDate($item->enddates))
 		{
-			$endDate = $item->enddate;
+			$endDate = $item->enddates;
 		}
 		else
 		{
 			$endDate = $item->dates;
 		}
 
-		return JFactory::getDate($endDate . ($this->isAllDay() ? '' : ' ' . $item->endtimes));
+		return JFactory::getDate($endDate . ($this->isAllDay() || $dateOnly ? '' : ' ' . $item->endtimes));
+	}
+
+	/**
+	 * Get session duration in days (On how many days it spans)
+	 *
+	 * @return int
+	 */
+	public function getDurationDays()
+	{
+		if ($this->isOpenDate())
+		{
+			return false;
+		}
+
+		if ($this->getDateStart() == $this->getDateEnd())
+		{
+			return 1;
+		}
+
+		return $this->getDateEnd()->diff($this->getDateStart())->format('%a') + 1;
 	}
 
 	/**

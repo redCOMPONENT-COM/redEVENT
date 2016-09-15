@@ -86,7 +86,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 
 		$start = $this->entity->getDateStart();
 
-		return $start->diff(JFactory::getDate('today'))->format('%d');
+		return $start->diff(JFactory::getDate('today'))->format('%a');
 	}
 
 	/**
