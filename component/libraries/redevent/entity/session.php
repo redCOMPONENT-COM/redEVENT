@@ -92,6 +92,49 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Get start date/time
+	 *
+	 * @return JDate
+	 */
+	public function getDateStart()
+	{
+		$item = $this->getItem(true);
+
+		if ($this->isOpenDate())
+		{
+			return false;
+		}
+
+		return JFactory::getDate($item->dates . ($this->isAllDay() ? '' : ' ' . $item->times));
+	}
+
+	/**
+	 * Get end date/time
+	 *
+	 * @return JDate
+	 */
+	public function getDateEnd()
+	{
+		$item = $this->getItem(true);
+
+		if ($this->isOpenDate())
+		{
+			return false;
+		}
+
+		if (RedeventHelperDate::isValidDate($item->enddates))
+		{
+			$endDate = $item->enddate;
+		}
+		else
+		{
+			$endDate = $item->dates;
+		}
+
+		return JFactory::getDate($endDate . ($this->isAllDay() ? '' : ' ' . $item->endtimes));
+	}
+
+	/**
 	 * Return associated event
 	 *
 	 * @return RedeventEntityEvent
@@ -401,6 +444,40 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Get unix start date/time from db
+	 *
+	 * @return string
+	 */
+	public function getUnixStart()
+	{
+		$item = $this->getItem();
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			return null;
+		}
+
+		return strtotime($item->dates . ($this->isAllDay() ? '' : ' ' . $item->times));
+	}
+
+	/**
+	 * Get unix start date/time from db
+	 *
+	 * @return string
+	 */
+	public function getUnixEnd()
+	{
+		$item = $this->getItem();
+
+		if (!RedeventHelperDate::isValidDate($item->enddates))
+		{
+			return null;
+		}
+
+		return strtotime($item->enddates . ($this->isAllDay() ? '' : ' ' . $item->endtimes));
+	}
+
+	/**
 	 * Return associated venue
 	 *
 	 * @return RedeventEntityVenue
@@ -418,6 +495,16 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return $this->venue;
+	}
+
+	/**
+	 * Return true if it's a full day session
+	 *
+	 * @return bool
+	 */
+	public function isAllDay()
+	{
+		return $this->getItem(true)->allday > 0;
 	}
 
 	/**
@@ -467,6 +554,34 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return false;
+	}
+
+	/**
+	 * Return true if it's an open date
+	 *
+	 * @return bool
+	 */
+	public function isOpenDate()
+	{
+		return !RedeventHelperDate::isValidDate($this->getItem(true)->dates);
+	}
+
+	/**
+	 * Is this an upcoming event
+	 *
+	 * @return bool
+	 */
+	public function isUpcoming()
+	{
+		$item = $this->getItem(true);
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			// Open date
+			return false;
+		}
+
+		return $this->getUnixStart() > time();
 	}
 
 	/**

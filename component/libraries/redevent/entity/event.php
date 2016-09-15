@@ -193,6 +193,17 @@ class RedeventEntityEvent extends RedeventEntityBase
 							return $session->published == $value;
 						}
 					);
+
+				case 'upcoming':
+					$sessions = array_filter(
+						$sessions,
+						function($session) use ($value)
+						{
+							$upcoming = $session->isUpcoming();
+
+							return $value ? $upcoming : !$upcoming;
+						}
+					);
 			}
 		}
 

@@ -59,4 +59,35 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	{
 		return isset($this->entity->$name);
 	}
+
+	/**
+	 * is triggered when invoking inaccessible methods in an object context.
+	 *
+	 * @param   method  $name       method name
+	 * @param   array   $arguments  arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($name, $arguments)
+	{
+		if (is_callable(array($this->entity, 'get' . ucfirst($name))))
+		{
+			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
+		}
+	}
+
+	/**
+	 * Get next session
+	 *
+	 * @return RedeventEntityTwigSession
+	 */
+	public function getNext()
+	{
+		if ($session = $this->entity->getNextSession())
+		{
+			return new RedeventEntityTwigSession($session);
+		}
+
+		return false;
+	}
 }

@@ -73,6 +73,35 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get number of days until start
+	 *
+	 * @return string
+	 */
+	public function getDaysUntil()
+	{
+		if (!RedeventHelperDate::isValidDate($this->entity->dates))
+		{
+			return false;
+		}
+
+		$start = $this->entity->getDateStart();
+
+		return $start->diff(JFactory::getDate('today'))->format('%d');
+	}
+
+	/**
+	 * Get venue twig entity
+	 *
+	 * @return \RedeventEntityTwigVenue
+	 */
+	public function getEvent()
+	{
+		$event = $this->entity->getEvent();
+
+		return $event->isValid() ? new \RedeventEntityTwigEvent($event) : false;
+	}
+
+	/**
 	 * Return number of places left
 	 *
 	 * @return int
