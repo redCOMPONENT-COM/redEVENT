@@ -31,6 +31,21 @@ class RedeventHelperRoute
 
 		return self::buildUrl($parts);
 	}
+	/**
+	 * return link to bundle view
+	 *
+	 * @param   int  $id  bundle id
+	 *
+	 * @return url
+	 */
+	public static function getBundlesRoute()
+	{
+		$parts = array("option" => "com_redevent",
+			"view"   => "bundles"
+		);
+
+		return self::buildUrl($parts);
+	}
 
 	/**
 	 * return link to details view of specified event

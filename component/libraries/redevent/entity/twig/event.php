@@ -66,6 +66,46 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get all bundles this event belongs to
+	 *
+	 * @return \RedeventEntityTwigBundle[]
+	 */
+	public function getBundles()
+	{
+		if (!$bundles = $this->entity->getBundles())
+		{
+			return false;
+		}
+
+		// Filter published
+		$published = array_filter(
+			$bundles,
+			function($bundle)
+			{
+				return $bundle->published;
+			}
+		);
+
+		// Return twig entities
+		return $published ? array_map(
+			function($bundle)
+			{
+				return new \RedeventEntityTwigBundle($bundle);
+			}, $published
+		) : false;
+	}
+
+	/**
+	 * Get all bundles this event belongs to
+	 *
+	 * @return \RedeventEntityTwigBundle[]
+	 */
+	public function getBundlesLink()
+	{
+		return \JRoute::_(\RedeventHelperRoute::getBundlesRoute() . '&filter[event]' . $this->entity->id);
+	}
+
+	/**
 	 * Get duration max in days
 	 *
 	 * @return int

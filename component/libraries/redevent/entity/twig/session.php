@@ -132,6 +132,16 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Return signup url
+	 *
+	 * @return string
+	 */
+	public function getSignuplink()
+	{
+		return \JRoute::_(\RedeventHelperRoute::getSignupRoute('webform', $this->entity->eventid, $this->entity->id));
+	}
+
+	/**
 	 * Get venue twig entity
 	 *
 	 * @return \RedeventEntityTwigVenue
