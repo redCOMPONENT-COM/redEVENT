@@ -294,8 +294,10 @@ class RedeventEntitySession extends RedeventEntityBase
 	 */
 	public function isFull()
 	{
+		$item = $this->getItem();
+
 		// Check the max registrations and waiting list
-		if ($this->getEvent()->maxattendees)
+		if ($item->maxattendees)
 		{
 			if (!$attendees = $this->getAttendees())
 			{
@@ -322,8 +324,8 @@ class RedeventEntitySession extends RedeventEntityBase
 				}
 			}
 
-			if ($this->getEvent()->maxattendees <= $registered
-				&& $this->getEvent()->maxwaitinglist <= $waiting)
+			if ($item->maxattendees <= $registered
+				&& $item->maxwaitinglist <= $waiting)
 			{
 				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
 
