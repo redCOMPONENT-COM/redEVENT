@@ -571,8 +571,6 @@ class RedeventEntitySession extends RedeventEntityBase
 			if ($item->maxattendees <= $registered
 				&& $item->maxwaitinglist <= $waiting)
 			{
-				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
-
 				return true;
 			}
 		}
