@@ -88,7 +88,7 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 
 			if (!$this->event)
 			{
-				$this->event = RedeventEntityEvent::getInstance($item->event_id);
+				$this->event = RedeventEntityEvent::load($item->event_id);
 			}
 		}
 
