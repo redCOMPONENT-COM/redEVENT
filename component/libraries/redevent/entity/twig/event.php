@@ -61,6 +61,55 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get duration max in days
+	 *
+	 * @return int
+	 */
+	public function getDurationMax()
+	{
+		if (!$sessions = $this->getSessions())
+		{
+			return false;
+		}
+
+		return array_reduce(
+			$sessions,
+			function($value, $session)
+			{
+				return max($value, $session->getDurationDays());
+			}
+		);
+	}
+
+	/**
+	 * Get duration min in days
+	 *
+	 * @return int
+	 */
+	public function getDurationMin()
+	{
+		if (!$sessions = $this->getSessions())
+		{
+			return false;
+		}
+
+		return array_reduce(
+			$sessions,
+			function($value, $session)
+			{
+				$duration = $session->getDurationDays();
+
+				if (!$duration)
+				{
+					return $value;
+				}
+
+				return $value ? min($value, $duration) : $duration;
+			}
+		);
+	}
+
+	/**
 	 * Return signup form
 	 *
 	 * @return string
@@ -126,15 +175,6 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 			return false;
 		}
 
-		return array_map(
-			function($row)
-			{
-				$instance = \RedeventEntitySession::getInstance();
-				$instance->bind($row);
-
-				return new \RedeventEntityTwigSession($instance);
-			},
-			$res
-		);
+		return \RedeventEntitySession::loadArray($res);
 	}
 }
