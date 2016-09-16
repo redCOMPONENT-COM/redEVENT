@@ -183,8 +183,10 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 			return false;
 		}
 
-		$booked = array_reduce(
-			$session->getAttendees(),
+		$attendees = $session->getAttendees();
+
+		$booked = $attendees ? array_reduce(
+			$attendees,
 			function ($count, $attendee)
 			{
 				if ($attendee->confirmed && !$attendee->cancelled && !$attendee->waitinglist)
@@ -194,7 +196,7 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 
 				return $count;
 			}
-		);
+		) : 0;
 
 		$left = $session->maxattendees - $booked;
 
