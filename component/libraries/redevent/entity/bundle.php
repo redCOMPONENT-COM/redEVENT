@@ -58,7 +58,7 @@ class RedeventEntityBundle extends RedeventEntityBase
 			$bundleEvents,
 			function ($current, $bundleEvent)
 			{
-				return $bundleEvent->getDurationMin() + $current;
+				return $current + $bundleEvent->getDurationMin();
 			}
 		);
 	}

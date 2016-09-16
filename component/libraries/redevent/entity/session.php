@@ -150,12 +150,12 @@ class RedeventEntitySession extends RedeventEntityBase
 			return false;
 		}
 
-		if ($this->getDateStart() == $this->getDateEnd())
+		if ($this->getDateStart(true) == $this->getDateEnd(true))
 		{
 			return 1;
 		}
 
-		return $this->getDateEnd()->diff($this->getDateStart())->format('%a') + 1;
+		return $this->getDateEnd(true)->diff($this->getDateStart(true))->format('%a') + 1;
 	}
 
 	/**
