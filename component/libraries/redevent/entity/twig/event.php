@@ -22,6 +22,11 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigEvent extends AbstractTwigEntity
 {
 	/**
+	 * @var RedeventEntitySession[][]
+	 */
+	private $sessions;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntityEvent  $entity  The entity
@@ -67,7 +72,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	public function getDurationMax()
 	{
-		if (!$sessions = $this->getSessions())
+		if (!$sessions = $this->getEventSessions())
 		{
 			return false;
 		}
@@ -88,7 +93,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	public function getDurationMin()
 	{
-		if (!$sessions = $this->getSessions())
+		if (!$sessions = $this->getEventSessions())
 		{
 			return false;
 		}
@@ -107,6 +112,34 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 				return $value ? min($value, $duration) : $duration;
 			}
 		);
+	}
+
+	/**
+	 * Get next session
+	 *
+	 * @return \RedeventEntityTwigSession
+	 */
+	public function getNext()
+	{
+		if (!$sessions = $this->getEventSessions(1, "dates.asc"))
+		{
+			return false;
+		}
+
+		$upcomings = array_filter(
+			$sessions,
+			function($session)
+			{
+				return $session->isUpcoming();
+			}
+		);
+
+		if (!$upcomings)
+		{
+			return false;
+		}
+
+		return new \RedeventEntityTwigSession(reset($upcomings));
 	}
 
 	/**
@@ -142,39 +175,70 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
-		$db = \JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select('*')
-			->from('#__redevent_event_venue_xref')
-			->where('eventid = ' . $this->entity->id);
+		$sessions = $this->getEventSessions($published, $ordering, $featured);
 
-		switch ($ordering)
+		return $sessions ? array_map(
+			function($session)
+			{
+				return new \RedeventEntityTwigSession($session);
+			},
+			$sessions
+		) : false;
+	}
+
+	/**
+	 * Return cached event sessions
+	 *
+	 * @param   int     $published  publish state
+	 * @param   string  $ordering   ordering
+	 * @param   bool    $featured   filtered featured
+	 *
+	 * @return \RedeventEntitySession[]
+	 */
+	private function getEventSessions($published = 1, $ordering = 'dates.asc', $featured = false)
+	{
+		$hash = "published=$published&$ordering=$ordering&featured=$featured";
+
+		if (!isset($this->sessions[$hash]))
 		{
-			case 'dates.desc':
-				$query->order('dates DESC, times DESC');
-				break;
-			case 'dates.asc':
-			default:
-				$query->order('dates ASC, times ASC');
+			$db = \JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('*')
+				->from('#__redevent_event_venue_xref')
+				->where('eventid = ' . $this->entity->id);
+
+			switch ($ordering)
+			{
+				case 'dates.desc':
+					$query->order('dates DESC, times DESC');
+					break;
+				case 'dates.asc':
+				default:
+					$query->order('dates ASC, times ASC');
+			}
+
+			if (is_numeric($published))
+			{
+				$query->where('published = ' . $published);
+			}
+
+			if ($featured)
+			{
+				$query->where('featured = 1');
+			}
+
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
+
+			$this->sessions[$hash] = $res ? array_map(
+				function($row)
+				{
+					return \RedeventEntitySession::getInstance($row->id)->bind($row);
+				},
+				$res
+			) : false;
 		}
 
-		if (is_numeric($published))
-		{
-			$query->where('published = ' . $published);
-		}
-
-		if ($featured)
-		{
-			$query->where('featured = 1');
-		}
-
-		$db->setQuery($query);
-
-		if (!$res = $db->loadObjectList())
-		{
-			return false;
-		}
-
-		return \RedeventEntitySession::loadArray($res);
+		return $this->sessions[$hash];
 	}
 }
