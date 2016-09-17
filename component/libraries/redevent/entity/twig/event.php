@@ -227,6 +227,37 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get event venues
+	 *
+	 * @return \RedeventEntityTwigVenue[]
+	 */
+	public function getVenues()
+	{
+		if (!$sessions = $this->getEventSessions())
+		{
+			return false;
+		}
+
+		$venues = array_reduce(
+			$sessions,
+			function($value, $session)
+			{
+				$venue = $session->getVenue();
+
+				if (empty($value[$venue->id]))
+				{
+					$value[$venue->id] = new RedeventEntityTwigVenue($venue);
+				}
+
+				return $value;
+			},
+			array()
+		);
+
+		return $venues;
+	}
+
+	/**
 	 * Return cached event sessions
 	 *
 	 * @param   int     $published  publish state
