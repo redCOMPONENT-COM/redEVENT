@@ -96,6 +96,43 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 	}
 
 	/**
+	 * Get next session in bundle
+	 *
+	 * @return RedeventEntitySession
+	 */
+	public function getNext()
+	{
+		if (!$sessions = $this->getSessions())
+		{
+			return false;
+		}
+
+		$upcomings = array_filter(
+			$sessions,
+			function($session)
+			{
+				return $session->isUpcoming();
+			}
+		);
+
+		if (!$upcomings)
+		{
+			return false;
+		}
+
+		// Order
+		uasort(
+			$upcomings,
+			function($a, $b)
+			{
+				return $a->getUnixStart() - $b->getUnixStart();
+			}
+		);
+
+		return reset($upcomings);
+	}
+
+	/**
 	 * Get associated sessions
 	 *
 	 * @return RedeventEntitySession[]

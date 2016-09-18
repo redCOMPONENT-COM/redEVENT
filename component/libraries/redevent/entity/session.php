@@ -438,16 +438,7 @@ class RedeventEntitySession extends RedeventEntityBase
 			$db->setQuery($query);
 			$items = $db->loadObjectList();
 
-			$this->pricegroups = array_map(
-				function($item)
-				{
-					$pricegroup = RedeventEntitySessionpricegroup::getInstance();
-					$pricegroup->bind($item);
-
-					return $pricegroup;
-				},
-				$items
-			);
+			$this->pricegroups = RedeventEntitySessionpricegroup::loadArray($items);
 		}
 
 		if ($filterAcl)
