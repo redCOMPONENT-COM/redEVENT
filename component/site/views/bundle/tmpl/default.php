@@ -64,14 +64,16 @@ RHelperAsset::load('site/bundle-addtocart.js');
 		<td class="session-price">
 			{{#if prices.length}}
 				{{#if singleprice}}
-					<input type="hidden" name="sessionpricegroup[]" value="{{ prices.0.value }}"/>{{ prices.0.text }}
+					<input type="hidden" name="sessionpricegroup[]" value="{{ prices.0.id }}"/>{{ prices.0.price }}
 				{{else}}
 					<select name="sessionpricegroup[]">
 						{{#each prices}}
-						<option value="{{ value }}">{{ text }}</option>
+						<option value="{{ id }}">{{ price }}</option>
 						{{/each}}
 					</select>
 				{{/if}}
+			{{else}}
+			<input type="hidden" name="sessionpricegroup[]" value=""/>0
 			{{/if}}
 		</td>
 		<td class="session-total">{{ total }}</td>

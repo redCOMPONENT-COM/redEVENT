@@ -5,16 +5,33 @@
  */
 (function($){
 
-	var listtemplate, selectedtemplate;
+	var listtemplate, selectedtemplate, selectRowTemplate;
 
-	var selectDefault = function(bundleeventId)
+	var showMore = function(eventDiv)
 	{
+		var selectDiv = eventDiv.next();
+		var bundleeventid = eventDiv.find('input[name="bundleevent[]"]').val();
+		var selected = eventDiv.find('input[name="selected[]"]').val();
+		var tbody = selectDiv.find('table tbody');
+		var limitStart = tbody.children().length;
 
+		$.ajax({
+			url: 'index.php?option=com_redevent&format=json&task=bundle.getsessions',
+			data: "bundleeventid=" + bundleeventid + "limitstart=" + limitStart
+		})
+		.done(function(response){
+			if (response.data.length) {
+				response.data.forEach(function(row) {
+					tbody.append(selectRowTemplate(row));
+				});
+			}
+		});
 	};
 
 	$(function() {
 		listtemplate = Handlebars.compile($("#select-session-template").html());
 		selectedtemplate = Handlebars.compile($("#selected-session-template").html());
+		selectRowTemplate = Handlebars.compile($("#select-row-template").html());
 
 		$('div.bundle-event').each(function(index, element){
 			var $element = $(element);
@@ -27,9 +44,10 @@
 			})
 			.done(function(response){
 				$element.find('table.selected-date tbody').empty().append(selectedtemplate({
-					id: response.id,
-					label: response.label,
-					prices: response.prices
+					id: response.data.id,
+					label: response.data.label,
+					prices: response.data.prices,
+					singleprice: response.data.singleprice
 				}));
 			});
 		});
@@ -63,6 +81,8 @@
 					timeoptions: [],
 					languageoptions: []
 				}));
+
+				showMore(eventDiv);
 			});
 		});
 	});

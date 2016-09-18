@@ -40,13 +40,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<table class="table">
 			<thead>
 				<tr>
-					<th><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_DATE'); ?></th>
-					<th><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_DURATION'); ?></th>
-					<th><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_LANGUAGE'); ?></th>
-					<th><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_VENUE'); ?></th>
-					<th><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_PRICE'); ?></th>
-					<th><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SEATS'); ?></th>
-					<th><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_BOOK_COURSE'); ?></th>
+					<th class="session-date"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_DATE'); ?></th>
+					<th class="session-duration"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_DURATION'); ?></th>
+					<th class="session-language"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_LANGUAGE'); ?></th>
+					<th class="session-venue"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_VENUE'); ?></th>
+					<th class="session-price"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_PRICE'); ?></th>
+					<th class="session-places"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_PLACES'); ?></th>
+					<th class="session-book"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_BOOK_COURSE'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -57,4 +57,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<button type="button" class="btn btn-primary"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SHOW_MORE'); ?></button>
 		</div>
 	</div>
+</script>
+
+<script id="select-row-template" type="text/x-handlebars-template">
+	<tr>
+		<td class="session-date">{{ date }}</td>
+		<td class="session-duration">{{ duration }}</td>
+		<td class="session-language">{{ language }}</td>
+		<td class="session-venue">{{ venue }}</td>
+		<td class="session-price">{{ price }}</td>
+		<td class="session-places">{{ places }}</td>
+		<td class="session-book">{{ book }}</td>
+	</tr>
 </script>
