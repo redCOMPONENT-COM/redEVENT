@@ -60,13 +60,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 </script>
 
 <script id="select-row-template" type="text/x-handlebars-template">
-	<tr>
+	<tr{{#if selected}} class="selected"{{/if}}>
 		<td class="session-date">{{ date }}</td>
 		<td class="session-duration">{{ duration }}</td>
 		<td class="session-language">{{ language }}</td>
 		<td class="session-venue">{{ venue }}</td>
 		<td class="session-price">{{ price }}</td>
 		<td class="session-places">{{ places }}</td>
-		<td class="session-book">{{ book }}</td>
+		<td class="session-book">
+			{{#if selected}}
+				<?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SELECTED_LABEL') ?>
+			{{else}}
+				<span class="do-select" sessionid="{{ id }}">
+					<span class="icon-arrow-right"></span> <?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SELECT_LABEL') ?>
+				</span>
+			{{/if}}
+		</td>
 	</tr>
 </script>

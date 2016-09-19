@@ -16,12 +16,13 @@
 		var limitStart = tbody.children().length;
 
 		$.ajax({
-			url: 'index.php?option=com_redevent&format=json&task=bundle.getsessions',
+			url: 'index.php?option=com_redevent&format=json&task=bundle.sessions',
 			data: "bundleeventid=" + bundleeventid + "limitstart=" + limitStart
 		})
 		.done(function(response){
 			if (response.data.length) {
 				response.data.forEach(function(row) {
+					row.selected = (row.id == selected);
 					tbody.append(selectRowTemplate(row));
 				});
 			}
@@ -67,9 +68,7 @@
 			// Display after getting data
 			$.ajax({
 				url: 'index.php?option=com_redevent&format=json&task=bundle.sessionfilters',
-				data: {
-					bundleeventid: bundleeventid,
-				}
+				data: "bundleeventid=bundleeventid"
 			})
 			.done(function(response){
 				eventDiv.after(listtemplate({
@@ -81,6 +80,27 @@
 					timeoptions: [],
 					languageoptions: []
 				}));
+
+				// Select session
+				eventDiv.next().on('click', '.do-select', function(){
+					var sessionId = $(this).attr('sessionid');
+
+					// Display after getting data
+					$.ajax({
+						url: 'index.php?option=com_redevent&format=json&task=bundle.session',
+						data: "id=" + sessionId
+					})
+					.done(function(response){
+						eventDiv.find('table.selected-date tbody').empty().append(selectedtemplate({
+							id: response.data.id,
+							label: response.data.label,
+							prices: response.data.prices,
+							singleprice: response.data.singleprice
+						}));
+
+						eventDiv.next().remove();
+					});
+				});
 
 				showMore(eventDiv);
 			});

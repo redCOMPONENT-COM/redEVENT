@@ -10,6 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 RHelperAsset::load('lib/handlebars.js');
 RHelperAsset::load('site/bundle-addtocart.js');
+RHelperAsset::load('site/bundle-addtocart.css');
 ?>
 <div id="redevent" class="bundle-details">
 <h2><?= $this->bundle->name ?></h2>

@@ -24,9 +24,9 @@ class RedeventControllerBundle extends JControllerLegacy
 	{
 		try
 		{
-			$bundeleventid = $this->input->getInt('bundleeventid');
+			$bundleeventid = $this->input->getInt('bundleeventid');
 
-			if (!$entity = RedeventEntityBundleevent::load($bundeleventid))
+			if (!$entity = RedeventEntityBundleevent::load($bundleeventid))
 			{
 				throw new InvalidArgumentException('Entity not found');
 			}
@@ -73,14 +73,14 @@ class RedeventControllerBundle extends JControllerLegacy
 		}
 	}
 
-	public function getSessions()
+	public function sessions()
 	{
 		try
 		{
-			$bundeleventid = $this->input->getInt('bundleeventid');
+			$bundleeventid = $this->input->getInt('bundleeventid');
 			$limitstart = $this->input->getInt('limitstart');
 
-			if (!$entity = RedeventEntityBundleevent::load($bundeleventid))
+			if (!$entity = RedeventEntityBundleevent::load($bundleeventid))
 			{
 				throw new InvalidArgumentException('Entity not found');
 			}
@@ -123,6 +123,7 @@ class RedeventControllerBundle extends JControllerLegacy
 					}
 
 					$data = new stdclass;
+					$data->id = $session->id;
 					$data->date = $session->getFormattedStartDate();
 					$data->duration = $session->getDurationDays();
 					$data->language = $session->language;
@@ -136,6 +137,55 @@ class RedeventControllerBundle extends JControllerLegacy
 			);
 
 			echo new JResponseJson(array_slice($resp, $limitstart, 5));
+		}
+		catch (Exception $e)
+		{
+			echo new JResponseJson($e);
+		}
+	}
+
+	/**
+	 * Get session
+	 *
+	 * @return void
+	 */
+	public function session()
+	{
+		try
+		{
+			$id = $this->input->getInt('id');
+
+			if (!$session = RedeventEntitySession::load($id))
+			{
+				throw new InvalidArgumentException('Entity not found');
+			}
+
+			$label = JText::sprintf(
+				'COM_REDEVENT_VIEW_BUNDLE_SESSION_SELECTED_LABEL_S_S_S_D',
+				$session->getFormattedStartDate(),
+				$session->getVenue()->city,
+				$session->getVenue()->country,
+				$session->getDurationDays()
+			);
+
+			if ($priceGroups = $session->getPricegroups(true))
+			{
+				$prices = array_map(
+					function($pg)
+					{
+						return array('id' => $pg->id, 'price' => $pg->price);
+					},
+					array_values($priceGroups)
+				);
+				$singleprice = count($prices) <= 2;
+			}
+			else
+			{
+				$prices = false;
+				$singleprice = true;
+			}
+
+			echo new JResponseJson(compact('id', 'label', 'prices', 'singleprice'));
 		}
 		catch (Exception $e)
 		{
