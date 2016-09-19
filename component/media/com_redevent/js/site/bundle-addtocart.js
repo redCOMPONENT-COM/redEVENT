@@ -17,12 +17,20 @@
 
 		$.ajax({
 			url: 'index.php?option=com_redevent&format=json&task=bundle.sessions',
-			data: "bundleeventid=" + bundleeventid + "limitstart=" + limitStart
+			data: "bundleeventid=" + bundleeventid + "&limitstart=" + limitStart
 		})
 		.done(function(response){
 			if (response.data.length) {
 				response.data.forEach(function(row) {
 					row.selected = (row.id == selected);
+
+					if (row.maxattendees > 0) {
+						row.places = row.left >= 10 ? "10+" : row.left;
+					}
+					else {
+						row.places = "10+";
+					}
+
 					tbody.append(selectRowTemplate(row));
 				});
 			}
@@ -130,10 +138,17 @@
 						updateSelected(eventDiv, response.data);
 						eventDiv.next().remove();
 					});
+				})
+				.click('.show-more-button button', function() {
+					showMore(eventDiv)
 				});
 
 				showMore(eventDiv);
 			});
 		});
+
+		$('#add-to-cart-button button').click(function(){
+			alert('TBD');
+		})
 	});
 })(jQuery);

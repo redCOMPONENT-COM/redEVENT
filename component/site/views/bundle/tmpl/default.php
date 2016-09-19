@@ -52,7 +52,7 @@ RHelperAsset::load('site/bundle-addtocart.css');
 		<div class="price"></div>
 	</div>
 
-	<div class="add-to-cart-button">
+	<div id="add-to-cart-button">
 		<button type="button" class="btn btn-success"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_EVENT_ADD_TO_CART'); ?></button>
 	</div>
 </div>

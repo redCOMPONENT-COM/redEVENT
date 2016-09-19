@@ -68,13 +68,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<td class="session-price">{{ price }}</td>
 		<td class="session-places">{{ places }}</td>
 		<td class="session-book">
-			{{#if selected}}
-				<?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SELECTED_LABEL') ?>
-			{{else}}
-				<span class="do-select" sessionid="{{ id }}">
-					<span class="icon-arrow-right"></span> <?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SELECT_LABEL') ?>
-				</span>
-			{{/if}}
+			{{#unless full}}
+				{{#if selected}}
+					<?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SELECTED_LABEL') ?>
+				{{else}}
+					<span class="do-select" sessionid="{{ id }}">
+						<span class="icon-arrow-right"></span> <?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SESSION_LIST_SELECT_LABEL') ?>
+					</span>
+				{{/if}}
+			{{/unless}}
 		</td>
 	</tr>
 </script>

@@ -85,16 +85,6 @@ class RedeventControllerBundle extends JControllerLegacy
 						$price = "";
 					}
 
-					if ($session->maxattendees)
-					{
-						$left = $session->getNumberLeft();
-						$placesLeft = $left < 10 ? $left : "10+";
-					}
-					else
-					{
-						$placesLeft = "10+";
-					}
-
 					$data = new stdclass;
 					$data->id = $session->id;
 					$data->date = $session->getFormattedStartDate();
@@ -102,7 +92,9 @@ class RedeventControllerBundle extends JControllerLegacy
 					$data->language = $session->language;
 					$data->venue = $session->getVenue()->name;
 					$data->price = $price;
-					$data->places = $placesLeft;
+					$data->left = $session->getNumberLeft();
+					$data->maxattendees = $session->maxattendees;
+					$data->full = $session->isFull();
 
 					return $data;
 				},
@@ -150,6 +142,8 @@ class RedeventControllerBundle extends JControllerLegacy
 	 */
 	private function getSessionData(RedeventEntitySession $session)
 	{
+		$id = $session->id;
+
 		$label = JText::sprintf(
 			'COM_REDEVENT_VIEW_BUNDLE_SESSION_SELECTED_LABEL_S_S_S_D',
 			$session->getFormattedStartDate(),
