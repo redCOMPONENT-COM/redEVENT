@@ -49,6 +49,7 @@ RHelperAsset::load('site/bundle-addtocart.css');
 
 	<div id="grand-total">
 		<div class="label"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_EVENT_GRAND_TOTAL'); ?></div>
+		<div class="price"></div>
 	</div>
 
 	<div class="add-to-cart-button">
@@ -65,16 +66,17 @@ RHelperAsset::load('site/bundle-addtocart.css');
 		<td class="session-price">
 			{{#if prices.length}}
 				{{#if singleprice}}
-					<input type="hidden" name="sessionpricegroup[]" value="{{ prices.0.id }}"/>{{ prices.0.price }}
+					<input type="hidden" name="sessionpricegroup[]" value="{{ prices.0.id }}" price="{{ prices.0.price }}" currency="{{ prices.0.currency }}"/>
+					{{ prices.0.currency }} <span class="price">{{ prices.0.price }}</span>
 				{{else}}
 					<select name="sessionpricegroup[]">
 						{{#each prices}}
-						<option value="{{ id }}">{{ price }}</option>
+						<option value="{{ id }}" price="{{ price }} currency="{{ currency }}">{{ currency }} {{ price }}</option>
 						{{/each}}
 					</select>
 				{{/if}}
 			{{else}}
-			<input type="hidden" name="sessionpricegroup[]" value=""/>0
+			<input type="hidden" name="sessionpricegroup[]" value="0"/>-
 			{{/if}}
 		</td>
 		<td class="session-total">{{ total }}</td>

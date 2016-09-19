@@ -38,34 +38,7 @@ class RedeventControllerBundle extends JControllerLegacy
 				return;
 			}
 
-			$id = $next->id;
-
-			$label = JText::sprintf(
-				'COM_REDEVENT_VIEW_BUNDLE_SESSION_SELECTED_LABEL_S_S_S_D',
-				$next->getFormattedStartDate(),
-				$next->getVenue()->city,
-				$next->getVenue()->country,
-				$next->getDurationDays()
-			);
-
-			if ($priceGroups = $next->getPricegroups(true))
-			{
-				$prices = array_map(
-					function($pg)
-					{
-						return array('id' => $pg->id, 'price' => $pg->price);
-					},
-					array_values($priceGroups)
-				);
-				$singleprice = count($prices) <= 2;
-			}
-			else
-			{
-				$prices = false;
-				$singleprice = true;
-			}
-
-			echo new JResponseJson(compact('id', 'label', 'prices', 'singleprice'));
+			echo new JResponseJson($this->getSessionData($next));
 		}
 		catch (Exception $e)
 		{
@@ -160,36 +133,48 @@ class RedeventControllerBundle extends JControllerLegacy
 				throw new InvalidArgumentException('Entity not found');
 			}
 
-			$label = JText::sprintf(
-				'COM_REDEVENT_VIEW_BUNDLE_SESSION_SELECTED_LABEL_S_S_S_D',
-				$session->getFormattedStartDate(),
-				$session->getVenue()->city,
-				$session->getVenue()->country,
-				$session->getDurationDays()
-			);
-
-			if ($priceGroups = $session->getPricegroups(true))
-			{
-				$prices = array_map(
-					function($pg)
-					{
-						return array('id' => $pg->id, 'price' => $pg->price);
-					},
-					array_values($priceGroups)
-				);
-				$singleprice = count($prices) <= 2;
-			}
-			else
-			{
-				$prices = false;
-				$singleprice = true;
-			}
-
-			echo new JResponseJson(compact('id', 'label', 'prices', 'singleprice'));
+			echo new JResponseJson($this->getSessionData($session));
 		}
 		catch (Exception $e)
 		{
 			echo new JResponseJson($e);
 		}
+	}
+
+	/**
+	 * Get session data from entity
+	 *
+	 * @param   RedeventEntitySession  $session  entity
+	 *
+	 * @return array
+	 */
+	private function getSessionData(RedeventEntitySession $session)
+	{
+		$label = JText::sprintf(
+			'COM_REDEVENT_VIEW_BUNDLE_SESSION_SELECTED_LABEL_S_S_S_D',
+			$session->getFormattedStartDate(),
+			$session->getVenue()->city,
+			$session->getVenue()->country,
+			$session->getDurationDays()
+		);
+
+		if ($priceGroups = $session->getPricegroups(true))
+		{
+			$prices = array_map(
+				function($pg)
+				{
+					return array('id' => $pg->id, 'price' => $pg->price, 'currency' => $pg->currency);
+				},
+				array_values($priceGroups)
+			);
+			$singleprice = count($prices) <= 2;
+		}
+		else
+		{
+			$prices = false;
+			$singleprice = true;
+		}
+
+		return compact('id', 'label', 'prices', 'singleprice');
 	}
 }

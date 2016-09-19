@@ -29,6 +29,47 @@
 		});
 	};
 
+	var updateSelected = function(eventDiv, sessionData) {
+		eventDiv.find('table.selected-date tbody').empty().append(selectedtemplate(sessionData));
+		eventDiv.change('[name="sessionpricegroup[]"]', updatePrices);
+		updatePrices();
+	};
+
+	var updatePrices = function(){
+		var total = 0;
+		var currency = "";
+
+		$('div.bundle-event').each(function(index, element){
+			var $element = $(element);
+			var priceElement = $element.find('[name="sessionpricegroup[]"]');
+			var price = 0;
+			var pcurrency = "";
+
+			if (priceElement.prop('tagName') == 'INPUT') {
+				price = priceElement.attr('price');
+				pcurrency = priceElement.attr('currency');
+			}
+			else {
+				var option = priceElement.find('option:selected');
+				price = option.attr('price');
+				pcurrency = option.attr('currency');
+			}
+
+			price = parseFloat(price) * $element.find('[name="participants[]"]').val();
+
+			if (price) {
+				total += price;
+				currency = pcurrency;
+				$element.find('td.session-total').text(pcurrency + ' ' + price.toFixed(2));
+			}
+			else {
+				$element.find('td.session-total').text("-");
+			}
+		});
+
+		$('#grand-total .price').text(currency + ' ' + total.toFixed(2));
+	}
+
 	$(function() {
 		listtemplate = Handlebars.compile($("#select-session-template").html());
 		selectedtemplate = Handlebars.compile($("#selected-session-template").html());
@@ -44,12 +85,7 @@
 				data: "bundleeventid=" + bundleeventid
 			})
 			.done(function(response){
-				$element.find('table.selected-date tbody').empty().append(selectedtemplate({
-					id: response.data.id,
-					label: response.data.label,
-					prices: response.data.prices,
-					singleprice: response.data.singleprice
-				}));
+				updateSelected($element, response.data);
 			});
 		});
 
@@ -91,13 +127,7 @@
 						data: "id=" + sessionId
 					})
 					.done(function(response){
-						eventDiv.find('table.selected-date tbody').empty().append(selectedtemplate({
-							id: response.data.id,
-							label: response.data.label,
-							prices: response.data.prices,
-							singleprice: response.data.singleprice
-						}));
-
+						updateSelected(eventDiv, response.data);
 						eventDiv.next().remove();
 					});
 				});
