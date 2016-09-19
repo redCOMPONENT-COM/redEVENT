@@ -22,6 +22,11 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigEvent extends AbstractTwigEntity
 {
 	/**
+	 * @var RedeventEntitySession[][]
+	 */
+	private $sessions;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntityEvent  $entity  The entity
@@ -61,6 +66,123 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get all bundles this event belongs to
+	 *
+	 * @return \RedeventEntityTwigBundle[]
+	 */
+	public function getBundles()
+	{
+		if (!$bundles = $this->entity->getBundles())
+		{
+			return false;
+		}
+
+		// Filter published
+		$published = array_filter(
+			$bundles,
+			function($bundle)
+			{
+				return $bundle->published;
+			}
+		);
+
+		// Return twig entities
+		return $published ? array_map(
+			function($bundle)
+			{
+				return new \RedeventEntityTwigBundle($bundle);
+			}, $published
+		) : false;
+	}
+
+	/**
+	 * Get all bundles this event belongs to
+	 *
+	 * @return \RedeventEntityTwigBundle[]
+	 */
+	public function getBundlesLink()
+	{
+		return \JRoute::_(\RedeventHelperRoute::getBundlesRoute() . '&filter[event]' . $this->entity->id);
+	}
+
+	/**
+	 * Get duration max in days
+	 *
+	 * @return int
+	 */
+	public function getDurationMax()
+	{
+		if (!$sessions = $this->getEventSessions())
+		{
+			return false;
+		}
+
+		return array_reduce(
+			$sessions,
+			function($value, $session)
+			{
+				return max($value, $session->getDurationDays());
+			}
+		);
+	}
+
+	/**
+	 * Get duration min in days
+	 *
+	 * @return int
+	 */
+	public function getDurationMin()
+	{
+		if (!$sessions = $this->getEventSessions())
+		{
+			return false;
+		}
+
+		return array_reduce(
+			$sessions,
+			function($value, $session)
+			{
+				$duration = $session->getDurationDays();
+
+				if (!$duration)
+				{
+					return $value;
+				}
+
+				return $value ? min($value, $duration) : $duration;
+			}
+		);
+	}
+
+	/**
+	 * Get next session
+	 *
+	 * @return \RedeventEntityTwigSession
+	 */
+	public function getNext()
+	{
+		if (!$sessions = $this->getEventSessions(1, "dates.asc"))
+		{
+			return false;
+		}
+
+		$upcomings = array_filter(
+			$sessions,
+			function($session)
+			{
+				return $session->isUpcoming();
+			}
+		);
+
+		if (!$upcomings)
+		{
+			return false;
+		}
+
+		return new \RedeventEntityTwigSession(reset($upcomings));
+	}
+
+	/**
 	 * Return signup form
 	 *
 	 * @return string
@@ -93,48 +215,101 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
-		$db = \JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select('*')
-			->from('#__redevent_event_venue_xref')
-			->where('eventid = ' . $this->entity->id);
+		$sessions = $this->getEventSessions($published, $ordering, $featured);
 
-		switch ($ordering)
-		{
-			case 'dates.desc':
-				$query->order('dates DESC, times DESC');
-				break;
-			case 'dates.asc':
-			default:
-				$query->order('dates ASC, times ASC');
-		}
+		return $sessions ? array_map(
+			function($session)
+			{
+				return new \RedeventEntityTwigSession($session);
+			},
+			$sessions
+		) : false;
+	}
 
-		if (is_numeric($published))
-		{
-			$query->where('published = ' . $published);
-		}
-
-		if ($featured)
-		{
-			$query->where('featured = 1');
-		}
-
-		$db->setQuery($query);
-
-		if (!$res = $db->loadObjectList())
+	/**
+	 * Get event venues
+	 *
+	 * @return \RedeventEntityTwigVenue[]
+	 */
+	public function getVenues()
+	{
+		if (!$sessions = $this->getEventSessions())
 		{
 			return false;
 		}
 
-		return array_map(
-			function($row)
+		$venues = array_reduce(
+			$sessions,
+			function($value, $session)
 			{
-				$instance = \RedeventEntitySession::getInstance();
-				$instance->bind($row);
+				$venue = $session->getVenue();
 
-				return new \RedeventEntityTwigSession($instance);
+				if (empty($value[$venue->id]))
+				{
+					$value[$venue->id] = new RedeventEntityTwigVenue($venue);
+				}
+
+				return $value;
 			},
-			$res
+			array()
 		);
+
+		return $venues;
+	}
+
+	/**
+	 * Return cached event sessions
+	 *
+	 * @param   int     $published  publish state
+	 * @param   string  $ordering   ordering
+	 * @param   bool    $featured   filtered featured
+	 *
+	 * @return \RedeventEntitySession[]
+	 */
+	private function getEventSessions($published = 1, $ordering = 'dates.asc', $featured = false)
+	{
+		$hash = "published=$published&$ordering=$ordering&featured=$featured";
+
+		if (!isset($this->sessions[$hash]))
+		{
+			$db = \JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('*')
+				->from('#__redevent_event_venue_xref')
+				->where('eventid = ' . $this->entity->id);
+
+			switch ($ordering)
+			{
+				case 'dates.desc':
+					$query->order('dates DESC, times DESC');
+					break;
+				case 'dates.asc':
+				default:
+					$query->order('dates ASC, times ASC');
+			}
+
+			if (is_numeric($published))
+			{
+				$query->where('published = ' . $published);
+			}
+
+			if ($featured)
+			{
+				$query->where('featured = 1');
+			}
+
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
+
+			$this->sessions[$hash] = $res ? array_map(
+				function($row)
+				{
+					return \RedeventEntitySession::getInstance($row->id)->bind($row);
+				},
+				$res
+			) : false;
+		}
+
+		return $this->sessions[$hash];
 	}
 }

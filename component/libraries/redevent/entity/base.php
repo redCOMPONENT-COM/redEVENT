@@ -79,6 +79,36 @@ abstract class RedeventEntityBase
 	const STATE_DISABLED = 0;
 
 	/**
+	 * Load a collection from an array.
+	 *
+	 * @param   array  $items  Array containing entities data
+	 *
+	 * @return  self
+	 *
+	 * @throws  \RuntimeException
+	 */
+	public static function loadArray(array $items)
+	{
+		$entities = array();
+
+		foreach ($items as $item)
+		{
+			$item = (object) $item;
+
+			if (!property_exists($item, 'id'))
+			{
+				throw new \RuntimeException(\JText::_('LIB_REDEVENT_ENTITY_COLLECTION_ERROR_LOAD_ARRAY_REQUIRES_ID_PROPERTY'));
+			}
+
+			$entity = self::getInstance($item->id)->bind($item);
+
+			$entities[] = $entity;
+		}
+
+		return $entities;
+	}
+
+	/**
 	 * Constructor
 	 *
 	 * @param   mixed  $id  Identifier of the active item

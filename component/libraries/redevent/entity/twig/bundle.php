@@ -45,7 +45,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 			return $this->entity->$name;
 		}
 
-		throw new RuntimeException('unsupported property in __get: ' . $name);
+		throw new \RuntimeException('unsupported property in __get: ' . $name);
 	}
 
 	/**
@@ -58,5 +58,99 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	public function __isset($name)
 	{
 		return isset($this->entity->$name);
+	}
+
+	/**
+	 * is triggered when invoking inaccessible methods in an object context.
+	 *
+	 * @param   method  $name       method name
+	 * @param   array   $arguments  arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($name, $arguments)
+	{
+		if (is_callable(array($this->entity, 'get' . ucfirst($name))))
+		{
+			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
+		}
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return RedeventEntityTwigEvent[]
+	 */
+	public function getEvents()
+	{
+		if (!$bundleEvents = $this->entity->getBundleevents())
+		{
+			return false;
+		}
+
+		return array_map(
+			function($bundleEvent)
+			{
+				return new \RedeventEntityTwigEvent($bundleEvent->getEvent());
+			},
+			$bundleEvents
+		);
+	}
+
+	/**
+	 * Get next session
+	 *
+	 * @return RedeventEntityTwigSession
+	 */
+	public function getNext()
+	{
+		if ($session = $this->entity->getNextSession())
+		{
+			return new \RedeventEntityTwigSession($session);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return RedeventEntityTwigSession[]
+	 */
+	public function getUpcomings()
+	{
+		if (!$sessions = $this->entity->getUpcomingSessions())
+		{
+			return false;
+		}
+
+		return array_map(
+			function($session)
+			{
+				return new \RedeventEntityTwigSession($session);
+			},
+			$sessions
+		);
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return RedeventEntityTwigVenue[]
+	 */
+	public function getVenues()
+	{
+		if (!$venues = $this->entity->getVenues())
+		{
+			return false;
+		}
+
+		return array_map(
+			function($venue)
+			{
+				return new \RedeventEntityTwigVenue($venue);
+			},
+			$venues
+		);
 	}
 }
