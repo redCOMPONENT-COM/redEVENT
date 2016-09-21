@@ -85,8 +85,7 @@ class plgRedeventIbcaffiliate extends JPlugin
 				"type" => 1,
 				"value" => (float) $attendee->price ,
 				"reference_id" => $attendee->id,
-				"approved" => $this->params->get('activation', 0),
-				"atid" => 0
+				"approved" => $this->params->get('activation', 0)
 			);
 
 			require_once JPATH_SITE . '/components/com_affiliatetracker/helpers/helpers.php';
