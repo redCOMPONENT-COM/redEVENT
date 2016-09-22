@@ -85,4 +85,20 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	{
 		return \JRoute::_(\RedeventHelperRoute::getBundlesRoute() . '&filter[venue]' . $this->entity->id);
 	}
+
+	/**
+	 * Get associated events
+	 *
+	 * @return RedeventEntityTwigEvent[]
+	 */
+	public function getEvents()
+	{
+		return array_map(
+			function($event)
+			{
+				return new RedeventEntityTwigEvent($event);
+			},
+			$this->entity->getEvents()
+		);
+	}
 }

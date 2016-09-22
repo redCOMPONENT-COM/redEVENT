@@ -108,6 +108,30 @@ class RedeventEntityVenue extends RedeventEntityBase
 	}
 
 	/**
+	 * Get events that have sessions on this venue
+	 *
+	 * @return RedeventEntityEvent[]
+	 */
+	public function getEvents()
+	{
+		$db = JFactory::getDbo();
+
+		// First get from 'all_dates' bundle events
+		$query = $db->getQuery(true)
+			->select('DISTINCT e.*')
+			->from('#__redevent_events AS e')
+			->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id')
+			->where('x.venueid = ' . $this->id)
+			->where('x.published = 1')
+			->where('e.published = 1');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList() ?: array();
+
+		return RedeventEntityEvent::loadArray($res);
+	}
+
+	/**
 	 * Return creator
 	 *
 	 * @return JUser
