@@ -56,6 +56,58 @@ class RedeventEntityVenue extends RedeventEntityBase
 	}
 
 	/**
+	 * Get bundles that have sessions on this venue
+	 *
+	 * @return RedeventEntityBundle[]
+	 */
+	public function getBundles()
+	{
+		$db = JFactory::getDbo();
+
+		// First get from 'all_dates' bundle events
+		$query = $db->getQuery(true)
+			->select('b.*')
+			->from('#__redevent_bundle AS b')
+			->join('INNER', '#__redevent_bundle_event AS be ON be.bundle_id = b.id')
+			->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = be.event_id')
+			->where('x.venueid = ' . $this->id)
+			->where('x.published = 1')
+			->where('be.all_dates = 1')
+			->where('b.published = 1');
+
+		$db->setQuery($query);
+		$res_all = $db->loadObjectList() ?: array();
+
+		// Then from the 'selected sessions' bundle events
+		$query = $db->getQuery(true)
+			->select('b.*')
+			->from('#__redevent_bundle AS b')
+			->join('INNER', '#__redevent_bundle_event AS be ON be.bundle_id = b.id')
+			->join('INNER', '#__redevent_bundle_event_session AS bes ON bes.bundle_event_id = be.id')
+			->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = bes.session_id')
+			->where('x.venueid = ' . $this->id)
+			->where('x.published = 1')
+			->where('b.published = 1');
+
+		$db->setQuery($query);
+		$res_selected = $db->loadObjectList() ?: array();
+
+		$merged = array_merge($res_all, $res_selected);
+
+		$bundles = array();
+
+		foreach ($merged as $row)
+		{
+			if (empty($bundles[$row->id]))
+			{
+				$bundles[$row->id] = RedeventEntityBundle::getInstance($row->id)->bind($row);
+			}
+		}
+
+		return $bundles;
+	}
+
+	/**
 	 * Return creator
 	 *
 	 * @return JUser
