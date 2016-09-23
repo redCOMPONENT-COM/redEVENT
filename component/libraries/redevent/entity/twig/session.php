@@ -34,6 +34,22 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * is triggered when invoking inaccessible methods in an object context.
+	 *
+	 * @param   method  $name       method name
+	 * @param   array   $arguments  arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($name, $arguments)
+	{
+		if (is_callable(array($this->entity, 'get' . ucfirst($name))))
+		{
+			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
+		}
+	}
+
+	/**
 	 * is utilized for reading data from inaccessible members.
 	 *
 	 * @param   string  $name  string
