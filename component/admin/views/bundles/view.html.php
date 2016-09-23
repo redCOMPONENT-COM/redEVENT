@@ -59,7 +59,7 @@ class RedeventViewBundles extends RedeventViewAdmin
 			$this->canEditState = true;
 		}
 
-		 parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**

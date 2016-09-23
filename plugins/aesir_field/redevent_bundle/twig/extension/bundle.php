@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since  3.2.0
  */
-class PlgAesir_FieldRedevent_bundleTwigExtensionBundle extends \Twig_Extension
+class PlgAesir_FieldRedevent_BundleTwigExtensionBundle extends \Twig_Extension
 {
 	/**
 	 * Inject our filter.

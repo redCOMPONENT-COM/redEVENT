@@ -33,7 +33,7 @@ class RedeventControllerBundle extends JControllerLegacy
 
 			if (!$next = $entity->getNext())
 			{
-				echo new JResponseJson(false);
+				echo new JResponseJson("");
 
 				return;
 			}
@@ -46,6 +46,11 @@ class RedeventControllerBundle extends JControllerLegacy
 		}
 	}
 
+	/**
+	 * Get bundle sessions
+	 *
+	 * @return void
+	 */
 	public function sessions()
 	{
 		try
@@ -60,7 +65,7 @@ class RedeventControllerBundle extends JControllerLegacy
 
 			if (!$sessions = $entity->getSessions())
 			{
-				echo new JResponseJson(false);
+				echo new JResponseJson("");
 
 				return;
 			}

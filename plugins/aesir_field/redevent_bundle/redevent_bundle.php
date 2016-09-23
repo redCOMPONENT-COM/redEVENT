@@ -32,7 +32,7 @@ use Aesir\Entity\FieldInterface;
  *
  * @since  1.0.0
  */
-final class PlgAesir_FieldRedevent_bundle extends AbstractFieldPlugin
+final class PlgAesir_FieldRedevent_Bundle extends AbstractFieldPlugin
 {
 	/**
 	 * Type for the form type="redevent_bundle" tag
