@@ -40,6 +40,8 @@ class JFormFieldRELanguages extends JFormFieldList
 			$allowed = array();
 		}
 
-		return RedeventHelperLanguages::getOptions('value', 'text', false, $allowed);
+		$options = RedeventHelperLanguages::getOptions('value', 'text', false, $allowed);
+
+		return array_merge(parent::getOptions(), $options);
 	}
 }
