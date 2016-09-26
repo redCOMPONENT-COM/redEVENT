@@ -92,6 +92,73 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Get start date/time
+	 *
+	 * @param   bool  $dateOnly  only take day into account
+	 *
+	 * @return JDate
+	 */
+	public function getDateStart($dateOnly = false)
+	{
+		$item = $this->getItem(true);
+
+		if ($this->isOpenDate())
+		{
+			return false;
+		}
+
+		return JFactory::getDate($item->dates . ($this->isAllDay() || $dateOnly ? '' : ' ' . $item->times));
+	}
+
+	/**
+	 * Get end date/time
+	 *
+	 * @param   bool  $dateOnly  only take day into account
+	 *
+	 * @return JDate
+	 */
+	public function getDateEnd($dateOnly = false)
+	{
+		$item = $this->getItem(true);
+
+		if ($this->isOpenDate())
+		{
+			return false;
+		}
+
+		if (RedeventHelperDate::isValidDate($item->enddates))
+		{
+			$endDate = $item->enddates;
+		}
+		else
+		{
+			$endDate = $item->dates;
+		}
+
+		return JFactory::getDate($endDate . ($this->isAllDay() || $dateOnly ? '' : ' ' . $item->endtimes));
+	}
+
+	/**
+	 * Get session duration in days (On how many days it spans)
+	 *
+	 * @return int
+	 */
+	public function getDurationDays()
+	{
+		if ($this->isOpenDate())
+		{
+			return false;
+		}
+
+		if ($this->getDateStart(true) == $this->getDateEnd(true))
+		{
+			return 1;
+		}
+
+		return $this->getDateEnd(true)->diff($this->getDateStart(true))->format('%a') + 1;
+	}
+
+	/**
 	 * Return associated event
 	 *
 	 * @return RedeventEntityEvent
@@ -266,6 +333,71 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return number of booked places
+	 *
+	 * @return int
+	 */
+	public function getNumberAttending()
+	{
+		$attendees = $this->getAttendees();
+
+		return empty($attendees) ? 0 :
+			array_reduce(
+				$attendees,
+				function($count, $attendee)
+				{
+					if ($attendee->isAttending())
+					{
+						$count++;
+					}
+
+					return $count;
+				}
+			);
+	}
+
+	/**
+	 * Return number of persons on waiting list
+	 *
+	 * @return int
+	 */
+	public function getNumberLeft()
+	{
+		$item = $this->getItem();
+
+		if (!$item->maxattendees)
+		{
+			return false;
+		}
+
+		return $item->maxattendees - $this->getNumberAttending();
+	}
+
+	/**
+	 * Return number of persons on waiting list
+	 *
+	 * @return int
+	 */
+	public function getNumberWaiting()
+	{
+		$attendees = $this->getAttendees();
+
+		return empty($attendees) ? 0 :
+			array_reduce(
+				$attendees,
+				function($count, $attendee)
+				{
+					if ($attendee->isWaiting())
+					{
+						$count++;
+					}
+
+					return $count;
+				}
+			);
+	}
+
+	/**
 	 * Return initialized RedeventRfieldSessionprice
 	 *
 	 * @return RedeventRfieldSessionprice
@@ -302,16 +434,7 @@ class RedeventEntitySession extends RedeventEntityBase
 			$db->setQuery($query);
 			$items = $db->loadObjectList();
 
-			$this->pricegroups = array_map(
-				function($item)
-				{
-					$pricegroup = RedeventEntitySessionpricegroup::getInstance();
-					$pricegroup->bind($item);
-
-					return $pricegroup;
-				},
-				$items
-			);
+			$this->pricegroups = RedeventEntitySessionpricegroup::loadArray($items);
 		}
 
 		if ($filterAcl)
@@ -329,6 +452,40 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return $this->pricegroups;
+	}
+
+	/**
+	 * Get unix start date/time from db
+	 *
+	 * @return string
+	 */
+	public function getUnixStart()
+	{
+		$item = $this->getItem();
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			return null;
+		}
+
+		return strtotime($item->dates . ($this->isAllDay() ? '' : ' ' . $item->times));
+	}
+
+	/**
+	 * Get unix start date/time from db
+	 *
+	 * @return string
+	 */
+	public function getUnixEnd()
+	{
+		$item = $this->getItem();
+
+		if (!RedeventHelperDate::isValidDate($item->enddates))
+		{
+			return null;
+		}
+
+		return strtotime($item->enddates . ($this->isAllDay() ? '' : ' ' . $item->endtimes));
 	}
 
 	/**
@@ -352,14 +509,26 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return true if it's a full day session
+	 *
+	 * @return bool
+	 */
+	public function isAllDay()
+	{
+		return $this->getItem(true)->allday > 0;
+	}
+
+	/**
 	 * Check if session is full
 	 *
 	 * @return boolean
 	 */
 	public function isFull()
 	{
+		$item = $this->getItem();
+
 		// Check the max registrations and waiting list
-		if ($this->getEvent()->maxattendees)
+		if ($item->maxattendees)
 		{
 			if (!$attendees = $this->getAttendees())
 			{
@@ -371,12 +540,12 @@ class RedeventEntitySession extends RedeventEntityBase
 
 			foreach ($attendees as $attendee)
 			{
-				if ((!$attendee->confirmed) || $attendee->cancelled)
+				if (!$attendee->isConfirmed())
 				{
 					continue;
 				}
 
-				if ($attendee->waitinglist)
+				if ($attendee->isWaiting())
 				{
 					$waiting++;
 				}
@@ -386,16 +555,42 @@ class RedeventEntitySession extends RedeventEntityBase
 				}
 			}
 
-			if ($this->getEvent()->maxattendees <= $registered
-				&& $this->getEvent()->maxwaitinglist <= $waiting)
+			if ($item->maxattendees <= $registered
+				&& $item->maxwaitinglist <= $waiting)
 			{
-				$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
-
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * Return true if it's an open date
+	 *
+	 * @return bool
+	 */
+	public function isOpenDate()
+	{
+		return !RedeventHelperDate::isValidDate($this->getItem(true)->dates);
+	}
+
+	/**
+	 * Is this an upcoming event
+	 *
+	 * @return bool
+	 */
+	public function isUpcoming()
+	{
+		$item = $this->getItem(true);
+
+		if (!RedeventHelperDate::isValidDate($item->dates))
+		{
+			// Open date
+			return false;
+		}
+
+		return $this->getUnixStart() > time();
 	}
 
 	/**

@@ -25,7 +25,7 @@ abstract class RedeventHelperAdmin
 		$return = base64_encode('index.php?option=com_redevent');
 
 		$items = array(
-			array(
+			'events' => array(
 				'icon' => 'icon-calendar',
 				'text' => JText::_('COM_REDEVENT_EVENTS'),
 				'items' => array(
@@ -51,7 +51,7 @@ abstract class RedeventHelperAdmin
 					),
 				)
 			),
-			array(
+			'venues' => array(
 				'icon' => 'icon-map-marker',
 				'text' => JText::_('COM_REDEVENT_VENUES'),
 				'items' => array(
@@ -65,7 +65,7 @@ abstract class RedeventHelperAdmin
 					),
 				)
 			),
-			array(
+			'features' => array(
 				'icon' => 'icon-list',
 				'text' => JText::_('COM_REDEVENT_MENU_FEATURES'),
 				'items' => array(
@@ -87,7 +87,7 @@ abstract class RedeventHelperAdmin
 					),
 				)
 			),
-			array(
+			'tools' => array(
 				'icon' => 'icon-wrench',
 				'text' => JText::_('COM_REDEVENT_TOOLS'),
 				'items' => array(
@@ -110,7 +110,7 @@ abstract class RedeventHelperAdmin
 
 		if (RedeventHelper::config()->get('redmember_integration_b2b', 0))
 		{
-			$items[] = array(
+			$items['redmember'] = array(
 				'icon' => 'icon-group',
 				'text' => 'redMEMBER',
 				'items' => array(
@@ -121,6 +121,19 @@ abstract class RedeventHelperAdmin
 				)
 			);
 		}
+
+		if (RedeventHelper::config()->get('enable_bundles', 1))
+		{
+			$items['features']['items'][] = array(
+				'view' => 'bundles',
+				'link' => 'index.php?option=com_redevent&view=bundles', 'icon' => 'icon-briefcase',
+				'text' => JText::_('COM_REDEVENT_MENU_BUNDLES'), 'access' => 'core.edit'
+			);
+		}
+
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = RFactory::getDispatcher();
+		$dispatcher->trigger('onGetRedeventAdminMenuItems', array(&$items));
 
 		return $items;
 	}

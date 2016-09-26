@@ -17,7 +17,7 @@
 		]
 	},
 	"plugins" : {
-		"aesir_field" : ["redevent_event"],
+		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_venue"],
 		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],

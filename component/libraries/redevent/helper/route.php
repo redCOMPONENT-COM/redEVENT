@@ -16,6 +16,37 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventHelperRoute
 {
 	/**
+	 * return link to bundle view
+	 *
+	 * @param   int  $id  bundle id
+	 *
+	 * @return url
+	 */
+	public static function getBundleRoute($id)
+	{
+		$parts = array("option" => "com_redevent",
+			"view"   => "bundle",
+			"id" => $id
+		);
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * return link to bundle view
+	 *
+	 * @return url
+	 */
+	public static function getBundlesRoute()
+	{
+		$parts = array("option" => "com_redevent",
+			"view"   => "bundles"
+		);
+
+		return self::buildUrl($parts);
+	}
+
+	/**
 	 * return link to details view of specified event
 	 *
 	 * @param   int  $yearId   year id

@@ -108,7 +108,6 @@ $tab = JFactory::getApplication()->input->getString('tab');
 		</li>
 	</ul>
 
-
 	<div class="tab-content">
 		<div class="tab-pane active" id="details">
 			<div class="row-fluid">

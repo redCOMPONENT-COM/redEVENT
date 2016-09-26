@@ -99,6 +99,35 @@ class RedeventEntityEvent extends RedeventEntityBase
 	}
 
 	/**
+	 * Get all bundles this event belongs to
+	 *
+	 * @return RedeventEntityBundle
+	 */
+	public function getBundles()
+	{
+		if (!$this->hasId())
+		{
+			return false;
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('b.*')
+			->from('#__redevent_bundle AS b')
+			->join('INNER', '#__redevent_bundle_event AS be ON be.bundle_id = b.id')
+			->where('be.event_id = ' . $this->id);
+
+		$db->setQuery($query);
+
+		if (!$res = $db->loadObjectList())
+		{
+			return false;
+		}
+
+		return RedeventEntityBundle::loadArray($res);
+	}
+
+	/**
 	 * Return event template
 	 *
 	 * @return RedeventEntityEventtemplate
@@ -191,6 +220,17 @@ class RedeventEntityEvent extends RedeventEntityBase
 						function($session) use ($value)
 						{
 							return $session->published == $value;
+						}
+					);
+
+				case 'upcoming':
+					$sessions = array_filter(
+						$sessions,
+						function($session) use ($value)
+						{
+							$upcoming = $session->isUpcoming();
+
+							return $value ? $upcoming : !$upcoming;
 						}
 					);
 			}

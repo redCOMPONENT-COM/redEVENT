@@ -8,7 +8,6 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>PLG_AESIR_FIELD_REDEVENT_EVENT_DESC</description>
 	<files>
-		<folder>entity</folder>
 		<folder>form</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>

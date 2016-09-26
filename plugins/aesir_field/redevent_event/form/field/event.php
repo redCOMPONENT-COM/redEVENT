@@ -77,7 +77,7 @@ class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 	 */
 	protected function getEventOptions()
 	{
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('id AS value, title AS text')
 			->from('#__redevent_events')
@@ -95,7 +95,7 @@ class PlgAesir_FieldRedevent_EventFormFieldEvent extends CustomField
 		return array_map(
 			function($element)
 			{
-				return JHtml::_('select.option', $element->value, $element->text);
+				return \JHtml::_('select.option', $element->value, $element->text);
 			},
 			$res
 		);
