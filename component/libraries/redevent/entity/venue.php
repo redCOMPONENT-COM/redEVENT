@@ -22,6 +22,11 @@ class RedeventEntityVenue extends RedeventEntityBase
 	private $creator;
 
 	/**
+	 * @var RedeventEntitySession[]
+	 */
+	private $sessions;
+
+	/**
 	 * Proxy item properties
 	 *
 	 * @param   string  $property  Property tried to access
@@ -129,6 +134,51 @@ class RedeventEntityVenue extends RedeventEntityBase
 		$res = $db->loadObjectList() ?: array();
 
 		return RedeventEntityEvent::loadArray($res);
+	}
+
+	/**
+	 * Get sessions on this venue
+	 *
+	 * @return RedeventEntitySession[]
+	 */
+	public function getSessions()
+	{
+		if (is_null($this->sessions))
+		{
+			$db = JFactory::getDbo();
+
+			// First get from 'all_dates' bundle events
+			$query = $db->getQuery(true)
+				->select('x.*')
+				->from('#__redevent_event_venue_xref AS x')
+				->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
+				->where('x.venueid = ' . $this->id)
+				->where('x.published = 1')
+				->where('e.published = 1');
+
+			$db->setQuery($query);
+			$res = $db->loadObjectList() ?: array();
+
+			$this->sessions = RedeventEntitySession::loadArray($res);
+		}
+
+		return $this->sessions;
+	}
+
+	/**
+	 * Get upcoming sessions on this venue
+	 *
+	 * @return RedeventEntitySession[]
+	 */
+	public function getUpcomings()
+	{
+		return array_filter(
+			$this->getSessions(),
+			function($session)
+			{
+				return $session->isUpcoming();
+			}
+		);
 	}
 
 	/**

@@ -31,10 +31,9 @@ class RedeventHelperRoute
 
 		return self::buildUrl($parts);
 	}
+
 	/**
 	 * return link to bundle view
-	 *
-	 * @param   int  $id  bundle id
 	 *
 	 * @return url
 	 */
