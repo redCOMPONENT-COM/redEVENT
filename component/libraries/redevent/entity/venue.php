@@ -154,7 +154,8 @@ class RedeventEntityVenue extends RedeventEntityBase
 				->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
 				->where('x.venueid = ' . $this->id)
 				->where('x.published = 1')
-				->where('e.published = 1');
+				->where('e.published = 1')
+				->order('x.dates ASC');
 
 			$db->setQuery($query);
 			$res = $db->loadObjectList() ?: array();
