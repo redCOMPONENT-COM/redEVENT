@@ -201,7 +201,7 @@ class RedeventHelperDate
 	{
 		$settings = RedeventHelper::config();
 
-		if (!$time)
+		if (!self::isValidTime($time))
 		{
 			return;
 		}
@@ -218,90 +218,18 @@ class RedeventHelperDate
 	/**
 	 * return formatted event date and time (start and end), or false if open date
 	 *
-	 * @param   object   $event    event data
-	 * @param   boolean  $showend  show end
+	 * @param   object   $data      dates data
+	 * @param   boolean  $showend   show end
+	 * @param   boolean  $showtime  show time
 	 *
 	 * @return string
 	 */
-	public static function formatEventDateTime($event, $showend = null)
+	public static function formatEventDateTime($data, $showend = null, $showtime = null)
 	{
-		if (!static::isValidDate($event->dates))
-		{
-			// Open dates
-			$date = '<span class="event-date open-date">' . JText::_('COM_REDEVENT_OPEN_DATE') . '</span>';
-
-			return $date;
-		}
-
 		$settings = RedeventHelper::config();
+		$dates = new Redevent\Date\Dates($data);
 
-		if (is_null($showend))
-		{
-			$showend = $settings->get('lists_showend', 1);
-		}
-
-		$date_start = static::formatdate($event->dates, $event->times);
-		$time_start = '';
-		$date_end = '';
-		$time_end = '';
-
-		// Is this a full day(s) event ?
-		if (!$event->allday)
-		{
-			$time_start = static::formattime($event->dates, $event->times);
-		}
-
-		if ($event->allday)
-		{
-			if ($showend && static::isValidDate($event->enddates))
-			{
-				if (strtotime($event->enddates . ' -1 day') != strtotime($event->dates)
-					&& strtotime($event->enddates) != strtotime($event->dates))
-				{
-					$date_end = static::formatdate(strftime('Y-m-d', strtotime($event->enddates . ' -1 day')), $event->endtimes);
-				}
-			}
-		}
-		elseif ($showend)
-		{
-			if (static::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
-			{
-				$date_end = static::formatdate($event->enddates, $event->endtimes);
-				$time_end = static::formattime($event->dates, $event->endtimes);
-			}
-			else
-			{
-				// Same day, just display end time after start time
-				$time_start .= ' ' . static::formattime($event->dates, $event->endtimes);
-			}
-		}
-
-		$date = '<span class="event-date">';
-		$date .= '<span class="event-start">';
-		$date .= '<span class="event-day">' . $date_start . '</span>';
-
-		if ($settings->get('lists_show_time', 0) == 1 && $time_start)
-		{
-			$date .= ' <span class="event-time">' . $time_start . '</span>';
-		}
-
-		$date .= '</span>';
-
-		if ($date_end)
-		{
-			$date .= ' <span class="event-end"><span class="event-day">' . $date_end . '</span>';
-
-			if ($settings->get('lists_show_time', 0) == 1 && $time_end)
-			{
-				$date .= ' <span class="event-time">' . $time_end . '</span>';
-			}
-
-			$date .= '</span>';
-		}
-
-		$date .= '</span>';
-
-		return $date;
+		return $dates->formatEventDateTime($showend ?: $settings->get('lists_showend', 1), $showtime ?: $settings->get('lists_show_time', 0));
 	}
 
 	/**
