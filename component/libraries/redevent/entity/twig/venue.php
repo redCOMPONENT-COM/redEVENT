@@ -101,4 +101,20 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 			$this->entity->getEvents()
 		);
 	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return array
+	 */
+	public function getUpcomingsessions()
+	{
+		return array_map(
+			function($session)
+			{
+				return new RedeventEntityTwigSession($session);
+			},
+			$this->entity->getUpcomings()
+		);
+	}
 }
