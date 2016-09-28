@@ -67,7 +67,7 @@
 				description="COM_REDEVENT_SESSION_LANGUAGE_DESC"
 				default="eng"
 				class="inputbox">
-			<option value="*">JALL</option>
+			<option value="*">JNONE</option>
 		</field>
 
         <field
