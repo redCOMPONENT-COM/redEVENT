@@ -33,6 +33,9 @@ before_script:
 - cd ../tests
 - composer config -g github-oauth.github.com $GITHUB_TOKEN
 - composer install --prefer-dist
+- cd ../component/libraries/redevent
+- composer config -g github-oauth.github.com $GITHUB_TOKEN
+- composer install --prefer-dist
 
 script:
 - vendor/bin/robo check:for-missed-debug-code
