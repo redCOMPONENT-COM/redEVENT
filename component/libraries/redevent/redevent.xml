@@ -36,6 +36,7 @@
 		<folder>table</folder>
 		<folder>tags</folder>
 		<folder>user</folder>
+		<folder>vendor</folder>
 		<folder>view</folder>
 		<file>bootstrap.php</file>
 	</files>
