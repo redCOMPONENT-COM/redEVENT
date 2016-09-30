@@ -30,6 +30,7 @@ $ignored = array(
 	REPO_BASE . '/component/admin/layouts/*',
 	REPO_BASE . '/component/admin/tables/*',
 	REPO_BASE . '/component/libraries/redevent/layouts/*',
+	REPO_BASE . '/component/libraries/redevent/vendor/*',
 	REPO_BASE . '/component/site/views/*/tmpl/*',
 	REPO_BASE . '/component/site/layouts/*',
 	REPO_BASE . '/component/site/classes/*',

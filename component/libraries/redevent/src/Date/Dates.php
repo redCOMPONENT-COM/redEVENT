@@ -60,7 +60,8 @@ class Dates
 	/**
 	 * return formatted date and time (start and end)
 	 *
-	 * @param   boolean  $showend  show end
+	 * @param   boolean  $showend   show end
+	 * @param   boolean  $showtime  show end
 	 *
 	 * @return string
 	 */
