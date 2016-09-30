@@ -26,8 +26,7 @@ before_script:
 - sleep 3 # give fluxbox some time to start
 - git submodule update --init --recursive
 - cd component/libraries/redevent
-- composer config -g github-oauth.github.com $GITHUB_TOKEN
-- composer install --prefer-dist
+- composer dump-autoload
 - cd ../../../build
 - npm install gulp -g # install globally so that it's available to robo
 - npm install
