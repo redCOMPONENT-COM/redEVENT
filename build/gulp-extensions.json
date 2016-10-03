@@ -18,7 +18,7 @@
 	},
 	"plugins" : {
 		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue"],
-		"content" : ["resimplelist"],
+		"content" : ["resimplelist", "aesirsessionssync"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
 		"jomsocial" : ["redevent"],
