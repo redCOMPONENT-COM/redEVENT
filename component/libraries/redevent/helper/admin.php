@@ -122,7 +122,7 @@ abstract class RedeventHelperAdmin
 			);
 		}
 
-		if (RedeventHelper::config()->get('enable_bundles', 1))
+		if (RedeventHelper::config()->get('enable_bundles', 0))
 		{
 			$items['features']['items'][] = array(
 				'view' => 'bundles',
