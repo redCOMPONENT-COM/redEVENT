@@ -76,6 +76,7 @@ class RedeventModelEvent extends RModelAdmin
 		if ($form->getValue('id') && $this->hasAttendees($form->getValue('id')))
 		{
 			$form->setFieldAttribute('template_id', 'disabled', '1');
+			$form->setFieldAttribute('template_id', 'required', '0');
 		}
 
 		return $form;
@@ -114,6 +115,11 @@ class RedeventModelEvent extends RModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
+		if ($data['id'] && $this->hasAttendees($data['id']))
+		{
+			$form->setFieldAttribute('template_id', 'required', '0');
+		}
+
 		// First get the data from form itself
 		if (!$validData = parent::validate($form, $data, $group))
 		{
