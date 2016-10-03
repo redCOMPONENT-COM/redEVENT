@@ -49,6 +49,7 @@ tests/unit/phpunit.xml
 # composer
 composer.phar
 tests/vendor/*
+libraries/redevent/vendor/*
 
 # Robo
 robo.phar

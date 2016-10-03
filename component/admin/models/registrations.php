@@ -195,10 +195,14 @@ class RedeventModelRegistrations extends RModelList
 
 		if ($this->getState('filter.search'))
 		{
-			$query->where('(u.name LIKE "%' . $this->getState('filter.search') . '%"'
-				. ' OR u.username LIKE "%' . $this->getState('filter.search') . '%"'
-				. ' OR u.email LIKE "%' . $this->getState('filter.search') . '%"'
-			. ')');
+			$where = array(
+				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
+				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
+				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
+				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
+			);
+
+			$query->where('(' . implode(' OR ', $where) . ')');
 		}
 
 		if ($this->getState('filter.origin'))

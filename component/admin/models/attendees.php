@@ -85,6 +85,7 @@ class RedeventModelAttendees extends RModelList
 		$id	.= ':' . $this->getState('filter.confirmed');
 		$id .= ':' . $this->getState('filter.waiting');
 		$id	.= ':' . $this->getState('filter.cancelled');
+		$id	.= ':' . $this->getState('filter.search');
 
 		return parent::getStoreId($id);
 	}
@@ -230,6 +231,18 @@ class RedeventModelAttendees extends RModelList
 			case 1:
 				$query->where('r.cancelled = 1');
 				break;
+		}
+
+		if ($this->getState('filter.search'))
+		{
+			$where = array(
+				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
+				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
+				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
+				'CONCAT(a.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
+			);
+
+			$query->where('(' . implode(' OR ', $where) . ')');
 		}
 
 		return $query;
