@@ -33,7 +33,7 @@ class JFormFieldRELanguages extends JFormFieldList
 		if ($allowed = $config->get('allowed_session_languages'))
 		{
 			$allowed = explode(',', $allowed);
-			$allowed = array_map(trim, $allowed);
+			$allowed = array_map('trim', $allowed);
 		}
 		else
 		{
