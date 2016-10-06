@@ -21,6 +21,12 @@ file_filter = languages/<lang>/site/<lang>/<lang>.com_redevent.ini
 source_file = component/site/language/en-GB/en-GB.com_redevent.ini
 source_lang = en-GB
 
+# ======================= LIBRARY ==============================
+[redevent3.lib_redevent-ini]
+file_filter = languages/<lang>/site/<lang>/<lang>.lib_redevent.ini
+source_file = component/libraries/redevent/language/en-GB/en-GB.com_redevent.ini
+source_lang = en-GB
+
 # ======================= MODULES ==============================
 [redevent3.site-mod_redevent-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent.ini
@@ -85,6 +91,17 @@ source_lang = en-GB
 [redevent3.site-mod_redevent_filters-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_filters.sys.ini
 source_file = modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.sys.ini
+source_lang = en-GB
+
+
+[redevent3.site-mod_redevent_quickbook-ini]
+file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_quickbook.ini
+source_file = modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_quickbook.ini
+source_lang = en-GB
+
+[redevent3.site-mod_redevent_quickbook-sys-ini]
+file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_quickbook.sys.ini
+source_file = modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_quickbook.sys.ini
 source_lang = en-GB
 
 
@@ -189,6 +206,28 @@ source_file = plugins/jomsocial/redevent/language/en-GB/en-GB.plg_community_rede
 source_lang = en-GB
 
 # ========== REDEVENT =============
+[redevent3.admin-plg_redevent_acymailinglists-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_acymailinglists.ini
+source_file = plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_acymailinglists.ini
+source_lang = en-GB
+
+[redevent3.admin-plg_redevent_acymailinglists-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_acymailinglists.sys.ini
+source_file = plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_acymailinglists.sys.ini
+source_lang = en-GB
+
+
+[redevent3.admin-plg_redevent_eventnewslettersignup-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_eventnewslettersignup.ini
+source_file = plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_eventnewslettersignup.ini
+source_lang = en-GB
+
+[redevent3.admin-plg_redevent_eventnewslettersignup-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_eventnewslettersignup.sys.ini
+source_file = plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_eventnewslettersignup.sys.ini
+source_lang = en-GB
+
+
 [redevent3.admin-plg_redevent_jomsocial-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_jomsocial.ini
 source_file = plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.ini
@@ -219,6 +258,17 @@ source_lang = en-GB
 [redevent3.admin-plg_redform_paymentnotificationemail-sys-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redform_paymentnotificationemail.sys.ini
 source_file = plugins/redform/paymentnotificationemail/language/en-GB/en-GB.plg_redform_paymentnotificationemail.sys.ini
+source_lang = en-GB
+
+# ========== REDFORM_FIELD =============
+[redevent3.admin-plg_redform_field_eventacymailinglists-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redform_field_eventacymailinglists.ini
+source_file = plugins/redform/paymentnotificationemail/language/en-GB/en-GB.plg_redform_field_eventacymailinglists.ini
+source_lang = en-GB
+
+[redevent3.admin-plg_redform_field_eventacymailinglists-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redform_field_eventacymailinglists.sys.ini
+source_file = plugins/redform/paymentnotificationemail/language/en-GB/en-GB.plg_redform_field_eventacymailinglists.sys.ini
 source_lang = en-GB
 
 # ========== REDFORM_PAYMENT =============
