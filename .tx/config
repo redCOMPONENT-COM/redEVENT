@@ -24,7 +24,7 @@ source_lang = en-GB
 # ======================= LIBRARY ==============================
 [redevent3.lib_redevent-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.lib_redevent.ini
-source_file = component/libraries/redevent/language/en-GB/en-GB.com_redevent.ini
+source_file = component/libraries/redevent/language/en-GB/en-GB.lib_redevent.ini
 source_lang = en-GB
 
 # ======================= MODULES ==============================
@@ -96,12 +96,12 @@ source_lang = en-GB
 
 [redevent3.site-mod_redevent_quickbook-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_quickbook.ini
-source_file = modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_quickbook.ini
+source_file = modules/frontend/mod_redevent_quickbook/language/en-GB/en-GB.mod_redevent_quickbook.ini
 source_lang = en-GB
 
 [redevent3.site-mod_redevent_quickbook-sys-ini]
 file_filter = languages/<lang>/site/<lang>/<lang>.mod_redevent_quickbook.sys.ini
-source_file = modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_quickbook.sys.ini
+source_file = modules/frontend/mod_redevent_quickbook/language/en-GB/en-GB.mod_redevent_quickbook.sys.ini
 source_lang = en-GB
 
 
