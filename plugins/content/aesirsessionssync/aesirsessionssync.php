@@ -36,6 +36,13 @@ JLoader::import('reditem.library');
 class PlgContentAesirsessionssync extends JPlugin
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $autoloadLanguage = true;
+
+	/**
 	 * Sync session to aesir after save
 	 *
 	 * @param   string  $context  context
@@ -52,31 +59,97 @@ class PlgContentAesirsessionssync extends JPlugin
 		}
 
 		$session = RedeventEntitySession::getInstance($table->id)->bind($table);
+		$item = $this->getAesirSessionItem($session->id);
 
+		if (!$item->isValid())
+		{
+			$data = array(
+				'type_id' => $this->params->get('aesir_session_type_id'),
+				'template_id' => $this->params->get('aesir_session_template_id'),
+				'title'   => JText::sprintf(
+					'PLG_AESIRSESSIONSSYNC_ITEM_SESSION_TITLE_FORMAT',
+					$session->getEvent()->title,
+					$session->getVenue()->name,
+					$session->getFormattedStartDate()),
+				'access'  => 1,
+				'custom_fields' => array(
+					'select_redevent_session' => $session->id
+				)
+			);
 
+			$eventItem = $this->getAesirEventItem($session->eventid);
+
+			if ($eventItem->isValid())
+			{
+				$data['params'] = array(
+					"related_items" => array($eventItem->getId())
+				);
+			}
+
+			// TODO: remove this workaround when aesir code gets fixed
+			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
+			$jform['access'] = $this->params->get('session_access');
+			JFactory::getApplication()->input->set('jform', $jform);
+
+			$item->save($data);
+		}
 	}
 
 	/**
-	 * @param $session
+	 * Get aesir item session
 	 *
-	 * @return mixed
+	 * @param   int  $sessionId  redEVENT session id
 	 *
-	 * @since version
+	 * @return ReditemEntityItem
 	 */
-	private function getAesirItem($session)
+	private function getAesirSessionItem($sessionId)
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('as.*')
-			->from('#__reditem_types_session_2 AS as')
-			->join('INNER', '#__reditem_items AS i ON i.id = as.id')
-			->where('');
+			->select('s.*')
+			->from('#__reditem_types_session_2 AS s')
+			->join('INNER', '#__reditem_items AS i ON i.id = s.id')
+			->where('s.select_redevent_session = ' . $sessionId);
 
 		$db->setQuery($query);
 
 		if ($res = $db->loadObject())
 		{
 			$entity = ReditemEntityItem::getInstance($res->id)->bind($res);
+		}
+		else
+		{
+			$entity = ReditemEntityItem::getInstance();
+		}
+
+		return $entity;
+	}
+
+	/**
+	 * Get aesir item session
+	 *
+	 * @param   int  $eventId  redEVENT event id
+	 *
+	 * @return ReditemEntityItem
+	 */
+	private function getAesirEventItem($eventId)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('c.*')
+			->from('#__reditem_types_course_1 AS c')
+			->join('INNER', '#__reditem_items AS i ON i.id = c.id')
+			->where('c.select_redevent_event = ' . $eventId);
+
+		$db->setQuery($query);
+
+		if ($res = $db->loadObject())
+		{
+			$entity = ReditemEntityItem::getInstance($res->id)->bind($res);
+		}
+		else
+		{
+			$entity = ReditemEntityItem::getInstance();
 		}
 
 		return $entity;

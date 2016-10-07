@@ -18,6 +18,26 @@
 
 	<config>
 		<fields name="params">
+			<fieldset name="basic">
+				<field
+						name="aesir_session_type_id"
+						type="reditem.typeList"
+						label="PLG_AESIRSESSIONSSYNC_XML_AESIR_SESSION_TYPE_ID_LABEL"
+						description="PLG_AESIRSESSIONSSYNC_XML_AESIR_SESSION_TYPE_DESCRIPTION">
+				</field>
+				<field
+						name="aesir_session_template_id"
+						type="reditem.typeList"
+						label="PLG_AESIRSESSIONSSYNC_XML_AESIR_SESSION_TEMPLATE_ID_LABEL"
+						description="PLG_AESIRSESSIONSSYNC_XML_AESIR_SESSION_TEMPLATE_ID_DESC">
+				</field>
+				<field
+						name="session_access"
+						type="accesslevel"
+						label="PLG_AESIRSESSIONSSYNC_XML_SESSION_ACCESS_LABEL"
+						description="PLG_AESIRSESSIONSSYNC_XML_SESSION_ACCESS_DESC">
+				</field>
+			</fieldset>
 		</fields>
 	</config>
 
