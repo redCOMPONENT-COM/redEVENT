@@ -64,6 +64,8 @@ class RedeventViewLogs extends RedeventViewAdmin
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($firstGroup);
 
-		return $toolbar;
+		$this->toolbar = $toolbar;
+
+		return parent::getToolbar();
 	}
 }

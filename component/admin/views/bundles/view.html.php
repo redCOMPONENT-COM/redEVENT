@@ -118,6 +118,8 @@ class RedeventViewBundles extends RedeventViewAdmin
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
 
-		return $toolbar;
+		$this->toolbar = $toolbar;
+
+		return parent::getToolbar();
 	}
 }

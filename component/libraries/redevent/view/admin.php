@@ -90,6 +90,13 @@ abstract class RedeventViewAdmin extends RViewAdmin
 	protected $logoutReturnUri = 'index.php';
 
 	/**
+	 * view toolbar
+	 *
+	 * @var RToolbar
+	 */
+	protected $toolbar;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $config  A named configuration array for object construction.<br/>
@@ -115,5 +122,21 @@ abstract class RedeventViewAdmin extends RViewAdmin
 			'active' => strtolower($this->_name),
 			'view' => $this
 		);
+	}
+
+	/**
+	 * Get the toolbar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		if ($this->toolbar instanceof RToolbar)
+		{
+			JPluginHelper::getPlugin('redevent');
+			RFactory::getDispatcher()->trigger('onViewGetToolbar', array($this, &$this->toolbar));
+		}
+
+		return $this->toolbar;
 	}
 }

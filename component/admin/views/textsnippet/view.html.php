@@ -95,6 +95,8 @@ class RedeventViewTextsnippet extends RedeventViewAdmin
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($group);
 
-		return $toolbar;
+		$this->toolbar = $toolbar;
+
+		return parent::getToolbar();
 	}
 }
