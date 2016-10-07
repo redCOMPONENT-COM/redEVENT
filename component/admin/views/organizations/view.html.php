@@ -99,6 +99,8 @@ class RedeventViewOrganizations extends RedeventViewAdmin
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup);
 
-		return $toolbar;
+		$this->toolbar = $toolbar;
+
+		return parent::getToolbar();
 	}
 }
