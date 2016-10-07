@@ -27,7 +27,7 @@
 				</field>
 				<field
 						name="aesir_session_template_id"
-						type="reditem.typeList"
+						type="reditem.template"
 						label="PLG_AESIRSESSIONSSYNC_XML_AESIR_SESSION_TEMPLATE_ID_LABEL"
 						description="PLG_AESIRSESSIONSSYNC_XML_AESIR_SESSION_TEMPLATE_ID_DESC">
 				</field>
