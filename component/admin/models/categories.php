@@ -51,7 +51,7 @@ class RedeventModelCategories extends RModelList
 				'name', 'c.name',
 				'ordering', 'c.ordering',
 				'published', 'c.published',
-				'id', 'c.id',
+				'id', 'c.id', 'c.lft',
 				'access', 'c.access', 'c.language',
 				'category'
 			);
