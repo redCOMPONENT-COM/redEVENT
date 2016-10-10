@@ -133,7 +133,7 @@ abstract class RedeventViewAdmin extends RViewAdmin
 	{
 		if ($this->toolbar instanceof RToolbar)
 		{
-			JPluginHelper::getPlugin('redevent');
+			JPluginHelper::importPlugin('redevent');
 			RFactory::getDispatcher()->trigger('onViewGetToolbar', array($this, &$this->toolbar));
 		}
 

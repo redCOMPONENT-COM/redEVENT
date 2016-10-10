@@ -18,7 +18,7 @@
 	},
 	"plugins" : {
 		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue"],
-		"content" : ["resimplelist", "aesirsessionssync"],
+		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
 		"jomsocial" : ["redevent"],
@@ -40,7 +40,7 @@
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
-		"system" : ["autotweetredevent"],
+		"system" : ["autotweetredevent", "aesirsessionssync"],
 		"xmap" : ["redevent"]
 	}
 }

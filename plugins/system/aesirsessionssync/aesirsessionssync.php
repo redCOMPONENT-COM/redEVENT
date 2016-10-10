@@ -29,11 +29,11 @@ jimport('joomla.plugin.plugin');
 JLoader::import('reditem.library');
 
 /**
- * Class PlgContentAesirsessionssync
+ * Class PlgSystemAesirsessionssync
  *
  * @since  3.2.0
  */
-class PlgContentAesirsessionssync extends JPlugin
+class PlgSystemAesirsessionssync extends JPlugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -41,6 +41,47 @@ class PlgContentAesirsessionssync extends JPlugin
 	 * @var    boolean
 	 */
 	protected $autoloadLanguage = true;
+
+	/**
+	 * Intercepts task sessions.aesirsync
+	 *
+	 * @return void
+	 */
+	public function onAfterRoute()
+	{
+		$app = JFactory::getApplication();
+		$input = $app->input;
+
+		if (!($input->get('option') == 'com_redevent' && $input->get('task') == 'sessions.aesirsync'))
+		{
+			return;
+		}
+
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		$msg = null;
+
+		// Get items to publish from the request.
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+
+		if (empty($cid))
+		{
+			JLog::add(JText::_('COM_REDEVENT_NO_ITEM_SELECTED'), JLog::WARNING, 'jerror');
+		}
+		else
+		{
+			foreach ($cid as $sessionId)
+			{
+				$session = RedeventEntitySession::load($sessionId);
+				$this->syncSession($session);
+			}
+
+			$msg = JText::sprintf('PLG_AESIRSESSIONSSYNC_D_SESSIONS_SYNCED', count($cid));
+		}
+
+		$app->redirect('index.php?option=com_redevent&view=sessions', $msg);
+	}
 
 	/**
 	 * Sync session to aesir after save
@@ -51,7 +92,7 @@ class PlgContentAesirsessionssync extends JPlugin
 	 *
 	 * @return void
 	 */
-	public function oncontentaftersave($context, $table, $isNew)
+	public function onContentAfterSave($context, $table, $isNew)
 	{
 		if (!'com_redevent.session' == $context)
 		{
@@ -59,6 +100,47 @@ class PlgContentAesirsessionssync extends JPlugin
 		}
 
 		$session = RedeventEntitySession::getInstance($table->id)->bind($table);
+
+		$this->syncSession($session);
+	}
+
+	/**
+	 * Override toolbar
+	 *
+	 * @param   RedeventViewAdmin  $view      the view object
+	 * @param   RToolbar           &$toolbar  the toolbar
+	 *
+	 * @return void
+	 */
+	public function onViewGetToolbar(RedeventViewAdmin $view, RToolbar &$toolbar)
+	{
+		if (!$view instanceof RedeventViewSessions)
+		{
+			return;
+		}
+
+		if (JFactory::getUser()->authorise('core.create', 'com_redevent'))
+		{
+			$group = new RToolbarButtonGroup;
+			$sync = RToolbarBuilder::createStandardButton(
+				'sessions.aesirsync',
+				JText::_('PLG_AESIRSESSIONSSYNC_SYNC_BUTTON_LABEL'), '', 'icon-refresh', true
+			);
+			$group->addButton($sync);
+
+			$toolbar->addGroup($group);
+		}
+	}
+
+	/**
+	 * Sync a session
+	 *
+	 * @param   RedeventEntitySession  $session  session to sync
+	 *
+	 * @return void
+	 */
+	private function syncSession($session)
+	{
 		$item = $this->getAesirSessionItem($session->id);
 
 		if (!$item->isValid())
