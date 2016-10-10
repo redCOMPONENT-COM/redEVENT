@@ -4,6 +4,30 @@ namespace Step\Acceptance;
 class Adminredevent extends \AcceptanceTester
 {
 	/**
+	 * Create a Bundle
+	 *
+	 * @param   array  $params  parameters
+	 *
+	 * @return void
+	 */
+	public function createBundle($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redevent&view=bundles');
+		$I->waitForText('Bundles', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "bundle.add")]']);
+		$I->waitForText('Name', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_name'], $params['name']);
+
+		if (!empty($params['description']))
+		{
+			$I->fillTinyMceEditorById('jform_description', $params['description']);
+		}
+
+		$I->click(['xpath' => '//button[contains(@onclick, "bundle.save")]']);
+	}
+
+	/**
 	 * Create a Category
 	 *
 	 * @param   array  $params  parameters
@@ -148,6 +172,11 @@ class Adminredevent extends \AcceptanceTester
 
 		$venue = isset($params['venue']) ? $params['venue'] : 'Venue 1';
 		$I->selectOptionInChosenByIdUsingJs('jform_venueid', $venue);
+
+		if (!empty($params['title']))
+		{
+			$I->fillField(['id' => 'jform_title'], $params['title']);
+		}
 
 		$I->click(['xpath' => '//button[contains(@onclick, "session.save")]']);
 	}
