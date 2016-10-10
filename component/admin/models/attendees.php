@@ -63,8 +63,8 @@ class RedeventModelAttendees extends RModelList
 		{
 			$config['filter_fields'] = array(
 				'r.id', 'x.eventid', 'x.xref',
-				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.uregdate',
-				'u.username', 'paid'
+				'r.confirmed', 'r.waitinglist', 'r.cancelled', 'r.uregdate', 'r.confirmdate',
+				'u.username', 'u.email', 'paid'
 			);
 		}
 
@@ -302,7 +302,7 @@ class RedeventModelAttendees extends RModelList
 
 		$app = JFactory::getApplication();
 
-		if ($value = $app->input->getInt('session', 0))
+		if ($value = $app->input->getInt('session', $app->input->getInt('xref', 0)))
 		{
 			$this->setState('filter.session', $value);
 		}

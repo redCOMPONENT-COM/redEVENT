@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since  __DEPLOY_VERSION__
  */
-class PlgAesir_FieldRedevent_sessionTwigExtensionSession extends \Twig_Extension
+class PlgAesir_FieldRedevent_SessionTwigExtensionSession extends \Twig_Extension
 {
 	/**
 	 * Inject our filter.
