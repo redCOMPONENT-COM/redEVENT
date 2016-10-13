@@ -407,7 +407,7 @@ class RedeventEntitySession extends RedeventEntityBase
 		$field = new RedeventRfieldSessionprice;
 		$field->setOptions($this->getPricegroups());
 		$title = $this->getEvent()->title . ($this->title ? ' - ' . $this->title : '');
-		$field->setPaymentRequestItemLabel(JText::sprintf('COM_REDEVENT_REGISTRATION_PRICE_ITEM_LABEL_S', $title));
+		$field->setPaymentRequestItemLabel(JText::sprintf('LIB_REDEVENT_REGISTRATION_PRICE_ITEM_LABEL_S', $title));
 
 		return $field;
 	}
