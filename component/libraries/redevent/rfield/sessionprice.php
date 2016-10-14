@@ -341,6 +341,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	 */
 	public function setLabel($label)
 	{
+		$this->load();
 		$this->data->label = $label;
 
 		return $this;
