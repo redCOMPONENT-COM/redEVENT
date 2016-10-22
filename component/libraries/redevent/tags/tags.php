@@ -2433,6 +2433,16 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
+	private function getTag_attending()
+	{
+		return $this->getSession()->getNumberAttending();
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @return string
+	 */
 	private function getTag_webformsignup()
 	{
 		$registration_status = $this->canregister();
