@@ -25,10 +25,12 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.error.error');
 
+$app = JFactory::getApplication();
+
 // Check for component
 if (!JComponentHelper::getComponent('com_autotweet', true)->enabled)
 {
-	JError::raiseWarning('5', 'AutoTweet NG Component is not installed or not enabled. - ' . __FILE__);
+	$app->enqueueMessage('AutoTweet NG Component is not installed or not enabled. - ' . __FILE__, 'warning');
 
 	return;
 }
@@ -39,19 +41,15 @@ include_once JPATH_ROOT . '/administrator/components/com_autotweet/helpers/autot
 // Check for redEVENT extension
 if (!JComponentHelper::getComponent('com_redevent', true)->enabled)
 {
-	JError::raiseWarning('5', 'AutoTweet NG redEVENT-Plugin - redEVENT extension is not installed or not enabled.');
+	$app->enqueueMessage('AutoTweet NG redEVENT-Plugin - redEVENT extension is not installed or not enabled.', 'warning');
 
 	return;
 }
 
-// Redevent
-include_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-require_once JPATH_SITE . '/administrator/components/com_redevent/classes/error.class.php';
-
 // Register library prefix
 JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
-RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+JLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 /**
  * redEVENT extension plugin for AutoTweet.
@@ -81,7 +79,7 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 		$pluginParams = $this->pluginParams;
 
 		$this->text_template = $pluginParams->get('text_template', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_TEXT_TEMPLATE'));
-		$this->date_format   = $pluginParams->get('date_format', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT'));
+		$this->date_format   = $pluginParams->get('date_format', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', false, false));
 	}
 
 	/**
@@ -108,19 +106,39 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 		$db->setQuery($query);
 		$res = $db->loadObject();
 
-		$date = strtotime($res->dates) ? JFactory::getDate($res->dates) : false;
-
 		$this->postStatusMessage(
 			$res->id,
-			JFactory::getDate()->toFormat(),
-			$res->title . '@' . $res->venue . ($date ? $date->format(' \o\n Y-m-d') : ''),
+			JFactory::getDate()->toSql(),
+			$this->getFulltext($res),
 			'eventsession',
-			'',
-			'',
+			JRoute::_(JUri::root() . RedeventHelperRoute::getDetailsRoute($res->id, $res->title)),
+			$res->image ? JUri::root() . $res->image : '',
 			json_encode($res)
 		);
 
 		return true;
+	}
+
+	/**
+	 * Add a button to session toolbar
+	 *
+	 * @param   RView     $view      view
+	 * @param   RToolbar  &$toolbar  toolbar
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.1
+	 */
+	public function onRedeventViewGetToolbar($view, &$toolbar)
+	{
+		if ($view->getName() !== 'session')
+		{
+			return;
+		}
+
+		$group = new RToolbarButtonGroup();
+		$group->addButton(RToolbarBuilder::createStandardButton('session.saveAndTwit', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_SAVE_AND_TWEET'), '', 'icon-twitter', false));
+		$toolbar->addGroup($group);
 	}
 
 	/**
