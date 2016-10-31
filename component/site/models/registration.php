@@ -166,9 +166,11 @@ class RedeventModelRegistration extends RModel
 			return false;
 		}
 
+		$submitter = RdfEntitySubmitter::load($sid);
+
 		if (!$obj->confirmed
 			&& $session->activate == 0 // No activation
-			&& !$this->confirmOnPayment($obj))
+			&& (!$this->confirmOnPayment($obj) || $submitter->isPaid()))
 		{
 			$doConfirm = true;
 
