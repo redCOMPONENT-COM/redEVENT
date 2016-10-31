@@ -69,3 +69,5 @@ class RedeventBootstrap
 		}
 	}
 }
+
+RedeventBootstrap::bootstrap();
