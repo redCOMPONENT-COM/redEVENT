@@ -17,7 +17,7 @@ RHelperAsset::load('site/bundle-addtocart.css');
 
 	<div class="description"><?= $this->bundle->description ?></div>
 
-	<div id="courses">
+	<form id="courses" method="post" action="index.php?option=com_redevent&task=bundle.addtocart">
 		<h3><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_SELECT_EVENTS_DATES'); ?></h3>
 
 		<?php foreach ($this->bundle->getBundleEvents() as $bundleEvent): ?>
@@ -45,16 +45,19 @@ RHelperAsset::load('site/bundle-addtocart.css');
 
 			</div>
 		<?php endforeach; ?>
-	</div>
 
-	<div id="grand-total">
-		<div class="label"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_EVENT_GRAND_TOTAL'); ?></div>
-		<div class="price"></div>
-	</div>
+		<div id="grand-total">
+			<div class="label"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_EVENT_GRAND_TOTAL'); ?></div>
+			<div class="price"></div>
+		</div>
 
-	<div id="add-to-cart-button">
-		<button type="button" class="btn btn-success"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_EVENT_ADD_TO_CART'); ?></button>
-	</div>
+		<div id="add-to-cart-button">
+			<button type="button" class="btn btn-success"><?= JText::_('COM_REDEVENT_VIEW_BUNDLE_EVENT_ADD_TO_CART'); ?></button>
+		</div>
+
+		<input type="hidden" name="id" value="<?= $this->bundle->id ?>" />
+		<?php echo JHtml::_('form.token'); ?>
+	</form>
 </div>
 
 <script id="selected-session-template" type="text/x-handlebars-template">
