@@ -174,6 +174,9 @@ class RedeventControllerBundle extends JControllerLegacy
 			$singleprice = true;
 		}
 
-		return compact('id', 'label', 'prices', 'singleprice');
+		$hasLimit = $session->maxattendees;
+		$left = $session->getNumberLeft();
+
+		return compact('id', 'label', 'prices', 'singleprice', 'hasLimit', 'left');
 	}
 }

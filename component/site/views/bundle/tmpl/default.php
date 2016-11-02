@@ -65,7 +65,7 @@ RHelperAsset::load('site/bundle-addtocart.css');
 		<td class="session-date">
 			<input type="hidden" name="selected[]" value="{{ id }}"/>{{ label }}
 		</td>
-		<td class="session-participants"><input name="participants[]" value="1" size="3"/></td>
+		<td class="session-participants"><input name="participants[]" value="1" size="3"/>{{#if hasLimit}} <?= JText::_('COM_REDEVENT_VIEW_BUNDLE_EVENT_MAX') ?>{{ left }}{{/if}}</td>
 		<td class="session-price">
 			{{#if prices.length}}
 				{{#if singleprice}}

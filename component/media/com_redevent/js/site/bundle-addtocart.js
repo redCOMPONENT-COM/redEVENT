@@ -38,6 +38,7 @@
 	};
 
 	var updateSelected = function(eventDiv, sessionData) {
+		sessionData.left = sessionData.left >= 10 ? "10+" : sessionData.left;
 		eventDiv.find('table.selected-date tbody').empty().append(selectedtemplate(sessionData));
 		eventDiv.change('[name="sessionpricegroup[]"]', updatePrices);
 		updatePrices();
