@@ -134,6 +134,16 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get frontend link
+	 *
+	 * @return string
+	 */
+	public function getLink()
+	{
+		return RedeventHelperRoute::getBundleRoute($this->entity->id);
+	}
+
+	/**
 	 * Get upcoming sessions
 	 *
 	 * @return RedeventEntityTwigVenue[]

@@ -148,7 +148,7 @@
 		});
 
 		$('#add-to-cart-button button').click(function(){
-			alert('TBD');
+			$(this).closest('form').submit();
 		})
 	});
 })(jQuery);
