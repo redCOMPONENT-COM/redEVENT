@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 
 // Import library dependencies
 jimport('joomla.event.plugin');
+JLoader::import('redevent.bootstrap');
+JLoader::import('redeventcart.library');
 
 /**
  * Class plgRedform_PaymentFiltervenue
@@ -36,7 +38,11 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 		}
 
 		// First check that if this is redEVENT submission
-		if ($details->integration !== 'redevent')
+		if ($details->integration == 'redeventcart')
+		{
+			$this->filterRedeventcart($gateways, $details);
+		}
+		elseif ($details->integration !== 'redevent')
 		{
 			return true;
 		}
@@ -56,27 +62,31 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 		$registry = new JRegistry;
 		$registry->loadString($res);
 
-		$allowed = $registry->get('allowed_gateways');
-
-		if (!$allowed || !count($allowed))
-		{
-			return true;
-		}
-
-		// Intersect !
-		$filtered = array();
-
-		foreach ($gateways as $g)
-		{
-			if (in_array($g->value, $allowed))
-			{
-				$filtered[] = $g;
-			}
-		}
-
-		$gateways = $filtered;
+		$gateways = $this->filter($gateways, $registry->get('allowed_gateways'));
 
 		return true;
+	}
+
+	/**
+	 * Filter for redEVENTCART integration
+	 *
+	 * @param   array           &$gateways  current allowed gateways
+	 * @param   RdfPaymentInfo  $details    submission details
+	 *
+	 * @return void
+	 */
+	private function filterRedeventcart(&$gateways, $details)
+	{
+		$cart = $details->getCart();
+		$sid = current($cart->getSubmitters())->id;
+
+		$participant = RedeventcartEntityParticipant::getInstance();
+		$participant->loadBySubmitterId($sid);
+
+		$venue = $participant->getSession()->getVenue();
+		$params = new \Joomla\Registry\Registry($venue->params);
+
+		$gateways = $this->filter($gateways, $params->get('allowed_gateways'));
 	}
 
 	/**
@@ -103,26 +113,31 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 		$registry = new JRegistry;
 		$registry->loadString($res);
 
-		$allowed = $registry->get('allowed_gateways');
-
-		if (!$allowed || !count($allowed))
-		{
-			return true;
-		}
-
-		// Intersect !
-		$filtered = array();
-
-		foreach ($gateways as $g)
-		{
-			if (in_array($g->value, $allowed))
-			{
-				$filtered[] = $g;
-			}
-		}
-
-		$gateways = $filtered;
+		$gateways = $this->filter($gateways, $registry->get('allowed_gateways'));
 
 		return true;
+	}
+
+	/**
+	 * Do the filtering
+	 *
+	 * @param   array  $gateways  input list
+	 * @param   array  $allowed   allowed ids
+	 *
+	 * @return array filtered list
+	 */
+	private function filter($gateways, $allowed)
+	{
+		if (empty($allowed))
+		{
+			return $gateways;
+		}
+
+		return array_filter(
+			$gateways,
+			function($element) use ($allowed) {
+				return in_array($element->value, $allowed);
+			}
+		);
 	}
 }
