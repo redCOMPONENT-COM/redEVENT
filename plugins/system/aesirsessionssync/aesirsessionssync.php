@@ -94,7 +94,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 */
 	public function onContentAfterSave($context, $table, $isNew)
 	{
-		if (!'com_redevent.session' == $context)
+		if ('com_redevent.session' !== $context)
 		{
 			return;
 		}
@@ -112,7 +112,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 *
 	 * @return void
 	 */
-	public function onViewGetToolbar(RedeventViewAdmin $view, RToolbar &$toolbar)
+	public function onRedeventViewGetToolbar(RedeventViewAdmin $view, RToolbar &$toolbar)
 	{
 		if (!$view instanceof RedeventViewSessions)
 		{
