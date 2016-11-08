@@ -173,7 +173,29 @@ class PlgSystemAesirsessionssync extends JPlugin
 			$jform['access'] = $this->params->get('session_access');
 			JFactory::getApplication()->input->set('jform', $jform);
 
-			$item->save($data);
+			$sessionItemId = $item->save($data);
+		}
+		else
+		{
+			$sessionItemId = $item->getId();
+		}
+
+		$eventItem = $this->getAesirEventItem($session->eventid);
+
+		if ($eventItem->isValid())
+		{
+			$params = new \Joomla\Registry\Registry($eventItem->params);
+			$relatedItems = $params->get('related_items', array());
+
+			if (!in_array($sessionItemId, $relatedItems))
+			{
+				$relatedItems[] = $sessionItemId;
+			}
+
+			$params->set('related_items', $sessionItemId);
+			$eventItem->params = $params->toString();
+
+			$eventItem->save();
 		}
 	}
 
@@ -227,7 +249,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 		if ($res = $db->loadObject())
 		{
-			$entity = ReditemEntityItem::getInstance($res->id)->bind($res);
+			$entity = ReditemEntityItem::getInstance($res->id);
 		}
 		else
 		{
