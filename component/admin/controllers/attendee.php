@@ -16,6 +16,25 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventControllerAttendee extends RControllerForm
 {
 	/**
+	 * Method to add a new record.
+	 *
+	 * @return  mixed  True if the record can be added, a error object if not.
+	 */
+	public function add()
+	{
+		if (!parent::add())
+		{
+			return false;
+		}
+
+		// Set session id
+		$context = "$this->option.edit.$this->context";
+		JFactory::getApplication()->setUserState($context . '.session_id', $this->input->get('xref'));
+
+		return true;
+	}
+
+	/**
 	 * Method to save a record.
 	 *
 	 * @param   string  $key     The name of the primary key of the URL variable.
