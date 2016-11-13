@@ -36,6 +36,7 @@ class RedeventModelAttendee extends RModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
+		$app = JFactory::getApplication();
 
 		if ($this->id = JFactory::getApplication()->input->getInt('id', 0))
 		{
@@ -46,6 +47,10 @@ class RedeventModelAttendee extends RModelAdmin
 			$this->setSessionId($sessionId);
 		}
 		elseif ($sessionId = JFactory::getApplication()->input->getInt('sessionId', 0))
+		{
+			$this->setSessionId($sessionId);
+		}
+		elseif ($sessionId = $app->getUserState($this->context . '.session_id'))
 		{
 			$this->setSessionId($sessionId);
 		}
