@@ -137,8 +137,10 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 		}
 
 		$group = new RToolbarButtonGroup;
-		$group->addButton(RToolbarBuilder::createStandardButton(
-			'session.saveAndTwit', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_SAVE_AND_TWEET'), '', 'icon-twitter', false)
+		$group->addButton(
+			RToolbarBuilder::createStandardButton(
+				'session.saveAndTwit', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_SAVE_AND_TWEET'), '', 'icon-twitter', false
+			)
 		);
 		$toolbar->addGroup($group);
 	}
