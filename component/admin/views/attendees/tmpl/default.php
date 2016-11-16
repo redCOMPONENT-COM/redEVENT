@@ -71,7 +71,7 @@ RHelperAsset::load('backend/attendeesmove.js');
 </div>
 
 
-<form action="index.php?option=com_redevent&view=attendees" class="admin" id="adminForm" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&view=attendees&session=<?= $this->session->xref ?>" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
 	echo RedeventLayoutHelper::render(
 		'searchtools.default',
