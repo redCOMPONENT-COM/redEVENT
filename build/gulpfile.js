@@ -163,6 +163,69 @@ gulp.task('release:languages', ['prepare:release'], function() {
 	return tasks;
 });
 
+// Override Copy to test site
+gulp.task('copy', [
+	'copy:components',
+	'copy:libraries',
+	'copy:media',
+	'copy:modules',
+	'copy:packages',
+	'copy:plugins',
+	'copy:templates',
+	'copy:overrides'
+]);
+
+// Override Watch for file changes
+gulp.task('watch', [
+	'watch:components',
+	'watch:libraries',
+	'watch:media',
+	'watch:modules',
+	'watch:packages',
+	'watch:plugins',
+	'watch:templates',
+	'watch:overrides'
+]);
+
+gulp.task('clean:overrides', function(){
+
+});
+
+gulp.task('copy:overrides', [
+	'copy:overrides:admin',
+	'copy:overrides:admincode',
+	'copy:overrides:site',
+	'copy:overrides:code'
+]);
+
+var extPath = '..';
+
+gulp.task('watch:overrides', function(){
+	gulp.watch(extPath + '/overrides/**',
+		['copy:overrides']);
+});
+
+gulp.task('copy:overrides:admin', function(){
+	return gulp.src(extPath + '/overrides/admin/**')
+		.pipe(gulp.dest(config.wwwDir + '/administrator/templates/isis'));
+});
+
+gulp.task('copy:overrides:admincode', function(){
+	return gulp.src(extPath + '/overrides/code/admin/**')
+		.pipe(gulp.dest(config.wwwDir + '/administrator/code'));
+});
+
+gulp.task('copy:overrides:site', function(){
+	return gulp.src(extPath + '/overrides/site/**')
+		.pipe(gulp.dest(config.wwwDir + '/templates/redcomponent'))
+		.pipe(gulp.dest(config.wwwDir + '/templates/redweb'));
+});
+
+gulp.task('copy:overrides:code', function(){
+	return gulp.src(extPath + '/overrides/code/site/**')
+		.pipe(gulp.dest(config.wwwDir + '/code'));
+});
+
 function getGitDescribe(cb) {
 	exec('git describe', function (err, stdout, stderr) {
 		cb(stdout.split('\n').join(''))
