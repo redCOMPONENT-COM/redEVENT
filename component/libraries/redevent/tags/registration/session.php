@@ -266,6 +266,14 @@ class RedeventTagsRegistrationSession
 			throw new Exception(JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED'), 0);
 		}
 
+		$left = $this->session->getNumberLeft();
+		$multi = min($left, $multi);
+
+		if ($multi < 1)
+		{
+			throw new Exception(JText::_('COM_REDEVENT_EVENT_FULL'), 0);
+		}
+
 		return $multi;
 	}
 
