@@ -79,7 +79,7 @@ class RedeventRegistrationCanregister
 		{
 			$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
 
-			return true;
+			return $this->result;
 		}
 
 		if ($this->userHasPendingRegistration())
