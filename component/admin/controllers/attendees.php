@@ -105,7 +105,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 
 		$msg = $total . ' ' . JText::_('COM_REDEVENT_ATTENDEES_MOVED');
 
-		$this->setRedirect('index.php?option=com_redevent&view=attendees&filter[session]=' . $dest, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=attendees&xref=' . $dest, $msg);
 	}
 
 	/**
@@ -363,7 +363,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 		}
 		else
 		{
-			if (!$sessionId = $this->input->getInt('session', 0))
+			if (!$sessionId = $this->input->getInt('xref', 0))
 			{
 				$filters = $this->input->get('filter', null, 'array');
 				$sessionId = isset($filters['session']) ? (int) $filters['session'] : 0;
@@ -374,7 +374,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 				}
 			}
 
-			return JRoute::_('index.php?option=com_redevent&view=attendees&session=' . $sessionId . $append, false);
+			return JRoute::_('index.php?option=com_redevent&view=attendees&xref=' . $sessionId . $append, false);
 		}
 	}
 }

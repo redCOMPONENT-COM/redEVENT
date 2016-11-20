@@ -229,7 +229,7 @@ $search = $this->state->get('filter.search');
 					<?php if (!$this->event || $row->registra): ?>
 						<td><?php echo $endreg; ?></td>
 						<td><?php echo ($row->registra ?
-								JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
+								JHTML::link('index.php?option=com_redevent&view=attendees&xref=' . $row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
 					<?php endif; ?>
 
 					<td>

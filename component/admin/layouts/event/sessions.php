@@ -238,7 +238,7 @@ if (isset($data['activeFilters']['event']))
 
 							<td><?php echo $endreg; ?></td>
 							<td><?php echo ($item->registra ?
-										JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $item->id, intval($item->attendees->attending). ' / '. intval($item->attendees->waiting)) : '-'); ?></td>
+										JHTML::link('index.php?option=com_redevent&view=attendees&xref=' . $item->id, intval($item->attendees->attending). ' / '. intval($item->attendees->waiting)) : '-'); ?></td>
 
 							<td>
 								<?php echo $item->language; ?>

@@ -70,8 +70,7 @@ RHelperAsset::load('backend/attendeesmove.js');
 	<strong><?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).':'; ?></strong>&nbsp;<?php echo htmlspecialchars($this->session->title, ENT_QUOTES, 'UTF-8'); ?>
 </div>
 
-
-<form action="index.php?option=com_redevent&view=attendees&session=<?= $this->session->xref ?>" class="admin" id="adminForm" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&view=attendees&xref=<?= $this->session->xref ?>" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
 	echo RedeventLayoutHelper::render(
 		'searchtools.default',
