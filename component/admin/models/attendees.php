@@ -302,7 +302,7 @@ class RedeventModelAttendees extends RModelList
 
 		$app = JFactory::getApplication();
 
-		if ($value = $app->input->getInt('xref', 0));
+		if ($value = $app->input->getInt('xref', 0))
 		{
 			$this->setState('filter.session', $value);
 		}
