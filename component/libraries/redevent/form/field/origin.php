@@ -36,6 +36,7 @@ class RedeventFormFieldOrigin extends JFormFieldList
 		$query = $db->getQuery(true)
 			->select('DISTINCT origin')
 			->from('#__redevent_register')
+			->where('origin <> ""')
 			->order('origin ASC');
 
 		$db->setQuery($query);

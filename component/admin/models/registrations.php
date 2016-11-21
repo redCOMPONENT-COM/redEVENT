@@ -52,7 +52,7 @@ class RedeventModelRegistrations extends RModelList
 				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin', 'r.waitinglist', 'e.title', 'paid',
 				'r.origin',
 				// Filters
-				'venue', 'origin', 'xref', 'confirmed', 'waiting', 'cancelled'
+				'session', 'venue', 'origin', 'xref', 'confirmed', 'waiting', 'cancelled'
 			);
 		}
 
@@ -154,40 +154,40 @@ class RedeventModelRegistrations extends RModelList
 	 */
 	private function buildWhere(&$query)
 	{
-		if (is_numeric($this->getState('filter.confirmed')))
+		if (!empty($this->getState('filter.confirmed')))
 		{
 			switch ($this->getState('filter.confirmed'))
 			{
-				case 0:
+				case "unconfirmed":
 					$query->where('r.confirmed = 0');
 					break;
-				case 1:
+				case "confirmed":
 					$query->where('r.confirmed = 1');
 					break;
 			}
 		}
 
-		if (is_numeric($this->getState('filter.waiting')))
+		if (!empty($this->getState('filter.waiting')))
 		{
 			switch ($this->getState('filter.waiting'))
 			{
-				case 1:
+				case "attending":
 					$query->where('r.waitinglist = 0');
 					break;
-				case 2:
+				case "waiting":
 					$query->where('r.waitinglist = 1');
 					break;
 			}
 		}
 
-		if (is_numeric($this->getState('filter.cancelled')))
+		if (!empty($this->getState('filter.cancelled')))
 		{
 			switch ($this->getState('filter.cancelled'))
 			{
-				case 0:
+				case "active":
 					$query->where('r.cancelled = 0');
 					break;
-				case 1:
+				case "cancelled":
 					$query->where('r.cancelled = 1');
 					break;
 			}

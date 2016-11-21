@@ -48,10 +48,13 @@ class RedeventModelEvents extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'title', 'obj.title',
-				'published', 'obj.published',
+				// Ordering
+				'obj.title',
+				'obj.published',
 				'id', 'obj.id', 'obj.language',
-				'cat.id', 'cat.name', 't.name'
+				'cat.id', 'cat.name', 't.name',
+				// Filters
+				'title', 'published', 'category', 'venue', 'template', 'language'
 			);
 		}
 

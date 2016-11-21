@@ -48,13 +48,16 @@ class RedeventModelSessions extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
+				// Ordering
 				'obj.title', 'e.title',
-				'published', 'obj.published',
-				'id', 'obj.id',
-				'language', 'obj.language',
-				'dates', 'obj.dates',
-				'session_code', 'obj.session_code',
-				'obj.featured', 'obj.registrationend', 'v.venue', 'obj.note'
+				'obj.published',
+				'obj.id',
+				'obj.language',
+				'obj.dates',
+				'obj.session_code',
+				'obj.featured', 'obj.registrationend', 'v.venue', 'obj.note',
+				// Filters
+				'event', 'venue', 'category', 'published', 'id', 'language', 'dates', 'session_code',
 			);
 		}
 
