@@ -50,6 +50,9 @@ class RedeventHelper
 
 		$params = self::config();
 
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+
 		$now = time();
 		$cronfile = JPATH_COMPONENT . '/recron.txt';
 
@@ -173,6 +176,8 @@ class RedeventHelper
 					{
 						RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: ' . $db->getErrorMsg());
 					}
+
+					$dispatcher->trigger('onEventCleanArchived', array($xrefs));
 
 					if ($params->get('pastevents_events_action', 1))
 					{
