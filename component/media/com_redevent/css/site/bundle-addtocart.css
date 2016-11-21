@@ -1,0 +1,8 @@
+div.select-session-list tr.selected {
+	color: white;
+	background-color: #002a80;
+}
+
+div.select-session-list .do-select {
+	cursor: pointer;
+}

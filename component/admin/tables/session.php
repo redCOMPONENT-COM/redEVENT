@@ -37,46 +37,25 @@ class RedeventTableSession extends RedeventTable
 	protected $_tableFieldState = 'published';
 
 	/**
+	 * Field name to keep created date (created_date)
+	 *
+	 * @var  string
+	 */
+	protected $_tableFieldCreatedDate = 'created';
+
+	/**
+	 * Field name to keep latest modified user (modified_date)
+	 *
+	 * @var  string
+	 */
+	protected $_tableFieldModifiedDate = 'modified';
+
+	/**
 	 * Associated Session data
 	 *
 	 * @var object
 	 */
 	private $beforeDeleteSessions;
-
-	/**
-	 * @var  integer
-	 */
-	public $created_by;
-
-	/**
-	 * @var  string
-	 */
-	public $created;
-
-	/**
-	 * @var  integer
-	 */
-	public $modified_by;
-
-	/**
-	 * @var  string
-	 */
-	public $modified;
-
-	/**
-	 * @var  integer
-	 */
-	public $checked_out;
-
-	/**
-	 * @var  string
-	 */
-	public $checked_out_time;
-
-	/**
-	 * @var  int
-	 */
-	public $eventid;
 
 	/**
 	 * @var  array
@@ -104,16 +83,6 @@ class RedeventTableSession extends RedeventTable
 		if ($this->course_credit === '')
 		{
 			$this->course_credit = null;
-		}
-
-		if ($this->times === '')
-		{
-			$this->times = null;
-		}
-
-		if ($this->endtimes === '')
-		{
-			$this->endtimes = null;
 		}
 
 		$alias = JFilterOutput::stringURLSafe($this->title);

@@ -30,6 +30,7 @@ $ignored = array(
 	REPO_BASE . '/component/admin/layouts/*',
 	REPO_BASE . '/component/admin/tables/*',
 	REPO_BASE . '/component/libraries/redevent/layouts/*',
+	REPO_BASE . '/component/libraries/redevent/vendor/*',
 	REPO_BASE . '/component/site/views/*/tmpl/*',
 	REPO_BASE . '/component/site/layouts/*',
 	REPO_BASE . '/component/site/classes/*',
@@ -42,6 +43,7 @@ $ignored = array(
 	REPO_BASE . '/plugins/**/media/*',
 	REPO_BASE . '/plugins/jomsocial/*',
 	REPO_BASE . '/plugins/josetta_ext/*',
+	REPO_BASE . '/plugins/**/layouts/*',
 	REPO_BASE . '/modules/frontend/mod_rokminievents',
 	REPO_BASE . '/modules/frontend/mod_redevent_categories/helper.php',
 );

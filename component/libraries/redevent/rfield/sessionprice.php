@@ -39,7 +39,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 			{
 				$option = new stdclass;
 				$option->value = $sessionPricegroup->id;
-				$option->label = $sessionPricegroup->name;
+				$option->label = $sessionPricegroup->getPricegroup()->name;
 				$option->sku = $sessionPricegroup->sku;
 				$option->price = $sessionPricegroup->price;
 				$option->vat = $sessionPricegroup->vatrate;
@@ -120,8 +120,8 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		if (!$this->data)
 		{
 			$data = new stdClass;
-			$data->field = JText::_('COM_REDEVENT_RFIELD_SESSIONPRICE_LABEL');
-			$data->tooltip = JText::_('COM_REDEVENT_RFIELD_SESSIONPRICE_TOOLTIP');
+			$data->field = JText::_('LIB_REDEVENT_RFIELD_SESSIONPRICE_LABEL');
+			$data->tooltip = JText::_('LIB_REDEVENT_RFIELD_SESSIONPRICE_TOOLTIP');
 			$data->redmember_field = null;
 			$data->fieldtype = $this->type;
 			$data->params = '';
@@ -132,7 +132,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 			$data->readonly = false;
 			$data->form_id = 0;
 			$data->published = true;
-			$data->field_header = JText::_('COM_REDEVENT_RFIELD_SESSIONPRICE_LABEL');
+			$data->field_header = JText::_('LIB_REDEVENT_RFIELD_SESSIONPRICE_HEADER');
 
 			$this->data = $data;
 		}
@@ -151,15 +151,21 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 
 		if (count($options))
 		{
-			$option = reset($options);
-			$price = $option->price;
-		}
-		else
-		{
-			$price = $this->getValue();
+			if ($value = $this->getValue())
+			{
+				foreach ($this->options as $option)
+				{
+					if ($option->value == $value)
+					{
+						return $option->price;
+					}
+				}
+
+				throw new RuntimeException('undefined sessionprice value');
+			}
 		}
 
-		return $price;
+		return $this->getValue();
 	}
 
 	/**
@@ -281,7 +287,27 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	 */
 	public function getSku()
 	{
-		return parent::getSku() ?: 'REGISTRATION';
+		$sku = array();
+
+		if (!$this->value)
+		{
+			return '';
+		}
+
+		foreach ($this->getOptions() as $option)
+		{
+			if ($option->value == $this->getValue())
+			{
+				$sku[] = $option->sku ?: 'REGISTRATION' . '_' . $option->value;
+			}
+		}
+
+		if (empty($sku))
+		{
+			return 'REGISTRATION';
+		}
+
+		return implode('-', $sku);
 	}
 
 	/**
@@ -304,5 +330,20 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	public function isRequired()
 	{
 		return $this->load()->validate && !$this->isReadonly();
+	}
+
+	/**
+	 * Set custom label
+	 *
+	 * @param   string  $label  label to set
+	 *
+	 * @return $this
+	 */
+	public function setLabel($label)
+	{
+		$this->load();
+		$this->data->label = $label;
+
+		return $this;
 	}
 }

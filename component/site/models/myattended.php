@@ -99,11 +99,11 @@ class RedeventModelMyattended extends RedeventModelBasesessionlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
+		$query->select('x.dates, x.enddates, x.allday, x.times, x.endtimes, x.registrationend');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
 		$query->select('c.name AS catname, c.id AS catid');
-		$query->select('x.featured');
+		$query->select('x.featured, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
 		$query->select('r.id AS attendee_id, r.sid, r.submit_key');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');

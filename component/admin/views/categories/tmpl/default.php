@@ -109,7 +109,7 @@ if (($saveOrder) && ($this->canEditState))
 					<?php echo JText::_('COM_REDEVENT_COLOR'); ?>
 				</th>
 				<th width="100">
-					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.left', $listDirn, $listOrder); ?>
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $listDirn, $listOrder); ?>
 				</th>
 				<th width="150">
 					<?php echo JText::_('COM_REDEVENT_EVENTS'); ?>

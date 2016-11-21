@@ -76,7 +76,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 		$form = parent::getForm($data, $loadData);
 
 		// Do not allow to modify the session event once created
-		if ($form->getValue('id'))
+		if ($form->getValue('id') || $this->getState($this->getName() . '.eventid'))
 		{
 			$form->setFieldAttribute('eventid', 'readonly', '1');
 		}

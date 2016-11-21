@@ -58,13 +58,13 @@ class RedeventFeedRssitem
 		}
 
 		// Format time
-		if ($session->times)
+		if (!$session->allday)
 		{
 			$time = RedeventHelperDate::formattime($session->times);
 			$displaytime = $time;
 		}
 
-		if ($session->endtimes)
+		if (!$session->allday)
 		{
 			$endtime = RedeventHelperDate::formattime($session->endtimes);
 			$displaytime = $time . ' - ' . $endtime;

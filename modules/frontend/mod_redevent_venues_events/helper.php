@@ -35,7 +35,7 @@ class ModRedEventVenuesEventsHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.venueid, l.venue, l.city, l.url')
+		$query->select('a.*, x.id AS xref, x.dates, x.enddates, x.allday, x.times, x.endtimes, x.venueid, l.venue, l.city, l.url')
 			->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
 			->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug')
 			->from('#__redevent_event_venue_xref AS x')

@@ -32,6 +32,11 @@ class RedeventEntityEvent extends RedeventEntityBase
 	private $sessions;
 
 	/**
+	 * @var RedeventEntityEventtemplate
+	 */
+	private $template;
+
+	/**
 	 * Get event categories
 	 *
 	 * @return RedeventEntityCategory[]
@@ -94,20 +99,67 @@ class RedeventEntityEvent extends RedeventEntityBase
 	}
 
 	/**
+	 * Get all bundles this event belongs to
+	 *
+	 * @return RedeventEntityBundle
+	 */
+	public function getBundles()
+	{
+		if (!$this->hasId())
+		{
+			return false;
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('b.*')
+			->from('#__redevent_bundle AS b')
+			->join('INNER', '#__redevent_bundle_event AS be ON be.bundle_id = b.id')
+			->where('be.event_id = ' . $this->id);
+
+		$db->setQuery($query);
+
+		if (!$res = $db->loadObjectList())
+		{
+			return false;
+		}
+
+		return RedeventEntityBundle::loadArray($res);
+	}
+
+	/**
+	 * Return event template
+	 *
+	 * @return RedeventEntityEventtemplate
+	 */
+	public function getEventtemplate()
+	{
+		if (!$this->template)
+		{
+			$item = $this->getItem();
+
+			if (!empty($item))
+			{
+				$this->template = RedeventEntityEventtemplate::load($item->template_id);
+			}
+		}
+
+		return $this->template;
+	}
+
+	/**
 	 * Return associated redform form
 	 *
 	 * @return RdfEntityForm
 	 */
 	public function getForm()
 	{
-		$item = $this->getItem();
-
-		if (!empty($item))
+		if (!$template = $this->getEventtemplate())
 		{
-			return RdfEntityForm::load($item->redform_id);
+			return false;
 		}
 
-		return false;
+		return $template->getForm();
 	}
 
 	/**
@@ -140,7 +192,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 			throw new RuntimeException('invalid user entity');
 		}
 
-		return strlen(trim(strip_tags($this->review_message))) > 0;
+		return strlen(trim(strip_tags($this->getEventtemplate()->review_message))) > 0;
 	}
 
 	/**
@@ -168,6 +220,17 @@ class RedeventEntityEvent extends RedeventEntityBase
 						function($session) use ($value)
 						{
 							return $session->published == $value;
+						}
+					);
+
+				case 'upcoming':
+					$sessions = array_filter(
+						$sessions,
+						function($session) use ($value)
+						{
+							$upcoming = $session->isUpcoming();
+
+							return $value ? $upcoming : !$upcoming;
 						}
 					);
 			}

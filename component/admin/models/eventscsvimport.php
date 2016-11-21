@@ -37,6 +37,11 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * @var array
 	 */
+	private $templates;
+
+	/**
+	 * @var array
+	 */
 	private $venues;
 
 	/**
@@ -52,17 +57,12 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * @var int
 	 */
-	private $updated = 0;
+	private $updatedEvents = 0;
 
 	/**
 	 * @var int
 	 */
-	private $ignored = 0;
-
-	/**
-	 * @var int
-	 */
-	private $ignored_sessions = 0;
+	private $ignoredEvents = 0;
 
 	/**
 	 * @var int
@@ -73,6 +73,31 @@ class RedeventModelEventscsvimport extends RModel
 	 * @var int
 	 */
 	private $createdSessions = 0;
+
+	/**
+	 * @var int
+	 */
+	private $updatedSessions = 0;
+
+	/**
+	 * @var int
+	 */
+	private $ignoredSessions = 0;
+
+	/**
+	 * @var array();
+	 */
+	private $errorMessages = array();
+
+	/**
+	 * Return error messages
+	 *
+	 * @return array
+	 */
+	public function getErrorMessages()
+	{
+		return $this->errorMessages;
+	}
 
 	/**
 	 * insert events/sessions in database
@@ -87,19 +112,29 @@ class RedeventModelEventscsvimport extends RModel
 		$this->duplicateMethod = $duplicate_method;
 		$this->storedTitles = array();
 
-		foreach ($records as $r)
+		foreach ($records as $row => $r)
 		{
 			$this->replaceCustoms($r);
 
-			if (!$eventId = $this->storeEvent($r))
+			try
 			{
-				continue;
-			}
+				if (!$eventId = $this->storeEvent($r))
+				{
+					continue;
+				}
 
-			$this->storeSession($r, $eventId);
+				$this->storeSession($r, $eventId);
+			}
+			catch (Exception $e)
+			{
+				$this->errorMessages[] = "row $row: " . $e->getMessage();
+			}
 		}
 
-		$count = array('added' => $this->createdEvents, 'updated' => $this->updated, 'ignored' => $this->ignored);
+		$count = array(
+			'added' => $this->createdEvents, 'updated' => $this->updatedEvents, 'ignored' => $this->ignoredEvents,
+			'addedSessions' => $this->createdSessions, 'updatedSession' => $this->updatedSessions, 'ignoredSessions' => $this->ignoredSessions
+		);
 
 		return $count;
 	}
@@ -185,7 +220,7 @@ class RedeventModelEventscsvimport extends RModel
 				// Discard if set to ignore duplicate
 				if ($found && $this->duplicateMethod == self::DUPLICATE_IGNORE)
 				{
-					$this->ignored++;
+					$this->ignoredEvents++;
 					$this->storedTitles[$data['id']] = $data['title'];
 
 					return $data['id'];
@@ -206,6 +241,8 @@ class RedeventModelEventscsvimport extends RModel
 			}
 
 			$data['categories'] = $cats_ids;
+
+			$data['template_id'] = $this->getTemplateId($data);
 
 			// Bind submitted data
 			$ev->bind($data);
@@ -244,7 +281,7 @@ class RedeventModelEventscsvimport extends RModel
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterEventSaved', array($ev->id));
 
-			($updating ? $this->updated++ : $this->createdEvents++);
+			($updating ? $this->updatedEvents++ : $this->createdEvents++);
 
 			return $ev->id;
 		}
@@ -274,7 +311,7 @@ class RedeventModelEventscsvimport extends RModel
 
 			if ($exists && $this->duplicateMethod == self::DUPLICATE_IGNORE)
 			{
-				$this->ignored_sessions++;
+				$this->ignoredSessions++;
 
 				return true;
 			}
@@ -296,9 +333,11 @@ class RedeventModelEventscsvimport extends RModel
 				$session->reset();
 				$session->bind($data);
 				$session->id = null;
+				$isUpdate = false;
 			}
 			else
 			{
+				$isUpdate = $exists;
 				$session->bind($data);
 			}
 
@@ -318,34 +357,44 @@ class RedeventModelEventscsvimport extends RModel
 				return false;
 			}
 
+			// Import pricegroups
+			if (isset($data['pricegroups_names']))
+			{
+				$pgs = explode('#!#', $data['pricegroups_names']);
+				$prices = explode('#!#', $data['prices']);
+				$currencies = explode('#!#', $data['currencies']);
+				$pricegroups = array();
+
+				foreach ($pgs as $k => $v)
+				{
+					if (empty($v))
+					{
+						continue;
+					}
+
+					$price = new stdclass;
+					$price->pricegroup_id    = $this->getPgId($v);
+					$price->price = $prices[$k];
+					$price->currency = $currencies[$k];
+					$pricegroups[] = $price;
+				}
+
+				$session->setPrices($pricegroups);
+			}
+
 			// Trigger plugins
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterSessionSaved', array($session->id));
 
-			// Import pricegroups
-			$pgs = explode('#!#', $data['pricegroups_names']);
-			$prices = explode('#!#', $data['prices']);
-			$currencies = explode('#!#', $data['currencies']);
-			$pricegroups = array();
-
-			foreach ($pgs as $k => $v)
+			if ($isUpdate)
 			{
-				if (empty($v))
-				{
-					continue;
-				}
-
-				$price = new stdclass;
-				$price->pricegroup_id    = $this->getPgId($v);
-				$price->price = $prices[$k];
-				$price->currency = $currencies[$k];
-				$pricegroups[] = $price;
+				$this->updatedSession++;
 			}
-
-			$session->setPrices($pricegroups);
-
-			$this->createdSessions++;
+			else
+			{
+				$this->createdSessions++;
+			}
 
 			return true;
 		}
@@ -404,6 +453,72 @@ class RedeventModelEventscsvimport extends RModel
 		}
 
 		return $this->categories;
+	}
+
+	/**
+	 * Get event template id
+	 *
+	 * @param   array  $data  csv row data
+	 *
+	 * @return int
+	 */
+	private function getTemplateId($data)
+	{
+		$templates = $this->getTemplates();
+
+		if (empty($data['template_name']))
+		{
+			throw new InvalidArgumentException('template_name column is required');
+		}
+
+		if ($id = array_search($data['template_name'], $templates))
+		{
+			return $id;
+		}
+
+		// Try to create if not found
+		$model = RModel::getAdminInstance('Eventtemplate');
+		unset($data['id']);
+		$data['name'] = $data['template_name'];
+
+		if (!$model->save($data))
+		{
+			throw new RuntimeException($model->getError());
+		}
+
+		$id = $model->getState('eventtemplate.id');
+		$this->templates[$id] = $data['template_name'];
+
+		return $id;
+	}
+
+	/**
+	 * Get templates
+	 *
+	 * @return array index by template id
+	 */
+	private function getTemplates()
+	{
+		if (is_null($this->templates))
+		{
+			$this->templates = array();
+
+			$model = RModel::getAdminInstance('Eventtemplates', array('ignore_request' => true));
+			$model->setState('list.limit', 0);
+			$templates = $model->getItems();
+
+			if (!$templates)
+			{
+				return $this->templates;
+			}
+
+			foreach ($templates as $template)
+			{
+				$this->templates[$template->id] = $template->name;
+			}
+		}
+
+		return $this->templates;
 	}
 
 	/**

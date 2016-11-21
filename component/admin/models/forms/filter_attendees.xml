@@ -8,14 +8,6 @@
 			placeholder="JSEARCH_FILTER"
 			class="js-enter-submits"
 			/>
-		<field
-				name="session"
-				type="session"
-				onchange="this.form.submit();"
-				label="COM_REDEVENT_FORMS_FILTER_REGISTRATION_SESSION"
-				default=""
-				>
-		</field>
         <field
                 name="confirmed"
                 type="list"
@@ -52,7 +44,7 @@
 	</fields>
 	<fields name="list">
 		<field
-			name="registrations_limit"
+			name="attendees_limit"
 			type="rlimitbox"
 			class="inputbox input-mini chzn"
 			default="25"

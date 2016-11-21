@@ -212,7 +212,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			// Redform saved fine, now add the attendees
 			$user = JFactory::getUser();
 
-			if (!$user->get('id') && $session->getEvent()->juser)
+			if (!$user->get('id') && $session->getEvent()->getEventtemplate()->juser)
 			{
 				if ($new = $model->createUser($result->posts[0]['sid']))
 				{
@@ -255,7 +255,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 			$gateway = $app->input->get('gw');
 
-			$rfredirect = $rfcore->getFormRedirect($session->getEvent()->redform_id);
+			$rfredirect = $rfcore->getFormRedirect($session->getEvent()->getEventtemplate()->redform_id);
 
 			if ($rfredirect)
 			{
@@ -370,17 +370,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 */
 	public function cancelreg()
 	{
-		$xref = $this->input->getInt('xref', 0);
-		$rid = $this->input->getInt('rid', 0);
-
-		if ($this->cancelRegistration($rid, $xref))
-		{
-			$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
-		}
-		else
-		{
-			$this->setMessage($this->getError(), 'error');
-		}
+		$this->setMessage(JText::_('COM_REDEVENT_Registration_cancelled'));
 
 		$return = $this->input->getString('return');
 

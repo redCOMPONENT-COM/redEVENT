@@ -14,7 +14,7 @@ extract($displayData);
 <form action="<?php echo JRoute::_('index.php'); ?>" class="redform-validate" method="post" name="redform" enctype="multipart/form-data">
 	<?php echo $redformHtml; ?>
 
-	<?php if ($session->getEvent()->hasReview()): ?>
+	<?php if (!$submitKey && $session->getEvent()->hasReview()): ?>
 		<input type="hidden" name="hasreview" value="1"/>
 	<?php endif; ?>
 

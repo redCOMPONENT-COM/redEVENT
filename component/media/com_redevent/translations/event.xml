@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<contentelement type="contentelement">
+	<name>redEVENT events</name>
+	<author>redCOMPONENT</author>
+	<copyright>Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.</copyright>
+	<version>3.2.1</version>
+	<description>Events Table Definition for the redEVENT extension</description>
+	<reference>
+		<table name="redevent_events">
+			<field name="id" type="referenceid" translate="0" alwaysFallback="false" filter="RAW" description="">ID</field>
+			<field name="title" type="text" translate="1" alwaysFallback="false" filter="RAW" description="">Name</field>
+			<field name="alias" type="text" translate="1" alwaysFallback="false" filter="RAW" description="">Alias</field>
+			<field name="summary" type="text" translate="1" alwaysFallback="false" filter="RAW" description="">Summary</field>
+			<field name="datdescription" type="htmltext" translate="1" alwaysFallback="false" filter="RAW" description="">Full description</field>
+		</table>
+
+		<component>
+			<editForm admin="true" option="com_redevent" view="event" layout="edit" identifier="id" showbutton="true" htmlposition=".btn-toolbar:first .btn-group:first" checkoriginalid="false"/>
+		</component>
+	</reference>
+</contentelement>

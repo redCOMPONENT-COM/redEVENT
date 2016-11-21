@@ -50,6 +50,9 @@ class RedeventHelper
 
 		$params = self::config();
 
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+
 		$now = time();
 		$cronfile = JPATH_COMPONENT . '/recron.txt';
 
@@ -173,6 +176,8 @@ class RedeventHelper
 					{
 						RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: ' . $db->getErrorMsg());
 					}
+
+					$dispatcher->trigger('onEventCleanArchived', array($xrefs));
 
 					if ($params->get('pastevents_events_action', 1))
 					{
@@ -403,7 +408,7 @@ class RedeventHelper
 
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra')
+		$query->select('x.allday, x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra')
 			->from('#__redevent_event_venue_xref AS x')
 			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
 			->where('x.id = ' . $db->Quote($xref_id));
@@ -653,7 +658,7 @@ class RedeventHelper
 		$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
 
 		// All day event if start time is not set
-		if (!$session->times || $session->times == '00:00:00')
+		if ($session->allday)
 		{
 			// All day !
 			$dateparam = array('VALUE' => 'DATE');

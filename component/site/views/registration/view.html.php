@@ -29,6 +29,10 @@ class RedeventViewRegistration extends JViewLegacy
 
 		$event = $this->get('SessionDetails');
 
+		/* Start the tag replacer */
+		$tags = new RedeventTags;
+		$tags->setXref($event->xref);
+
 		if ($this->getLayout() == 'confirmed')
 		{
 			$message = $event->confirmation_message;
@@ -39,6 +43,7 @@ class RedeventViewRegistration extends JViewLegacy
 		{
 			$message = $event->review_message;
 			$document->setTitle($event->title . ' - ' . JText::_('COM_REDEVENT_REGISTRATION_REVIEW_PAGE_TITLE'));
+			$tags->setOption('isReview', true);
 		}
 		elseif ($this->getLayout() == 'edit')
 		{
@@ -55,14 +60,12 @@ class RedeventViewRegistration extends JViewLegacy
 			return;
 		}
 
-		/* Start the tag replacer */
-		$tags = new RedeventTags;
-		$tags->setXref($event->xref);
 		$message = $tags->replaceTags($message);
 
 		$this->assignRef('tags',    $tags);
 		$this->assignRef('message', $message);
 		$this->assignRef('event',   $event);
+
 		parent::display($tpl);
 	}
 

@@ -109,7 +109,9 @@ class RedeventViewSessions extends RedeventViewAdmin
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
 
-		return $toolbar;
+		$this->toolbar = $toolbar;
+
+		return parent::getToolbar();
 	}
 
 	/**
@@ -139,6 +141,7 @@ class RedeventViewSessions extends RedeventViewAdmin
 
 	/**
 	 * returns toggle image link for session feature
+	 * Kept here for b/c
 	 *
 	 * @param   object  $row  item data
 	 * @param   int     $i    row number
@@ -147,16 +150,12 @@ class RedeventViewSessions extends RedeventViewAdmin
 	 */
 	public function featured($row, $i)
 	{
-		$states = array(
-			1 => array('unfeature', 'COM_REDEVENT_FEATURED', 'COM_REDEVENT_SESSION_UNFEATURE_SESSION', '', false, 'star', 'star'),
-			0 => array('feature', '', 'COM_REDEVENT_SESSION_FEATURE_SESSION', '', false, 'star-empty', 'star-empty'),
-		);
-
-		return JHtml::_('rgrid.state', $states, $row->featured, $i, 'sessions.', $this->canEditState, true);
+		return RedeventHtmlSessions::featured($row, $i, $this->canEditState);
 	}
 
 	/**
 	 * returns toggle image link for session publish state
+	 * Kept here for b/c
 	 *
 	 * @param   object  $row  item data
 	 * @param   int     $i    row number
@@ -165,11 +164,6 @@ class RedeventViewSessions extends RedeventViewAdmin
 	 */
 	public function published($row, $i)
 	{
-		$states = array(1 => array('unpublish', 'JPUBLISHED', 'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED', false, 'ok-sign icon-green', 'ok-sign icon-green'),
-			0 => array('publish', 'JUNPUBLISHED', 'JLIB_HTML_PUBLISH_ITEM', 'JUNPUBLISHED', false, 'remove icon-red', 'remove icon-red'),
-			-1 => array('unpublish', 'JARCHIVED', 'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED', false, 'hdd', 'hdd'),
-		);
-
-		return JHtml::_('rgrid.state', $states, $row->published, $i, 'sessions.', $this->canEditState, true);
+		return RedeventHtmlSessions::published($row, $i, $this->canEditState);
 	}
 }

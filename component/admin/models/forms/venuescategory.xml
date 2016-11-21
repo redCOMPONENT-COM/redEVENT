@@ -84,6 +84,14 @@
 		description="JFIELD_ACCESS_DESC"
 		class="inputbox"/>
 
+	<field name="meta_keywords" type="textarea"
+		   label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
+		   rows="3" cols="30" />
+
+	<field name="meta_description" type="textarea"
+		   label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC"
+		   rows="3" cols="30" />
+
 	<field name="asset_id" type="hidden" filter="unset" />
 
 	<field name="rules"

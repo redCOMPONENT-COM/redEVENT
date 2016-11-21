@@ -36,8 +36,6 @@ class RedeventModelEditevent extends RModelAdmin
 
 			$categories = $this->getEventCategories($result->id);
 			$result->categories = array_keys($categories);
-
-			$result->showfields = explode(',', $result->showfields);
 		}
 
 		return $result;
@@ -271,11 +269,7 @@ class RedeventModelEditevent extends RModelAdmin
 	 */
 	private function mergeTemplateData($data)
 	{
-		$app = JFactory::getApplication();
-
-		$templateId = $app->getParams()->get('event_template', 0);
-
-		if ($templateId)
+		if ($templateId = $this->getTemplateId($data))
 		{
 			$query = $this->_db->getQuery(true)
 				->select('e.*')
@@ -286,10 +280,14 @@ class RedeventModelEditevent extends RModelAdmin
 
 			if ($templateData = $this->_db->loadAssoc())
 			{
-				unset($templateData['id']);
-				unset($templateData['title']);
-				unset($templateData['alias']);
-				unset($templateData['course_code']);
+				$unset = array_fill_keys(
+					array(
+						'id', 'title', 'alias', 'course_code', 'created_by', 'modified', 'modified_by', 'author_ip', 'created', 'alias', 'alias', 'alias'
+						, 'checked_out', 'checked_out_time', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias'
+					),
+					0
+				);
+				$templateData = array_diff_key($templateData, $unset);
 				$data = array_merge($templateData, $data);
 			}
 
@@ -306,6 +304,40 @@ class RedeventModelEditevent extends RModelAdmin
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Get template id
+	 *
+	 * @param   array  $data  posted data
+	 *
+	 * @return mixed
+	 */
+	private function getTemplateId($data)
+	{
+		if (isset($data['categories']))
+		{
+			$categoryids = $data['categories'];
+			JArrayHelper::toInteger($categoryids);
+
+			if (count($categoryids))
+			{
+				$query = $this->_db->getQuery(true)
+					->select('event_template')
+					->from('#__redevent_categories')
+					->where('id IN (' . implode(', ', $categoryids) . ')')
+					->where('event_template > 0');
+
+				$this->_db->setQuery($query);
+
+				if ($res = $this->_db->loadResult())
+				{
+					return $res;
+				}
+			}
+		}
+
+		return JFactory::getApplication()->getParams()->get('event_template', 0);
 	}
 
 	/**

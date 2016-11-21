@@ -68,7 +68,6 @@ if ($eventid = JFactory::getApplication()->input->getInt('eventid'))
 				<th class="title" width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_DATE', 'obj.dates', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10"><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
 				<th width="40">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_SESSIONS_SESSION_CODE', 'obj.session_code', $listDirn, $listOrder); ?>
 				</th>
@@ -98,30 +97,15 @@ if ($eventid = JFactory::getApplication()->input->getInt('eventid'))
 			<tbody>
 			<?php $n = count($this->items); ?>
 			<?php foreach ($this->items as $i => $row) :
-				/* Get the date */
-				$date = RedeventHelperDate::formatdate($row->dates, $row->times, $this->params->get('backend_formatdate', 'd.m.Y'));
-				$enddate  = (!RedeventHelperDate::isValidDate($row->enddates) || $row->enddates == $row->dates)
-					? ''
-					: RedeventHelperDate::formatdate($row->enddates, $row->endtimes, $this->params->get('backend_formatdate', 'd.m.Y'));
-				$displaydate = $date. ($enddate ? ' - '.$enddate: '');
+				$session = RedeventEntitySession::getInstance($row->id);
+				$session->bind($row);
+				$displaydate = implode('<br>', $session->getFormattedDates(
+						$this->params->get('backend_formatdate', 'd.m.Y'), $this->params->get('formattime', 'H:i')
+					)
+				);
 				$endreg = (!RedeventHelperDate::isValidDate($row->registrationend) ? '-' : RedeventHelperDate::formatdate($row->registrationend, null, $this->params->get('backend_formatdate', 'd.m.Y') . ' H:i'));
 
-				$displaytime = '';
-
-				/* Get the time */
-				if (RedeventHelperDate::isValidTime($row->times) && $row->times != '00:00:00')
-				{
-					$displaytime = RedeventHelperDate::formattime($row->times, $this->params->get('formattime', 'H:i'));
-
-					if (RedeventHelperDate::isValidTime($row->endtimes) && $row->endtimes != '00:00:00')
-					{
-						$displaytime .= ' - ' . RedeventHelperDate::formattime($row->endtimes, $this->params->get('formattime', 'H:i'));
-					}
-				}
 				$featured = $this->featured($row, $i);
-
-				$venuelink = JRoute::_( 'index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);
-				$eventlink = JRoute::_( 'index.php?option=com_redevent&task=event.edit&id=' . $row->eventid);
 				?>
 				<tr>
 					<td>
@@ -137,7 +121,6 @@ if ($eventid = JFactory::getApplication()->input->getInt('eventid'))
 					<td>
 						<?php echo $displaydate; ?>
 					</td>
-					<td><?php echo $displaytime; ?></td>
 					<td><?php echo $row->session_code; ?></td>
 
 					<td>

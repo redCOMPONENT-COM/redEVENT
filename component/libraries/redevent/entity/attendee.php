@@ -131,6 +131,42 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	}
 
 	/**
+	 * Is attendee confirmed
+	 *
+	 * @return bool
+	 */
+	public function isAttending()
+	{
+		$item = $this->getItem(true);
+
+		return $this->isConfirmed() && !$item->waitinglist;
+	}
+
+	/**
+	 * Is attendee confirmed
+	 *
+	 * @return bool
+	 */
+	public function isConfirmed()
+	{
+		$item = $this->getItem(true);
+
+		return $this->confirmed && !$item->cancelled;
+	}
+
+	/**
+	 * Is attendee on waiting list
+	 *
+	 * @return bool
+	 */
+	public function isWaiting()
+	{
+		$item = $this->getItem(true);
+
+		return $this->isConfirmed() && $item->waitinglist;
+	}
+
+	/**
 	 * Return array of RedeventEntityAttendee
 	 *
 	 * @param   string  $submit_key  submit key
@@ -196,6 +232,26 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		}
 
 		return $this->answers;
+	}
+
+	/**
+	 * Update attendee payment requests
+	 *
+	 * @return bool|void
+	 */
+	public function updatePaymentRequests()
+	{
+		if (!$this->isValid())
+		{
+			return;
+		}
+
+		$answers = $this->getAnswers();
+
+		$model = new RdfCoreModelSubmissionprice;
+		$model->setAnswers($answers);
+
+		return $model->updatePrice();
 	}
 
 	/**

@@ -16,43 +16,6 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelEmailattendees extends RModel
 {
 	/**
-	 * Constructor
-	 *
-	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
-	 *
-	 * @throws RuntimeException
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-
-		$data = JFactory::getApplication()->input->get('filter', array(), 'array');
-
-		if (!$data['session'])
-		{
-			throw new RuntimeException('mission session id');
-		}
-		else
-		{
-			$this->setState('sessionId', (int) $data['session']);
-
-			$this->setState('confirmed', isset($data['filter.confirmed']) ? $data['filter.confirmed'] : null);
-			$this->setState('waiting', isset($data['filter.waiting']) ? $data['filter.waiting'] : null);
-			$this->setState('cancelled', isset($data['filter.cancelled']) ? $data['filter.cancelled'] : null);
-		}
-
-		if ($cids = JFactory::getApplication()->input->get('cid', array(), 'array'))
-		{
-			JArrayHelper::toInteger($cids);
-			$this->setState('cids', $cids);
-		}
-		else
-		{
-			$this->setState('cids', array());
-		}
-	}
-
-	/**
 	 * Get attendees emails
 	 *
 	 * @return array
@@ -203,5 +166,49 @@ class RedeventModelEmailattendees extends RModel
 		}
 
 		return true;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
+	 *
+	 * @note    Calling getState in this method will result in recursion.
+	 * @since   12.2
+	 */
+	protected function populateState()
+	{
+		parent::populateState();
+
+		$input = JFactory::getApplication()->input;
+
+		$data = $input->get('filter', array(), 'array');
+
+		$sessionId = isset($data['session']) ? (int) $data['session'] : $input->getInt('xref');
+
+		if (!$sessionId)
+		{
+			throw new RuntimeException('mission session id');
+		}
+
+		$this->setState('sessionId', $sessionId);
+
+		$this->setState('confirmed', isset($data['filter.confirmed']) ? $data['filter.confirmed'] : null);
+		$this->setState('waiting', isset($data['filter.waiting']) ? $data['filter.waiting'] : null);
+		$this->setState('cancelled', isset($data['filter.cancelled']) ? $data['filter.cancelled'] : null);
+
+		if ($cids = $input->get('cid', array(), 'array'))
+		{
+			JArrayHelper::toInteger($cids);
+			$this->setState('cids', $cids);
+		}
+		else
+		{
+			$this->setState('cids', array());
+		}
 	}
 }

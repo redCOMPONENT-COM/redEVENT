@@ -80,6 +80,7 @@ function redeventBuildRoute(&$query)
 			break;
 
 		case 'archive':
+		case 'bundle':
 		case 'calendar':
 		case 'categoryevents':
 		case 'details':
@@ -219,6 +220,17 @@ function redeventParseRoute($segments)
 			{
 				$vars['task'] = $segments[2];
 			}
+
+			break;
+
+		case 'bundle':
+			if (isset($segments[1]))
+			{
+				$id = explode(':', $segments[1]);
+				$vars['id'] = $id[0];
+			}
+
+			$vars['view'] = 'bundle';
 
 			break;
 

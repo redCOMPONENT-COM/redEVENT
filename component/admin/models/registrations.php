@@ -52,7 +52,7 @@ class RedeventModelRegistrations extends RModelList
 				'r.confirmed', 'r.waiting', 'r.cancelled', 'r.origin', 'r.waitinglist', 'e.title', 'paid',
 				'r.origin',
 				// Filters
-				'venue', 'origin', 'xref', 'confirmed', 'waiting', 'cancelled'
+				'session', 'venue', 'origin', 'xref', 'confirmed', 'waiting', 'cancelled'
 			);
 		}
 
@@ -154,40 +154,40 @@ class RedeventModelRegistrations extends RModelList
 	 */
 	private function buildWhere(&$query)
 	{
-		if (is_numeric($this->getState('filter.confirmed')))
+		if (!empty($this->getState('filter.confirmed')))
 		{
 			switch ($this->getState('filter.confirmed'))
 			{
-				case 0:
+				case "unconfirmed":
 					$query->where('r.confirmed = 0');
 					break;
-				case 1:
+				case "confirmed":
 					$query->where('r.confirmed = 1');
 					break;
 			}
 		}
 
-		if (is_numeric($this->getState('filter.waiting')))
+		if (!empty($this->getState('filter.waiting')))
 		{
 			switch ($this->getState('filter.waiting'))
 			{
-				case 1:
+				case "attending":
 					$query->where('r.waitinglist = 0');
 					break;
-				case 2:
+				case "waiting":
 					$query->where('r.waitinglist = 1');
 					break;
 			}
 		}
 
-		if (is_numeric($this->getState('filter.cancelled')))
+		if (!empty($this->getState('filter.cancelled')))
 		{
 			switch ($this->getState('filter.cancelled'))
 			{
-				case 0:
+				case "active":
 					$query->where('r.cancelled = 0');
 					break;
-				case 1:
+				case "cancelled":
 					$query->where('r.cancelled = 1');
 					break;
 			}
@@ -195,10 +195,14 @@ class RedeventModelRegistrations extends RModelList
 
 		if ($this->getState('filter.search'))
 		{
-			$query->where('(u.name LIKE "%' . $this->getState('filter.search') . '%"'
-				. ' OR u.username LIKE "%' . $this->getState('filter.search') . '%"'
-				. ' OR u.email LIKE "%' . $this->getState('filter.search') . '%"'
-			. ')');
+			$where = array(
+				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
+				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
+				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
+				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
+			);
+
+			$query->where('(' . implode(' OR ', $where) . ')');
 		}
 
 		if ($this->getState('filter.origin'))
@@ -238,10 +242,11 @@ class RedeventModelRegistrations extends RModelList
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('r.id AS rid, e.redform_id,r.xref AS xref_id');
+		$query->select('r.id AS rid, t.redform_id,r.xref AS xref_id');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id');
 		$query->where('r.id IN (' . implode(',', $cid) . ')');
 		$db->setQuery($query);
 		$res = $db->loadObjectList();

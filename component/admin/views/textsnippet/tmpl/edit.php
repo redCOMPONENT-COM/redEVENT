@@ -8,6 +8,8 @@
 defined('_JEXEC') or die;
 
 JHtml::_('rjquery.chosen', 'select');
+
+RHelperAsset::load('redevent-backend.css');
 ?>
 <script type="text/javascript">
 	jQuery(document).ready(function()
@@ -54,7 +56,7 @@ JHtml::_('rjquery.chosen', 'select');
 				<?php echo $this->form->getLabel('text_field'); ?>
 			</div>
 			<div class="controls">
-				<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_webform'); ?></div>
+				<div class="tags-info"><?= RedeventHelperOutput::getTagsEditorInsertModal($this->form->getField('text_field')) ?></div>
 				<?php echo $this->form->getInput('text_field'); ?>
 			</div>
 		</div>

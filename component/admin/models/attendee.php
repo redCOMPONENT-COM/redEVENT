@@ -36,6 +36,7 @@ class RedeventModelAttendee extends RModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
+		$app = JFactory::getApplication();
 
 		if ($this->id = JFactory::getApplication()->input->getInt('id', 0))
 		{
@@ -46,6 +47,10 @@ class RedeventModelAttendee extends RModelAdmin
 			$this->setSessionId($sessionId);
 		}
 		elseif ($sessionId = JFactory::getApplication()->input->getInt('sessionId', 0))
+		{
+			$this->setSessionId($sessionId);
+		}
+		elseif ($sessionId = $app->getUserState($this->context . '.session_id'))
 		{
 			$this->setSessionId($sessionId);
 		}
@@ -120,9 +125,10 @@ class RedeventModelAttendee extends RModelAdmin
 		// Get form id and answer id
 		$query = $this->_db->getQuery(true);
 
-		$query->select('a.redform_id as form_id, a.course_code, x.id as xref')
+		$query->select('t.redform_id as form_id, a.course_code, x.id as xref')
 			->from('#__redevent_event_venue_xref AS x')
-			->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid')
+			->join('INNER', '#__redevent_events AS a ON a.id = x.eventid')
+			->join('INNER', '#__redevent_event_template AS t ON t.id = a.template_id')
 			->where('x.id = ' . $this->sessionId);
 
 		$this->_db->setQuery($query);
@@ -215,12 +221,13 @@ class RedeventModelAttendee extends RModelAdmin
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('pg.price, a.activate');
+		$query->select('pg.price, t.activate');
 		$query->select('CASE WHEN CHAR_LENGTH(pg.currency) THEN pg.currency ELSE f.currency END as currency');
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
+		$query->join('INNER', '#__redevent_event_template AS t ON t.id =  a.template_id');
 		$query->join('LEFT', '#__redevent_sessions_pricegroups AS pg ON pg.id = ' . $pricegroup);
-		$query->join('LEFT', '#__rwf_forms AS f on f.id = a.redform_id');
+		$query->join('LEFT', '#__rwf_forms AS f on f.id = t.redform_id');
 		$query->where('x.id = ' . $xref);
 
 		$db->setQuery($query);
@@ -286,24 +293,36 @@ class RedeventModelAttendee extends RModelAdmin
 	 */
 	public function getPricegroups()
 	{
-		if (!$this->pricegroups)
+		if (is_null($this->pricegroups))
 		{
 			$db = $this->_db;
 			$query = $db->getQuery(true);
 
-			$query->select('sp.*, p.name, p.alias, p.tooltip, f.currency AS form_currency');
-			$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug');
-			$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
+			$query->select('sp.*');
 			$query->from('#__redevent_sessions_pricegroups AS sp');
 			$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
-			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
-			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-			$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
 			$query->where('sp.xref = ' . $db->Quote($this->sessionId));
 			$query->order('p.ordering ASC');
 
 			$db->setQuery($query);
-			$this->pricegroups = $db->loadObjectList();
+
+			if (!$res = $db->loadObjectList())
+			{
+				$this->pricegroups = false;
+			}
+			else
+			{
+				$this->pricegroups = array_map(
+					function($result)
+					{
+						$entity = RedeventEntitySessionpricegroup::getInstance($result->id);
+						$entity->bind($result);
+
+						return $entity;
+					},
+					$res
+				);
+			}
 		}
 
 		return $this->pricegroups;

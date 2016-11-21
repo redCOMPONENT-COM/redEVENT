@@ -1,3 +1,6 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
 CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object` varchar(255) NOT NULL,
@@ -11,6 +14,51 @@ CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
   `added` datetime NOT NULL default '0000-00-00 00:00:00',
   `added_by` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_bundle` (
+  `id` int(11) UNSIGNED NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL default '',
+  `alias` varchar(100) NOT NULL default '',
+  `description` text NOT NULL,
+  `published` tinyint(2) NOT NULL default '0',
+  `checked_out` int(11) NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL,
+  `access` int(11) unsigned NOT NULL default '0',
+  `ordering` int(11) NOT NULL default '0',
+  `language` char(7) NOT NULL,
+  `params` TEXT NOT NULL,
+  `asset_id` int(10) NOT NULL DEFAULT '0',
+PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_bundle_event` (
+  `id` int(11) UNSIGNED NOT NULL auto_increment,
+  `bundle_id` INT(11) UNSIGNED NOT NULL,
+  `event_id` INT(11) UNSIGNED NOT NULL,
+  `all_dates` tinyint(1) NOT NULL default '0',
+  `params` TEXT NOT NULL,
+  PRIMARY KEY  (`id`),
+  CONSTRAINT `#__re_bundle_ev_fk1`
+  FOREIGN KEY (`bundle_id`) REFERENCES `#__redevent_bundle` (`id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `#__re_bundle_ev_fk2`
+  FOREIGN KEY (`event_id`) REFERENCES `#__redevent_events` (`id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_bundle_event_session` (
+  `id` int(11) UNSIGNED NOT NULL auto_increment,
+  `bundle_event_id` INT(11) UNSIGNED NOT NULL,
+  `session_id` INT(11) UNSIGNED NOT NULL,
+  `params` TEXT NOT NULL,
+  PRIMARY KEY  (`id`),
+  CONSTRAINT `#__re_bundle_ev_session_fk1`
+  FOREIGN KEY (`bundle_event_id`) REFERENCES `#__redevent_bundle_event` (`id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `#__re_bundle_ev_session_fk2`
+  FOREIGN KEY (`session_id`) REFERENCES `#__redevent_event_venue_xref` (`id`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
@@ -63,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `venueid` int(11) unsigned NOT NULL,
   `dates` date NOT NULL,
   `enddates` date NOT NULL,
+  `allday` tinyint(1) NOT NULL default '0',
   `times` time NOT NULL,
   `endtimes` time NOT NULL,
   `registrationend` datetime NOT NULL,
@@ -94,30 +143,37 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `title` varchar(100) NOT NULL default '',
   `alias` varchar(100) NOT NULL default '',
   `course_code` varchar(255) NOT NULL,
+  `template_id` int(11) NOT NULL,
+  `author_ip` varchar(15) NOT NULL default '',
+  `summary` mediumtext NOT NULL,
+  `datdescription` mediumtext NOT NULL,
+  `datimage` varchar(100) NOT NULL default '',
+  `registra` tinyint(1) NOT NULL default '0',
+  `unregistra` tinyint(1) NOT NULL default '0',
+  `max_multi_signup` int(2) unsigned NOT NULL default '1',
+  `published` tinyint(1) NOT NULL default '0',
+  `language` char(7) NOT NULL,
+  `created` datetime NOT NULL,
   `created_by` int(11) unsigned NOT NULL default '0',
   `modified` datetime NOT NULL,
   `modified_by` int(11) unsigned NOT NULL default '0',
-  `author_ip` varchar(15) NOT NULL default '',
-  `created` datetime NOT NULL,
-  `summary` mediumtext NOT NULL,
-  `datdescription` mediumtext NOT NULL,
-  `mailflow_id` int(11) NOT NULL default '0',
-  `details_layout` tinyint(2) NOT NULL,
-  `meta_keywords` varchar(200) NOT NULL default '',
-  `meta_description` varchar(255) NOT NULL default '',
-  `datimage` varchar(100) NOT NULL default '',
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  `registra` tinyint(1) NOT NULL default '0',
-  `unregistra` tinyint(1) NOT NULL default '0',
-  `published` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_event_template` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `name` VARCHAR(100) NOT NULL default '',
+  `redform_id` int(11) default NULL,
+  `meta_keywords` varchar(200) NOT NULL default '',
+  `meta_description` varchar(255) NOT NULL default '',
+  `mailflow_id` int(11) NOT NULL default '0',
+  `juser` tinyint(1) NOT NULL default '1' COMMENT 'Create user on registration',
+  `details_layout` tinyint(2) NOT NULL,
   `notify` tinyint(1) NOT NULL default '0',
   `notify_subject` varchar(255) NOT NULL default '',
   `notify_body` text NOT NULL,
-  `redform` tinyint(1) NOT NULL default '0',
-  `redform_id` int(11) default NULL,
-  `registeruser` tinyint(1) NOT NULL default '1',
-  `juser` tinyint(1) NOT NULL default '1',
   `notify_on_list_body` text NOT NULL,
   `notify_off_list_body` text NOT NULL,
   `notify_on_list_subject` varchar(255) NOT NULL,
@@ -129,7 +185,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `showfields` text,
   `confirmation_message` text,
   `submission_types` varchar(255) default 'email',
-  `max_multi_signup` int(2) unsigned NOT NULL default '1',
   `submission_type_email` text,
   `submission_type_external` varchar(255) NOT NULL,
   `submission_type_phone` text,
@@ -151,7 +206,11 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `enable_ical` tinyint(2) NOT NULL default '0',
   `enable_activation_confirmation` TINYINT( 1 ) NOT NULL DEFAULT  '0',
   `language` char(7) NOT NULL,
-  PRIMARY KEY  (`id`)
+  `checked_out` int(11) NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`id`),
+  KEY (`redform_id`),
+  KEY (`mailflow_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
@@ -201,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
 `alias` varchar(150) NOT NULL default '',
 `tooltip` varchar(255) NOT NULL default '',
 `image` varchar(100) NOT NULL default '',
-`access` int(11) unsigned NOT NULL default '0',
+`access` int(11) unsigned NOT NULL default '1',
 `ordering` int(11) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -377,6 +436,10 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   PRIMARY KEY  (`id`),
   KEY `idx_language` (`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `#__redevent_event_template` (`name`, `redform_id`, `meta_keywords`, `meta_description`, `mailflow_id`, `juser`, `details_layout`, `notify`, `notify_subject`, `notify_body`, `notify_on_list_body`, `notify_off_list_body`, `notify_on_list_subject`, `notify_off_list_subject`, `show_names`, `activate`, `notify_confirm_subject`, `notify_confirm_body`, `showfields`, `confirmation_message`, `submission_types`, `submission_type_email`, `submission_type_external`, `submission_type_phone`, `submission_type_formal_offer`, `submission_type_formal_offer_subject`, `submission_type_formal_offer_body`, `submission_type_formal_offer_pdf`, `show_submission_type_webform_formal_offer`, `submission_type_webform`, `submission_type_email_subject`, `submission_type_email_body`, `submission_type_email_pdf`, `review_message`, `send_pdf_form`, `pdf_form_data`, `submission_type_webform_formal_offer`, `paymentaccepted`, `paymentprocessing`, `enable_ical`, `enable_activation_confirmation`, `language`, `checked_out`, `checked_out_time`) VALUES
+('default template', 1, '', '', 0, 0, 0, 0, '', '', '', '', '', '', 0, 0, '', '', NULL, '', 'webform', '', '', '', '', '', '', NULL, 0, '<p>Please fill the form to register</p>\r\n<p>[redform]</p>', '', '', '', '', 0, 0, NULL, '<p><span style="font-size: 12.16px; line-height: 15.808px;">Thank you, y</span>our payment for [event_title] was accepted</p>', '<p>Thank you, y<span style="font-size: 12.16px; line-height: 15.808px;">our payment for [event_title]</span> is being processed</p>', 0, 0, '*', 0, '0000-00-00 00:00:00');
+
 
 INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `un`, `name`) VALUES
 (1, 'AS', 'AF', 'AFG', 4, 'Afghanistan, Islamic Republic '),
@@ -625,3 +688,6 @@ INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `
 (244, 'AS', 'YE', 'YEM', 887, 'Yemen'),
 (245, 'AF', 'ZM', 'ZMB', 894, 'Zambia, Republic of'),
 (246, 'AF', 'ZW', 'ZWE', 716, 'Zimbabwe, Republic of');
+
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

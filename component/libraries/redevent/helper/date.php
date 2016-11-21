@@ -31,7 +31,7 @@ class RedeventHelperDate
 	}
 
 	/**
-	 * return true is a date is valid (not null, or 0000-00...)
+	 * return true is a date is valid (not null, or 0000-00-00...)
 	 *
 	 * @param   string  $time  time string from db
 	 *
@@ -39,11 +39,6 @@ class RedeventHelperDate
 	 */
 	public static function isValidTime($time)
 	{
-		if (empty($time) || $time == '00:00:00')
-		{
-			return false;
-		}
-
 		$format = strlen($time) > 5 ? 'H:i:s' : 'H:i';
 		$d = DateTime::createFromFormat($format, $time);
 
@@ -64,7 +59,7 @@ class RedeventHelperDate
 	public static function isOver($session, $day_check = true)
 	{
 		if (!(property_exists($session, 'dates') && property_exists($session, 'times')
-			&& property_exists($session, 'enddates') && property_exists($session, 'endtimes')))
+			&& property_exists($session, 'enddates') && property_exists($session, 'endtimes') && property_exists($session, 'allday')))
 		{
 			throw new Exception('Missing object properties');
 		}
@@ -77,13 +72,13 @@ class RedeventHelperDate
 
 		$cmp = $day_check ? strtotime('today') : time();
 
-		if (static::isValidDate($session->enddates . ' ' . $session->endtimes))
+		if (static::isValidDate($session->enddates))
 		{
-			return strtotime($session->enddates . ' ' . $session->endtimes) < $cmp;
+			return strtotime($session->enddates . ($session->allday ? ' 23:59:59' : ' ' . $session->endtimes)) < $cmp;
 		}
 		else
 		{
-			return strtotime($session->dates . ' ' . $session->times) < $cmp;
+			return strtotime($session->dates . ' ' . ($session->allday ? '' : ' ' . $session->times)) < $cmp;
 		}
 	}
 
@@ -102,12 +97,11 @@ class RedeventHelperDate
 		}
 
 		// All day events if start or end time is null or 00:00:00
-		if (empty($event->times) || $event->times == '00:00:00' || empty($event->endtimes) || $event->endtimes == '00:00:00')
+		if ($event->allday)
 		{
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
+			if (!static::isValidDate($event->enddates) || $event->enddates == $event->dates)
 			{
 				// Same day
-
 				return '1' . ' ' . JText::_('COM_REDEVENT_Day');
 			}
 			else
@@ -122,7 +116,7 @@ class RedeventHelperDate
 			// There is start and end times
 			$start = strtotime($event->dates . ' ' . $event->times);
 
-			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates)
+			if (!static::isValidDate($event->enddates) || $event->enddates == $event->dates)
 			{
 				// Same day, return hours and minutes
 				$end = strtotime($event->dates . ' ' . $event->endtimes);
@@ -207,7 +201,7 @@ class RedeventHelperDate
 	{
 		$settings = RedeventHelper::config();
 
-		if (!$time)
+		if (!self::isValidTime($time))
 		{
 			return;
 		}
@@ -224,92 +218,18 @@ class RedeventHelperDate
 	/**
 	 * return formatted event date and time (start and end), or false if open date
 	 *
-	 * @param   object   $event    event data
-	 * @param   boolean  $showend  show end
+	 * @param   object   $data      dates data
+	 * @param   boolean  $showend   show end
+	 * @param   boolean  $showtime  show time
 	 *
 	 * @return string
 	 */
-	public static function formatEventDateTime($event, $showend = null)
+	public static function formatEventDateTime($data, $showend = null, $showtime = null)
 	{
-		if (!static::isValidDate($event->dates))
-		{
-			// Open dates
-			$date = '<span class="event-date open-date">' . JText::_('COM_REDEVENT_OPEN_DATE') . '</span>';
-
-			return $date;
-		}
-
 		$settings = RedeventHelper::config();
+		$dates = new Redevent\Date\Dates($data);
 
-		if (is_null($showend))
-		{
-			$showend = $settings->get('lists_showend', 1);
-		}
-
-		$date_start = static::formatdate($event->dates, $event->times);
-		$time_start = '';
-		$date_end = '';
-		$time_end = '';
-
-		// Is this a full day(s) event ?
-		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
-
-		if (!$allday)
-		{
-			$time_start = static::formattime($event->dates, $event->times);
-		}
-
-		if ($allday)
-		{
-			if ($showend && static::isValidDate($event->enddates))
-			{
-				if (strtotime($event->enddates . ' -1 day') != strtotime($event->dates)
-					&& strtotime($event->enddates) != strtotime($event->dates))
-				{
-					$date_end = static::formatdate(strftime('Y-m-d', strtotime($event->enddates . ' -1 day')), $event->endtimes);
-				}
-			}
-		}
-		elseif ($showend)
-		{
-			if (static::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
-			{
-				$date_end = static::formatdate($event->enddates, $event->endtimes);
-				$time_end = static::formattime($event->dates, $event->endtimes);
-			}
-			else
-			{
-				// Same day, just display end time after start time
-				$time_start .= ' ' . static::formattime($event->dates, $event->endtimes);
-			}
-		}
-
-		$date = '<span class="event-date">';
-		$date .= '<span class="event-start">';
-		$date .= '<span class="event-day">' . $date_start . '</span>';
-
-		if ($settings->get('lists_show_time', 0) == 1 && $time_start)
-		{
-			$date .= ' <span class="event-time">' . $time_start . '</span>';
-		}
-
-		$date .= '</span>';
-
-		if ($date_end)
-		{
-			$date .= ' <span class="event-end"><span class="event-day">' . $date_end . '</span>';
-
-			if ($settings->get('lists_show_time', 0) == 1 && $time_end)
-			{
-				$date .= ' <span class="event-time">' . $time_end . '</span>';
-			}
-
-			$date .= '</span>';
-		}
-
-		$date .= '</span>';
-
-		return $date;
+		return $dates->formatEventDateTime($showend ?: $settings->get('lists_showend', 1), $showtime ?: $settings->get('lists_show_time', 0));
 	}
 
 	/**

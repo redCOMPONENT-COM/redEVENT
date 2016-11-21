@@ -70,19 +70,19 @@ if ($this->row->venueid != 0) {
 			<?php
 			$tmp = RedeventHelperDate::formatdate($this->row->dates, $this->row->times);
 
-			if (!empty($this->row->times) && strcasecmp('00:00:00', $this->row->times))
+			if (RedeventHelperDate::isValidTime($this->row->times) && !$this->row->allday)
 			{
-				$tmp .= ' ' .RedeventHelperDate::formattime($this->row->dates, $this->row->times);
+				$tmp .= ' ' . RedeventHelperDate::formattime($this->row->dates, $this->row->times);
 			}
 
 			if (RedeventHelperDate::isValidDate($this->row->enddates) && $this->row->enddates != $this->row->dates)
 			{
-				$tmp .= ' - ' .RedeventHelperDate::formatdate($this->row->enddates, $this->row->endtimes);
+				$tmp .= ' - ' . RedeventHelperDate::formatdate($this->row->enddates, $this->row->endtimes);
 			}
 
-			if (RedeventHelperDate::isValidTime($this->row->endtimes) && strcasecmp('00:00:00', $this->row->endtimes))
+			if (RedeventHelperDate::isValidTime($this->row->endtimes) && !$this->row->allday)
 			{
-				$tmp .= ' ' .RedeventHelperDate::formattime($this->row->dates, $this->row->endtimes);
+				$tmp .= ' ' . RedeventHelperDate::formattime($this->row->dates, $this->row->endtimes);
 			}
 			echo $tmp;
 			?>

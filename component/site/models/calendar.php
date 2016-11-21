@@ -153,7 +153,7 @@ class RedeventModelCalendar extends RModel
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes');
+		$query->select('DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.allday, x.times, x.endtimes');
 		$query->select('a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url, l.street, l.country, x.featured');
 		$query->select('a.datimage');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');

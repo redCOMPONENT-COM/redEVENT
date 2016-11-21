@@ -166,9 +166,11 @@ class RedeventModelRegistration extends RModel
 			return false;
 		}
 
+		$submitter = RdfEntitySubmitter::load($sid);
+
 		if (!$obj->confirmed
 			&& $session->activate == 0 // No activation
-			&& !$this->confirmOnPayment($obj))
+			&& (!$this->confirmOnPayment($obj) || $submitter->isPaid()))
 		{
 			$doConfirm = true;
 
@@ -311,22 +313,23 @@ class RedeventModelRegistration extends RModel
 			}
 
 			$query = $this->_db->getQuery(true)
-				->select('a.id AS did, x.id AS xref, a.title as event_name, a.datdescription, a.meta_keywords, a.meta_description, a.datimage')
-				->select('a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id')
-				->select('a.enable_activation_confirmation, a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body')
-				->select('a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body')
-				->select('x.*, x.title as session_name, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields')
-				->select('a.submission_type_email, a.submission_type_external, a.submission_type_phone')
+				->select('a.id AS did, x.id AS xref, a.title as event_name, a.datdescription, t.meta_keywords, t.meta_description, a.datimage')
+				->select('a.registra, a.unregistra, t.activate, t.notify, t.redform_id as form_id')
+				->select('t.enable_activation_confirmation, t.notify_confirm_body, t.notify_confirm_subject, t.notify_subject, t.notify_body')
+				->select('t.notify_off_list_subject, t.notify_off_list_body, t.notify_on_list_subject, t.notify_on_list_body')
+				->select('x.*, x.title as session_name, a.created_by, t.redform_id, x.maxwaitinglist, x.maxattendees, t.juser, t.show_names, t.showfields')
+				->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone')
 				->select('v.venue')
 				->select('u.name AS creator_name, u.email AS creator_email')
-				->select('a.confirmation_message, a.review_message')
+				->select('t.confirmation_message, t.review_message')
 				->select('IF (x.course_credit = 0, "", x.course_credit) AS course_credit')
-				->select('a.course_code, a.submission_types, c.name AS catname, c.published, c.access')
+				->select('a.course_code, t.submission_types, c.name AS catname, c.published, c.access')
 				->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title')
 				->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
 				->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug')
 				->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug')
 				->from('#__redevent_events AS a')
+				->innerJoin('#__redevent_event_template AS t ON t.id = a.template_id')
 				->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id')
 				->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id')
 				->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id')
@@ -550,7 +553,8 @@ class RedeventModelRegistration extends RModel
 			$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
 			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-			$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
+			$query->innerJoin('#__redevent_event_template AS t On t.id = e.template_id');
+			$query->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id');
 			$query->where('sp.xref = ' . $db->Quote($event->xref));
 			$query->order('p.ordering ASC');
 

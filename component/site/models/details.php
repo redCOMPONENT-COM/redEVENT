@@ -139,12 +139,12 @@ class RedeventModelDetails extends RModel
 			$query = $this->_buildDetailsWhere($query);
 
 			$query->select('a.id AS did, a.id AS event_id, a.title AS event_title, a.datdescription');
-			$query->select('a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, a.details_layout');
-			$query->select('a.created_by, a.redform_id, a.juser, a.show_names, a.showfields, a.enable_ical');
-			$query->select('a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message');
-			$query->select('a.confirmation_message, a.course_code, a.submission_types');
-			$query->select(' a.submission_type_webform, a.submission_type_formal_offer, '
-				. ' a.submission_type_email_pdf, a.submission_type_formal_offer_pdf, a.send_pdf_form, a.pdf_form_data');
+			$query->select('t.meta_keywords, t.meta_description, a.datimage, a.registra, a.unregistra, a.summary, t.details_layout');
+			$query->select('a.created_by, t.redform_id, t.juser, t.show_names, t.showfields, t.enable_ical');
+			$query->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone, t.review_message');
+			$query->select('t.confirmation_message, a.course_code, t.submission_types');
+			$query->select(' t.submission_type_webform, t.submission_type_formal_offer, '
+				. ' t.submission_type_email_pdf, t.submission_type_formal_offer_pdf, t.send_pdf_form, t.pdf_form_data');
 
 			$query->select('x.id AS xref, x.title as session_title');
 			$query->select('x.*');
@@ -175,6 +175,7 @@ class RedeventModelDetails extends RModel
 			}
 
 			$query->from('#__redevent_events AS a');
+			$query->innerJoin('#__redevent_event_template AS t ON t.id = a.template_id');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
 			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
 			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
@@ -591,7 +592,8 @@ class RedeventModelDetails extends RModel
 			->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id')
 			->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref')
 			->join('INNER', '#__redevent_events AS e on e.id = x.eventid')
-			->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id')
+			->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
+			->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id')
 			->where('sp.xref = ' . $this->_db->Quote($event->xref))
 			->order('p.ordering ASC');
 

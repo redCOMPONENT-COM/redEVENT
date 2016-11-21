@@ -314,7 +314,7 @@ class PlgContentResimplelist extends JPlugin
 		}
 
 		// Is this a full day(s) event ?
-		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
+		$allday = $event->allday;
 
 		$date = '<span class="event-date">';
 		$date .= '<span class="event-start">';
@@ -336,7 +336,7 @@ class PlgContentResimplelist extends JPlugin
 					// All day is written as midnight to midnight, so remove last day
 				{
 					$date .= ' <span class="event-end"><span class="event-day">'
-						. self::_formatdate(strftime('%Y-%m-%d', strtotime($event->enddates . ' -1 day')), $event->endtimes)
+						. self::_formatdate(strftime('%Y-%m-%d', strtotime($event->enddates . ' -1 day')), '')
 						. '</span></span>';
 				}
 			}

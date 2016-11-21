@@ -228,10 +228,11 @@ class RedeventModelBasesessionlist extends RModel
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code, x.details');
+		$query->select('x.dates, x.enddates, x.allday, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code, x.details');
 		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('a.*');
+		$query->select('t.*, a.id AS id'); /* B/C compatibility as template table was extracted from event table */
 		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription, l.venue_code, l.id AS venue_id');
 		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
@@ -251,6 +252,7 @@ class RedeventModelBasesessionlist extends RModel
 
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
+		$query->join('INNER', '#__redevent_event_template AS t ON t.id = a.template_id');
 		$query->join('INNER', '#__redevent_venues AS l ON l.id = x.venueid');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id');
 		$query->join('LEFT', '#__redevent_venues_categories AS vc ON xvcat.category_id = vc.id');
@@ -691,7 +693,8 @@ class RedeventModelBasesessionlist extends RModel
 		$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
 		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-		$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
+		$query->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id');
+		$query->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id');
 		$query->where('sp.xref IN (' . implode(",", array_keys($ids)) . ')');
 		$query->order('p.ordering ASC');
 		$db->setQuery($query);

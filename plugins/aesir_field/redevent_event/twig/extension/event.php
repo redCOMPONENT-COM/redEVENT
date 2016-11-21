@@ -12,7 +12,7 @@ use Aesir\Twig\Extension;
 defined('_JEXEC') or die;
 
 /**
- * Category Twig extension.
+ * Event Twig extension.
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -39,9 +39,9 @@ class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
 	 */
 	public function getInstance($id)
 	{
-		$item = RedeventEntityEvent::load((int) $id);
+		$item = \RedeventEntityEvent::load((int) $id);
 
-		return $item->isLoaded() ? new PlgAesir_FieldRedevent_eventEntityTwigEvent($item) : null;
+		return $item->isLoaded() ? new \RedeventEntityTwigEvent($item) : null;
 	}
 
 	/**

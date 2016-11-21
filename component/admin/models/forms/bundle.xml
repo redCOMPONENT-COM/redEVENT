@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<field name="id"
+		type="hidden"
+		default="0"
+		class="readonly"
+		readonly="true"
+	/>
+
+	<field
+		name="name"
+		type="text"
+		default=""
+		label="COM_REDEVENT_NAME"
+		description ="COM_REDEVENT_NAME"
+		required="true"
+		class="inputbox" />
+
+	<field
+		name="alias"
+		type="text"
+		default=""
+		label="COM_REDEVENT_Alias"
+		description ="COM_REDEVENT_Alias"
+		class="inputbox" />
+
+	<field
+		name="description"
+		type="editor"
+		label="COM_REDEVENT_DESCRIPTION"
+		description="COM_REDEVENT_BUNDLE_DESCRIPTION_DESC"
+		class="inputbox"
+		filter="JComponentHelper::filterText"
+		buttons="true"
+		hide="readmore,pagebreak"/>
+
+	<field
+		name="published"
+		type="list"
+		class="inputbox"
+		default="1"
+		size="1"
+		label="JSTATUS"
+		description="JFIELD_PUBLISHED_DESC">
+		<option
+				value="1">
+			JPUBLISHED
+		</option>
+		<option
+				value="0">
+			JUNPUBLISHED
+		</option>
+		<option
+				value="-1">
+			JARCHIVED
+		</option>
+	</field>
+
+	<field
+		name="access"
+		type="accesslevel"
+		label="JFIELD_ACCESS_LABEL"
+		description="JFIELD_ACCESS_DESC"
+		class="inputbox"/>
+
+	<field
+		name="language"
+		type="contentlanguage"
+		label="JFIELD_LANGUAGE_LABEL"
+		description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
+		class="inputbox">
+		<option value="*">JALL</option>
+	</field>
+</form>

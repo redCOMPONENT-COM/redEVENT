@@ -34,8 +34,6 @@ class RedeventModelEvent extends RModelAdmin
 
 			$categories = $this->getEventCategories($result->id);
 			$result->categories = array_keys($categories);
-
-			$result->showfields = explode(',', $result->showfields);
 		}
 
 		return $result;
@@ -77,7 +75,8 @@ class RedeventModelEvent extends RModelAdmin
 		// Do not allow to modify the registration form once there are attendees
 		if ($form->getValue('id') && $this->hasAttendees($form->getValue('id')))
 		{
-			$form->setFieldAttribute('redform_id', 'disabled', '1');
+			$form->setFieldAttribute('template_id', 'disabled', '1');
+			$form->setFieldAttribute('template_id', 'required', '0');
 		}
 
 		return $form;
@@ -116,6 +115,11 @@ class RedeventModelEvent extends RModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
+		if ($data['id'] && $this->hasAttendees($data['id']))
+		{
+			$form->setFieldAttribute('template_id', 'required', '0');
+		}
+
 		// First get the data from form itself
 		if (!$validData = parent::validate($form, $data, $group))
 		{

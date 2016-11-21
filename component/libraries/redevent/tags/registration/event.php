@@ -83,7 +83,7 @@ class RedeventTagsRegistrationEvent
 			$options['selectPaymentGateway'] = 1;
 		}
 
-		$redformHtml = $this->rfcore->getFormFields($this->event->redform_id, null, 1, $options);
+		$redformHtml = $this->rfcore->getFormFields($this->event->getEventtemplate()->redform_id, null, 1, $options);
 		$event = $this->event;
 
 		$html = RedeventLayoutHelper::render('redevent.registration.event', compact('form', 'redformHtml', 'event'));

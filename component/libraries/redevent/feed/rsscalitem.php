@@ -49,7 +49,7 @@ class RedeventFeedRsscalitem
 		{
 			$date = $session->dates;
 
-			if (RedeventHelperDate::isValidTime($session->times))
+			if (!$session->allday)
 			{
 				$date .= ' ' . $session->times;
 			}
@@ -61,7 +61,7 @@ class RedeventFeedRsscalitem
 		{
 			$date = $session->enddates;
 
-			if (RedeventHelperDate::isValidTime($session->endtimes))
+			if (!$session->allday)
 			{
 				$date .= ' ' . $session->endtimes;
 			}

@@ -23,6 +23,8 @@ $form = $this->form;
 $descriptionField = $this->form->getField('datdescription', 'event');
 $sessionDetailsField = $this->form->getField('details');
 
+RHelperAsset::load('sessiondates.js');
+
 JFactory::getDocument()->addScriptDeclaration(
 	"var easySubmitButton = function(task) {
 		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
@@ -82,7 +84,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('title', 'event'); ?>
 							</div>
 						</div>
-						<?php if ($this->params->get('edit_categories')): ?>
+
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('categories', 'event'); ?>
@@ -91,7 +93,7 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('categories', 'event'); ?>
 							</div>
 						</div>
-						<?php endif; ?>
+
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $form->getLabel('venueid'); ?>
@@ -102,13 +104,21 @@ JFactory::getDocument()->addScriptDeclaration(
 						</div>
 						<div class="control-group">
 							<div class="control-label">
+								<?php echo $form->getLabel('allday'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $form->getInput('allday'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
 								<?php echo $form->getLabel('dates'); ?>
 							</div>
 							<div class="controls">
 								<?php echo $form->getInput('dates'); ?>
 							</div>
 						</div>
-						<div class="control-group">
+						<div class="control-group timefield">
 							<div class="control-label">
 								<?php echo $form->getLabel('times'); ?>
 							</div>
@@ -124,12 +134,21 @@ JFactory::getDocument()->addScriptDeclaration(
 								<?php echo $form->getInput('enddates'); ?>
 							</div>
 						</div>
-						<div class="control-group">
+						<div class="control-group timefield">
 							<div class="control-label">
 								<?php echo $form->getLabel('endtimes'); ?>
 							</div>
 							<div class="controls">
 								<?php echo $form->getInput('endtimes'); ?>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('registrationend'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('registrationend'); ?>
 							</div>
 						</div>
 

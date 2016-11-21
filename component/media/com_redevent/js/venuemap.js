@@ -21,93 +21,96 @@
  */
 
 // Call the init function when the page has been loaded
-var mymap = {
-
-	options: {
+var mymap = (function($) {
+	var options = {
 		zoom: 16,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	},
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
 
-	venue: null,
+	var venue, map;
 
-	map: null,
+	var init = function (venue, elementid) {
+		venue = venue;
+		map = new google.maps.Map(document.getElementById(elementid), options);
 
-	init: function (venue, elementid) {
-		this.venue = venue;
-		this.map = new google.maps.Map(document.getElementById(elementid),
-			this.options);
-		if (this.venue.latitude) {
-			this.setmarker();
+		if (venue.latitude) {
+			setmarker();
 		}
 		else {
-			this.codeadress();
+			codeadress();
 		}
-	},
+	};
 
-	initajax: function (venueid, elementid) {
-		var url = basepath + 'index.php?option=com_redevent&view=venue&format=raw&id=' + venueid;
-		var theAjax = new Request({
-			url: url,
-			method: 'post',
-			postBody: ''
-		});
+	var initajax = function (venueid, elementid) {
+		$.ajax({
+			url: basepath + 'index.php?option=com_redevent&view=venue&format=raw&id=' + venueid,
+			dataType: "json"
+		})
+		.done(function(data){
+			venue = data;
+			map = new google.maps.Map(document.getElementById(elementid), options);
 
-		theAjax.addEvent('onSuccess', function (response) {
-			this.venue = eval('(' + response + ')');
-			this.map = new google.maps.Map(document.getElementById(elementid),
-				this.options);
-			if (this.venue.latitude != "null") {
-				this.setmarker();
+			if (venue.latitude != "null") {
+				setmarker();
 			}
 			else {
-				this.codeadress();
+				codeadress();
 			}
-		}.bind(this));
-		theAjax.send();
-	},
+		});
+	};
 
-	codeadress: function () {
+	var codeadress = function () {
 		var geocoder = new google.maps.Geocoder();
-		geocoder.geocode({'address': this.venue.address}, function (results, status) {
+		geocoder.geocode({'address': venue.address}, function (results, status) {
 			if (results[0]) {
-				this.venue.latitude = results[0].geometry.location.lat();
-				this.venue.longitude = results[0].geometry.location.lng();
-				this.setmarker();
+				venue.latitude = results[0].geometry.location.lat();
+				venue.longitude = results[0].geometry.location.lng();
+				setmarker();
 			}
-		}.bind(this));
-	},
+		});
+	};
 
-	setmarker: function () {
-		var latlng = new google.maps.LatLng(this.venue.latitude, this.venue.longitude);
-		this.map.setCenter(latlng);
+	var setmarker = function () {
+		var latlng = new google.maps.LatLng(venue.latitude, venue.longitude);
+
+		map.setCenter(latlng);
+
 		var marker = new google.maps.Marker({
-			map: this.map,
+			map: map,
 			position: latlng
 		});
 
 		// set content of infowindow
-		var addressparts = this.venue.address.split(',');
-		var div = new Element('div');
-		var txt = '<strong>' + this.venue.name + '</strong><br/>';
+		var addressparts = venue.address.split(',');
+
+		var div = $('<div></div>');
+		var txt = '<strong>' + venue.name + '</strong><br/>';
 		for (var i = 0; i < addressparts.length; i++) {
 			txt += addressparts[i] + '<br/>';
 		}
-		div.set('html', txt);
-		if (this.venue.address) {
-			new Element('a', {
-				href: 'http://maps.google.com/maps?daddr=' + encodeURI(this.venue.address) + '@' + this.venue.latitude + ',' + this.venue.longitude,
-				target: '_blank'
-			}).set('html', Joomla.JText._('COM_REDEVENT_GET_DIRECTIONS')).injectInside(div);
+		div.append(txt);
+
+		if (venue.address) {
+			$('<a></a>').attr('href', 'http://maps.google.com/maps?daddr=' + encodeURI(venue.address) + '@' + venue.latitude + ',' + venue.longitude)
+				.append(Joomla.JText._('COM_REDEVENT_GET_DIRECTIONS')).appendTo(div);
 		}
+
 		var infowindow = new google.maps.InfoWindow();
-		infowindow.setContent(div);
+		infowindow.setContent(div[0].outerHTML);
+
 		google.maps.event.addListener(marker, 'click', function () {
-			infowindow.open(this.map, marker);
-		}.bind(this));
+			infowindow.open(map, marker);
+		});
+
 		// only open on map display if map is big enough
-		var size = $(this.map.getDiv()).getSize();
-		if (size.x >= 350 && size.y >= 350) {
-			infowindow.open(this.map, marker);
+		var $map = $(map.getDiv());
+
+		if ($map.width() >= 350 && $map.height() >= 350) {
+			infowindow.open(map, marker);
 		}
-	}
-};
+	};
+
+	return {
+		initajax: initajax
+	};
+})(jQuery);

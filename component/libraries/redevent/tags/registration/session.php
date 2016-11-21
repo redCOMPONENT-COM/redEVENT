@@ -116,7 +116,7 @@ class RedeventTagsRegistrationSession
 	{
 		$this->isReview = $value ? true : false;
 
-		return this;
+		return $this;
 	}
 
 	/**
@@ -182,7 +182,7 @@ class RedeventTagsRegistrationSession
 		$renderData = array(
 			'form' => $form,
 			'redformHtml' => $this->rfcore->getFormFields(
-					$this->session->getEvent()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
+					$this->session->getEvent()->getEventtemplate()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
 				),
 			'session' => $this->session,
 			'submitKey' => $this->submitKey
@@ -238,23 +238,40 @@ class RedeventTagsRegistrationSession
 	 */
 	private function getNumberOfSignup()
 	{
-		// Multiple signup ?
-		$max = $this->session->getEvent()->max_multi_signup;
 		$user = JFactory::getUser();
 
-		if ($max && !$this->isSingle && $user->get('id'))
+		if ($this->isSingle)
 		{
-			$multi = $this->session->getUserNumberOfSignupLeft($user->get('id'));
-
-			if ($multi < 1)
-			{
-				throw new Exception(JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED'), 0);
-			}
+			return 1;
 		}
-		else
+
+		// Max multiple signup ?
+		$max = (int) $this->session->getEvent()->max_multi_signup;
+
+		if ($max < 2)
 		{
-			// Single signup
-			$multi = 1;
+			return 1;
+		}
+
+		if ($user->guest)
+		{
+			// We can't check against user maximum allowed signup in that case...
+			return RedeventHelper::config()->get('guestMultipleRegistration', 0) ? $max : 1;
+		}
+
+		$multi = $this->session->getUserNumberOfSignupLeft($user->get('id'));
+
+		if ($multi < 1)
+		{
+			throw new Exception(JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED'), 0);
+		}
+
+		$left = $this->session->getNumberLeft();
+		$multi = min($left, $multi);
+
+		if ($multi < 1)
+		{
+			throw new Exception(JText::_('COM_REDEVENT_EVENT_FULL'), 0);
 		}
 
 		return $multi;
