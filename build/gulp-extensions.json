@@ -34,7 +34,7 @@
 			"redeventvenue",
 			"redeventvenuecategory"
 		],
-		"redevent" : ["jomsocial", "redmemberlogin", "acymailinglists", "eventnewslettersignup", "kurser", "ibcaffiliate"],
+		"redevent" : ["jomsocial", "redmemberlogin", "acymailinglists", "eventnewslettersignup", "kurser", "ibcaffiliate", "event_clean_ibc"],
 		"redevent_config" : ["ibc"],
 		"redform" : ["paymentnotificationemail"],
 		"redform_field" : ["eventacymailinglists"],
