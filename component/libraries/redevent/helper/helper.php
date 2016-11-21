@@ -174,6 +174,10 @@ class RedeventHelper
 						RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: ' . $db->getErrorMsg());
 					}
 
+					JPluginHelper::importPlugin('redevent');
+					$dispatcher = JDispatcher::getInstance();
+					$dispatcher->trigger('onEventCleanArchived', array($xrefs));
+
 					if ($params->get('pastevents_events_action', 1))
 					{
 						// Update events to archive (if no more published xref)
