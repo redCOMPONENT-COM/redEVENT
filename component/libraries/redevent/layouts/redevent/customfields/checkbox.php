@@ -16,6 +16,7 @@ extract($displayData);
 		<?php $checked = in_array($option->value, $selected) ? ' checked="checked"' : ''; ?>
 		<div class="checkbox">
 			<label>
+				<input type="hidden" name="jform[<?php echo $field->fieldname; ?>][]" value="0">
 				<input type="checkbox" name="jform[<?php echo $field->fieldname; ?>][]" value="<?php echo $option->value; ?>"<?php echo $checked; ?>
 				<?php echo $attributes; ?>/>
 				<?php echo $option->text; ;?>
