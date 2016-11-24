@@ -41,5 +41,8 @@
     "require-dir": "^0.3.0",
     "xml2js": "^0.4.16",
     "yargs": "^4.6.0"
+  },
+  "dependencies": {
+    "gulp-json-modify": "^1.0.2"
   }
 }
