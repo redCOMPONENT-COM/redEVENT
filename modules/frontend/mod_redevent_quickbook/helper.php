@@ -41,7 +41,7 @@ class ModRedeventQuickbookHelper
 	 *
 	 * @return mixed
 	 */
-	public function getData(JRegistry $params)
+	public static function getData(JRegistry $params)
 	{
 		$input = JFactory::getApplication()->input;
 		$result = new stdclass;
@@ -117,7 +117,7 @@ class ModRedeventQuickbookHelper
 	 *
 	 * @return array
 	 */
-	protected function getSessionsOptions($sessions, JRegistry $params)
+	protected static function getSessionsOptions($sessions, JRegistry $params)
 	{
 		$options = array();
 
@@ -149,7 +149,7 @@ class ModRedeventQuickbookHelper
 	 *
 	 * @return array
 	 */
-	protected function jsPriceGroups($sessions)
+	protected static function jsPriceGroups($sessions)
 	{
 		$js = array('var prices = new Array();');
 
