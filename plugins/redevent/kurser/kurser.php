@@ -84,7 +84,6 @@ class PlgRedeventKurser extends JPlugin
 					'',
 					$item->getLink(),
 					JRoute::_($item->getLink('inherit', false), true, -1),
-					'',
 					'Add'
 				];
 
@@ -97,6 +96,7 @@ class PlgRedeventKurser extends JPlugin
 		$date = md5(date('Y-m-d-h-i-s'));
 		$title = JFile::makeSafe('kurser_export_' . $date . '.csv');
 		header('Content-Disposition: attachment; filename="' . $title . '"');
+		header('Cache-Control: no-cache, no-store, must-revalidate');
 		echo $text;
 	}
 
