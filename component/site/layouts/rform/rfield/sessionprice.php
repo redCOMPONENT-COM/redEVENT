@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 $data = $displayData;
 $properties = $data->getInputProperties();
+$params = JFactory::getApplication()->getParams('com_redevent');
 ?>
 <?php if (!count($data->options)): ?>
 	<?php echo JText::_('COM_REDEVENT_EVENT_PRICE_FREE'); ?>
@@ -28,16 +29,25 @@ $properties = $data->getInputProperties();
 		<input <?php echo $data->propertiesToString($properties); ?>/>
 		<?php echo RedeventHelperOutput::formatprice($option->price, $option->currency); ?>
 	<?php else: ?>
-		<div class="fieldoptions">
-
-			<?php foreach ($data->options as $option): ?>
-				<div class="fieldoption">
+		<?php if ($params->get('price_select_layout', 'select') == 'select'): ?>
+			<select <?php echo $data->propertiesToString($properties); ?>>
+				<?php foreach ($data->options as $option): ?>
 					<?php $properties = $data->getOptionProperties($option); ?>
-					<input <?php echo $data->propertiesToString($properties); ?>/>
-					<?php echo $option->label; ?>
-				</div>
-			<?php endforeach; ?>
-
-		</div>
+					<option value="<?= $option->value ?>">
+						<?php echo $option->label; ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+		<?php else: ?>
+			<div class="fieldoptions">
+				<?php foreach ($data->options as $option): ?>
+					<div class="fieldoption">
+						<?php $properties = $data->getOptionProperties($option); ?>
+						<input <?php echo $data->propertiesToString($properties); ?>/>
+						<?php echo $option->label; ?>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 <?php endif; ?>
