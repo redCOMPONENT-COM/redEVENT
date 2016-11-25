@@ -56,6 +56,11 @@ class RedeventModelSession extends RModelAdmin
 			$item->recurrence = $rule->getFormData();
 			$item->recurrence->recurrenceid = 0;
 			$item->recurrence->repeat = 0;
+
+			if ($this->getState('eventId'))
+			{
+				$item->eventid = $this->getState('eventId');
+			}
 		}
 
 		return $item;
@@ -74,7 +79,7 @@ class RedeventModelSession extends RModelAdmin
 		$form = parent::getForm($data, $loadData);
 
 		// Do not allow to modify the session event once created
-		if ($form->getValue('id'))
+		if ($form->getValue('id') || $this->getState('eventId'))
 		{
 			$form->setFieldAttribute('eventid', 'readonly', '1');
 		}
@@ -447,5 +452,25 @@ class RedeventModelSession extends RModelAdmin
 		$res = $this->_db->loadObjectList();
 
 		return $res;
+	}
+
+	/**
+	 * method to auto-populate the model state.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2.1
+	 */
+	protected function populateState()
+	{
+		parent::populateState();
+
+		$jform = JFactory::getApplication()->input->get('jform', array(), 'array');
+		$eventId = !(empty($jform['eventid'])) ? $jform['eventid'] : 0;
+
+		if ($eventId)
+		{
+			$this->setState('eventId', $eventId);
+		}
 	}
 }
