@@ -191,7 +191,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 
 		$properties['value'] = $this->getValue();
 
-		$properties['size'] = $this->getParam('size', 25);
+		$properties['size'] = 1;
 		$properties['maxlength'] = $this->getParam('maxlength', 250);
 
 		if ($this->isReadonly())
