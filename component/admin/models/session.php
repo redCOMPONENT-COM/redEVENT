@@ -16,6 +16,67 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelSession extends RModelAdmin
 {
 	/**
+	 * copy sessions
+	 *
+	 * @param   array  $session_ids  session ids
+	 *
+	 * @return boolean true on success
+	 */
+	public function copy($session_ids)
+	{
+		foreach ($session_ids as $id)
+		{
+			$row = $this->getTable('session');
+			$row->load($id);
+			$row->id = null;
+			$row->note = Jtext::sprintf('COM_REDEVENT_COPY_OF_D', $id);
+
+			/* pre-save checks */
+			if (!$row->check())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+
+			/* save the changes */
+			if (!$row->store())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+
+			// Copy associated prices
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('*')->from('#__redevent_sessions_pricegroups')->where('xref = ' . $id);
+
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
+
+			foreach ($res as $r)
+			{
+				/* Load the table */
+				$pricerow = $this->getTable('Sessionpricegroup');
+				$pricerow->bind(get_object_vars($r));
+				$pricerow->id = null;
+				$pricerow->xref = $row->id;
+
+				/* save the changes */
+				if (!$pricerow->store())
+				{
+					$this->setError($pricerow->getError(), 'error');
+
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to get a single record.
 	 *
 	 * @param   integer  $pk  The id of the primary key.
