@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $data = $displayData;
 $properties = $data->getInputProperties();
-$params = JFactory::getApplication()->getParams('com_redevent');
+$params = JComponentHelper::getParams('com_redevent');
 ?>
 <?php if (!count($data->options)): ?>
 	<?php echo JText::_('COM_REDEVENT_EVENT_PRICE_FREE'); ?>
