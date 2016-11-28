@@ -25,7 +25,8 @@ $options = json_encode(
 	array(
 		'altField'      => '#' . $id,
 		'dateFormat'    => $dateformat,
-		'altFormat'     => $altDateformat
+		'altFormat'     => $altDateformat,
+		'showWeek' => true
 	)
 );
 

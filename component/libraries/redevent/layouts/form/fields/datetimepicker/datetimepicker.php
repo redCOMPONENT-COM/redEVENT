@@ -32,7 +32,8 @@ $options = json_encode(
 		'altFieldTimeOnly' => false,
 		'timeFormat'    => $timeformat,
 		'altTimeFormat' => $altTimeformat,
-		'showSecond'    => $showSecond
+		'showSecond'    => $showSecond,
+		'showWeek' => true
 	)
 );
 
