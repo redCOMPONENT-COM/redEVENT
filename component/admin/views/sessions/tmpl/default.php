@@ -134,9 +134,13 @@ $search = $this->state->get('filter.search');
 					)
 				);
 
-				$endreg = RedeventHelperDate::isValidDate($row->registrationend)
-					? RedeventHelperDate::formatdate($row->registrationend, null, $this->params->get('backend_formatdate', 'd.m.Y') . ' H:i')
-					: '-';
+				$endreg = '';
+
+				if ($endregDate = $session->getRegistrationEnd())
+				{
+					$endregDate->setTimezone(new DateTimeZone(JFactory::getUser()->getParam('timezone', JFactory::getConfig()->get('offset'))));
+					$endreg = $endregDate->format($this->params->get('backend_formatdate', 'd.m.Y') . ' H:i', true);
+				}
 
 				$featured = $this->featured($row, $i);
 

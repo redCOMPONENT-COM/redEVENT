@@ -455,6 +455,23 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Get registration end
+	 *
+	 * @return JDate
+	 */
+	public function getRegistrationEnd()
+	{
+		$item = $this->getItem();
+
+		if (!RedeventHelperDate::isValidDate($item->registrationend))
+		{
+			return null;
+		}
+
+		return JDate::getInstance($item->registrationend);
+	}
+
+	/**
 	 * Get unix start date/time from db
 	 *
 	 * @return string
