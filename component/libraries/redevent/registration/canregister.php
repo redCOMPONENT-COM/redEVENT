@@ -168,19 +168,23 @@ class RedeventRegistrationCanregister
 		$now = JFactory::getDate('now', $app->getCfg('offset'));
 		$now_unix = $now->toUnix('true');
 
-		if (RedeventHelperDate::isValidDate($this->session->registrationend)
-			&& strtotime($this->session->registrationend) < $now_unix)
+		if (RedeventHelperDate::isValidDate($this->session->registrationend))
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
+			if (strtotime($this->session->registrationend) < $now_unix)
+			{
+				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
-			return true;
+				return true;
+			}
 		}
-		elseif (RedeventHelperDate::isValidDate($this->session->dates)
-			&& strtotime($this->session->dates . ' ' . $this->session->times) < $now_unix)
+		elseif (RedeventHelperDate::isValidDate($this->session->dates))
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
+			if (strtotime($this->session->dates . ' ' . $this->session->times) < $now_unix)
+			{
+				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
-			return true;
+				return true;
+			}
 		}
 
 		return false;
