@@ -134,6 +134,7 @@ class RedeventRegistrationCanregister
 		$result->canregister = 1;
 		$result->status = null;
 		$result->error = null;
+		$result->icon = null;
 
 		$this->result = $result;
 	}
@@ -151,6 +152,9 @@ class RedeventRegistrationCanregister
 		$this->result->canregister = 0;
 		$this->result->status = $status;
 		$this->result->error = $error;
+
+		$imgpath = 'media/com_redevent/images/' . $error . '.png';
+		$this->result->icon = JHTML::_('image', JURI::base() . $imgpath, $status, array('class' => 'hasTooltip', 'title' => $status));
 
 		return $this->result;
 	}

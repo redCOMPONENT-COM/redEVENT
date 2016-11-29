@@ -935,6 +935,7 @@ class RedeventHelper
 					'countryflag',
 					'enddate',
 					'session_code',
+					'registration',
 			);
 		}
 

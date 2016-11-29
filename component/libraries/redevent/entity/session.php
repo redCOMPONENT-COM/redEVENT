@@ -92,6 +92,20 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Check if user can register to session
+	 *
+	 * @param   JUser  $user  user
+	 *
+	 * @return boolean
+	 */
+	public function getCanRegisterStatus($user = null)
+	{
+		$user = $user ?: JFactory::getUser();
+
+		return RedeventHelper::canRegister($this->id, $user->get('id'));
+	}
+
+	/**
 	 * Get start date/time
 	 *
 	 * @param   bool  $dateOnly  only take day into account
@@ -469,6 +483,133 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return JDate::getInstance($item->registrationend);
+	}
+
+	/**
+	 * Get registrations links as icons
+	 *
+	 * @return array
+	 *
+	 * @since 3.2.1
+	 */
+	public function getRegistrationIconLinks()
+	{
+		if (!$this->canRegister())
+		{
+			return false;
+		}
+
+		$icons = array();
+		$imageFolder = JURI::base() . 'media/com_redevent/images/';
+		$settings = RedeventHelper::config();
+
+		/* Get the different submission types */
+		$submissiontypes = explode(',', $this->getEvent()->getEventtemplate()->submission_types);
+
+		foreach ($submissiontypes as $key => $subtype)
+		{
+			switch ($subtype)
+			{
+				case 'email':
+					$image = JHTML::image(
+						$imageFolder . $settings->get('signup_email_img', 'email_icon.gif'),
+						JText::_($settings->get('signup_email_text')), 'class="registration-icon"'
+					);
+					$url = RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getSlug(), $this->getSlug());
+					$icons[] = RHtml::tooltip(
+						'',
+						JText::_('LIB_REDEVENT_REGISTRATION_ICONS_TOOLTIP_TITLE'), null, $image, $url
+					);
+					break;
+
+				case 'phone':
+					$image = JHTML::image(
+						$imageFolder . $settings->get('signup_phone_img', 'phone_icon.gif'),
+						JText::_($settings->get('signup_phone_text')), 'class="registration-icon"'
+					);
+					$url = RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getSlug(), $this->getSlug());
+					$icons[] = RHtml::tooltip(
+						'',
+						JText::_('LIB_REDEVENT_REGISTRATION_ICONS_TOOLTIP_TITLE'), null, $image, $url
+					);
+					break;
+
+				case 'external':
+					if (!empty($this->getEvent()->external_registration_url))
+					{
+						$url = $this->getEvent()->external_registration_url;
+					}
+					else
+					{
+						$url = $this->getEvent()->submission_type_external;
+					}
+
+					$image = JHTML::image(
+						$imageFolder . $settings->get('signup_external_img', 'external_icon.gif'),
+						JText::_($settings->get('signup_external_text')), 'class="registration-icon"'
+					);
+					$icons[] = RHtml::tooltip(
+						'',
+						JText::_('LIB_REDEVENT_REGISTRATION_ICONS_TOOLTIP_TITLE'), null, $image, $url
+					);
+					break;
+
+				case 'webform':
+					if ($pgs = $this->getPricegroups())
+					{
+						foreach ($pgs as $p)
+						{
+							if (empty($p->getPricegroup()->image))
+							{
+								$image = JHTML::image(
+									$imageFolder . $settings->get('signup_webform_img', 'form_icon.gif'), JText::_($p->getPricegroup()->name),
+									'class="registration-icon"'
+								);
+							}
+							else
+							{
+								$image = JHTML::image(
+									JURI::base() . $p->getPricegroup()->image, JText::_($p->getPricegroup()->name),
+									'class="registration-icon"'
+								);
+							}
+
+							$url = RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getSlug(), $this->getSlug(), $p->getSlug());
+							$icons[] = RHtml::tooltip(
+								JText::_($p->getPricegroup()->name),
+								JText::_('LIB_REDEVENT_REGISTRATION_ICONS_TOOLTIP_TITLE'), null, $image, $url
+							);
+						}
+					}
+					else
+					{
+						$image = JHTML::image(
+							$imageFolder . $settings->get('signup_webform_img', 'form_icon.gif'),
+							JText::_($settings->get('signup_webform_text')), 'class="registration-icon"'
+						);
+						$url = RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getSlug(), $this->getSlug());
+						$icons[] = RHtml::tooltip(
+							'',
+							JText::_('LIB_REDEVENT_REGISTRATION_ICONS_TOOLTIP_TITLE'), null, $image, $url
+						);
+					}
+					break;
+
+				case 'formaloffer':
+					$image = JHTML::image(
+						$imageFolder . $settings->get('signup_formal_offer_img', 'formal_icon.gif'),
+						JText::_($settings->get('signup_formal_offer_text')), 'class="registration-icon"'
+					);
+					$url = RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getSlug(), $this->getSlug());
+					$icons[] = RHtml::tooltip(
+						'',
+						JText::_('LIB_REDEVENT_REGISTRATION_ICONS_TOOLTIP_TITLE'), null, $image, $url
+					);
+					break;
+			}
+		}
+
+		return $icons;
 	}
 
 	/**
