@@ -321,6 +321,20 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Check if session as a max attendees number set
+	 *
+	 * @return bool
+	 *
+	 * @since 3.2.1
+	 */
+	public function hasMaxAttendees()
+	{
+		$item = $this->getItem(true);
+
+		return $item->maxattendees > 0;
+	}
+
+	/**
 	 * Get number of signup left for user
 	 *
 	 * @param   int  $userId  user id
@@ -381,7 +395,7 @@ class RedeventEntitySession extends RedeventEntityBase
 
 		if (!$item->maxattendees)
 		{
-			return false;
+			throw new LogicException('Places left cannot be checked when no max attendees');
 		}
 
 		return $item->maxattendees - $this->getNumberAttending();
