@@ -170,8 +170,6 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 	 */
 	protected function _buildDataQuery(&$category)
 	{
-		$user		= JFactory::getUser();
-
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
@@ -216,6 +214,8 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 		$query->where('(l.access IN (' . $gids . ')) ');
 		$query->where('(c.access IN (' . $gids . ')) ');
 		$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . ')) ');
+		$query->where('a.published = 1');
+		$query->where('x.published = 1');
 
 		if ($this->getState('filter.language'))
 		{
