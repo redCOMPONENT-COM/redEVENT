@@ -45,6 +45,9 @@ class RedeventModelRegistration extends RModel
 	 */
 	protected $rf_answers;
 
+	/**
+	 * @var RedeventEntitySessionpricegroup
+	 */
 	protected $prices = null;
 
 	protected $origin = '';
@@ -508,7 +511,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $sessionpricegroup_id  session pricegroup id
 	 *
-	 * @return object session price group
+	 * @return RedeventEntitySessionpricegroup session price group
 	 */
 	public function getRegistrationPrice($sessionpricegroup_id)
 	{
@@ -536,30 +539,14 @@ class RedeventModelRegistration extends RModel
 	/**
 	 * Get current session price groups
 	 *
-	 * @return array
+	 * @return RedeventEntitySessionpricegroup[]
 	 */
 	public function getPricegroups()
 	{
 		if (!$this->prices)
 		{
-			$event = $this->getSessionDetails();
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->select('sp.*, p.name, p.alias, p.tooltip, f.currency AS form_currency');
-			$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug');
-			$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
-			$query->from('#__redevent_sessions_pricegroups AS sp');
-			$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
-			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
-			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-			$query->innerJoin('#__redevent_event_template AS t On t.id = e.template_id');
-			$query->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id');
-			$query->where('sp.xref = ' . $db->Quote($event->xref));
-			$query->order('p.ordering ASC');
-
-			$db->setQuery($query);
-			$this->prices = $db->loadObjectList();
+			$session = RedeventEntitySession::load($this->xref);
+			$this->prices = $session->getPricegroups('true');
 		}
 
 		return $this->prices;
