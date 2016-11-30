@@ -346,4 +346,25 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 
 		return $this;
 	}
+
+	/**
+	 * Returns field value ready to be printed.
+	 * Array values will be separated with separator (default '~~~')
+	 *
+	 * @param   string  $separator  separator
+	 *
+	 * @return string
+	 */
+	public function getValueAsString($separator = '~~~')
+	{
+		// We just want to return the pricegroup name in that case
+		if (!$spg = $this->getValue())
+		{
+			return false;
+		}
+
+		$sessionPriceGroup = RedeventEntitySessionpricegroup::load($spg);
+
+		return $sessionPriceGroup->getPricegroup()->name;
+	}
 }
