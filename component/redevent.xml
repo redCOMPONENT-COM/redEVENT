@@ -59,7 +59,7 @@
 			<menu img="../media/com_redevent/images/icon-16-events.png" view="events">COM_REDEVENT_MENU_EVENTS</menu>
 			<menu img="../media/com_redevent/images/icon-16-sessions.png" view="sessions">COM_REDEVENT_MENU_SESSIONS</menu>
             <menu img="../media/com_redevent/images/icon-16-venues.png" view="venues">COM_REDEVENT_MENU_VENUES</menu>
-			<menu img="../media/com_redevent/images/icon-16-templates.png" view="venues">COM_REDEVENT_MENU_TEMPLATES</menu>
+			<menu img="../media/com_redevent/images/icon-16-templates.png" view="eventtemplates">COM_REDEVENT_MENU_TEMPLATES</menu>
 			<menu img="../media/com_redevent/images/attending-16.png" view="registrations">COM_REDEVENT_MENU_REGISTRATIONS</menu>
 			<menu img="../media/com_redevent/images/icon-16-categories.png" view="categories">COM_REDEVENT_MENU_CATEGORIES</menu>
 			<menu img="../media/com_redevent/images/icon-16-venuescategories.png" view="venuescategories">COM_REDEVENT_MENU_VENUES_CATEGORIES</menu>
