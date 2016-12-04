@@ -108,6 +108,12 @@ class RedeventViewEvents extends RedeventViewAdmin
 			$fourthGroup->addButton($importExport);
 		}
 
+		if ($user->authorise('core.create', 'com_redevent'))
+		{
+			$copy = RToolbarBuilder::createCopyButton('events.copy');
+			$fourthGroup->addButton($copy);
+		}
+
 		if ($user->authorise('core.edit.state', 'com_redevent'))
 		{
 			$publish = RToolbarBuilder::createPublishButton('events.publish');

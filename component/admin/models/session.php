@@ -29,7 +29,7 @@ class RedeventModelSession extends RModelAdmin
 			$row = $this->getTable('session');
 			$row->load($id);
 			$row->id = null;
-			$row->note = Jtext::sprintf('COM_REDEVENT_COPY_OF_D', $id);
+			$row->note = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $id);
 
 			/* pre-save checks */
 			if (!$row->check())
