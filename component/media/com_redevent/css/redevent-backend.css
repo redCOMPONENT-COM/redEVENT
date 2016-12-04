@@ -78,3 +78,8 @@ td.tagname {
 	cursor: hover;
 	font-weight: bold !important;
 }
+
+div.redform-lock {
+	font-style: italic;
+	font-size: 0.8em;
+}

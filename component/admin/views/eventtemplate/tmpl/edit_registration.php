@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->form->getLabel('redform_id'); ?>
 	</div>
 	<div class="controls">
+		<div class="redform-lock"><?= JText::_('COM_REDEVENT_EVENTTEMPLATE_EDIT_FORM_LOCKED_HAS_ATTENDEES') ?></div>
 		<?php echo $this->form->getInput('redform_id'); ?>
 	</div>
 </div>
