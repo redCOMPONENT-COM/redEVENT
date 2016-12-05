@@ -173,9 +173,12 @@ if (isset($data['activeFilters']['event']))
 							)
 						);
 
-						$endreg = RedeventHelperDate::isValidDate($item->registrationend)
-							? RedeventHelperDate::formatdate($item->registrationend, null, $params->get('backend_formatdate', 'd.m.Y') . ' H:i')
-							: '-';
+						$endreg = '';
+
+						if ($endregDate = $session->getRegistrationEnd())
+						{
+							$endreg = $endregDate->format($params->get('backend_formatdate', 'd.m.Y') . ' H:i', true);
+						}
 
 						$featured = RedeventHtmlSessions::featured($item, $i, $canEditState);
 

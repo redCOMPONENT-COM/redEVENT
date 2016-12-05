@@ -496,7 +496,12 @@ class RedeventEntitySession extends RedeventEntityBase
 			return null;
 		}
 
-		return JDate::getInstance($item->registrationend);
+		$date = JDate::getInstance($item->registrationend);
+
+		// Put it in the user tz as default
+		$date->setTimezone(new DateTimeZone(JFactory::getUser()->getParam('timezone', JFactory::getConfig()->get('offset'))));
+
+		return $date;
 	}
 
 	/**
