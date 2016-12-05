@@ -120,6 +120,8 @@ class RedeventModelEvent extends RModelAdmin
 			$form->setFieldAttribute('template_id', 'required', '0');
 		}
 
+		$form->setFieldAttribute('datimage', 'directory', RedeventHelper::config()->get('default_image_path', 'redevent/events'));
+
 		return $form;
 	}
 
