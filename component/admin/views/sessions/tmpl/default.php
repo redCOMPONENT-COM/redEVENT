@@ -143,8 +143,9 @@ $search = $this->state->get('filter.search');
 
 				$featured = $this->featured($row, $i);
 
-				$venuelink = JRoute::_('index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);
-				$eventlink = JRoute::_('index.php?option=com_redevent&task=event.edit&id=' . $row->eventid);
+				$return = base64_encode('index.php?option=com_redevent&view=sessions');
+				$venuelink = JRoute::_('index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid . '&return=' . $return);
+				$eventlink = JRoute::_('index.php?option=com_redevent&task=event.edit&id=' . $row->eventid . '&return=' . $return);
 				?>
 				<tr>
 					<td>
