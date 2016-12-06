@@ -145,7 +145,11 @@ gulp.task('release:languages', ['prepare:release'], function() {
 
 	const tasks = folders.map(function(directory) {
 		return fs.readFile(path.join(directory, 'install.xml'), function(err, data) {
-			parser.parseString(data, function (err, result) {
+			return parser.parseString(data, function (err, result) {
+				if (err) {
+					return (err);
+				}
+
 				const lang = path.basename(directory);
 				const version = result.extension.version[0];
 				const fileName = config.skipVersion ? extension.name + '_' + lang + '.zip' : extension.name + '_' + lang + '-v' + version + '.zip';
