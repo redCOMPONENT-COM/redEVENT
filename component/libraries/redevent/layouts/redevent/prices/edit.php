@@ -44,7 +44,7 @@ $view = $displayData;
 		<?php echo JHTML::_('select.genericlist', $view->currencyoptions, 'jform[currency][]', array('class' => 'price-currency'), 'value', 'text'); ?>
 	</td>
 	<td>
-		<button type="button" class="btn price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button>
+		<button type="button" class="btn price-button" id="add-price"><?php echo JText::_('LIB_REDEVENT_ADD_ANOTHER'); ?></button>
 	</td>
 </tr>
 </table>
