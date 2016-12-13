@@ -24,6 +24,7 @@
             label="COM_REDEVENT_SESSION_VENUE_LABEL"
             description ="COM_REDEVENT_SESSION_VENUE_DESC"
             required="true"
+            show_lang="true"
             class="inputbox" />
 
         <field
