@@ -775,7 +775,7 @@ class RedeventAttendee extends JObject
 		 * Send a submission mail to the attendee and/or contact person
 		 * This will only work if the contact person has an e-mail address
 		 **/
-		if (isset($eventsettings->notify) && $eventsettings->notify)
+		if (!empty($eventsettings->notify))
 		{
 			$params = JComponentHelper::getParams('com_redevent');
 
