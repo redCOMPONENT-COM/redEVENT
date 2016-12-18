@@ -62,11 +62,6 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	{
 		$this->load();
 
-		if ($value)
-		{
-			$this->data->readonly = true;
-		}
-
 		return parent::setValue($value, false);
 	}
 
