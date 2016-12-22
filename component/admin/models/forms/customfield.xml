@@ -60,10 +60,9 @@
 
 		<field
 			name="published"
-			type="list"
-			class="inputbox"
+			type="radio"
+			class="btn-group radio" >
 			default="1"
-			size="1"
 			label="JSTATUS"
 			description="JFIELD_PUBLISHED_DESC">
 			<option
