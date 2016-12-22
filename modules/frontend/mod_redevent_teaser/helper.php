@@ -26,7 +26,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return array
 	 */
-	public function getList(&$params)
+	public static function getList(&$params)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -194,7 +194,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return array
 	 */
-	private function _categories($rows)
+	private static function _categories($rows)
 	{
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -263,7 +263,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return array
 	 */
-	private function _getCatLinks($item)
+	private static function _getCatLinks($item)
 	{
 		$links = array();
 
@@ -284,7 +284,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return string
 	 */
-	private function _format_day($row, &$params)
+	private static function _format_day($row, &$params)
 	{
 		// Get needed timestamps and format
 		$yesterday_stamp = mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"));
@@ -380,7 +380,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return string
 	 */
-	private function _format_date($row, &$params)
+	private static function _format_date($row, &$params)
 	{
 		$enddates_stamp = $row->enddates ? strtotime($row->enddates) : null;
 
@@ -410,7 +410,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return string
 	 */
-	private function _format_time($date, $time, &$params)
+	private static function _format_time($date, $time, &$params)
 	{
 		$time = strftime($params->get('formattime', '%H:%M'), strtotime($date . ' ' . $time));
 		$result = JText::sprintf('MOD_REDEVENT_TEASER_TIME_STRING', $time);
@@ -425,7 +425,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return string
 	 */
-	private function _format_dayname($row)
+	private static function _format_dayname($row)
 	{
 		$date = strtotime($row->dates);
 		$result = strftime("%A", $date);
@@ -440,7 +440,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return string
 	 */
-	private function _format_daynum($row)
+	private static function _format_daynum($row)
 	{
 		$date = strtotime($row->dates);
 		$result = strftime("%d", $date);
@@ -455,7 +455,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return string
 	 */
-	private function _format_year($row)
+	private static function _format_year($row)
 	{
 		$date = strtotime($row->dates);
 		$result = strftime("%Y", $date);
@@ -470,7 +470,7 @@ class ModRedeventTeaserHelper
 	 *
 	 * @return string
 	 */
-	private function _format_month($row)
+	private static function _format_month($row)
 	{
 		$date = strtotime($row->dates);
 		$result = strftime("%B", $date);

@@ -85,7 +85,7 @@ class JFormFieldSession extends JFormField
 
 		// The select button
 		$html[] = '    <a class="btn btn-primary modal_' . $this->id . '" title="' . JText::_('COM_REDEVENT_SELECT_SESSION') . '" href="' . $link .
-		'" rel="{handler: \'iframe\', size: {x:700, y:450}}">' .
+		'" rel="{handler: \'iframe\', size: {x:800, y:450}}">' .
 		JText::_('COM_REDEVENT_SELECT_SESSION') . '</a>';
 
 		if ($reset)

@@ -79,7 +79,7 @@ class RedeventRegistrationCanregister
 		{
 			$this->setResultError(JText::_('COM_REDEVENT_EVENT_FULL'), static::ERROR_IS_FULL);
 
-			return true;
+			return $this->result;
 		}
 
 		if ($this->userHasPendingRegistration())
@@ -134,6 +134,7 @@ class RedeventRegistrationCanregister
 		$result->canregister = 1;
 		$result->status = null;
 		$result->error = null;
+		$result->icon = null;
 
 		$this->result = $result;
 	}
@@ -152,6 +153,9 @@ class RedeventRegistrationCanregister
 		$this->result->status = $status;
 		$this->result->error = $error;
 
+		$imgpath = 'media/com_redevent/images/' . $error . '.png';
+		$this->result->icon = JHTML::_('image', JURI::base() . $imgpath, $status, array('class' => 'hasTooltip', 'title' => $status));
+
 		return $this->result;
 	}
 
@@ -168,19 +172,23 @@ class RedeventRegistrationCanregister
 		$now = JFactory::getDate('now', $app->getCfg('offset'));
 		$now_unix = $now->toUnix('true');
 
-		if (RedeventHelperDate::isValidDate($this->session->registrationend)
-			&& strtotime($this->session->registrationend) < $now_unix)
+		if (RedeventHelperDate::isValidDate($this->session->registrationend))
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
+			if (strtotime($this->session->registrationend) < $now_unix)
+			{
+				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
-			return true;
+				return true;
+			}
 		}
-		elseif (RedeventHelperDate::isValidDate($this->session->dates)
-			&& strtotime($this->session->dates . ' ' . $this->session->times) < $now_unix)
+		elseif (RedeventHelperDate::isValidDate($this->session->dates))
 		{
-			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
+			if (strtotime($this->session->dates . ' ' . $this->session->times) < $now_unix)
+			{
+				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
-			return true;
+				return true;
+			}
 		}
 
 		return false;

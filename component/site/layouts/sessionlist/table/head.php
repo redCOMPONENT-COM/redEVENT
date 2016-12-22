@@ -17,7 +17,6 @@ $orderDir = JArrayHelper::getValue($displayData, 'orderDir');
 
 $colnames = explode(",", $params->get('lists_columns_names', 'date, title, venue, city, category'));
 $colnames = array_map('trim', $colnames);
-
 $print = JArrayHelper::getValue($displayData, 'print', 0);
 $sorting = JArrayHelper::getValue($displayData, 'sorting', 1) && !$print;
 
@@ -81,6 +80,15 @@ $allColumns = array(
 		'title' => JText::_('COM_REDEVENT_CREDITS'),
 		'id' => 'el_credits'
 	),
+	'session_code' => array(
+		'title' => JText::_('COM_REDEVENT_TABLE_HEADER_SESSION_CODE'),
+		'id' => 'el_session_code',
+		'sort' => 'x.session_code'
+	),
+	'registration' => array(
+		'title' => JText::_('COM_REDEVENT_TABLE_HEADER_REGISTRATION'),
+		'id' => 'el_registration'
+	),
 );
 ?>
 <thead>
@@ -90,7 +98,7 @@ $allColumns = array(
 			<?php if (isset($allColumns[$col])): ?>
 
 				<th class="sectiontableheader" <?php echo isset($allColumns[$col]['id']) ? 'id="' . $allColumns[$col]['id'] . '"' : ''; ?>>
-					<?php if (JArrayHelper::getValue($allColumns[$col], 'sort', 1) && $sorting): ?>
+					<?php if (JArrayHelper::getValue($allColumns[$col], 'sort', 0) && $sorting): ?>
 						<?php echo JHTML::_('grid.sort', JArrayHelper::getValue($colnames, $k, $allColumns[$col]['title']), $allColumns[$col]['sort'], $orderDir, $order); ?>
 					<?php else: ?>
 						<?php echo JArrayHelper::getValue($colnames, $k, $allColumns[$col]['title']); ?>
@@ -115,7 +123,7 @@ $allColumns = array(
 			<?php else: ?>
 
 				<th class="sectiontableheader re_col">
-					<?php echo $col; ?>
+					<?php echo JArrayHelper::getValue($colnames, $k, $col); ?>
 				</th>
 
 			<?php endif; ?>

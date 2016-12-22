@@ -135,6 +135,22 @@ $colnames = array_map('trim', $colnames);
 						<td class="re_credits"><?php echo $row->course_credit ? $row->course_credit : '-'; ?></td>
 						<?php break;?>
 
+					<?php case 'registration': ?>
+						<td class="re_registration">
+							<?php if ($row->registra): ?>
+								<?php $session = RedeventEntitySession::load($row->xref); ?>
+								<?php $regStatus = $session->getCanRegisterStatus(); ?>
+								<?php if ($regStatus->canregister): ?>
+									<?php foreach ($session->getRegistrationIconLinks() as $regIcon): ?>
+										<span class="registration-link"><?= $regIcon ?></span>
+									<?php endforeach; ?>
+								<?php else: ?>
+									<span class="registration-link"><?= RHtml::tooltip($regStatus->status, JText::_('COM_REDEVENT_REGISTRATION_NOT_POSSIBLE'), null, $regStatus->icon) ?></span>
+								<?php endif;?>
+							<?php endif; ?>
+						</td>
+						<?php break;?>
+
 					<?php default: ?>
 						<?php if (isset($row->$col)):?>
 							<td class="re_customs"><?php echo str_replace("\n", "<br/>", $row->$col); ?></td>

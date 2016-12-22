@@ -153,7 +153,7 @@ class RedeventControllerAttendee extends RControllerForm
 		{
 			if (!$sessionId = $this->input->getInt('sessionId', 0))
 			{
-				$sessionId = $this->input->getInt('session', 0);
+				$sessionId = $this->input->getInt('xref', 0);
 
 				if (!$sessionId)
 				{
@@ -161,7 +161,7 @@ class RedeventControllerAttendee extends RControllerForm
 				}
 			}
 
-			return JRoute::_('index.php?option=com_redevent&view=attendees&session=' . $sessionId . $append, false);
+			return JRoute::_('index.php?option=com_redevent&view=attendees&xref=' . $sessionId . $append, false);
 		}
 	}
 }

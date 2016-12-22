@@ -64,7 +64,9 @@ class RedeventModelAttendees extends RModelList
 			$config['filter_fields'] = array(
 				'r.id', 'x.eventid', 'x.xref',
 				'r.confirmed', 'r.waitinglist', 'r.cancelled', 'r.uregdate', 'r.confirmdate',
-				'u.username', 'u.email', 'paid'
+				'u.username', 'u.email', 'paid',
+				// Filters
+				'cancelled', 'confirmed', 'waitinglist'
 			);
 		}
 
@@ -225,11 +227,11 @@ class RedeventModelAttendees extends RModelList
 
 		switch ($this->getState('filter.cancelled', 0))
 		{
-			case 0:
-				$query->where('r.cancelled = 0');
-				break;
 			case 1:
 				$query->where('r.cancelled = 1');
+				break;
+			case 2:
+				$query->where('r.cancelled = 0');
 				break;
 		}
 
@@ -302,7 +304,7 @@ class RedeventModelAttendees extends RModelList
 
 		$app = JFactory::getApplication();
 
-		if ($value = $app->input->getInt('session', $app->input->getInt('xref', 0)))
+		if ($value = $app->input->getInt('xref', 0))
 		{
 			$this->setState('filter.session', $value);
 		}

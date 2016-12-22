@@ -35,6 +35,8 @@ class RedeventModelCategory extends RModelAdmin
 			$form->setFieldAttribute('published', 'class', 'btn-group disabled');
 		}
 
+		$form->setFieldAttribute('image', 'directory', RedeventHelper::config()->get('default_image_path', 'redevent/events'));
+
 		return $form;
 	}
 

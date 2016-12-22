@@ -16,6 +16,44 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelEventtemplate extends RModelAdmin
 {
 	/**
+	 * copy
+	 *
+	 * @param   array  $ids  ids to copy
+	 *
+	 * @return boolean true on success
+	 *
+	 * @since 3.2.1
+	 */
+	public function copy($ids)
+	{
+		foreach ($ids as $id)
+		{
+			$row = $this->getTable('eventtemplate');
+			$row->load($id);
+			$row->id = null;
+			$row->name = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $row->name);
+
+			/* pre-save checks */
+			if (!$row->check())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+
+			/* save the changes */
+			if (!$row->store())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method for getting the form from the model.
 	 *
 	 * @param   array    $data      Data for the form.

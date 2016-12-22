@@ -134,14 +134,18 @@ $search = $this->state->get('filter.search');
 					)
 				);
 
-				$endreg = RedeventHelperDate::isValidDate($row->registrationend)
-					? RedeventHelperDate::formatdate($row->registrationend, null, $this->params->get('backend_formatdate', 'd.m.Y') . ' H:i')
-					: '-';
+				$endreg = '';
+
+				if ($endregDate = $session->getRegistrationEnd())
+				{
+					$endreg = $endregDate->format($this->params->get('backend_formatdate', 'd.m.Y') . ' H:i', true);
+				}
 
 				$featured = $this->featured($row, $i);
 
-				$venuelink = JRoute::_('index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);
-				$eventlink = JRoute::_('index.php?option=com_redevent&task=event.edit&id=' . $row->eventid);
+				$return = base64_encode('index.php?option=com_redevent&view=sessions');
+				$venuelink = JRoute::_('index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid . '&return=' . $return);
+				$eventlink = JRoute::_('index.php?option=com_redevent&task=event.edit&id=' . $row->eventid . '&return=' . $return);
 				?>
 				<tr>
 					<td>
@@ -229,7 +233,7 @@ $search = $this->state->get('filter.search');
 					<?php if (!$this->event || $row->registra): ?>
 						<td><?php echo $endreg; ?></td>
 						<td><?php echo ($row->registra ?
-								JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
+								JHTML::link('index.php?option=com_redevent&view=attendees&xref=' . $row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
 					<?php endif; ?>
 
 					<td>

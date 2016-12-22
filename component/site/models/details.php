@@ -285,80 +285,73 @@ class RedeventModelDetails extends RModel
 		}
 
 		/* At least 1 redFORM field must be selected to show the user data from */
-		if ((!empty($this->details->showfields) || $admin || $all_fields) && $this->details->redform_id > 0)
+		$table_fields = array();
+		$fields_names = array();
+
+		if ($fields = $this->getFormFields($all_fields))
 		{
-			$fields = $this->getFormFields($all_fields);
-
-			if (!$fields)
-			{
-				RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_fields') . $this->_db->getErrorMsg());
-
-				return null;
-			}
-
-			$table_fields = array();
-			$fields_names = array();
-
 			foreach ($fields as $key => $field)
 			{
 				$table_fields[] = 'a.field_' . $field->fieldId;
 				$fields_names['field_' . $field->fieldId] = $field->field_header ?: $field->field;
 			}
+		}
 
-			$query = $this->_db->getQuery(true)
-				->select(implode(', ', $table_fields))
-				->select('s.submit_key, s.id')
-				->from('#__redevent_register AS r')
-				->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
-				->join('INNER', '#__rwf_forms_' . $this->details->redform_id . ' AS a ON s.answer_id = a.id')
-				->where('r.xref = ' . $this->xref)
-				->where('r.confirmed = 1')
-				->where('r.cancelled = 0')
-				->order('r.confirmdate');
+		$query = $this->_db->getQuery(true)
+			->select('s.submit_key, s.id')
+			->from('#__redevent_register AS r')
+			->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
+			->join('INNER', '#__rwf_forms_' . $this->details->redform_id . ' AS a ON s.answer_id = a.id')
+			->where('r.xref = ' . $this->xref)
+			->where('r.confirmed = 1')
+			->where('r.cancelled = 0')
+			->order('r.confirmdate');
 
-			$this->_db->setQuery($query);
-			$answers = $this->_db->loadObjectList();
+		if ($table_fields)
+		{
+			$query->select(implode(', ', $table_fields));
+		}
 
-			if ($answers === false)
+		$this->_db->setQuery($query);
+		$answers = $this->_db->loadObjectList();
+
+		if ($answers === false)
+		{
+			RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_registered_users') . ' ' . $this->_db->getErrorMsg());
+
+			return null;
+		}
+
+		// Add the answers to submitters list
+		$registers = array();
+
+		foreach ($answers as $answer)
+		{
+			if (!isset($submitters[$answer->submit_key]))
 			{
-				RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_registered_users') . ' ' . $this->_db->getErrorMsg());
+				$msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_WITHOUT_SUBMITTER') . ': ' . $answer->id;
+				$this->setError($msg);
+				RedeventError::raiseWarning(10, $msg);
 
 				return null;
 			}
 
-			// Add the answers to submitters list
-			$registers = array();
+			// Build the object
+			$register = new stdclass;
+			$register->id = $answer->id;
+			$register->attendee_id = $submitters[$answer->submit_key]->id;
+			$register->submitter = $submitters[$answer->submit_key];
+			$register->answers = $answer;
+			$register->fields = $fields_names;
 
-			foreach ($answers as $answer)
-			{
-				if (!isset($submitters[$answer->submit_key]))
-				{
-					$msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_WITHOUT_SUBMITTER') . ': ' . $answer->id;
-					$this->setError($msg);
-					RedeventError::raiseWarning(10, $msg);
+			// Just the fields
+			unset($register->answers->id);
+			unset($register->answers->submit_key);
 
-					return null;
-				}
-
-				// Build the object
-				$register = new stdclass;
-				$register->id = $answer->id;
-				$register->attendee_id = $submitters[$answer->submit_key]->id;
-				$register->submitter = $submitters[$answer->submit_key];
-				$register->answers = $answer;
-				$register->fields = $fields_names;
-
-				// Just the fields
-				unset($register->answers->id);
-				unset($register->answers->submit_key);
-
-				$registers[] = $register;
-			}
-
-			return $registers;
+			$registers[] = $register;
 		}
 
-		return null;
+		return $registers;
 	}
 
 	/**

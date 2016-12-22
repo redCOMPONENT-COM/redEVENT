@@ -26,7 +26,7 @@ class ModRedEventCategoriesHelper
 	 *
 	 * @return array
 	 */
-	public function getList($params)
+	public static function getList($params)
 	{
 		$db = JFactory::getDBO();
 
@@ -51,7 +51,7 @@ class ModRedEventCategoriesHelper
 	 *
 	 * @return array
 	 */
-	private function _getTree($selected)
+	private static function _getTree($selected)
 	{
 		$tree = array();
 
@@ -74,7 +74,7 @@ class ModRedEventCategoriesHelper
 	 *
 	 * @return array
 	 */
-	private function _getChildren($parent, $cats)
+	private static function _getChildren($parent, $cats)
 	{
 		$parent->children = array();
 
@@ -96,7 +96,7 @@ class ModRedEventCategoriesHelper
 	 *
 	 * @return array
 	 */
-	private function _buildQuery($params)
+	private static function _buildQuery($params)
 	{
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -160,7 +160,7 @@ class ModRedEventCategoriesHelper
 	 *
 	 * @return string
 	 */
-	public function printDtCat($category, $depth, $showcount = 1, $currents)
+	public static function printDtCat($category, $depth, $showcount = 1, $currents)
 	{
 		$link = JRoute::_(RedeventHelperRoute::getCategoryeventsRoute($category->slug));
 		$txt = $showcount ? $category->name . ' (' . $category->assignedevents . ')' : $category->name;
@@ -194,7 +194,7 @@ class ModRedEventCategoriesHelper
 	 *
 	 * @return string
 	 */
-	public function printFlatCat($category, $showcount = 1, $currents)
+	public static function printFlatCat($category, $showcount = 1, $currents)
 	{
 		$link = JRoute::_(RedeventHelperRoute::getCategoryeventsRoute($category->slug));
 		$txt = $showcount ? $category->name . ' (' . $category->assignedevents . ')' : $category->name;
@@ -217,7 +217,7 @@ class ModRedEventCategoriesHelper
 	 *
 	 * @return array
 	 */
-	public function getParentsCats($catid)
+	public static function getParentsCats($catid)
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);

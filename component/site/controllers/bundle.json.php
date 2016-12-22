@@ -97,7 +97,7 @@ class RedeventControllerBundle extends JControllerLegacy
 					$data->language = $session->language;
 					$data->venue = $session->getVenue()->name;
 					$data->price = $price;
-					$data->left = $session->getNumberLeft();
+					$data->left = $session->hasMaxAttendees() ? $session->getNumberLeft() : false;
 					$data->maxattendees = $session->maxattendees;
 					$data->full = $session->isFull();
 
@@ -174,8 +174,8 @@ class RedeventControllerBundle extends JControllerLegacy
 			$singleprice = true;
 		}
 
-		$hasLimit = $session->maxattendees;
-		$left = $session->getNumberLeft();
+		$hasLimit = $session->hasMaxAttendees();
+		$left = $hasLimit ? $session->getNumberLeft() : false;
 
 		return compact('id', 'label', 'prices', 'singleprice', 'hasLimit', 'left');
 	}

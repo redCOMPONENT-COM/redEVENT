@@ -25,6 +25,11 @@ class RedeventUserAclSessionregistration
 	private $acl;
 
 	/**
+	 * @var int[]
+	 */
+	private $categoriesAssets;
+
+	/**
 	 * @var JDatabaseDriver
 	 */
 	private $db;
@@ -52,55 +57,84 @@ class RedeventUserAclSessionregistration
 	public function getRecipients()
 	{
 		// Get all users globally allowed to receive notifications
-		$allowedGlobal = $this->acl->getAllowedUsers('re.receiveregistrations');
+		$allowedGlobal = $this->acl->getAllowedGroups('re.receiveregistrations');
 
 		if (!$allowedGlobal)
 		{
 			return false;
 		}
 
-		if (!$allowedByCategory = $this->getAllowedToManageEventsByCategories())
+		if (!$allowedByCategory = $this->getGroupsAllowedToManageEventsByCategories())
 		{
 			return false;
 		}
 
-		if (!$allowedByVenue = $this->getAllowedToManageEventsByVenue())
+		if (!$allowedByVenue = $this->getGroupsAllowedToManageEventsByVenue())
 		{
 			return false;
 		}
 
 		// Intersect to find allowed users
-		$allowed = array_intersect($allowedGlobal, $allowedByCategory, $allowedByVenue);
+		$allowedGroups = array_intersect($allowedGlobal, $allowedByCategory, $allowedByVenue);
 
-		return $allowed;
+		if (!$allowedGroups)
+		{
+			return false;
+		}
+
+		$users = array();
+
+		foreach ($allowedGroups as $groupId)
+		{
+			$users = array_merge($users, JAccess::getUsersByGroup($groupId, true));
+		}
+
+		$users = array_unique($users);
+
+		return $users;
 	}
 
 	/**
-	 * Get users allowed to managed events by categories
+	 * Get session categories assets
+	 *
+	 * @return array|int[]
+	 */
+	private function getCategoriesAssets()
+	{
+		if (is_null($this->categoriesAssets))
+		{
+			$db = $this->db;
+
+			// Get categories asset names
+			$query = $db->getQuery(true)
+				->select('a.name')
+				->from('#__redevent_event_venue_xref AS x')
+				->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
+				->innerJoin('#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')
+				->innerJoin('#__redevent_categories AS c ON xcat.category_id = c.id')
+				->innerJoin('#__assets AS a ON c.asset_id = a.id')
+				->where('x.id = ' . $this->sessionId);
+
+			$db->setQuery($query);
+
+			$this->categoriesAssets = $db->loadColumn() ?: array();
+		}
+
+		return $this->categoriesAssets;
+	}
+
+	/**
+	 * Get groups allowed to managed events by categories
 	 *
 	 * @return array
 	 */
-	private function getAllowedToManageEventsByCategories()
+	private function getGroupsAllowedToManageEventsByCategories()
 	{
 		$allowedByCategory = array();
-		$db = $this->db;
 
-		// Get categories asset names
-		$query = $db->getQuery(true)
-			->select('a.name')
-			->from('#__redevent_event_venue_xref AS x')
-			->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
-			->innerJoin('#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')
-			->innerJoin('#__redevent_categories AS c ON xcat.category_id = c.id')
-			->innerJoin('#__assets AS a ON c.asset_id = a.id')
-			->where('x.id = ' . $this->sessionId);
-
-		$db->setQuery($query);
-		$categoriesAssets = $db->loadColumn() ?: array();
-
-		foreach ($categoriesAssets as $asset)
+		foreach ($this->getCategoriesAssets() as $asset)
 		{
-			if ($res = $this->acl->getAllowedUsers('re.manageevents', $asset))
+			if ($res = $this->acl->getAllowedGroups('re.manageevents', $asset))
 			{
 				$allowedByCategory = array_merge($allowedByCategory, $res);
 			}
@@ -110,13 +144,13 @@ class RedeventUserAclSessionregistration
 	}
 
 	/**
-	 * Get users allowed to managed events by venue
+	 * Get groups allowed to managed events by venue
 	 *
 	 * @return array
 	 */
-	private function getAllowedToManageEventsByVenue()
+	private function getGroupsAllowedToManageEventsByVenue()
 	{
-		$allowedByVenue = array();
+		$allowedByVensue = array();
 		$db = $this->db;
 
 		// Get venue asset name
@@ -132,7 +166,7 @@ class RedeventUserAclSessionregistration
 
 		$allowedByVenue = array();
 
-		if ($res = $this->acl->getAllowedUsers('re.manageevents', $venueAsset))
+		if ($res = $this->acl->getAllowedGroups('re.manageevents', $venueAsset))
 		{
 			$allowedByVenue = $res;
 		}
@@ -152,7 +186,7 @@ class RedeventUserAclSessionregistration
 
 		foreach ($venueCategoriesAssets as $asset)
 		{
-			if ($res = $this->acl->getAllowedUsers('re.manageevents', $asset))
+			if ($res = $this->acl->getAllowedGroups('re.manageevents', $asset))
 			{
 				$allowedByVenue = array_merge($allowedByVenue, $res);
 			}

@@ -49,6 +49,7 @@ class RedeventModelEventtemplates extends RModelList
 		{
 			$config['filter_fields'] = array(
 				'id', 'obj.id', 'obj.name', 'obj.language',
+				'language',
 			);
 		}
 

@@ -173,9 +173,12 @@ if (isset($data['activeFilters']['event']))
 							)
 						);
 
-						$endreg = RedeventHelperDate::isValidDate($item->registrationend)
-							? RedeventHelperDate::formatdate($item->registrationend, null, $params->get('backend_formatdate', 'd.m.Y') . ' H:i')
-							: '-';
+						$endreg = '';
+
+						if ($endregDate = $session->getRegistrationEnd())
+						{
+							$endreg = $endregDate->format($params->get('backend_formatdate', 'd.m.Y') . ' H:i', true);
+						}
 
 						$featured = RedeventHtmlSessions::featured($item, $i, $canEditState);
 
@@ -238,7 +241,7 @@ if (isset($data['activeFilters']['event']))
 
 							<td><?php echo $endreg; ?></td>
 							<td><?php echo ($item->registra ?
-										JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $item->id, intval($item->attendees->attending). ' / '. intval($item->attendees->waiting)) : '-'); ?></td>
+										JHTML::link('index.php?option=com_redevent&view=attendees&xref=' . $item->id, intval($item->attendees->attending). ' / '. intval($item->attendees->waiting)) : '-'); ?></td>
 
 							<td>
 								<?php echo $item->language; ?>

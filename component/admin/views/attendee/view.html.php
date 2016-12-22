@@ -41,7 +41,6 @@ class RedeventViewAttendee extends RedeventViewAdmin
 
 		$field = new RedeventRfieldSessionprice;
 		$field->setOptions($sessionpricegroups);
-		$field->setFormIndex(1);
 
 		if ($row->sessionpricegroup_id)
 		{

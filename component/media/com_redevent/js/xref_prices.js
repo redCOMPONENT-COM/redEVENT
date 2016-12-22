@@ -1,6 +1,6 @@
 /**
  * @package    Redevent.js
- * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @copyright  redEVENT (C) 2008-2016 redCOMPONENT.com
  * @license    GNU/GPL, see LICENSE.php
  */
 (function($){
@@ -28,10 +28,9 @@
 			$('#trnewprice').before(newrow);
 
 			// Reset values
-			group.val(0);
-			price.val(0);
-			vatrate.val(0);
-			sku.val(0);
+			price.val('');
+			vatrate.val('');
+			sku.val('');
 
 			$("#re-prices").trigger("chosen:updated");
 		});
