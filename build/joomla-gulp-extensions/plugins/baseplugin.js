@@ -14,6 +14,8 @@ var fs          = require('fs');
 var xml2js      = require('xml2js');
 var parser      = new xml2js.Parser();
 var path       	= require('path');
+var replace     = require('gulp-replace');
+var updateSiteXmlTemplate = '<updates><version></version></updates>';
 
 module.exports.addPlugin = function (group, name) {
 	var baseTask  = 'plugins.' + group + '.' + name;
@@ -92,6 +94,16 @@ module.exports.addPlugin = function (group, name) {
 				catch (error) {
 					console.log('error building ' + name)
 				}
+			});
+		});
+	});
+
+	// Update site xml
+	gulp.task('update-sites:' + baseTask, function(){
+		fs.readFile( extPath + '/' + name + '.xml', function(err, data) {
+			parser.parseString(data, function (err, result) {
+				const version = result.extension.version[0];
+				fs.writeFileSync('./update_server_xml/' + 'plg_' + group + '_' + name + '.xml', updateSiteXmlTemplate);
 			});
 		});
 	});

@@ -14,6 +14,7 @@ var fs          = require('fs');
 var xml2js      = require('xml2js');
 var parser      = new xml2js.Parser();
 var path       	= require('path');
+var replace     = require('gulp-replace');
 
 module.exports.addModule = function (name) {
 	var baseTask  = 'modules.frontend.' + name;
@@ -73,6 +74,18 @@ module.exports.addModule = function (name) {
 		gulp.watch([
 			extPath + '/media/**'
 		], ['copy:' + baseTask + ':media']);
+	});
+
+	// Update site xml
+	gulp.task('update-sites:' + baseTask, function(){
+		fs.readFile( extPath + '/' + name + '.xml', function(err, data) {
+			parser.parseString(data, function (err, result) {
+				const version = result.extension.version[0];
+				gulp.src(['./update_server_xml/' + name + '.xml'])
+					.pipe(replace(/<version>(.*)<\/version>/g, "<version>" + version + "</version>"))
+					.pipe(gulp.dest('./update_server_xml'));
+			});
+		});
 	});
 
 	// Release: plugin

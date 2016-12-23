@@ -18,8 +18,6 @@ var replace     = require('gulp-replace');
 var xml2js      = require('xml2js');
 var parser      = new xml2js.Parser();
 
-var print = require('gulp-print');
-
 var baseTask  = 'components.redevent';
 var extPath   = '../component';
 var updateXmlPath = '../../update_server_xml/';
@@ -149,15 +147,9 @@ gulp.task('update-sites:' + baseTask, function(){
 	fs.readFile( extPath + '/redevent.xml', function(err, data) {
 		parser.parseString(data, function (err, result) {
 			const version = result.extension.version[0];
-			console.log(version);
-
 			gulp.src(['./update_server_xml/com_redevent.xml'])
-				.pipe(print());
-
-			gulp.src(['./update_server_xml/com_redevent.xml'])
-				.pipe(print())
-				.pipe(replace(/<version>(.*)<\/version>/g, version))
-				.pipe(gulp.dest('./update_server_xml/com_redevent.xml'));
+				.pipe(replace(/<version>(.*)<\/version>/g, "<version>" + version + "</version>"))
+				.pipe(gulp.dest('./update_server_xml'));
 		});
 	});
 });

@@ -19,10 +19,18 @@ const parser      = new xml2js.Parser();
 
 var gitDescribe = '';
 
-gulp.task('update-sites', ['update-sites:components']);
+gulp.task('update-sites', ['update-sites:components', 'update-sites:modules', 'update-sites:plugins']);
 
 gulp.task('update-sites:components',
 	jgulp.src.components.getComponentsTasks('update-sites:components')
+);
+
+gulp.task('update-sites:modules',
+	jgulp.src.modules.getModulesTasks('update-sites:modules', 'frontend')
+);
+
+gulp.task('update-sites:plugins',
+	jgulp.src.plugins.getPluginsTasks('update-sites:plugins')
 );
 
 gulp.task('prepare:release', ['clean:release', 'git_version'], function(){
