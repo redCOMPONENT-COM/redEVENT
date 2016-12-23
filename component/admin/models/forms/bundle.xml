@@ -37,7 +37,7 @@
 	<field
 		name="published"
 		type="radio"
-		class="btn-group radio" >
+		class="btn-group radio"
 		default="1"
 		label="JSTATUS"
 		description="JFIELD_PUBLISHED_DESC">
