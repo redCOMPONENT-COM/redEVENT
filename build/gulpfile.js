@@ -19,6 +19,12 @@ const parser      = new xml2js.Parser();
 
 var gitDescribe = '';
 
+gulp.task('update-sites', ['update-sites:components']);
+
+gulp.task('update-sites:components',
+	jgulp.src.components.getComponentsTasks('update-sites:components')
+);
+
 gulp.task('prepare:release', ['clean:release', 'git_version'], function(){
 	return del(config.release_dir, {force: true});
 });
