@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 RHelperAsset::load('csvtool.js');
+RHelperAsset::load('redevent-backend.css');
 ?>
 
 <div class="row-fluid">

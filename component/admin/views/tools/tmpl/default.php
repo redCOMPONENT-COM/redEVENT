@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+RHelperAsset::load('redevent-backend.css');
+
 $icons = array(
     array(
         'link' => 'index.php?option=com_redevent&task=tools.importeventlist',
