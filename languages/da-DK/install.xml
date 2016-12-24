@@ -19,4 +19,8 @@
 			<folder>da-DK</folder>
 		</files>
 	</fileset>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT language update">http://julien.intern.redweb.dk/updates/redevent/redevent_da-DK.xml</server>
+	</updateservers>
 </extension>

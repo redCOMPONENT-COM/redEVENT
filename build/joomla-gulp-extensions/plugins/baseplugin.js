@@ -15,24 +15,6 @@ var xml2js      = require('xml2js');
 var parser      = new xml2js.Parser();
 var path       	= require('path');
 var replace     = require('gulp-replace');
-var updateSiteXmlTemplate = "<?xml version='1.0' encoding='utf-8'?> \
-<updates> \
-	<update> \
-	<name>redEVENT ##FULLNAME##</name> \
-	<description>redEVENT plugin update</description>\
-	<element>##ELEMENT##</element>\
-	<type>plugin</type>\
-	<folder>##FOLDER##</folder>\
-	<version>##VERSION##</version>\
-	<infourl title='redEVENT'>https://www.redcomponent.com/index.php/redcomponent/redevent</infourl>\
-	<downloads>\
-	<downloadurl type='full' format='zip'>https://www.redcomponent.com/index.php/redcomponent/redevent</downloadurl>\
-	</downloads>\
-	<maintainer>redCOMPONENT</maintainer>\
-	<maintainerurl>http://www.redcomponent.com</maintainerurl>\
-	<targetplatform name='joomla' version='3.[0123456789]'/>\
-	</update>\
-</updates>";
 
 module.exports.addPlugin = function (group, name) {
 	var baseTask  = 'plugins.' + group + '.' + name;
