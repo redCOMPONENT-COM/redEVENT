@@ -15,4 +15,8 @@
 		<filename plugin="redevent_venue">redevent_venue.php</filename>
 		<filename>redevent_venue.xml</filename>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/plg_aesir_field_redevent_venue.xml</server>
+	</updateservers>
 </extension>

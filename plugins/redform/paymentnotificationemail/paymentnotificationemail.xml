@@ -33,4 +33,8 @@
             </fieldset>
         </fields>
     </config>
+
+    <updateservers>
+        <server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/plg_redform_paymentnotificationemail.xml</server>
+    </updateservers>
 </extension>

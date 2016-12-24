@@ -13,4 +13,8 @@
 		<filename plugin="redevent_session">redevent_session.php</filename>
 		<filename>redevent_session.xml</filename>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/plg_aesir_field_redevent_session.xml</server>
+	</updateservers>
 </extension>

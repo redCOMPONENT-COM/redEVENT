@@ -15,6 +15,7 @@ var xml2js      = require('xml2js');
 var parser      = new xml2js.Parser();
 var path       	= require('path');
 var replace     = require('gulp-replace');
+var xmlDom = require('xmldom');
 
 module.exports.addModule = function (name) {
 	var baseTask  = 'modules.frontend.' + name;
@@ -84,6 +85,26 @@ module.exports.addModule = function (name) {
 				gulp.src(['./update_server_xml/' + name + '.xml'])
 					.pipe(replace(/<version>(.*)<\/version>/g, "<version>" + version + "</version>"))
 					.pipe(gulp.dest('./update_server_xml'));
+			});
+		});
+	});
+
+	gulp.task('insert-update-site:' + baseTask, function(){
+		fs.readFile( extPath + '/' + name + '.xml', function(err, data) {
+			parser.parseString(data, function (err, result) {
+				if (result.extension.updateservers)
+				{
+					return;
+				}
+
+				var json = result;
+				result.updateservers = [{}];
+				result.updateservers[0] = {server : { $: { id: "1000202" }} };
+
+				var builder = new xml2js.Builder();
+				var xml = builder.buildObject(result);
+
+				console.log(xml);
 			});
 		});
 	});

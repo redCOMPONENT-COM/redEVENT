@@ -16,4 +16,8 @@
 		<filename>index.html</filename>
 		<folder>language</folder>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/plg_editors-xtd_redevent.xml</server>
+	</updateservers>
 </extension>

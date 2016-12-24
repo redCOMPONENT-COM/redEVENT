@@ -15,23 +15,11 @@ const filter      = require('gulp-filter');
 const jgulp = requireDir('./node_modules/joomla-gulp', {recurse: true});
 const dir = requireDir('./joomla-gulp-extensions', {recurse: true});
 
+const update_sites = require('./update-sites.js');
+
 const parser      = new xml2js.Parser();
 
 var gitDescribe = '';
-
-gulp.task('update-sites', ['update-sites:components', 'update-sites:modules', 'update-sites:plugins']);
-
-gulp.task('update-sites:components',
-	jgulp.src.components.getComponentsTasks('update-sites:components')
-);
-
-gulp.task('update-sites:modules',
-	jgulp.src.modules.getModulesTasks('update-sites:modules', 'frontend')
-);
-
-gulp.task('update-sites:plugins',
-	jgulp.src.plugins.getPluginsTasks('update-sites:plugins')
-);
 
 gulp.task('prepare:release', ['clean:release', 'git_version'], function(){
 	return del(config.release_dir, {force: true});
@@ -179,6 +167,11 @@ gulp.task('release:languages', ['prepare:release'], function() {
 
 	return tasks;
 });
+
+gulp.task('insert-update-site', ['insert-update-site:modules']);
+
+gulp.task('insert-update-site:modules',
+	jgulp.src.modules.getModulesTasks('insert-update-site:modules', 'frontend'));
 
 function getGitDescribe(cb) {
 	exec('git describe', function (err, stdout, stderr) {

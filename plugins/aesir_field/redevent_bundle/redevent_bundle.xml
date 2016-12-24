@@ -15,4 +15,8 @@
 		<filename plugin="redevent_bundle">redevent_bundle.php</filename>
 		<filename>redevent_bundle.xml</filename>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/plg_aesir_field_redevent_bundle.xml</server>
+	</updateservers>
 </extension>

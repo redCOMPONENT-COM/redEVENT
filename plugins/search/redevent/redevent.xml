@@ -31,5 +31,8 @@
  		</fields>
 	</config>
 
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/plg_search_redevent.xml</server>
+	</updateservers>
 </extension>
 
