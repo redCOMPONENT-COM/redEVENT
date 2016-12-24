@@ -15,6 +15,8 @@ const filter      = require('gulp-filter');
 const jgulp = requireDir('./node_modules/joomla-gulp', {recurse: true});
 const dir = requireDir('./joomla-gulp-extensions', {recurse: true});
 
+const update_sites = require('./update-sites.js');
+
 const parser      = new xml2js.Parser();
 
 var gitDescribe = '';
@@ -165,6 +167,11 @@ gulp.task('release:languages', ['prepare:release'], function() {
 
 	return tasks;
 });
+
+gulp.task('insert-update-site', ['insert-update-site:modules']);
+
+gulp.task('insert-update-site:modules',
+	jgulp.src.modules.getModulesTasks('insert-update-site:modules', 'frontend'));
 
 function getGitDescribe(cb) {
 	exec('git describe', function (err, stdout, stderr) {

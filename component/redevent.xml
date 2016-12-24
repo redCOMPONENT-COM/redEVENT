@@ -88,10 +88,15 @@
 	<!-- Plugins here -->
 	<plugins>
 		<plugin name="redevent" group="redform_integration" />
+		<plugin name="redevent" group="installer" />
 	</plugins>
 
 	<!-- Libraries to install -->
 	<libraries>
 		<library name="redevent"/>
 	</libraries>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/com_redevent.xml</server>
+	</updateservers>
 </extension>

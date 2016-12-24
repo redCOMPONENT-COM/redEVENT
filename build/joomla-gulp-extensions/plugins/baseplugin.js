@@ -14,6 +14,25 @@ var fs          = require('fs');
 var xml2js      = require('xml2js');
 var parser      = new xml2js.Parser();
 var path       	= require('path');
+var replace     = require('gulp-replace');
+var updateSiteXmlTemplate = "<?xml version='1.0' encoding='utf-8'?> \
+<updates> \
+	<update> \
+	<name>redEVENT ##FULLNAME##</name> \
+	<description>redEVENT plugin update</description>\
+	<element>##ELEMENT##</element>\
+	<type>plugin</type>\
+	<folder>##FOLDER##</folder>\
+	<version>##VERSION##</version>\
+	<infourl title='redEVENT'>https://www.redcomponent.com/index.php/redcomponent/redevent</infourl>\
+	<downloads>\
+	<downloadurl type='full' format='zip'>https://www.redcomponent.com/index.php/redcomponent/redevent</downloadurl>\
+	</downloads>\
+	<maintainer>redCOMPONENT</maintainer>\
+	<maintainerurl>http://www.redcomponent.com</maintainerurl>\
+	<targetplatform name='joomla' version='3.[0123456789]'/>\
+	</update>\
+</updates>";
 
 module.exports.addPlugin = function (group, name) {
 	var baseTask  = 'plugins.' + group + '.' + name;
@@ -92,6 +111,31 @@ module.exports.addPlugin = function (group, name) {
 				catch (error) {
 					console.log('error building ' + name)
 				}
+			});
+		});
+	});
+
+	// Update site xml
+	gulp.task('update-sites:' + baseTask, function(){
+		fs.readFile( extPath + '/' + name + '.xml', function(err, data) {
+			parser.parseString(data, function (err, result) {
+				const version = result.extension.version[0];
+
+				fs.readFile('plg_update_site_template.xml', 'utf-8', function(err, content){
+					if (err)
+					{
+						console.log(err);
+
+						return;
+					}
+
+					var text = content
+						.replace(/(##FULLNAME##)/g, 'plg_' + group + '_' + name)
+						.replace(/(##ELEMENT##)/g, name)
+						.replace(/(##FOLDER##)/g, group)
+						.replace(/(##VERSION##)/g, version);
+					fs.writeFileSync('./update_server_xml/' + 'plg_' + group + '_' + name + '.xml', text);
+				});
 			});
 		});
 	});
