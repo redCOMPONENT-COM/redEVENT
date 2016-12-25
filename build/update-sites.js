@@ -42,11 +42,12 @@ gulp.task('update-sites:languages', function(){
 
                 fs.readFile(path.join(langPath, file) + '/install.xml', function(err, data) {
                     parser.parseString(data, function (err, result) {
+                        const name = result.extension.name[0];
                         const version = result.extension.version[0];
 
                         fs.readFile('language_update_site_template.xml', 'utf-8', function(err, content){
                             const text = content
-                                .replace(/(##LANG##)/g, lang)
+                                .replace(/(##NAME##)/g, name)
                                 .replace(/(##VERSION##)/g, version);
                             fs.writeFileSync('./update_server_xml/' + 'redevent_' + lang + '.xml', text);
                         });
