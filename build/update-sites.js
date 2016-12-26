@@ -48,7 +48,8 @@ gulp.task('update-sites:languages', function(){
                         fs.readFile('language_update_site_template.xml', 'utf-8', function(err, content){
                             const text = content
                                 .replace(/(##NAME##)/g, name)
-                                .replace(/(##VERSION##)/g, version);
+                                .replace(/(##VERSION##)/g, version)
+                                .replace(/(##LANG##)/g, lang);
                             fs.writeFileSync('./update_server_xml/' + 'redevent_' + lang + '.xml', text);
                         });
                     });

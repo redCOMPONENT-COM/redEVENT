@@ -22,9 +22,7 @@ const parser      = new xml2js.Parser();
 
 var gitDescribe = '';
 
-gulp.task('prepare:release', ['clean:release', 'git_version'], function(){
-	return del(config.release_dir, {force: true});
-});
+gulp.task('prepare:release', ['clean:release', 'git_version']);
 
 gulp.task('clean:release', function(){
 	return del(config.release_dir, {force: true});
