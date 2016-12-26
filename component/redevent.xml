@@ -97,6 +97,6 @@
 	</libraries>
 
 	<updateservers>
-		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/com_redevent.xml</server>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/com_redevent.xml</server>
 	</updateservers>
 </extension>

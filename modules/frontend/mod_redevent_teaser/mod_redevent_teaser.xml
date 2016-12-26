@@ -120,6 +120,6 @@
 	</config>
 
 	<updateservers>
-		<server type="extension" priority="1" name="redEVENT update">http://julien.intern.redweb.dk/updates/redevent/mod_redevent_teaser.xml</server>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/mod_redevent_teaser.xml</server>
 	</updateservers>
 </extension>
