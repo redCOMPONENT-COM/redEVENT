@@ -15,7 +15,6 @@ var xml2js      = require('xml2js');
 var parser      = new xml2js.Parser();
 var path       	= require('path');
 var replace     = require('gulp-replace');
-var xmlDom = require('xmldom');
 
 module.exports.addModule = function (name) {
 	var baseTask  = 'modules.frontend.' + name;
