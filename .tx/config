@@ -205,14 +205,14 @@ source_file = plugins/finder/re_venues/language/en-GB/en-GB.plg_finder_re_venues
 source_lang = en-GB
 
 # ========== JOMSOCIAL =============
-[redevent3.admin-plg_community_redevent-ini]
-file_filter = languages/<lang>/admin/<lang>/<lang>.plg_community_redevent.ini
-source_file = plugins/jomsocial/redevent/language/en-GB/en-GB.plg_community_redevent.ini
+[redevent3.admin-plg_jomsocial_redevent-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_jomsocial_redevent.ini
+source_file = plugins/jomsocial/redevent/language/en-GB/en-GB.plg_jomsocial_redevent.ini
 source_lang = en-GB
 
-[redevent3.admin-plg_community_redevent-sys-ini]
-file_filter = languages/<lang>/admin/<lang>/<lang>.plg_community_redevent.sys.ini
-source_file = plugins/jomsocial/redevent/language/en-GB/en-GB.plg_community_redevent.sys.ini
+[redevent3.admin-plg_jomsocial_redevent-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_jomsocial_redevent.sys.ini
+source_file = plugins/jomsocial/redevent/language/en-GB/en-GB.plg_jomsocial_redevent.sys.ini
 source_lang = en-GB
 
 # ========== REDEVENT =============
@@ -314,13 +314,3 @@ file_filter = languages/<lang>/admin/<lang>/<lang>.plg_system_autotweetredevent.
 source_file = plugins/system/autotweetredevent/language/en-GB/en-GB.plg_system_autotweetredevent.sys.ini
 source_lang = en-GB
 
-# ========== XMAP =============
-[redevent3.admin-plg_xmap_com_redevent-ini]
-file_filter = languages/<lang>/admin/<lang>/<lang>.plg_xmap_com_redevent.ini
-source_file = plugins/xmap/redevent/language/en-GB/en-GB.plg_xmap_com_redevent.ini
-source_lang = en-GB
-
-[redevent3.admin-plg_xmap_com_redevent-sys-ini]
-file_filter = languages/<lang>/admin/<lang>/<lang>.plg_xmap_com_redevent.sys.ini
-source_file = plugins/xmap/redevent/language/en-GB/en-GB.plg_xmap_com_redevent.sys.ini
-source_lang = en-GB
