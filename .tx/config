@@ -150,6 +150,16 @@ file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redform_integration_redev
 source_file = component/plugins/redform_integration/redevent/language/en-GB/en-GB.plg_redform_integration_redevent.sys.ini
 source_lang = en-GB
 
+[redevent3.admin-plg_installer_redevent-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_installer_redevent.ini
+source_file = component/plugins/installer/redevent/language/en-GB/en-GB.plg_installer_redevent.ini
+source_lang = en-GB
+
+[redevent3.admin-plg_installer_redevent-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_installer_redevent.sys.ini
+source_file = component/plugins/installer/redevent/language/en-GB/en-GB.plg_installer_redevent.sys.ini
+source_lang = en-GB
+
 # ========== CONTENT =============
 [redevent3.admin-plg_content_resimplelist-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_content_resimplelist.ini
