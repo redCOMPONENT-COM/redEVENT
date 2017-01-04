@@ -6,7 +6,7 @@
 		<element>redevent_venue</element>
 		<type>plugin</type>
 		<folder>aesir_field</folder>
-		<version>3.2.0</version>
+		<version>3.2.2</version>
 		<infourl title="redEVENT">https://www.redcomponent.com/index.php/redcomponent/redevent</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://www.redcomponent.com/index.php/redcomponent/redevent</downloadurl>

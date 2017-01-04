@@ -10,7 +10,7 @@
 		<type>file</type>
 		<!-- Must match 'client' column from #__extensions, it's 0 for file type -->
 		<client>0</client>
-		<version>3.2.1</version>
+		<version>3.2.2</version>
 		<infourl title="redEVENT">https://www.redcomponent.com/index.php/redcomponent/redevent</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://www.redcomponent.com/index.php/redcomponent/redevent</downloadurl>
