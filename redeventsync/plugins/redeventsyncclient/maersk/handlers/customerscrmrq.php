@@ -82,7 +82,12 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$rmUser = RedmemberApi::getUser($user_id);
 
 		// Fields should match the actual fields db_name from maersk redmember
-		$data['id'] = (int) $rmUser->id;
+		if ($user_id)
+		{
+			$data['id'] = $rmUser->id;
+			$data['joomla_user_id'] = $user_id;
+		}
+
 		$data['rm_customerid'] = (string) $customer->CustomerID;
 		$data['rm_firstname'] = (string) $customer->Firstname;
 		$data['rm_lastname'] = (string) $customer->Lastname;
