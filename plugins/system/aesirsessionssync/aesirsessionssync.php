@@ -152,7 +152,8 @@ class PlgSystemAesirsessionssync extends JPlugin
 					'PLG_AESIRSESSIONSSYNC_ITEM_SESSION_TITLE_FORMAT',
 					$session->getEvent()->title,
 					$session->getVenue()->name,
-					$session->getFormattedStartDate()),
+					$session->getFormattedStartDate()
+				),
 				'access'  => 1,
 				'custom_fields' => array(
 					'select_redevent_session' => $session->id
@@ -187,15 +188,33 @@ class PlgSystemAesirsessionssync extends JPlugin
 			$params = new \Joomla\Registry\Registry($eventItem->params);
 			$relatedItems = $params->get('related_items', array());
 
+			if ($relatedItems && !is_array($relatedItems))
+			{
+				$relatedItems = array($relatedItems);
+			}
+
 			if (!in_array($sessionItemId, $relatedItems))
 			{
 				$relatedItems[] = $sessionItemId;
 			}
 
-			$params->set('related_items', $sessionItemId);
-			$eventItem->params = $params->toString();
+			$params->set('related_items', $relatedItems);
 
-			$eventItem->save();
+			/*
+			 * This doesn't work because current redITEM pulls input data from the table file, so we have to use manual sql update
+			 * $eventItem->params = $params->toString();
+			 * $eventItem->save();
+			 *
+			 * @todo: wait for aesir fix !
+			 */
+			$db    = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->update('#__reditem_items')
+				->set('params = ' . $db->quote($params->toString()))
+				->where('id = ' . $eventItem->getItemId());
+
+			$db->setQuery($query);
+			$db->execute();
 		}
 	}
 
