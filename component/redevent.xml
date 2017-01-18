@@ -8,7 +8,7 @@
 	<copyright>(C) 2008 - 2014 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
 	<version>3.2.2</version>
-	<redcore version="1.8.1" />
+	<redcore version="1.8.8" />
 	<tag>##VERSION##</tag>
 	<description>COM_REDEVENT_XML_DESCRIPTION</description>
 
