@@ -114,8 +114,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 				$delete = RToolbarBuilder::createDeleteButton('attendees.delete');
 				$secondGroup->addButton($delete);
 			}
-
-			if ($this->state->get('filter.cancelled') == 0)
+			else
 			{
 				$cancel = RToolbarBuilder::createCancelButton('attendees.cancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL');
 				$secondGroup->addButton($cancel);
