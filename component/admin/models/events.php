@@ -171,16 +171,23 @@ class RedeventModelEvents extends RModelList
 
 		if ($search)
 		{
-			$like = $this->_db->quote('%' . $search . '%');
+			if (strpos($search, 'id:') === 0)
+			{
+				$query->where('obj.id = ' . substr($search, 3));
+			}
+			else
+			{
+				$like = $this->_db->quote('%' . $search . '%');
 
-			$parts = array();
-			$parts[] = 'LOWER(obj.title) LIKE ' . $like;
-			$parts[] = 'obj.course_code LIKE ' . $like;
-			$parts[] = 'LOWER(loc.venue) LIKE ' . $like;
-			$parts[] = 'LOWER(loc.city) LIKE ' . $like;
-			$parts[] = 'LOWER(cat.name) LIKE ' . $like;
+				$parts = array();
+				$parts[] = 'LOWER(obj.title) LIKE ' . $like;
+				$parts[] = 'obj.course_code LIKE ' . $like;
+				$parts[] = 'LOWER(loc.venue) LIKE ' . $like;
+				$parts[] = 'LOWER(loc.city) LIKE ' . $like;
+				$parts[] = 'LOWER(cat.name) LIKE ' . $like;
 
-			$query->where(implode(' OR ', $parts));
+				$query->where(implode(' OR ', $parts));
+			}
 		}
 
 		if ($category = $this->getState('filter.category'))
