@@ -11,6 +11,9 @@ defined('JPATH_REDCORE') or die;
 $user = JFactory::getUser();
 $active = null;
 $data = $displayData;
+
+jimport('redevent.bootstrap');
+
 $params = RedeventHelper::config();
 
 if (isset($data['active']))
