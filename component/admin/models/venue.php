@@ -34,6 +34,8 @@ class RedeventModelVenue extends RModelAdmin
 			$row->id = null;
 			$row->venue = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $row->venue);
 			$row->categories = $categories;
+			$row->checked_out = 0;
+			$row->checked_out_time = 0;
 
 			/* pre-save checks */
 			if (!$row->check())

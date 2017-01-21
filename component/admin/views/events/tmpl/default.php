@@ -136,7 +136,7 @@ $search = $this->state->get('filter.search');
 							<?php if ($row->checked_out) : ?>
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
-								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
+								$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'events.', $canCheckin);
 								?>
 							<?php endif; ?>
