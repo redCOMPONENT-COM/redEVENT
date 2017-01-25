@@ -43,6 +43,29 @@ class PlgSystemAesirsessionssync extends JPlugin
 	protected $autoloadLanguage = true;
 
 	/**
+	 * @var ReditemEntityItem[]
+	 */
+	private $aesirEvents;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object &$subject   The object to observe
+	 * @param   array  $config     An optional associative array of configuration settings.
+	 *                             Recognized key values include 'name', 'group', 'params', 'language'
+	 *                             (this list is not meant to be comprehensive).
+	 *
+	 * @since   1.5
+	 */
+	public function __construct($subject, array $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		$this->aesirEvents = array();
+	}
+
+
+	/**
 	 * Intercepts task sessions.aesirsync
 	 *
 	 * @return void
@@ -64,6 +87,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 		// Get items to publish from the request.
 		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+		$synced = 0;
 
 		if (empty($cid))
 		{
@@ -74,10 +98,14 @@ class PlgSystemAesirsessionssync extends JPlugin
 			foreach ($cid as $sessionId)
 			{
 				$session = RedeventEntitySession::load($sessionId);
-				$this->syncSession($session);
+
+				if ($this->syncSession($session))
+				{
+					$synced++;
+				}
 			}
 
-			$msg = JText::sprintf('PLG_AESIRSESSIONSSYNC_D_SESSIONS_SYNCED', count($cid));
+			$msg = JText::sprintf('PLG_AESIRSESSIONSSYNC_D_SESSIONS_SYNCED', $synced);
 		}
 
 		$app->redirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -137,7 +165,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 *
 	 * @param   RedeventEntitySession  $session  session to sync
 	 *
-	 * @return void
+	 * @return true on success
 	 */
 	private function syncSession($session)
 	{
@@ -162,12 +190,14 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 			$eventItem = $this->getAesirEventItem($session->eventid);
 
-			if ($eventItem->isValid())
+			if (!$eventItem->isValid())
 			{
-				$data['params'] = array(
-					"related_items" => array($eventItem->getId())
-				);
+				return false;
 			}
+
+			$data['params'] = array(
+				"related_items" => array($eventItem->getId())
+			);
 
 			// TODO: remove this workaround when aesir code gets fixed
 			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
@@ -216,6 +246,8 @@ class PlgSystemAesirsessionssync extends JPlugin
 			$db->setQuery($query);
 			$db->execute();
 		}
+
+		return true;
 	}
 
 	/**
@@ -257,24 +289,31 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 */
 	private function getAesirEventItem($eventId)
 	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select('c.*')
-			->from('#__reditem_types_course_1 AS c')
-			->join('INNER', '#__reditem_items AS i ON i.id = c.id')
-			->where('c.select_redevent_event = ' . $eventId);
-
-		$db->setQuery($query);
-
-		if ($res = $db->loadObject())
+		if (!isset($this->aesirEvents[$eventId]))
 		{
-			$entity = ReditemEntityItem::getInstance($res->id);
-		}
-		else
-		{
-			$entity = ReditemEntityItem::getInstance();
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('c.*')
+				->from('#__reditem_types_course_1 AS c')
+				->join('INNER', '#__reditem_items AS i ON i.id = c.id')
+				->where('c.select_redevent_event = ' . $eventId);
+
+			$db->setQuery($query);
+
+			if ($res = $db->loadObject())
+			{
+				$entity = ReditemEntityItem::getInstance($res->id);
+			}
+			else
+			{
+				$entity = ReditemEntityItem::getInstance();
+				$event = RedeventEntityEvent::load($eventId);
+				JFactory::getApplication()->enqueueMessage('Aesir item not found for event ' . $event->title, 'warning');
+			}
+
+			$this->aesirEvents[$eventId] = $entity;
 		}
 
-		return $entity;
+		return $this->aesirEvents[$eventId];
 	}
 }
