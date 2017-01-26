@@ -48,13 +48,12 @@ class RedeventControllerEventtemplates extends RControllerAdmin
 			try
 			{
 				$model->mergeTemplates($cid, $target);
+				$this->setMessage(JText::_('COM_REDEVENT_MERGE_TEMPLATES_SUCCESS'));
 			}
 			catch (Exception $e)
 			{
 				$this->setMessage($e->getMessage(), 'error');
 			}
-
-			$this->setMessage(JText::_('COM_REDEVENT_MERGE_TEMPLATES_SUCCESS'));
 		}
 
 		// Set redirect
