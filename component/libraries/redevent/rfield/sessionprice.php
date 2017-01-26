@@ -62,11 +62,6 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	{
 		$this->load();
 
-		if ($value)
-		{
-			$this->data->readonly = true;
-		}
-
 		return parent::setValue($value, false);
 	}
 
@@ -191,7 +186,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 
 		$properties['value'] = $this->getValue();
 
-		$properties['size'] = $this->getParam('size', 25);
+		$properties['size'] = 1;
 		$properties['maxlength'] = $this->getParam('maxlength', 250);
 
 		if ($this->isReadonly())
@@ -345,5 +340,26 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		$this->data->label = $label;
 
 		return $this;
+	}
+
+	/**
+	 * Returns field value ready to be printed.
+	 * Array values will be separated with separator (default '~~~')
+	 *
+	 * @param   string  $separator  separator
+	 *
+	 * @return string
+	 */
+	public function getValueAsString($separator = '~~~')
+	{
+		// We just want to return the pricegroup name in that case
+		if (!$spg = $this->getValue())
+		{
+			return false;
+		}
+
+		$sessionPriceGroup = RedeventEntitySessionpricegroup::load($spg);
+
+		return $sessionPriceGroup->getPricegroup()->name;
 	}
 }

@@ -144,5 +144,6 @@ $tab = JFactory::getApplication()->input->getString('tab');
 
 	<?php echo $this->form->getInput('id'); ?>
 	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="return" value="<?php echo JFactory::getApplication()->input->get('return'); ?>">
 	<?php echo JHtml::_('form.token'); ?>
 </form>

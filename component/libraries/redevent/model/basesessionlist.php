@@ -229,6 +229,7 @@ class RedeventModelBasesessionlist extends RModel
 		$query = $db->getQuery(true);
 
 		$query->select('x.dates, x.enddates, x.allday, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code, x.details');
+		$query->select('x.session_code');
 		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('a.*');
@@ -281,9 +282,8 @@ class RedeventModelBasesessionlist extends RModel
 		}
 
 		$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
-		$ordering_def = $open_order
-			? 'x.dates = 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir . ', x.times ' . $filter_order_dir
-			: 'x.dates > 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir . ', x.times ' . $filter_order_dir;
+		$ordering_def = ($open_order ? 'x.dates = 0 ' : 'x.dates > 0 ') . $filter_order_dir
+			. ', x.dates ' . $filter_order_dir . ', x.times ' . $filter_order_dir . ', x.featured DESC';
 
 		switch ($filter_order)
 		{

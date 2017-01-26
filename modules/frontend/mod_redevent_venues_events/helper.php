@@ -26,7 +26,7 @@ class ModRedEventVenuesEventsHelper
 	 *
 	 * @return array
 	 */
-	public function getList($params)
+	public static function getList($params)
 	{
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
@@ -117,7 +117,7 @@ class ModRedEventVenuesEventsHelper
 	 *
 	 * @return string
 	 */
-	private function _format_url($url)
+	private static function _format_url($url)
 	{
 		if (!empty($url) && strtolower(substr($url, 0, 7)) != "http://")
 		{
@@ -134,7 +134,7 @@ class ModRedEventVenuesEventsHelper
 	 *
 	 * @return array $options for select
 	 */
-	public function getVenuesEventsOptions($sessions)
+	public static function getVenuesEventsOptions($sessions)
 	{
 		$options = array(JHTML::_('select.option', '', JText::_('MOD_REDEVENT_VENUES_EVENTS_SELECT_EVENT')));
 

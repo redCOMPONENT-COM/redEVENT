@@ -77,13 +77,6 @@ class RedeventTableVenue extends RedeventTable
 			return false;
 		}
 
-		if (!$this->categories)
-		{
-			$this->setError(JText::_('COM_REDEVENT_TABLE_VENUE_CHECK_CATEGORIES_REQUIRED'));
-
-			return false;
-		}
-
 		$alias = JFilterOutput::stringURLSafe($this->venue);
 
 		if (empty($this->alias) || $this->alias === $alias)
@@ -148,6 +141,36 @@ class RedeventTableVenue extends RedeventTable
 		$this->setCategories($this->categories);
 
 		return parent::afterStore($updateNulls);
+	}
+
+	/**
+	 * Get associated venue category ids
+	 *
+	 * @param   int  $id  venue id
+	 *
+	 * @return array
+	 *
+	 * @since 3.2.1
+	 */
+	public function getCategoryIds($id = null)
+	{
+		$id = $id ?: $this->id;
+
+		if (!$id)
+		{
+			return false;
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('c.*')
+			->from('#__redevent_venues_categories AS c')
+			->join('INNER', '#__redevent_venue_category_xref AS x ON x.category_id = c.id')
+			->where('x.venue_id = ' . $id);
+
+		$db->setQuery($query);
+
+		return $db->loadColumn();
 	}
 
 

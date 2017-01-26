@@ -26,7 +26,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return array
 	 */
-	public function getList($params)
+	public static function getList($params)
 	{
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
@@ -174,7 +174,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return string
 	 */
-	protected function _builddateinfo($row, $params)
+	protected static function _builddateinfo($row, $params)
 	{
 		if (!RedeventHelperDate::isValidDate($row->dates))
 		{
@@ -207,7 +207,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return string
 	 */
-	protected function _format_url($url)
+	protected static function _format_url($url)
 	{
 		if (!empty($url) && strtolower(substr($url, 0, 7)) != "http://")
 		{
@@ -226,7 +226,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return string
 	 */
-	protected function _format_date($date, $time, $format)
+	protected static function _format_date($date, $time, $format)
 	{
 		$date = strftime($format, strtotime($date . ' ' . $time));
 
@@ -240,7 +240,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return bool|mixed
 	 */
-	public function getSelect($params)
+	public static function getSelect($params)
 	{
 		$type = JRequest::getInt('reattspan', $params->get('type', '0'));
 
@@ -272,7 +272,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return mixed
 	 */
-	protected function _getDaySelect($params)
+	protected static function _getDaySelect($params)
 	{
 		$currentoffset = JRequest::getInt('reattoffset', (int) $params->get('offset', '0'));
 
@@ -299,7 +299,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return mixed
 	 */
-	protected function _getWeekSelect($params)
+	protected static function _getWeekSelect($params)
 	{
 		$reparams = JComponentHelper::getParams('com_redevent');
 		$weekstart = ($reparams->get('week_start', "MO") == "SU" ? 0 : 1);
@@ -331,7 +331,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return mixed
 	 */
-	protected function _getMonthSelect($params)
+	protected static function _getMonthSelect($params)
 	{
 		$offset = JRequest::getInt('reattoffset', (int) $params->get('offset', '0'));
 
@@ -356,7 +356,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return string dates span
 	 */
-	public function datesSpan($start, $end = null, $full_date_format = null)
+	public static function datesSpan($start, $end = null, $full_date_format = null)
 	{
 		if (!strtotime($start))
 		{
@@ -401,7 +401,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return boolean true on success
 	 */
-	protected function _addPrices(&$rows)
+	protected static function _addPrices(&$rows)
 	{
 		if (!count($rows))
 		{
@@ -452,7 +452,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @return bool|int
 	 */
-	public function getTotal($rows)
+	public static function getTotal($rows)
 	{
 		if (!count($rows))
 		{
@@ -487,7 +487,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @todo: use redCORE lib helper !
 	 */
-	public function printPrice($price, $currency)
+	public static function printPrice($price, $currency)
 	{
 		if (!$price)
 		{

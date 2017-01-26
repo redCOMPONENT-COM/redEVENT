@@ -11,7 +11,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2014 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.1</version>
+	<version>3.2.2</version>
 	<tag>##VERSION##</tag>
 	<description>MOD_REDEVENT_QUICKBOOK_XML_DESCRIPTION</description>
 
@@ -77,4 +77,7 @@
 		</fields>
 	</config>
 
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/mod_redevent_quickbook.xml</server>
+	</updateservers>
 </extension>

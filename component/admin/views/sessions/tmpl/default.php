@@ -134,14 +134,18 @@ $search = $this->state->get('filter.search');
 					)
 				);
 
-				$endreg = RedeventHelperDate::isValidDate($row->registrationend)
-					? RedeventHelperDate::formatdate($row->registrationend, null, $this->params->get('backend_formatdate', 'd.m.Y') . ' H:i')
-					: '-';
+				$endreg = '';
+
+				if ($endregDate = $session->getRegistrationEnd())
+				{
+					$endreg = $endregDate->format($this->params->get('backend_formatdate', 'd.m.Y') . ' H:i', true);
+				}
 
 				$featured = $this->featured($row, $i);
 
-				$venuelink = JRoute::_('index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);
-				$eventlink = JRoute::_('index.php?option=com_redevent&task=event.edit&id=' . $row->eventid);
+				$return = base64_encode('index.php?option=com_redevent&view=sessions');
+				$venuelink = JRoute::_('index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid . '&return=' . $return);
+				$eventlink = JRoute::_('index.php?option=com_redevent&task=event.edit&id=' . $row->eventid . '&return=' . $return);
 				?>
 				<tr>
 					<td>
@@ -166,7 +170,7 @@ $search = $this->state->get('filter.search');
 							<?php if ($row->checked_out): ?>
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
-								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
+								$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'sessions.', $canCheckin);
 								?>
 							<?php endif; ?>

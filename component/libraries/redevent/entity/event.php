@@ -222,6 +222,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 							return $session->published == $value;
 						}
 					);
+					break;
 
 				case 'upcoming':
 					$sessions = array_filter(
@@ -233,6 +234,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 							return $value ? $upcoming : !$upcoming;
 						}
 					);
+					break;
 			}
 		}
 

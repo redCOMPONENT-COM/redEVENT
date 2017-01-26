@@ -149,7 +149,8 @@ class RedeventModelMyattended extends RedeventModelBasesessionlist
 	{
 		$user = JFactory::getUser();
 
-		$query->where('x.published > -1');
+		$query->where('r.cancelled = 0');
+		$query->where('r.waitinglist = 0');
 
 		// Upcoming !
 		$now = strftime('%Y-%m-%d %H:%M');

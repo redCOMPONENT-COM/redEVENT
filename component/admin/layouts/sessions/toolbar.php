@@ -34,6 +34,13 @@ $formName = $data['formName'];
 			</button>
 			<button class="btn"
 			        onclick="if (document.<?php echo $formName; ?>.boxchecked.value==0){alert('Please first make a selection from the list');}
+				        else{ Joomla.submitform('sessions.copy', document.getElementById('<?php echo $formName; ?>'))}"
+			        href="#">
+				<i class="icon-copy"></i>
+				<?php echo JText::_('COM_REDEVENT_COPY') ?>
+			</button>
+			<button class="btn"
+			        onclick="if (document.<?php echo $formName; ?>.boxchecked.value==0){alert('Please first make a selection from the list');}
 				        else{ Joomla.submitform('sessions.publish', document.getElementById('<?php echo $formName; ?>'))}"
 			        href="#">
 				<i class="icon-plus-sign"></i>

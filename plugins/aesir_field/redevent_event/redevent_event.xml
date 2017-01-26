@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" client="site" type="plugin" group="aesir_field" method="upgrade">
 	<name>PLG_AESIR_FIELD_REDEVENT_EVENT</name>
-	<version>3.2.0</version>
+	<version>3.2.2</version>
 	<creationDate>April 2016</creationDate>
 	<author>redCOMPONENT.com</author>
 	<copyright>Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.</copyright>
@@ -15,4 +15,8 @@
 		<filename plugin="redevent_event">redevent_event.php</filename>
 		<filename>redevent_event.xml</filename>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/plg_aesir_field_redevent_event.xml</server>
+	</updateservers>
 </extension>

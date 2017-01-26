@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>email@redcomponent.com</authorEmail>
 	<authorUrl>www.redcomponent.com</authorUrl>
-	<version>3.0.1</version>
+	<version>3.2.2</version>
 	<description>PLG_REDEVENT_ACYMAILINGLISTS_XML_DESCRIPTION</description>
 
 	<files>
@@ -18,4 +18,8 @@
 
 	<config>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/plg_redevent_acymailinglists.xml</server>
+	</updateservers>
 </extension>

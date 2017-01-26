@@ -51,18 +51,13 @@
 
 	<field
 		name="published"
-		type="list"
-		class="inputbox"
+		type="radio"
+		class="btn-group radio"
 		default="1"
-		size="1"
 		label="JSTATUS"
 		description="JFIELD_PUBLISHED_DESC">
-		<option value="1">
-			JPUBLISHED
-		</option>
-		<option value="0">
-			JUNPUBLISHED
-		</option>
+		<option value="1">JPUBLISHED</option>
+		<option value="0">JUNPUBLISHED</option>
 	</field>
 
 	<field

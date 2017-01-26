@@ -99,6 +99,12 @@ class RedeventViewEventtemplates extends RedeventViewAdmin
 			$secondGroup->addButton($importExport);
 		}
 
+		if ($user->authorise('core.create', 'com_redevent'))
+		{
+			$copy = RToolbarBuilder::createCopyButton('eventtemplates.copy');
+			$secondGroup->addButton($copy);
+		}
+
 		if ($user->authorise('core.delete', 'com_redevent'))
 		{
 			$delete = RToolbarBuilder::createDeleteButton('eventtemplates.delete');

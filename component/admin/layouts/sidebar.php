@@ -19,6 +19,8 @@ if (isset($data['active']))
 }
 
 $icons = RedeventHelperAdmin::getAdminMenuItems();
+
+RHelperAsset::load('redevent-backend.css', 'com_redevent');
 ?>
 <script type="text/javascript">
 	(function($){

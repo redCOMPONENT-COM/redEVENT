@@ -15,7 +15,8 @@ $selectProperties = $field->getSelectProperties();
 <select <?php echo $field->propertiesToString($selectProperties); ?>>
 	<?php foreach ($field->options as $option): ?>
 		<?php $properties = $field->getOptionProperties($option); ?>
-		<option <?php echo $field->propertiesToString($properties); ?>>
+		<option <?php echo $field->propertiesToString($properties); ?>
+			<?= ($option->value == $field->getValue()) ? 'selected="selected"' : '' ?>>
 			<?php echo $option->label; ?>
 		</option>
 	<?php endforeach; ?>

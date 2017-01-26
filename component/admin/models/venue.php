@@ -16,6 +16,64 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelVenue extends RModelAdmin
 {
 	/**
+	 * copy
+	 *
+	 * @param   array  $ids  ids to copy
+	 *
+	 * @return boolean true on success
+	 *
+	 * @since 3.2.1
+	 */
+	public function copy($ids)
+	{
+		foreach ($ids as $id)
+		{
+			$row = $this->getTable('venue');
+			$row->load($id);
+			$categories = $row->getCategoryIds();
+			$row->id = null;
+			$row->venue = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $row->venue);
+			$row->categories = $categories;
+			$row->checked_out = 0;
+			$row->checked_out_time = 0;
+
+			/* pre-save checks */
+			if (!$row->check())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+
+			/* save the changes */
+			if (!$row->store())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method for getting the form from the model.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed  A JForm object on success, false on failure
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = parent::getForm($data, $loadData);
+		$form->setFieldAttribute('locimage', 'directory', RedeventHelper::config()->get('default_image_path', 'redevent/events'));
+
+		return $form;
+	}
+
+	/**
 	 * Method to get a single record.
 	 *
 	 * @param   int  $pk  Record Id

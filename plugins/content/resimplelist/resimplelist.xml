@@ -7,7 +7,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.1.0</version>
+	<version>3.2.2</version>
 	<tag>##VERSION##</tag>
 	<description>PLG_RESIMPLELIST_PLUGIN_DESC</description>
 
@@ -47,4 +47,7 @@
 		</fields>
 	</config>
 
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/plg_content_resimplelist.xml</server>
+	</updateservers>
 </extension>

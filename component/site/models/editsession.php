@@ -113,6 +113,8 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			}
 		}
 
+		$form->setFieldAttribute('datimage', 'directory', RedeventHelper::config()->get('default_image_path', 'redevent/events'), 'event');
+
 		return $form;
 	}
 

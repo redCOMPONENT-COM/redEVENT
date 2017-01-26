@@ -38,6 +38,7 @@ release
 gulp-config.json
 node_modules
 releases
+build/joomla-cms3
 
 # Packages #
 *.zip

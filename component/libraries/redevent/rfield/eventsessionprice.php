@@ -51,11 +51,6 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 	{
 		$this->load();
 
-		if ($value)
-		{
-			$this->data->readonly = true;
-		}
-
 		return parent::setValue($value, false);
 	}
 

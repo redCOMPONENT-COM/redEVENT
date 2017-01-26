@@ -361,5 +361,7 @@ class RedeventModelEditevent extends RModelAdmin
 		{
 			$form->setFieldAttribute('categories', 'required', 'false');
 		}
+
+		$form->setFieldAttribute('datimage', 'directory', RedeventHelper::config()->get('default_image_path', 'redevent/events'));
 	}
 }

@@ -16,6 +16,69 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelSession extends RModelAdmin
 {
 	/**
+	 * copy sessions
+	 *
+	 * @param   array  $session_ids  session ids
+	 *
+	 * @return boolean true on success
+	 */
+	public function copy($session_ids)
+	{
+		foreach ($session_ids as $id)
+		{
+			$row = $this->getTable('session');
+			$row->load($id);
+			$row->id = null;
+			$row->checked_out = 0;
+			$row->checked_out_time = 0;
+			$row->note = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $id);
+
+			/* pre-save checks */
+			if (!$row->check())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+
+			/* save the changes */
+			if (!$row->store())
+			{
+				$this->setError($row->getError(), 'error');
+
+				return false;
+			}
+
+			// Copy associated prices
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('*')->from('#__redevent_sessions_pricegroups')->where('xref = ' . $id);
+
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
+
+			foreach ($res as $r)
+			{
+				/* Load the table */
+				$pricerow = $this->getTable('Sessionpricegroup');
+				$pricerow->bind(get_object_vars($r));
+				$pricerow->id = null;
+				$pricerow->xref = $row->id;
+
+				/* save the changes */
+				if (!$pricerow->store())
+				{
+					$this->setError($pricerow->getError(), 'error');
+
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to get a single record.
 	 *
 	 * @param   integer  $pk  The id of the primary key.
@@ -56,6 +119,11 @@ class RedeventModelSession extends RModelAdmin
 			$item->recurrence = $rule->getFormData();
 			$item->recurrence->recurrenceid = 0;
 			$item->recurrence->repeat = 0;
+
+			if ($this->getState('eventId'))
+			{
+				$item->eventid = $this->getState('eventId');
+			}
 		}
 
 		return $item;
@@ -74,7 +142,7 @@ class RedeventModelSession extends RModelAdmin
 		$form = parent::getForm($data, $loadData);
 
 		// Do not allow to modify the session event once created
-		if ($form->getValue('id'))
+		if ($form->getValue('id') || $this->getState('eventId'))
 		{
 			$form->setFieldAttribute('eventid', 'readonly', '1');
 		}
@@ -447,5 +515,25 @@ class RedeventModelSession extends RModelAdmin
 		$res = $this->_db->loadObjectList();
 
 		return $res;
+	}
+
+	/**
+	 * method to auto-populate the model state.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2.1
+	 */
+	protected function populateState()
+	{
+		parent::populateState();
+
+		$jform = JFactory::getApplication()->input->get('jform', array(), 'array');
+		$eventId = !(empty($jform['eventid'])) ? $jform['eventid'] : 0;
+
+		if ($eventId)
+		{
+			$this->setState('eventId', $eventId);
+		}
 	}
 }

@@ -92,7 +92,9 @@ class RedeventViewVenues extends RedeventViewAdmin
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
 			$new = RToolbarBuilder::createNewButton('venue.add');
+			$copy = RToolbarBuilder::createCopyButton('venues.copy');
 			$firstGroup->addButton($new);
+			$firstGroup->addButton($copy);
 		}
 
 		if ($user->authorise('core.edit', 'com_redevent'))
@@ -102,6 +104,12 @@ class RedeventViewVenues extends RedeventViewAdmin
 
 			$importExport = RToolbarBuilder::createStandardButton('venuescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false);
 			$secondGroup->addButton($importExport);
+		}
+
+		if ($user->authorise('core.create', 'com_redevent'))
+		{
+			$copy = RToolbarBuilder::createCopyButton('venues.copy');
+			$thirdGroup->addButton($copy);
 		}
 
 		if ($user->authorise('core.edit.state', 'com_redevent'))

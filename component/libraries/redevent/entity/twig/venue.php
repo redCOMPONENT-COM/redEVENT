@@ -45,6 +45,11 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 			return $this->entity->$name;
 		}
 
+		if ('categories' == $name)
+		{
+			return $this->getCategories();
+		}
+
 		throw new \RuntimeException('unsupported property in __get: ' . $name);
 	}
 
@@ -84,6 +89,22 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getBundlesLink()
 	{
 		return \JRoute::_(\RedeventHelperRoute::getBundlesRoute() . '&filter[venue]' . $this->entity->id);
+	}
+
+	/**
+	 * Get associated venue categories
+	 *
+	 * @return RedeventEntityTwigVenuescategory[]
+	 */
+	public function getCategories()
+	{
+		return array_map(
+			function($entity)
+			{
+				return new RedeventEntityTwigVenuescategory($entity);
+			},
+			$this->entity->getCategories()
+		);
 	}
 
 	/**

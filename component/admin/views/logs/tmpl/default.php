@@ -22,6 +22,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+RHelperAsset::load('redevent-backend.css');
 ?>
 <?php foreach ($this->items as $line): ?>
 <?php echo $line . '<br/>'; ?>

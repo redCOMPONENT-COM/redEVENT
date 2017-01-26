@@ -71,10 +71,11 @@
 			var startDate = $('#jform_dates').val();
 			var startTime = $('#jform_times').val();
 
-			if (!(regexDate.test(startDate) && regexTime.test(startTime)))
+			if (!(regexDate.test(startDate) || !regexTime.test(startTime)))
 			{
-				$('#jform_enddates').get(0).setCustomValidity(Joomla.JText._("LIB_REDEVENT_JS_VALIDATION_END_TIME_REQUIRES_START_TIME"));
-				return false;
+				$('#jform_endtimes').get(0).setCustomValidity('');
+
+				return true;
 			}
 
 			var endDate = $('#jform_enddates').val();

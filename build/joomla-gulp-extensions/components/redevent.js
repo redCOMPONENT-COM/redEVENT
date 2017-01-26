@@ -14,9 +14,13 @@ var symlink     = require('gulp-symlink');
 var sass        = require('gulp-ruby-sass');
 var uglify      = require('gulp-uglify');
 var zip         = require('gulp-zip');
+var replace     = require('gulp-replace');
+var xml2js      = require('xml2js');
+var parser      = new xml2js.Parser();
 
 var baseTask  = 'components.redevent';
 var extPath   = '../component';
+var updateXmlPath = '../../update_server_xml/';
 var mediaPath = extPath + '/media/com_redevent';
 var pluginsPath = extPath + '/plugins';
 
@@ -137,6 +141,17 @@ gulp.task('watch:' + baseTask + ':plugins', function() {
 gulp.task('watch:' + baseTask + ':media', function() {
 	gulp.watch(extPath + '/media/**',
 		['copy:' + baseTask + ':media']);
+});
+
+gulp.task('update-sites:' + baseTask, function(){
+	fs.readFile( extPath + '/redevent.xml', function(err, data) {
+		parser.parseString(data, function (err, result) {
+			const version = result.extension.version[0];
+			gulp.src(['./update_server_xml/com_redevent.xml'])
+				.pipe(replace(/<version>(.*)<\/version>/g, "<version>" + version + "</version>"))
+				.pipe(gulp.dest('./update_server_xml'));
+		});
+	});
 });
 
 //// Watch: LESS

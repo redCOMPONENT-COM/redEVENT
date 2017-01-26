@@ -7,7 +7,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2016 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.2.0</version>
+	<version>3.2.2</version>
 	<tag>##VERSION##</tag>
 	<description>redevent pl-PL</description>
 
@@ -19,4 +19,8 @@
 			<folder>pl-PL</folder>
 		</files>
 	</fileset>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT language update">http://updates.redcomponent.com/redevent/redevent_pl-PL.xml</server>
+	</updateservers>
 </extension>

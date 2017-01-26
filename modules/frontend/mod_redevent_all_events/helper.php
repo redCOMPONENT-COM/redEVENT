@@ -26,7 +26,7 @@ class ModRedeventAlleventsHelper
 	 *
 	 * @return array
 	 */
-	public function getList(&$params)
+	public static function getList(&$params)
 	{
 		$mainframe = JFactory::getApplication();
 

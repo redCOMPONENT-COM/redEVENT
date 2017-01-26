@@ -164,7 +164,6 @@ if (isset($data['activeFilters']['event']))
 						$canChange = 1;
 						$canEdit = 1;
 						$canEditState = 1;
-						$canCheckin = 1;
 
 						$session = RedeventEntitySession::getInstance($item->id);
 						$session->bind($item);
@@ -173,9 +172,12 @@ if (isset($data['activeFilters']['event']))
 							)
 						);
 
-						$endreg = RedeventHelperDate::isValidDate($item->registrationend)
-							? RedeventHelperDate::formatdate($item->registrationend, null, $params->get('backend_formatdate', 'd.m.Y') . ' H:i')
-							: '-';
+						$endreg = '';
+
+						if ($endregDate = $session->getRegistrationEnd())
+						{
+							$endreg = $endregDate->format($params->get('backend_formatdate', 'd.m.Y') . ' H:i', true);
+						}
 
 						$featured = RedeventHtmlSessions::featured($item, $i, $canEditState);
 
@@ -197,7 +199,7 @@ if (isset($data['activeFilters']['event']))
 									<?php if ($item->checked_out): ?>
 										<?php
 										$editor = JFactory::getUser($item->checked_out);
-										$canCheckin = $item->checked_out == $userId || $item->checked_out == 0;
+										$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 										echo JHtml::_('rgrid.checkedout', $i, $editor->name, $item->checked_out_time, 'sessions.', $canCheckin);
 										?>
 									<?php endif; ?>

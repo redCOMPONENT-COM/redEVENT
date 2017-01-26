@@ -108,4 +108,8 @@ $fieldSets = $this->form->getFieldsets('params');
 	<?php echo $this->form->getInput('id'); ?>
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
+
+    <?php if ($this->form->getFieldAttribute('redform_id', 'disabled')): ?>
+        <input type="hidden" name="jform[redform_id]" value="<?= $this->item->redform_id?>" />
+    <?php endif; ?>
 </form>

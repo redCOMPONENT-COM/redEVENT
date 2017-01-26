@@ -37,6 +37,14 @@ RHelperAsset::load('sessiondates.js');
 	</div>
 	<div class="control-group">
 		<div class="control-label">
+			<?php echo $this->form->getLabel('note'); ?>
+		</div>
+		<div class="controls">
+			<?php echo $this->form->getInput('note'); ?>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-label">
 			<?php echo $this->form->getLabel('allday'); ?>
 		</div>
 		<div class="controls">

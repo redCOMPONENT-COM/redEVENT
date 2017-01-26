@@ -27,6 +27,11 @@ class RedeventEntityVenue extends RedeventEntityBase
 	private $sessions;
 
 	/**
+	 * @var RedeventEntityTwigVenuecategory[]
+	 */
+	private $categories;
+
+	/**
 	 * Proxy item properties
 	 *
 	 * @param   string  $property  Property tried to access
@@ -38,6 +43,11 @@ class RedeventEntityVenue extends RedeventEntityBase
 		if ($property == 'name' || $property == 'title')
 		{
 			$property = 'venue';
+		}
+
+		if ('categories' == $property)
+		{
+			return $this->getCategories();
 		}
 
 		return parent::__get($property);
@@ -110,6 +120,42 @@ class RedeventEntityVenue extends RedeventEntityBase
 		}
 
 		return $bundles;
+	}
+
+	/**
+	 * Get venue categories
+	 *
+	 * @return RedeventEntityVenuescategory[]
+	 */
+	public function getCategories()
+	{
+		if ($this->categories)
+		{
+			return $this->categories;
+		}
+
+		if (!$this->isValid())
+		{
+			throw new RuntimeException('Invalid venue entity');
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('c.*')
+			->from('#__redevent_venues_categories AS c')
+			->join('INNER', '#__redevent_venue_category_xref AS x ON x.category_id = c.id')
+			->where('x.venue_id = ' . $this->id);
+
+		$db->setQuery($query);
+
+		if (!$res = $db->loadObjectList())
+		{
+			return false;
+		}
+
+		$this->categories = RedeventEntityVenuescategory::loadArray($res);
+
+		return $this->categories;
 	}
 
 	/**

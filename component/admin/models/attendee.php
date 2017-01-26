@@ -196,49 +196,46 @@ class RedeventModelAttendee extends RModelAdmin
 	public function store($data)
 	{
 		$xref = $data['xref'];
+		$session = RedeventEntitySession::load($xref);
 
 		if (isset($data['sessionpricegroup_id']))
 		{
-			$pricegroup = intval($data['sessionpricegroup_id']);
+			$pricegroupId = intval($data['sessionpricegroup_id']);
 		}
 		else
 		{
-			$pricegroup = 0;
+			$pricegroupId = 0;
 		}
 
-		$field = new RedeventRfieldSessionprice;
-		$field->setOptions($this->getPricegroups());
-		$field->setFormIndex(1);
+		$options = array('edit' => 1);
 
-		if ($pricegroup)
+		if ($pricegroups = $session->getPricegroups())
 		{
-			$field->setValue($pricegroup);
+			if (!$pricegroupId)
+			{
+				$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
+				$this->setError($msg);
+
+				return false;
+			}
+
+			$field = $session->getPricefield();
+			$field->setValue($pricegroupId);
+
+			$extrafields = array(1 => array($field));
+
+			$options['extrafields'] = $extrafields;
+			$options['currency'] = $session->getEvent()->getForm()->currency;
 		}
 
 		$id = $data['id'];
-
-		// Get price and activate
-		$db = $this->_db;
-		$query = $db->getQuery(true);
-
-		$query->select('pg.price, t.activate');
-		$query->select('CASE WHEN CHAR_LENGTH(pg.currency) THEN pg.currency ELSE f.currency END as currency');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
-		$query->join('INNER', '#__redevent_event_template AS t ON t.id =  a.template_id');
-		$query->join('LEFT', '#__redevent_sessions_pricegroups AS pg ON pg.id = ' . $pricegroup);
-		$query->join('LEFT', '#__rwf_forms AS f on f.id = t.redform_id');
-		$query->where('x.id = ' . $xref);
-
-		$db->setQuery($query);
-		$details = $db->loadObject();
 
 		// First save redform data
 		$rfcore = RdfCore::getInstance();
 
 		try
 		{
-			$result = $rfcore->saveAnswers('redevent', array('extrafields' => array(1 => array($field)), 'currency' => $details->currency, 'edit' => 1));
+			$result = $rfcore->saveAnswers('redevent', $options);
 		}
 		catch (Exception $e)
 		{
@@ -260,7 +257,7 @@ class RedeventModelAttendee extends RModelAdmin
 		$data['submit_key'] = $result->submit_key;
 		$data['sid'] = $result->posts[0]['sid'];
 
-		if ($details->activate == 0)
+		if ($session->getEvent()->getEventtemplate()->activate == 0)
 		{
 			// No activation
 			$data['confirmed'] = 1;
@@ -295,34 +292,8 @@ class RedeventModelAttendee extends RModelAdmin
 	{
 		if (is_null($this->pricegroups))
 		{
-			$db = $this->_db;
-			$query = $db->getQuery(true);
-
-			$query->select('sp.*');
-			$query->from('#__redevent_sessions_pricegroups AS sp');
-			$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
-			$query->where('sp.xref = ' . $db->Quote($this->sessionId));
-			$query->order('p.ordering ASC');
-
-			$db->setQuery($query);
-
-			if (!$res = $db->loadObjectList())
-			{
-				$this->pricegroups = false;
-			}
-			else
-			{
-				$this->pricegroups = array_map(
-					function($result)
-					{
-						$entity = RedeventEntitySessionpricegroup::getInstance($result->id);
-						$entity->bind($result);
-
-						return $entity;
-					},
-					$res
-				);
-			}
+			$session = RedeventEntitySession::load($this->sessionId);
+			$this->pricegroups = $session->getPricegroups();
 		}
 
 		return $this->pricegroups;

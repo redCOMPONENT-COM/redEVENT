@@ -24,6 +24,7 @@
             label="COM_REDEVENT_SESSION_VENUE_LABEL"
             description ="COM_REDEVENT_SESSION_VENUE_DESC"
             required="true"
+            show_lang="true"
             class="inputbox" />
 
         <field
@@ -133,10 +134,9 @@
 
         <field
             name="published"
-            type="list"
-            class="inputbox"
+            type="radio"
+            class="btn-group radio"
             default="1"
-            size="1"
             label="JSTATUS"
             description="JFIELD_PUBLISHED_DESC">
             <option value="1">JPUBLISHED</option>
