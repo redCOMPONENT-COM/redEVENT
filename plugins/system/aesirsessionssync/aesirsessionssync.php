@@ -75,14 +75,36 @@ class PlgSystemAesirsessionssync extends JPlugin
 		$app = JFactory::getApplication();
 		$input = $app->input;
 
-		if (!($input->get('option') == 'com_redevent' && $input->get('task') == 'sessions.aesirsync'))
+		$task = $input->get('task');
+
+		if ($input->get('option') !== 'com_redevent')
 		{
 			return;
 		}
 
+		if ($task == 'sessions.aesirsync')
+		{
+			return $this->sessionsSync();
+		}
+		elseif ($task == 'events.missingeventsitems')
+		{
+			return $this->listMissingEventsItems();
+		}
+
+		return;
+	}
+
+	/**
+	 * Sync sessions
+	 *
+	 * @return void
+	 */
+	private function sessionsSync()
+	{
 		// Check for request forgeries
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 
+		$app = JFactory::getApplication();
 		$msg = null;
 
 		// Get items to publish from the request.
@@ -142,21 +164,33 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 */
 	public function onRedeventViewGetToolbar(RedeventViewAdmin $view, RToolbar &$toolbar)
 	{
-		if (!$view instanceof RedeventViewSessions)
+		if ($view instanceof RedeventViewSessions)
 		{
-			return;
+			if (JFactory::getUser()->authorise('core.create', 'com_redevent'))
+			{
+				$group = new RToolbarButtonGroup;
+				$sync = RToolbarBuilder::createStandardButton(
+					'sessions.aesirsync',
+					JText::_('PLG_AESIRSESSIONSSYNC_SYNC_BUTTON_LABEL'), '', 'icon-refresh', true
+				);
+				$group->addButton($sync);
+
+				$toolbar->addGroup($group);
+			}
 		}
-
-		if (JFactory::getUser()->authorise('core.create', 'com_redevent'))
+		elseif ($view instanceof RedeventViewEvents)
 		{
-			$group = new RToolbarButtonGroup;
-			$sync = RToolbarBuilder::createStandardButton(
-				'sessions.aesirsync',
-				JText::_('PLG_AESIRSESSIONSSYNC_SYNC_BUTTON_LABEL'), '', 'icon-refresh', true
-			);
-			$group->addButton($sync);
+			if (JFactory::getUser()->authorise('core.manage', 'com_redevent'))
+			{
+				$group = new RToolbarButtonGroup;
+				$sync = RToolbarBuilder::createStandardButton(
+					'events.missingeventsitems',
+					JText::_('PLG_AESIRSESSIONSSYNC_MISSINGEVENTSITEMS_BUTTON_LABEL'), '', 'icon-refresh', false
+				);
+				$group->addButton($sync);
 
-			$toolbar->addGroup($group);
+				$toolbar->addGroup($group);
+			}
 		}
 	}
 
@@ -315,5 +349,47 @@ class PlgSystemAesirsessionssync extends JPlugin
 		}
 
 		return $this->aesirEvents[$eventId];
+	}
+
+	private function listMissingEventsItems()
+	{
+		$app = JFactory::getApplication();
+
+		if (!$events = $this->getMissingEventItems())
+		{
+			$app->enqueueMessage(JText::_('PLG_AESIRSESSIONSSYNC_NO_MISSING_EVENT_ITEMS'), 'success');
+		}
+		else
+		{
+			$app->enqueueMessage(JText::sprintf('PLG_AESIRSESSIONSSYNC_D_MISSING_EVENT_ITEMS', count($events)), 'warning');
+
+			foreach ($events as $event)
+			{
+				$app->enqueueMessage($event->title, 'warning');
+			}
+		}
+
+		$app->redirect('index.php?option=com_redevent&view=events');
+	}
+
+	private function getMissingEventItems()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('e.*')
+			->from('#__redevent_events AS e')
+			->leftJoin('#__reditem_types_course_1 AS c ON c.select_redevent_event = e.id')
+			->where('c.id IS NULL')
+			->where('e.published = 1')
+			->order('e.title ASC');
+
+		$db->setQuery($query);
+
+		if (!$res = $db->loadObjectList())
+		{
+			return false;
+		}
+
+		return RedeventEntityEvent::loadArray($res);
 	}
 }
