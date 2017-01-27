@@ -378,9 +378,12 @@ class PlgSystemAesirsessionssync extends JPlugin
 		$query = $db->getQuery(true)
 			->select('e.*')
 			->from('#__redevent_events AS e')
+			->innerJoin('#__redevent_event_venue_xref AS x ON e.id = x.eventid')
 			->leftJoin('#__reditem_types_course_1 AS c ON c.select_redevent_event = e.id')
 			->where('c.id IS NULL')
 			->where('e.published = 1')
+			->where('x.published = 1')
+			->group('e.id')
 			->order('e.title ASC');
 
 		$db->setQuery($query);
