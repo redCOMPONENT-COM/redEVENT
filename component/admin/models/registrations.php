@@ -180,17 +180,14 @@ class RedeventModelRegistrations extends RModelList
 			}
 		}
 
-		if (!empty($this->getState('filter.cancelled')))
+		switch ($this->getState('filter.cancelled', 0))
 		{
-			switch ($this->getState('filter.cancelled'))
-			{
-				case "active":
-					$query->where('r.cancelled = 0');
-					break;
-				case "cancelled":
-					$query->where('r.cancelled = 1');
-					break;
-			}
+			case 1:
+				$query->where('r.cancelled = 1');
+				break;
+			case 2:
+				$query->where('r.cancelled = 0');
+				break;
 		}
 
 		if ($this->getState('filter.search'))

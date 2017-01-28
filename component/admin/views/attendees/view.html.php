@@ -75,8 +75,9 @@ class RedeventViewAttendees extends RedeventViewAdmin
 	{
 		$user = JFactory::getUser();
 
-		$firstGroup		= new RToolbarButtonGroup;
-		$secondGroup		= new RToolbarButtonGroup;
+		$firstGroup = new RToolbarButtonGroup;
+		$secondGroup = new RToolbarButtonGroup;
+		$thirdGroup = new RToolbarButtonGroup;
 
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
@@ -104,25 +105,20 @@ class RedeventViewAttendees extends RedeventViewAdmin
 				RToolbarBuilder::createStandardButton('attendees.move', 'COM_REDEVENT_ATTENDEES_TOOLBAR_MOVE', '', 'icon-move')
 			);
 
-			if ($this->state->get('filter.cancelled') == 1)
-			{
-				$restore = RToolbarBuilder::createStandardButton(
-					'attendees.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', '', ' icon-circle-arrow-left'
-				);
-				$secondGroup->addButton($restore);
+			$cancel = RToolbarBuilder::createCancelButton('attendees.cancelreg', '', 'btn-warning');
+			$thirdGroup->addButton($cancel);
 
-				$delete = RToolbarBuilder::createDeleteButton('attendees.delete');
-				$secondGroup->addButton($delete);
-			}
-			else
-			{
-				$cancel = RToolbarBuilder::createCancelButton('attendees.cancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL');
-				$secondGroup->addButton($cancel);
-			}
+			$restore = RToolbarBuilder::createStandardButton(
+				'attendees.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', 'btn-success', ' icon-circle-arrow-left'
+			);
+			$thirdGroup->addButton($restore);
+
+			$delete = RToolbarBuilder::createDeleteButton('attendees.delete');
+			$thirdGroup->addButton($delete);
 		}
 
 		$toolbar = new RToolbar;
-		$toolbar->addGroup($firstGroup)->addGroup($secondGroup);
+		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup);
 
 		$this->toolbar = $toolbar;
 
