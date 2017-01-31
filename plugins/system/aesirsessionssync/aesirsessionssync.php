@@ -101,9 +101,6 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 */
 	private function sessionsSync()
 	{
-		// Check for request forgeries
-		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
-
 		$app = JFactory::getApplication();
 		$msg = null;
 
@@ -113,10 +110,13 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 		if (empty($cid))
 		{
-			JLog::add(JText::_('COM_REDEVENT_NO_ITEM_SELECTED'), JLog::WARNING, 'jerror');
+			return $this->globalsync();
 		}
 		else
 		{
+			// Check for request forgeries
+			JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
 			foreach ($cid as $sessionId)
 			{
 				$session = RedeventEntitySession::load($sessionId);
@@ -171,7 +171,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 				$group = new RToolbarButtonGroup;
 				$sync = RToolbarBuilder::createStandardButton(
 					'sessions.aesirsync',
-					JText::_('PLG_AESIRSESSIONSSYNC_SYNC_BUTTON_LABEL'), '', 'icon-refresh', true
+					JText::_('PLG_AESIRSESSIONSSYNC_SYNC_BUTTON_LABEL'), '', 'icon-refresh', false
 				);
 				$group->addButton($sync);
 
@@ -192,6 +192,60 @@ class PlgSystemAesirsessionssync extends JPlugin
 				$toolbar->addGroup($group);
 			}
 		}
+	}
+
+	/**
+	 * Sync all
+	 *
+	 * @return void
+	 */
+	private function globalsync()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+
+		$app   = JFactory::getApplication();
+		$input = $app->input;
+
+		$synced     = $input->getInt('synced', 0);
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('x.*')
+			->from('#__redevent_event_venue_xref AS x')
+			->innerJoin('#__redevent_events AS e On e.id = x.eventid')
+			->innerJoin('#__reditem_types_course_1 AS c ON c.select_redevent_event = x.eventid')
+			->leftJoin('#__reditem_types_session_2 AS s ON s.select_redevent_session = x.id')
+			->where('s.id IS NULL')
+			->where('x.published = 1')
+			->where('e.published = 1')
+			->order('x.id ASC');
+
+		$db->setQuery($query, 0, 5);
+
+		if (!$unsynced = $db->loadObjectList())
+		{
+			$app->enqueueMessage(sprintf('Done, %d sessions synced', $synced));
+			$app->redirect('index.php?option=com_redevent&view=sessions');
+		}
+
+		$sessions = RedeventEntitySession::loadArray($unsynced);
+
+		foreach ($sessions as $session)
+		{
+			if ($this->syncSession($session))
+			{
+				$synced++;
+			}
+		}
+
+		echo JText::sprintf('PLG_AESIRSESSIONSSYNC_D_SESSIONS_SYNCED', $synced);
+
+		$next = 'index.php?option=com_redevent&task=sessions.aesirsync'
+			. '&synced=' . $synced
+			. '&' . JSession::getFormToken() . '=1';
+
+		JFactory::getDocument()->addScriptDeclaration('window.location = "' . $next . '";');
 	}
 
 	/**
