@@ -167,6 +167,16 @@
             hide="readmore,pagebreak"
             />
 
+		<field
+				name="session_language"
+				type="relanguages"
+				label="COM_REDEVENT_SESSION_LANGUAGE"
+				description="COM_REDEVENT_SESSION_LANGUAGE_DESC"
+				default="eng"
+				class="inputbox">
+			<option value="*">JALL</option>
+		</field>
+
         <field
             name="language"
             type="contentlanguage"

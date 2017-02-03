@@ -241,6 +241,9 @@ class RedeventModelBasesessionlist extends RModel
 		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
 
+		// Maersk
+		$query->select('x.session_language');
+
 		foreach ((array) $customs as $c)
 		{
 			$query->select('a.custom' . $c->id);

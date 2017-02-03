@@ -166,6 +166,14 @@
             class="inputbox" />
 
 		<field
+				name="contactAdminEmail"
+				type="contactAdminEmail"
+				default=""
+				label="COM_REDEVENT_CONTACT_ADMIN_EMAIL"
+				description ="COM_REDEVENT_CONTACT_ADMIN_EMAIL_DESC"
+				class="inputbox" />
+
+		<field
 			name="map"
 			type="list"
 			class="inputbox"
