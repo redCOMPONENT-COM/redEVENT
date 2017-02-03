@@ -88,6 +88,9 @@ $search = $this->state->get('filter.search');
 				<th class="title" width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_NAME', 'obj.name', $listDirn, $listOrder); ?>
 				</th>
+				<th width="auto">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_FORM', 'f.formname', $listDirn, $listOrder); ?>
+				</th>
 				<th width="150">
 					<?php echo JHTML::_('rsearchtools.sort', 'JGRID_HEADING_LANGUAGE', 'c.language', $listDirn, $listOrder); ?>
 				</th>
@@ -111,7 +114,7 @@ $search = $this->state->get('filter.search');
 							<?php if ($row->checked_out) : ?>
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
-								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
+								$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'eventtemplates.', $canCheckin);
 								?>
 							<?php endif; ?>
@@ -124,6 +127,9 @@ $search = $this->state->get('filter.search');
 						<?php else : ?>
 							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=eventtemplate.edit&id=' . $row->id, $itemTitle); ?>
 						<?php endif; ?>
+					</td>
+					<td>
+						<?php echo $row->formname; ?>
 					</td>
 					<td align="center"><?php echo $row->language == '*' ? Jtext::_('All') : $row->language_title; ?></td>
 					<td>

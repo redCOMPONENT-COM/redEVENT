@@ -16,6 +16,14 @@
 				>
 			<option value="">COM_REDEVENT_FILTER_LANGUAGE</option>
 		</field>
+		<field
+				name="redform_id"
+				type="redform.form"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_FORM"
+		>
+			<option value="">COM_REDEVENT_FILTER_FORM</option>
+		</field>
 	</fields>
 	<fields name="list">
 		<field

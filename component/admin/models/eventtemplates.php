@@ -48,8 +48,11 @@ class RedeventModelEventtemplates extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'id', 'obj.id', 'obj.name', 'obj.language',
+				'id', 'obj.id', 'obj.name', 'obj.language', 'f.formname',
 				'language',
+
+				// Filters
+				'redform_id'
 			);
 		}
 
@@ -63,9 +66,16 @@ class RedeventModelEventtemplates extends RModelList
 	 * @param   int    $target  target template
 	 *
 	 * @return void
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function mergeTemplates($cid, $target)
 	{
+		if (!$this->checkMergeTarget($cid, $target))
+		{
+			throw new InvalidArgumentException(JText::_('COM_REDEVENT_EVENTTEMPLATES_INVALID_MERGE'));
+		}
+
 		// Just in case, remove target from remove list...
 		$remove = array_diff($cid, array($target));
 
@@ -103,6 +113,10 @@ class RedeventModelEventtemplates extends RModelList
 		$query->from('#__redevent_event_template AS obj ');
 		$query->group('obj.id');
 
+		// Join over registration form
+		$query->select('f.formname');
+		$query->join('LEFT', $db->quoteName('#__rwf_forms', 'f') . ' ON f.id = obj.redform_id');
+
 		// Join over the language
 		$query->select('l.title AS language_title');
 		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = obj.language');
@@ -127,6 +141,13 @@ class RedeventModelEventtemplates extends RModelList
 			$query->where(implode(' OR ', $parts));
 		}
 
+		$filterForm = $this->state->get('filter.redform_id');
+
+		if (is_numeric($filterForm))
+		{
+			$query->where('obj.redform_id = ' . $filterForm);
+		}
+
 		$order = $this->getState('list.ordering', 'obj.name');
 		$dir = $this->getState('list.direction', 'asc');
 		$query->order($db->qn($order) . ' ' . $dir);
@@ -149,6 +170,7 @@ class RedeventModelEventtemplates extends RModelList
 	{
 		// Compile the store id.
 		$id	.= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.redform_id');
 		$id .= ':' . $this->getState('filter.language');
 
 		return parent::getStoreId($id);
@@ -166,5 +188,31 @@ class RedeventModelEventtemplates extends RModelList
 	{
 		// Forcing default values
 		parent::populateState($ordering ?: 'obj.name', $direction ?: 'asc');
+	}
+
+	/**
+	 * Check that templates can actually be merged in target
+	 *
+	 * @param   int[]  $cid     ids of templates to be merged
+	 * @param   int    $target  id of target
+	 *
+	 * @return boolean
+	 *
+	 * @since 3.2.3
+	 */
+	private function checkMergeTarget($cid, $target)
+	{
+		$template = RedeventEntityEventtemplate::load($target);
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('id')
+			->from('#__redevent_event_template')
+			->where('redform_id <> ' . $template->redform_id)
+			->where('id IN (' . implode(",", $cid) . ')');
+
+		$db->setQuery($query);
+
+		return $db->loadResult() ? false : true;
 	}
 }

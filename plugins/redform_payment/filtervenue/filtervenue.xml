@@ -7,7 +7,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2013 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.1</version>
+	<version>3.2.2</version>
 	<tag>##VERSION##</tag>
   <description>PLG_REDFORM_PAYMENT_FILTERVENUE_XML_DESCRIPTION</description>
 
@@ -24,4 +24,7 @@
 	  </fields>
   </config>
 
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/plg_redform_payment_filtervenue.xml</server>
+	</updateservers>
 </extension>

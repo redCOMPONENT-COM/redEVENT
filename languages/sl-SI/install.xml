@@ -7,7 +7,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2016 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.2.1</version>
+	<version>3.2.2</version>
 	<tag>##VERSION##</tag>
 	<description>redevent sl-SI</description>
 
@@ -19,4 +19,8 @@
 			<folder>sl-SI</folder>
 		</files>
 	</fileset>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT language update">http://updates.redcomponent.com/redevent/redevent_sl-SI.xml</server>
+	</updateservers>
 </extension>

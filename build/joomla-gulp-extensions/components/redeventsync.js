@@ -82,6 +82,11 @@ gulp.task('copy:' + baseTask + ':media', ['clean:' + baseTask + ':media'], funct
 		.pipe(gulp.dest(config.wwwDir + '/media/com_redeventsync'));
 });
 
+// updates sites
+gulp.task('update-sites:' + baseTask, function(){
+	console.log('update-sites:' + baseTask + ' is not implemented yet');
+});
+
 //// Compile LESS
 //gulp.task('less:' + baseTask, function () {
 //	return gulp.src([

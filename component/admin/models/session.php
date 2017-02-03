@@ -29,6 +29,8 @@ class RedeventModelSession extends RModelAdmin
 			$row = $this->getTable('session');
 			$row->load($id);
 			$row->id = null;
+			$row->checked_out = 0;
+			$row->checked_out_time = 0;
 			$row->note = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $id);
 
 			/* pre-save checks */

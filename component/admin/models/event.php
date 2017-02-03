@@ -31,6 +31,8 @@ class RedeventModelEvent extends RModelAdmin
 			$row = $this->getTable('event');
 			$row->load($id);
 			$row->id = null;
+			$row->checked_out = 0;
+			$row->checked_out_time = 0;
 			$row->title = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $row->title);
 
 			$categories = $this->getEventCategories($id);

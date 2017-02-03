@@ -11,17 +11,18 @@ const del         = require('del');
 const exec        = require('child_process').exec;
 const replace     = require('gulp-replace');
 const filter      = require('gulp-filter');
+const merge       = require('merge-stream');
 
 const jgulp = requireDir('./node_modules/joomla-gulp', {recurse: true});
 const dir = requireDir('./joomla-gulp-extensions', {recurse: true});
+
+const update_sites = require('./update-sites.js');
 
 const parser      = new xml2js.Parser();
 
 var gitDescribe = '';
 
-gulp.task('prepare:release', ['clean:release', 'git_version'], function(){
-	return del(config.release_dir, {force: true});
-});
+gulp.task('prepare:release', ['clean:release', 'git_version']);
 
 gulp.task('clean:release', function(){
 	return del(config.release_dir, {force: true});
@@ -137,35 +138,56 @@ gulp.task('release:languages', ['prepare:release'], function() {
 	const releaseDir = path.join(config.release_dir, 'language');
 
 	const folders = fs.readdirSync(langPath)
-		.map(function(file){
+		.map(function(file) {
 			return path.join(langPath, file);
 		})
 		.filter(function(file) {
-			return fs.statSync(file).isDirectory();
+			return fs.existsSync(path.join(file, 'install.xml'));
 		});
 
-	const tasks = folders.map(function(directory) {
-		return fs.readFile(path.join(directory, 'install.xml'), function(err, data) {
-			return parser.parseString(data, function (err, result) {
+	// We need to combine streams so we can know when this task is actually done
+	return merge(folders.map(function(directory) {
+			const data = fs.readFileSync(path.join(directory, 'install.xml'));
+
+			// xml2js parseString is sync, but must be called using callbacks... hence this awkwards vars
+			// see https://github.com/Leonidas-from-XIV/node-xml2js/issues/159
+			var task;
+			var error;
+
+			parser.parseString(data, function (err, result) {
 				if (err) {
-					return (err);
+					error = err;
+					console.log(err);
+
+					return;
 				}
 
 				const lang = path.basename(directory);
 				const version = result.extension.version[0];
 				const fileName = config.skipVersion ? extension.name + '_' + lang + '.zip' : extension.name + '_' + lang + '-v' + version + '.zip';
 
-				return gulp.src([
-						directory + '/**'
-					])
+				task = gulp.src([directory + '/**'])
 					.pipe(zip(fileName))
 					.pipe(gulp.dest(releaseDir));
 			});
-		});
-	});
 
-	return tasks;
+			if (error) {
+				throw error;
+			}
+
+			if (!error && !task) {
+				throw new Error('xml2js callback became suddenly async or something.');
+			}
+
+			return task;
+		})
+	);
 });
+
+gulp.task('insert-update-site', ['insert-update-site:modules']);
+
+gulp.task('insert-update-site:modules',
+	jgulp.src.modules.getModulesTasks('insert-update-site:modules', 'frontend'));
 
 // Override Copy to test site
 gulp.task('copy', [

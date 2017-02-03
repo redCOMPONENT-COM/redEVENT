@@ -7,7 +7,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.2.1</version>
+	<version>3.2.2</version>
 	<tag>##VERSION##</tag>
 	<description>redevent nb-NO</description>
 
@@ -20,4 +20,8 @@
 			<folder>nb-NO</folder>
 		</files>
 	</fileset>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT language update">http://updates.redcomponent.com/redevent/redevent_nb-NO.xml</server>
+	</updateservers>
 </extension>

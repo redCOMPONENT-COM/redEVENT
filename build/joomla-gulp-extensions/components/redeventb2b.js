@@ -194,6 +194,11 @@ gulp.task('watch:' + baseTask + ':backend', function() {
 	['copy:' + baseTask + ':backend']);
 });
 
+// updates sites
+gulp.task('update-sites:' + baseTask, function(){
+	console.log('update-sites:' + baseTask + ' is not implemented yet');
+});
+
 //// Watch: LESS
 //gulp.task('watch:' + baseTask + ':less',
 //	function() {

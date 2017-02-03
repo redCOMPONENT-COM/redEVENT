@@ -157,7 +157,7 @@ class RedeventEntityVenue extends RedeventEntityBase
 
 		return $this->categories;
 	}
-	
+
 	/**
 	 * Get events that have sessions on this venue
 	 *

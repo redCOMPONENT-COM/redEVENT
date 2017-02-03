@@ -11,7 +11,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.1</version>
+	<version>3.2.2</version>
 	<tag>##VERSION##</tag>
 
 	<description><![CDATA[MOD_REDEVENT_CALENDAR_DESC]]></description>
@@ -124,4 +124,7 @@
 		</fields>
 	</config>
 
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/mod_redevent_calendar.xml</server>
+	</updateservers>
 </extension>
