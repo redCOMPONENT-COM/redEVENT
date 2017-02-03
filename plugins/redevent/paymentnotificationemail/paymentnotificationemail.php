@@ -22,7 +22,7 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
  *
  * @since  2.5
  */
-class PlgRedformPaymentnotificationemail extends JPlugin
+class PlgRedeventPaymentnotificationemail extends JPlugin
 {
 	/**
 	 * The plugin identifier.
@@ -41,7 +41,7 @@ class PlgRedformPaymentnotificationemail extends JPlugin
 	 *
 	 * @return bool true on success
 	 */
-	public function onAfterPaymentVerified($submit_key)
+	public function onAfterPaymentVerifiedRedevent($submit_key)
 	{
 		$this->submitkey = $submit_key;
 
