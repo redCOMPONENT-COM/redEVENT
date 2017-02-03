@@ -16,6 +16,7 @@
 	<files folder="site">
 		<filename>controller.php</filename>
 		<filename>redeventb2b.php</filename>
+		<filename>router.php</filename>
 		<folder>controllers</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>
