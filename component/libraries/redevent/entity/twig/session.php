@@ -178,4 +178,29 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	{
 		return $this->entity->isFull();
 	}
+
+	/**
+	 * Get reditem twig entity
+	 *
+	 * @return bool
+	 *
+	 * @since 3.2.3
+	 */
+	public function getReditemLink()
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('id')
+			->from('#__reditem_types_session_2')
+			->where('select_redevent_session = ' . $this->entity->id);
+
+		$db->setQuery($query);
+
+		if (!$res = $db->loadResult())
+		{
+			return false;
+		}
+
+		return ReditemHelperRoute::getItemRoute($res);
+	}
 }
