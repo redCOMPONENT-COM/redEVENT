@@ -43,6 +43,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		$menu = $mainframe->getMenu();
 		$item = $menu->getActive();
 
+		RHtml::_('rjquery.framework');
 		RHelperAsset::load('myevents.js');
 		RHelperAsset::load('ajaxnav.js', 'com_redevent');
 		JText::script("COM_REDEVENT_CONFIRM_DELETE_DATE");
