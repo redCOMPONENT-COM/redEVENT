@@ -268,8 +268,19 @@ class RedeventTagsRegistrationSession
 
 		if ($this->session->hasMaxAttendees())
 		{
-			$left = $this->session->getNumberLeft();
-			$multi = min($left, $multi);
+			// We can't allow multiple registrations to be split between attending and waiting list, so we need to check separately.
+			if ($left = $this->session->getNumberLeft())
+			{
+				$multi = min($left, $multi);
+			}
+			elseif ($left = $this->session->getNumberWaitingLeft())
+			{
+				$multi = min($left, $multi);
+			}
+			else
+			{
+				$multi = 0;
+			}
 		}
 
 		if ($multi < 1)
