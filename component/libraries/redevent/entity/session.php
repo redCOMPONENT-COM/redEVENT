@@ -763,8 +763,8 @@ class RedeventEntitySession extends RedeventEntityBase
 
 		if (!RedeventHelperDate::isValidDate($item->dates))
 		{
-			// Open date
-			return false;
+			// Open date, check settings see if they are considered as future dates
+			return RedeventHelper::config()->get('open_as_upcoming') ? true : false;
 		}
 
 		return $this->getUnixStart() > time();

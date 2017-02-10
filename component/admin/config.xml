@@ -218,7 +218,7 @@
 			<option value="1">Yes</option>
 		</field>
 
-		<field typ="spacer" hr="true" />
+		<field type="spacer" hr="true" />
 
 		<field name="showmapserv" type="radio" default="1"
 			   class="btn-group"
@@ -830,6 +830,13 @@
 			  description="COM_REDEVENT_SETTINGS_MISC">
 		<field name="defaultredformid" type="RFForm" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID"
 			   description="COM_REDEVENT_DEFAULT_FORM_ID_TIP"/>
+		<field name="open_as_upcoming" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_OPEN_AS_UPCOMING_LABEL"
+			   description="COM_REDEVENT_SETTINGS_OPEN_AS_UPCOMING_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYes</option>
+		</field>
 		<field name="default_image_path" type="text"
 			   label="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_LABEL"
 			   description="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_DESC"
@@ -842,8 +849,8 @@
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL"
 			   description="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNO</option>
+			<option value="1">JYes</option>
 		</field>
 		<field name="week_start" type="radio" default="MO"
 			   class="btn-group"
