@@ -69,6 +69,9 @@ $search = $this->state->get('filter.search');
 				<th>
 					<?php echo JText::_('COM_REDEVENTSYNC_QUEUEDMESSAGE_MESSAGE'); ?>
 				</th>
+				<th width="1%">
+					<?php echo JText::_('COM_REDEVENTSYNC_QUEUEDMESSAGE_ERRORS'); ?>
+				</th>
 				<th width="1%" class="nowrap hidden-phone">
 					<?php echo JHtml::_('rsearchtools.sort', 'Id', 'obj.id', $listDirn, $listOrder); ?>
 				</th>
@@ -97,6 +100,9 @@ $search = $this->state->get('filter.search');
 						</td>
 						<td>
 							<?php echo $this->escape($item->message); ?>
+						</td>
+						<td>
+							<?php echo $this->escape($item->errors); ?>
 						</td>
 						<td>
 							<?php echo $item->id; ?>

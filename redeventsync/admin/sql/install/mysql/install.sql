@@ -29,5 +29,6 @@ CREATE TABLE IF NOT EXISTS `#__redeventsync_queuedmessages` (
   `queued` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `plugin` VARCHAR(50) NOT NULL,
   `message` text NOT NULL,
+  `errors` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
