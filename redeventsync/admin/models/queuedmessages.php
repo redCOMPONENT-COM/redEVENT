@@ -56,6 +56,7 @@ class RedeventsyncModelQueuedmessages extends RModelList
 				'transactionid', 'obj.transactionid',
 				'direction', 'obj.direction',
 				'status', 'obj.status',
+				'errors', 'obj.errors',
 			);
 		}
 
