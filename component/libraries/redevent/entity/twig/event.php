@@ -170,9 +170,21 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 			$sessions,
 			function($session)
 			{
-				return $session->isUpcoming();
+				return $session->isUpcoming() && !$session->isOpenDate();
 			}
 		);
+
+		if (!$upcomings)
+		{
+			// Try allowing open dates
+			$upcomings = array_filter(
+				$sessions,
+				function($session)
+				{
+					return $session->isUpcoming();
+				}
+			);
+		}
 
 		if (!$upcomings)
 		{
@@ -281,11 +293,22 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 			switch ($ordering)
 			{
 				case 'dates.desc':
-					$query->order('dates DESC, times DESC');
+					$filter_order_dir = 'DESC';
+					$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
+					$ordering = ($open_order ? 'dates = 0 ' : 'dates > 0 ') . $filter_order_dir
+						. ', dates ' . $filter_order_dir . ', times ' . $filter_order_dir . ', featured DESC';
+
+					$query->order($ordering);
 					break;
+
 				case 'dates.asc':
 				default:
-					$query->order('dates ASC, times ASC');
+					$filter_order_dir = 'ASC';
+					$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
+					$ordering = ($open_order ? 'dates = 0 ' : 'dates > 0 ') . $filter_order_dir
+						. ', dates ' . $filter_order_dir . ', times ' . $filter_order_dir . ', featured DESC';
+
+					$query->order($ordering);
 			}
 
 			if (is_numeric($published))
