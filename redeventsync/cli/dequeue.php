@@ -42,17 +42,9 @@ $config = new JConfig;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$loader = JPATH_LIBRARIES . '/redeventsync/bootstrap.php';
+require_once dirname(__FILE__) . '/bootstrap_redcore.php';
 
-if (!file_exists($loader))
-{
-	throw new Exception(JText::_('COM_redeventsync_LIB_INIT_FAILED'), 404);
-}
-
-include_once $loader;
-
-// Bootstraps redEVENTSYNC
-ResyncBootstrap::bootstrap();
+require_once dirname(__FILE__) . '/bootstrap_resync.php';
 
 /**
  * This script will checkin all checked out items in database
