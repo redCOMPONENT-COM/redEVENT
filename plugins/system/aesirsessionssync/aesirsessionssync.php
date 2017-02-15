@@ -208,20 +208,18 @@ class PlgSystemAesirsessionssync extends JPlugin
 		$input = $app->input;
 
 		$synced     = $input->getInt('synced', 0);
+		$limitstart = $input->getInt('limitstart', 0);
 
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('x.*')
 			->from('#__redevent_event_venue_xref AS x')
 			->innerJoin('#__redevent_events AS e On e.id = x.eventid')
-			->innerJoin('#__reditem_types_course_1 AS c ON c.select_redevent_event = x.eventid')
-			->leftJoin('#__reditem_types_session_2 AS s ON s.select_redevent_session = x.id')
-			->where('s.id IS NULL')
 			->where('x.published = 1')
 			->where('e.published = 1')
-			->order('x.id ASC');
+			->order('x.id DESC');
 
-		$db->setQuery($query, 0, 5);
+		$db->setQuery($query, $limitstart, 5);
 
 		if (!$unsynced = $db->loadObjectList())
 		{
@@ -242,8 +240,8 @@ class PlgSystemAesirsessionssync extends JPlugin
 		echo JText::sprintf('PLG_AESIRSESSIONSSYNC_D_SESSIONS_SYNCED', $synced);
 
 		$next = 'index.php?option=com_redevent&task=sessions.aesirsync'
-			. '&synced=' . $synced
-			. '&' . JSession::getFormToken() . '=1';
+			. '&synced=' . $synced . '&limitstart=' . ($limitstart + 5)
+			. '&' . JSession::getFormToken() . '=1' . '&rand=' . uniqid();
 
 		JFactory::getDocument()->addScriptDeclaration('window.location = "' . $next . '";');
 	}
@@ -313,26 +311,35 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 			if (!in_array($sessionItemId, $relatedItems))
 			{
+				echo "<p>Adding $session->id $session->dates / $sessionItemId</p>";
 				$relatedItems[] = $sessionItemId;
+
+				$params->set('related_items', $relatedItems);
+
+				/*
+				 * This doesn't work because current redITEM pulls input data from the table file, so we have to use manual sql update
+				 * $eventItem->params = $params->toString();
+				 * $eventItem->save();
+				 *
+				 * @todo: wait for aesir fix !
+				 */
+				$db    = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->update('#__reditem_items')
+					->set('params = ' . $db->quote($params->toString()))
+					->where('id = ' . $eventItem->getItemId());
+
+				$db->setQuery($query);
+
+				if (!$db->execute())
+				{
+					echo $db->getErrorMsg();
+
+					exit();
+				}
+
+				ReditemEntityItem::clearInstance($eventItem->id);
 			}
-
-			$params->set('related_items', $relatedItems);
-
-			/*
-			 * This doesn't work because current redITEM pulls input data from the table file, so we have to use manual sql update
-			 * $eventItem->params = $params->toString();
-			 * $eventItem->save();
-			 *
-			 * @todo: wait for aesir fix !
-			 */
-			$db    = JFactory::getDbo();
-			$query = $db->getQuery(true)
-				->update('#__reditem_items')
-				->set('params = ' . $db->quote($params->toString()))
-				->where('id = ' . $eventItem->getItemId());
-
-			$db->setQuery($query);
-			$db->execute();
 		}
 
 		return true;
@@ -381,28 +388,23 @@ class PlgSystemAesirsessionssync extends JPlugin
 		{
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)
-				->select('c.*')
+				->select('c.id')
 				->from('#__reditem_types_course_1 AS c')
 				->join('INNER', '#__reditem_items AS i ON i.id = c.id')
 				->where('c.select_redevent_event = ' . $eventId);
 
 			$db->setQuery($query);
 
-			if ($res = $db->loadObject())
+			if (!$res = $db->loadResult())
 			{
-				$entity = ReditemEntityItem::getInstance($res->id);
-			}
-			else
-			{
-				$entity = ReditemEntityItem::getInstance();
 				$event = RedeventEntityEvent::load($eventId);
 				JFactory::getApplication()->enqueueMessage('Aesir item not found for event ' . $event->title, 'warning');
 			}
 
-			$this->aesirEvents[$eventId] = $entity;
+			$this->aesirEvents[$eventId] = $res ?: false;
 		}
 
-		return $this->aesirEvents[$eventId];
+		return ReditemEntityItem::getInstance($this->aesirEvents[$eventId] ?: null);
 	}
 
 	private function listMissingEventsItems()
