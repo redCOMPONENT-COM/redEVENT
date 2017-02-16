@@ -31,15 +31,22 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	 */
 	public function setOptions($sessionpriceGroups)
 	{
+		$application = JFactory::getApplication();
 		$this->options = array();
 
 		if (is_array($sessionpriceGroups) && count($sessionpriceGroups))
 		{
 			foreach ($sessionpriceGroups as $sessionPricegroup)
 			{
+				if (!$sessionPricegroup->active && !$application->isAdmin())
+				{
+					continue;
+				}
+
 				$option = new stdclass;
 				$option->value = $sessionPricegroup->id;
-				$option->label = $sessionPricegroup->getPricegroup()->name;
+				$option->label = $sessionPricegroup->getPricegroup()->name
+					. ($sessionPricegroup->active ? '' : JText::_('LIB_REDEVENT_PRICEGROUP_LABEL_INACTIVE'));
 				$option->sku = $sessionPricegroup->sku;
 				$option->price = $sessionPricegroup->price;
 				$option->vat = $sessionPricegroup->vatrate;

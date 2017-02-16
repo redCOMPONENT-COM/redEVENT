@@ -11,12 +11,14 @@ JHTML::_('behavior.formvalidation');
 
 RHelperAsset::load('editsession.js');
 
+$sessionDetailsField = $this->form->getField('details');
+
 JFactory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
 	{
 		if (task == 'editsession.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
 		{
-			" . $this->form->getField('details')->save() . "
+			" . ($sessionDetailsField && $this->params->get('edit_session_details')? $sessionDetailsField->save() : '') . "
 			Joomla.submitform(task);
 		}
 	}

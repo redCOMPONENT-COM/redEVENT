@@ -31,10 +31,10 @@ JHtml::_('rjquery.chosen', 'select');
 		<?php foreach ((array) $data->roles as $k => $r): ?>
 			<tr>
 				<td>
-					<?php echo JHTML::_('select.genericlist', $data->rolesoptions, 'jform[rrole][]', '', 'value', 'text', $r->role_id); ?>
+					<?php echo JHTML::_('select.genericlist', $data->rolesoptions, 'jform[new_roles][rrole][]', '', 'value', 'text', $r->role_id); ?>
 				</td>
 				<td>
-					<?php echo JHTML::_('list.users', 'jform[urole][]', $r->user_id, 0, null, 'name', 0); ?>
+					<?php echo JHTML::_('list.users', 'jform[new_roles][urole][]', $r->user_id, 0, null, 'name', 0); ?>
 				</td>
 				<td>
 					<button type="button" class="btn role-button remove-role"><?php echo Jtext::_('COM_REDEVENT_REMOVE'); ?></button>
@@ -45,10 +45,10 @@ JHtml::_('rjquery.chosen', 'select');
 
 		<tr id="trnewrole">
 			<td>
-				<?php echo JHTML::_('select.genericlist', $data->rolesoptions, 'jform[rrole][]', 'id="newrolerole" class="rrole"'); ?>
+				<?php echo JHTML::_('select.genericlist', $data->rolesoptions, 'jform[new_roles][rrole][]', 'id="newrolerole" class="rrole"'); ?>
 			</td>
 			<td>
-				<?php echo JHTML::_('list.users', 'jform[urole][]', 0, 1, 'id="newroleuser"', 'name', 0); ?>
+				<?php echo JHTML::_('list.users', 'jform[new_roles][urole][]', 0, 1, 'id="newroleuser"', 'name', 0); ?>
 			</td>
 			<td>
 				<button type="button" class="btn role-button" id="add-role"><?php echo JText::_('COM_REDEVENT_add'); ?></button>

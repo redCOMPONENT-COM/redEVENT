@@ -214,25 +214,13 @@
             size="8" maxlength="8"
             class="inputbox" />
         <field
-            name="pricegroup"
+            name="new_prices"
             type="hidden"
             />
         <field
-            name="price"
+            name="new_roles"
             type="hidden"
-            />
-		<field
-			name="vatrate"
-			type="hidden"
-			/>
-		<field
-			name="sku"
-			type="hidden"
-			/>
-        <field
-            name="currency"
-            type="hidden"
-            />
+        />
     </fieldset>
 
     <fields name="recurrence">
@@ -397,22 +385,6 @@
                     />
         </fieldset>
     </fields>
-
-    <fieldset name="roles">
-        <field
-                name="rrole"
-                type="rerole"
-                label="COM_REDEVENT_SESSION_ROLE_SELECT"
-                description="COM_REDEVENT_SESSION_ROLE_SELECT_DESC">
-            <option value="">COM_REDEVENT_Select_role</option>
-        </field>
-        <field
-                name="urole"
-                type="user"
-                label="COM_REDEVENT_SESSION_ROLE_USER"
-                description="COM_REDEVENT_SESSION_ROLE_USER_DESC"/>
-
-    </fieldset>
 
     <fieldset name="ical">
         <field

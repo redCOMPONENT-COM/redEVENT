@@ -89,6 +89,8 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 	 */
 	protected function getOptions()
 	{
+		$application = JFactory::getApplication();
+
 		if (!$this->options)
 		{
 			if (!$this->event || !$this->event->isValid())
@@ -136,6 +138,11 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 
 				foreach ($prices as $price)
 				{
+					if (!$price->active && !$application->isAdmin())
+					{
+						continue;
+					}
+
 					$option = new stdClass;
 					$option->value = $session->id . '_' . $price->id;
 					$option->label = JText::sprintf(
