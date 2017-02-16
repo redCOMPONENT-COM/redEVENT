@@ -126,11 +126,6 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception($row->getError());
 			}
 
-			if (isset($object->prices))
-			{
-				$row->setPrices($object->prices);
-			}
-
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
@@ -555,17 +550,17 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			if (isset($el->EventPrice))
 			{
 				$prices = array();
+				$k = 0;
 
 				foreach ($el->EventPrice->children() as $price)
 				{
-					$p = new stdClass;
-					$p->pricegroup_id = (int) $price->PriceGroupId;
-					$p->price         = (float) $price->PriceGroupPrice;
-					$p->currency      = (string) $price->CurrencyCode;
-					$prices[] = $p;
+					$prices['pricegroup'][$k] = (int) $price->PriceGroupId;
+					$prices['price'][$k]      = (float) $price->PriceGroupPrice;
+					$prices['currency'][$k]   = (string) $price->CurrencyCode;
+					$k++;
 				}
 
-				$object->prices = $prices;
+				$object->new_prices = $prices;
 			}
 		}
 
@@ -759,6 +754,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 		$query->select('pg.id, pg.name');
 		$query->from('#__redevent_sessions_pricegroups AS xpg');
 		$query->join('INNER', '#__redevent_pricegroups AS pg ON xpg.pricegroup_id = pg.id');
+		$query->where('xpg.active = 1');
 		$query->where('xpg.xref = ' . $session_id);
 
 		$db->setQuery($query);
