@@ -328,6 +328,32 @@ class RedeventModelEventscsvimport extends RModel
 			$data['icaldetails'] = $data['session_icaldetails'] ?: null;
 			$data['published'] = $data['session_published'] ?: null;
 
+			// Import pricegroups
+			if (isset($data['pricegroups_names']))
+			{
+				$pgs = explode('#!#', $data['pricegroups_names']);
+				$prices = explode('#!#', $data['prices']);
+				$currencies = explode('#!#', $data['currencies']);
+				$pricegroups = array();
+
+				$i = 0;
+
+				foreach ($pgs as $k => $v)
+				{
+					if (empty($v))
+					{
+						continue;
+					}
+
+					$pricegroups['pricegroup'][$i] = $this->getPgId($v);
+					$pricegroups['price'][$i] = $prices[$k];
+					$pricegroups['currency'][$i] = $currencies[$k];
+					$i++;
+				}
+
+				$data['new_prices'] = $pricegroups;
+			}
+
 			if ($exists && $this->duplicateMethod == self::DUPLICATE_CREATE_NEW)
 			{
 				$session->reset();
@@ -355,31 +381,6 @@ class RedeventModelEventscsvimport extends RModel
 				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $session->getError(), 'error');
 
 				return false;
-			}
-
-			// Import pricegroups
-			if (isset($data['pricegroups_names']))
-			{
-				$pgs = explode('#!#', $data['pricegroups_names']);
-				$prices = explode('#!#', $data['prices']);
-				$currencies = explode('#!#', $data['currencies']);
-				$pricegroups = array();
-
-				foreach ($pgs as $k => $v)
-				{
-					if (empty($v))
-					{
-						continue;
-					}
-
-					$price = new stdclass;
-					$price->pricegroup_id    = $this->getPgId($v);
-					$price->price = $prices[$k];
-					$price->currency = $currencies[$k];
-					$pricegroups[] = $price;
-				}
-
-				$session->setPrices($pricegroups);
 			}
 
 			// Trigger plugins
