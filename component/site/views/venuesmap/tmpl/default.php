@@ -65,45 +65,49 @@ venues.push(<?php echo json_encode($obj); ?>);
 
 <?php if ($this->params->get('show_cat_filter', 1) || $this->params->get('show_vcat_filter', 1) || $this->params->get('show_custom_filters', 1)) : ?>
 <form action="<?php echo JRoute::_($this->action); ?>" method="post" id="filterform">
-<div id="red_filter" class="floattext">
-    <div class="el_fleft">
-    <table>
-	    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
-	      <tr>
-	        <td>
-			      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_VENUES_CATEGORY'); ?></label>
-			    </td>
-			    <td>
-			      <?php echo $this->lists['venuescats']; ?>
-	        </td>
-		    </tr>
-	    <?php endif; ?>
-	    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
-	      <tr>
-	        <td>
-		      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_EVENTS_CATEGORY'); ?></label>
-	        </td>
-	        <td>
-		      <?php echo $this->lists['eventscats']; ?>
-	        </td>
-	      </tr>
-      <?php endif; ?>
-      <?php if ($this->params->get('show_custom_filters', 1)) : ?>
-	      <?php foreach ((array) $this->lists['customfilters'] as $filter) : ?>
-	      <tr>
-	        <td>
-		      <label for="filter_type"><?php echo $filter->name; ?></label>
-	        </td>
-	        <td>
-		      <?php echo $filter->renderFilter(array('class' =>"customfilter"), isset($this->filter_customs[$filter->id]) ? $this->filter_customs[$filter->id] : null); ?>
-	        </td>
-	      </tr>
-	      <?php endforeach; ?>
-      <?php endif; ?>
-    </table>
-    </div>
-</div>
-<input type="hidden" name="filter" id="filter" value="0"/>
+	<div id="red_filter">
+	    <div class="venue_filters">
+	    <table>
+		    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
+		      <tr>
+		        <td>
+				      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_VENUES_CATEGORY'); ?></label>
+				    </td>
+				    <td>
+				      <?php echo $this->lists['venuescats']; ?>
+		        </td>
+			    </tr>
+		    <?php endif; ?>
+		    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
+		      <tr>
+		        <td>
+			      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_EVENTS_CATEGORY'); ?></label>
+		        </td>
+		        <td>
+			      <?php echo $this->lists['eventscats']; ?>
+		        </td>
+		      </tr>
+	      <?php endif; ?>
+	      <?php if ($this->params->get('show_custom_filters', 1)) : ?>
+		      <?php foreach ((array) $this->lists['customfilters'] as $filter) : ?>
+		      <tr>
+		        <td>
+			      <label for="filter_type"><?php echo $filter->name; ?></label>
+		        </td>
+		        <td>
+			      <?php echo $filter->renderFilter(array('class' =>"customfilter"), isset($this->filter_customs[$filter->id]) ? $this->filter_customs[$filter->id] : null); ?>
+		        </td>
+		      </tr>
+		      <?php endforeach; ?>
+	      <?php endif; ?>
+	    </table>
+	    </div>
+	</div>
+	<div class="filter-buttons">
+		<button type="submit"><?= JText::_('COM_REDEVENT_SEARCH') ?></button>
+	</div>
+
+	<input type="hidden" name="filter" id="filter" value="0"/>
 </form>
 <?php endif; ?>
 
