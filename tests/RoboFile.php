@@ -413,15 +413,12 @@ class RoboFile extends \Robo\Tasks
 		$reportFile = 'selenium.log';
 		$body = 'Selenium log:' . chr(10). chr(10);
 
-		$this->say("checking _output");
-
 		// Loop throught Codeception snapshots
 		if (file_exists(__DIR__ . '/_output') && $handler = opendir(__DIR__ . '/_output'))
 		{
 			$reportFile = __DIR__ . '/_output/report.tap.log';
 			$body = 'Codeception tap log:' . chr(10). chr(10);
 			$errorSelenium = false;
-			$this->say("reportFile: $reportFile");
 		}
 
 		if (file_exists($reportFile))
@@ -437,7 +434,6 @@ class RoboFile extends \Robo\Tasks
 
 				while (false !== ($errorSnapshot = readdir($handler)))
 				{
-					$this->say("errorSnapshot: $errorSnapshot");
 					// Avoid sending system files or html files
 					if (!('png' === pathinfo($errorSnapshot, PATHINFO_EXTENSION)))
 					{
@@ -469,8 +465,6 @@ class RoboFile extends \Robo\Tasks
 
 			if (!$reportError)
 			{
-				$this->say("nothing to report");
-
 				return;
 			}
 
