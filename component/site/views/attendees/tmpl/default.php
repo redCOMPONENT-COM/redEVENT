@@ -38,7 +38,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
-	<div id="redevent" class="el_details">
+	<div id="redevent" class="el_details<?= $this->params->get('pageclass_sfx') ?>">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.RedeventHelper::getSessionFullTitle($this->session); ?>
 		<?php if ($this->manage_attendees): ?>
     <?php echo RedeventHelperOutput::xrefattendeesbutton($this->session->xref); ?>
@@ -150,4 +150,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php
 
 echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('COM_REDEVENT_RETURN_TO_MY_EVENTS'), array('class' => 're-back'));
-?>
