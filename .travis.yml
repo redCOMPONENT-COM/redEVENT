@@ -48,8 +48,6 @@ before_script:
 - composer install --prefer-dist
 
 script:
-- echo "TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
-- export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
 - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
 - vendor/bin/robo check:for-missed-debug-code
 - vendor/bin/robo check:for-parse-errors
