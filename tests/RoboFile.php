@@ -433,6 +433,7 @@ class RoboFile extends \Robo\Tasks
 
 				while (false !== ($errorSnapshot = readdir($handler)))
 				{
+					$this->say("errorSnapshot: $errorSnapshot");
 					// Avoid sending system files or html files
 					if (!('png' === pathinfo($errorSnapshot, PATHINFO_EXTENSION)))
 					{
@@ -489,6 +490,10 @@ class RoboFile extends \Robo\Tasks
 				// Not a pull request, so just output in console
 				$this->say($body);
 			}
+		}
+		else
+		{
+			$this->say("reportFile not found");
 		}
 	}
 
