@@ -165,7 +165,7 @@ class Adminredevent extends \AcceptanceTester
 		$I->amOnPage('administrator/index.php?option=com_redevent&view=sessions');
 		$I->waitForText('Sessions', 30, ['css' => 'H1']);
 		$I->click(['xpath' => '//button[contains(@onclick, "session.add")]']);
-		$I->waitForText('Evennt', 30, ['css' => 'label']);
+		$I->waitForText('Event', 30, ['css' => 'label']);
 
 		$event = isset($params['event']) ? $params['event'] : 'Event 1';
 		$I->selectOptionInChosenByIdUsingJs('jform_eventid', $event);
