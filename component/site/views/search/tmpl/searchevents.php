@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $filter_customs_values = $this->state->get('filter_customs');
 ?>
-<div id="redevent" class="el_eventlist">
+<div id="redevent" class="el_eventlist<?= $this->params->get('pageclass_sfx') ?>">
 	<p class="buttons">
 		<?php
 		echo RedeventHelperOutput::printbutton($this->print_link, $this->params);

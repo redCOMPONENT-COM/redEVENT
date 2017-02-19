@@ -22,7 +22,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
+<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details<?= $this->params->get('pageclass_sfx') ?>">
 	<div class="event-header">
 		<div class="buttons">
 			<?php echo RedeventHelperOutput::mailbutton($this->row->slug, 'details', $this->params); ?>
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 
 
-		<?php if ($this->params->def('show_page_title', 1)) : ?>
+		<?php if ($this->params->def('show_page_heading', 1)) : ?>
 			<h1 class="componentheading">
 				<?php echo RedeventHelper::getSessionFullTitle($this->row); ?>
 			</h1>

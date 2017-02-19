@@ -23,11 +23,14 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<div id="redevent" class="jlmap">
+<div id="redevent" class="jlmap<?= $this->params->get('pageclass_sfx') ?>">
   <div id="goback"><a href="javascript:history.back()"><?php echo JText::_('COM_REDEVENT_Back'); ?></a></div>
-  <h1 class="componentheading">
-    <?php echo JText::_('COM_REDEVENT_VENUES_MAP'); ?>
-  </h1>
+
+	<?php if ($this->params->def('show_page_heading', 1)) : ?>
+		<h1 class='componentheading'>
+			<?php echo $this->escape($this->pagetitle); ?>
+		</h1>
+	<?php endif; ?>
 
 <script type="text/javascript">
 var venueurl = '<?php echo JRoute::_($this->ajaxurl, false); ?>';

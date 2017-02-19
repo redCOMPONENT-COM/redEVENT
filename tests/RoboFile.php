@@ -392,6 +392,92 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
+	 * Sends a message to Github with the Error found in tests and a Image attached. Require Github and Cloudinary tokens
+	 *
+	 * @param $cloudName
+	 * @param $apiKey
+	 * @param $apiSecret
+	 * @param $GithubToken
+	 * @param $repoOwner
+	 * @param $repo
+	 * @param $pull
+	 */
+	public function sendScreenshotFromTravisToGithub($cloudName, $apiKey, $apiSecret, $GithubToken, $repoOwner, $repo, $pull)
+	{
+		$errorSelenium = true;
+		$reportError = false;
+		$reportFile = 'tests/selenium.log';
+		$body = 'Selenium log:' . chr(10). chr(10);
+
+		// Loop throught Codeception snapshots
+		if (file_exists('tests/_output') && $handler = opendir('tests/_output'))
+		{
+			$reportFile = 'tests/_output/report.tap.log';
+			$body = 'Codeception tap log:' . chr(10). chr(10);
+			$errorSelenium = false;
+		}
+
+		if (file_exists($reportFile))
+		{
+			if ($reportFile)
+			{
+				$body .= file_get_contents($reportFile, null, null, 15);
+			}
+
+			if (!$errorSelenium)
+			{
+				$handler = opendir('tests/_output');
+
+				while (false !== ($errorSnapshot = readdir($handler)))
+				{
+					// Avoid sending system files or html files
+					if (!('png' === pathinfo($errorSnapshot, PATHINFO_EXTENSION)))
+					{
+						continue;
+					}
+
+					$reportError = true;
+					$this->say("Uploading screenshots: $errorSnapshot");
+
+					Cloudinary::config(
+						array(
+							'cloud_name' => $cloudName,
+							'api_key'    => $apiKey,
+							'api_secret' => $apiSecret
+						)
+					);
+
+					$result = \Cloudinary\Uploader::upload(realpath(dirname(__FILE__) . '/tests/_output/' . $errorSnapshot));
+					$this->say($errorSnapshot . 'Image sent');
+					$body .= '![Screenshot](' . $result['secure_url'] . ')';
+				}
+			}
+
+			// If it's a Selenium error log, it prints it in the regular output
+			if ($errorSelenium)
+			{
+				$this->say($body);
+			}
+
+			// If it needs to, it creates the error log in a Github comment
+			if ($reportError)
+			{
+				$this->say('Creating Github issue');
+				$client = new \Github\Client;
+				$client->authenticate($GithubToken, \Github\Client::AUTH_HTTP_TOKEN);
+				$client
+					->api('issue')
+					->comments()->create(
+						$repoOwner, $repo, $pull,
+						array(
+							'body'  => $body
+						)
+					);
+			}
+		}
+	}
+
+	/**
 	 * Clone joomla from official repo
 	 *
 	 * @return void
