@@ -23,7 +23,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div id="redevent" class="el_venueevents">
+<div id="redevent" class="el_venueevents<?= $this->params->get('pageclass_sfx') ?>">
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
-<?php if ($this->params->def('show_page_title', 1)) : ?>
+<?php if ($this->params->def('show_page_heading', 1)) : ?>
 	<h1 class='componentheading'>
 		<?php echo $this->escape($this->pagetitle); ?>
 	</h1>

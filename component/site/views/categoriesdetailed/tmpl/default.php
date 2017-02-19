@@ -24,7 +24,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<div id="redevent" class="el_categoriesdetailed">
+<div id="redevent" class="el_categoriesdetailed<?= $this->params->get('pageclass_sfx') ?>">
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
@@ -34,7 +34,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	?>
 </p>
 
-<?php if ($this->params->get('show_page_title')) : ?>
+<?php if ($this->params->get('show_page_heading')) : ?>
 
 <h1 class="componentheading">
 <?php echo $this->escape($this->pagetitle); ?>

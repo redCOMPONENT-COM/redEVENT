@@ -50,13 +50,13 @@ JFactory::getDocument()->addScriptDeclaration(
 	});
 </script>
 
-<?php if ($this->params->def('show_page_title', 1)): ?>
+<?php if ($this->params->def('show_page_heading', 1)): ?>
 	<h1 class='componentheading'>
 		<?php echo $this->getTitle(); ?>
 	</h1>
 <?php endif; ?>
 
-<div class="redevent-edit-form">
+<div class="redevent-edit-form<?= $this->params->get('pageclass_sfx') ?>">
 	<form enctype="multipart/form-data"
 	      action="<?php echo $action; ?>"
 	      method="post" name="adminForm" class="form-validate"
