@@ -402,17 +402,17 @@ class RoboFile extends \Robo\Tasks
 	 * @param $repo
 	 * @param $pull
 	 */
-	public function sendScreenshotFromTravisToGithub($cloudName, $apiKey, $apiSecret, $GithubToken, $repoOwner, $repo, $pull)
+	public function sendScreenshotFromTravisToGithub($cloudName, $apiKey, $apiSecret, $GithubToken, $repoOwner, $repo, $pull = null)
 	{
 		$errorSelenium = true;
 		$reportError = false;
-		$reportFile = 'tests/selenium.log';
+		$reportFile = 'selenium.log';
 		$body = 'Selenium log:' . chr(10). chr(10);
 
 		// Loop throught Codeception snapshots
-		if (file_exists('tests/_output') && $handler = opendir('tests/_output'))
+		if (file_exists('_output') && $handler = opendir('_output'))
 		{
-			$reportFile = 'tests/_output/report.tap.log';
+			$reportFile = '_output/report.tap.log';
 			$body = 'Codeception tap log:' . chr(10). chr(10);
 			$errorSelenium = false;
 		}
@@ -426,7 +426,7 @@ class RoboFile extends \Robo\Tasks
 
 			if (!$errorSelenium)
 			{
-				$handler = opendir('tests/_output');
+				$handler = opendir('_output');
 
 				while (false !== ($errorSnapshot = readdir($handler)))
 				{
@@ -447,7 +447,7 @@ class RoboFile extends \Robo\Tasks
 						)
 					);
 
-					$result = \Cloudinary\Uploader::upload(realpath(dirname(__FILE__) . '/tests/_output/' . $errorSnapshot));
+					$result = \Cloudinary\Uploader::upload(realpath(dirname(__FILE__) . '/_output/' . $errorSnapshot));
 					$this->say($errorSnapshot . 'Image sent');
 					$body .= '![Screenshot](' . $result['secure_url'] . ')';
 				}
@@ -459,9 +459,15 @@ class RoboFile extends \Robo\Tasks
 				$this->say($body);
 			}
 
-			// If it needs to, it creates the error log in a Github comment
-			if ($reportError)
+			if (!$reportError)
 			{
+				// Nothing to report
+				return;
+			}
+
+			if (is_numeric($pull))
+			{
+				// Creates the error log in a Github comment
 				$this->say('Creating Github issue');
 				$client = new \Github\Client;
 				$client->authenticate($GithubToken, \Github\Client::AUTH_HTTP_TOKEN);
@@ -470,9 +476,14 @@ class RoboFile extends \Robo\Tasks
 					->comments()->create(
 						$repoOwner, $repo, $pull,
 						array(
-							'body'  => $body
+							'body' => $body
 						)
 					);
+			}
+			else
+			{
+				// Not a pull request, so just output in console
+				$this->say($body);
 			}
 		}
 	}
