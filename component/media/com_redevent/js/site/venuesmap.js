@@ -20,129 +20,118 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Call this function when the page has been loaded
+(function($){
 
-var venuesmap = {
+	var map = null;
 
-	map : null,
-
-	initialize : function() {
-
+	var initialize = function() {
 		// init map
+		var mapOptions = {
+			panControl: true,
+			zoomControl: true,
+			mapTypeControl: true,
+			scaleControl: true,
+			streetViewControl: true,
+			overviewMapControl: true,
+			zoom: 3,
+			// Default to europe...
+			center: new google.maps.LatLng(43,2),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
 
-	    var mapOptions = {
-	    		  panControl: true,
-	    		  zoomControl: true,
-	    		  mapTypeControl: true,
-	    		  scaleControl: true,
-	    		  streetViewControl: true,
-	    		  overviewMapControl: true,
-	    		  zoom: 3,
-	    		  center: new google.maps.LatLng(43,2),
-	    		  mapTypeId: google.maps.MapTypeId.ROADMAP
-	    		};
-	    map = new google.maps.Map( document.id('gmap').setProperty('style', 'width: 100%; height: 600px'), mapOptions);
+		map = new google.maps.Map(document.id('gmap').setProperty('style', 'width: 100%; height: 600px'), mapOptions);
 
-	    // get marker manager
-	    var mgr = new MarkerManager(map);
-	    // get bound object to calculate best fit later
-	    var bounds = new google.maps.LatLngBounds();
+		// get marker manager
+		var mgr = new MarkerManager(map);
 
-	    var markers = [];
-	    // add marker for each location
-	    venues.each(function(venue) {
-	      if (venue.lat !=0 && venue.lng !=0) {
+		// get bound object to calculate best fit later
+		var bounds = new google.maps.LatLngBounds();
 
-	        // create marker
-	        var point = new google.maps.LatLng(venue.lat, venue.lng);
-	        var marker = new google.maps.Marker({ position: point, title: venue.name});
+		var markers = [];
 
-	        // add the point to the bounds
-	        bounds.extend(point);
+		// add marker for each location
+		venues.each(function(venue) {
+			if (venue.lat !=0 && venue.lng !=0) {
+				// create marker
+				var point = new google.maps.LatLng(venue.lat, venue.lng);
+				var marker = new google.maps.Marker({ position: point, title: venue.name});
 
-	        google.maps.event.addListener(marker, 'click', function(latlng) {
-	        	var url = venueurl + '&id=' + this.venue.id;
-	    		var theAjax = new Request({
-	    			url: url,
-	    			method: 'post',
-	    			postBody : ''
-	    			});
+				// add the point to the bounds
+				bounds.extend(point);
 
-	    		theAjax.addEvent('onSuccess', venuesmap.popvenueinfo.bind(this.marker));
-	    		theAjax.send();
-		        }.bind({'venue':venue, 'marker': marker})
-	        );
+				google.maps.event.addListener(marker, 'click', function() {
+					$.ajax({
+						url: venueurl + '&id=' + venue.id
+					})
+					.done(function(response){
+						popvenueinfo(response, marker);
+					});
+				});
 
-	        markers.push(marker);
-	      }
-	    });
+				markers.push(marker);
+			}
+		});
 
-	    var countrymarkers = [];
-	    // add marker for each country
-	    countries.each(function(element) {
-	      if (element.lat !=0 && element.lng !=0) {
-	        // create latlng object
-	        var icon = new google.maps.MarkerImage(element.flag,
-	        		                               new google.maps.Size(32, 22),
-	        		                               new google.maps.Point(0, 0),
-	        		                               new google.maps.Point(16, 11)
-	        		                               );
+		var countrymarkers = [];
 
-	        var target = new google.maps.LatLng(element.lat, element.lng);
-	        // create marker
-	        opts = {
-	          position : target,
-	          icon: icon,
-	          clickable: true,
-	          title: element.name
-	        };
+		// add marker for each country
+		countries.each(function(element) {
+			if (element.lat !=0 && element.lng !=0) {
+				// create latlng object
+				var icon = new google.maps.MarkerImage(element.flag,
+					new google.maps.Size(32, 22),
+					new google.maps.Point(0, 0),
+					new google.maps.Point(16, 11)
+				);
 
-	        var marker = new google.maps.Marker(opts);
+				var target = new google.maps.LatLng(element.lat, element.lng);
 
-	        google.maps.event.addListener(marker, 'click', function(aa, latlng){
-	           this.map.setCenter(this.marker.getLatLng(), 5);
-	        }.bind({'map':this, 'marker': marker}));
-	        countrymarkers.push(marker);
-	      }
-	    }.bind(this.map));
+				// Create marker
+				opts = {
+					position : target,
+					icon: icon,
+					clickable: true,
+					title: element.name
+				};
 
-	    google.maps.event.addListener(mgr, 'loaded', function() {
-	    	// optimal map fit
-	    	map.fitBounds(bounds);
-		    mgr.addMarkers(countrymarkers, 0 , 5);
-		    mgr.addMarkers(markers, 4);
-		    mgr.refresh();
-	  	});
-	},
+				var marker = new google.maps.Marker(opts);
 
-	popvenueinfo : function(response)
-	{
+				google.maps.event.addListener(marker, 'click', function(){
+					map.setCenter(marker.getPosition());
+					map.setZoom(5);
+				});
+				countrymarkers.push(marker);
+			}
+		});
+
+		google.maps.event.addListener(mgr, 'loaded', function() {
+			mgr.addMarkers(countrymarkers, 0 , 5);
+			mgr.addMarkers(markers, 4);
+			mgr.refresh();
+
+			if (!bounds.isEmpty()) {
+				// optimal map fit
+				map.fitBounds(bounds);
+			}
+			else {
+				// Nothing to display, zoom out and center on middle of nowhere
+				map.setCenter(new google.maps.LatLng(10,-40));
+				map.setZoom(2);
+			}
+		});
+	};
+
+	var popvenueinfo = function(response, marker) {
 		var infowindow = new google.maps.InfoWindow({content: response});
-		infowindow.open(map, this);
-	}
-};
+		infowindow.open(map, marker);
+	};
 
-window.addEvent('domready', function () {
+	$(function(){
+		initialize();
 
-	venuesmap.initialize();
-
-	if ($('filter_venuecategory')) {
-		$('filter_venuecategory').addEvent('change', function () {
-			$('filter').value = 1;
-			$('filterform').submit();
-		});
-	}
-	if ($('filter_category')) {
-		$('filter_category').addEvent('change', function () {
-			$('filter').value = 1;
-			$('filterform').submit();
-		});
-	}
-
-	$$('.customfilter').each(function (element) {
-		element.addEvent('change', function () {
-			$('filter').value = 1;
-			$('filterform').submit();
+		$('#filter_venuecategory, #filter_category, .customfilter').change(function() {
+			$('#filter').val(1);
+			$('#filterform').submit();
 		});
 	});
-});
+})(jQuery);
