@@ -511,7 +511,7 @@ class RedeventUserAcl
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 
-		return $res;
+		return $res ?: array();
 	}
 
 	/**
