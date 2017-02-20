@@ -66,25 +66,58 @@ class RedeventTableSession extends RedeventTable
 	 * @var array
 	 * @since 3.2.3
 	 */
-	public $prices;
+	private $prices;
 
 	/**
 	 * @var array
 	 * @since 3.2.3
 	 */
-	public $roles;
+	private $roles;
 
 	/**
 	 * @var array
 	 * @since 3.2.3
 	 */
-	public $new_prices;
+	private $new_prices;
 
 	/**
 	 * @var array
 	 * @since 3.2.3
 	 */
-	public $new_roles;
+	private $new_roles;
+
+	/**
+	 * Method to bind an associative array or object to the JTable instance.This
+	 * method only binds properties that are publicly accessible and optionally
+	 * takes an array of properties to ignore when binding.
+	 *
+	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @throws  InvalidArgumentException
+	 */
+	public function bind($src, $ignore = array())
+	{
+		// If the source value is an object, get its accessible properties.
+		if (is_object($src))
+		{
+			$src = get_object_vars($src);
+		}
+
+		if (isset($src['new_prices']))
+		{
+			$this->new_prices = $src['new_prices'];
+		}
+
+		if (isset($src['new_roles']))
+		{
+			$this->new_roles = $src['new_roles'];
+		}
+
+		return parent::bind($src, $ignore);
+	}
 
 	/**
 	 * Checks that the object is valid and able to be stored.
@@ -487,7 +520,7 @@ class RedeventTableSession extends RedeventTable
 	 */
 	private function savePrices()
 	{
-		if (empty($this->id))
+		if (empty($this->id) || is_null($this->new_prices))
 		{
 			return true;
 		}
@@ -543,7 +576,7 @@ class RedeventTableSession extends RedeventTable
 	 */
 	private function saveRoles()
 	{
-		if (empty($this->id))
+		if (empty($this->id) || is_null($this->new_roles))
 		{
 			return true;
 		}
