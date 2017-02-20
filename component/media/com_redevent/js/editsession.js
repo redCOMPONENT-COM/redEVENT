@@ -6,7 +6,7 @@
 (function($){
 	$(function(){
 		document.formvalidator.setHandler('futuredate', function(value, $el) {
-			if (!value) {
+			if (!value || '0000-00-00' == value) {
 				return true;
 			}
 
