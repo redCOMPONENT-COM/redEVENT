@@ -23,9 +23,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="redevent" class="el_eventlist">
+<div id="redevent" class="el_eventlist<?= $this->params->get('pageclass_sfx') ?>">
 
-<?php if ($this->params->def('show_page_title', 1)): ?>
+<?php if ($this->params->def('show_page_heading', 1)): ?>
 
 	<h1 class="componentheading">
 		<?php echo $this->escape($this->pagetitle); ?>

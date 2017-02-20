@@ -11,7 +11,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <style type="text/css">
 .rf_img {min-height:<?php echo $this->config->get('imageheight', 100);?>px;}
 </style>
-<div id="redevent" class="el_categoryevents">
+<div id="redevent" class="el_categoryevents<?= $this->params->get('pageclass_sfx') ?>">
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
@@ -23,7 +23,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	?>
 </p>
 
-<?php if ($this->params->def( 'show_page_title', 1 )) : ?>
+<?php if ($this->params->def( 'show_page_heading', 1 )) : ?>
 
     <h1 class='componentheading'>
 		<?php echo $this->task == 'archive' ? $this->escape($this->category->name.' - '.JText::_('COM_REDEVENT_ARCHIVE')) : $this->escape($this->category->name); ?>

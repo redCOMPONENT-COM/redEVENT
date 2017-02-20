@@ -97,6 +97,13 @@ class RedeventsyncQueueStats extends JApplicationCli
 		return $db->loadObjectList();
 	}
 
+	/**
+	 * Send email
+	 *
+	 * @param   array  $messages  messages
+	 *
+	 * @return void
+	 */
 	private function sendMail($messages)
 	{
 		if (!$messages)

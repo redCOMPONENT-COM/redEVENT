@@ -414,7 +414,7 @@ class RedeventTableSession extends RedeventTable
 	{
 		if (is_null($this->prices))
 		{
-			$this->prices = [];
+			$this->prices = array();
 
 			if (empty($this->id))
 			{
@@ -428,7 +428,7 @@ class RedeventTableSession extends RedeventTable
 				->where($db->qn('spg.xref') . ' = ' . (int) $this->id);
 			$db->setQuery($query);
 
-			$this->prices = $db->loadObjectList() ?: [];
+			$this->prices = $db->loadObjectList() ?: array();
 		}
 
 		return true;
@@ -443,7 +443,7 @@ class RedeventTableSession extends RedeventTable
 	 */
 	private function loadRoles()
 	{
-		$this->roles = [];
+		$this->roles = array();
 
 		if (empty($this->id))
 		{
@@ -457,7 +457,7 @@ class RedeventTableSession extends RedeventTable
 			->where($db->qn('r.xref') . ' = ' . (int) $this->id);
 		$db->setQuery($query);
 
-		$this->roles = $db->loadObjectList() ?: [];
+		$this->roles = $db->loadObjectList() ?: array();
 
 		return true;
 	}

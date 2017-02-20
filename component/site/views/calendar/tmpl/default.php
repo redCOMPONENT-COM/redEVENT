@@ -145,21 +145,21 @@ foreach ($this->rows as $row)
 
 }
 ?>
-<div id="redevent" class="jlcalendar">
-    <?php if ($this->params->def('show_page_title', 1)): ?>
+<div id="redevent" class="jlcalendar<?= $this->params->get('pageclass_sfx') ?>">
+    <?php if ($this->params->def('show_page_heading', 1)): ?>
     	<h1 class="componentheading">
         	<?php echo $this->escape($this->params->get('page_title')); ?>
     	</h1>
     <?php endif; ?>
 
-<?php
-  // print the calendar
-  if ($this->params->get('show_week_num', 1)) {
-  	$this->cal->enableWeekNum($this->params->get('week_column_name'));
-  }
-  print ($this->cal->showMonth());
-  //return;
-?>
+	<?php
+	  // print the calendar
+	  if ($this->params->get('show_week_num', 1)) {
+	    $this->cal->enableWeekNum($this->params->get('week_column_name'));
+	  }
+	  print ($this->cal->showMonth());
+	  //return;
+	?>
 </div>
 
 <div id="jlcalendarlegend">
