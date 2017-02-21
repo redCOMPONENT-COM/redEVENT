@@ -5,26 +5,38 @@
 			<![CDATA[COM_REDEVENT_MY_EVENTS_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_MY_EVENTS_LAYOUT</name>
-		<description>COM_REDEVENT_MY_EVENTS_LAYOUT_DESC</description>
-		<params>
-			<param name="showcode" type="radio" default="0" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE_DESC">
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="showcode" type="radio" default="0" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE_DESC">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="showopendates" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES_DESC">
+			</field>
+			<field name="showopendates" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES_DESC">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="shownonbookable" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE_DESC">
+			</field>
+			<field name="shownonbookable" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE_DESC">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="showeventfilter" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER_DESC">
+			</field>
+			<field name="showeventfilter" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER_DESC">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-		</params>
-	</state>
+			</field>
+
+			<field name="display_num" type="list" default="" label="COM_REDEVENT_EVENT_NUMBER"
+				   description="COM_REDEVENT_EVENT_NUMBER_TIP">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+				<option value="25">25</option>
+				<option value="30">30</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+				<option value="200">200</option>
+			</field>
+		</fieldset>
+	</fields>
 </metadata>

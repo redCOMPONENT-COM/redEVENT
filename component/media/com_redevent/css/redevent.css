@@ -695,3 +695,7 @@ div.coords-pinpoint {
 	height: 24px;
 	margin: 0 auto;
 }
+
+div#redevent form.loading {
+	opacity:0.3;
+}
