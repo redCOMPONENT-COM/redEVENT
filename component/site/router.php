@@ -100,6 +100,7 @@ function redeventBuildRoute(&$query)
 		case 'featured':
 		case 'venue':
 		case 'venues':
+		case 'venuepaidregistrations':
 			if (isset($query['id']))
 			{
 				$segments[] = $query['id'];
@@ -273,6 +274,12 @@ function redeventParseRoute($segments)
 				$vars['task'] = $segments[2];
 			}
 
+			break;
+
+		case 'venuepaidregistrations':
+			$id = explode(':', $segments[1]);
+			$vars['id'] = $id[0];
+			$vars['view'] = 'venuepaidregistrations';
 			break;
 
 		case 'editevent':
