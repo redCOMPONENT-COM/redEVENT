@@ -22,6 +22,15 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigVenue extends AbstractTwigEntity
 {
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigVenue[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntityVenue  $entity  The entity
@@ -29,6 +38,25 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function __construct(\RedeventEntityVenue $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntityVenue  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigVenue
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -75,7 +103,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 		return array_map(
 			function($bundle)
 			{
-				return new RedeventEntityTwigBundle($bundle);
+				return \RedeventEntityTwigBundle::getInstance($bundle);
 			},
 			$this->entity->getBundles()
 		);
@@ -101,7 +129,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 		return array_map(
 			function($entity)
 			{
-				return new RedeventEntityTwigVenuescategory($entity);
+				return \RedeventEntityTwigVenuescategory::getInstance($entity);
 			},
 			$this->entity->getCategories()
 		);
@@ -117,7 +145,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 		return array_map(
 			function($event)
 			{
-				return new RedeventEntityTwigEvent($event);
+				return RedeventEntityTwigEvent::getInstance($event);
 			},
 			$this->entity->getEvents()
 		);
@@ -133,7 +161,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 		return array_map(
 			function($session)
 			{
-				return new RedeventEntityTwigSession($session);
+				return RedeventEntityTwigSession::getInstance($session);
 			},
 			$this->entity->getUpcomings()
 		);

@@ -7,8 +7,6 @@
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-use Aesir\Twig\Extension;
-
 defined('_JEXEC') or die;
 
 /**
@@ -16,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  3.2.0
  */
-class PlgAesir_FieldRedevent_BundleTwigExtensionBundle extends \Twig_Extension
+class PlgAesir_FieldRedevent_BundleTwigExtensionBundle extends Redevent\Twig\Plugin
 {
 	/**
 	 * Inject our filter.
@@ -25,8 +23,9 @@ class PlgAesir_FieldRedevent_BundleTwigExtensionBundle extends \Twig_Extension
 	 */
 	public function getFunctions()
 	{
-		return array(
-			new \Twig_SimpleFunction('redevent_bundle', array($this, 'getInstance'))
+		return array_merge(
+			parent::getFunctions(),
+			array(new \Twig_SimpleFunction('redevent_bundle', array($this, 'getInstance')))
 		);
 	}
 
@@ -35,13 +34,17 @@ class PlgAesir_FieldRedevent_BundleTwigExtensionBundle extends \Twig_Extension
 	 *
 	 * @param   integer  $id  Item identifier
 	 *
-	 * @return  mixed  \Aesir\Entity\Twig\Category || null
+	 * @return  mixed  \RedeventEntityTwigBundle || null
 	 */
 	public function getInstance($id)
 	{
-		$item = \RedeventEntityBundle::load((int) $id);
+		if (empty(self::$twigEntities[$id]))
+		{
+			$item = \RedeventEntityBundle::load((int) $id);
+			self::$twigEntities[$id] = $item->isLoaded() ? \RedeventEntityTwigBundle::getInstance($item) : null;
+		}
 
-		return $item->isLoaded() ? new \RedeventEntityTwigBundle($item) : null;
+		return self::$twigEntities[$id];
 	}
 
 	/**

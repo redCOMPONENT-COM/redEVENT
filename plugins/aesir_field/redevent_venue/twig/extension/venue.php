@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since  3.2.0
  */
-class PlgAesir_FieldRedevent_VenueTwigExtensionVenue extends \Twig_Extension
+class PlgAesir_FieldRedevent_VenueTwigExtensionVenue extends Redevent\Twig\Plugin
 {
 	/**
 	 * Inject our filter.
@@ -25,8 +25,9 @@ class PlgAesir_FieldRedevent_VenueTwigExtensionVenue extends \Twig_Extension
 	 */
 	public function getFunctions()
 	{
-		return array(
-			new \Twig_SimpleFunction('redevent_venue', array($this, 'getInstance'))
+		return array_merge(
+			parent::getFunctions(),
+			array(new \Twig_SimpleFunction('redevent_venue', array($this, 'getInstance')))
 		);
 	}
 
@@ -35,13 +36,17 @@ class PlgAesir_FieldRedevent_VenueTwigExtensionVenue extends \Twig_Extension
 	 *
 	 * @param   integer  $id  Item identifier
 	 *
-	 * @return  mixed  \Aesir\Entity\Twig\Category || null
+	 * @return  mixed  \RedeventEntityTwigVenue || null
 	 */
 	public function getInstance($id)
 	{
-		$item = \RedeventEntityVenue::load((int) $id);
+		if (empty(self::$twigEntities[$id]))
+		{
+			$item = \RedeventEntityVenue::load((int) $id);
+			self::$twigEntities[$id] = $item->isLoaded() ? \RedeventEntityTwigVenue::getInstance($item) : null;
+		}
 
-		return $item->isLoaded() ? new \RedeventEntityTwigVenue($item) : null;
+		return self::$twigEntities[$id];
 	}
 
 	/**
