@@ -287,6 +287,35 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get all start dates of active sessions
+	 *
+	 * @return string[]
+	 *
+	 * @since 3.2.3
+	 */
+	public function getStartDates()
+	{
+		if (!$sessions = $this->getEventSessions())
+		{
+			return false;
+		}
+
+		return array_reduce(
+			$sessions,
+			function($values, $session)
+			{
+				if (!in_array($session->dates, $values))
+				{
+					$values[] = $session->dates;
+				}
+
+				return $values;
+			},
+			array()
+		);
+	}
+
+	/**
 	 * Return cached event sessions
 	 *
 	 * @param   int     $published  publish state
