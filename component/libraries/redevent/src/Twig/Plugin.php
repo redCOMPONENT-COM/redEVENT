@@ -34,7 +34,8 @@ abstract class Plugin extends \Twig_Extension
 	{
 		return array(
 			new \Twig_SimpleFunction('redevent_allvenues', array($this, 'getAllVenues')),
-			new \Twig_SimpleFunction('redevent_eventvenues', array($this, 'getActiveEventVenues'))
+			new \Twig_SimpleFunction('redevent_eventvenues', array($this, 'getActiveEventVenues')),
+			new \Twig_SimpleFunction('redevent_eventlanguages', array($this, 'getActiveEventLanguages')),
 		);
 	}
 
@@ -110,5 +111,38 @@ abstract class Plugin extends \Twig_Extension
 			},
 			$entities
 		) : false;
+	}
+
+	/**
+	 * Get venues associated to published sessions of list of events
+	 *
+	 * @param   int[]  $eventIds  event ids
+	 *
+	 * @return string[]
+	 *
+	 * @since 3.2.3
+	 */
+	public function getActiveEventLanguages($eventIds)
+	{
+		if (empty($eventIds))
+		{
+			return null;
+		}
+
+		$eventIds = array_map('intval', $eventIds);
+
+		$db    = \JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('DISTINCT x.session_language')
+			->from('#__redevent_event_venue_xref AS x')
+			->where('x.published = 1')
+			->where('x.eventid IN (' . implode(", ", $eventIds) . ')')
+			->order('x.session_language ASC');
+
+		$db->setQuery($query);
+
+		$res = $db->loadColumn();
+
+		return $res ?: null;
 	}
 }
