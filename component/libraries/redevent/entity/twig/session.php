@@ -24,6 +24,15 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	use Traits\HasCheckin, Traits\HasFeatured, Traits\HasState;
 
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigSession[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntitySession  $entity  The entity
@@ -31,6 +40,25 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	public function __construct(\RedeventEntitySession $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntitySession  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigSession
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -114,7 +142,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	{
 		$event = $this->entity->getEvent();
 
-		return $event->isValid() ? new \RedeventEntityTwigEvent($event) : false;
+		return $event->isValid() ? \RedeventEntityTwigEvent::getInstance($event) : false;
 	}
 
 	/**
@@ -140,7 +168,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 			? array_map(
 				function($entity)
 				{
-					return new \RedeventEntityTwigSessionpricegroup($entity);
+					return \RedeventEntityTwigSessionpricegroup::getInstance($entity);
 				},
 				$prices
 			)
@@ -166,7 +194,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	{
 		$venue = $this->entity->getVenue();
 
-		return $venue->isValid() ? new \RedeventEntityTwigVenue($venue) : false;
+		return $venue->isValid() ? \RedeventEntityTwigVenue::getInstance($venue) : false;
 	}
 
 	/**

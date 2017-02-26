@@ -22,9 +22,23 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigEvent extends AbstractTwigEntity
 {
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigEvent[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * @var RedeventEntitySession[][]
 	 */
 	private $sessions;
+
+	/**
+	 * @var RedeventEntityVenue[]
+	 */
+	private $venues;
 
 	/**
 	 * Constructor.
@@ -34,6 +48,25 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	public function __construct(\RedeventEntityEvent $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntityEvent  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigEvent
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -90,7 +123,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 		return $published ? array_map(
 			function($bundle)
 			{
-				return new \RedeventEntityTwigBundle($bundle);
+				return \RedeventEntityTwigBundle::getInstance($bundle);
 			}, $published
 		) : false;
 	}
@@ -191,7 +224,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 			return false;
 		}
 
-		return new \RedeventEntityTwigSession(reset($upcomings));
+		return \RedeventEntityTwigSession::getInstance(reset($upcomings));
 	}
 
 	/**
@@ -232,7 +265,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 		return $sessions ? array_map(
 			function($session)
 			{
-				return new \RedeventEntityTwigSession($session);
+				return \RedeventEntityTwigSession::getInstance($session);
 			},
 			$sessions
 		) : false;
@@ -245,28 +278,12 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	public function getVenues()
 	{
-		if (!$sessions = $this->getEventSessions())
+		if (is_null($this->venues))
 		{
-			return false;
+			$this->venues = $this->entity->getActiveVenues();
 		}
 
-		$venues = array_reduce(
-			$sessions,
-			function($value, $session)
-			{
-				$venue = $session->getVenue();
-
-				if (empty($value[$venue->id]))
-				{
-					$value[$venue->id] = new RedeventEntityTwigVenue($venue);
-				}
-
-				return $value;
-			},
-			array()
-		);
-
-		return $venues;
+		return $this->venues;
 	}
 
 	/**
@@ -280,57 +297,36 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	private function getEventSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
-		$hash = "published=$published&$ordering=$ordering&featured=$featured";
+		$hash = "published=$published&ordering=$ordering&featured=$featured";
 
 		if (!isset($this->sessions[$hash]))
 		{
-			$db = \JFactory::getDbo();
-			$query = $db->getQuery(true)
-				->select('*')
-				->from('#__redevent_event_venue_xref')
-				->where('eventid = ' . $this->entity->id);
-
 			switch ($ordering)
 			{
 				case 'dates.desc':
-					$filter_order_dir = 'DESC';
-					$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
-					$ordering = ($open_order ? 'dates = 0 ' : 'dates > 0 ') . $filter_order_dir
-						. ', dates ' . $filter_order_dir . ', times ' . $filter_order_dir . ', featured DESC';
-
-					$query->order($ordering);
+					$order = 'dates';
+					$orderDir = 'desc';
 					break;
 
 				case 'dates.asc':
 				default:
-					$filter_order_dir = 'ASC';
-					$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
-					$ordering = ($open_order ? 'dates = 0 ' : 'dates > 0 ') . $filter_order_dir
-						. ', dates ' . $filter_order_dir . ', times ' . $filter_order_dir . ', featured DESC';
-
-					$query->order($ordering);
+					$order = 'dates';
+					$orderDir = 'asc';
 			}
+
+			$filters = array();
 
 			if (is_numeric($published))
 			{
-				$query->where('published = ' . $published);
+				$filters['published'] = $published;
 			}
 
 			if ($featured)
 			{
-				$query->where('featured = 1');
+				$filters['featured'] = 1;
 			}
 
-			$db->setQuery($query);
-			$res = $db->loadObjectList();
-
-			$this->sessions[$hash] = $res ? array_map(
-				function($row)
-				{
-					return \RedeventEntitySession::getInstance($row->id)->bind($row);
-				},
-				$res
-			) : false;
+			$this->sessions[$hash] = $this->entity->getSessions($order, $orderDir, $filters);
 		}
 
 		return $this->sessions[$hash];
