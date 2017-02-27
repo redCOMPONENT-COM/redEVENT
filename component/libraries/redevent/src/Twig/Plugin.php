@@ -35,6 +35,7 @@ abstract class Plugin extends \Twig_Extension
 		return array(
 			new \Twig_SimpleFunction('redevent_allvenues', array($this, 'getAllVenues')),
 			new \Twig_SimpleFunction('redevent_eventvenues', array($this, 'getActiveEventVenues')),
+			new \Twig_SimpleFunction('redevent_venuesperevent', array($this, 'getActiveVenuesPerEvent')),
 			new \Twig_SimpleFunction('redevent_eventlanguages', array($this, 'getActiveEventLanguages')),
 		);
 	}
@@ -111,6 +112,62 @@ abstract class Plugin extends \Twig_Extension
 			},
 			$entities
 		) : false;
+	}
+
+	/**
+	 * Get venues associated to published sessions of list of events, assigned per event id
+	 *
+	 * @param   int[]  $eventIds  event ids
+	 *
+	 * @return \RedeventEntityTwigVenue[][]
+	 *
+	 * @since 3.2.3
+	 */
+	public function getActiveVenuesPerEvent($eventIds)
+	{
+		if (empty($eventIds))
+		{
+			return null;
+		}
+
+		if (!$venues = $this->getActiveEventVenues($eventIds))
+		{
+			return null;
+		}
+
+		$eventIds = array_map('intval', $eventIds);
+
+		$db    = \JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('DISTINCT x.eventid, x.venueid')
+			->from('#__redevent_venues AS v')
+			->innerJoin('#__redevent_event_venue_xref AS x ON x.venueid = v.id')
+			->where('x.published = 1')
+			->where('x.eventid IN (' . implode(", ", $eventIds) . ')')
+			->order('v.venue ASC');
+
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+
+		$result = array();
+
+		foreach ($rows as $row)
+		{
+			if (!isset($result[$row->eventid]))
+			{
+				$result[$row->eventid] = array();
+			}
+
+			foreach ($venues as $venue)
+			{
+				if ($venue->id == $row->venueid)
+				{
+					$result[$row->eventid][] = $venue;
+				}
+			}
+		}
+
+		return $result;
 	}
 
 	/**
