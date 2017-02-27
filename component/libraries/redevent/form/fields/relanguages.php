@@ -28,6 +28,8 @@ class JFormFieldRELanguages extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
+		$options = parent::getOptions();
+
 		$config = RedeventHelper::config();
 
 		if ($allowed = $config->get('allowed_session_languages'))
@@ -40,6 +42,6 @@ class JFormFieldRELanguages extends JFormFieldList
 			$allowed = array();
 		}
 
-		return RedeventHelperLanguages::getOptions('value', 'text', false, $allowed);
+		return array_merge($options, RedeventHelperLanguages::getOptions('value', 'text', false, $allowed));
 	}
 }
