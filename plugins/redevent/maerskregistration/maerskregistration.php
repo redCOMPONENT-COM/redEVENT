@@ -321,14 +321,23 @@ class plgRedeventMaerskregistration extends JPlugin
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_INVOICE_CONTACT') .': ' . $bookerInfo->rm_invoice_contact . '</li>';
 		$body .= '</ul>';
 
+		$company = null;
 
-		$companies = $attendeeInfo->getOrganizations();
-
-		if (!empty($companies))
+		if ($organizationName = $attendee->getFieldValue(4))
+		{
+			if ($orgId = $this->getOrganizationIdFromName($organizationName))
+			{
+				$company = RedmemberApi::getOrganization($orgId);
+			}
+		}
+		elseif ($companies = $attendeeInfo->getOrganizations())
 		{
 			$companyUser = reset($companies);
 			$company = RedmemberApi::getOrganization($companyUser['organization_id']);
+		}
 
+		if ($company)
+		{
 			$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_HEADER') . '</h2>';
 			$body .= '<ul>';
 			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_NAME') .': ' . $company->name . '</li>';
@@ -474,5 +483,18 @@ class plgRedeventMaerskregistration extends JPlugin
 		$data = $db->loadResult();
 
 		return $data;
+	}
+
+	private function getOrganizationIdFromName($name)
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('id')
+			->from('#__redmember_organization')
+			->where('name = ' . $db->quote($name));
+
+		$db->setQuery($query);
+
+		return $db->loadResult();
 	}
 }
