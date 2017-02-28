@@ -159,14 +159,18 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	 */
 	private function redformRegistration()
 	{
-		$pricegroup = $this->getPricegroup();
+		$options = array("organization_id" => $this->organizationId);
 
-		$field = new RedeventRfieldSessionprice;
-		$field->setOptions(array($pricegroup));
-		$field->setValue($pricegroup->id);
-		$field->setFormIndex(1);
+		if ($pricegroup = $this->getPricegroup())
+		{
+			$field = new RedeventRfieldSessionprice;
+			$field->setOptions(array($pricegroup));
+			$field->setValue($pricegroup->id);
+			$field->setFormIndex(1);
 
-		$options = array('extrafields' => array(array($field)), 'currency' => $pricegroup->currency);
+			$options['extrafields'] = array(array($field));
+			$options['currency'] = $pricegroup->currency;
+		}
 
 		$redformId = $this->getRedformId();
 
@@ -201,7 +205,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 			->setOrigin('b2b')
 			->register($user, $rfpost['sid'], $redformResult->submit_key, $pricegroup->id, 1);
 
-		if ($reg)
+		if (!$reg)
 		{
 			throw new Exception(JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED'));
 		}
@@ -326,10 +330,8 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	{
 		if ($this->pricegroup === null)
 		{
-			$model = RModel::getFrontInstance('Registration', array('ignore_request' => true), 'com_redevent');
-			$model->setXref($this->xref);
-
-			$priceGroups = $model->getPricegroups();
+			$session = RedeventEntitySession::load($this->xref);
+			$priceGroups = $session->getPricegroups();
 
 			if (!empty($priceGroups))
 			{
