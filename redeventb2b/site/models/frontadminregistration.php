@@ -159,7 +159,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	 */
 	private function redformRegistration()
 	{
-		$options = array();
+		$options = array("organization_id" => $this->organizationId);
 
 		if ($pricegroup = $this->getPricegroup())
 		{
