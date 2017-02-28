@@ -152,6 +152,21 @@ class RedeventAttendee extends JObject
 	}
 
 	/**
+	 * Get a field value
+	 *
+	 * @param   int    $field_id  field id
+	 * @param   mixed  $default   default value
+	 *
+	 * @return string
+	 */
+	public function getFieldValue($field_id, $default = null)
+	{
+		$answers = $this->getAnswers();
+
+		return $answers->getFieldAnswer($field_id) ?: $default;
+	}
+
+	/**
 	 * Get full name
 	 *
 	 * @return string
