@@ -166,4 +166,38 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 			$this->entity->getUpcomings()
 		);
 	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return array
+	 */
+	public function getUpcomingsessionsCount()
+	{
+		return count($this->entity->getUpcomings());
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return array
+	 */
+	public function getUsedLanguages()
+	{
+		$res = array_reduce(
+			$this->entity->getUpcomings(),
+			function ($values, $session)
+			{
+				if (!in_array($session->session_language, $values))
+				{
+					$values[] = $session->session_language;
+				}
+
+				return $values;
+			},
+			array()
+		);
+
+		return $res;
+	}
 }

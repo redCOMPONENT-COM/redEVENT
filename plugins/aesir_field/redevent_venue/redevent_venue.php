@@ -26,6 +26,8 @@ RedeventBootstrap::bootstrap();
 
 use Aesir\Plugin\AbstractFieldPlugin;
 use Aesir\Entity\FieldInterface;
+use Aesir\App;
+use Aesir\Entity\Twig;
 
 /**
  * Redevent_venue field
@@ -61,5 +63,67 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 	public function onAesirAfterTwigLoad(\Aesir\Twig\Enviroment $twig, \Twig_LoaderInterface $loader = null, $options = array())
 	{
 		$twig->addExtension(new PlgAesir_FieldRedevent_venueTwigExtensionVenue);
+	}
+
+	public function onAjaxGetVenueActiveSessions()
+	{
+		$app = JFactory::getApplication();
+		$input = $app->input;
+
+		$venueId = $input->getInt('id');
+		$limit = $input->getInt('limit', RedeventHelper::config()->get('show_num'));
+		$limitstart = $input->getInt('limitstart', 0);
+		$layout = $input->getString('layout', 'redevent.aesir_field.venue.sessions');
+
+		$db = JFactory::getDbo();
+
+		// First get from 'all_dates' bundle events
+		$query = $db->getQuery(true)
+			->select('x.*')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
+			->where('x.venueid = ' . $venueId)
+			->where('x.published = 1')
+			->where('e.published = 1');
+
+		$open_order = RedeventHelper::config()->get('open_dates_ordering', 0);
+		$ordering_def = ($open_order ? 'x.dates = 0 ' : 'x.dates > 0 ') . 'ASC'
+			. ', x.dates ASC, x.times ASC';
+
+		$query->order($ordering_def);
+
+		$db->setQuery($query, $limitstart, $limit);
+		$res = $db->loadObjectList() ?: array();
+
+		$sessions = RedeventEntitySession::loadArray($res);
+
+		$twigEntities = array_map(
+			function($session)
+			{
+				return RedeventEntityTwigSession::getInstance($session);
+			},
+			$sessions
+		);
+
+		$twigLayout = RedeventLayoutHelper::render($layout, compact('sessions'), '', ['defaultLayoutsPath' => __DIR__ . '/layouts']);
+
+		$loader = new Twig_Loader_Array(
+			array (
+				$layout => $twigLayout
+			)
+		);
+
+		$twig = App::getTwig($loader);
+
+		$html = $twig->render(
+			$layout,
+			array (
+				'sessions' => $twigEntities
+			)
+		);
+
+		echo new JResponseJson($html);
+
+		$app->close();
 	}
 }

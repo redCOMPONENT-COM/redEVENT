@@ -27,7 +27,9 @@ class PlgAesir_FieldRedevent_VenueTwigExtensionVenue extends Redevent\Twig\Plugi
 	{
 		return array_merge(
 			parent::getFunctions(),
-			array(new \Twig_SimpleFunction('redevent_venue', array($this, 'getInstance')))
+			array(
+				new \Twig_SimpleFunction('redevent_venue', array($this, 'getInstance'))
+			)
 		);
 	}
 
