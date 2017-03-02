@@ -65,6 +65,13 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 		$twig->addExtension(new PlgAesir_FieldRedevent_venueTwigExtensionVenue);
 	}
 
+	/**
+	 * Integration for maersk
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.3
+	 */
 	public function onAjaxGetVenueActiveSessions()
 	{
 		$app = JFactory::getApplication();
@@ -74,6 +81,9 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 		$limit = $input->getInt('limit', RedeventHelper::config()->get('show_num'));
 		$limitstart = $input->getInt('limitstart', 0);
 		$layout = $input->getString('layout', 'redevent.aesir_field.venue.sessions');
+
+		$filter_date = $input->getString('filter_date');
+		$filter_lang = $input->getString('filter_lang');
 
 		$db = JFactory::getDbo();
 
@@ -85,6 +95,19 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 			->where('x.venueid = ' . $venueId)
 			->where('x.published = 1')
 			->where('e.published = 1');
+
+		if ($filter_date)
+		{
+			$monthStart = JFactory::getDate(str_replace("_", " ", $filter_date));
+			$monthEnd = clone $monthStart;
+			$monthEnd->modify('+ 1 month - 1 day');
+			$query->where('x.dates BETWEEN ' . $db->quote($monthStart->toSql()) . ' AND ' . $db->quote($monthEnd->toSql()));
+		}
+
+		if ($filter_lang)
+		{
+			$query->where('x.session_language = ' . $db->quote($filter_lang));
+		}
 
 		$open_order = RedeventHelper::config()->get('open_dates_ordering', 0);
 		$ordering_def = ($open_order ? 'x.dates = 0 ' : 'x.dates > 0 ') . 'ASC'
