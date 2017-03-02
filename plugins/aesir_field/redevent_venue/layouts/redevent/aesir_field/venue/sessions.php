@@ -18,6 +18,15 @@ extract($displayData);
 
 <div class="row list-item {% if  loop.index % 2 == 0 %} blue {% endif %} ">
 
+	<div class="hidden time-list">
+		{% if session.session_date == "0000-00-00" %}
+		Request date
+		{% else %}
+		{{ session.session_date|date("M_Y")  }}
+		{% endif %}
+	</div>
+	<div class="hidden lang-list">{{ session.session_language }}</div>
+
 	<div class="course">
 		{{ session.getEvent.title }}
 	</div>
