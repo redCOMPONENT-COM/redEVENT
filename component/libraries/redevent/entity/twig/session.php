@@ -214,7 +214,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	 *
 	 * @since 3.2.3
 	 */
-	public function getReditemLink()
+	public function getReditemLink($routed = true)
 	{
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -229,6 +229,8 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 			return false;
 		}
 
-		return ReditemHelperRoute::getItemRoute($res);
+		$route = ReditemHelperRoute::getItemRoute($res);
+
+		return $routed ? \JRoute::_($route) : $route;
 	}
 }
