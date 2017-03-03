@@ -144,7 +144,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 */
 	public function onContentAfterSave($context, $table, $isNew)
 	{
-		if ('com_redevent.session' !== $context)
+		if (!$table instanceof RedeventTableSession)
 		{
 			return;
 		}
