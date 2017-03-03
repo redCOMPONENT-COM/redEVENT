@@ -59,9 +59,9 @@ extract($displayData);
 	<div class="price">
 		{% if session.prices > '' %}
 		{% for item in session.prices %}
-
+		{% if item.active %}
 		{{ item.currency }} {{ item.price }}
-
+		{% endif %}
 		{% endfor %}
 		{% else %}
 		-
