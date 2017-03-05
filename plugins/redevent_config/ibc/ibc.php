@@ -39,5 +39,6 @@ class PlgRedevent_ConfigIbc extends JPlugin
 	public function onGetRedeventConfig(&$params)
 	{
 		$params->set('ga_emails_domain_filter', $this->params->get('ga_emails_domain_filter'));
+		$params->set('disable_waitinglist_status_email', 1);
 	}
 }
