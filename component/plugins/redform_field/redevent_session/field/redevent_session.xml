@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields name="params">
+		<fieldset name="extra" label="extra">
+			<field name="label_format"
+				   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_LABEL_FORMAT"
+				   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_LABEL_FORMAT_DESC"/>
+			<field name="value_format"
+				   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT"
+				   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT_DESC"/>
+		</fieldset>
+	</fields>
+</form>
