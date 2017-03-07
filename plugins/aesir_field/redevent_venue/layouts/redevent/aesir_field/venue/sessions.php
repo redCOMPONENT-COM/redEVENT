@@ -77,7 +77,8 @@ extract($displayData);
 	</div>
 
 	<div class="book">
-		<a href="{{ session.getReditemLink|raw }}"><i class="small-arrow" aria-hidden="true"><img src="images/ICONS/arrow_read_more.svg" /></i>Book course</a>
+		<a href="{{ session.getReditemLink|raw }}"><i class="small-arrow" aria-hidden="true"><img src="images/ICONS/arrow_read_more.svg" /></i>
+			{% if session.registrationend|date('U') > 'now'|date('U') %}Book course{% else %}Read more{% endif %}</a>
 	</div>
 </div>
 
