@@ -50,7 +50,35 @@ class RdfFieldRedevent_session extends RdfRfieldSelect
 	 */
 	public function getOptions()
 	{
-		return parent::getOptions();
+		$options = parent::getOptions();
+
+		if (!$sessions = $this->getSessions())
+		{
+			return $sessions;
+		}
+
+		$formatValue = $this->getParam('label_format', '[session_id]');
+		$formatText = $this->getParam('value_format', '[event_title] - [date format="d-m-Y"]');
+
+		$tags = new RedeventTags;
+
+		$optionsSessions = array_map(
+			function($session) use ($tags, $formatValue, $formatText)
+			{
+				$tags->setXref($session->id);
+
+				$option = new stdClass;
+				$option->value = $tags->replaceTags($formatValue, ['extra' => ['[session_id]' => $session->id]]);
+				$option->label = $tags->replaceTags($formatText, ['extra' => ['[session_id]' => $session->id]]);
+				$option->price = 0;
+				$option->sku = "";
+
+				return $option;
+			},
+			$sessions
+		);
+
+		return array_merge($options ?: array(), $optionsSessions);
 	}
 
 	/**
@@ -65,5 +93,47 @@ class RdfFieldRedevent_session extends RdfRfieldSelect
 		$this->pluginParams = $params;
 
 		return $this;
+	}
+
+	/**
+	 * getSessions
+	 *
+	 * @return RedeventEntitySession[]
+	 *
+	 * @since 3.2.3
+	 */
+	private function getSessions()
+	{
+		$filterState = $this->getParam('session_state');
+		$filterCategory = $this->getParam('session_category');
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('x.*')
+			->from('#__redevent_event_venue_xref AS x')
+			->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
+			->where('x.published = 1')
+			->where('e.published = 1')
+			->order('x.dates > 0 DESC, x.dates ASC, x.times ASC');
+
+		if (is_numeric($filterState))
+		{
+			$query->where('x.published = ' . $filterState);
+		}
+
+		if (is_numeric($filterCategory))
+		{
+			$query->innerJoin('#__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid');
+			$query->where('xcat.category_id = ' . $filterCategory);
+		}
+
+		$db->setQuery($query);
+
+		if (!$res = $db->loadObjectList())
+		{
+			return array();
+		}
+
+		return RedeventEntitySession::loadArray($res);
 	}
 }
