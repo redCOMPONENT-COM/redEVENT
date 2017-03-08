@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields name="params">
+		<fieldset name="extra" label="extra">
+			<field name="session_category"
+				   type="redevent.category"
+				   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_EVENT_CATEGORY"
+				   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_EVENT_CATEGORY_DESC">
+				<option value="">JALL</option>
+			</field>
+			<field name="label_format"
+				   type="text"
+				   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_LABEL_FORMAT"
+				   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_LABEL_FORMAT_DESC"/>
+			<field name="value_format"
+				   type="text"
+				   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT"
+				   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT_DESC"/>
+		</fieldset>
+	</fields>
+</form>

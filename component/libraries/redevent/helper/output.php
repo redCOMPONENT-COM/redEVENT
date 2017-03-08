@@ -404,7 +404,7 @@ class RedeventHelperOutput
 			$attributes['class'] = 'venuemap';
 		}
 
-		$mapLink = JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id=' . $data->venueid);
+		$mapLink = JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id=' . ($data->venueid ?: $data->id));
 
 		$output = RedeventLayoutHelper::render('mapicon', array('link' => $mapLink, 'attributes' => $attributes), null, array('client' => 0));
 
@@ -429,7 +429,7 @@ class RedeventHelperOutput
 		$document->addScriptDeclaration('
 			var basepath = "' . JURI::root() . '";
 			window.addEvent(\'domready\', function() {
-				mymap.initajax(' . $data->venueid . ', "venue-location");
+				mymap.initajax(' . ($data->venueid ?: $data->id) . ', "venue-location");
 			});
 		');
 		JText::script("COM_REDEVENT_GET_DIRECTIONS");

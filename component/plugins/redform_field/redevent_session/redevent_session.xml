@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redform_field" method="upgrade">
+	<name>PLG_REDFORM_FIELD_REDEVENT_SESSION</name>
+	<creationDate>March 2017</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2017 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>3.2.3</version>
+	<tag>##VERSION##</tag>
+	<description>PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_DESCRIPTION</description>
+
+	<files>
+		<file plugin="redevent_session">redevent_session.php</file>
+		<folder>field</folder>
+		<folder>language</folder>
+		<folder>layouts</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="label_format"
+					   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_LABEL_FORMAT"
+					   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_LABEL_FORMAT_DESC"/>
+				<field name="value_format"
+					   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT"
+					   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

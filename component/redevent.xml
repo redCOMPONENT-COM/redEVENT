@@ -89,6 +89,7 @@
 	<plugins>
 		<plugin name="redevent" group="redform_integration" />
 		<plugin name="redevent" group="installer" />
+		<plugin name="redevent_session" group="redform_field" />
 	</plugins>
 
 	<!-- Libraries to install -->
