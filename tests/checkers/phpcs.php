@@ -36,6 +36,7 @@ $ignored = array(
 	REPO_BASE . '/component/site/classes/*',
 	REPO_BASE . '/component/site/sef_ext/*',
 	REPO_BASE . '/component/media',
+	REPO_BASE . '/component/plugins/**/layouts/*',
 	REPO_BASE . '/redeventb2b/*/layouts/*',
 	REPO_BASE . '/redeventsync/admin/tables/*',
 	REPO_BASE . '/redeventsync/*/layouts/*',

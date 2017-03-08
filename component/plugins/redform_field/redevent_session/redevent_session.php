@@ -19,7 +19,7 @@ jimport('redevent.bootstrap');
  *
  * @since  3.0
  */
-class PlgRedform_FieldRedevent_session extends JPlugin
+class PlgRedform_FieldRedevent_Session extends JPlugin
 {
 	protected $autoloadLanguage = true;
 

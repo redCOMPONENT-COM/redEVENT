@@ -14,7 +14,7 @@ defined('JPATH_BASE') or die;
  *
  * @since  3.0
  */
-class RdfFieldRedevent_session extends RdfRfieldSelect
+class RdfFieldRedevent_Session extends RdfRfieldSelect
 {
 	/**
 	 * @var string

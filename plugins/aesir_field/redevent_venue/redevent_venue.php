@@ -65,6 +65,13 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 		$twig->addExtension(new PlgAesir_FieldRedevent_venueTwigExtensionVenue);
 	}
 
+	/**
+	 * Dislplay active sessions for venue
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.3
+	 */
 	public function onAjaxGetVenueActiveSessions()
 	{
 		$app = JFactory::getApplication();
