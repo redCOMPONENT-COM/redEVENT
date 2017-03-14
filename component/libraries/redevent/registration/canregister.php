@@ -174,7 +174,9 @@ class RedeventRegistrationCanregister
 
 		if (RedeventHelperDate::isValidDate($this->session->registrationend))
 		{
-			if (strtotime($this->session->registrationend) < $now_unix)
+			$registrationEnd = JFactory::getDate($this->session->registrationend, new DateTimeZone("UTC"));
+
+			if ($registrationEnd < $now)
 			{
 				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
