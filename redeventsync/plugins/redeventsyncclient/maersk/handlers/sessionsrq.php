@@ -34,7 +34,6 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			$object = $this->parseSessionXml($xml);
 			$row = RTable::getAdminInstance('Session', array(), 'com_redevent');
 
-
 			if (!$row->bind(get_object_vars($object)))
 			{
 				throw new Exception($row->getError());
@@ -44,6 +43,8 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			{
 				throw new Exception($row->getError());
 			}
+
+			RFactory::getDispatcher()->trigger('onContentAfterSave', array('redeventsync.sessionrq', $row));
 
 			// Log
 			$this->log(
@@ -56,11 +57,6 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			$response->addChild('Success', '');
 			$response->addChild('SessionCode', $row->session_code);
 			$this->addResponse($response);
-
-			if (isset($object->prices))
-			{
-				$row->setPrices($object->prices);
-			}
 
 			// Log
 			$this->log(
@@ -562,22 +558,6 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 
 				$object->new_prices = $prices;
 			}
-		}
-
-		if (isset($xml->SessionRoles))
-		{
-			$roles = array();
-
-			foreach ($el->SessionRole->children() as $ob)
-			{
-				$p = new stdClass;
-				$p->RoleId    = (int) $ob->RoleId;
-				$p->RoleName  = (string) $ob->RoleName;
-				$p->RoleUser  = (string) $ob->RoleUser;
-				$roles[] = $p;
-			}
-
-			$xml->roles = $roles;
 		}
 
 		if (isset($xml->SessionIcal))
