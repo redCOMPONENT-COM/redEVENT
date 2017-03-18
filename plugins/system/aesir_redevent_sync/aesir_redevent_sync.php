@@ -283,8 +283,8 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 		if (!$item->isValid())
 		{
 			$data = array(
-				'type_id' => $this->params->get('aesir_session_type_id'),
-				'template_id' => $this->params->get('aesir_session_template_id'),
+				'type_id' => RedeventHelperConfig::get('aesir_session_type_id'),
+				'template_id' => RedeventHelperConfig::get('aesir_session_template_id'),
 				'title'   => JText::sprintf(
 					'PLG_AESIR_REDEVENT_SYNC_ITEM_SESSION_TITLE_FORMAT',
 					$session->getEvent()->title,
@@ -310,7 +310,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 
 			// TODO: remove this workaround when aesir code gets fixed
 			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
-			$jform['access'] = $this->params->get('session_access');
+			$jform['access'] = RedeventHelperConfig::get('session_access');
 			JFactory::getApplication()->input->set('jform', $jform);
 
 			$sessionItemId = $item->save($data);
@@ -516,7 +516,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	{
 		if (is_null($this->eventType))
 		{
-			$typeId = $this->params->get('aesir_event_type_id');
+			$typeId = RedeventHelperConfig::get('aesir_event_type_id');
 			$type = ReditemEntityType::load($typeId);
 
 			if (!$type->isValid())
@@ -541,7 +541,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	{
 		if (is_null($this->eventSelectField))
 		{
-			$id = $this->params->get('aesir_event_select_field');
+			$id = RedeventHelperConfig::get('aesir_event_select_field');
 			$field = ReditemEntityField::load($id);
 
 			if (!$field->isValid())
@@ -566,7 +566,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	{
 		if (is_null($this->sessionType))
 		{
-			$typeId = $this->params->get('aesir_session_type_id');
+			$typeId = RedeventHelperConfig::get('aesir_session_type_id');
 			$type = ReditemEntityType::load($typeId);
 
 			if (!$type->isValid())
@@ -591,7 +591,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	{
 		if (is_null($this->sessionSelectField))
 		{
-			$id = $this->params->get('aesir_session_select_field');
+			$id = RedeventHelperConfig::get('aesir_session_select_field');
 			$field = ReditemEntityField::load($id);
 
 			if (!$field->isValid())

@@ -34,6 +34,7 @@
 			"redeventvenuecategory"
 		],
 		"redevent" : ["jomsocial", "redmemberlogin", "acymailinglists", "eventnewslettersignup", "paymentnotificationemail"],
+		"redevent_config" : ["aesir"],
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],

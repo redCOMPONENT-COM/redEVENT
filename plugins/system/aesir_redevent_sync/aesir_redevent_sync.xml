@@ -19,42 +19,6 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field
-						name="aesir_session_type_id"
-						type="reditem.typeList"
-						label="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_SESSION_TYPE_ID_LABEL"
-						description="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_SESSION_TYPE_DESCRIPTION">
-				</field>
-				<field
-						name="aesir_session_select_field"
-						type="reditem.customfield"
-						label="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_SESSION_SELECT_FIELD_LABEL"
-						description="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_SESSION_SELECT_FIELD_DESCRIPTION">
-				</field>
-				<field
-						name="aesir_event_type_id"
-						type="reditem.typeList"
-						label="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_EVENT_TYPE_ID_LABEL"
-						description="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_EVENT_TYPE_DESCRIPTION">
-				</field>
-				<field
-						name="aesir_event_select_field"
-						type="reditem.customfield"
-						label="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_EVENT_SELECT_FIELD_LABEL"
-						description="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_EVENT_SELECT_FIELD_DESCRIPTION">
-				</field>
-				<field
-						name="aesir_session_template_id"
-						type="reditem.template"
-						label="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_LABEL"
-						description="PLG_AESIR_REDEVENT_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_DESC">
-				</field>
-				<field
-						name="session_access"
-						type="accesslevel"
-						label="PLG_AESIR_REDEVENT_SYNC_XML_SESSION_ACCESS_LABEL"
-						description="PLG_AESIR_REDEVENT_SYNC_XML_SESSION_ACCESS_DESC">
-				</field>
 			</fieldset>
 		</fields>
 	</config>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent_config" method="aesir">
+	<name>PLG_REDEVENT_CONFIG_AESIR</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2017 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>3.0.5</version>
+	<tag>##VERSION##</tag>
+	<description>PLG_REDEVENT_CONFIG_AESIR_XML_DESCRIPTION</description>
+
+	<files>
+		<file plugin="aesir">aesir.php</file>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+						name="aesir_session_type_id"
+						type="reditem.typeList"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TYPE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TYPE_DESCRIPTION">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_session_select_field"
+						type="reditem.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_SELECT_FIELD_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_SELECT_FIELD_DESCRIPTION">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_event_type_id"
+						type="reditem.typeList"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TYPE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TYPE_DESCRIPTION">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_event_select_field"
+						type="reditem.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_SELECT_FIELD_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_SELECT_FIELD_DESCRIPTION">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_session_template_id"
+						type="reditem.template"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="session_access"
+						type="accesslevel"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SESSION_ACCESS_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SESSION_ACCESS_DESC">
+					<option value="">JSELECT</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
