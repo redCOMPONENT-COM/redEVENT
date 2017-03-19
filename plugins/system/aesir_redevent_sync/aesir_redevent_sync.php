@@ -166,14 +166,16 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	 */
 	public function onContentAfterSave($context, $table, $isNew)
 	{
-		if (!$table instanceof RedeventTableSession)
+		if ($table instanceof RedeventTableSession && $this->params->get('sync_sessions'))
 		{
-			return;
+			$session = RedeventEntitySession::getInstance($table->id)->bind($table);
+			$this->syncSession($session);
 		}
-
-		$session = RedeventEntitySession::getInstance($table->id)->bind($table);
-
-		$this->syncSession($session);
+		elseif ($table instanceof RedeventTableEvent && $this->params->get('sync_events'))
+		{
+			$event = RedeventEntityEvent::getInstance($table->id)->bind($table);
+			$this->syncEvent($event);
+		}
 	}
 
 	/**
@@ -310,7 +312,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 
 			// TODO: remove this workaround when aesir code gets fixed
 			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
-			$jform['access'] = RedeventHelperConfig::get('session_access');
+			$jform['access'] = RedeventHelperConfig::get('aesir_session_access');
 			JFactory::getApplication()->input->set('jform', $jform);
 
 			$sessionItemId = $item->save($data);
@@ -369,6 +371,53 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	}
 
 	/**
+	 * Sync an event
+	 *
+	 * @param   RedeventEntityEvent  $event  event to sync
+	 *
+	 * @return true on success
+	 */
+	private function syncEvent(RedeventEntityEvent $event)
+	{
+		$item = $this->getAesirEventItem($event->id);
+		$eventSelectField = $this->getEventSelectField();
+
+		if (!$item->isValid())
+		{
+			$data = array(
+				'type_id' => RedeventHelperConfig::get('aesir_event_type_id'),
+				'template_id' => RedeventHelperConfig::get('aesir_event_template_id'),
+				'title'   => $event->title,
+				'access'  => RedeventHelperConfig::get('aesir_event_access'),
+				'custom_fields' => array(
+					$eventSelectField->fieldcode => $event->id
+				)
+			);
+
+			$categories = array();
+			$eventCategories = $event->getCategories();
+
+			foreach ($eventCategories as $eventCategory)
+			{
+				if ($category = $this->getAesirCategory($eventCategory->id))
+				{
+					$categories[] = $category->id;
+				}
+			}
+
+			// TODO: remove this workaround when aesir code gets fixed
+			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
+			$jform['access'] = RedeventHelperConfig::get('aesir_session_access');
+			$jform['categories'] = $categories;
+			JFactory::getApplication()->input->set('jform', $jform);
+
+			$item->save($data);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get aesir item session
 	 *
 	 * @param   int  $sessionId  redEVENT session id
@@ -400,6 +449,67 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 		}
 
 		return $entity;
+	}
+
+	/**
+	 * Get aesir category
+	 *
+	 * @param   int  $redeventCategoryId  redEVENT category id
+	 *
+	 * @return ReditemEntityCategory
+	 */
+	private function getAesirCategory($redeventCategoryId)
+	{
+		if (!isset($this->aesirCategories[$redeventCategoryId]))
+		{
+			$types = $this->getCategoryTypes();
+
+			foreach ($types as $type)
+			{
+				if ($category = $this->findCategoryInType($type, $redeventCategoryId))
+				{
+					$this->aesirCategories[$redeventCategoryId] = $category;
+
+					return $category;
+				}
+			}
+
+			$this->aesirCategories[$redeventCategoryId] = false;
+		}
+
+		return $this->aesirCategories[$redeventCategoryId];
+	}
+
+	/**
+	 * Try to find category from category types tables
+	 *
+	 * @param   ReditemEntityType  $type                category type
+	 * @param   int                $redeventCategoryId  redevent category id
+	 *
+	 * @return ReditemEntityCategory
+	 *
+	 * @since 3.2.3
+	 */
+	private function findCategoryInType(ReditemEntityType $type, $redeventCategoryId)
+	{
+		$db    = JFactory::getDbo();
+
+		$categoryTable = $db->qn('#__reditem_types_' . $type->table_name);
+		$categorySelectFieldId = $db->qn($this->getCategorySelectField()->fieldcode);
+
+		$query = $db->getQuery(true)
+			->select('id')
+			->from($categoryTable)
+			->where($categorySelectFieldId . ' = ' . $redeventCategoryId);
+
+		$db->setQuery($query);
+
+		if (!$id = $db->loadResult())
+		{
+			return false;
+		}
+
+		return ReditemEntityCategory::load($id);
 	}
 
 	/**
@@ -556,6 +666,31 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	}
 
 	/**
+	 * Get category select field entity
+	 *
+	 * @return ReditemEntityfield
+	 *
+	 * @since 3.2.3
+	 */
+	private function getCategorySelectField()
+	{
+		if (is_null($this->categorySelectField))
+		{
+			$id = RedeventHelperConfig::get('aesir_category_select_field');
+			$field = ReditemEntityField::load($id);
+
+			if (!$field->isValid())
+			{
+				throw new LogicException('Category select field is not set');
+			}
+
+			$this->categorySelectField = $field;
+		}
+
+		return $this->categorySelectField;
+	}
+
+	/**
 	 * Get session type entity
 	 *
 	 * @return ReditemEntityType
@@ -603,5 +738,51 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 		}
 
 		return $this->sessionSelectField;
+	}
+
+	/**
+	 * Get category types
+	 *
+	 * @return RedeventEnityType[]
+	 *
+	 * @since 3.2.3
+	 */
+	private function getCategoryTypes()
+	{
+		if (is_null($this->categoryTypes))
+		{
+			if (!$categorySelectFieldId = RedeventHelperConfig::get('aesir_category_select_field'))
+			{
+				$this->categoryTypes = false;
+
+				return $this->categoryTypes;
+			}
+
+			$db    = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('t.*')
+				->from('#__reditem_type_field_xref AS x')
+				->join('INNER', '#__reditem_types AS t ON t.id = x.type_id')
+				->where('x.field_id = ' . $categorySelectFieldId);
+
+			$db->setQuery($query);
+
+			if (!$res = $db->loadObjectList())
+			{
+				$this->categoryTypes = false;
+
+				return $this->categoryTypes;
+			}
+
+			$this->categoryTypes = array_map(
+				function($row)
+				{
+					return ReditemEntityType::getInstance($row->id)->bind($row);
+				},
+				$res
+			);
+		}
+
+		return $this->categoryTypes;
 	}
 }

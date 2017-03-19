@@ -7,7 +7,7 @@
 	<authorUrl>www.redcomponent.com</authorUrl>
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>3.1.0</version>
+	<version>3.2.3</version>
 	<tag>##VERSION##</tag>
 	<description>PLG_AESIR_REDEVENT_SYNC_PLUGIN_DESC</description>
 
@@ -19,8 +19,39 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field
+						name="sync_events"
+						type="list"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_EVENTS"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_EVENTS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+						name="sync_sessions"
+						type="list"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_SESSIONS"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_SESSIONS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+						name="sync_venues"
+						type="list"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_VENUES"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_VENUES_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+						name="sync_categories"
+						type="list"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_CATEGORIES"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SYNC_CATEGORIES_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
-
 </extension>
