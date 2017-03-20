@@ -483,6 +483,29 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return active RedeventEntitySessionpricegroups for user
+	 *
+	 * @param   JUser  $user  user to filter against
+	 *
+	 * @return   RedeventEntitySessionpricegroup[]
+	 */
+	public function getUserActivePricegroups($user = null)
+	{
+		if (!$pricegroups = $this->getPricegroups(true, $user))
+		{
+			return false;
+		}
+
+		return array_filter(
+			$pricegroups,
+			function($pricegroup)
+			{
+				return $pricegroup->active == 1;
+			}
+		);
+	}
+
+	/**
 	 * Get registration end
 	 *
 	 * @return JDate
