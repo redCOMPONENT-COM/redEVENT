@@ -291,7 +291,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
-				'title'   => $category->title,
+				'title'   => $category->name,
 				'access'  => RedeventHelperConfig::get('aesir_category_access'),
 				'parent_id' => RedeventHelperConfig::get('aesir_category_parent_id'),
 				'custom_fields' => array(
@@ -304,7 +304,12 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 			$jform['access'] = RedeventHelperConfig::get('aesir_category_access');
 			JFactory::getApplication()->input->set('jform', $jform);
 
-			$item->save($data);
+			$model = RModel::getAdminInstance('Category', array('ignore_request' => true), 'com_reditem');
+
+			if (!$model->save($data))
+			{
+				throw new LogicException($model->getError());
+			}
 		}
 
 		return true;
