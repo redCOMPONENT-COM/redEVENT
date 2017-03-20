@@ -37,6 +37,13 @@
 					description="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_TIMEOUT_DESC"
                     default="20"
 					/>
+				<field
+						name="created_by"
+						type="user"
+						label="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_CREATED_BY_LABEL"
+						description="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_CREATED_BY_DESC"
+						default="20"
+				/>
 			</fieldset>
 		</fields>
 	</config>

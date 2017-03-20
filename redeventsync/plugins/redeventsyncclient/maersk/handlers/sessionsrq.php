@@ -39,6 +39,9 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception($row->getError());
 			}
 
+			// Set an user for creation
+			JFactory::getSession()->set('user', JFactory::getUser($this->parent->params->get('created_by')));
+
 			if (!($row->check() && $row->store()))
 			{
 				throw new Exception($row->getError());
