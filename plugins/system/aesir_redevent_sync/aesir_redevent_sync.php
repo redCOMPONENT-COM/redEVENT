@@ -176,6 +176,11 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 			$event = RedeventEntityEvent::getInstance($table->id)->bind($table);
 			$this->syncEvent($event);
 		}
+		elseif ($table instanceof RedeventTableCategory && $this->params->get('sync_categories'))
+		{
+			$category = RedeventEntityCategory::getInstance($table->id)->bind($table);
+			$this->syncCategory($category);
+		}
 	}
 
 	/**
@@ -268,6 +273,41 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 			. '&' . JSession::getFormToken() . '=1' . '&rand=' . uniqid();
 
 		JFactory::getDocument()->addScriptDeclaration('window.location = "' . $next . '";');
+	}
+
+	/**
+	 * Sync a category
+	 *
+	 * @param   RedeventEntityCategory  $category  category to sync
+	 *
+	 * @return true on success
+	 */
+	private function syncCategory(RedeventEntityCategory $category)
+	{
+		$item = $this->getAesirCategory($category->id);
+
+		if (!$item->isValid())
+		{
+			$data = array(
+				'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
+				'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
+				'title'   => $category->title,
+				'access'  => RedeventHelperConfig::get('aesir_category_access'),
+				'parent_id' => RedeventHelperConfig::get('aesir_category_parent_id'),
+				'custom_fields' => array(
+					$this->getCategorySelectField()->fieldcode => $category->id
+				)
+			);
+
+			// TODO: remove this workaround when aesir code gets fixed
+			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
+			$jform['access'] = RedeventHelperConfig::get('aesir_category_access');
+			JFactory::getApplication()->input->set('jform', $jform);
+
+			$item->save($data);
+		}
+
+		return true;
 	}
 
 	/**
@@ -380,7 +420,6 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	private function syncEvent(RedeventEntityEvent $event)
 	{
 		$item = $this->getAesirEventItem($event->id);
-		$eventSelectField = $this->getEventSelectField();
 
 		if (!$item->isValid())
 		{
@@ -390,7 +429,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 				'title'   => $event->title,
 				'access'  => RedeventHelperConfig::get('aesir_event_access'),
 				'custom_fields' => array(
-					$eventSelectField->fieldcode => $event->id
+					$this->getEventSelectField()->fieldcode => $event->id
 				)
 			);
 
@@ -474,7 +513,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 				}
 			}
 
-			$this->aesirCategories[$redeventCategoryId] = false;
+			$this->aesirCategories[$redeventCategoryId] = ReditemEntityCategory::getInstance();
 		}
 
 		return $this->aesirCategories[$redeventCategoryId];
