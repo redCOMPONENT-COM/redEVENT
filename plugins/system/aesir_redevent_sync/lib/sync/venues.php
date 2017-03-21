@@ -17,6 +17,45 @@ defined('_JEXEC') or die('Restricted access');
 class PlgSystemAesir_Redevent_SyncSyncVenues
 {
 	/**
+	 * Sync categories
+	 *
+	 * @return void
+	 */
+	public function venuesSync()
+	{
+		$app = JFactory::getApplication();
+		$msg = null;
+
+		// Get items to publish from the request.
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+		$synced = 0;
+
+		if (empty($cid))
+		{
+			return $this->globalSync();
+		}
+		else
+		{
+			// Check for request forgeries
+			JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+			foreach ($cid as $id)
+			{
+				$entity = RedeventEntityVenue::load($id);
+
+				if ($this->syncVenue($entity))
+				{
+					$synced++;
+				}
+			}
+
+			$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_VENUES_SYNCED', $synced);
+		}
+
+		$app->redirect('index.php?option=com_redevent&view=venues', $msg);
+	}
+
+	/**
 	 * Sync a venue
 	 *
 	 * @param   RedeventEntityVenue  $venue  venue to sync
@@ -49,6 +88,56 @@ class PlgSystemAesir_Redevent_SyncSyncVenues
 		}
 
 		return true;
+	}
+
+	/**
+	 * Sync all
+	 *
+	 * @return void
+	 */
+	private function globalSync()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+
+		$app   = JFactory::getApplication();
+		$input = $app->input;
+
+		$synced     = $input->getInt('synced', 0);
+		$limitstart = $input->getInt('limitstart', 0);
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('c.*')
+			->from('#__redevent_venues AS c')
+			->where('c.published = 1')
+			->order('c.id DESC');
+
+		$db->setQuery($query, $limitstart, 5);
+
+		if (!$unsynced = $db->loadObjectList())
+		{
+			$app->enqueueMessage(sprintf('Done, %d venues synced', $synced));
+			$app->redirect('index.php?option=com_redevent&view=venues');
+		}
+
+		$instances = RedeventEntityVenue::loadArray($unsynced);
+
+		foreach ($instances as $instance)
+		{
+			if ($this->syncVenue($instance))
+			{
+				$synced++;
+			}
+		}
+
+		echo JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_venues_SYNCED', $synced);
+
+		$next = 'index.php?option=com_redevent&task=venues.aesirsync'
+			. '&synced=' . $synced . '&limitstart=' . ($limitstart + 5)
+			. '&' . JSession::getFormToken() . '=1' . '&rand=' . uniqid();
+
+		JFactory::getDocument()->addScriptDeclaration('window.location = "' . $next . '";');
 	}
 
 	/**

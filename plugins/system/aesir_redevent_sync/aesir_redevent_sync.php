@@ -82,6 +82,11 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 				$helper = new PlgSystemAesir_Redevent_SyncSyncCategories;
 
 				return $helper->categoriesSync();
+
+			case 'venues.aesirsync':
+				$helper = new PlgSystemAesir_Redevent_SyncSyncVenues;
+
+				return $helper->venuesSync();
 		}
 	}
 
