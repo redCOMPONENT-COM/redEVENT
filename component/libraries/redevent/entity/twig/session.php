@@ -162,7 +162,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	 */
 	public function getPrices()
 	{
-		$prices = $this->entity->getPricegroups();
+		$prices = $this->entity->getUserActivePricegroups();
 
 		return $prices
 			? array_map(
