@@ -16,4 +16,16 @@
 		<filename>index.html</filename>
 		<folder>language</folder>
 	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="dummy"
+					type="text"
+					label="PLG_REDEVENT_CONFIG_EXAMPLE_XML_DUMMY"
+					description="PLG_REDEVENT_CONFIG_EXAMPLE_XML_DUMMY_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
 </extension>

@@ -17,7 +17,7 @@
 		]
 	},
 	"plugins" : {
-		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue"],
+		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue", "redevent_category"],
 		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
@@ -34,6 +34,7 @@
 			"redeventvenuecategory"
 		],
 		"redevent" : ["jomsocial", "redmemberlogin", "acymailinglists", "eventnewslettersignup", "paymentnotificationemail"],
+		"redevent_config" : ["aesir"],
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package     Redevent.Plugin
- * @subpackage  Config.Example
+ * @subpackage  Config.Aesir
  *
- * @copyright   Copyright (C) 2013 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2017 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
@@ -16,10 +16,10 @@ jimport('joomla.plugin.plugin');
  * Specific parameters for redEVENT.
  *
  * @package     Redevent.Plugin
- * @subpackage  Config.Example
+ * @subpackage  Config.Aesir
  * @since       2.5
  */
-class PlgRedevent_ConfigExample extends JPlugin
+class PlgRedevent_ConfigAesir extends JPlugin
 {
 	/**
 	 * The plugin identifier.
@@ -27,7 +27,7 @@ class PlgRedevent_ConfigExample extends JPlugin
 	 * @var    string
 	 * @since  2.5
 	 */
-	protected $context = 'example';
+	protected $context = 'aesir';
 
 	/**
 	 * Alters component parameters
@@ -38,11 +38,6 @@ class PlgRedevent_ConfigExample extends JPlugin
 	 */
 	public function onGetRedeventConfig(&$params)
 	{
-		// Add some fixed values
-		$params->set('param_a', 0);
-		$params->set('param_b', 1);
-
-		// Merge params from plugin
 		$params->merge($this->params);
 	}
 }
