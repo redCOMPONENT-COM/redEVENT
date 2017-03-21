@@ -19,7 +19,7 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
+			<fieldset name="events" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_EVENTS">
 				<field
 						name="aesir_event_type_id"
 						type="reditem.typeList"
@@ -48,7 +48,9 @@
 						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_ACCESS_DESC">
 					<option value="">JSELECT</option>
 				</field>
+			</fieldset>
 
+			<fieldset name="sessions" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_SESSIONS">
 				<field
 						name="aesir_session_type_id"
 						type="reditem.typeList"
@@ -77,7 +79,9 @@
 						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SESSION_ACCESS_DESC">
 					<option value="">JSELECT</option>
 				</field>
+			</fieldset>
 
+			<fieldset name="categories" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_CATEGORIES">
 				<field
 						name="aesir_category_type_id"
 						type="reditem.typeList"
@@ -111,6 +115,37 @@
 						type="accesslevel"
 						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_CATEGORY_ACCESS_LABEL"
 						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_CATEGORY_ACCESS_DESC">
+					<option value="">JSELECT</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="venues" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_VENUES">
+				<field
+						name="aesir_venue_type_id"
+						type="reditem.typeList"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TYPE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TYPE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_venue_select_field"
+						type="reditem.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_SELECT_FIELD_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_SELECT_FIELD_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_venue_template_id"
+						type="reditem.template"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TEMPLATE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TEMPLATE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_venue_access"
+						type="accesslevel"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_VENUE_ACCESS_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_VENUE_ACCESS_DESC">
 					<option value="">JSELECT</option>
 				</field>
 			</fieldset>

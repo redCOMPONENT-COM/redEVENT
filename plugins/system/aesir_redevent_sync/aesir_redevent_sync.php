@@ -166,20 +166,32 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	 */
 	public function onContentAfterSave($context, $table, $isNew)
 	{
-		if ($table instanceof RedeventTableSession && $this->params->get('sync_sessions'))
+		try
 		{
-			$session = RedeventEntitySession::getInstance($table->id)->bind($table);
-			$this->syncSession($session);
+			if ($table instanceof RedeventTableSession && $this->params->get('sync_sessions'))
+			{
+				$session = RedeventEntitySession::getInstance($table->id)->bind($table);
+				$this->syncSession($session);
+			}
+			elseif ($table instanceof RedeventTableEvent && $this->params->get('sync_events'))
+			{
+				$event = RedeventEntityEvent::getInstance($table->id)->bind($table);
+				$this->syncEvent($event);
+			}
+			elseif ($table instanceof RedeventTableCategory && $this->params->get('sync_categories'))
+			{
+				$category = RedeventEntityCategory::getInstance($table->id)->bind($table);
+				$this->syncCategory($category);
+			}
+			elseif ($table instanceof RedeventTableVenue && $this->params->get('sync_venues'))
+			{
+				$venue = RedeventEntityVenue::getInstance($table->id)->bind($table);
+				$this->syncVenue($venue);
+			}
 		}
-		elseif ($table instanceof RedeventTableEvent && $this->params->get('sync_events'))
+		catch (Exception $e)
 		{
-			$event = RedeventEntityEvent::getInstance($table->id)->bind($table);
-			$this->syncEvent($event);
-		}
-		elseif ($table instanceof RedeventTableCategory && $this->params->get('sync_categories'))
-		{
-			$category = RedeventEntityCategory::getInstance($table->id)->bind($table);
-			$this->syncCategory($category);
+			JFactory::getApplication()->enqueueMessage(JText::_('PLG_AESIR_REDEVENT_SYNC_ERROR_SYNC') . $e->getMessage(), 'warning');
 		}
 	}
 
@@ -348,6 +360,9 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 
 			if (!$eventItem->isValid())
 			{
+				$event = RedeventEntityEvent::load($session->eventid);
+				JFactory::getApplication()->enqueueMessage('Aesir item not found for event ' . $event->title, 'warning');
+
 				return false;
 			}
 
@@ -453,6 +468,41 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
 			$jform['access'] = RedeventHelperConfig::get('aesir_session_access');
 			$jform['categories'] = $categories;
+			JFactory::getApplication()->input->set('jform', $jform);
+
+			$item->save($data);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Sync a venue
+	 *
+	 * @param   RedeventEntityVenue  $venue  venue to sync
+	 *
+	 * @return true on success
+	 */
+	private function syncVenue(RedeventEntityVenue $venue)
+	{
+		$item = $this->getAesirVenueItem($venue->id);
+
+		if (!$item->isValid())
+		{
+			$data = array(
+				'type_id' => RedeventHelperConfig::get('aesir_venue_type_id'),
+				'template_id' => RedeventHelperConfig::get('aesir_venue_template_id'),
+				'title'   => $venue->name,
+				'access'  => RedeventHelperConfig::get('aesir_venue_access'),
+				'custom_fields' => array(
+					$this->getVenueSelectField()->fieldcode => $venue->id
+				)
+			);
+
+			// TODO: remove this workaround when aesir code gets fixed
+			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
+			$jform['access'] = RedeventHelperConfig::get('aesir_venue_access');
+			$jform['categories'] = false;
 			JFactory::getApplication()->input->set('jform', $jform);
 
 			$item->save($data);
@@ -581,11 +631,7 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 
 			$db->setQuery($query);
 
-			if (!$res = $db->loadResult())
-			{
-				$event = RedeventEntityEvent::load($eventId);
-				JFactory::getApplication()->enqueueMessage('Aesir item not found for event ' . $event->title, 'warning');
-			}
+			$res = $db->loadResult();
 
 			$this->aesirEvents[$eventId] = $res ?: false;
 		}
@@ -622,41 +668,35 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	}
 
 	/**
-	 * Return redEVENT events not having a corresponding aesir item
+	 * Get aesir item venue
 	 *
-	 * @return RedeventEntityEvent[]
+	 * @param   int  $venueId  redEVENT venue id
 	 *
-	 * @since 3.2.3
+	 * @return ReditemEntityItem
 	 */
-	private function getMissingEventItems()
+	private function getAesirVenueItem($venueId)
 	{
-		$eventType = $this->getEventType();
-		$eventSelect = $this->getEventSelectField();
-
-		$db = JFactory::getDbo();
-
-		$eventItemTable = $db->qn('#__reditem_types_' . $eventType->table_name, 'c');
-		$eventSelectName = $db->qn('c.' . $eventSelect->fieldcode);
-
-		$query = $db->getQuery(true)
-			->select('e.*')
-			->from('#__redevent_events AS e')
-			->innerJoin('#__redevent_event_venue_xref AS x ON e.id = x.eventid')
-			->leftJoin($eventItemTable . ' ON ' . $eventSelectName . ' = e.id')
-			->where('c.id IS NULL')
-			->where('e.published = 1')
-			->where('x.published = 1')
-			->group('e.id')
-			->order('e.title ASC');
-
-		$db->setQuery($query);
-
-		if (!$res = $db->loadObjectList())
+		if (!isset($this->aesirVenues[$venueId]))
 		{
-			return false;
+			$db = JFactory::getDbo();
+
+			$venueType = $this->getVenueType();
+			$venueItemTable = $db->qn('#__reditem_types_' . $venueType->table_name, 'c');
+			$venueSelectField = $db->qn('c.' . $this->getVenueSelectField()->fieldcode);
+
+			$query = $db->getQuery(true)
+				->select('c.id')
+				->from($venueItemTable)
+				->join('INNER', '#__reditem_items AS i ON i.id = c.id')
+				->where($venueSelectField . ' = ' . $venueId);
+
+			$db->setQuery($query);
+			$res = $db->loadResult();
+
+			$this->aesirVenues[$venueId] = $res ?: false;
 		}
 
-		return RedeventEntityEvent::loadArray($res);
+		return ReditemEntityItem::getInstance($this->aesirVenues[$venueId] ?: null);
 	}
 
 	/**
@@ -760,9 +800,34 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	}
 
 	/**
-	 * Get session type entity
+	 * Get venue type entity
 	 *
 	 * @return ReditemEntityType
+	 *
+	 * @since 3.2.3
+	 */
+	private function getVenueType()
+	{
+		if (is_null($this->venueType))
+		{
+			$typeId = RedeventHelperConfig::get('aesir_venue_type_id');
+			$type = ReditemEntityType::load($typeId);
+
+			if (!$type->isValid())
+			{
+				throw new LogicException('venue type is not selected');
+			}
+
+			$this->venueType = $type;
+		}
+
+		return $this->venueType;
+	}
+
+	/**
+	 * Get session type entity
+	 *
+	 * @return ReditemEntityField
 	 *
 	 * @since 3.2.3
 	 */
@@ -782,6 +847,31 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 		}
 
 		return $this->sessionSelectField;
+	}
+
+	/**
+	 * Get venue select field
+	 *
+	 * @return ReditemEntityField
+	 *
+	 * @since 3.2.3
+	 */
+	private function getVenueSelectField()
+	{
+		if (is_null($this->venueSelectField))
+		{
+			$id = RedeventHelperConfig::get('aesir_venue_select_field');
+			$field = ReditemEntityField::load($id);
+
+			if (!$field->isValid() || 1)
+			{
+				throw new LogicException('venue select field is not selected');
+			}
+
+			$this->venueSelectField = $field;
+		}
+
+		return $this->venueSelectField;
 	}
 
 	/**
