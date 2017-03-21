@@ -406,6 +406,15 @@ class RedeventTags
 					$search[] = $tag_obj->getFullMatch();
 					$replace[] = $this->$func($tag_obj);
 				}
+
+				if (class_exists('RedeventTagsLib' . ucfirst($tag_obj->getName())))
+				{
+					$className = 'RedeventTagsLib' . ucfirst($tag_obj->getName());
+					$helper = new $className($this, $tag_obj);
+
+					$search[] = $tag_obj->getFullMatch();
+					$replace[] = $helper->getReplace();
+				}
 			}
 
 			// Do the replace
@@ -492,7 +501,7 @@ class RedeventTags
 	 *
 	 * @return RedeventEntityEvent
 	 */
-	private function getEvent()
+	public function getEvent()
 	{
 		if (empty($this->event))
 		{
@@ -531,7 +540,7 @@ class RedeventTags
 	 *
 	 * @return RedeventEntitySession
 	 */
-	private function getSession()
+	public function getSession()
 	{
 		if (empty($this->session) && $this->xref)
 		{
