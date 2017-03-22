@@ -1,8 +1,8 @@
 <?php
 /**
- * @package     RedEVENT.Library
- * @copyright   Copyright (C) 2017 redCOMPONENT.com. All rights reserved.
- * @license     GNU General Public License version 2 or later, see LICENSE.
+ * @package    RedEVENT.Library
+ * @copyright  Copyright (C) 2017 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 namespace Redevent\Tag;
