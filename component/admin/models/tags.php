@@ -233,7 +233,8 @@ class RedeventModelTags extends RModel
 		{
 			$name = substr(basename($file), 0, -4);
 			$className = 'RedeventTagsLib' . ucfirst($name);
-			$tags[] = $className::getDescription();
+			$instance = new $className;
+			$tags[] = $instance->getDescription();
 		}
 	}
 }

@@ -23,7 +23,7 @@ class RedeventTagsLibPlacesleftswitch extends \Redevent\Tag\Replacer
 	 *
 	 * @since 3.2.3
 	 */
-	public static function getDescription()
+	public function getDescription()
 	{
 		return new RedeventTagsTag('placesleftswitch', JText::_('COM_REDEVENT_TAG_DESC_PLACESLEFTSWITCH'), 'registration');
 	}

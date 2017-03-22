@@ -28,7 +28,7 @@ abstract class Replacer
 	 * @param   \RedeventTags        $parent      object calling this class	 *
 	 * @param   \RedeventTagsParsed  $tagsParsed  parsed tag data
 	 */
-	public function __construct(\RedeventTags $parent, \RedeventTagsParsed $tagsParsed)
+	public function __construct(\RedeventTags $parent = null, \RedeventTagsParsed $tagsParsed = null)
 	{
 		$this->parent = $parent;
 		$this->tagsParsed = $tagsParsed;
@@ -41,7 +41,7 @@ abstract class Replacer
 	 *
 	 * @since 3.2.3
 	 */
-	public static abstract function getDescription();
+	public abstract function getDescription();
 
 	/**
 	 * Get replacement
