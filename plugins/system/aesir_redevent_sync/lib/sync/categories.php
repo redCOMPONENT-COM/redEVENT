@@ -75,12 +75,16 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 				throw new LogicException('Category default access is not set in config plugin');
 			}
 
+			// Try to find existing parent aesir category, if not use default
+			$parent = $this->getAesirCategory($category->parent_id);
+			$parentId = $parent->isValid() ? $parent->id : RedeventHelperConfig::get('aesir_category_parent_id');
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
 				'title'   => $category->name,
 				'access'  => RedeventHelperConfig::get('aesir_category_access'),
-				'parent_id' => RedeventHelperConfig::get('aesir_category_parent_id'),
+				'parent_id' => $parentId,
 				'custom_fields' => array(
 					$this->getCategorySelectField()->fieldcode => $category->id
 				)
