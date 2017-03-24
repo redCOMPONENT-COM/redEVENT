@@ -70,6 +70,11 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 
 		if (!$item->isValid())
 		{
+			if (!$access = RedeventHelperConfig::get('aesir_event_access'))
+			{
+				throw new LogicException('Event default access is not set in config plugin');
+			}
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_event_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_event_template_id'),

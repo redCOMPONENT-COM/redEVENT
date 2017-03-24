@@ -70,6 +70,11 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 
 		if (!$item->isValid())
 		{
+			if (!$access = RedeventHelperConfig::get('aesir_category_access'))
+			{
+				throw new LogicException('Category default access is not set in config plugin');
+			}
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),

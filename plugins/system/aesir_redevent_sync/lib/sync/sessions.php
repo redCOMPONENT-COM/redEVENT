@@ -80,6 +80,11 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 
 		if (!$item->isValid())
 		{
+			if (!$access = RedeventHelperConfig::get('aesir_session_access'))
+			{
+				throw new LogicException('Session default access is not set in config plugin');
+			}
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_session_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_session_template_id'),

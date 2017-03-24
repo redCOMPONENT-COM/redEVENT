@@ -68,6 +68,11 @@ class PlgSystemAesir_Redevent_SyncSyncVenues
 
 		if (!$item->isValid())
 		{
+			if (!$access = RedeventHelperConfig::get('aesir_venue_access'))
+			{
+				throw new LogicException('Venue default access is not set in config plugin');
+			}
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_venue_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_venue_template_id'),
