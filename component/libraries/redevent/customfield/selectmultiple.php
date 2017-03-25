@@ -73,7 +73,7 @@ class RedeventCustomfieldSelectmultiple extends RedeventCustomfieldSelect
 		}
 
 		return JHTML::_(
-			'select.genericlist', $options, 'jform[' . $this->fieldname . ']' . '[]', 'multiple="multiple" size="'
+			'select.genericlist', $options, 'jform[' . $this->fieldname . '][]', 'multiple="multiple" size="'
 			. min(10, count($options)) . '" ' . $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid
 		);
 	}

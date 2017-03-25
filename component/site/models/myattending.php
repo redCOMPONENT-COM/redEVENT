@@ -53,7 +53,7 @@ class RedeventModelMyattending extends RedeventModelBasesessionlist
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 			$pagination = $this->getPagination();
 
 			if ($pop)
@@ -79,7 +79,7 @@ class RedeventModelMyattending extends RedeventModelBasesessionlist
 	 *
 	 * @return JDatabaseQuery
 	 */
-	protected function _buildQuery()
+	protected function buildQuery()
 	{
 		$query = $this->_buildQueryEventsSelect();
 		$query->where('r.cancelled = 0');

@@ -148,7 +148,7 @@ class RedeventModelRegistrations extends RModelList
 	/**
 	 * Add where part from filters
 	 *
-	 * @param   JDatabaseQuery  &$query  query
+	 * @param   JDatabaseQuery  $query  query
 	 *
 	 * @return JDatabaseQuery
 	 */

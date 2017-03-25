@@ -33,6 +33,8 @@ class RedeventViewDetails extends RViewSite
 		}
 
 		echo 'layout not found';
+
+		return false;
 	}
 
 	/**
@@ -101,5 +103,7 @@ class RedeventViewDetails extends RViewSite
 		header('Pragma: no-cache');
 
 		JFactory::getApplication()->close();
+
+		return true;
 	}
 }

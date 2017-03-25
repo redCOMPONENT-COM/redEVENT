@@ -53,10 +53,10 @@ $ignored = array(
 $options = array(
 	'files'        => array(
 		REPO_BASE . '/component',
-		REPO_BASE . '/redeventb2b',
-		REPO_BASE . '/redeventsync',
-		REPO_BASE . '/modules',
-		REPO_BASE . '/plugins'
+//		REPO_BASE . '/redeventb2b',
+//		REPO_BASE . '/redeventsync',
+//		REPO_BASE . '/modules',
+//		REPO_BASE . '/plugins'
 	),
 	'standard'     => array( REPO_BASE . '/tests/checkers/phpcs/ruleset.xml'),
 	'ignored'      => $ignored,

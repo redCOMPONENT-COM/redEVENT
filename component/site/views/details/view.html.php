@@ -126,7 +126,7 @@ class RedeventViewDetails extends JViewLegacy
 			}
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

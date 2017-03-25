@@ -45,7 +45,7 @@ class RedeventViewUpcomingvenueevents extends RViewSite
 		{
 			echo JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED');
 
-			return;
+			return false;
 		}
 
 		if (!$params->get('custom_css'))

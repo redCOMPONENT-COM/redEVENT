@@ -85,5 +85,7 @@ class RedeventViewSignup extends RViewSite
 		// Output the file
 		$pdf->Output($course->title . ".pdf", "I");
 		$mainframe->close();
+
+		return true;
 	}
 }

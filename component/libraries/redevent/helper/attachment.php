@@ -151,7 +151,9 @@ class RedeventHelperAttachment extends JObject
 
 		if (!($table->check() && $table->store()))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_REDEVENT_ATTACHMENT_ERROR_UPDATING_RECORD') . ': ' . $table->getError(), 'warning');
+			JFactory::getApplication()->enqueueMessage(
+				JText::_('COM_REDEVENT_ATTACHMENT_ERROR_UPDATING_RECORD') . ': ' . $table->getError(), 'warning'
+			);
 
 			return false;
 		}

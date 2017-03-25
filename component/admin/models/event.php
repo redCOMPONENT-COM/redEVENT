@@ -40,14 +40,14 @@ class RedeventModelEvent extends RModelAdmin
 
 			if (!$row->check())
 			{
-				$this->setError($row->getError(), 'error');
+				$this->setError($row->getError());
 
 				return false;
 			}
 
 			if (!$row->store())
 			{
-				$this->setError($row->getError(), 'error');
+				$this->setError($row->getError());
 
 				return false;
 			}
@@ -217,7 +217,7 @@ class RedeventModelEvent extends RModelAdmin
 	/**
 	 * Method to change the published state of one or more records.
 	 *
-	 * @param   array    &$pks   A list of the primary keys to change.
+	 * @param   array    $pks    A list of the primary keys to change.
 	 * @param   integer  $value  The value of the published state.
 	 *
 	 * @return  boolean  True on success.

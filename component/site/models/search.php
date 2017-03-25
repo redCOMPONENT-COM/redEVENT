@@ -52,7 +52,9 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 		{
 			// Get the filter request variables
 			$this->setState('filter_order',     JFactory::getApplication()->input->getCmd('filter_order', 'a.title'));
-			$this->setState('filter_order_Dir', strtoupper(JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+			$this->setState(
+				'filter_order_Dir', strtoupper(JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC'
+			);
 		}
 	}
 
@@ -71,7 +73,7 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 			$pagination = $this->getPagination();
 			$this->data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			$this->data = $this->_categories($this->data);
@@ -86,9 +88,9 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 	 *
 	 * @return string
 	 */
-	protected function _buildQuery()
+	protected function buildQuery()
 	{
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 
 		if ($this->getState('results_type') == 0)
 		{
@@ -106,7 +108,7 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
 		$app = JFactory::getApplication();
 
@@ -239,7 +241,8 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 
 					if ($category)
 					{
-						$or[] = '(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
+						$or[] = '(c.id = ' . (int) $category->id
+							. ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
 					}
 				}
 
@@ -254,7 +257,8 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 
 				if ($category)
 				{
-					$where[] = '(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
+					$where[] = '(c.id = ' . (int) $category->id
+						. ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
 				}
 			}
 
@@ -430,7 +434,7 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 			$map[$ev->id] = $k;
 		}
 
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 		$query->clear('order');
 		$query->where('a.id IN (' . implode(",", $event_ids) . ')');
 

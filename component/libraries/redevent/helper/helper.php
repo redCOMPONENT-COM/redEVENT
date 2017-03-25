@@ -617,8 +617,8 @@ class RedeventHelper
 	/**
 	 * Add event to ical
 	 *
-	 * @param   vcalendar  &$calendartool  calendar object
-	 * @param   object     $session        session data
+	 * @param   vcalendar  $calendartool  calendar object
+	 * @param   object     $session       session data
 	 *
 	 * @return boolean
 	 */
@@ -884,8 +884,8 @@ class RedeventHelper
 	{
 		$params = static::config();
 
-		$delimiter_esc = preg_quote($delimiter, '/');
-		$enclosure_esc = preg_quote($enclosure, '/');
+		$delimiterEsc = preg_quote($delimiter, '/');
+		$enclosureEsc = preg_quote($enclosure, '/');
 
 		$output = array();
 
@@ -897,7 +897,7 @@ class RedeventHelper
 				$field = str_replace(array("\n"), "", $field);
 			}
 
-			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
+			$output[] = preg_match("/(?:${delimiterEsc}|${enclosureEsc}|\s)/", $field) ? (
 				$enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
 				) : $field;
 		}

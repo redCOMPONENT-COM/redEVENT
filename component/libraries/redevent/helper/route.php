@@ -710,7 +710,7 @@ class RedeventHelperRoute
 			"view"   => $viewName
 		);
 
-		if ($item = self::_findItem($parts))
+		if ($item = self::findItem($parts))
 		{
 			return $item->id;
 		}
@@ -727,7 +727,7 @@ class RedeventHelperRoute
 	 */
 	protected static function buildUrl($parts)
 	{
-		if ($item = self::_findItem($parts))
+		if ($item = self::findItem($parts))
 		{
 			$parts['Itemid'] = $item->id;
 		}
@@ -746,7 +746,7 @@ class RedeventHelperRoute
 	 *
 	 * @return integer Itemid
 	 */
-	protected static function _findItem($query)
+	protected static function findItem($query)
 	{
 		$finder = RedeventRouteItemid::getInstance();
 

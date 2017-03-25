@@ -23,9 +23,9 @@ class RedeventModelFeatured extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
-		$query = parent::_buildWhere($query);
+		$query = parent::buildWhere($query);
 		$query->where('x.featured = 1');
 
 		return $query;

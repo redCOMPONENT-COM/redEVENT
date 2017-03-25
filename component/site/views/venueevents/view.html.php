@@ -161,7 +161,7 @@ class RedeventViewVenueevents extends RViewSite
 		$pageNav = new JPagination($total, $limitstart, $limit);
 
 		// Create select lists
-		$lists = $this->_buildSortLists($elsettings);
+		$lists = $this->buildSortLists($elsettings);
 
 		$state = $this->get('state');
 		$filter_customs = $state->get('filter_customs');
@@ -217,7 +217,7 @@ class RedeventViewVenueevents extends RViewSite
 	 *
 	 * @return mixed
 	 */
-	protected function _buildSortLists($elsettings)
+	protected function buildSortLists($elsettings)
 	{
 		$app = JFactory::getApplication();
 		$params = $app->getParams();

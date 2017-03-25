@@ -512,8 +512,6 @@ class RedeventAttendee extends JObject
 		{
 			RedeventHelperLog::simpleLog(JText::_('COM_REDEVENT_REGISTRATION_FAILED_SENDING_WAITING_LIST_STATUS_EMAIL'));
 			throw new Exception(JText::_('COM_REDEVENT_REGISTRATION_FAILED_SENDING_WAITING_LIST_STATUS_EMAIL'));
-
-			return false;
 		}
 
 		return true;

@@ -20,7 +20,7 @@ class RedeventViewAttendee extends RedeventViewAdmin
 	 *
 	 * @param   string  $tpl  template
 	 *
-	 * @return mixed|void
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{

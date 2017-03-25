@@ -113,7 +113,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 		// Filter published
 		$published = array_filter(
 			$bundles,
-			function($bundle)
+			function ($bundle)
 			{
 				return $bundle->published;
 			}
@@ -121,7 +121,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		// Return twig entities
 		return $published ? array_map(
-			function($bundle)
+			function ($bundle)
 			{
 				return \RedeventEntityTwigBundle::getInstance($bundle);
 			}, $published
@@ -152,7 +152,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		return array_reduce(
 			$sessions,
-			function($value, $session)
+			function ($value, $session)
 			{
 				return max($value, $session->getDurationDays());
 			}
@@ -173,14 +173,17 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		return array_reduce(
 			$sessions,
-			function($value, $session)
+			function ($value, $session)
 			{
 				$duration = $session->getDurationDays();
 
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if (!$duration)
 				{
 					return $value;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $value ? min($value, $duration) : $duration;
 			}
@@ -201,7 +204,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		$upcomings = array_filter(
 			$sessions,
-			function($session)
+			function ($session)
 			{
 				return $session->isUpcoming() && !$session->isOpenDate();
 			}
@@ -212,7 +215,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 			// Try allowing open dates
 			$upcomings = array_filter(
 				$sessions,
-				function($session)
+				function ($session)
 				{
 					return $session->isUpcoming();
 				}
@@ -256,14 +259,14 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 * @param   string  $ordering   ordering
 	 * @param   bool    $featured   filtered featured
 	 *
-	 * @return array|bool
+	 * @return array|boolean
 	 */
 	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
 		$sessions = $this->getEventSessions($published, $ordering, $featured);
 
 		return $sessions ? array_map(
-			function($session)
+			function ($session)
 			{
 				return \RedeventEntityTwigSession::getInstance($session);
 			},
@@ -302,12 +305,15 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		return array_reduce(
 			$sessions,
-			function($values, $session)
+			function ($values, $session)
 			{
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if (!in_array($session->dates, $values))
 				{
 					$values[] = $session->dates;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $values;
 			},

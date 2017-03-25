@@ -247,7 +247,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 
 		$query->select('f.*')
 			->from('#__redevent_fields AS f')
-			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR ' . 'f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
+			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
 			->order('f.ordering');
 
 		$this->_db->setQuery($query);
@@ -321,7 +321,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	/**
 	 * Try to save event
 	 *
-	 * @param   array  &$data  post data
+	 * @param   array  $data  post data
 	 *
 	 * @return boolean
 	 */

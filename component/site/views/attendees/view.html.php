@@ -211,7 +211,7 @@ class RedeventViewAttendees extends RViewSite
 		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id=' . $session->slug));
 		$this->assign('lists', $lists);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

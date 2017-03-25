@@ -102,7 +102,7 @@ class RedeventHelperDate
 			if (!static::isValidDate($event->enddates) || $event->enddates == $event->dates)
 			{
 				// Same day
-				return '1' . ' ' . JText::_('COM_REDEVENT_Day');
+				return '1 ' . JText::_('COM_REDEVENT_Day');
 			}
 			else
 			{

@@ -237,7 +237,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Update attendee payment requests
 	 *
-	 * @return boolean|void
+	 * @return boolean
 	 */
 	public function updatePaymentRequests()
 	{

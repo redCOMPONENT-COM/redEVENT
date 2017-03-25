@@ -10,10 +10,9 @@
 		<exclude name="Squiz.Commenting.VariableComment" />
 
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
-		<!--
+
 		<exclude name="Joomla.NamingConventions.ValidFunctionName.MethodUnderscore"/>
 		<exclude name="Joomla.NamingConventions.ValidVariableName.ClassVarHasUnderscore"/>
-		-->
 	</rule>
 
 	<exclude-pattern>*/tmpl/*</exclude-pattern>

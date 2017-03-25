@@ -480,7 +480,7 @@ class RedeventTags
 	/**
 	 * Do extra replacements from options
 	 *
-	 * @param   string  &$text  haystack
+	 * @param   string  $text  haystack
 	 *
 	 * @return boolean  true if a replacement was done
 	 */
@@ -1309,13 +1309,13 @@ class RedeventTags
 	 *
 	 * @param   RedeventEntitySessionpricegroup[]  $prices  prices
 	 *
-	 * @return string|void
+	 * @return string
 	 */
 	private function formatPrices($prices)
 	{
 		if (!is_array($prices))
 		{
-			return;
+			return false;
 		}
 
 		if (count($prices) == 1)

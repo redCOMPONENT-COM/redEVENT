@@ -26,7 +26,7 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 	{
 		if ($this->getLayout() == 'import')
 		{
-			return $this->_displayImport($tpl);
+			return $this->displayImport($tpl);
 		}
 
 		$user = JFactory::getUser();
@@ -126,7 +126,7 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	private function _displayImport($tpl = null)
+	private function displayImport($tpl = null)
 	{
 		$document	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT'));

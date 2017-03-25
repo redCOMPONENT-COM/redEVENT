@@ -279,10 +279,7 @@ class RedeventModelSignup extends RModel
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResult();
 
-		if ($res >= $max)
-		{
-			return true;
-		}
+		return $res >= $max;
 	}
 
 	/**

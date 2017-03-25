@@ -39,7 +39,7 @@ class RedeventViewPayment extends RViewSite
 		$row = $this->get('Event');
 
 		// This loads the tags replacer
-		JFactory::getApplication()->input->set('xref', $row->xref); // Neede for tag constructor
+		JFactory::getApplication()->input->set('xref', $row->xref);
 		$tags = new RedeventTags;
 		$tags->setXref($row->xref);
 		$tags->setSubmitkey($submit_key);

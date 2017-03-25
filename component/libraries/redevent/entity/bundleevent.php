@@ -65,10 +65,13 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 			{
 				$duration = $session->getDurationDays();
 
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if (!$duration)
 				{
 					return $min;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $min ? min($min, $duration) : $duration;
 			}

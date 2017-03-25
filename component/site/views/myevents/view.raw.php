@@ -110,7 +110,7 @@ class RedeventViewMyevents extends RViewSite
 
 		if (!$user->get('id'))
 		{
-			return false;
+			return;
 		}
 
 		$model = RModel::getFrontInstance('Mysessions');
@@ -377,7 +377,8 @@ class RedeventViewMyevents extends RViewSite
 		$text = JText::_('COM_REDEVENT_EDIT_EVENT');
 
 		$link 	= RedeventHelperRoute::getEditEventRoute($id, $xref) . '&referer=myevents';
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text
+			. '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}
@@ -400,7 +401,8 @@ class RedeventViewMyevents extends RViewSite
 		$text = JText::_('COM_REDEVENT_DELETE_XREF');
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref=' . $id;
-		$output	= '<a href="' . JRoute::_($link) . '" class="deletelink hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="deletelink hasTooltip" title="' . $text
+			. '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}
@@ -444,7 +446,8 @@ class RedeventViewMyevents extends RViewSite
 		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES');
 		$link 	= RedeventHelperRoute::getManageAttendees($id, 'registration.manageattendees');
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text
+			. '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}
@@ -466,7 +469,8 @@ class RedeventViewMyevents extends RViewSite
 		$text = JText::_('COM_REDEVENT_EDIT_VENUE');
 
 		$link 	= 'index.php?option=com_redevent&view=editvenue&id=' . $id;
-		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text . '<br/>' . $overlib . '">' . $image . '</a>';
+		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTooltip" title="' . $text
+			. '<br/>' . $overlib . '">' . $image . '</a>';
 
 		return $output;
 	}

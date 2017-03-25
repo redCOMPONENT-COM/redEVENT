@@ -47,11 +47,11 @@ class RedeventViewRegistration extends JViewLegacy
 		}
 		elseif ($this->getLayout() == 'edit')
 		{
-			return $this->_displayEdit($tpl);
+			return $this->displayEdit($tpl);
 		}
 		elseif ($this->getLayout() == 'cancel')
 		{
-			return $this->_displayCancel($tpl);
+			return $this->displayCancel($tpl);
 		}
 		else
 		{
@@ -76,7 +76,7 @@ class RedeventViewRegistration extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	protected function _displayEdit($tpl = null)
+	protected function displayEdit($tpl = null)
 	{
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
@@ -153,7 +153,7 @@ class RedeventViewRegistration extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	protected function _displayCancel($tpl)
+	protected function displayCancel($tpl)
 	{
 		$xref = JFactory::getApplication()->input->getInt('xref');
 		$rid  = JFactory::getApplication()->input->getInt('rid');
@@ -174,7 +174,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assignRef('cancellink', $cancellink);
 		$this->assignRef('action',     JRoute::_('index.php?option=com_redevent&xref=' . $xref . '&rid=' . $rid));
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

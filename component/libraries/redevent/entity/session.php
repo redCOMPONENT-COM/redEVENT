@@ -65,7 +65,7 @@ class RedeventEntitySession extends RedeventEntityBase
 				$res = $db->loadObjectList();
 
 				$this->attendees = $res ? array_map(
-					function($row)
+					function ($row)
 					{
 						return RedeventEntityAttendee::getInstance($row->id)->bind($row);
 					}, $res
@@ -372,12 +372,15 @@ class RedeventEntitySession extends RedeventEntityBase
 		return empty($attendees) ? 0 :
 			array_reduce(
 				$attendees,
-				function($count, $attendee)
+				function ($count, $attendee)
 				{
+					// PHPCS Indentation error false-positive
+					// @codingStandardsIgnoreStart
 					if ($attendee->isAttending())
 					{
 						$count++;
 					}
+					// @codingStandardsIgnoreEnd
 
 					return $count;
 				}
@@ -413,12 +416,15 @@ class RedeventEntitySession extends RedeventEntityBase
 		return empty($attendees) ? 0 :
 			array_reduce(
 				$attendees,
-				function($count, $attendee)
+				function ($count, $attendee)
 				{
+					// PHPCS Indentation error false-positive
+					// @codingStandardsIgnoreStart
 					if ($attendee->isWaiting())
 					{
 						$count++;
 					}
+					// @codingStandardsIgnoreEnd
 
 					return $count;
 				}
@@ -498,7 +504,7 @@ class RedeventEntitySession extends RedeventEntityBase
 
 		return array_filter(
 			$pricegroups,
-			function($pricegroup)
+			function ($pricegroup)
 			{
 				return $pricegroup->active == 1;
 			}
@@ -545,7 +551,7 @@ class RedeventEntitySession extends RedeventEntityBase
 		$imageFolder = JURI::base() . 'media/com_redevent/images/';
 		$settings = RedeventHelper::config();
 
-		/* Get the different submission types */
+		// Get the different submission types
 		$submissiontypes = explode(',', $this->getEvent()->getEventtemplate()->submission_types);
 
 		foreach ($submissiontypes as $key => $subtype)

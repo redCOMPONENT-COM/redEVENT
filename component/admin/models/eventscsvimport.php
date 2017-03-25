@@ -142,7 +142,7 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * Convert custom fields keys from import to custom<id> keys
 	 *
-	 * @param   array  &$row  data
+	 * @param   array  $row  data
 	 *
 	 * @return array
 	 */

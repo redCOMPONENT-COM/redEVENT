@@ -101,7 +101,7 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 	/**
 	 * Get feed link
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFeedLink()
 	{

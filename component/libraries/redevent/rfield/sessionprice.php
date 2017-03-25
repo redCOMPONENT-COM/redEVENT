@@ -300,7 +300,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		{
 			if ($option->value == $this->getValue())
 			{
-				$sku[] = $option->sku ?: 'REGISTRATION' . '_' . $option->value;
+				$sku[] = $option->sku ?: 'REGISTRATION_' . $option->value;
 			}
 		}
 

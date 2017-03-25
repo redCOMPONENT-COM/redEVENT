@@ -22,7 +22,7 @@ class RedeventControllerCategoriescsv extends RControllerForm
 	 * @param   string  $urlVar  The name of the URL variable if different from the primary key
 	 * (sometimes required to avoid router collisions).
 	 *
-	 * @return  boolean  True if access level check and checkout passes, false otherwise.
+	 * @return void
 	 */
 	public function edit($key = null, $urlVar = null)
 	{
@@ -76,7 +76,8 @@ class RedeventControllerCategoriescsv extends RControllerForm
 		// If there is no validated fields, there is a problem...
 		if (!count($fields))
 		{
-			$msg .= "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />try to export first to get an example of formatting</p>\n";
+			$msg .= "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />"
+				. "try to export first to get an example of formatting</p>\n";
 			$this->setRedirect('index.php?option=com_redevent&view=categoriescsv', $msg, 'error');
 
 			return;

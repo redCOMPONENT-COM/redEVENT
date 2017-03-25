@@ -125,7 +125,7 @@ td.monthweek {
 .custom-title {
    font-weight: bold;
    font-size: 11px;
-   margin: 10;
+   margin: 10px;
    color: white;
    padding: 2px 5px 1px;
    background: #7598FF;
@@ -159,7 +159,7 @@ td.monthweek {
 }
 
 #jlcalendarlegend {
-  clear: both;  
+  clear: both;
 }
 
 #jlcalendarlegend .eventCat {

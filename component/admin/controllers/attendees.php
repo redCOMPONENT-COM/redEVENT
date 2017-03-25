@@ -27,7 +27,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	{
 		if (!(is_array($cid) && count($cid)))
 		{
-			return false;
+			return;
 		}
 
 		foreach ($cid as $attendee_id)
@@ -43,7 +43,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	 *
 	 * @TODO: reimplement for 3.x
 	 *
-	 * @return true on sucess
+	 * @return void
 	 */
 	public function move()
 	{
@@ -119,7 +119,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * confirm an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function confirm()
 	{
@@ -163,7 +163,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * remove confirm status from an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function unconfirm()
 	{
@@ -207,7 +207,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * set cancelled status to an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function cancelreg()
 	{
@@ -237,7 +237,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * remove cancelled status from an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function uncancelreg()
 	{
@@ -267,7 +267,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * puts attendees on the waiting list of the session
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function onwaiting()
 	{
@@ -311,7 +311,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * puts attendees off the waiting list of the session
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function offwaiting()
 	{
