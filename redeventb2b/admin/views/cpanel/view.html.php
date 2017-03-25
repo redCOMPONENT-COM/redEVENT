@@ -35,6 +35,6 @@ class Redeventb2bViewCpanel extends Redeventb2bViewAdmin
 	{
 		$this->user = JFactory::getUser();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

@@ -397,7 +397,7 @@ class ModRedeventAttendingHelper
 	/**
 	 * adds submission price to rows     *
 	 *
-	 * @param   array  &$rows  rows
+	 * @param   array  $rows  rows
 	 *
 	 * @return boolean true on success
 	 */

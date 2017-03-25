@@ -220,8 +220,8 @@ class ModRedEventHelper
 	/**
 	 * Method to a formated and structured string of date infos
 	 *
-	 * @param   object  $row      data
-	 * @param   array   &$params  parameters
+	 * @param   object  $row     data
+	 * @param   array   $params  parameters
 	 *
 	 * @return string
 	 */
@@ -319,7 +319,9 @@ class ModRedEventHelper
 
 			if ($app->getLanguageFilter())
 			{
-				$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+				$query->where(
+					'(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)'
+				);
 			}
 
 			$db->setQuery($query);

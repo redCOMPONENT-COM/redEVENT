@@ -22,20 +22,20 @@ class Modredeventcalhelper
 	/**
 	 * Get items
 	 *
-	 * @param   string     $greq_year   requested year
-	 * @param   string     $greq_month  requested month
-	 * @param   JRegistry  &$params     plugin params
+	 * @param   string    $greqYear   requested year
+	 * @param   string    $greqMonth  requested month
+	 * @param   JRegistry $params     plugin params
 	 *
 	 * @return array
 	 */
-	public static function getdays($greq_year, $greq_month, &$params)
+	public static function getdays($greqYear, $greqMonth, &$params)
 	{
 		$user = JFactory::getUser();
 
 		$tz = new DatetimeZone(JFactory::getApplication()->getCfg('offset'));
 
-		$monthstart = JFactory::getDate("$greq_month/1/$greq_year", $tz)->format('Y-m-d', true);
-		$monthend   = JFactory::getDate("$greq_month/1/$greq_year next month", $tz)->format('Y-m-d', true);
+		$monthstart = JFactory::getDate("$greqMonth/1/$greqYear", $tz)->format('Y-m-d', true);
+		$monthend   = JFactory::getDate("$greqMonth/1/$greqYear next month", $tz)->format('Y-m-d', true);
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -103,31 +103,31 @@ class Modredeventcalhelper
 			}
 
 			// The two cases for roll over the year end with an event that goes across the year boundary.
-			if ($greq_year < $eyear)
+			if ($greqYear < $eyear)
 			{
 				$emonth = $emonth + 12;
 			}
 
-			if ($event->start_year < $greq_year)
+			if ($event->start_year < $greqYear)
 			{
 				$event->start_month = $event->start_month - 12;
 			}
 
-			if (($greq_year >= $event->start_year) && ($greq_year <= $eyear)
-				&& ($greq_month >= $event->start_month) && ($greq_month <= $emonth))
+			if (($greqYear >= $event->start_year) && ($greqYear <= $eyear)
+				&& ($greqMonth >= $event->start_month) && ($greqMonth <= $emonth))
 			{
 				// Set end day for current month
-				if ($emonth > $greq_month)
+				if ($emonth > $greqMonth)
 				{
-					$emonth = $greq_month;
+					$emonth = $greqMonth;
 
-					$eday = JFactory::getDate($greq_month . "/1/$greq_year", $tz)->format('t', true);
+					$eday = JFactory::getDate($greqMonth . "/1/$greqYear", $tz)->format('t', true);
 				}
 
 				// Set start day for current month
-				if ($event->start_month < $greq_month)
+				if ($event->start_month < $greqMonth)
 				{
-					$event->start_month = $greq_month;
+					$event->start_month = $greqMonth;
 					$event->start_day = 1;
 				}
 

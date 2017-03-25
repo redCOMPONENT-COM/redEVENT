@@ -32,7 +32,7 @@ class PlgRedevent_ConfigExample extends JPlugin
 	/**
 	 * Alters component parameters
 	 *
-	 * @param   JRegistry  &$params  parameters
+	 * @param   JRegistry  $params  parameters
 	 *
 	 * @return boolean true on success
 	 */
@@ -44,5 +44,7 @@ class PlgRedevent_ConfigExample extends JPlugin
 
 		// Merge params from plugin
 		$params->merge($this->params);
+
+		return true;
 	}
 }

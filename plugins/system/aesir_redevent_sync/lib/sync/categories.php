@@ -180,7 +180,8 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 
 		$next = 'index.php?option=com_redevent&task=categories.aesirsync'
 			. '&synced=' . $synced . '&limitstart=' . ($limitstart + 5)
-			. '&' . JSession::getFormToken() . '=1' . '&rand=' . uniqid();
+			. '&' . JSession::getFormToken() . '=1'
+			. '&rand=' . uniqid();
 
 		JFactory::getDocument()->addScriptDeclaration('window.location = "' . $next . '";');
 	}

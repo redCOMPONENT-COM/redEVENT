@@ -29,8 +29,8 @@ class Xmap_Com_Redevent
 	 * This function is called before a menu item is printed. We use it to set the
 	 * proper uniqueid for the item and indicate whether the node is expandible or not
 	 *
-	 * @param   Object  $node     node
-	 * @param   array   &$params  parameters
+	 * @param   Object  $node    node
+	 * @param   array   $params  parameters
 	 *
 	 * @return void
 	 */
@@ -90,9 +90,9 @@ class Xmap_Com_Redevent
 	/**
 	 * Get the content tree for this kind of content
 	 *
-	 * @param   Object  $xmap     xmap
-	 * @param   Object  $parent   parent
-	 * @param   Array   &$params  params
+	 * @param   Object  $xmap    xmap
+	 * @param   Object  $parent  parent
+	 * @param   Array   $params  params
 	 *
 	 * @return boolean
 	 */
@@ -187,9 +187,9 @@ class Xmap_Com_Redevent
 	/**
 	 * tree for categories and categories detailed views
 	 *
-	 * @param   Object  &$xmap    xmap
-	 * @param   Object  &$parent  parent
-	 * @param   Array   $params   params
+	 * @param   Object  $xmap    xmap
+	 * @param   Object  $parent  parent
+	 * @param   Array   $params  params
 	 *
 	 * @return void
 	 */
@@ -253,9 +253,9 @@ class Xmap_Com_Redevent
 	/**
 	 * tree for categories and categories detailed views
 	 *
-	 * @param   Object  &$xmap    xmap
-	 * @param   Object  &$parent  parent
-	 * @param   Array   $params   params
+	 * @param   Object  $xmap    xmap
+	 * @param   Object  $parent  parent
+	 * @param   Array   $params  params
 	 *
 	 * @return void
 	 */
@@ -332,9 +332,9 @@ class Xmap_Com_Redevent
 	/**
 	 * expands venue menus
 	 *
-	 * @param   Object  &$xmap    xmap
-	 * @param   Object  &$parent  parent
-	 * @param   Array   $params   params
+	 * @param   Object  $xmap    xmap
+	 * @param   Object  $parent  parent
+	 * @param   Array   $params  params
 	 *
 	 * @return void
 	 */
@@ -425,9 +425,9 @@ class Xmap_Com_Redevent
 	/**
 	 * tree for venues categories view
 	 *
-	 * @param   Object  &$xmap    xmap
-	 * @param   Object  &$parent  parent
-	 * @param   Array   $params   params
+	 * @param   Object  $xmap    xmap
+	 * @param   Object  $parent  parent
+	 * @param   Array   $params  params
 	 *
 	 * @return void
 	 */

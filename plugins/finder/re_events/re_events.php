@@ -68,8 +68,8 @@ class PlgFinderRe_Events extends FinderIndexerAdapter
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
 	 *
 	 * @since   2.5
 	 */
@@ -503,7 +503,7 @@ class PlgFinderRe_Events extends FinderIndexerAdapter
 	/**
 	 * get categories associated to row
 	 *
-	 * @param   FinderIndexerResult  &$item  item
+	 * @param   FinderIndexerResult  $item  item
 	 *
 	 * @return FinderIndexerResult
 	 */

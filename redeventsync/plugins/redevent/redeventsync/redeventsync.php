@@ -89,7 +89,9 @@ class PlgRedeventRedeventsync extends JPlugin
 		}
 		catch (ResyncException $e)
 		{
-			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), $e->status, $e->debug
+			);
 		}
 		catch (Exception $e)
 		{

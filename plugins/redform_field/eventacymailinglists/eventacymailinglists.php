@@ -51,7 +51,7 @@ class PlgRedform_FieldEventacymailinglists extends JPlugin
 	/**
 	 * Add supported field type(s)
 	 *
-	 * @param   string[]  &$types  types
+	 * @param   string[]  $types  types
 	 *
 	 * @return void
 	 */
@@ -63,7 +63,7 @@ class PlgRedform_FieldEventacymailinglists extends JPlugin
 	/**
 	 * Add supported field type(s) as option(s)
 	 *
-	 * @param   object[]  &$options  options
+	 * @param   object[]  $options  options
 	 *
 	 * @return void
 	 */
@@ -75,8 +75,8 @@ class PlgRedform_FieldEventacymailinglists extends JPlugin
 	/**
 	 * Return an instance of supported types, if matches.
 	 *
-	 * @param   string     $type       type of field
-	 * @param   RdfRfield  &$instance  instance of field
+	 * @param   string     $type      type of field
+	 * @param   RdfRfield  $instance  instance of field
 	 *
 	 * @return void
 	 */
