@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="redEVENT Custom Standard">
+
+	<rule ref="./Joomla/Joomla">
+		<exclude name="Joomla.NamingConventions.ValidFunctionName.ScopeNotCamelCaps"/>
+		<exclude name="Joomla.NamingConventions.ValidVariableName.NotCamelCaps"/>
+		<exclude name="Joomla.NamingConventions.ValidVariableName.MemberNotCamelCaps"/>
+		<exclude name="Joomla.NamingConventions.ValidFunctionName.FunctionNoCapital"/>
+		<!-- Exclude rule for class members doc bloc -->
+		<exclude name="Squiz.Commenting.VariableComment" />
+
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<!--
+		<exclude name="Joomla.NamingConventions.ValidFunctionName.MethodUnderscore"/>
+		<exclude name="Joomla.NamingConventions.ValidVariableName.ClassVarHasUnderscore"/>
+		-->
+	</rule>
+
+</ruleset>
