@@ -87,7 +87,7 @@ class RedeventTagsLibPlacesleftswitch extends \Redevent\Tag\Replacer
 		}
 
 		$parsedConditions = array_map(
-			function($condition)
+			function ($condition)
 			{
 				list($limit, $tag) = explode(";", $condition);
 
@@ -98,7 +98,7 @@ class RedeventTagsLibPlacesleftswitch extends \Redevent\Tag\Replacer
 
 		uasort(
 			$parsedConditions,
-			function($a, $b)
+			function ($a, $b)
 			{
 				return $a['limit'] > $b['limit'] ? 1 : - 1;
 			}
@@ -111,5 +111,8 @@ class RedeventTagsLibPlacesleftswitch extends \Redevent\Tag\Replacer
 				return '[' . $condition['tag'] . ']';
 			}
 		}
+
+		// Shouldn't happen
+		return $this->getRegular();
 	}
 }

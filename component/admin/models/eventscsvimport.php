@@ -142,7 +142,7 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * Convert custom fields keys from import to custom<id> keys
 	 *
-	 * @param   array  &$row  data
+	 * @param   array  $row  data
 	 *
 	 * @return array
 	 */
@@ -196,7 +196,7 @@ class RedeventModelEventscsvimport extends RModel
 	 *
 	 * @param   array  $data  event data from import
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function storeEvent($data)
 	{
@@ -461,7 +461,7 @@ class RedeventModelEventscsvimport extends RModel
 	 *
 	 * @param   array  $data  csv row data
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function getTemplateId($data)
 	{
@@ -528,7 +528,7 @@ class RedeventModelEventscsvimport extends RModel
 	 * @param   string  $name  venue name
 	 * @param   string  $city  venue city
 	 *
-	 * @return int id
+	 * @return integer id
 	 */
 	private function getVenueId($name, $city)
 	{
@@ -595,7 +595,7 @@ class RedeventModelEventscsvimport extends RModel
 	 *
 	 * @param   string  $name  price group name
 	 *
-	 * @return int id
+	 * @return integer id
 	 */
 	private function getPgId($name)
 	{

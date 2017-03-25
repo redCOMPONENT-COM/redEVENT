@@ -41,7 +41,7 @@ class RedeventViewVenue extends RedeventViewFront
 		$this->assignRef('row', $row);
 		$this->assignRef('elsettings', $settings);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -88,6 +88,6 @@ class RedeventViewVenue extends RedeventViewFront
 		$this->assignRef('row', $row);
 		$this->assignRef('address', $address);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

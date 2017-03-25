@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 $elsettings = RedeventHelper::config();
 $imagepath = JURI::root() . 'media/com_redevent/images/';
 
-foreach ($this->upcomingevents as $key => $event)
+foreach ($this->upcomingevents as $event)
 {
 	$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref=' . $event->xref . '&id=' . $event->slug);
 	$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id=' . $event->venueslug);
@@ -57,7 +57,7 @@ foreach ($this->upcomingevents as $key => $event)
 		$submissiontypes = explode(',', $event->submission_types);
 		$venues_html = '';
 
-		foreach ($submissiontypes as $key => $subtype)
+		foreach ($submissiontypes as $subtype)
 		{
 			switch ($subtype)
 			{

@@ -127,7 +127,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * Get user id for this attendee
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getUserId()
 	{
@@ -251,7 +251,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * get id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getId()
 	{
@@ -363,9 +363,9 @@ class RedeventAttendee extends JObject
 		$query = $this->db->getQuery(true);
 
 		$query->update('#__redevent_register')
-				->set('waitinglist = ' . $waiting)
-				->set('paymentstart = NOW()')
-				->where('id = ' . $this->db->Quote($this->id));
+			->set('waitinglist = ' . $waiting)
+			->set('paymentstart = NOW()')
+			->where('id = ' . $this->db->Quote($this->id));
 
 		$this->db->setQuery($query);
 
@@ -498,22 +498,20 @@ class RedeventAttendee extends JObject
 
 		foreach ($emails as $email)
 		{
-			/* Add the email address */
+			// Add the email address
 			$mailer->AddAddress($email['email'], $email['fullname']);
 		}
 
-		/* Mail submitter */
+		// Mail submitter
 		$htmlmsg = '<html><head><title></title></title></head><body>' . $body . '</body></html>';
 		$mailer->MsgHTML($htmlmsg);
 		$mailer->setSubject($subject);
 
-		/* Send the mail */
+		// Send the mail
 		if (!$mailer->Send())
 		{
 			RedeventHelperLog::simpleLog(JText::_('COM_REDEVENT_REGISTRATION_FAILED_SENDING_WAITING_LIST_STATUS_EMAIL'));
 			throw new Exception(JText::_('COM_REDEVENT_REGISTRATION_FAILED_SENDING_WAITING_LIST_STATUS_EMAIL'));
-
-			return false;
 		}
 
 		return true;
@@ -700,7 +698,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * return attendee event session xref
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getXref()
 	{
@@ -789,7 +787,7 @@ class RedeventAttendee extends JObject
 		/**
 		 * Send a submission mail to the attendee and/or contact person
 		 * This will only work if the contact person has an e-mail address
-		 **/
+		 */
 		if (!empty($eventsettings->notify))
 		{
 			$params = JComponentHelper::getParams('com_redevent');
@@ -799,13 +797,13 @@ class RedeventAttendee extends JObject
 			$body .= $eventsettings->notify_body;
 			$body .= '</body></html>';
 
-			/* Load the mailer */
+			// Load the mailer
 			$mailer = $this->prepareEmail($subject, $body);
 			$emails = $this->getContactEmails();
 
 			foreach ($emails as $email)
 			{
-				/* Add the email address */
+				// Add the email address
 				$mailer->AddAddress($email['email'], $email['fullname']);
 			}
 
@@ -815,7 +813,7 @@ class RedeventAttendee extends JObject
 				$mailer->addAttachment($ics);
 			}
 
-			/* send */
+			// Send
 			if (!$mailer->Send())
 			{
 				RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
@@ -832,7 +830,7 @@ class RedeventAttendee extends JObject
 	 *
 	 * @param   bool  $unreg  is this unregistration ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function notifyManagers($unreg = false)
 	{
@@ -880,7 +878,7 @@ class RedeventAttendee extends JObject
 			</body>
 			</html>';
 
-		/* Load the mailer */
+		// Load the mailer
 		$mailer = $this->prepareEmail($subject, $body);
 
 		if ($this->getEmail() && $params->get('allow_email_aliasing', 1))
@@ -947,7 +945,7 @@ class RedeventAttendee extends JObject
 
 		$mainframe = JFactory::getApplication();
 
-		/* Load the mailer */
+		// Load the mailer
 		$mailer = RdfHelper::getMailer();
 		$mailer->isHTML(true);
 		$mailer->From = $mainframe->getCfg('mailfrom');
@@ -959,10 +957,10 @@ class RedeventAttendee extends JObject
 		$tags->addOptions(array('sids' => array($this->load()->sid)));
 		$tags->setSubmitkey($this->load()->submit_key);
 
-		/* build activation link */
+		// Build activation link
 		// TODO: use the route helper !
 		$url = JRoute::_(
-				JURI::root()
+			JURI::root()
 				. 'index.php?option=com_redevent&task=registration.activate'
 				. '&confirmid=' . str_replace(".", "_", $this->data->uip)
 				. 'x' . $this->data->xref
@@ -973,7 +971,7 @@ class RedeventAttendee extends JObject
 		$activatelink = '<a href="' . $url . '">' . JText::_('COM_REDEVENT_Activate') . '</a>';
 
 		$cancellinkurl = JRoute::_(
-				JURI::root()
+			JURI::root()
 				. 'index.php?option=com_redevent&task=registration.emailcancelregistration'
 				. '&rid=' . $this->data->id
 				. '&xref=' . $this->data->xref
@@ -999,7 +997,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * return ics file for session
 	 *
-	 * @return bool|string
+	 * @return boolean|string
 	 */
 	private function getIcs()
 	{

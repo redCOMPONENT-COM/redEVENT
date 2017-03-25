@@ -219,7 +219,7 @@ class RedeventModelTags extends RModel
 	/**
 	 * Add tags from library classes
 	 *
-	 * @param   array  &$tags  tags
+	 * @param   array  $tags  tags
 	 *
 	 * @return void
 	 *

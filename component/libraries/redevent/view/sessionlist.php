@@ -28,7 +28,7 @@ abstract class RedeventViewSessionlist extends RedeventViewFront
 	{
 		$this->prepareView();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

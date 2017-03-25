@@ -51,7 +51,7 @@ class RedeventViewSessions extends RedeventViewAdmin
 			$this->canEditState = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

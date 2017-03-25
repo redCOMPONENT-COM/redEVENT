@@ -51,7 +51,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 			$this->filterForm->setFieldAttribute('session', 'event', $this->session->eventid, 'filter');
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -170,35 +170,5 @@ class RedeventViewAttendees extends RedeventViewAdmin
 		);
 
 		return JHtml::_('rgrid.state', $states, $row->waitinglist, $i, 'attendees.', $this->canEdit, true);
-	}
-
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  mixed  A string if successful, otherwise a Error object.
-	 */
-	public function _displayprint($tpl = null)
-	{
-		$elsettings = JComponentHelper::getParams('com_redevent');
-		RHelperAsset::load('redevent-backend.css');
-
-		$rows = $this->get('Data');
-		$event = $this->get('Event');
-		$rf_fields = $this->get('RedFormFrontFields');
-		$form = $this->get('Form');
-
-		$event->dates = RedeventHelperDate::isValidDate($event->dates)
-			? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime($event->dates))
-			: JText::_('COM_REDEVENT_OPEN_DATE');
-
-		// Assign data to template
-		$this->assignRef('rows', $rows);
-		$this->assignRef('event', $event);
-		$this->assignRef('rf_fields', $rf_fields);
-		$this->assignRef('form',      $form);
-
-		parent::display($tpl);
 	}
 }

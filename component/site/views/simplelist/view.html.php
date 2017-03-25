@@ -28,7 +28,7 @@ class RedeventViewSimpleList extends RedeventViewSessionlist
 		$this->assign('list_link', RedeventHelperRoute::getSimpleListRoute(null, 'default'));
 		$this->assign('dellink', JFactory::getUser()->authorise('re.createevent'));
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

@@ -32,13 +32,13 @@ class RedeventViewFeatured extends RedeventViewSessionlist
 			RHelperAsset::load('featured.css');
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
 	 * Get feed link
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFeedLink()
 	{

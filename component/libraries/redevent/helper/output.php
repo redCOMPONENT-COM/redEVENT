@@ -19,7 +19,7 @@ class RedeventHelperOutput
 	 * Writes Event submission button
 	 *
 	 * @param   boolean  $allowed  Access of user
-	 * @param   array    &$params  needed params
+	 * @param   array    $params   needed params
 	 *
 	 * @return string
 	 */
@@ -62,8 +62,8 @@ class RedeventHelperOutput
 	/**
 	 * Return html code for thumbnails view button
 	 *
-	 * @param   string  $link     link to the view
-	 * @param   array   &$params  needed params
+	 * @param   string  $link    link to the view
+	 * @param   array   $params  needed params
 	 *
 	 * @return string
 	 */
@@ -104,8 +104,8 @@ class RedeventHelperOutput
 	/**
 	 * Return html code for list view button
 	 *
-	 * @param   string  $link     link to the view
-	 * @param   array   &$params  needed params
+	 * @param   string  $link    link to the view
+	 * @param   array   $params  needed params
 	 *
 	 * @return string
 	 */
@@ -162,7 +162,7 @@ class RedeventHelperOutput
 	/**
 	 * returns html code for archive button
 	 *
-	 * @param   array  &$params  needed params
+	 * @param   array  $params  needed params
 	 *
 	 * @return string html
 	 */
@@ -202,7 +202,7 @@ class RedeventHelperOutput
 	 * returns html code for edit button
 	 *
 	 * @param   int     $id             id of the item to edit
-	 * @param   array   &$params        parameters
+	 * @param   array   $params         parameters
 	 * @param   int     $allowedtoedit  allowed to edit
 	 * @param   string  $view           view to go to
 	 *
@@ -261,7 +261,7 @@ class RedeventHelperOutput
 			return $output;
 		}
 
-		return;
+		return '';
 	}
 
 	/**
@@ -294,7 +294,7 @@ class RedeventHelperOutput
 	 * returns html code for edit button
 	 *
 	 * @param   string  $print_link  link
-	 * @param   array   &$params     parameters
+	 * @param   array   $params      parameters
 	 *
 	 * @return string html
 	 */
@@ -334,7 +334,7 @@ class RedeventHelperOutput
 			return $output;
 		}
 
-		return;
+		return '';
 	}
 
 	/**
@@ -392,7 +392,7 @@ class RedeventHelperOutput
 		// Stop if disabled
 		if (!$data->map)
 		{
-			return;
+			return '';
 		}
 
 		if (isset($attributes['class']))
@@ -431,7 +431,8 @@ class RedeventHelperOutput
 			window.addEvent(\'domready\', function() {
 				mymap.initajax(' . ($data->venueid ?: $data->id) . ', "venue-location");
 			});
-		');
+		'
+		);
 		JText::script("COM_REDEVENT_GET_DIRECTIONS");
 
 		if (isset($attributes['class']))
@@ -465,7 +466,7 @@ class RedeventHelperOutput
 
 		if (!$key = $params->get('googlemapsApiKey'))
 		{
-			return;
+			return '';
 		}
 
 		RHelperAsset::load('gmapsoverlay.css');
@@ -620,8 +621,8 @@ class RedeventHelperOutput
 			case 'comma':
 				// Format price
 				$formatprice = number_format(
-						$price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')
-					) . ',-';
+					$price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')
+				) . ',-';
 				break;
 
 			case 'none':
@@ -654,7 +655,7 @@ class RedeventHelperOutput
 	{
 		if (!is_array($prices))
 		{
-			return;
+			return '';
 		}
 
 		if (count($prices) == 1)
@@ -683,7 +684,7 @@ class RedeventHelperOutput
 	{
 		if (!is_array($prices))
 		{
-			return;
+			return '';
 		}
 
 		if (count($prices) == 1)
@@ -726,7 +727,9 @@ class RedeventHelperOutput
 	 */
 	public static function getTagsModalLink($field = '')
 	{
-		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal-button"');
+		return JHTML::link(
+			'index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal-button"'
+		);
 	}
 
 	/**

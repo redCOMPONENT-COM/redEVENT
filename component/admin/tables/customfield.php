@@ -184,7 +184,7 @@ class RedeventTableCustomfield extends RedeventTable
 	/**
 	 * Create column in object table
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 *
 	 * @throws Exception
 	 */
@@ -219,7 +219,9 @@ class RedeventTableCustomfield extends RedeventTable
 	 * @param   int     $customId    custom field id
 	 * @param   string  $object_key  type of object the custom field belongs to
 	 *
-	 * @return bool
+	 * @return boolean
+	 *
+	 * @throws LogicException
 	 */
 	private function dropColumn($customId, $object_key)
 	{
@@ -234,7 +236,7 @@ class RedeventTableCustomfield extends RedeventTable
 				break;
 
 			default:
-				return;
+				throw new LogicException('unknown custom field object key');
 		}
 
 		$db = $this->_db;

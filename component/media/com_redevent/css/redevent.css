@@ -90,7 +90,7 @@ border: none;
  *
  * Event Details
  */
-div#redevent.el_details dl
+div#redevent.el_details dl,
 div#redevent.el_venueevents dl,
 div#redevent.el_venuesview dl {
 margin: 0 5px;

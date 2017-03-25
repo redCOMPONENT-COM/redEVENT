@@ -182,8 +182,8 @@ class RedeventTagsRegistrationSession
 		$renderData = array(
 			'form' => $form,
 			'redformHtml' => $this->rfcore->getFormFields(
-					$this->session->getEvent()->getEventtemplate()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
-				),
+				$this->session->getEvent()->getEventtemplate()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
+			),
 			'session' => $this->session,
 			'submitKey' => $this->submitKey
 		);
@@ -232,7 +232,7 @@ class RedeventTagsRegistrationSession
 	/**
 	 * Get number of signup to display
 	 *
-	 * @return int
+	 * @return integer
 	 *
 	 * @throws Exception
 	 */

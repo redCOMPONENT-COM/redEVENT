@@ -282,7 +282,8 @@ class RedeventModelEditevent extends RModelAdmin
 			{
 				$unset = array_fill_keys(
 					array(
-						'id', 'title', 'alias', 'course_code', 'created_by', 'modified', 'modified_by', 'author_ip', 'created', 'alias', 'alias', 'alias'
+						'id', 'title', 'alias', 'course_code', 'created_by', 'modified', 'modified_by',
+						'author_ip', 'created', 'alias', 'alias', 'alias'
 						, 'checked_out', 'checked_out_time', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias'
 					),
 					0

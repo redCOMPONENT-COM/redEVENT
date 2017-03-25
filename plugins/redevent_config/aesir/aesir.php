@@ -32,12 +32,14 @@ class PlgRedevent_ConfigAesir extends JPlugin
 	/**
 	 * Alters component parameters
 	 *
-	 * @param   JRegistry  &$params  parameters
+	 * @param   JRegistry  $params  parameters
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 */
 	public function onGetRedeventConfig(&$params)
 	{
 		$params->merge($this->params);
+
+		return true;
 	}
 }

@@ -137,8 +137,8 @@ class PlgSystemAesir_Redevent_Sync extends JPlugin
 	/**
 	 * Override toolbar
 	 *
-	 * @param   RedeventViewAdmin  $view      the view object
-	 * @param   RToolbar           &$toolbar  the toolbar
+	 * @param   RedeventViewAdmin  $view     the view object
+	 * @param   RToolbar           $toolbar  the toolbar
 	 *
 	 * @return void
 	 */

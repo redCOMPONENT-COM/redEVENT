@@ -101,7 +101,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 				$category->assignedevents = $this->_getEventsTotal($category);
 
 				// Generate description
-				if (empty ($category->description))
+				if (empty($category->description))
 				{
 					$category->description = JText::_('COM_REDEVENT_NO_DESCRIPTION');
 				}
@@ -123,7 +123,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 	/**
 	 * Method to get the Categories events
 	 *
-	 * @param   object  &$category  a category object
+	 * @param   object  $category  a category object
 	 *
 	 * @access public
 	 * @return array
@@ -147,7 +147,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 	/**
 	 * Method to get the Categories events total
 	 *
-	 * @param   object  &$category  a category object
+	 * @param   object  $category  a category object
 	 *
 	 * @access public
 	 * @return array
@@ -157,13 +157,13 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 		// Lets load the content
 		$query = $this->_buildDataQuery($category);
 
-		return $this->_getListCount($query, 0, 0);
+		return $this->_getListCount($query);
 	}
 
 	/**
 	 * Method get the event query
 	 *
-	 * @param   object  &$category  a category object
+	 * @param   object  $category  a category object
 	 *
 	 * @access protected
 	 * @return array

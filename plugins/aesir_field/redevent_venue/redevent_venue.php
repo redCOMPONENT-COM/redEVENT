@@ -105,7 +105,7 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 		$sessions = RedeventEntitySession::loadArray($res);
 
 		$twigEntities = array_map(
-			function($session)
+			function ($session)
 			{
 				return RedeventEntityTwigSession::getInstance($session);
 			},

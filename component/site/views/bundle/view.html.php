@@ -26,7 +26,7 @@ class RedeventViewBundle extends RedeventViewFront
 	{
 		$this->bundle = $this->get('item');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

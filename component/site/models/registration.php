@@ -202,7 +202,7 @@ class RedeventModelRegistration extends RModel
 	 */
 	public function getRegistrationFromActivationLink($submit_key, $register_id, $uid, $xref)
 	{
-		/* Check the db if this entry exists */
+		// Check the db if this entry exists
 		$query = $this->_db->getQuery(true)
 			->select('r.confirmed')
 			->from('#__redevent_register AS r')
@@ -221,7 +221,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   object  $registration  registration data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function confirmOnPayment($registration)
 	{
@@ -302,7 +302,7 @@ class RedeventModelRegistration extends RModel
 	/**
 	 * Get session details
 	 *
-	 * @return bool|mixed|object
+	 * @return boolean|mixed|object
 	 */
 	public function getSessionDetails()
 	{
@@ -320,8 +320,8 @@ class RedeventModelRegistration extends RModel
 				->select('a.registra, a.unregistra, t.activate, t.notify, t.redform_id as form_id')
 				->select('t.enable_activation_confirmation, t.notify_confirm_body, t.notify_confirm_subject, t.notify_subject, t.notify_body')
 				->select('t.notify_off_list_subject, t.notify_off_list_body, t.notify_on_list_subject, t.notify_on_list_body')
-				->select('x.*, x.title as session_name, a.created_by, t.redform_id, x.maxwaitinglist, x.maxattendees, t.juser, t.show_names, t.showfields')
-				->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone')
+				->select('x.*, x.title as session_name, a.created_by, t.redform_id, x.maxwaitinglist, x.maxattendees, t.juser, t.show_names')
+				->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone, t.showfields')
 				->select('v.venue')
 				->select('u.name AS creator_name, u.email AS creator_email')
 				->select('t.confirmation_message, t.review_message')
@@ -385,10 +385,10 @@ class RedeventModelRegistration extends RModel
 	 */
 	public function sendNotificationEmail($submit_key)
 	{
-		/* Load database connection */
+		// Load database connection
 		$db = JFactory::getDBO();
 
-		/* Get registration settings */
+		// Get registration settings
 		$query = $this->_db->getQuery(true)
 			->select('r.id')
 			->from('#__redevent_register AS r')
@@ -426,7 +426,7 @@ class RedeventModelRegistration extends RModel
 	 * @param   bool    $unreg       is this an unregistration ?
 	 * @param   int     $reg_id      registration id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function notifyManagers($submit_key, $unreg = false, $reg_id = 0)
 	{
@@ -436,7 +436,7 @@ class RedeventModelRegistration extends RModel
 		}
 		else
 		{
-			/* Get registration settings */
+			// Get registration settings
 			$query = $this->_db->getQuery(true)
 				->select('r.id')
 				->from('#__redevent_register AS r')
@@ -473,7 +473,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $submitter_id  submitter id
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	public function getRegistration($submitter_id)
 	{
@@ -641,7 +641,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $sid  submitter id
 	 *
-	 * @return bool|JUser
+	 * @return boolean|JUser
 	 */
 	protected function createRedmemberUser($sid)
 	{
@@ -816,7 +816,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $sid  submitter id
 	 *
-	 * @return bool|JUser
+	 * @return boolean|JUser
 	 *
 	 * @throws Exception
 	 */
@@ -896,7 +896,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   string  $email  The email to search on
 	 *
-	 * @return int The user id or 0 if not found
+	 * @return integer The user id or 0 if not found
 	 */
 	protected function _getUserIdFromEmail($email)
 	{

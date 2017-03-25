@@ -388,7 +388,7 @@ class RedeventModelAttendees extends RModelList
 	 *
 	 * @param   mixed  $pks  ids to delete
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function delete($pks = null)
 	{

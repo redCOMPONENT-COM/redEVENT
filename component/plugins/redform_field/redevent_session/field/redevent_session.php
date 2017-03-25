@@ -63,7 +63,7 @@ class RdfFieldRedevent_Session extends RdfRfieldSelect
 		$tags = new RedeventTags;
 
 		$optionsSessions = array_map(
-			function($session) use ($tags, $formatValue, $formatText)
+			function ($session) use ($tags, $formatValue, $formatText)
 			{
 				$tags->setXref($session->id);
 

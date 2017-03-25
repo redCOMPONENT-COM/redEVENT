@@ -92,7 +92,7 @@ class PlgAesir_FieldRedevent_CategoryFormFieldCategory extends CustomField
 		}
 
 		return array_map(
-			function($element)
+			function ($element)
 			{
 				return \JHtml::_('select.option', $element->value, $element->text);
 			},

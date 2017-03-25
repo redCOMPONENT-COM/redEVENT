@@ -54,7 +54,7 @@ class RedeventRouteItemid
 	 *
 	 * @param   array  $query  url parameters
 	 *
-	 * @return int Itemid
+	 * @return integer Itemid
 	 */
 	public function getItemId($query)
 	{
@@ -172,7 +172,7 @@ class RedeventRouteItemid
 	 *
 	 * @param   array  $query  query parts
 	 *
-	 * @return bool|string
+	 * @return boolean|string
 	 */
 	private function isRegistration($query)
 	{

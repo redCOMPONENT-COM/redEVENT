@@ -14,7 +14,7 @@ interface RokMiniEvents_Source {
     /**
      * Checks to see if the source is available to be used
      * @abstract
-     * @return bool
+     * @return boolean
      */
     function available();
 }

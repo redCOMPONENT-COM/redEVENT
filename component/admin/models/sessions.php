@@ -175,7 +175,8 @@ class RedeventModelSessions extends RModelList
 				$search = $this->_db->Quote('%' . $this->_db->escape($search, true) . '%');
 				$query->where('(LOWER(e.title) LIKE ' . $search . ' OR '
 					. ' LOWER(obj.title) LIKE ' . $search . ' OR '
-					. ' LOWER(obj.session_code) LIKE ' . $search . ')');
+					. ' LOWER(obj.session_code) LIKE ' . $search . ')'
+				);
 			}
 		}
 

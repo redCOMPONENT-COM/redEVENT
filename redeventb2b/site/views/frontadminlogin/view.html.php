@@ -38,7 +38,7 @@ class Redeventb2bViewFrontadminlogin extends RViewSite
 		{
 			$app->redirect($frontadminRoute);
 
-			return;
+			return true;
 		}
 
 		$params = $app->getParams();
@@ -58,6 +58,6 @@ class Redeventb2bViewFrontadminlogin extends RViewSite
 		$this->return = base64_encode($frontadminRoute);
 		$this->params = $app->getParams();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

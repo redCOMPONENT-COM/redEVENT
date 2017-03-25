@@ -116,5 +116,7 @@ class RedeventViewAttendeescsv extends RViewCsv
 		$title = JFile::makeSafe('attendees_' . $date . '.csv');
 		header('Content-Disposition: attachment; filename="' . $title . '"');
 		echo $text;
+
+		return true;
 	}
 }

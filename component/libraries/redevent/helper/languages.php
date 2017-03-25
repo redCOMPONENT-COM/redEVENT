@@ -68,7 +68,7 @@ class RedeventHelperLanguages
 		{
 			$codes = array_filter(
 				$codes,
-				function($element) use ($filter)
+				function ($element) use ($filter)
 				{
 					return in_array($element['iso2'], $filter);
 				}
@@ -235,7 +235,7 @@ class RedeventHelperLanguages
 	 *
 	 * @param   string  $iso  iso-1 code
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private static function convertToIso2($iso)
 	{

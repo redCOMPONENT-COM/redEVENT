@@ -61,7 +61,7 @@ class RedeventHelperIcal
 	 *
 	 * @param   RedeventEntitySession  $session  session data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function addSession($session)
 	{
@@ -242,7 +242,7 @@ class RedeventHelperIcal
 	 *
 	 * @param   string  $path  path to save to
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 */
 	public function write($path)
 	{

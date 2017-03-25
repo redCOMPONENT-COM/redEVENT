@@ -156,7 +156,7 @@ if (!class_exists('RTCommon_ClassLoader', false)) {
          * See if the loader is registered
          * @static
          * @param  $loaderName
-         * @return bool
+         * @return boolean
          */
         public static function isLoaderRegistered($loaderName)
         {

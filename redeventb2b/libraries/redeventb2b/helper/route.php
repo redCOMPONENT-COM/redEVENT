@@ -78,7 +78,7 @@ class Redeventb2bHelperRoute
 	 *
 	 * @param   array  $query  url parameters
 	 *
-	 * @return int Itemid
+	 * @return integer Itemid
 	 */
 	protected static function _findItem($query)
 	{

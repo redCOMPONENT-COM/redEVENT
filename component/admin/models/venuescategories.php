@@ -146,7 +146,7 @@ class RedeventModelVenuescategories extends RModelList
 			{
 				$query->where('c.published = 1');
 			}
-			elseif ($filter_state == '0' )
+			elseif ($filter_state == '0')
 			{
 				$query->where('c.published = 0');
 			}
@@ -190,7 +190,7 @@ class RedeventModelVenuescategories extends RModelList
 	 *
 	 * @param   int  $id  venue category id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function countCategoryVenues($id)
 	{

@@ -65,7 +65,7 @@ class RedeventEntitySession extends RedeventEntityBase
 				$res = $db->loadObjectList();
 
 				$this->attendees = $res ? array_map(
-					function($row)
+					function ($row)
 					{
 						return RedeventEntityAttendee::getInstance($row->id)->bind($row);
 					}, $res
@@ -155,7 +155,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Get session duration in days (On how many days it spans)
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationDays()
 	{
@@ -323,7 +323,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Check if session as a max attendees number set
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @since 3.2.1
 	 */
@@ -339,7 +339,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	 *
 	 * @param   int  $userId  user id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getUserNumberOfSignupLeft($userId)
 	{
@@ -363,7 +363,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return number of booked places
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getNumberAttending()
 	{
@@ -372,12 +372,15 @@ class RedeventEntitySession extends RedeventEntityBase
 		return empty($attendees) ? 0 :
 			array_reduce(
 				$attendees,
-				function($count, $attendee)
+				function ($count, $attendee)
 				{
+					// PHPCS Indentation error false-positive
+					// @codingStandardsIgnoreStart
 					if ($attendee->isAttending())
 					{
 						$count++;
 					}
+					// @codingStandardsIgnoreEnd
 
 					return $count;
 				}
@@ -387,7 +390,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return number of persons on waiting list
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getNumberLeft()
 	{
@@ -404,7 +407,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return number of persons on waiting list
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getNumberWaiting()
 	{
@@ -413,12 +416,15 @@ class RedeventEntitySession extends RedeventEntityBase
 		return empty($attendees) ? 0 :
 			array_reduce(
 				$attendees,
-				function($count, $attendee)
+				function ($count, $attendee)
 				{
+					// PHPCS Indentation error false-positive
+					// @codingStandardsIgnoreStart
 					if ($attendee->isWaiting())
 					{
 						$count++;
 					}
+					// @codingStandardsIgnoreEnd
 
 					return $count;
 				}
@@ -498,7 +504,7 @@ class RedeventEntitySession extends RedeventEntityBase
 
 		return array_filter(
 			$pricegroups,
-			function($pricegroup)
+			function ($pricegroup)
 			{
 				return $pricegroup->active == 1;
 			}
@@ -545,7 +551,7 @@ class RedeventEntitySession extends RedeventEntityBase
 		$imageFolder = JURI::base() . 'media/com_redevent/images/';
 		$settings = RedeventHelper::config();
 
-		/* Get the different submission types */
+		// Get the different submission types
 		$submissiontypes = explode(',', $this->getEvent()->getEventtemplate()->submission_types);
 
 		foreach ($submissiontypes as $key => $subtype)
@@ -711,7 +717,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return true if it's a full day session
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isAllDay()
 	{
@@ -768,7 +774,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return true if it's an open date
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isOpenDate()
 	{
@@ -778,7 +784,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Is this an upcoming event
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isUpcoming()
 	{
@@ -798,7 +804,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	 *
 	 * @param   int  $userId  user id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function getUserActiveRegistrationsCount($userId)
 	{

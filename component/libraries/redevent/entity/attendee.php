@@ -133,7 +133,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Is attendee confirmed
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isAttending()
 	{
@@ -145,7 +145,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Is attendee confirmed
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isConfirmed()
 	{
@@ -157,7 +157,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Is attendee on waiting list
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isWaiting()
 	{
@@ -190,7 +190,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		}
 
 		$attendees = array_map(
-			function($item)
+			function ($item)
 			{
 				$instance = self::getInstance($item->id);
 				$instance->bind($item);
@@ -237,13 +237,13 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Update attendee payment requests
 	 *
-	 * @return bool|void
+	 * @return boolean
 	 */
 	public function updatePaymentRequests()
 	{
 		if (!$this->isValid())
 		{
-			return;
+			return false;
 		}
 
 		$answers = $this->getAnswers();
