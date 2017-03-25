@@ -155,7 +155,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Get session duration in days (On how many days it spans)
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationDays()
 	{
@@ -323,7 +323,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Check if session as a max attendees number set
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @since 3.2.1
 	 */
@@ -339,7 +339,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	 *
 	 * @param   int  $userId  user id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getUserNumberOfSignupLeft($userId)
 	{
@@ -363,7 +363,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return number of booked places
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getNumberAttending()
 	{
@@ -387,7 +387,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return number of persons on waiting list
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getNumberLeft()
 	{
@@ -404,7 +404,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return number of persons on waiting list
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getNumberWaiting()
 	{
@@ -711,7 +711,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return true if it's a full day session
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isAllDay()
 	{
@@ -768,7 +768,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Return true if it's an open date
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isOpenDate()
 	{
@@ -778,7 +778,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	/**
 	 * Is this an upcoming event
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isUpcoming()
 	{
@@ -798,7 +798,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	 *
 	 * @param   int  $userId  user id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function getUserActiveRegistrationsCount($userId)
 	{

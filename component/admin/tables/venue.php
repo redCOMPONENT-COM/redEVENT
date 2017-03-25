@@ -320,7 +320,7 @@ class RedeventTableVenue extends RedeventTable
 	 *
 	 * @param   array  $quotedIds  quoted ids
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function haveNoSessions($quotedIds)
 	{

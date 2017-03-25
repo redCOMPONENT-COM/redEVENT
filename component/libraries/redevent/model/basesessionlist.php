@@ -820,7 +820,7 @@ class RedeventModelBasesessionlist extends RModel
 	/**
 	 * return filter for event custom fields
 	 *
-	 * @return void
+	 * @return RedeventAbstractCustomfield[]
 	 */
 	public function getCustomFilters()
 	{

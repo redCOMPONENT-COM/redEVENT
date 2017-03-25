@@ -42,7 +42,7 @@ class RedeventHelper
 	 *
 	 * @param   int  $forced  force cleanup
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function cleanup($forced = 0)
 	{
@@ -202,6 +202,8 @@ class RedeventHelper
 			// Update recron file with latest update
 			JFile::write($cronfile, $now);
 		}
+
+		return true;
 	}
 
 	/**
@@ -393,7 +395,7 @@ class RedeventHelper
 	 * @param   int  $xref_id  session id
 	 * @param   int  $user_id  user id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function canUnregister($xref_id, $user_id = null)
 	{
@@ -479,7 +481,7 @@ class RedeventHelper
 	 * @param   object  $session    event data
 	 * @param   bool    $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @deprecated
 	 */
@@ -618,7 +620,7 @@ class RedeventHelper
 	 * @param   vcalendar  &$calendartool  calendar object
 	 * @param   object     $session        session data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function icalAddEvent(&$calendartool, $session)
 	{

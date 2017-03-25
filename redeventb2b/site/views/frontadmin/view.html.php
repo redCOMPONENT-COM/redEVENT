@@ -337,7 +337,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 	 *
 	 * @param   object  $row  row
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isFull($row)
 	{

@@ -162,7 +162,7 @@ class RedeventViewSignup extends RViewSite
 		$this->assignRef('pagetitle', $pagetitle);
 		$this->assignRef('fullpage', $fullpage);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -212,6 +212,6 @@ class RedeventViewSignup extends RViewSite
 			throw new RuntimeException('NOT AUTHORIZED', 403);
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

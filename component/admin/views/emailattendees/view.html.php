@@ -30,7 +30,7 @@ class RedeventViewEmailattendees extends RedeventViewAdmin
 		$this->settings = RedeventHelper::config();
 		$this->editor = JFactory::getEditor();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

@@ -149,7 +149,7 @@ class RedEventModelWeek extends RedeventModelBasesessionlist
 	/**
 	 * return week number
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getWeekNumber()
 	{
@@ -161,7 +161,7 @@ class RedEventModelWeek extends RedeventModelBasesessionlist
 	/**
 	 * return year
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getYear()
 	{

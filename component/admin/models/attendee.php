@@ -116,7 +116,7 @@ class RedeventModelAttendee extends RModelAdmin
 	/**
 	 * Init data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function initData()
 	{

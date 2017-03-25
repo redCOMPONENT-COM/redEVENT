@@ -47,6 +47,8 @@ class RedeventAnalytics
 	{
 		$options = $this->buildOptions($submit_key);
 		RdfHelperAnalytics::recordTransMeasurementProtocol($submit_key, $options);
+
+		return true;
 	}
 
 	/**

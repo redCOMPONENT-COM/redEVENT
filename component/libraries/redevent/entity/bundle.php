@@ -24,7 +24,7 @@ class RedeventEntityBundle extends RedeventEntityBase
 	/**
 	 * Get bundle max duration
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMax()
 	{
@@ -45,7 +45,7 @@ class RedeventEntityBundle extends RedeventEntityBase
 	/**
 	 * Get bundle min duration
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMin()
 	{

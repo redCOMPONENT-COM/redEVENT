@@ -127,7 +127,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * Get user id for this attendee
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getUserId()
 	{
@@ -251,7 +251,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * get id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getId()
 	{
@@ -700,7 +700,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * return attendee event session xref
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getXref()
 	{
@@ -832,7 +832,7 @@ class RedeventAttendee extends JObject
 	 *
 	 * @param   bool  $unreg  is this unregistration ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function notifyManagers($unreg = false)
 	{
@@ -999,7 +999,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * return ics file for session
 	 *
-	 * @return bool|string
+	 * @return boolean|string
 	 */
 	private function getIcs()
 	{

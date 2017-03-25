@@ -137,7 +137,7 @@ class RedeventModelSignup extends RModel
 	 * @param   array  $tags             tags
 	 * @param   bool   $send_attachment  send attachment
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @todo: rewrite this function !!!
 	 */
@@ -200,7 +200,7 @@ class RedeventModelSignup extends RModel
 	 *
 	 * @param   array  $tags  tags
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getSendFormalOfferEmail($tags)
 	{
@@ -250,7 +250,7 @@ class RedeventModelSignup extends RModel
 	/**
 	 * Is session full ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getIsFull()
 	{
@@ -295,7 +295,7 @@ class RedeventModelSignup extends RModel
 	 *
 	 * @param   int  $submitter_id  submitter id
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	public function getRegistration($submitter_id)
 	{
@@ -329,7 +329,7 @@ class RedeventModelSignup extends RModel
 	 *
 	 * @param   int  $xref_id  xref id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getManageAttendees($xref_id)
 	{

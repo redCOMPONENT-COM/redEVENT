@@ -94,7 +94,7 @@ class Xmap_Com_Redevent
 	 * @param   Object  $parent   parent
 	 * @param   Array   &$params  params
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function getTree($xmap, $parent, &$params)
 	{

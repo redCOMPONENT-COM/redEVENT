@@ -36,10 +36,11 @@ class RedeventFormFieldEventtemplate extends JFormFieldList
 		$rows = $model->getItems() ?: array();
 
 		$options = array_map(
-				function($row) {
-					return array('value' => $row->id, 'text' => $row->name);
-				},
-				$rows
+			function ($row)
+			{
+				return array('value' => $row->id, 'text' => $row->name);
+			},
+			$rows
 		);
 
 		return array_merge(parent::getOptions(), $options);

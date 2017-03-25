@@ -28,7 +28,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 * @param   int   $event_id  event id
 	 * @param   bool  $isNew     is new
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventEdited($event_id, $isNew)
 	{
@@ -97,7 +97,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 * @param   int   $venue_id  venue id
 	 * @param   bool  $isNew     is new
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onVenueEdited($venue_id, $isNew)
 	{
@@ -162,7 +162,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 *
 	 * @param   int  $xref  session id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventUserRegistered($xref)
 	{
@@ -225,7 +225,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 *
 	 * @param   int  $xref  session id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventUserUnregistered($xref)
 	{
@@ -289,7 +289,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 * @param   int     $user_id  user id
 	 * @param   string  &$text    text
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAttendeeDisplay($user_id, &$text)
 	{
@@ -310,7 +310,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 * @param   int     $user_id  user id
 	 * @param   Object  &$object  object
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventCreatorDisplay($user_id, &$object)
 	{

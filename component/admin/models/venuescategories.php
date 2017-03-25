@@ -190,7 +190,7 @@ class RedeventModelVenuescategories extends RModelList
 	 *
 	 * @param   int  $id  venue category id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function countCategoryVenues($id)
 	{

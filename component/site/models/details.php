@@ -468,7 +468,7 @@ class RedeventModelDetails extends RModel
 	/**
 	 * Can user manage attendees ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getManageAttendees()
 	{
@@ -480,7 +480,7 @@ class RedeventModelDetails extends RModel
 	/**
 	 * Can user view full attendees details ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getViewFullAttendees()
 	{

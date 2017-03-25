@@ -131,7 +131,7 @@ class Dates
 	/**
 	 * Get session duration in days (On how many days it spans)
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationDays()
 	{
@@ -181,7 +181,7 @@ class Dates
 	/**
 	 * Return true if it's a full day session
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isAllDay()
 	{
@@ -191,7 +191,7 @@ class Dates
 	/**
 	 * Return true if it's a one day session
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isOneDay()
 	{
@@ -215,7 +215,7 @@ class Dates
 	 *
 	 * @param   bool  $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isOver($day_check = true)
 	{

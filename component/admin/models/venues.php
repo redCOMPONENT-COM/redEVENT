@@ -251,6 +251,8 @@ class RedeventModelVenues extends RModelList
 			$dispatcher->trigger('onFinderChangeState', array('com_redevent.venue', $id, $state));
 			$dispatcher->trigger('onAfterVenueSaved', array($id));
 		}
+
+		return true;
 	}
 
 	/**

@@ -21,7 +21,7 @@ class RedeventHelperAttachment extends JObject
 	 * @param   array   $post_files  data from JRequest 'files'
 	 * @param   string  $object      identification (should be event<eventid>, category<categoryid>, etc...)
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function postUpload($post_files, $object)
 	{
@@ -136,7 +136,7 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @param   array  $attach  (id, name, description, access)
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function update($attach)
 	{

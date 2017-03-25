@@ -186,7 +186,7 @@ class vcalendar
 	 *
 	 * @param string $value
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setMethod($value)
 	{
@@ -361,7 +361,7 @@ class vcalendar
 	 * @param string $value
 	 * @param array  $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setXprop($label, $value, $params = FALSE)
 	{
@@ -385,7 +385,7 @@ class vcalendar
 	 * @param mixed $propName , bool FALSE => X-property
 	 * @param       int       @propix, optional, if specific property is wanted in case of multiply occurences
 	 *
-	 * @return bool, if successfull delete
+	 * @return boolean, if successfull delete
 	 */
 	function deleteProperty($propName, $propix = FALSE)
 	{
@@ -510,7 +510,7 @@ class vcalendar
 	 *                    first argument is ALWAYS component name,
 	 *                    second ALWAYS component value!
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setProperty()
 	{
@@ -1382,7 +1382,7 @@ class vcalendar
 	 *
 	 * @param string $filename optional filname (incl. opt. directory/path) or URL
 	 *
-	 * @return bool FALSE if error occurs during parsing
+	 * @return boolean FALSE if error occurs during parsing
 	 *
 	 */
 	function parse($filename = FALSE)
@@ -1814,7 +1814,7 @@ class vcalendar
 	 * @param string $filename  optional
 	 * @param string $delimiter optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function saveCalendar($directory = FALSE, $filename = FALSE, $delimiter = FALSE)
 	{
@@ -1985,7 +1985,7 @@ class calendarComponent
 	 * @param string $value "AUDIO" / "DISPLAY" / "EMAIL" / "PROCEDURE"
 	 * @param mixed  $params
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setAction($value, $params = FALSE)
 	{
@@ -2031,7 +2031,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setAttach($value, $params = FALSE, $index = FALSE)
 	{
@@ -2133,7 +2133,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setAttendee($value, $params = FALSE, $index = FALSE)
 	{
@@ -2252,7 +2252,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setCategories($value, $params = FALSE, $index = FALSE)
 	{
@@ -2290,7 +2290,7 @@ class calendarComponent
 	 * @param string $value  "PUBLIC" / "PRIVATE" / "CONFIDENTIAL" / iana-token / x-name
 	 * @param array  $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setClass($value, $params = FALSE)
 	{
@@ -2338,7 +2338,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setComment($value, $params = FALSE, $index = FALSE)
 	{
@@ -2390,7 +2390,7 @@ class calendarComponent
 	 * @param int   $sec    optional
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setCompleted($year, $month = FALSE, $day = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $params = FALSE)
 	{
@@ -2445,7 +2445,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setContact($value, $params = FALSE, $index = FALSE)
 	{
@@ -2487,7 +2487,7 @@ class calendarComponent
 	 * @param int   $sec    optional
 	 * @param mixed $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setCreated($year = FALSE, $month = FALSE, $day = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $params = FALSE)
 	{
@@ -2536,7 +2536,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setDescription($value, $params = FALSE, $index = FALSE)
 	{
@@ -2592,7 +2592,7 @@ class calendarComponent
 	 * @param string $tz    optional
 	 * @param        array  params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setDtend($year, $month = FALSE, $day = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $tz = FALSE, $params = FALSE)
 	{
@@ -2723,7 +2723,7 @@ class calendarComponent
 	 * @param string $tz     optional
 	 * @param array  $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setDtstart($year, $month = FALSE, $day = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $tz = FALSE, $params = FALSE)
 	{
@@ -2783,7 +2783,7 @@ class calendarComponent
 	 * @param int   $sec    optional
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setDue($year, $month = FALSE, $day = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $tz = FALSE, $params = FALSE)
 	{
@@ -2840,7 +2840,7 @@ class calendarComponent
 	 * @param int   $sec    optional
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setDuration($week, $day = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $params = FALSE)
 	{
@@ -2925,7 +2925,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setExdate($exdates, $params = FALSE, $index = FALSE)
 	{
@@ -3000,7 +3000,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setExrule($exruleset, $params = FALSE, $index = FALSE)
 	{
@@ -3085,7 +3085,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setFreebusy($fbType, $fbValues, $params = FALSE, $index = FALSE)
 	{
@@ -3182,7 +3182,7 @@ class calendarComponent
 	 * @param float $longitude
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setGeo($latitude, $longitude, $params = FALSE)
 	{
@@ -3271,7 +3271,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param        array params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setLocation($value, $params = FALSE)
 	{
@@ -3311,7 +3311,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param        array params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setOrganizer($value, $params = FALSE)
 	{
@@ -3356,7 +3356,7 @@ class calendarComponent
 	 * @param int   $value
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setPercentComplete($value, $params = FALSE)
 	{
@@ -3394,7 +3394,7 @@ class calendarComponent
 	 * @param int   $value
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setPriority($value, $params = FALSE)
 	{
@@ -3530,7 +3530,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setRdate($rdates, $params = FALSE, $index = FALSE)
 	{
@@ -3672,7 +3672,7 @@ class calendarComponent
 	 * @param int   $sec    optional
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setRecurrenceid($year, $month = FALSE, $day = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $tz = FALSE, $params = FALSE)
 	{
@@ -3730,7 +3730,7 @@ class calendarComponent
 	 * @param array $params , optional
 	 * @param index $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setRelatedTo($value, $params = FALSE, $index = FALSE)
 	{
@@ -3823,7 +3823,7 @@ class calendarComponent
 	 * @param array   $params  , optional
 	 * @param integer $index   , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setRequestStatus($statcode, $text, $extdata = FALSE, $params = FALSE, $index = FALSE)
 	{
@@ -3881,7 +3881,7 @@ class calendarComponent
 	 * @param array   $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setResources($value, $params = FALSE, $index = FALSE)
 	{
@@ -3953,7 +3953,7 @@ class calendarComponent
 	 * @param int   $value  optional
 	 * @param array $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setSequence($value = FALSE, $params = FALSE)
 	{
@@ -3991,7 +3991,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param array  $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setStatus($value, $params = FALSE)
 	{
@@ -4030,7 +4030,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param string $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setSummary($value, $params = FALSE)
 	{
@@ -4068,7 +4068,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param string $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setTransp($value, $params = FALSE)
 	{
@@ -4128,7 +4128,7 @@ class calendarComponent
 	 * @param bool  $before       optional
 	 * @param array $params       optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setTrigger($year, $month = null, $day = null, $week = FALSE, $hour = FALSE, $min = FALSE, $sec = FALSE, $relatedStart = TRUE, $before = TRUE, $params = FALSE)
 	{
@@ -4254,7 +4254,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param array  $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setTzid($value, $params = FALSE)
 	{
@@ -4301,7 +4301,7 @@ class calendarComponent
 	 * @param string  $params , optional
 	 * @param integer $index  , optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setTzname($value, $params = FALSE, $index = FALSE)
 	{
@@ -4339,7 +4339,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param string $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setTzoffsetfrom($value, $params = FALSE)
 	{
@@ -4377,7 +4377,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param string $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setTzoffsetto($value, $params = FALSE)
 	{
@@ -4474,7 +4474,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param string $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setUid($value, $params = FALSE)
 	{
@@ -4511,7 +4511,7 @@ class calendarComponent
 	 * @param string $value
 	 * @param string $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setUrl($value, $params = FALSE)
 	{
@@ -4566,7 +4566,7 @@ class calendarComponent
 	 * @param mixed  $value
 	 * @param array  $params optional
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setXprop($label, $value, $params = FALSE)
 	{
@@ -5330,7 +5330,7 @@ class calendarComponent
 	 * @param int    $elseVal optional, return value if not found
 	 * @param int    $preSet  optional, return value if already preset
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	function _existRem(&$array, $expkey, $expval = FALSE, $hitVal = null, $elseVal = null, $preSet = null)
 	{
@@ -5605,7 +5605,7 @@ class calendarComponent
 	 *
 	 * @param array $input
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function _isArrayDate($input)
 	{
@@ -5639,7 +5639,7 @@ class calendarComponent
 	 *
 	 * @param array $input
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function _isArrayTimestampDate($input)
 	{
@@ -5654,7 +5654,7 @@ class calendarComponent
 	 *
 	 * @param string $input
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function _isOffset($input)
 	{
@@ -5683,7 +5683,7 @@ class calendarComponent
 	 *
 	 * @param string $propName
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function _notExistProp($propName)
 	{
@@ -6710,7 +6710,7 @@ class calendarComponent
 	 * @param string $propName
 	 * @param        int @propix, optional, if specific property is wanted in case of multiply occurences
 	 *
-	 * @return bool, if successfull delete TRUE
+	 * @return boolean, if successfull delete TRUE
 	 */
 	function deleteProperty($propName, $propix = FALSE)
 	{
@@ -7008,7 +7008,7 @@ class calendarComponent
 	 * @param array $multiprop , reference to a component property
 	 * @param       int        @propix, default 0
 	 *
-	 * @return bool TRUE
+	 * @return boolean TRUE
 	 */
 	function deletePropertyM(& $multiprop, $propix = 0)
 	{
@@ -7353,7 +7353,7 @@ class calendarComponent
 	 *
 	 * @param mixed $unparsedtext , optional, strict rfc2445 formatted, single property string or array of property strings
 	 *
-	 * @return bool FALSE if error occurs during parsing
+	 * @return boolean FALSE if error occurs during parsing
 	 *
 	 */
 	function parse($unparsedtext = null)
@@ -7840,7 +7840,7 @@ class calendarComponent
 	 * @param mixed  $arg1      optional, ordno/component type/ component uid
 	 * @param mixed  $arg2      optional, ordno if arg1 = component type
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setComponent($component, $arg1 = FALSE, $arg2 = FALSE)
 	{

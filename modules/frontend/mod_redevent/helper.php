@@ -22,7 +22,7 @@ class ModRedEventHelper
 	/**
 	 * Method to get the events
 	 *
-	 * @param   array  &$params  parameters
+	 * @param   array  $params  parameters
 	 *
 	 * @return array
 	 */
@@ -162,8 +162,7 @@ class ModRedEventHelper
 		$rows = $db->loadObjectList();
 		$rows = self::_categories($rows);
 
-		$i		= 0;
-		$lists	= array();
+		$lists = array();
 		$title_length = $params->get('cuttitle', '18');
 
 		switch ($params->get('title_type', 0))

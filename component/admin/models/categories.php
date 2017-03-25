@@ -204,7 +204,7 @@ class RedeventModelCategories extends RModelList
 	 *
 	 * @param   int  $id  category id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	protected function countCategoryEvents($id)
 	{

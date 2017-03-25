@@ -38,7 +38,6 @@ class RedeventModelEvent extends RModelAdmin
 			$categories = $this->getEventCategories($id);
 			$row->categories = array_keys($categories);
 
-			/* pre-save checks */
 			if (!$row->check())
 			{
 				$this->setError($row->getError(), 'error');
@@ -46,7 +45,6 @@ class RedeventModelEvent extends RModelAdmin
 				return false;
 			}
 
-			/* save the changes */
 			if (!$row->store())
 			{
 				$this->setError($row->getError(), 'error');
@@ -275,7 +273,7 @@ class RedeventModelEvent extends RModelAdmin
 	 *
 	 * @param   int  $event_id  event id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function hasAttendees($event_id)
 	{

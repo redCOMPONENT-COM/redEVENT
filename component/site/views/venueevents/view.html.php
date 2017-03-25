@@ -207,7 +207,7 @@ class RedeventViewVenueevents extends RViewSite
 
 		$this->assign('columns', $cols);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

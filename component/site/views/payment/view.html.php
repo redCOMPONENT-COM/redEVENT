@@ -129,7 +129,7 @@ class RedeventViewPayment extends RViewSite
 
 		$tpl = JFactory::getApplication()->input->get('tpl', $tpl);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

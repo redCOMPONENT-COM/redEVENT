@@ -367,7 +367,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	 *
 	 * @param   array  $data  post data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function saveRecurrence($data)
 	{

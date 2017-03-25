@@ -64,7 +64,7 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 			$this->canEditState = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -139,6 +139,6 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 
 		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_redevent&view=customfields');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

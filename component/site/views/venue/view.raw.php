@@ -54,5 +54,7 @@ class RedeventViewVenue extends RViewSite
 		echo json_encode($resp);
 
 		JFactory::getApplication()->close();
+
+		return true;
 	}
 }

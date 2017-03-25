@@ -265,7 +265,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	/**
 	 * Try to get a default value from integrations
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function lookupDefaultValue()
 	{
@@ -315,7 +315,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	/**
 	 * Is required ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isReadonly()
 	{
@@ -327,7 +327,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	/**
 	 * Is required ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isRequired()
 	{

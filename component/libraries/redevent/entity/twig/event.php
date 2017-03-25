@@ -91,7 +91,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -141,7 +141,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	/**
 	 * Get duration max in days
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMax()
 	{
@@ -162,7 +162,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	/**
 	 * Get duration min in days
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMin()
 	{

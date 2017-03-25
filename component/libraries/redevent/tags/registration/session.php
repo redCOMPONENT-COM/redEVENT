@@ -232,7 +232,7 @@ class RedeventTagsRegistrationSession
 	/**
 	 * Get number of signup to display
 	 *
-	 * @return int
+	 * @return integer
 	 *
 	 * @throws Exception
 	 */

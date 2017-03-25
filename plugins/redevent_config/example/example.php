@@ -34,7 +34,7 @@ class PlgRedevent_ConfigExample extends JPlugin
 	 *
 	 * @param   JRegistry  &$params  parameters
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 */
 	public function onGetRedeventConfig(&$params)
 	{

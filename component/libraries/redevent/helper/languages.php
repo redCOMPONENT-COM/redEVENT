@@ -235,7 +235,7 @@ class RedeventHelperLanguages
 	 *
 	 * @param   string  $iso  iso-1 code
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private static function convertToIso2($iso)
 	{

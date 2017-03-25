@@ -67,7 +67,7 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 		$this->assignRef('thumb_link', $thumb_link);
 		$this->assignRef('list_link', $list_link);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

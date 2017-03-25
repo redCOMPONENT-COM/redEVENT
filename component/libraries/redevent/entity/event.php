@@ -288,7 +288,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 	/**
 	 * Check if event has a valid review text
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function hasReview()
 	{

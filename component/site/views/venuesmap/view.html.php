@@ -85,7 +85,7 @@ class RedeventViewVenuesmap extends RedeventViewFront
 		$this->assign('ajaxurl', $ajaxurl);
 		$this->assign('filter_customs', $filter_customs);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

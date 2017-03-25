@@ -107,7 +107,7 @@ class RedeventModelEventtemplate extends RModelAdmin
 	 *
 	 * @param   int  $templateId  template id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function hasAttendees($templateId)
 	{

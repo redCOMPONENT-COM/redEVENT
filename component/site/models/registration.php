@@ -221,7 +221,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   object  $registration  registration data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function confirmOnPayment($registration)
 	{
@@ -302,7 +302,7 @@ class RedeventModelRegistration extends RModel
 	/**
 	 * Get session details
 	 *
-	 * @return bool|mixed|object
+	 * @return boolean|mixed|object
 	 */
 	public function getSessionDetails()
 	{
@@ -426,7 +426,7 @@ class RedeventModelRegistration extends RModel
 	 * @param   bool    $unreg       is this an unregistration ?
 	 * @param   int     $reg_id      registration id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function notifyManagers($submit_key, $unreg = false, $reg_id = 0)
 	{
@@ -473,7 +473,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $submitter_id  submitter id
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	public function getRegistration($submitter_id)
 	{
@@ -641,7 +641,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $sid  submitter id
 	 *
-	 * @return bool|JUser
+	 * @return boolean|JUser
 	 */
 	protected function createRedmemberUser($sid)
 	{
@@ -816,7 +816,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $sid  submitter id
 	 *
-	 * @return bool|JUser
+	 * @return boolean|JUser
 	 *
 	 * @throws Exception
 	 */
@@ -896,7 +896,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   string  $email  The email to search on
 	 *
-	 * @return int The user id or 0 if not found
+	 * @return integer The user id or 0 if not found
 	 */
 	protected function _getUserIdFromEmail($email)
 	{

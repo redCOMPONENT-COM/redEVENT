@@ -85,7 +85,7 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 	 * @param   int    $xref       session id
 	 * @param   array  &$gateways  gateways array
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function filterSession($xref, &$gateways)
 	{

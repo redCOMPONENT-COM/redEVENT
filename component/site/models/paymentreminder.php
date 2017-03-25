@@ -25,7 +25,7 @@ class RedeventModelPaymentreminder extends RModel
 	 *
 	 * @param   array  $attendeeIds  attendee ids
 	 *
-	 * @return int count of notifications sent
+	 * @return integer count of notifications sent
 	 *
 	 * @throws RuntimeException
 	 */
@@ -78,7 +78,7 @@ class RedeventModelPaymentreminder extends RModel
 	/**
 	 * Get total of reminders to send
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getTotal()
 	{

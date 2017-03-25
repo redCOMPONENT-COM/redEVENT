@@ -50,7 +50,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 * @param   int   $session_id  session id
 	 * @param   bool  $isNew       is new session
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAfterSessionSave($session_id, $isNew = false)
 	{
@@ -77,7 +77,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   string  $session_code  session code
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAfterSessionDelete($session_code)
 	{
@@ -104,7 +104,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   int  $attendee_id  attendee id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAttendeeCreated($attendee_id)
 	{
@@ -131,7 +131,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   int  $attendee_id  attendee id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAttendeeConfirmed($attendee_id)
 	{
@@ -158,7 +158,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   int  $attendee_id  attendee id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAttendeeModified($attendee_id)
 	{
@@ -185,7 +185,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   int  $attendee_id  attendee id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAttendeeCancelled($attendee_id)
 	{
@@ -212,7 +212,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   int  $attendee_id  attendee id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAttendeeDeleted($attendee_id)
 	{
@@ -239,7 +239,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   string  $submit_key  submit key
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAfterPaymentVerified($submit_key)
 	{
@@ -280,7 +280,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 *
 	 * @param   string  $submit_key  submit key
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAfterPaymentVerifiedRedevent($submit_key)
 	{
@@ -322,7 +322,7 @@ class PlgRedeventRedeventsync extends JPlugin
 	 * @param   int   $userId  user id
 	 * @param   bool  $isNew   is it inew ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onUserSaved($userId, $isNew)
 	{

@@ -21,7 +21,7 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @param   string  $tpl  template file to load
 	 *
-	 * @return void
+	 * @return strin|boolean
 	 */
 	public function display($tpl = null)
 	{
@@ -44,6 +44,8 @@ class RedeventViewMyevents extends RViewSite
 
 			default:
 				echo 'Error: unkown layout ' . $this->getLayout();
+
+				return false;
 		}
 	}
 
@@ -62,7 +64,7 @@ class RedeventViewMyevents extends RViewSite
 
 		if (!$user->get('id'))
 		{
-			return false;
+			return;
 		}
 
 		$model = RModel::getFrontInstance('Myevents');
@@ -90,7 +92,7 @@ class RedeventViewMyevents extends RViewSite
 		$this->setLayout('default');
 		echo $this->loadTemplate('events');
 
-		return true;
+		return;
 	}
 
 	/**

@@ -48,5 +48,7 @@ class RedeventViewSimpleList extends RViewSite
 		$vcal->returnCalendar();
 
 		$mainframe->close();
+
+		return true;
 	}
 }

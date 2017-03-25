@@ -162,7 +162,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Is registration over ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function isRegistrationOver()
 	{
@@ -199,7 +199,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Is registration disabled ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function isRegistrationDisabled()
 	{
@@ -245,7 +245,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * User Reached Max Registrations ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function userReachedMaxRegistrations()
 	{
@@ -260,5 +260,7 @@ class RedeventRegistrationCanregister
 
 			return true;
 		}
+
+		return false;
 	}
 }

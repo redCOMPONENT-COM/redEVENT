@@ -658,7 +658,7 @@ class RedeventUserAcl
 	 *
 	 * @param   int  $xref_id  xref_id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function canViewAttendees($xref_id)
 	{

@@ -50,5 +50,7 @@ class RedeventViewCalendar extends RViewSite
 		$vcal->returnCalendar();
 
 		$app->close();
+
+		return true;
 	}
 }

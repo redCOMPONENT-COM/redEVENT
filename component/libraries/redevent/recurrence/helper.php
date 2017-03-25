@@ -175,7 +175,7 @@ class RedeventRecurrenceHelper
 	 *
 	 * @param   int  $recurrence_id  recurrence id
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 *
 	 * @TODO: refactor !
 	 */
@@ -312,7 +312,7 @@ class RedeventRecurrenceHelper
 	 *
 	 * @param   string  $date  date in ical format
 	 *
-	 * @return bool|string
+	 * @return boolean|string
 	 */
 	private function icalDatetotime($date)
 	{

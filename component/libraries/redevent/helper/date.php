@@ -52,7 +52,7 @@ class RedeventHelperDate
 	 * @param   object  $session    event data
 	 * @param   bool    $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @throws Exception
 	 */
@@ -203,7 +203,7 @@ class RedeventHelperDate
 
 		if (!self::isValidTime($time))
 		{
-			return;
+			return false;
 		}
 
 		$date = $date ?: 'today';

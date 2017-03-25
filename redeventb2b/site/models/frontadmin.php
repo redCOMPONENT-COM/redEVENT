@@ -1067,7 +1067,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 	 *
 	 * @param   int  $uid  uid, null for current user
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getUserDefaultOrganization($uid = null)
 	{

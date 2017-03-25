@@ -47,5 +47,7 @@ class RedeventViewFeatured extends JViewLegacy
 		$vcal->returnCalendar();
 
 		$mainframe->close();
+
+		return true;
 	}
 }

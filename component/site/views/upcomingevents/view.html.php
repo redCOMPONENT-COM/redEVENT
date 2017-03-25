@@ -59,6 +59,7 @@ class RedeventViewUpcomingevents extends RViewSite
 		$this->assignRef('upcomingevents', $upcomingevents);
 		$this->assignRef('params', $params);
 		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=upcomingevents'));
-		parent::display($tpl);
+
+		return parent::display($tpl);
 	}
 }

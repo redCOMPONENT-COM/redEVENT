@@ -47,8 +47,7 @@ class RedeventControllerEvent extends RedeventControllerForm
 					'formName' => $formName,
 					'showToolbar' => true,
 					'action' => 'index.php?option=com_redevent&view=event&model=sessions',
-					'return' => base64_encode('index.php?option=com_redevent&view=event&layout=edit&id='
-						. $eventId . '&tab=sessions&from_form=1')
+					'return' => base64_encode('index.php?option=com_redevent&view=event&layout=edit&id=' . $eventId . '&tab=sessions&from_form=1')
 				)
 			);
 		}

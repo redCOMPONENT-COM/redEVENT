@@ -55,7 +55,7 @@ class RedeventViewAttendee extends RedeventViewAdmin
 		$this->lists = $lists;
 		$this->returnUrl = $app->input->get('return');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

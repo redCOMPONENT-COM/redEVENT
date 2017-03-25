@@ -57,7 +57,7 @@ class RedeventViewRegistration extends JViewLegacy
 		{
 			echo 'layout not defined';
 
-			return;
+			return false;
 		}
 
 		$message = $tags->replaceTags($message);
@@ -66,7 +66,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assignRef('message', $message);
 		$this->assignRef('event',   $event);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -143,7 +143,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assign('rfields',  $rfields);
 		$this->assign('xref',     $xref);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

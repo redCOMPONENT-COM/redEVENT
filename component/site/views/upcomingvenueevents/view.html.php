@@ -156,6 +156,6 @@ class RedeventViewUpcomingvenueevents extends RViewSite
 		$this->assignRef('dellink', $dellink);
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($venue->slug)));
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

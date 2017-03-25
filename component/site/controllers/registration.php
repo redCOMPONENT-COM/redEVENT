@@ -41,7 +41,9 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	{
 		if ($this->input->get('cancel', '', 'post'))
 		{
-			return $this->cancelreg();
+			$this->cancelreg();
+
+			return;
 		}
 
 		JPluginHelper::importPlugin('redevent');
@@ -85,7 +87,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_XREF');
 			$this->setRedirect('index.php', $msg, 'error');
 
-			return false;
+			return;
 		}
 
 		$status = RedeventHelper::canRegister($xref);
@@ -95,7 +97,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			$msg = $status->status;
 			$this->setRedirect('index.php', $msg, 'error');
 
-			return false;
+			return;
 		}
 
 		$model = $this->getModel('registration');
@@ -120,7 +122,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 					$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
 					$this->setRedirect('index.php', $msg, 'error');
 
-					return false;
+					return;
 				}
 
 				$field = $session->getPricefield();
@@ -161,7 +163,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($session->eventid, $xref)));
 				}
 
-				return false;
+				return;
 			}
 		}
 		catch (Exception $e)
@@ -180,7 +182,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($session->eventid, $xref)));
 			}
 
-			return false;
+			return;
 		}
 
 		// Trigger before registration plugin, that can alter redform data, or even stop the registration process
@@ -232,7 +234,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 					$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($session->eventid, $xref)), $msg, 'error');
 
-					return false;
+					return;
 				}
 
 				$dispatcher->trigger('onAttendeeCreated', array($res->id));
@@ -767,7 +769,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 * @param   int  $rid   registration id
 	 * @param   int  $xref  session id
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @TODO: there are to much registration cancellation function !
 	 */

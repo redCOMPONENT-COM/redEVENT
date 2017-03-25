@@ -36,14 +36,16 @@ class RedeventModelWaitinglist extends RModel
 	 *
 	 * @param   int  $id  xref id
 	 *
-	 * @return id
+	 * @return integer
 	 */
 	public function setXrefId($id)
 	{
 		$this->xref = $id;
 
-		/* Get the eventdata */
+		// Get the eventdata
 		$this->getEventData();
+
+		return $this->xref;
 	}
 
 	/**

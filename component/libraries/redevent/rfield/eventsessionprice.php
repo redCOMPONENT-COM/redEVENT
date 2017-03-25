@@ -320,7 +320,7 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 	/**
 	 * Try to get a default value from integrations
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function lookupDefaultValue()
 	{
@@ -350,7 +350,7 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 	/**
 	 * Is read only ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isReadonly()
 	{
@@ -362,7 +362,7 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 	/**
 	 * Is required ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isRequired()
 	{

@@ -111,7 +111,7 @@ class RedeventViewAttendees extends RViewSite
 		$this->assignRef('action', JRoute::_('index.php?option=com_redevent&view=attendees&xref=' . $session->slug));
 		$this->assignRef('lists', $lists);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

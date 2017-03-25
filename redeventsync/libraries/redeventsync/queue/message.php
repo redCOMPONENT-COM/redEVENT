@@ -44,7 +44,7 @@ class ResyncQueueMessage
 	/**
 	 * Return first found transaction id
 	 *
-	 * @return int|string
+	 * @return integer|string
 	 */
 	public function getTransactionId()
 	{

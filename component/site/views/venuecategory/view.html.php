@@ -59,7 +59,7 @@ class RedeventViewVenuecategory extends RedeventViewSessionlist
 		$this->assign('dellink', JFactory::getUser()->authorise('re.createevent'));
 		$this->assign('description', $description);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -93,7 +93,7 @@ class RedeventViewVenuecategory extends RedeventViewSessionlist
 	/**
 	 * Get feed link
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFeedLink()
 	{

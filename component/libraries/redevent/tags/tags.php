@@ -169,7 +169,7 @@ class RedeventTags
 	/**
 	 * Get session id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getXref()
 	{
@@ -179,7 +179,7 @@ class RedeventTags
 	/**
 	 * Get a session id associated to event
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getAnXref()
 	{
@@ -480,7 +480,7 @@ class RedeventTags
 	 *
 	 * @param   string  &$text  haystack
 	 *
-	 * @return bool  true if a replacement was done
+	 * @return boolean  true if a replacement was done
 	 */
 	private function replaceExtra(&$text)
 	{
@@ -933,7 +933,7 @@ class RedeventTags
 	 *
 	 * @param   string  $submit_key  submit key
 	 *
-	 * @return bool|JUser
+	 * @return boolean|JUser
 	 */
 	protected function getSubmissionUser($submit_key)
 	{
@@ -1063,7 +1063,7 @@ class RedeventTags
 	/**
 	 * Get submission price
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	private function getSubmissionTotalPrice()
 	{
