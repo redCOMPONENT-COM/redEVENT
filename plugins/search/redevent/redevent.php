@@ -222,8 +222,6 @@ class PlgSearchRedevent extends JPlugin
 				// Search all or any
 				case 'all':
 				case 'any':
-
-				// Set default
 				default:
 					$words = explode(' ', $text);
 					$wheres = array();
@@ -249,13 +247,13 @@ class PlgSearchRedevent extends JPlugin
 				// Oldest first
 				case 'oldest':
 
-				// Popular first
+					// Popular first
 				case 'popular':
 
-				// Newest first
+					// Newest first
 				case 'newest':
 
-				// Default setting: alphabetic, ascending
+					// Default setting: alphabetic, ascending
 				default:
 					$order = 'c.name ASC';
 			}

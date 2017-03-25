@@ -101,7 +101,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 				$category->assignedevents = $this->_getEventsTotal($category);
 
 				// Generate description
-				if (empty ($category->description))
+				if (empty($category->description))
 				{
 					$category->description = JText::_('COM_REDEVENT_NO_DESCRIPTION');
 				}

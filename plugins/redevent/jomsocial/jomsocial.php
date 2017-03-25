@@ -69,7 +69,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.editevent';
 		$act->actor = $user->get('id');
-		$act->target = 0;  /* No target */
+		$act->target = 0;  // No target
+
 		$act->title = sprintf(($isNew) ? JText::_('{actor} added event %s') : JText::_('{actor} edited event %s'), $eventlink);
 		$act->content = '';
 		$act->app = 'redevent';
@@ -135,7 +136,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.editvenue';
 		$act->actor = $user->get('id');
-		$act->target = 0; /* no target */
+		$act->target = 0; // No target
+
 		$act->title = sprintf(($isNew) ? JText::_('{actor} added venue %s') : JText::_('{actor} edited venue %s'), $link);
 		$act->content = '';
 		$act->app = 'redevent';
@@ -201,7 +203,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.register';
 		$act->actor = $user->get('id');
-		$act->target = 0; /* no target */
+		$act->target = 0; // No target
+
 		$act->title = sprintf(JText::_('{actor} registered to %s'), $eventlink);
 		$act->content = '';
 		$act->app = 'redevent';
@@ -264,7 +267,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.unregister';
 		$act->actor = $user->get('id');
-		$act->target = 0; /* no target */
+		$act->target = 0; // No target
+
 		$act->title = sprintf(JText::_('{actor} unregistered from %s'), $eventlink);
 		$act->content = '';
 		$act->app = 'redevent';

@@ -44,6 +44,7 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 				$attributes['class'] = 'required';
 			}
 		}
+
 		/*
 		   * Required to avoid a cycle of encoding &
 		   * html_entity_decode was used in place of htmlspecialchars_decode because

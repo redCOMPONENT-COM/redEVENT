@@ -129,7 +129,7 @@ class RedeventViewVenueevents extends RViewSite
 		$maintainer = $acl->canEditVenue($venue->id);
 
 		// Generate Venuedescription
-		if (!empty ($venue->locdescription))
+		if (!empty($venue->locdescription))
 		{
 			$venuedescription = JHTML::_('content.prepare', $venue->locdescription);
 		}

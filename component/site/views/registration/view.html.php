@@ -29,7 +29,7 @@ class RedeventViewRegistration extends JViewLegacy
 
 		$event = $this->get('SessionDetails');
 
-		/* Start the tag replacer */
+		// Start the tag replacer
 		$tags = new RedeventTags;
 		$tags->setXref($event->xref);
 

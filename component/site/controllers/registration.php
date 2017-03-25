@@ -561,18 +561,18 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$mainframe = JFactory::getApplication();
 		$msgtype = 'message';
 
-		/* Get the confirm ID */
+		// Get the confirm ID
 		$confirmid = $this->input->get('confirmid', '', 'get');
 
-		/* Get the details out of the confirmid */
+		// Get the details out of the confirmid
 		list($uip, $xref, $uid, $register_id, $submit_key) = explode("x", $confirmid);
 
-		/* Confirm sign up via mail */
+		// Confirm sign up via mail
 		$model = $this->getModel('Registration', 'RedeventModel');
 		$model->setXref($xref);
 		$eventdata = $model->getSessionDetails();
 
-		/* This loads the tags replacer */
+		// This loads the tags replacer
 		$this->input->set('xref', $xref);
 		$tags = new RedeventTags;
 		$tags->setXref($xref);
@@ -592,19 +592,21 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				$rfcore = RdfCore::getInstance();
 				$addresses = $rfcore->getSubmissionContactEmails($submit_key);
 
-				/* Check if there are any addresses to be mailed */
+				// Check if there are any addresses to be mailed
 				if (count($addresses) > 0)
 				{
-					/* Start mailing */
+					// Start mailing
 					foreach ($addresses as $key => $sid)
 					{
 						foreach ($sid as $email)
 						{
-							/* Send a off mailinglist mail to the submitter if set */
-							/* Add the email address */
+							/*
+							 Send a off mailinglist mail to the submitter if set
+							 Add the email address
+							*/
 							$this->mailer->AddAddress($email['email']);
 
-							/* Mail submitter */
+							// Mail submitter
 							$htmlmsg = '<html><head><title></title></title></head><body>'
 								. $tags->replaceTags($eventdata->notify_confirm_body)
 								. '</body></html>';
@@ -615,14 +617,14 @@ class RedeventControllerRegistration extends RedeventControllerFront
 							$this->mailer->setBody($htmlmsg);
 							$this->mailer->setSubject($tags->replaceTags($eventdata->notify_confirm_subject));
 
-							/* Send the mail */
+							// Send the mail
 							if (!$this->mailer->Send())
 							{
 								$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
-								RedeventHelperLog::simpleLog('Error sending confirm email' . ': ' . $this->mailer->error);
+								RedeventHelperLog::simpleLog('Error sending confirm email: ' . $this->mailer->error);
 							}
 
-							/* Clear the mail details */
+							// Clear the mail details
 							$this->mailer->ClearAddresses();
 						}
 					}
@@ -752,7 +754,8 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		{
 			$mainframe = JFactory::getApplication();
 			jimport('joomla.mail.helper');
-			/* Start the mailer object */
+
+			// Start the mailer object
 			$this->mailer = RdfHelper::getMailer();
 			$this->mailer->isHTML(true);
 			$this->mailer->From = $mainframe->getCfg('mailfrom');
@@ -788,7 +791,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			return false;
 		}
 
-		/* Check if we have space on the waiting list */
+		// Check if we have space on the waiting list
 		$model_wait = RModel::getAdminInstance('waitinglist');
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();

@@ -179,7 +179,7 @@ class ModRedEventHelper
 				break;
 		}
 
-		foreach ( $rows as $k => $row )
+		foreach ($rows as $k => $row)
 		{
 			$rowtitle = $row->$title_type;
 

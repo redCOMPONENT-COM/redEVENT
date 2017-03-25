@@ -92,7 +92,7 @@ class RedeventViewOrganizations extends RedeventViewAdmin
 				'',
 				'icon-refresh',
 				false
-				);
+			);
 			$secondGroup->addButton($button);
 		}
 

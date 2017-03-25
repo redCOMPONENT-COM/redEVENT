@@ -83,11 +83,13 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$this->setState(
 			'filter_organization',
 			$app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',
-				'filter_organization',    $this->getUserDefaultOrganization(), 'int')
+				'filter_organization',    $this->getUserDefaultOrganization(), 'int'
+			)
 		);
 		$this->setState(
 			'filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',
-			'filter_person',    '', 'string')
+				'filter_person',    '', 'string'
+			)
 		);
 
 		$this->setState('filter_bookings_state', $app->input->get('filter_bookings_state', 1));
@@ -95,15 +97,18 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		// Manage sessions filters
 		$this->setState(
 			'filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',
-			'filter_session',    0, 'int')
+				'filter_session',    0, 'int'
+			)
 		);
 		$this->setState(
 			'filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',
-			'filter_from',    '', 'string')
+				'filter_from',    '', 'string'
+			)
 		);
 		$this->setState(
 			'filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',
-			'filter_to',    '', 'string')
+				'filter_to',    '', 'string'
+			)
 		);
 
 		// Sessions
@@ -947,7 +952,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		$useracl = RedeventUserAcl::getInstance();
 
-		if (!$useracl->canManageAttendees($res->xref) or 1)
+		if (!$useracl->canManageAttendees($res->xref) || 1)
 		{
 			$this->setError(JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED'));
 

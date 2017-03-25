@@ -56,7 +56,7 @@ class RedeventUserAcl
 	{
 		static $instances;
 
-		if (!isset ($instances))
+		if (!isset($instances))
 		{
 			$instances = array ();
 		}
@@ -472,9 +472,8 @@ class RedeventUserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $this->getUser()->authorise(
-				're.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent'
-			);
+		$canViewAttendees = $this->getUser()->authorise('re.viewattendees', 'com_redevent')
+			|| $this->getUser()->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -670,9 +669,8 @@ class RedeventUserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $this->getUser()->authorise(
-				're.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent'
-			);
+		$canViewAttendees = $this->getUser()->authorise('re.viewattendees', 'com_redevent')
+			|| $this->getUser()->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{

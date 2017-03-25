@@ -68,7 +68,7 @@ class RedeventHelperLanguages
 		{
 			$codes = array_filter(
 				$codes,
-				function($element) use ($filter)
+				function ($element) use ($filter)
 				{
 					return in_array($element['iso2'], $filter);
 				}

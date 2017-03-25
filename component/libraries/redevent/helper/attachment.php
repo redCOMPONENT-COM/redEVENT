@@ -191,7 +191,7 @@ class RedeventHelperAttachment extends JObject
 
 		// Then get info for files from db
 		$fnames = array_map(
-			function($item) use ($db)
+			function ($item) use ($db)
 			{
 				return $db->quote($item);
 			},

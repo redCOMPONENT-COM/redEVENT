@@ -118,7 +118,7 @@ class RedeventModelVenueevents extends RedeventModelBasesessionlist
 	{
 		$query = parent::_buildWhere($query);
 
-		/* Check if a venue ID is set */
+		// Check if a venue ID is set
 		if ($this->id > 0)
 		{
 			$query->where('x.venueid = ' . $this->id);

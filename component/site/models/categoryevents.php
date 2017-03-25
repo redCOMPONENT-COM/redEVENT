@@ -92,7 +92,8 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 		$query->where(' a.published <> 0 ');
 
 		$query->where('(c.id = ' . $this->_db->Quote($category->id)
-		. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');
+			. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))'
+		);
 
 		return $query;
 	}

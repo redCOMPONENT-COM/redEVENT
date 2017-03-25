@@ -162,7 +162,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	/**
 	 * Get session price groups
 	 *
-	 * @return   array|bool
+	 * @return   array|boolean
 	 */
 	public function getPrices()
 	{
@@ -170,7 +170,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 
 		return $prices
 			? array_map(
-				function($entity)
+				function ($entity)
 				{
 					return \RedeventEntityTwigSessionpricegroup::getInstance($entity);
 				},

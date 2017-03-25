@@ -36,10 +36,10 @@ class RedeventFormFieldTextsnippet extends JFormFieldList
 		$rows = $model->getItems() ?: array();
 
 		$options = array_map(
-				function($row) {
+			function ($row) {
 					return array('value' => $row->text_name, 'text' => $row->text_name);
-				},
-				$rows
+			},
+			$rows
 		);
 
 		return array_merge(parent::getOptions(), $options);

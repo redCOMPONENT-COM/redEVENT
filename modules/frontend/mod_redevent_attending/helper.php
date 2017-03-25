@@ -450,7 +450,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @param   array  $rows  rows
 	 *
-	 * @return boolean|int
+	 * @return boolean|integer
 	 */
 	public static function getTotal($rows)
 	{

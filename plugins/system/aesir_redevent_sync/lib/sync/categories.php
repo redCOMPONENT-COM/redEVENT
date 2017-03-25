@@ -277,7 +277,7 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 			}
 
 			$this->categoryTypes = array_map(
-				function($row)
+				function ($row)
 				{
 					return ReditemEntityType::getInstance($row->id)->bind($row);
 				},

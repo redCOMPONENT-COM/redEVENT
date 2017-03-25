@@ -190,7 +190,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		}
 
 		$attendees = array_map(
-			function($item)
+			function ($item)
 			{
 				$instance = self::getInstance($item->id);
 				$instance->bind($item);

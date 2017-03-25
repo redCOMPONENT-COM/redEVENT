@@ -1313,7 +1313,7 @@ class RedeventHelper
 		}
 
 		$fields = array_map(
-			function($row)
+			function ($row)
 			{
 				$field = RedeventFactoryCustomfield::getField($row->type);
 				$field->bind($row);

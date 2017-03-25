@@ -119,9 +119,11 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 		if ($this->getState('filter.language'))
 		{
 			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)'
+			);
 			$query->where('(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR c.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR c.language IS NULL)'
+			);
 		}
 
 		$filter = $this->getFilter();

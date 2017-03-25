@@ -28,7 +28,7 @@ class Modredeventcalhelper
 	 *
 	 * @return array
 	 */
-	public static function getdays ($greq_year, $greq_month, &$params)
+	public static function getdays($greq_year, $greq_month, &$params)
 	{
 		$user = JFactory::getUser();
 
@@ -91,7 +91,7 @@ class Modredeventcalhelper
 		foreach ($events as $event)
 		{
 			// Cope with no end date set i.e. set it to same as start date
-			if ($event->enddates == '0000-00-00' or is_null($event->enddates))
+			if ($event->enddates == '0000-00-00' || is_null($event->enddates))
 			{
 				$eyear = $event->start_year;
 				$emonth = $event->start_month;

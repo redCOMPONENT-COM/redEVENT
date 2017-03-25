@@ -136,7 +136,7 @@ class RedeventEntityBundle extends RedeventEntityBase
 		// Sort by date
 		usort(
 			$upcoming,
-			function($a, $b)
+			function ($a, $b)
 			{
 				return $a->getUnixStart() - $b->getUnixStart();
 			}

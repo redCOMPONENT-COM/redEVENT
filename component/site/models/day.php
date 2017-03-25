@@ -92,7 +92,8 @@ class RedeventModelDay extends RedeventModelBasesessionlist
 		// Only select events of the specified day
 		$query->where('x.dates > 0');
 		$query->where('(' . $this->_db->quote($this->_date) . ' BETWEEN x.dates AND x.enddates '
-		. ' OR ' . $this->_db->quote($this->_date) . ' = x.dates)');
+			. ' OR ' . $this->_db->quote($this->_date) . ' = x.dates)'
+		);
 
 		return $query;
 	}

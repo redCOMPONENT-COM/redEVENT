@@ -105,7 +105,8 @@ class RedeventModelSignup extends RModel
 	{
 		$mainframe = JFactory::getApplication();
 		jimport('joomla.mail.helper');
-		/* Start the mailer object */
+
+		// Start the mailer object
 		$this->mailer = RdfHelper::getMailer();
 		$this->mailer->isHTML(true);
 		$this->mailer->From = $mainframe->getCfg('mailfrom');
@@ -143,10 +144,10 @@ class RedeventModelSignup extends RModel
 	 */
 	public function getSendSignupEmail($tags, $send_attachment)
 	{
-		/* Initialise the mailer */
+		// Initialise the mailer
 		$this->Mailer();
 
-		/* Check if the attachment needs to be send */
+		// Check if the attachment needs to be send
 		if ($send_attachment)
 		{
 			$pdf = file_get_contents(
@@ -158,11 +159,13 @@ class RedeventModelSignup extends RModel
 			$this->mailer->AddAttachment($pdffile);
 		}
 
-		/* Add the recipient */
+		// Add the recipient
 		$this->mailer->AddAddress(JFactory::getApplication()->input->get('subemailaddress'), JFactory::getApplication()->input->get('subemailname'));
 
-		/* Add the body to the mail */
-		/* Read the template */
+		/*
+		 Add the body to the mail
+		 Read the template
+		*/
 		$event = RedeventEntityEvent::load($this->id);
 		$email_settings = $event->getEventtemplate();
 		$message = $tags->replaceTags($email_settings->submission_type_email_body);
@@ -172,10 +175,10 @@ class RedeventModelSignup extends RModel
 
 		$this->mailer->setBody($message);
 
-		/* Set the subject */
+		// Set the subject
 		$this->mailer->setSubject($tags->replaceTags($email_settings->submission_type_email_subject));
 
-		/* Sent out the mail */
+		// Sent out the mail
 		if (!$this->mailer->Send())
 		{
 			RedeventError::raiseWarning(0, JText::_('COM_REDEVENT_NO_MAIL_SEND') . ' ' . $this->mailer->error);
@@ -183,10 +186,10 @@ class RedeventModelSignup extends RModel
 			return false;
 		}
 
-		/* Clear the mail details */
+		// Clear the mail details
 		$this->mailer->ClearAddresses();
 
-		/* Remove the temporary file */
+		// Remove the temporary file
 		if ($send_attachment)
 		{
 			unlink($pdffile);
@@ -204,10 +207,10 @@ class RedeventModelSignup extends RModel
 	 */
 	public function getSendFormalOfferEmail($tags)
 	{
-		/* Initialise the mailer */
+		// Initialise the mailer
 		$this->Mailer();
 
-		/* Load the details for this course */
+		// Load the details for this course
 		$db = JFactory::getDBO();
 		$q = "SELECT *
 			FROM #__redevent_event_venue_xref x
@@ -219,21 +222,23 @@ class RedeventModelSignup extends RModel
 		$db->setQuery($q);
 		$details = $db->loadObject();
 
-		/* Add the recipient */
+		// Add the recipient
 		$this->mailer->AddAddress(JFactory::getApplication()->input->get('subemailaddress'), JFactory::getApplication()->input->get('subemailname'));
 
-		/* Set the subject */
+		// Set the subject
 		$this->mailer->setSubject($tags->replaceTags($details->submission_type_formal_offer_subject));
 
-		/* Add the body to the mail */
-		/* Read the template */
+		/*
+		 Add the body to the mail
+		 Read the template
+		*/
 		$message = $tags->replaceTags($details->submission_type_formal_offer_body);
 
 		// Convert urls
 		$message = RedeventHelperOutput::ImgRelAbs($message);
 		$this->mailer->setBody($message);
 
-		/* Sent out the mail */
+		// Sent out the mail
 		if (!$this->mailer->Send())
 		{
 			RedeventError::raiseWarning(0, JText::_('COM_REDEVENT_NO_MAIL_SEND') . ' ' . $this->mailer->error);
@@ -241,7 +246,7 @@ class RedeventModelSignup extends RModel
 			return false;
 		}
 
-		/* Clear the mail details */
+		// Clear the mail details
 		$this->mailer->ClearAddresses();
 
 		return true;

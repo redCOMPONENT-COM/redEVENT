@@ -109,7 +109,7 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 
 		$upcomings = array_filter(
 			$sessions,
-			function($session)
+			function ($session)
 			{
 				return $session->isUpcoming();
 			}
@@ -123,7 +123,7 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 		// Order
 		uasort(
 			$upcomings,
-			function($a, $b)
+			function ($a, $b)
 			{
 				return $a->getUnixStart() - $b->getUnixStart();
 			}

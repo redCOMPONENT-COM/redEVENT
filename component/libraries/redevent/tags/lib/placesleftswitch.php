@@ -87,7 +87,7 @@ class RedeventTagsLibPlacesleftswitch extends \Redevent\Tag\Replacer
 		}
 
 		$parsedConditions = array_map(
-			function($condition)
+			function ($condition)
 			{
 				list($limit, $tag) = explode(";", $condition);
 

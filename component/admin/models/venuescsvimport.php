@@ -67,7 +67,7 @@ class RedeventModelVenuescsvimport extends RModel
 	 *
 	 * @param   array  $data  venue data from import
 	 *
-	 * @return integer|bool
+	 * @return integer|boolean
 	 */
 	private function storeVenue($data)
 	{

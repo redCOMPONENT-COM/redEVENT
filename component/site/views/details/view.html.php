@@ -82,12 +82,12 @@ class RedeventViewDetails extends JViewLegacy
 		$this->print_link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref) . '&pop=1&tmpl=component');
 		$this->elsettings = RedeventHelper::config();
 
-		/* This loads the tags replacer */
+		// This loads the tags replacer
 		$this->tags = new RedeventTags;
 		$this->tags->setEventId($row->event_id);
 		$this->tags->setXref($row->xref);
 
-		/* Get the Venue Dates */
+		// Get the Venue Dates
 		$this->venuedates = $this->get('VenueDates');
 
 		// Manages attendees

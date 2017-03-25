@@ -51,7 +51,7 @@ class RedeventViewUpcomingevents extends RViewSite
 
 		$params->def('page_title', JText::_('COM_REDEVENT_UPCOMING_EVENTS_TITLE'));
 
-		/* Add rss link */
+		// Add rss link
 		$link = '&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);

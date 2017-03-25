@@ -146,7 +146,7 @@ class RedeventModelVenuescategories extends RModelList
 			{
 				$query->where('c.published = 1');
 			}
-			elseif ($filter_state == '0' )
+			elseif ($filter_state == '0')
 			{
 				$query->where('c.published = 0');
 			}

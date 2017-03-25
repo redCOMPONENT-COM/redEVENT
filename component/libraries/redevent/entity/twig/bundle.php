@@ -119,7 +119,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($bundleEvent)
+			function ($bundleEvent)
 			{
 				return \RedeventEntityTwigEvent::getInstance($bundleEvent->getEvent());
 			},
@@ -155,7 +155,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($session)
+			function ($session)
 			{
 				return \RedeventEntityTwigSession::getInstance($session);
 			},
@@ -186,7 +186,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($venue)
+			function ($venue)
 			{
 				return \RedeventEntityTwigVenue::getInstance($venue);
 			},

@@ -47,7 +47,7 @@ class RedeventControllerAttendee extends RControllerForm
 		// Check for request forgeries
 		JSession::checkToken() or die('Invalid Token');
 
-		$xref = $this->input->getInt('sessionId', 0) or die( 'Missing session id' );
+		$xref = $this->input->getInt('sessionId', 0) or die('Missing session id');
 		$task = $this->input->getCmd('task');
 
 		$model = $this->getModel('attendee');
@@ -157,7 +157,7 @@ class RedeventControllerAttendee extends RControllerForm
 
 				if (!$sessionId)
 				{
-					die( 'Missing session Id' );
+					die('Missing session Id');
 				}
 			}
 

@@ -294,13 +294,15 @@ class RedeventTags
 
 		$text = $this->replace($text);
 
-		/* Include redFORM */
+		// Include redFORM
 		if (strstr($text, '[redform]'))
 		{
 			$redform = $this->getForm();
 
-			/* second replacement, add the form */
-			/* if done in first one, username in the form javascript is replaced too... */
+			/**
+			 Second replacement, add the form
+			 if done in first one, username in the form javascript is replaced too...
+			 */
 			$text = str_replace('[redform]', $redform, $text);
 		}
 
@@ -428,7 +430,7 @@ class RedeventTags
 		$search = array();
 		$replace = array();
 
-		/* Load custom fields */
+		// Load custom fields
 		$customfields = $this->getCustomFields();
 
 		foreach ($customfields as $tag => $data)
@@ -437,7 +439,7 @@ class RedeventTags
 			$replace[] = $data->text_field;
 		}
 
-		/* redFORM fields values replacements */
+		// RedFORM fields values replacements
 		if ($alltags)
 		{
 			$redformfields = $this->getFieldsTags();
@@ -1089,7 +1091,7 @@ class RedeventTags
 	/**
 	 * Get form fields tags
 	 *
-	 * @return array|bool
+	 * @return array|boolean
 	 */
 	private function getFieldsTags()
 	{
@@ -1121,7 +1123,7 @@ class RedeventTags
 	 *
 	 * @param   int  $id  redform field id (not the same as 'form field' id...)
 	 *
-	 * @return array|bool
+	 * @return array|boolean
 	 */
 	private function getFieldAnswer($id)
 	{
@@ -1150,7 +1152,7 @@ class RedeventTags
 	 *
 	 * @param   int  $id  redform form field id
 	 *
-	 * @return array|bool
+	 * @return array|boolean
 	 */
 	private function getFormFieldAnswer($id)
 	{
@@ -1382,14 +1384,15 @@ class RedeventTags
 		return $this->canregister;
 	}
 
-	/*************************************************************************
-	 * tags functions
+	/**
+	 * **********************************************************************
+	 * Tags functions
 	 *
 	 * name must be getTag_xxxxx_yyy
 	 *
 	 */
 
-	/************ event tags **************************/
+	// Event tags
 
 	/**
 	 * Parses event_description tag
@@ -1398,7 +1401,7 @@ class RedeventTags
 	 */
 	private function getTag_event_description()
 	{
-		/* Fix the tags of the event description */
+		// Fix the tags of the event description
 		$findcourse = array('[venues]', '[price]', '[credits]', '[code]');
 		$venues_html = $this->SignUpLinks();
 
@@ -2020,7 +2023,7 @@ class RedeventTags
 		return $this->getEvent()->getCreator()->email;
 	}
 
-	/**************  venue tags ******************/
+	// Venue tags
 
 	/**
 	 * Parses a tag
@@ -2258,7 +2261,7 @@ class RedeventTags
 		return RedeventHelperOutput::map($this->getSession()->getVenue(), array('class' => 'event-full-map'));
 	}
 
-	/**************  registration tags ******************/
+	// Registration tags
 
 	/**
 	 * Parses a tag

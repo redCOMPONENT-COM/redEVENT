@@ -45,7 +45,7 @@ class RedeventViewVenuecategory extends RedeventViewSessionlist
 		$print_link = JRoute::_('index.php?option=com_redevent&view=venuecategory&id=' . $category->id . '&pop=1&tmpl=component');
 
 		// Generate Categorydescription
-		if (empty ($category->description))
+		if (empty($category->description))
 		{
 			$description = JText::_('COM_REDEVENT_NO_DESCRIPTION');
 		}

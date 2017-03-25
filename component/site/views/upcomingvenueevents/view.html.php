@@ -59,7 +59,7 @@ class RedeventViewUpcomingvenueevents extends RViewSite
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		/* Add rss link */
+		// Add rss link
 		$link = '&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
@@ -116,7 +116,7 @@ class RedeventViewUpcomingvenueevents extends RViewSite
 		}
 
 		// Generate Venuedescription
-		if (!empty ($venue->locdescription))
+		if (!empty($venue->locdescription))
 		{
 			// Execute plugins
 			$venuedescription = JHTML::_('content.prepare', $venue->locdescription);

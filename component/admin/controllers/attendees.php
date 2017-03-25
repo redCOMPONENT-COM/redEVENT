@@ -53,7 +53,8 @@ class RedeventControllerAttendees extends RControllerAdmin
 		$total = count($cid);
 		$formid = $this->input->getInt('form_id');
 
-		/* Check if anything is selected */
+		// Check if anything is selected
+
 		if (!is_array($cid) || count($cid) < 1)
 		{
 			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_attendee_to_move'));
@@ -62,21 +63,27 @@ class RedeventControllerAttendees extends RControllerAdmin
 		if (!$dest)
 		{
 			// Display the form to chose destination
-			/* Create the view object */
+			// Create the view object
+
 			$view = $this->getView('attendees', 'html');
 
-			/* Standard model */
+			// Standard model
+
 			$view->setModel($this->getModel('attendees', 'RedeventModel'), true);
-			/* set layout */
+
+			// Set layout
+
 			$view->setLayout('move');
 
-			/* Now display the view */
+			// Now display the view
+
 			$view->display();
 
 			return;
 		}
 
-		/* Get all submitter ID's */
+		// Get all submitter ID's
+
 		$model = $this->getModel('attendees');
 
 		if (!$model->move($cid, $dest))
@@ -92,7 +99,8 @@ class RedeventControllerAttendees extends RControllerAdmin
 			$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 		}
 
-		/* Check if we have space on the waiting list */
+		// Check if we have space on the waiting list
+
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
@@ -370,7 +378,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 
 				if (!$sessionId)
 				{
-					die( 'Missing session Id' );
+					die('Missing session Id');
 				}
 			}
 

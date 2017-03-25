@@ -89,10 +89,10 @@ class RedeventViewAttendees extends RViewSite
 		// Lists
 		$lists = array();
 
-		/* Call the state object */
+		// Call the state object
 		$state = $this->get('state');
 
-		/* Get the values from the state object that were inserted in the model's construct function */
+		// Get the values from the state object that were inserted in the model's construct function
 		$lists['order_Dir'] = $state->get('filter_order_Dir');
 		$lists['order'] = $state->get('filter_order');
 
@@ -192,10 +192,10 @@ class RedeventViewAttendees extends RViewSite
 		// Lists
 		$lists = array();
 
-		/* Call the state object */
+		// Call the state object
 		$state = $this->get('state');
 
-		/* Get the values from the state object that were inserted in the model's construct function */
+		// Get the values from the state object that were inserted in the model's construct function
 		$lists['order_Dir'] = $state->get('filter_order_Dir');
 		$lists['order'] = $state->get('filter_order');
 

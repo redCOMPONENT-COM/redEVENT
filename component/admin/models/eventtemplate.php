@@ -35,7 +35,8 @@ class RedeventModelEventtemplate extends RModelAdmin
 			$row->checked_out_time = 0;
 			$row->name = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $row->name);
 
-			/* pre-save checks */
+			// Pre-save checks
+
 			if (!$row->check())
 			{
 				$this->setError($row->getError(), 'error');
@@ -43,7 +44,8 @@ class RedeventModelEventtemplate extends RModelAdmin
 				return false;
 			}
 
-			/* save the changes */
+			// Save the changes
+
 			if (!$row->store())
 			{
 				$this->setError($row->getError(), 'error');
@@ -112,11 +114,11 @@ class RedeventModelEventtemplate extends RModelAdmin
 	private function hasAttendees($templateId)
 	{
 		$query = $this->_db->getQuery(true)
-				->select('r.id')
-				->from('#__redevent_register AS r')
-				->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref')
-				->join('INNER', '#__redevent_events AS e on e.id = x.eventid')
-				->where('e.template_id = ' . (int) $templateId);
+			->select('r.id')
+			->from('#__redevent_register AS r')
+			->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref')
+			->join('INNER', '#__redevent_events AS e on e.id = x.eventid')
+			->where('e.template_id = ' . (int) $templateId);
 
 		$this->_db->setQuery($query, 0, 1);
 		$res = $this->_db->loadResult();

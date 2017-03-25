@@ -74,8 +74,8 @@ class Dates
 
 		$date_start = \RedeventHelperDate::formatdate($this->dates, $this->times);
 		$time_start = $showtime && !$this->isAllDay() ? \RedeventHelperDate::formattime($this->dates, $this->times) : '';
-		$date_end   = $showend          ? \RedeventHelperDate::formatdate($this->enddates, $this->endtimes) : '';
-		$time_end   = $showtime && !$this->isAllDay() ? \RedeventHelperDate::formattime($this->enddates, $this->endtimes) :  '';
+		$date_end   = $showend ? \RedeventHelperDate::formatdate($this->enddates, $this->endtimes) : '';
+		$time_end   = $showtime && !$this->isAllDay() ? \RedeventHelperDate::formattime($this->enddates, $this->endtimes) : '';
 
 		if ($this->isOneDay())
 		{

@@ -202,7 +202,7 @@ class RedeventModelRegistration extends RModel
 	 */
 	public function getRegistrationFromActivationLink($submit_key, $register_id, $uid, $xref)
 	{
-		/* Check the db if this entry exists */
+		// Check the db if this entry exists
 		$query = $this->_db->getQuery(true)
 			->select('r.confirmed')
 			->from('#__redevent_register AS r')
@@ -385,10 +385,10 @@ class RedeventModelRegistration extends RModel
 	 */
 	public function sendNotificationEmail($submit_key)
 	{
-		/* Load database connection */
+		// Load database connection
 		$db = JFactory::getDBO();
 
-		/* Get registration settings */
+		// Get registration settings
 		$query = $this->_db->getQuery(true)
 			->select('r.id')
 			->from('#__redevent_register AS r')
@@ -436,7 +436,7 @@ class RedeventModelRegistration extends RModel
 		}
 		else
 		{
-			/* Get registration settings */
+			// Get registration settings
 			$query = $this->_db->getQuery(true)
 				->select('r.id')
 				->from('#__redevent_register AS r')

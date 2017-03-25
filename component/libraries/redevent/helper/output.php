@@ -431,7 +431,8 @@ class RedeventHelperOutput
 			window.addEvent(\'domready\', function() {
 				mymap.initajax(' . ($data->venueid ?: $data->id) . ', "venue-location");
 			});
-		');
+		'
+		);
 		JText::script("COM_REDEVENT_GET_DIRECTIONS");
 
 		if (isset($attributes['class']))
@@ -620,8 +621,8 @@ class RedeventHelperOutput
 			case 'comma':
 				// Format price
 				$formatprice = number_format(
-						$price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')
-					) . ',-';
+					$price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')
+				) . ',-';
 				break;
 
 			case 'none':

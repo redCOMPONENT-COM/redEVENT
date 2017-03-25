@@ -127,6 +127,7 @@ class PlgFinderRe_Events extends FinderIndexerAdapter
 		{
 			return true;
 		}
+
 		// Remove the items.
 		return $this->remove($id);
 	}
@@ -146,7 +147,7 @@ class PlgFinderRe_Events extends FinderIndexerAdapter
 	public function onFinderAfterSave($context, $row, $isNew)
 	{
 		// We only want to handle web links here. We need to handle front end and back end editing.
-		if ($context == 'com_redevent.event' || $context == 'com_redevent.event.form' )
+		if ($context == 'com_redevent.event' || $context == 'com_redevent.event.form')
 		{
 			// Reindex the item
 			$this->reindex($row->id);
@@ -182,7 +183,7 @@ class PlgFinderRe_Events extends FinderIndexerAdapter
 	public function onFinderBeforeSave($context, $row, $isNew)
 	{
 		// We only want to handle web links here
-		if ($context == 'com_redevent.event' || $context == 'com_redevent.event.form' )
+		if ($context == 'com_redevent.event' || $context == 'com_redevent.event.form')
 		{
 			// Query the database for the old access level if the item isn't new
 			if (!$isNew)
@@ -220,10 +221,11 @@ class PlgFinderRe_Events extends FinderIndexerAdapter
 	public function onFinderChangeState($context, $pks, $value)
 	{
 		// We only want to handle web links here
-		if ($context == 'com_redevent.event' || $context == 'com_redevent.event.form' )
+		if ($context == 'com_redevent.event' || $context == 'com_redevent.event.form')
 		{
 			$this->itemStateChange($pks, $value);
 		}
+
 		// Handle when the plugin is disabled
 		if ($context == 'com_plugins.plugin' && $value === 0)
 		{

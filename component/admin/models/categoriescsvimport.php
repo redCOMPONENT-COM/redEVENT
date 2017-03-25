@@ -62,7 +62,7 @@ class RedeventModelCategoriescsvimport extends RModel
 	 *
 	 * @param   array  $data  category data from import
 	 *
-	 * @return integer|bool
+	 * @return integer|boolean
 	 */
 	private function storeCategory($data)
 	{

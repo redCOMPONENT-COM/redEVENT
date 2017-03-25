@@ -54,7 +54,8 @@ class RedeventControllerSession extends RedeventControllerForm
 			return;
 		}
 
-		/* Check if people need to be moved on or off the waitinglist */
+		// Check if people need to be moved on or off the waitinglist
+
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($sessionId);
 		$model_wait->UpdateWaitingList();

@@ -139,7 +139,7 @@ class RedeventModelVenues extends RModelList
 			{
 				$query->where('obj.published = 1');
 			}
-			elseif ($filter_state == '0' )
+			elseif ($filter_state == '0')
 			{
 				$query->where('obj.published = 0');
 			}

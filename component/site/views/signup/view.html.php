@@ -43,7 +43,7 @@ class RedeventViewSignup extends RViewSite
 		$user = JFactory::getUser();
 		$item = $menu->getActive();
 
-		/* Load the event details */
+		// Load the event details
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
 
@@ -66,7 +66,7 @@ class RedeventViewSignup extends RViewSite
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		/* This loads the tags replacer */
+		// This loads the tags replacer
 		$tags = new RedeventTags;
 		$tags->setEventId($this->tmp_id);
 		$tags->setXref($this->tmp_xref);
@@ -78,14 +78,15 @@ class RedeventViewSignup extends RViewSite
 				if (JFactory::getApplication()->input->get('sendmail') == '1')
 				{
 					$model_signup = $this->getModel('Signup');
-					/* Send the user the signup email */
+
+					// Send the user the signup email
 					$result = $model_signup->getSendSignupEmail($tags, $course->send_pdf_form);
 					$this->assignRef('result', $result);
 					JFactory::getApplication()->input->set('xref', $this->tmp_xref);
 					JFactory::getApplication()->input->set('id', $this->tmp_id);
 				}
 
-				/* Load the view */
+				// Load the view
 				$this->assignRef('page', $course->submission_type_email);
 				$tpl = 'email';
 				break;
@@ -97,20 +98,21 @@ class RedeventViewSignup extends RViewSite
 					$model_signup = $this->getModel('Signup');
 					$model_details->getDetails();
 					$venues = $model_details->getVenues();
-					/* Send the user the formal offer email */
+
+					// Send the user the formal offer email
 					$result = $model_signup->getSendFormalOfferEmail($tags);
 					$this->assignRef('result', $result);
 					JRequest::setVar('xref', $this->tmp_xref);
 					JRequest::setVar('id', $this->tmp_id);
 				}
 
-				/* Load the view */
+				// Load the view
 				$this->assignRef('page', $course->submission_type_formal_offer);
 				$tpl = 'formaloffer';
 				break;
 
 			case 'phone':
-				/* Load the view */
+				// Load the view
 				$this->assignRef('page', $course->submission_type_phone);
 				$tpl = 'phone';
 				break;
@@ -174,7 +176,7 @@ class RedeventViewSignup extends RViewSite
 	 *
 	 * @throws RuntimeException
 	 */
-	public function  displayEdit($tpl = null)
+	public function displayEdit($tpl = null)
 	{
 		$user = JFactory::getUser();
 		$submitter_id = JRequest::getInt('submitter_id', 0);
