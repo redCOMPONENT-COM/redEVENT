@@ -991,7 +991,7 @@ class RedeventModelBasesessionlist extends RModel
 	 */
 	public function getEventsOptions()
 	{
-		$query = $this->_buildSelectFrom();
+		$query = $this->buildSelectFrom();
 		$query->select('a.id AS value, a.title AS text');
 		$query->where(' a.published <> 0');
 		$query->clear('group')->group('a.id');

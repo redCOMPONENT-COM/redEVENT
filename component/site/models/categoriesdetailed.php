@@ -89,7 +89,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBasesessionlist
 		// Lets load the content if it doesn't already exist
 		if (empty($this->categories))
 		{
-			$query = $this->buildQuery();
+			$query = $this->_buildQuery();
 			$this->categories = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 
 			$count = count($this->categories);
