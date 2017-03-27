@@ -10,6 +10,7 @@
 	<version>1.0</version>
 	<tag>##VERSION##</tag>
 	<description>PLG_REDEVENT_KURSER_XML_DESCRIPTION</description>
+	<origin>https://github.com/redCOMPONENT-COM/redEVENT/tree/ibc-2016/plugins/redevent/kurser</origin>
 
 	<files>
 		<file plugin="kurser">kurser.php</file>
