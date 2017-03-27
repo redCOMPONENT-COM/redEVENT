@@ -601,6 +601,8 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 				$this->appendElement($message, $a);
 
+				// Prevent adding multiple payment
+				break;
 			}
 		}
 
