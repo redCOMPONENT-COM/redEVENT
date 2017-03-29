@@ -16,6 +16,8 @@
 				   type="text"
 				   label="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT"
 				   description="PLG_REDFORM_FIELD_REDEVENT_SESSION_XML_VALUE_FORMAT_DESC"/>
+			<field name="size" type="text" default="1" label="COM_REDFORM_FIELD_SELECT_PARAMS_SIZE"
+				   description="COM_REDFORM_FIELD_SELECT_PARAMS_SIZE_DESC"/>
 		</fieldset>
 	</fields>
 </form>
