@@ -145,18 +145,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			}
 
 			// Make sure we have an user !
-			$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
-
-			if (!$rmUser)
-			{
-				// We need an user, trigger a special Exception to force getting one
-				throw new PlgresyncmaerskExceptionMissinguser($attendee->user_email, $attendee->venue_code);
-			}
-			elseif ($attendee->firstname != $rmUser->rm_firstname || $attendee->lastname != $rmUser->rm_lastname)
-			{
-				// Just try to update it
-				$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $rmUser->rm_firstname, $rmUser->rm_lastname);
-			}
+			$rmUser = $this->getRedmemberUser($attendee);
 
 			// We will first add to redform submitters, then to corresponding redform form,
 			// and then to register table
@@ -636,5 +625,39 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		}
 
 		return true;
+	}
+
+	private function getRedmemberUser($attendee)
+	{
+		// Make sure we have an user !
+		$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
+
+		if (!$rmUser)
+		{
+			return $this->createRedmemberUser($attendee);
+		}
+
+		if ($attendee->firstname != $rmUser->rm_firstname || $attendee->lastname != $rmUser->rm_lastname)
+		{
+			// Try to update it
+			$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $rmUser->rm_firstname, $rmUser->rm_lastname);
+		}
+
+		return $rmUser;
+	}
+
+	private function createRedmemberUser($attendee)
+	{
+		if (!$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $attendee->firstname, $attendee->lastname))
+		{
+			throw new Exception('CustomerRQ sync failed');
+		}
+
+		if (!$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email))
+		{
+			throw new Exception('User still not found after CustomerRQ');
+		}
+
+		return $rmUser;
 	}
 }
