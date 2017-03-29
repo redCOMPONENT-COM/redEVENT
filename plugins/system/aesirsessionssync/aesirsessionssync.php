@@ -121,9 +121,16 @@ class PlgSystemAesirsessionssync extends JPlugin
 			{
 				$session = RedeventEntitySession::load($sessionId);
 
-				if ($this->syncSession($session))
+				try
 				{
-					$synced++;
+					if ($this->syncSession($session))
+					{
+						$synced++;
+					}
+				}
+				catch (Exception $e)
+				{
+					$app->enqueueMessage($e->getMessage(), 'error');
 				}
 			}
 
@@ -151,7 +158,14 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 		$session = RedeventEntitySession::getInstance($table->id)->bind($table);
 
-		$this->syncSession($session);
+		try
+		{
+			$this->syncSession($session);
+		}
+		catch (Exception $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 	}
 
 	/**
@@ -231,9 +245,16 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 		foreach ($sessions as $session)
 		{
-			if ($this->syncSession($session))
+			try
 			{
-				$synced++;
+				if ($this->syncSession($session))
+				{
+					$synced++;
+				}
+			}
+			catch (Exception $e)
+			{
+				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -252,6 +273,8 @@ class PlgSystemAesirsessionssync extends JPlugin
 	 * @param   RedeventEntitySession  $session  session to sync
 	 *
 	 * @return true on success
+	 *
+	 * @throws RuntimeException
 	 */
 	private function syncSession($session)
 	{
@@ -311,7 +334,6 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 			if (!in_array($sessionItemId, $relatedItems))
 			{
-				echo "<p>Adding $session->id $session->dates / $sessionItemId</p>";
 				$relatedItems[] = $sessionItemId;
 
 				$params->set('related_items', $relatedItems);
@@ -333,9 +355,7 @@ class PlgSystemAesirsessionssync extends JPlugin
 
 				if (!$db->execute())
 				{
-					echo $db->getErrorMsg();
-
-					exit();
+					throw new RuntimeException($db->getErrorMsg());
 				}
 
 				ReditemEntityItem::clearInstance($eventItem->id);
