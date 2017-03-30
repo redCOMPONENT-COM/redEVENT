@@ -589,6 +589,7 @@ class RedeventModelDetails extends RModel
 			->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
 			->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id')
 			->where('sp.xref = ' . $this->_db->Quote($event->xref))
+			->where('sp.active = 1')
 			->order('p.ordering ASC');
 
 		$this->_db->setQuery($query);
