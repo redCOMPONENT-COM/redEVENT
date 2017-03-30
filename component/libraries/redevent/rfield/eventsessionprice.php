@@ -204,25 +204,27 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 	 */
 	public function getPrice()
 	{
-		$options = $this->getOptions();
-
-		if (count($options))
+		if (!$selected = $this->getSelectedOption())
 		{
-			if ($value = $this->getValue())
-			{
-				foreach ($this->options as $option)
-				{
-					if ($option->value == $value)
-					{
-						return $option->price;
-					}
-				}
-
-				throw new RuntimeException('undefined sessionprice value');
-			}
+			return false;
 		}
 
-		return $this->getValue();
+		return $selected->price ? : 0;
+	}
+
+	/**
+	 * Return vat, possibly depending on current field value
+	 *
+	 * @return float
+	 */
+	public function getVat()
+	{
+		if (!$selected = $this->getSelectedOption())
+		{
+			return false;
+		}
+
+		return $selected->vat ? $selected->vat * $selected->price / 100 : 0;
 	}
 
 	/**
