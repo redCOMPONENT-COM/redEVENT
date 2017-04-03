@@ -76,8 +76,15 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 			}
 
 			// Try to find existing parent aesir category, if not use default
-			$parent = $this->getAesirCategory($category->parent_id);
-			$parentId = $parent->isValid() ? $parent->id : RedeventHelperConfig::get('aesir_category_parent_id');
+			if (empty($category->parent_id))
+			{
+				$parentId = RedeventHelperConfig::get('aesir_category_parent_id');
+			}
+			else
+			{
+				$parent = $this->getAesirCategory($category->parent_id);
+				$parentId = $parent->isValid() ? $parent->id : RedeventHelperConfig::get('aesir_category_parent_id');
+			}
 
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
