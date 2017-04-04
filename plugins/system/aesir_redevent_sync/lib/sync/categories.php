@@ -207,12 +207,13 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 	{
 		$db    = JFactory::getDbo();
 
-		$categoryTable = $db->qn('#__reditem_types_' . $type->table_name);
-		$categorySelectFieldId = $db->qn($this->getCategorySelectField()->fieldcode);
+		$categoryTable = $db->qn('#__reditem_types_' . $type->table_name, 't');
+		$categorySelectFieldId = $db->qn('t.' . $this->getCategorySelectField()->fieldcode);
 
 		$query = $db->getQuery(true)
-			->select('id')
+			->select('t.id')
 			->from($categoryTable)
+			->innerJoin('#__reditem_categories AS c ON c.id = t.id')
 			->where($categorySelectFieldId . ' = ' . $redeventCategoryId);
 
 		$db->setQuery($query);
