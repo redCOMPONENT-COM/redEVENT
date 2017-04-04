@@ -48,7 +48,7 @@ class RedeventTagsParsed
 	{
 		$this->full_tag = $full_tag;
 
-		if (!preg_match('/\[([^\]\s]+)([^\]]*)\]/u', $this->full_tag, $matches))
+		if (!preg_match('/\[([^\]\s]+)\s*([^\]]*)\]/u', $this->full_tag, $matches))
 		{
 			throw new Exception(JText::_('COM_REDEVENT_TAGS_WRONG_TAG_SYNTAX') . ':' . $this->full_tag);
 		}
@@ -57,12 +57,11 @@ class RedeventTagsParsed
 
 		if (count($matches) > 2)
 		{
-			preg_match_all('/([^=\s]+)=([\'"])([^\2]*)\2/u', $matches[2], $match_params_array, PREG_SET_ORDER);
+			preg_match_all('/\s*([^=\s]+)=(")([^\'"]*)\2\s*/u', $matches[2], $match_params_array, PREG_SET_ORDER);
 
 			foreach ($match_params_array as $m)
 			{
-				$property = strtolower($m[1]);
-				$this->params[$property] = $m[3];
+				$this->params[] = array('key' => strtolower($m[1]), 'value' => $m[3]);
 			}
 		}
 	}
@@ -97,13 +96,26 @@ class RedeventTagsParsed
 	 */
 	public function getParam($name, $default = null)
 	{
-		if (isset($this->params[$name]))
+		$values = array();
+
+		foreach ($this->params as $param)
 		{
-			return $this->params[$name];
+			if ($name == $param['key'])
+			{
+				$values[] = $param['value'];
+			}
 		}
-		else
+
+		if (empty($values))
 		{
 			return $default;
 		}
+
+		if (count($values) == 1)
+		{
+			return $values[0];
+		}
+
+		return $values;
 	}
 }

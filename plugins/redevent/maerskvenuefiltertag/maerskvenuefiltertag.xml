@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.5" type="plugin" group="redevent" method="upgrade">
+	<name>PLG_REDEVENT_MAERSKVENUEFILTERTAG</name>
+	<creationDate>April 2017</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2017 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>3.2.3</version>
+	<description>PLG_REDEVENT_MAERSKVENUEFILTERTAG_XML_PLUGIN_DESC</description>
+
+	<files>
+		<filename plugin="maerskvenuefiltertag">maerskvenuefiltertag.php</filename>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+			</fieldset>
+ 		</fields>
+	</config>
+
+</extension>

@@ -34,7 +34,16 @@
 			"redeventvenue",
 			"redeventvenuecategory"
 		],
-		"redevent" : ["jomsocial", "redmemberlogin", "acymailinglists", "eventnewslettersignup", "maerskregistration", "notifycompanyadmin", "paymentnotificationemail"],
+		"redevent" : [
+			"jomsocial",
+			"redmemberlogin",
+			"acymailinglists",
+			"eventnewslettersignup",
+			"maerskregistration",
+			"notifycompanyadmin",
+			"paymentnotificationemail",
+			"maerskvenuefiltertag"
+		],
 		"redevent_config" : ["maersk"],
 		"redeventsyncclient" : ["maersk"],
 		"redform_field" : ["eventacymailinglists"],

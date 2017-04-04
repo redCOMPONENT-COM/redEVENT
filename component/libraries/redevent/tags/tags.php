@@ -503,7 +503,7 @@ class RedeventTags
 	 *
 	 * @return RedeventEntitySession
 	 */
-	private function getSession()
+	public function getSession()
 	{
 		if (empty($this->session) && $this->xref)
 		{
