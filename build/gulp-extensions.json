@@ -42,7 +42,8 @@
 			"maerskregistration",
 			"notifycompanyadmin",
 			"paymentnotificationemail",
-			"maerskvenuefiltertag"
+			"maerskvenuefiltertag",
+			"maerskgatewayfiltertag"
 		],
 		"redevent_config" : ["maersk"],
 		"redeventsyncclient" : ["maersk"],
