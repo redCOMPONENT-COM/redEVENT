@@ -119,7 +119,7 @@ $search = $this->state->get('filter.search');
 				<th width="40">
 					<?php echo JHTML::_('rsearchtools.sort', 'JGRID_HEADING_LANGUAGE', 'obj.language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10">
+				<th width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_ID', 'obj.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -240,7 +240,19 @@ $search = $this->state->get('filter.search');
 						<?php echo $row->language; ?>
 					</td>
 					<td>
-						<?php echo $row->id; ?>
+						<?php
+						$created	 	= JHTML::Date( $row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
+						$edited 		= JHTML::Date( $row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
+						$tip 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$created.'<br />';
+
+						if ($row->modified != '0000-00-00 00:00:00')
+						{
+							$tip 	.= JText::_('COM_REDEVENT_EDITED_AT' ).': '.$edited.'<br />';
+							$tip 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
+						}
+
+						echo RHtml::tooltip($tip, '', null, $row->id);
+						?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

@@ -121,10 +121,13 @@ class RedeventModelSessions extends RModelList
 		$query->select('obj.*')
 			->select('e.title AS event_title, e.checked_out as event_checked_out, e.registra')
 			->select('v.venue, v.checked_out as venue_checked_out')
+			->select('u.email, u.name AS author, u2.name as editor')
 			->from('#__redevent_event_venue_xref AS obj')
 			->join('INNER', '#__redevent_events AS e ON obj.eventid = e.id')
 			->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')
 			->join('LEFT', '#__redevent_venues AS v ON v.id = obj.venueid')
+			->join('LEFT', '#__users AS u ON u.id = obj.created_by')
+			->join('LEFT', '#__users AS u2 ON u2.id = obj.modified_by')
 			->group('obj.id');
 
 		$this->buildContentWhere($query);
