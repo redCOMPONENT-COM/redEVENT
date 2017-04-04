@@ -60,11 +60,10 @@ class RdfFieldRedevent_Session extends RdfRfieldSelect
 		$formatValue = $this->getParam('label_format', '[session_id]');
 		$formatText = $this->getParam('value_format', '[event_title] - [date format="d-m-Y"]');
 
-		$tags = new RedeventTags;
-
 		$optionsSessions = array_map(
-			function ($session) use ($tags, $formatValue, $formatText)
+			function ($session) use ($formatValue, $formatText)
 			{
+				$tags = new RedeventTags;
 				$tags->setXref($session->id);
 
 				$option = new stdClass;
