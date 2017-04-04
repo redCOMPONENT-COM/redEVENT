@@ -163,7 +163,7 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 			->select('c.*')
 			->from('#__redevent_categories AS c')
 			->where('c.published = 1')
-			->order('c.id DESC');
+			->order('c.lft ASC');
 
 		$db->setQuery($query, $limitstart, 5);
 
