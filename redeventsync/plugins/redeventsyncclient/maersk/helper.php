@@ -85,9 +85,10 @@ class RedeventsyncclientMaerskHelper
 		$query = $db->getQuery(true);
 
 		$query->select('x.id AS session_id');
-		$query->select('e.redform_id');
+		$query->select('t.redform_id');
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__redevent_event_template AS t ON t.id = e.template_id');
 		$query->join('INNER', '#__redevent_venues AS v on v.id = x.venueid');
 		$query->where('x.session_code = ' . $db->quote($session_code));
 		$query->where('v.venue_code = ' . $db->quote($venue_code));
