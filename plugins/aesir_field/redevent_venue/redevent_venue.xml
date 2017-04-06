@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" client="site" type="plugin" group="aesir_field" method="upgrade">
 	<name>PLG_AESIR_FIELD_REDEVENT_VENUE</name>
-	<version>3.2.2</version>
+	<version>3.2.3</version>
 	<creationDate>April 2016</creationDate>
 	<author>redCOMPONENT.com</author>
 	<copyright>Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.</copyright>
