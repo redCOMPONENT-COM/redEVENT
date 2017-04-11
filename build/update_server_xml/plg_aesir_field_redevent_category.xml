@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
 	<update>
-		<name>redEVENT plg_aesir_field_redevent_event</name>
+		<name>redEVENT plg_aesir_field_redevent_category</name>
 		<description>redEVENT plugin update</description>
-		<element>redevent_event</element>
+		<element>redevent_category</element>
 		<type>plugin</type>
 		<folder>aesir_field</folder>
 		<version>3.2.3</version>
