@@ -38,7 +38,7 @@
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
-		"system" : ["autotweetredevent", "aesir_redevent_sync"],
+		"system" : ["autotweetredevent", "aesir_redevent_sync", "redevent_labels"],
 		"xmap" : ["redevent"]
 	}
 }
