@@ -67,14 +67,48 @@ class PlgSystemRedevent_Labels extends JPlugin
 		if ($view instanceof RedeventViewAttendees)
 		{
 			$group = new RToolbarButtonGroup;
-			$button = RToolbarBuilder::createStandardButton(
-				'attendees.labels',
-				JText::_('PLG_SYSTEM_REDEVENT_LABELS_BUTTON_GET_LABELS'), '', 'icon-print', false
+
+			$xref = JFactory::getApplication()->input->get('xref');
+
+			// Workaround for redCORE styling the button differently with .modal class...
+			JFactory::getDocument()->addStyleDeclaration(<<<CSS
+	.redcore .modal.attendees-labels-button {
+		width:auto;
+		left:0;
+	}
+CSS
+);
+
+			$button = RToolbarBuilder::createModalButton(
+				'label-modal', JText::_('PLG_SYSTEM_REDEVENT_LABELS_BUTTON_GET_LABELS'), 'attendees-labels-button', 'icon-print', false,
+					array(
+						'url' => 'index.php?option=com_ajax&plugin=getAttendeesLabels&format=html&tmpl=component&xref=' . $xref
+					)
 			);
 			$group->addButton($button);
 
 			$toolbar->addGroup($group);
 		}
+	}
+
+	public function onAjaxGetAttendeesLabels()
+	{
+		$app = JFactory::getApplication();
+		$input = $app->input;
+
+		$xref = $input->getInt('xref');
+
+		RForm::addFormPath(__DIR__);
+		$form = RForm::getInstance("layout_settings", "layout_settings");
+
+		$html = RdfLayoutHelper::render(
+			'redevent.labels.settings',
+			compact('xref', 'form'),
+			null,
+			array('component' => 'com_redevent', 'defaultLayoutsPath' => __DIR__ . '/layouts')
+		);
+
+		return $html;
 	}
 
 	/**
@@ -126,10 +160,11 @@ class PlgSystemRedevent_Labels extends JPlugin
 	 */
 	private function getPdf()
 	{
+		$input = JFactory::getApplication()->input;
 		$session = $this->getSession();
 		$attendees = $this->getAttendees();
 
-		$rawText = $this->getTextFromTextlibrary($this->params->get('label_content'));
+		$rawText = $this->getTextFromTextlibrary($input->getString('label_content'));
 
 		$format = $this->getFormat();
 
@@ -179,7 +214,8 @@ class PlgSystemRedevent_Labels extends JPlugin
 	 */
 	private function getFormat()
 	{
-		$format = $this->params->get('print_layout');
+		$input = JFactory::getApplication()->input;
+		$format = $input->getString('print_layout');
 
 		if (!'custom' == $format)
 		{
@@ -187,17 +223,17 @@ class PlgSystemRedevent_Labels extends JPlugin
 		}
 
 		return array(
-			'paper-size' => $this->params->get('custom_paper_size'),
+			'paper-size' => $input->getString('custom_paper_size'),
 			'metric' => 'mm',
-			'marginLeft' => $this->params->get('custom_marginLeft'),
-			'marginTop' => $this->params->get('custom_marginTop'),
-			'NX' => $this->params->get('custom_nx'),
-			'NY' => $this->params->get('custom_ny'),
-			'SpaceX' => $this->params->get('custom_SpaceX'),
-			'SpaceY' => $this->params->get('custom_SpaceY'),
-			'width' => $this->params->get('custom_width'),
-			'height' => $this->params->get('custom_height'),
-			'font-size' => $this->params->get('custom_font_size'),
+			'marginLeft' => $input->getString('custom_marginLeft'),
+			'marginTop' => $input->getString('custom_marginTop'),
+			'NX' => $input->getInt('custom_nx'),
+			'NY' => $input->getInt('custom_ny'),
+			'SpaceX' => $input->getString('custom_SpaceX'),
+			'SpaceY' => $input->getString('custom_SpaceY'),
+			'width' => $input->getString('custom_width'),
+			'height' => $input->getString('custom_height'),
+			'font-size' => $input->getInt('custom_font_size'),
 		);
 	}
 
