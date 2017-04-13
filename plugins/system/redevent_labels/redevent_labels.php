@@ -72,18 +72,18 @@ class PlgSystemRedevent_Labels extends JPlugin
 
 			// Workaround for redCORE styling the button differently with .modal class...
 			JFactory::getDocument()->addStyleDeclaration(<<<CSS
-	.redcore .modal.attendees-labels-button {
-		width:auto;
-		left:0;
-	}
+				.redcore .modal.attendees-labels-button {
+					width:auto;
+					left:0;
+				}
 CSS
-);
+			);
 
 			$button = RToolbarBuilder::createModalButton(
 				'label-modal', JText::_('PLG_SYSTEM_REDEVENT_LABELS_BUTTON_GET_LABELS'), 'attendees-labels-button', 'icon-print', false,
-					array(
-						'url' => 'index.php?option=com_ajax&plugin=getAttendeesLabels&format=html&tmpl=component&xref=' . $xref
-					)
+				array(
+					'url' => 'index.php?option=com_ajax&plugin=getAttendeesLabels&format=html&tmpl=component&xref=' . $xref
+				)
 			);
 			$group->addButton($button);
 
@@ -91,6 +91,13 @@ CSS
 		}
 	}
 
+	/**
+	 * Ajax Callback
+	 *
+	 * @return string
+	 *
+	 * @since __deploy_version__
+	 */
 	public function onAjaxGetAttendeesLabels()
 	{
 		$app = JFactory::getApplication();
