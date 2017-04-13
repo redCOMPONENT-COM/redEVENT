@@ -70,7 +70,6 @@ class RedeventModelRegistrations extends RModelList
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
-		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.xref');
 		$id	.= ':' . $this->getState('filter.confirmed');
 		$id .= ':' . $this->getState('filter.waiting');
@@ -135,6 +134,11 @@ class RedeventModelRegistrations extends RModelList
 		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
 		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 0');
 
+		// Join on redform cart to filter by invoice id
+		$query->join('LEFT', '#__rwf_payment_request AS pr2 ON pr2.submission_id = s.id')
+			->join('LEFT', '#__rwf_cart_item AS ci ON ci.payment_request_id = pr2.id')
+			->join('LEFT', '#__rwf_cart AS cart ON cart.id = ci.cart_id');
+
 		$this->buildWhere($query);
 
 		$query->order(
@@ -196,6 +200,7 @@ class RedeventModelRegistrations extends RModelList
 				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
+				'cart.invoice_id LIKE "%' . $this->getState('filter.search') . '%"',
 				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
 			);
 
@@ -329,5 +334,20 @@ class RedeventModelRegistrations extends RModelList
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * @param   string $ordering  An optional ordering field.
+	 * @param   string $direction An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   __deploy_version__
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		return parent::populateState($ordering ?: 'r.uregdate', $direction ?: 'desc');
 	}
 }
