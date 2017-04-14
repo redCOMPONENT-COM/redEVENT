@@ -224,7 +224,7 @@ CSS
 		$input = JFactory::getApplication()->input;
 		$format = $input->getString('print_layout');
 
-		if (!'custom' == $format)
+		if ('custom' != $format)
 		{
 			return $format;
 		}
