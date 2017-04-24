@@ -180,6 +180,18 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Return signup form
+	 *
+	 * @return string
+	 */
+	public function getSignupform()
+	{
+		$helper = new \RedeventTagsRegistrationSession($this->entity->id);
+
+		return $helper->getHtml();
+	}
+
+	/**
 	 * Return signup url
 	 *
 	 * @return string
