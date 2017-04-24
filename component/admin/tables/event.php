@@ -94,9 +94,6 @@ class RedeventTableEvent extends RedeventTable
 			$this->alias = $alias;
 		}
 
-		// Prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
-		$this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
-
 		return true;
 	}
 
