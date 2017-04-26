@@ -830,6 +830,11 @@
 			  description="COM_REDEVENT_SETTINGS_MISC">
 		<field name="defaultredformid" type="RFForm" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID"
 			   description="COM_REDEVENT_DEFAULT_FORM_ID_TIP"/>
+		<field name="default_template" type="redevent.eventtemplate" default="0"
+			   label="COM_REDEVENT_SETTINGS_DEFAULT_TEMPLATE"
+			   description="COM_REDEVENT_SETTINGS_DEFAULT_TEMPLATE_DESC">
+			<option value="">JSELECT</option>
+		</field>
 		<field name="open_as_upcoming" type="radio" default="0"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_OPEN_AS_UPCOMING_LABEL"
