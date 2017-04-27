@@ -310,6 +310,31 @@ class RedeventTags
 	}
 
 	/**
+	 * Extract tags from text
+	 *
+	 * @param   string  $text  text containing tags to extract
+	 *
+	 * @return RedeventTagsParsed[]
+	 *
+	 * @since __deploy_version__
+	 */
+	public function extractTags($text)
+	{
+		if (!preg_match_all('/\[([^\]\s]+)(?:\s*)([^\]]*)\]/i', $text, $alltags, PREG_SET_ORDER))
+		{
+			return false;
+		}
+
+		return array_map(
+			function ($tag)
+			{
+				return new RedeventTagsParsed($tag[0]);
+			},
+			$alltags
+		);
+	}
+
+	/**
 	 * recursively replace tags
 	 *
 	 * @param   string  $text  text to handle
@@ -332,15 +357,13 @@ class RedeventTags
 		$dispatcher->trigger('onRedeventTagsReplace', array($this, &$text, &$recurse));
 
 		// Now get the list of all remaining tags
-		if (preg_match_all('/\[([^\]\s]+)(?:\s*)([^\]]*)\]/i', $text, $alltags, PREG_SET_ORDER))
+		if ($alltags = $this->extractTags($text))
 		{
 			$search = array();
 			$replace = array();
 
-			foreach ($alltags as $tag)
+			foreach ($alltags as $tag_obj)
 			{
-				$tag_obj = new RedeventTagsParsed($tag[0]);
-
 				// Check for conditions tags
 				if ($tag_obj->getParam('condition_hasplacesleft') == "0"
 					&& $this->getSession()->getNumberLeft())
@@ -448,15 +471,15 @@ class RedeventTags
 			{
 				foreach ($alltags as $tag)
 				{
-					if (stripos($tag[1], 'answer_') === 0)
+					if (stripos($tag->getName(), 'answer_') === 0)
 					{
-						$search[] = '[' . $tag[1] . ']';
-						$replace[] = $this->getFormFieldAnswer(substr($tag[1], 7));
+						$search[] = $tag->getFullMatch();
+						$replace[] = $this->getFormFieldAnswer(substr($tag->getName(), 7));
 					}
-					elseif (stripos($tag[1], 'field_') === 0)
+					elseif (stripos($tag->getName(), 'field_') === 0)
 					{
-						$search[] = '[' . $tag[1] . ']';
-						$replace[] = $this->getFieldAnswer(substr($tag[1], 6));
+						$search[] = $tag->getFullMatch();
+						$replace[] = $this->getFieldAnswer(substr($tag->getName(), 6));
 					}
 				}
 			}
@@ -1706,8 +1729,8 @@ class RedeventTags
 			return false;
 		}
 
-		$formatDate = $tag->getParam('formatDate') ?: null;
-		$formatTime = $tag->getParam('formatTime') ?: null;
+		$formatDate = $tag->getParam('formatdate') ?: null;
+		$formatTime = $tag->getParam('formattime') ?: null;
 		$tmp = RedeventHelperDate::formatdate($session->dates, $session->times, $formatDate);
 
 		if (RedeventHelperDate::isValidTime($session->times))
