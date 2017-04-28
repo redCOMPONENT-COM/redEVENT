@@ -61,7 +61,12 @@ class RedeventFormFieldEventtemplate extends JFormFieldList
 	 */
 	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
-		$value = $value ?: RedeventHelper::config()->get('default_template');
+		$useDefault = isset($element['use_config_default']) ? filter_var($element['use_config_default'], FILTER_VALIDATE_BOOLEAN) : true;
+
+		if ($useDefault)
+		{
+			$value = $value ?: RedeventHelper::config()->get('default_template');
+		}
 
 		return parent::setup($element, $value, $group);
 	}

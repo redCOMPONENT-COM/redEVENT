@@ -39,6 +39,7 @@
 		<field
 				name="template"
 				type="redevent.eventtemplate"
+				use_config_default="false"
 				onchange="this.form.submit();"
 				label="COM_REDEVENT_FILTER_TEMPLATE"
 		>
