@@ -237,7 +237,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	{
 		$data = $this->load();
 
-		$element = RdfLayoutHelper::render(
+		$element = RedeventLayoutHelper::render(
 			'rform.rfield.' . $this->type,
 			$this,
 			'',
