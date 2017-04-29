@@ -78,38 +78,43 @@ class RedeventViewSessions extends RedeventViewAdmin
 		{
 			$edit = RToolbarBuilder::createEditButton('session.edit');
 
-			$secondGroup->addButton($edit);
+			$firstGroup->addButton($edit);
+
+			$importExport = RToolbarBuilder::createStandardButton(
+				'eventscsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false
+			);
+			$fourthGroup->addButton($importExport);
 		}
 
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
 			$button = RToolbarBuilder::createCopyButton('sessions.copy');
-			$secondGroup->addButton($button);
+			$firstGroup->addButton($button);
 		}
 
 		if ($user->authorise('core.edit.state', 'com_redevent'))
 		{
 			$publish = RToolbarBuilder::createPublishButton('sessions.publish');
-			$thirdGroup->addButton($publish);
+			$secondGroup->addButton($publish);
 
 			$unPublish = RToolbarBuilder::createUnpublishButton('sessions.unpublish');
-			$thirdGroup->addButton($unPublish);
+			$secondGroup->addButton($unPublish);
 
 			$archive = RToolbarBuilder::createStandardButton('sessions.archive', JText::_('COM_REDEVENT_ARCHIVE'), '', 'icon-archive', true);
-			$thirdGroup->addButton($archive);
+			$secondGroup->addButton($archive);
 
 			$button = RToolbarBuilder::createStandardButton('sessions.feature', JText::_('COM_REDEVENT_FEATURE'), '', 'icon-star', true);
-			$thirdGroup->addButton($button);
+			$secondGroup->addButton($button);
 
 			$button = RToolbarBuilder::createStandardButton('sessions.unfeature', JText::_('COM_REDEVENT_UNFEATURE'), '', 'icon-star-empty', true);
-			$thirdGroup->addButton($button);
+			$secondGroup->addButton($button);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))
 		{
 			$delete = RToolbarBuilder::createDeleteButton('sessions.delete');
 
-			$fourthGroup->addButton($delete);
+			$firstGroup->addButton($delete);
 		}
 
 		$toolbar = new RToolbar;

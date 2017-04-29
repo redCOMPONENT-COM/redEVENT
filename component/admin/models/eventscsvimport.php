@@ -370,7 +370,9 @@ class RedeventModelEventscsvimport extends RModel
 				$isUpdate = false;
 				$session->reset();
 				$session->bind($data);
-				$session->id = null; // If session->id is set, JTable will run an update query, which is not what we want.
+
+				// If session->id is set, JTable will run an update query, which is not what we want.
+				$session->id = null;
 			}
 
 			// Check
