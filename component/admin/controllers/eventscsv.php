@@ -142,8 +142,8 @@ class RedeventControllerEventscsv extends RControllerForm
 			$msg .= "<p>total ignored events: " . $result['ignored'] . "</p>\n";
 
 			$msg .= "<p>total added sessions: " . $result['addedSessions'] . "</p>\n";
-			$msg .= "<p>total updated sessions: " . $result['addedSessions'] . "</p>\n";
-			$msg .= "<p>total ignored sessions: " . $result['addedSessions'] . "</p>\n";
+			$msg .= "<p>total updated sessions: " . $result['updatedSessions'] . "</p>\n";
+			$msg .= "<p>total ignored sessions: " . $result['ignoredSessions'] . "</p>\n";
 		}
 
 		$this->setRedirect('index.php?option=com_redevent&view=eventscsv', $msg, $msgType);
