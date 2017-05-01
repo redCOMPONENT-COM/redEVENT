@@ -69,6 +69,7 @@ class RedeventModelMyattended extends RedeventModelBasesessionlist
 		$this->data = $this->_categories($this->data);
 		$this->data = $this->_getPlacesLeft($this->data);
 		$this->data = $this->_getPrices($this->data);
+		$this->data = $this->addPaymentInfo($this->data);
 
 		return $this->data;
 	}
