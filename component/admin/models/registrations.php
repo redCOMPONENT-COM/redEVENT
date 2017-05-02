@@ -158,9 +158,11 @@ class RedeventModelRegistrations extends RModelList
 	 */
 	private function buildWhere(&$query)
 	{
-		if (!empty($this->getState('filter.confirmed')))
+		$filterConfirmed = $this->getState('filter.confirmed');
+
+		if (!empty($filterConfirmed))
 		{
-			switch ($this->getState('filter.confirmed'))
+			switch ($filterConfirmed)
 			{
 				case "unconfirmed":
 					$query->where('r.confirmed = 0');
@@ -171,9 +173,11 @@ class RedeventModelRegistrations extends RModelList
 			}
 		}
 
-		if (!empty($this->getState('filter.waiting')))
+		$filterWaiting = $this->getState('filter.waiting');
+
+		if (!empty($filterWaiting))
 		{
-			switch ($this->getState('filter.waiting'))
+			switch ($this->getState($filterWaiting))
 			{
 				case "attending":
 					$query->where('r.waitinglist = 0');
@@ -184,7 +188,9 @@ class RedeventModelRegistrations extends RModelList
 			}
 		}
 
-		switch ($this->getState('filter.cancelled', 0))
+		$filterCancelled = $this->getState('filter.cancelled', 0);
+
+		switch ($filterCancelled)
 		{
 			case 1:
 				$query->where('r.cancelled = 1');
@@ -194,32 +200,40 @@ class RedeventModelRegistrations extends RModelList
 				break;
 		}
 
-		if ($this->getState('filter.search'))
+		$filterSearch = $this->getState('filter.search');
+
+		if ($filterSearch)
 		{
 			$where = array(
 				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
 				'cart.invoice_id LIKE "%' . $this->getState('filter.search') . '%"',
-				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
+				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $filterSearch . '%"'
 			);
 
 			$query->where('(' . implode(' OR ', $where) . ')');
 		}
 
-		if ($this->getState('filter.origin'))
+		$filterOrigin = $this->getState('filter.origin');
+
+		if ($filterOrigin)
 		{
-			$query->where('r.origin LIKE "%' . $this->getState('filter.origin') . '%"');
+			$query->where('r.origin LIKE "%' . $filterOrigin . '%"');
 		}
 
-		if (is_numeric($this->getState('filter.venue')))
+		$filterVenue = $this->getState('filter.venue');
+
+		if (is_numeric($filterVenue))
 		{
-			$query->where('x.venueid = ' . $this->getState('filter.venue'));
+			$query->where('x.venueid = ' . $filterVenue);
 		}
 
-		if ($this->getState('filter.session'))
+		$filterSession = $this->getState('filter.session');
+
+		if ($filterSession)
 		{
-			$query->where('r.xref = ' . $this->getState('filter.session'));
+			$query->where('r.xref = ' . $filterSession);
 		}
 
 		return $query;

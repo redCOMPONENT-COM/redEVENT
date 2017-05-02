@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JFormHelper::loadFieldClass('list');
 
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 /**
  * RedEvent event template form field
  *
