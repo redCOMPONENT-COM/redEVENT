@@ -32,7 +32,7 @@ class Redeventb2bViewFrontadminlogin extends RViewSite
 
 		$user = JFactory::getUser();
 
-		$frontadminRoute = JRoute::_(Redeventb2bHelperRoute::getFrontadminRoute());
+		$frontadminRoute = JRoute::_(Redeventb2bHelperRoute::getFrontadminRoute(), false);
 
 		if ($user->get('id'))
 		{
