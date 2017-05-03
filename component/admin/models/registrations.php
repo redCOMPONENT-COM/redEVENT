@@ -208,7 +208,9 @@ class RedeventModelRegistrations extends RModelList
 				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
+				's.submit_key = "' . $this->getState('filter.search') . '"',
 				'cart.invoice_id LIKE "%' . $this->getState('filter.search') . '%"',
+				'cart.reference = "' . $this->getState('filter.search') . '"',
 				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $filterSearch . '%"'
 			);
 
