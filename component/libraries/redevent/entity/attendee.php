@@ -54,9 +54,12 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	 */
 	public function confirm()
 	{
-		$attendee = new RedeventAttendee($this->id);
+		if ($this->hasId())
+		{
+			$attendee = new RedeventAttendee($this->id);
 
-		return $attendee->confirm();
+			return $attendee->confirm();
+		}
 	}
 
 	/**
