@@ -302,6 +302,7 @@ class RedeventAttendee extends JObject
 
 		if (!$res)
 		{
+			RedeventHelperLog::simpleLog(JText::_('COM_REDEVENT_REGISTRATION_FAILED_CONFIRM_REGISTRATION'));
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_FAILED_CONFIRM_REGISTRATION'));
 
 			return false;
