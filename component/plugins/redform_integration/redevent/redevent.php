@@ -130,7 +130,7 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	/**
 	 * Handle redFORM after cart payment accepted callback
 	 *
-	 * @param  RdfEntityCart $cart
+	 * @param   RdfEntityCart  $cart  redFORM cart object
 	 *
 	 * @return void
 	 *
