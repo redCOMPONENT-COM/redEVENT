@@ -486,18 +486,11 @@ class RedeventModelAttendees extends RModelList
 	{
 		if (count($cid))
 		{
-			$date = JFactory::getDate();
-
-			$query = $this->_db->getQuery(true);
-
-			$query->update('#__redevent_register')
-				->set('confirmed = 1')
-				->set('confirmdate = ' . $this->_db->Quote($date->toSql()))
-				->where('id IN (' . implode(', ', $cid) . ')');
-
-			$this->_db->setQuery($query);
-
-			$this->_db->execute();
+			foreach ($cid as $id)
+			{
+				$attendee = new RedeventAttendee($id);
+				$attendee->confirm();
+			}
 		}
 
 		return true;

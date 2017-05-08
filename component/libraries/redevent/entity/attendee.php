@@ -46,6 +46,23 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	private $user;
 
 	/**
+	 * Set attendee as confirmed
+	 *
+	 * @return bool true on success
+	 *
+	 * @since __deploy_version__
+	 */
+	public function confirm()
+	{
+		if ($this->hasId())
+		{
+			$attendee = new RedeventAttendee($this->id);
+
+			return $attendee->confirm();
+		}
+	}
+
+	/**
 	 * Get email
 	 *
 	 * @return string
@@ -201,6 +218,35 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		);
 
 		return $attendees;
+	}
+
+	/**
+	 * Return RedeventEntityAttendee from submitter id
+	 *
+	 * @param   integer  $submitterId  submit key
+	 *
+	 * @return RedeventEntityAttendee
+	 */
+	public static function loadBySubmitterId($submitterId)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('r.*')
+			->from('#__redevent_register AS r')
+			->where('r.sid = ' . $db->q($submitterId));
+
+		$db->setQuery($query);
+		$res = $db->loadObject();
+
+		if (!$res)
+		{
+			return false;
+		}
+
+		$instance = self::getInstance($res->id);
+		$instance->bind($res);
+
+		return $instance;
 	}
 
 	/**

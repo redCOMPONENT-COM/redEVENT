@@ -128,6 +128,33 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	}
 
 	/**
+	 * Handle redFORM after cart payment accepted callback
+	 *
+	 * @param   RdfEntityCart  $cart  redFORM cart object
+	 *
+	 * @return void
+	 *
+	 * @since  __deploy_version__
+	 */
+	public function onAfterRedformCartPaymentAccepted(RdfEntityCart $cart)
+	{
+		foreach ($cart->getSubmitters() as $submitter)
+		{
+			if ($submitter->integration != 'redevent')
+			{
+				continue;
+			}
+
+			$attendee = RedeventEntityAttendee::loadBySubmitterId($submitter->id);
+
+			if (!$attendee->confirm())
+			{
+				RedeventHelperLog::simpleLog('Redevent error confirming ' . $attendee->id);
+			}
+		}
+	}
+
+	/**
 	 * Return fullname(s) associated to sumbission
 	 *
 	 * @param   string  $submit_key  submit_key
