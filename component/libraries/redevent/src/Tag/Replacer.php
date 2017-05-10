@@ -12,14 +12,22 @@ namespace Redevent\Tag;
 defined('_JEXEC') or die;
 
 /**
- * Bundle Twig extension.
+ * Replacer tag base class
  *
- * @since  3.2.0
+ * @since  3.2.3
  */
 abstract class Replacer
 {
+	/**
+	 * @var    \RedeventTags
+	 * @since  3.2.3
+	 */
 	protected $parent;
 
+	/**
+	 * @var    \RedeventTagsParsed
+	 * @since  3.2.3
+	 */
 	protected $tagsParsed;
 
 	/**
@@ -27,6 +35,8 @@ abstract class Replacer
 	 *
 	 * @param   \RedeventTags        $parent      object calling this class	 *
 	 * @param   \RedeventTagsParsed  $tagsParsed  parsed tag data
+	 *
+	 * @since  3.2.3
 	 */
 	public function __construct(\RedeventTags $parent = null, \RedeventTagsParsed $tagsParsed = null)
 	{

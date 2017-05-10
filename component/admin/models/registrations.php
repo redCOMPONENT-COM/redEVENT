@@ -214,7 +214,7 @@ class RedeventModelRegistrations extends RModelList
 				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $filterSearch . '%"'
 			);
 
-			if (strstr($filterSearch,'payment:'))
+			if (strstr($filterSearch, 'payment:'))
 			{
 				$search = substr($filterSearch, strlen('payment:'));
 				$query->innerJoin('#__rwf_payment AS pay ON pay.cart_id = cart.id');

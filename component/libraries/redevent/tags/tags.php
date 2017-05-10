@@ -25,6 +25,12 @@ class RedeventTags
 	private $xref;
 
 	/**
+	 * Attendees associated to submit key
+	 * @var RedeventEntityAttendee[]
+	 */
+	private $attendees;
+
+	/**
 	 * A session id belonging to the event
 	 * @var int
 	 */
@@ -223,6 +229,8 @@ class RedeventTags
 	public function setSubmitkey($string)
 	{
 		$this->submitkey = $string;
+
+		$this->attendees = null;
 	}
 
 	/**
@@ -573,6 +581,28 @@ class RedeventTags
 		}
 
 		return $this->session;
+	}
+
+	/**
+	 * return attendees
+	 *
+	 * @return RedeventEntityAttendee[]
+	 */
+	public function getAttendees()
+	{
+		if (empty($this->submitkey))
+		{
+			return false;
+		}
+
+		if ($this->attendees)
+		{
+			return $this->attendees;
+		}
+
+		$this->attendees = RedeventEntityAttendee::loadBySubmitKey($this->submitkey);
+
+		return $this->attendees;
 	}
 
 	/**
