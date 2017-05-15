@@ -85,4 +85,112 @@ class RedeventControllerMyevents extends RedeventControllerFront
 		echo json_encode($resp);
 		JFactory::getApplication()->close();
 	}
+
+	/**
+	 * Publish a venue
+	 *
+	 * @return void
+	 */
+	public function deletevenue()
+	{
+		$input = $this->input;
+		$id  = $input->get('id', 0, 'int');
+
+		$useracl = RedeventUserAcl::getInstance();
+
+		$msgType = 'message';
+
+		if (!$useracl->canEditVenue($id))
+		{
+			$msg = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
+			$msgType = 'error';
+
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, $msgType);
+
+			return;
+		}
+
+		$model = $this->getModel('editvenue');
+		$ids = array($id);
+
+		if (!$model->delete($ids))
+		{
+			$msg = $model->getError();
+			$msgType = 'error';
+		}
+		else
+		{
+			$msg = JText::_('COM_REDEVENT_MYEVENTS_VENUE_DELETED');
+		}
+
+		$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, $msgType);
+	}
+
+	/**
+	 * Publish a venue
+	 *
+	 * @return void
+	 */
+	public function publishvenue()
+	{
+		$input = $this->input;
+		$id  = $input->get('id', 0, 'int');
+
+		$this->setVenuePublishState($id, 1);
+	}
+
+	/**
+	 * Unpublish a venue
+	 *
+	 * @return void
+	 */
+	public function unpublishvenue()
+	{
+		$input = $this->input;
+		$id  = $input->get('id', 0, 'int');
+
+		$this->setVenuePublishState($id, 0);
+	}
+
+	/**
+	 * Publish / Unpublish a venue
+	 *
+	 * @param   integer  $id     venue id
+	 * @param   integer  $state  new state
+	 *
+	 * @return void
+	 *
+	 * @since __deploy_version__
+	 */
+	private function setVenuePublishState($id, $state)
+	{
+		$useracl = RedeventUserAcl::getInstance();
+
+		$msgType = 'message';
+
+		if (!$useracl->canPublishVenue($id))
+		{
+			$msg = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
+			$msgType = 'error';
+		}
+		else
+		{
+			$model = $this->getModel('editvenue');
+
+			$ids = array($id);
+			$res = $model->publish($ids, $state);
+
+			if ($res)
+			{
+				$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
+			}
+			else
+			{
+				$msg = $model->getError();
+				$msgType = 'error';
+			}
+		}
+
+		$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, $msgType);
+	}
 }
