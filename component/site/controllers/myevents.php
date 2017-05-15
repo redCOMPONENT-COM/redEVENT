@@ -87,6 +87,74 @@ class RedeventControllerMyevents extends RedeventControllerFront
 	}
 
 	/**
+	 * Publish an event
+	 *
+	 * @return void
+	 */
+	public function publishevent()
+	{
+		$input = $this->input;
+		$id  = $input->get('id', 0, 'int');
+
+		$this->setEventPublishState($id, 1);
+	}
+
+	/**
+	 * Unpublish an event
+	 *
+	 * @return void
+	 */
+	public function unpublishevent()
+	{
+		$input = $this->input;
+		$id  = $input->get('id', 0, 'int');
+
+		$this->setEventPublishState($id, 0);
+	}
+
+	/**
+	 * Publish / Unpublish a venue
+	 *
+	 * @param   integer  $id     venue id
+	 * @param   integer  $state  new state
+	 *
+	 * @return void
+	 *
+	 * @since __deploy_version__
+	 */
+	private function setEventPublishState($id, $state)
+	{
+		$useracl = RedeventUserAcl::getInstance();
+
+		$msgType = 'message';
+
+		if (!$useracl->canPublishEvent($id))
+		{
+			$msg = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
+			$msgType = 'error';
+		}
+		else
+		{
+			$model = $this->getModel('editevent');
+
+			$ids = array($id);
+			$res = $model->publish($ids, $state);
+
+			if ($res)
+			{
+				$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
+			}
+			else
+			{
+				$msg = $model->getError();
+				$msgType = 'error';
+			}
+		}
+
+		$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, $msgType);
+	}
+
+	/**
 	 * Publish a venue
 	 *
 	 * @return void
