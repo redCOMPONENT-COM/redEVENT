@@ -47,7 +47,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception($row->getError());
 			}
 
-			RFactory::getDispatcher()->trigger('onContentAfterSave', array('redeventsync.sessionrq', $row));
+			RFactory::getDispatcher()->trigger('onContentAfterSave', array('redeventsync.sessionrq', $row, true));
 
 			// Log
 			$this->log(
