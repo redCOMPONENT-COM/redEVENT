@@ -42,6 +42,8 @@ $config = new JConfig;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+$loadBootstrap = false;
+
 require_once dirname(__FILE__) . '/bootstrap_redcore.php';
 
 require_once dirname(__FILE__) . '/bootstrap_resync.php';
