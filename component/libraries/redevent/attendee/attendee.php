@@ -53,6 +53,13 @@ class RedeventAttendee extends JObject
 	static protected $attending = array();
 
 	/**
+	 * @var \RedeventTags
+	 *
+	 * @since __deploy_version__
+	 */
+	protected $tagHelper;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   int  $id  attendee id
@@ -437,13 +444,6 @@ class RedeventAttendee extends JObject
 			return true;
 		}
 
-		if (empty($this->taghelper))
-		{
-			$this->taghelper = new RedeventTags;
-			$this->taghelper->setXref($data->xref);
-			$this->taghelper->setSubmitkey($data->submit_key);
-		}
-
 		if ($waiting == 0)
 		{
 			if ($template->notify_off_list_subject)
@@ -462,8 +462,8 @@ class RedeventAttendee extends JObject
 				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');
 			}
 
-			$body = $this->taghelper->replaceTags($body);
-			$subject = $this->taghelper->replaceTags($subject);
+			$body = $this->replaceTags($body);
+			$subject = $this->replaceTags($subject);
 		}
 		else
 		{
@@ -478,8 +478,8 @@ class RedeventAttendee extends JObject
 				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');
 			}
 
-			$body = $this->taghelper->replaceTags($body);
-			$subject = $this->taghelper->replaceTags($subject);
+			$body = $this->replaceTags($body);
+			$subject = $this->replaceTags($subject);
 		}
 
 		if (empty($subject))
@@ -626,14 +626,17 @@ class RedeventAttendee extends JObject
 	 */
 	public function replaceTags($text)
 	{
-		$data = $this->load();
+		if (empty($this->tagHelper))
+		{
+			$data = $this->load();
 
-		$tags = new RedeventTags;
-		$tags->setSubmitkey($data->submit_key);
-		$tags->setXref($this->getXref());
-		$tags->addOptions(array('sids' => array($data->sid)));
+			$this->tagHelper = new RedeventTags;
+			$this->tagHelper->setSubmitkey($data->submit_key);
+			$this->tagHelper->setXref($this->getXref());
+			$this->tagHelper->addOptions(array('sids' => array($data->sid)));
+		}
 
-		$text = $tags->replaceTags($text);
+		$text = $this->tagHelper->replaceTags($text);
 
 		return $text;
 	}
