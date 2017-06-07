@@ -78,6 +78,14 @@ class PlgRedeventPaymentnotificationemail extends JPlugin
 
 		$attendee = new RedeventAttendee($attendee_id);
 
+		$payment = $this->getPayment($attendee);
+
+		if ($payment->gateway == 'custom')
+		{
+			// Don't send for custom payment gateway
+			return;
+		}
+
 		$recipient = $attendee->getEmail();
 
 		$mailer->addAddress($recipient);
@@ -130,5 +138,58 @@ class PlgRedeventPaymentnotificationemail extends JPlugin
 		$mailer->addReplyTo($sender);
 
 		return $mailer;
+	}
+
+	/**
+	 * Get associated payment
+	 *
+	 * @param   RedeventAttendee  $attendee  attendee
+	 *
+	 * @return RdfEntityPayment
+	 */
+	private function getPayment($attendee)
+	{
+		$submitter = RdfEntitySubmitter::load($attendee->get('sid'));
+
+		$payment = null;
+
+		foreach ($submitter->getPaymentRequests() as $paymentRequest)
+		{
+			if ($payment = $this->getPaymentRequestPayment($paymentRequest->id))
+			{
+				break;
+			}
+		}
+
+		return $payment;
+	}
+
+	/**
+	 * Get associated payment
+	 *
+	 * @return RdfEntityPayment
+	 *
+	 * @since 3.3.18
+	 */
+	public function getPaymentRequestPayment($id)
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('p.*')
+			->from('#__rwf_payment AS p')
+			->innerJoin('#__rwf_cart_item AS ci ON ci.cart_id = p.cart_id')
+			->where('ci.payment_request_id = ' . $id)
+			->where('p.paid = 1');
+
+		$db->setQuery($query);
+
+		if (!$res = $db->loadObject())
+		{
+			return false;
+		}
+
+		$entity = RdfEntityPayment::getInstance($res->id)->bind($res);
+
+		return $entity;
 	}
 }
