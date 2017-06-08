@@ -144,7 +144,7 @@ class RedeventTagsRegistrationSession
 	{
 		$form = $this->getRedformForm();
 		$multi = $this->getNumberOfSignup();
-		$prices = $this->session->getPricegroups(true);
+		$prices = $this->session->getActivePricegroups(true);
 
 		$options = array('extrafields' => array());
 		$options['sessionId'] = $this->session->id;

@@ -489,6 +489,30 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Return active RedeventEntitySessionpricegroups
+	 *
+	 * @param   bool   $filterAcl  filter by price group acl
+	 * @param   JUser  $user       user to filter against
+	 *
+	 * @return   RedeventEntitySessionpricegroup[]
+	 */
+	public function getActivePricegroups($filterAcl = false, $user = null)
+	{
+		if (!$pricegroups = $this->getPricegroups($filterAcl, $user))
+		{
+			return $this->pricegroups;
+		}
+
+		return array_filter(
+			$pricegroups,
+			function ($pricegroup)
+			{
+				return $pricegroup->active > 0;
+			}
+		);
+	}
+
+	/**
 	 * Return active RedeventEntitySessionpricegroups for user
 	 *
 	 * @param   JUser  $user  user to filter against
@@ -603,7 +627,7 @@ class RedeventEntitySession extends RedeventEntityBase
 					break;
 
 				case 'webform':
-					if ($pgs = $this->getPricegroups())
+					if ($pgs = $this->getActivePricegroups())
 					{
 						foreach ($pgs as $p)
 						{

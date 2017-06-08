@@ -65,7 +65,7 @@ class RedeventTagsLibPriceswitch extends \Redevent\Tag\Replacer
 	{
 		$session = $this->parent->getSession();
 
-		$pricegroups = $session->getPricegroups(true);
+		$pricegroups = $session->getActivePricegroups(true);
 
 		if (empty($pricegroups))
 		{

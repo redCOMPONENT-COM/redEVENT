@@ -1459,7 +1459,7 @@ class RedeventTags
 		$venues_html = $this->SignUpLinks();
 
 		$replacecourse = array($venues_html,
-			$this->formatPrices($this->getSession()->getPricegroups()),
+			$this->formatPrices($this->getSession()->getActivePricegroups()),
 			$this->getSession()->course_credit,
 			$this->getSession()->course_code);
 		$res = str_replace($findcourse, $replacecourse, $this->getEvent()->datdescription);
@@ -1521,7 +1521,7 @@ class RedeventTags
 	 */
 	private function getTag_price()
 	{
-		return $this->formatPrices($this->getSession()->getPricegroups());
+		return $this->formatPrices($this->getSession()->getActivePricegroups());
 	}
 
 	/**

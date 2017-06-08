@@ -546,7 +546,7 @@ class RedeventModelRegistration extends RModel
 		if (!$this->prices)
 		{
 			$session = RedeventEntitySession::load($this->xref);
-			$this->prices = $session->getPricegroups('true');
+			$this->prices = $session->getActivePricegroups('true');
 		}
 
 		return $this->prices;

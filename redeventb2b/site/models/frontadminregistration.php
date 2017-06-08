@@ -331,7 +331,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 		if ($this->pricegroup === null)
 		{
 			$session = RedeventEntitySession::load($this->xref);
-			$priceGroups = $session->getPricegroups();
+			$priceGroups = $session->getActivePricegroups();
 
 			if (!empty($priceGroups))
 			{

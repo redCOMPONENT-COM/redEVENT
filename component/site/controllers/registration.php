@@ -113,7 +113,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		$i = 1;
 
-		if ($pricegroups = $session->getPricegroups())
+		if ($pricegroups = $session->getActivePricegroups(true))
 		{
 			foreach ($selectedPricegroups as $regPricegroup)
 			{

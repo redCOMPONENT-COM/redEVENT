@@ -75,7 +75,7 @@ class RedeventControllerBundle extends JControllerLegacy
 				{
 					// PHPCS Indentation error false-positive
 					// @codingStandardsIgnoreStart
-					if ($priceGroups = $session->getPricegroups(true))
+					if ($priceGroups = $session->getActivePricegroups(true))
 					{
 						$prices = array_map(
 							function ($pg)
@@ -160,7 +160,7 @@ class RedeventControllerBundle extends JControllerLegacy
 			$session->getDurationDays()
 		);
 
-		if ($priceGroups = $session->getPricegroups(true))
+		if ($priceGroups = $session->getActivePricegroups(true))
 		{
 			$prices = array_map(
 				function ($pg)
