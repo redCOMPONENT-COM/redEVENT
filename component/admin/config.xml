@@ -882,6 +882,13 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="csv_export_attendees_server_tz" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_CSV_EXPORT_ATTENDEES_SERVER_TZ_LABEL"
+			   description="COM_REDEVENT_SETTINGS_CSV_EXPORT_ATTENDEES_SERVER_TZ_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="cat_select_ordering" type="list" default="0"
 			   label="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_LABEL"
 			   description="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_DESC">

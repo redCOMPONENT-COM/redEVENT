@@ -300,4 +300,21 @@ class RedeventHelperDate
 
 		return $date;
 	}
+
+	/**
+	 * Convert a utc date/time string to server offset
+	 *
+	 * @param   string  $value  date/time string
+	 *
+	 * @return string
+	 *
+	 * @since  __deploy_version__
+	 */
+	public static function utcToServerTz($value)
+	{
+		$date = JFactory::getDate($value, 'UTC');
+		$date->setTimezone(new DateTimeZone(JFactory::getConfig()->get('offset')));
+
+		return $date->toSql(true);
+	}
 }
