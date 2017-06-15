@@ -226,7 +226,9 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	/**
 	 * Get reditem twig entity
 	 *
-	 * @return bool
+	 * @param   boolean  $routed  return routed if true
+	 *
+	 * @return boolean
 	 *
 	 * @since 3.2.3
 	 */
