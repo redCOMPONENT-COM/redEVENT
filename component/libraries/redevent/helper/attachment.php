@@ -21,7 +21,7 @@ class RedeventHelperAttachment extends JObject
 	 * @param   array   $post_files  data from JRequest 'files'
 	 * @param   string  $object      identification (should be event<eventid>, category<categoryid>, etc...)
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function postUpload($post_files, $object)
 	{
@@ -136,7 +136,7 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @param   array  $attach  (id, name, description, access)
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function update($attach)
 	{
@@ -151,7 +151,9 @@ class RedeventHelperAttachment extends JObject
 
 		if (!($table->check() && $table->store()))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_REDEVENT_ATTACHMENT_ERROR_UPDATING_RECORD') . ': ' . $table->getError(), 'warning');
+			JFactory::getApplication()->enqueueMessage(
+				JText::_('COM_REDEVENT_ATTACHMENT_ERROR_UPDATING_RECORD') . ': ' . $table->getError(), 'warning'
+			);
 
 			return false;
 		}
@@ -191,7 +193,7 @@ class RedeventHelperAttachment extends JObject
 
 		// Then get info for files from db
 		$fnames = array_map(
-			function($item) use ($db)
+			function ($item) use ($db)
 			{
 				return $db->quote($item);
 			},

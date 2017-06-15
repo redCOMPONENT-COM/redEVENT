@@ -50,4 +50,34 @@ class RedEventViewAttendees extends RViewCsv
 
 		return $cols;
 	}
+
+	/**
+	 * Preprocess data
+	 *
+	 * @param   string  $column  column name
+	 * @param   string  $value   value to process
+	 *
+	 * @return string
+	 *
+	 * @since  __deploy_version__
+	 */
+	public function preprocess($column, $value)
+	{
+		$dateColumns = array('uregdate', 'confirmdate');
+
+		if (!in_array($column, $dateColumns))
+		{
+			return $value;
+		}
+
+		if (!RedeventHelperConfig::config()->get('csv_export_attendees_server_tz', 0))
+		{
+			return $value;
+		}
+
+		$date = JFactory::getDate($value, 'UTC');
+		$date->setTimezone(new DateTimeZone(JFactory::getConfig()->get('offset')));
+
+		return $date->toSql(true);
+	}
 }

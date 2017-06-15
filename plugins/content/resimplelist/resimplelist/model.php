@@ -55,7 +55,7 @@ class PlgReSimplistModel extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
 		$where = array();
 

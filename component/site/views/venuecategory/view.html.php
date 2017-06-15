@@ -45,7 +45,7 @@ class RedeventViewVenuecategory extends RedeventViewSessionlist
 		$print_link = JRoute::_('index.php?option=com_redevent&view=venuecategory&id=' . $category->id . '&pop=1&tmpl=component');
 
 		// Generate Categorydescription
-		if (empty ($category->description))
+		if (empty($category->description))
 		{
 			$description = JText::_('COM_REDEVENT_NO_DESCRIPTION');
 		}
@@ -59,7 +59,7 @@ class RedeventViewVenuecategory extends RedeventViewSessionlist
 		$this->assign('dellink', JFactory::getUser()->authorise('re.createevent'));
 		$this->assign('description', $description);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -93,7 +93,7 @@ class RedeventViewVenuecategory extends RedeventViewSessionlist
 	/**
 	 * Get feed link
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFeedLink()
 	{

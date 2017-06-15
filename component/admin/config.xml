@@ -830,6 +830,11 @@
 			  description="COM_REDEVENT_SETTINGS_MISC">
 		<field name="defaultredformid" type="RFForm" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID"
 			   description="COM_REDEVENT_DEFAULT_FORM_ID_TIP"/>
+		<field name="default_template" type="redevent.eventtemplate" default="0"
+			   label="COM_REDEVENT_SETTINGS_DEFAULT_TEMPLATE"
+			   description="COM_REDEVENT_SETTINGS_DEFAULT_TEMPLATE_DESC">
+			<option value="">JSELECT</option>
+		</field>
 		<field name="open_as_upcoming" type="radio" default="0"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_OPEN_AS_UPCOMING_LABEL"
@@ -874,6 +879,13 @@
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL"
 			   description="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="csv_export_attendees_server_tz" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_CSV_EXPORT_ATTENDEES_SERVER_TZ_LABEL"
+			   description="COM_REDEVENT_SETTINGS_CSV_EXPORT_ATTENDEES_SERVER_TZ_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>

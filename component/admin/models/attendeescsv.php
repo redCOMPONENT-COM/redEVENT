@@ -37,7 +37,7 @@ class RedeventModelAttendeescsv extends RModelAdmin
 	 * @param   int    $state_filter      filter session state
 	 * @param   int    $filter_attending  filter attending state
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	public function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = 0, $filter_attending = 0)
 	{

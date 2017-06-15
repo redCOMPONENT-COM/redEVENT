@@ -22,6 +22,8 @@ class RedeventHtmlSignup
 	 * @param   object  $sessionData  session data
 	 *
 	 * @return string html
+	 *
+	 * @throws LogicException
 	 */
 	public static function getSignupImageLink($signupType, $sessionData)
 	{
@@ -134,5 +136,7 @@ class RedeventHtmlSignup
 
 				return $link;
 		}
+
+		throw new LogicException('Unknown signup type');
 	}
 }

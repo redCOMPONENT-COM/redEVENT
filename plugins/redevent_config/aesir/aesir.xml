@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent_config" method="aesir">
+	<name>PLG_REDEVENT_CONFIG_AESIR</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2017 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>3.2.3</version>
+	<tag>##VERSION##</tag>
+	<description>PLG_REDEVENT_CONFIG_AESIR_XML_DESC</description>
+
+	<files>
+		<file plugin="aesir">aesir.php</file>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="events" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_EVENTS">
+				<field
+						name="aesir_event_type_id"
+						type="reditem.typeList"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TYPE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TYPE_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_event_select_field"
+						type="reditem.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_SELECT_FIELD_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_SELECT_FIELD_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_event_template_id"
+						type="reditem.template"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TEMPLATE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TEMPLATE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_event_access"
+						type="accesslevel"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_ACCESS_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_ACCESS_DESC">
+					<option value="">JSELECT</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="sessions" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_SESSIONS">
+				<field
+						name="aesir_session_type_id"
+						type="reditem.typeList"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TYPE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TYPE_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_session_select_field"
+						type="reditem.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_SELECT_FIELD_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_SELECT_FIELD_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_session_template_id"
+						type="reditem.template"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_session_access"
+						type="accesslevel"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SESSION_ACCESS_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_SESSION_ACCESS_DESC">
+					<option value="">JSELECT</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="categories" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_CATEGORIES">
+				<field
+						name="aesir_category_type_id"
+						type="reditem.typeList"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_TYPE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_TYPE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_category_parent_id"
+						type="reditem.category"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_PARENT_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_PARENT_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_category_select_field"
+						type="reditem.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_SELECT_FIELD_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_SELECT_FIELD_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_category_template_id"
+						type="reditem.template"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_TEMPLATE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_TEMPLATE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_category_access"
+						type="accesslevel"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_CATEGORY_ACCESS_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_CATEGORY_ACCESS_DESC">
+					<option value="">JSELECT</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="venues" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_VENUES">
+				<field
+						name="aesir_venue_type_id"
+						type="reditem.typeList"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TYPE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TYPE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_venue_select_field"
+						type="reditem.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_SELECT_FIELD_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_SELECT_FIELD_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_venue_template_id"
+						type="reditem.template"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TEMPLATE_ID_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TEMPLATE_ID_DESC">
+					<option value="">JSELECT</option>
+				</field>
+				<field
+						name="aesir_venue_access"
+						type="accesslevel"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_VENUE_ACCESS_LABEL"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_VENUE_ACCESS_DESC">
+					<option value="">JSELECT</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

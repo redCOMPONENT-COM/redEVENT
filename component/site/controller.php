@@ -41,7 +41,15 @@ class RedeventController extends RedeventControllerFront
 	 */
 	public function publishxref()
 	{
+		$acl = RedeventUserAcl::getInstance();
 		$xref = $this->input->getInt('xref');
+
+		if (!$acl->canPublishXref($xref))
+		{
+			$msg = JText::_('COM_REDEVENT_MYEVENTS_CHANGE_PUBLISHED_STATE_NOTE_ALLOWED');
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
+			$this->redirect();
+		}
 
 		$model = $this->getModel('editsession');
 

@@ -67,7 +67,7 @@ class RedeventModelEventtemplatescsvimport extends RModel
 	 *
 	 * @param   array  $data  eventtemplate data from import
 	 *
-	 * @return int|bool
+	 * @return integer|boolean
 	 */
 	private function storeEventtemplate($data)
 	{
@@ -139,7 +139,7 @@ class RedeventModelEventtemplatescsvimport extends RModel
 	 *
 	 * @param   string  $name  form name
 	 *
-	 * @return int id
+	 * @return integer id
 	 */
 	private function getFormId($name)
 	{

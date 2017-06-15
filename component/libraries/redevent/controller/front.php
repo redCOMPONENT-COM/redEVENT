@@ -64,7 +64,7 @@ class RedeventControllerFront extends JControllerLegacy
 				break;
 		}
 
-		parent::display();
+		return parent::display();
 	}
 
 	/**

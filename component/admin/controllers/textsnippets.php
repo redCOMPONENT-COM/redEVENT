@@ -132,7 +132,7 @@ class RedeventControllerTextsnippets extends RControllerAdmin
 					$msgs[] = "<p>total updated records: " . $updated . "</p>\n";
 				}
 
-				$msgType = $errors ? 'warning' :  '';
+				$msgType = $errors ? 'warning' : '';
 				$this->setMessage(implode("\n", $msgs), $msgType);
 			}
 			catch (Exception $e)

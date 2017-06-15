@@ -18,7 +18,7 @@
 	},
 	"plugins" : {
 		"aesir" : ["maersk_categorydetail"],
-		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue"],
+		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue", "redevent_category"],
 		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
@@ -43,14 +43,15 @@
 			"notifycompanyadmin",
 			"paymentnotificationemail",
 			"maerskvenuefiltertag",
-			"maerskgatewayfiltertag"
+			"maerskgatewayfiltertag",
+			"aesirtagsreplacement"
 		],
-		"redevent_config" : ["maersk"],
+		"redevent_config" : ["aesir", "maersk"],
 		"redeventsyncclient" : ["maersk"],
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
-		"system" : ["autotweetredevent", "aesirsessionssync", "jhtmlmaersk"],
+		"system" : ["autotweetredevent", "jhtmlmaersk", "aesir_redevent_sync", "redevent_labels"],
 		"xmap" : ["redevent"]
 	}
 }

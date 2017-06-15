@@ -57,7 +57,8 @@ abstract class Plugin extends \Twig_Extension
 			->order('venue ASC');
 
 		$query->where('(language in (' . $db->quote(\JFactory::getLanguage()->getTag())
-			. ',' . $db->quote('*') . ') OR language IS NULL)');
+			. ',' . $db->quote('*') . ') OR language IS NULL)'
+		);
 
 		$db->setQuery($query);
 		$venues = $db->loadObjectList();
@@ -65,7 +66,7 @@ abstract class Plugin extends \Twig_Extension
 		$entities = \RedeventEntityVenue::loadArray($venues);
 
 		return $venues ? array_map(
-			function($item)
+			function ($item)
 			{
 				return new \RedeventEntityTwigVenue($item);
 			},
@@ -106,7 +107,7 @@ abstract class Plugin extends \Twig_Extension
 		$entities = \RedeventEntityVenue::loadArray($venues);
 
 		return $venues ? array_map(
-			function($item)
+			function ($item)
 			{
 				return new \RedeventEntityTwigVenue($item);
 			},

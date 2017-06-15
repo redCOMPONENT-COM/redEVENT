@@ -218,7 +218,7 @@ class RedeventModelEventhelper extends RModel
 	/**
 	 * return places left for session
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getPlacesLeft()
 	{
@@ -251,7 +251,7 @@ class RedeventModelEventhelper extends RModel
 	/**
 	 * return places left on waiting list for session
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getWaitingPlacesLeft()
 	{

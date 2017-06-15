@@ -122,7 +122,7 @@ class RedeventModelOrganizations extends RModelList
 	/**
 	 * Sync organizations from redmember
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function sync()
 	{

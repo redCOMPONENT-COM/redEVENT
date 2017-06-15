@@ -35,7 +35,7 @@ class PlgRedeventAcymailinglists extends JPlugin
 	 * Add redMAILFLOW custom field for redEVENT
 	 *
 	 * @param   string                       $classname  class name
-	 * @param   RedeventAbstractCustomfield  &$instance  instance
+	 * @param   RedeventAbstractCustomfield  $instance   instance
 	 *
 	 * @return void
 	 */
@@ -52,7 +52,7 @@ class PlgRedeventAcymailinglists extends JPlugin
 	/**
 	 * Add redevent custom field type
 	 *
-	 * @param   string[]  &$types  types
+	 * @param   string[]  $types  types
 	 *
 	 * @return void
 	 */

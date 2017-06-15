@@ -121,7 +121,7 @@ class RedeventControllerEvents extends RControllerAdmin
 	{
 		if (!(is_array($cid) && count($cid)))
 		{
-			return false;
+			return;
 		}
 
 		// Trigger plugins

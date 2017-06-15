@@ -27,8 +27,8 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An optional associative array of configuration settings.
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An optional associative array of configuration settings.
 	 */
 	public function __construct(&$subject, $config = array())
 	{
@@ -39,15 +39,15 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	/**
 	 * returns a title for the object reference in redform
 	 *
-	 * @param   string                     $object_key            should be 'redevent' for this plugin to do something
-	 * @param   string                     $submit_key            submit ley
-	 * @param   RdfPaymentInfointegration  &$paymentDetailFields  object to return
+	 * @param   string                     $object_key           should be 'redevent' for this plugin to do something
+	 * @param   string                     $submit_key           submit ley
+	 * @param   RdfPaymentInfointegration  $paymentDetailFields  object to return
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 *
 	 * @throws Exception
 	 */
-	public function getRFSubmissionPaymentDetailFields($object_key, $submit_key, &$paymentDetailFields)
+	public function getRFSubmissionPaymentDetailFields($object_key, $submit_key, RdfPaymentInfointegration &$paymentDetailFields)
 	{
 		if ($object_key !== 'redevent')
 		{
@@ -101,7 +101,7 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	/**
 	 * Tag replacement for redFORM
 	 *
-	 * @param   string      &$text     text to replace
+	 * @param   string      $text      text to replace
 	 * @param   object      $formData  form data
 	 * @param   RdfAnswers  $answers   answers
 	 *
@@ -125,6 +125,33 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 		$replacer->setXref($table->xref);
 
 		$text = $replacer->replaceTags($text);
+	}
+
+	/**
+	 * Handle redFORM after cart payment accepted callback
+	 *
+	 * @param   RdfEntityCart  $cart  redFORM cart object
+	 *
+	 * @return void
+	 *
+	 * @since  __deploy_version__
+	 */
+	public function onAfterRedformCartPaymentAccepted(RdfEntityCart $cart)
+	{
+		foreach ($cart->getSubmitters() as $submitter)
+		{
+			if ($submitter->integration != 'redevent')
+			{
+				continue;
+			}
+
+			$attendee = RedeventEntityAttendee::loadBySubmitterId($submitter->id);
+
+			if (!$attendee->confirm())
+			{
+				RedeventHelperLog::simpleLog('Redevent error confirming ' . $attendee->id);
+			}
+		}
 	}
 
 	/**

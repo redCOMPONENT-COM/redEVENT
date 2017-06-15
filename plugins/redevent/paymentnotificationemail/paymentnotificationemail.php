@@ -39,7 +39,7 @@ class PlgRedeventPaymentnotificationemail extends JPlugin
 	 *
 	 * @param   string  $submit_key  submit key associated to payment
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 */
 	public function onAfterPaymentVerifiedRedevent($submit_key)
 	{
@@ -106,7 +106,7 @@ class PlgRedeventPaymentnotificationemail extends JPlugin
 	/**
 	 * Return one of the attendee id associated to submit key
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function getAnAttendeeId()
 	{

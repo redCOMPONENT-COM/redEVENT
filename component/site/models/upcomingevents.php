@@ -25,7 +25,7 @@ class RedeventModelUpcomingevents extends RedeventModelBasesessionlist
 		$params = RedeventHelper::config();
 		$db = JFactory::getDBO();
 
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 		$query->select('t.submission_types');
 
 		$upcoming_cond = '( ( CASE WHEN x.times THEN CONCAT(x.dates, " ", x.times) ELSE x.dates END > NOW() '

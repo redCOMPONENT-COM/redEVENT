@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JFormHelper::loadFieldClass('list');
 
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 /**
  * RedEvent event template form field
  *
@@ -36,12 +38,38 @@ class RedeventFormFieldEventtemplate extends JFormFieldList
 		$rows = $model->getItems() ?: array();
 
 		$options = array_map(
-				function($row) {
-					return array('value' => $row->id, 'text' => $row->name);
-				},
-				$rows
+			function ($row)
+			{
+				return array('value' => $row->id, 'text' => $row->name);
+			},
+			$rows
 		);
 
 		return array_merge(parent::getOptions(), $options);
+	}
+
+	/**
+	 * Method to attach a JForm object to the field.
+	 *
+	 * @param   SimpleXMLElement $element   The SimpleXMLElement object representing the `<field>` tag for the form field object.
+	 * @param   mixed            $value     The form field value to validate.
+	 * @param   string           $group     The field name group control value. This acts as as an array container for the field.
+	 *                                      For example if the field has name="foo" and the group value is set to "bar" then the
+	 *                                      full field name would end up being "bar[foo]".
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
+	 */
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+	{
+		$useDefault = isset($element['use_config_default']) ? filter_var($element['use_config_default'], FILTER_VALIDATE_BOOLEAN) : true;
+
+		if ($useDefault)
+		{
+			$value = $value ?: RedeventHelper::config()->get('default_template');
+		}
+
+		return parent::setup($element, $value, $group);
 	}
 }

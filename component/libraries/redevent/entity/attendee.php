@@ -46,6 +46,23 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	private $user;
 
 	/**
+	 * Set attendee as confirmed
+	 *
+	 * @return bool true on success
+	 *
+	 * @since __deploy_version__
+	 */
+	public function confirm()
+	{
+		if ($this->hasId())
+		{
+			$attendee = new RedeventAttendee($this->id);
+
+			return $attendee->confirm();
+		}
+	}
+
+	/**
 	 * Get email
 	 *
 	 * @return string
@@ -133,7 +150,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Is attendee confirmed
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isAttending()
 	{
@@ -145,7 +162,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Is attendee confirmed
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isConfirmed()
 	{
@@ -157,7 +174,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Is attendee on waiting list
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isWaiting()
 	{
@@ -190,7 +207,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		}
 
 		$attendees = array_map(
-			function($item)
+			function ($item)
 			{
 				$instance = self::getInstance($item->id);
 				$instance->bind($item);
@@ -201,6 +218,35 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		);
 
 		return $attendees;
+	}
+
+	/**
+	 * Return RedeventEntityAttendee from submitter id
+	 *
+	 * @param   integer  $submitterId  submit key
+	 *
+	 * @return RedeventEntityAttendee
+	 */
+	public static function loadBySubmitterId($submitterId)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('r.*')
+			->from('#__redevent_register AS r')
+			->where('r.sid = ' . $db->q($submitterId));
+
+		$db->setQuery($query);
+		$res = $db->loadObject();
+
+		if (!$res)
+		{
+			return false;
+		}
+
+		$instance = self::getInstance($res->id);
+		$instance->bind($res);
+
+		return $instance;
 	}
 
 	/**
@@ -237,13 +283,13 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Update attendee payment requests
 	 *
-	 * @return bool|void
+	 * @return boolean
 	 */
 	public function updatePaymentRequests()
 	{
 		if (!$this->isValid())
 		{
-			return;
+			return false;
 		}
 
 		$answers = $this->getAnswers();

@@ -59,14 +59,17 @@ class RedeventEntityEvent extends RedeventEntityBase
 
 			$this->activeVenues = array_reduce(
 				$sessions,
-				function($list, $session)
+				function ($list, $session)
 				{
 					$venue = $session->getVenue();
 
+					// PHPCS Indentation error false-positive
+					// @codingStandardsIgnoreStart
 					if (empty($list[$venue->id]))
 					{
 						$list[$venue->id] = new RedeventEntityTwigVenue($venue);
 					}
+					// @codingStandardsIgnoreEnd
 
 					return $list;
 				},
@@ -109,7 +112,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 		}
 
 		$this->categories = array_map(
-			function($row)
+			function ($row)
 			{
 				return RedeventEntityCategory::getInstance($row->id)->bind($row);
 			},
@@ -258,7 +261,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 			}
 
 			$this->sessions[$hash] = array_map(
-				function($row)
+				function ($row)
 				{
 					return RedeventEntitySession::getInstance($row->id)->bind($row);
 				},
@@ -288,7 +291,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 	/**
 	 * Check if event has a valid review text
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function hasReview()
 	{

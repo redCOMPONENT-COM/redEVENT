@@ -38,7 +38,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php
 $elsettings = RedeventHelper::config();
 $imagepath = JURI::root().'media/com_redevent/images/';
-foreach ($this->upcomingvenueevents as $key => $event) {
+foreach ($this->upcomingvenueevents as $event) {
 	$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref=' . $event->xref . '&id=' . $event->slug);
 	$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueslug);
 	?>
@@ -67,7 +67,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 		/* Get the different submission types */
 		$submissiontypes = explode(',', $event->submission_types);
 		$venues_html = '';
-		foreach ($submissiontypes as $key => $subtype) {
+		foreach ($submissiontypes as $subtype) {
 			switch ($subtype) {
 				case 'email':
 					$venues_html .= '<div class="vlink email">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=email&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->get('signup_email_img', 'email_icon.gif'),  $elsettings->get('signup_email_text'), 'width="24px" height="24px"')).'</div> ';

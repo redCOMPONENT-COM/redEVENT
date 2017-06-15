@@ -265,7 +265,8 @@ class RedeventModelEditvenue extends RModelAdmin
 
 			$link = JRoute::_(JURI::base() . RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
-			$state = $row->published ? JText::sprintf('COM_REDEVENT_USER_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_VENUE_UNPUBLISHED');
+			$state = $row->published ?
+				JText::sprintf('COM_REDEVENT_USER_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_VENUE_UNPUBLISHED');
 
 			if (!$isNew)
 			{

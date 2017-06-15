@@ -139,7 +139,7 @@ class RedeventModelVenues extends RModelList
 			{
 				$query->where('obj.published = 1');
 			}
-			elseif ($filter_state == '0' )
+			elseif ($filter_state == '0')
 			{
 				$query->where('obj.published = 0');
 			}
@@ -251,6 +251,8 @@ class RedeventModelVenues extends RModelList
 			$dispatcher->trigger('onFinderChangeState', array('com_redevent.venue', $id, $state));
 			$dispatcher->trigger('onAfterVenueSaved', array($id));
 		}
+
+		return true;
 	}
 
 	/**

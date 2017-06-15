@@ -118,7 +118,7 @@ class RedeventTagsRegistrationEvent
 
 			if ($status->canregister)
 			{
-				return true;
+				return;
 			}
 		}
 

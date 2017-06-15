@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * HTML View class for the Categoryevents View
@@ -51,7 +51,7 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 		$dellink = JFactory::getUser()->authorise('re.manageevents', $category->asset_name);
 
 		// Generate Categorydescription
-		if (empty ($category->description))
+		if (empty($category->description))
 		{
 			$description = JText::_('COM_REDEVENT_NO_DESCRIPTION');
 		}
@@ -67,7 +67,7 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 		$this->assignRef('thumb_link', $thumb_link);
 		$this->assignRef('list_link', $list_link);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 	/**
 	 * Get feed link
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFeedLink()
 	{

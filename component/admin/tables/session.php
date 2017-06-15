@@ -293,7 +293,7 @@ class RedeventTableSession extends RedeventTable
 	 *
 	 * @param   string  $pk  imploded ids
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function checkNoAttendees($pk)
 	{
@@ -439,7 +439,7 @@ class RedeventTableSession extends RedeventTable
 	/**
 	 * Load associated prices
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @since 3.2.3
 	 */
@@ -470,7 +470,7 @@ class RedeventTableSession extends RedeventTable
 	/**
 	 * Load associated roles
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @since 3.2.3
 	 */
@@ -514,7 +514,7 @@ class RedeventTableSession extends RedeventTable
 	/**
 	 * Save prices
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @since 3.2.3
 	 */
@@ -570,7 +570,7 @@ class RedeventTableSession extends RedeventTable
 	/**
 	 * Save roles
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @since 3.2.3
 	 */
@@ -626,7 +626,7 @@ class RedeventTableSession extends RedeventTable
 	{
 		if (empty($this->id))
 		{
-			return true;
+			return;
 		}
 
 		$query = $this->_db->getQuery(true);
@@ -648,7 +648,7 @@ class RedeventTableSession extends RedeventTable
 	{
 		if (empty($this->id))
 		{
-			return true;
+			return;
 		}
 
 		// We can only remove delete a price group if there is no attendee associated to it, so first list those
@@ -690,7 +690,7 @@ class RedeventTableSession extends RedeventTable
 	 *
 	 * @param   RTable  $row  session price group row
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @since 3.2.3
 	 */

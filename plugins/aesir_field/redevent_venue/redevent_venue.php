@@ -66,7 +66,7 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 	}
 
 	/**
-	 * Integration for maersk
+	 * Dislplay active sessions for venue
 	 *
 	 * @return void
 	 *
@@ -121,7 +121,7 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 		$sessions = RedeventEntitySession::loadArray($res);
 
 		$twigEntities = array_map(
-			function($session)
+			function ($session)
 			{
 				return RedeventEntityTwigSession::getInstance($session);
 			},

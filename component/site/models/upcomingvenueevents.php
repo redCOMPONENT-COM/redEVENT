@@ -26,7 +26,7 @@ class RedeventModelUpcomingvenueevents extends RedeventModelBasesessionlist
 		$params = RedeventHelper::config();
 		$db = $this->_db;
 
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 		$query->select('t.submission_types');
 
 		$query->where('x.venueid = ' . JFactory::getApplication()->input->getInt('id'));

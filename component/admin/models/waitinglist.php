@@ -36,14 +36,16 @@ class RedeventModelWaitinglist extends RModel
 	 *
 	 * @param   int  $id  xref id
 	 *
-	 * @return id
+	 * @return integer
 	 */
 	public function setXrefId($id)
 	{
 		$this->xref = $id;
 
-		/* Get the eventdata */
+		// Get the eventdata
 		$this->getEventData();
+
+		return $this->xref;
 	}
 
 	/**
@@ -82,7 +84,8 @@ class RedeventModelWaitinglist extends RModel
 	{
 		$this->getEventData();
 
-		/* If there is an event ID set, update all waitinglists for that event */
+		// If there is an event ID set, update all waitinglists for that event
+
 		if (!is_null($this->eventid))
 		{
 			$xrefids = $this->getXrefIds();
@@ -112,10 +115,10 @@ class RedeventModelWaitinglist extends RModel
 	 */
 	private function ProcessWaitingList()
 	{
-		/* Get attendee total first */
+		// Get attendee total first
 		$this->getWaitingList();
 
-		/* Check if there are too many ppl going to the event */
+		// Check if there are too many ppl going to the event
 		if (isset($this->waitinglist[0]))
 		{
 			if ($this->event_data->maxattendees == 0)
@@ -129,21 +132,22 @@ class RedeventModelWaitinglist extends RModel
 			}
 			elseif ($this->event_data->maxattendees < $this->waitinglist[0]->total)
 			{
-				/* Need to move people on the waitinglist */
+				// Need to move people on the waitinglist
 				$this->move_on = $this->waitinglist[0]->total - $this->event_data->maxattendees;
 				$this->MoveOnWaitingList();
 			}
 			elseif ($this->event_data->maxattendees > $this->waitinglist[0]->total)
 			{
-				/* Need to move people off the waitinglist */
+				// Need to move people off the waitinglist
 				$this->move_off = $this->event_data->maxattendees - $this->waitinglist[0]->total;
 				$this->MoveOffWaitingList();
 			}
 		}
 		elseif (isset($this->waitinglist[1]))
 		{
-			/* Nobody going yet, maximum number of attendees can go off the waitinglist */
-			/* Need to move people off the waitinglist */
+			/*
+			 Nobody going yet, maximum number of attendees can go off the waitinglist
+			 */
 			$this->move_off = $this->event_data->maxattendees;
 			$this->MoveOffWaitingList();
 		}
@@ -319,18 +323,20 @@ class RedeventModelWaitinglist extends RModel
 			return true;
 		}
 
-		/* Get attendee total first */
+		// Get attendee total first
 		$this->getEventData();
 		$this->getWaitingList();
 
-		/* Check if there are too many ppl going to the event */
+		// Check if there are too many ppl going to the event
 		$remaining = $this->event_data->maxattendees - $this->waitinglist[0]->total;
 
 		// If there are places remaining, or no limit, put people off the list.
 		if ($this->event_data->maxattendees == 0 || $remaining)
 		{
-			/* Need to move people on the waitinglist */
-			// We can only take as many new people off the list as there are remaining places
+			/*
+			 Need to move people on the waitinglist
+			 We can only take as many new people off the list as there are remaining places
+			*/
 			if ($this->event_data->maxattendees)
 			{
 				$this->move_off_ids = array_slice($register_ids, 0, $remaining);
@@ -371,7 +377,7 @@ class RedeventModelWaitinglist extends RModel
 	 */
 	public function putOnWaitingList($register_ids)
 	{
-		/* Check if there are too many ppl going to the event */
+		// Check if there are too many ppl going to the event
 		if (count($register_ids))
 		{
 			foreach ($register_ids as $rid)

@@ -80,7 +80,7 @@ class RedeventModelVenue extends RModel
 				$venue->limage = RedeventImage::flyercreator($venue->locimage);
 
 				// Generate Venuedescription
-				if (!empty ($venue->locdescription))
+				if (!empty($venue->locdescription))
 				{
 					// Execute plugins
 					$venue->locdescription = JHTML::_('content.prepare', $venue->locdescription);
@@ -143,7 +143,8 @@ class RedeventModelVenue extends RModel
 		if ($this->getState('filter.language'))
 		{
 			$query->where('(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR c.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR c.language IS NULL)'
+			);
 		}
 
 		$db->setQuery($query);

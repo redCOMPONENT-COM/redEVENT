@@ -67,8 +67,8 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 	/**
 	 * constructor
 	 *
-	 * @param   object  &$subject  subject
-	 * @param   array   $params    params
+	 * @param   object  $subject  subject
+	 * @param   array   $params   params
 	 */
 	public function __construct(&$subject, $params)
 	{
@@ -122,8 +122,8 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 	/**
 	 * Add a button to session toolbar
 	 *
-	 * @param   RView     $view      view
-	 * @param   RToolbar  &$toolbar  toolbar
+	 * @param   RView     $view     view
+	 * @param   RToolbar  $toolbar  toolbar
 	 *
 	 * @return void
 	 *
@@ -148,9 +148,9 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 	/**
 	 * getExtendedData
 	 *
-	 * @param   string  $id              Param.
-	 * @param   string  $typeinfo        Param.
-	 * @param   string  &$native_object  Param.
+	 * @param   string  $id             Param.
+	 * @param   string  $typeinfo       Param.
+	 * @param   string  $native_object  Param.
 	 *
 	 * @return	array
 	 *

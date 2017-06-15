@@ -226,7 +226,7 @@ class RedeventEntityVenue extends RedeventEntityBase
 	{
 		return array_filter(
 			$this->getSessions(),
-			function($session)
+			function ($session)
 			{
 				return $session->isUpcoming();
 			}

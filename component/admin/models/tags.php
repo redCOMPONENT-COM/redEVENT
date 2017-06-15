@@ -42,6 +42,8 @@ class RedeventModelTags extends RModel
 		$dispatcher = RFactory::getDispatcher();
 		$dispatcher->trigger('onRedeventGetAvailableTags', array(&$tags));
 
+		$this->addTagsClasses($tags);
+
 		return $this->tagsBySection($tags);
 	}
 
@@ -212,5 +214,27 @@ class RedeventModelTags extends RModel
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Add tags from library classes
+	 *
+	 * @param   array  $tags  tags
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.3
+	 */
+	private function addTagsClasses(&$tags)
+	{
+		$files = JFolder::files(JPATH_LIBRARIES . '/redevent/tags/lib', ".php", false, true);
+
+		foreach ($files as $file)
+		{
+			$name = substr(basename($file), 0, -4);
+			$className = 'RedeventTagsLib' . ucfirst($name);
+			$instance = new $className;
+			$tags[] = $instance->getDescription();
+		}
 	}
 }

@@ -22,7 +22,7 @@ class RedeventsyncControllerSync extends JControllerLegacy
 	 *
 	 * @param   string  $task  The task to execute, e.g. "browse"
 	 *
-	 * @return  null|bool  False on execution failure
+	 * @return  void
 	 */
 	public function execute($task)
 	{

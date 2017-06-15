@@ -26,7 +26,7 @@ class RedeventViewVenuescsv extends RedeventViewAdmin
 	{
 		$this->form = $this->get('Form');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
