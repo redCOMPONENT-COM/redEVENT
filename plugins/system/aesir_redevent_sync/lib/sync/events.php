@@ -75,10 +75,17 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 				throw new LogicException('Event default access is not set in config plugin');
 			}
 
+			$title = RdfLayoutHelper::render(
+				'aesir_redevent_sync.event.title',
+				compact('event'),
+				null,
+				array('component' => 'com_redform', 'defaultLayoutsPath' => PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS)
+			);
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_event_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_event_template_id'),
-				'title'   => $event->title,
+				'title'   => $title,
 				'access'  => RedeventHelperConfig::get('aesir_event_access'),
 				'custom_fields' => array(
 					$this->getEventSelectField()->fieldcode => $event->id
