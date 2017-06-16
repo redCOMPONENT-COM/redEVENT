@@ -25,7 +25,7 @@ class PlgRedeventEvent_Clean_Ibc extends JPlugin
 	 *
 	 * @param   array  $xrefs  Affected database objects
 	 *
-	 * @return bool true on success
+	 * @return void
 	 */
 	public function onEventCleanArchived($xrefs)
 	{

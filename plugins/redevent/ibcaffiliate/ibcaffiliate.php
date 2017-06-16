@@ -17,7 +17,7 @@ jimport('joomla.plugin.plugin');
  *
  * @since  2.5
  */
-class plgRedeventIbcaffiliate extends JPlugin
+class PlgRedeventIbcaffiliate extends JPlugin
 {
 	/**
 	 * constructor
@@ -111,7 +111,7 @@ class plgRedeventIbcaffiliate extends JPlugin
 	 *
 	 * @param   int  $attendeeId  attendee id
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	private function getAttendeeDetails($attendeeId)
 	{

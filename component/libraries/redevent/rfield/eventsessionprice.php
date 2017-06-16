@@ -176,7 +176,7 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 	 *
 	 * @param   RedeventEntitySession  $session  session
 	 *
-	 * @return bool|string
+	 * @return boolean|string
 	 */
 	private function placesLeftSuffix(RedeventEntitySession $session)
 	{
@@ -191,10 +191,13 @@ class RedeventRfieldEventsessionprice extends RdfRfieldSelect
 			$attendees,
 			function ($count, $attendee)
 			{
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if ($attendee->confirmed && !$attendee->cancelled && !$attendee->waitinglist)
 				{
 					$count++;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $count;
 			}

@@ -32,9 +32,9 @@ class PlgRedevent_ConfigIbc extends JPlugin
 	/**
 	 * Alters component parameters
 	 *
-	 * @param   JRegistry  &$params  parameters
+	 * @param   JRegistry  $params  parameters
 	 *
-	 * @return bool true on success
+	 * @return void
 	 */
 	public function onGetRedeventConfig(&$params)
 	{

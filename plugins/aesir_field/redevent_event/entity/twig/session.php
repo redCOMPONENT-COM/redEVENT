@@ -53,7 +53,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -63,7 +63,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 	/**
 	 * Get session price groups
 	 *
-	 * @return   array|bool
+	 * @return   array|boolean
 	 */
 	public function getPrices()
 	{
@@ -71,7 +71,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 
 		return $prices
 			? array_map(
-				function($entity)
+				function ($entity)
 				{
 					return new PlgAesir_FieldRedevent_eventEntityTwigSessionpricegroup($entity);
 				},
@@ -95,7 +95,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 	/**
 	 * Get booked places
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getBooked()
 	{
@@ -106,12 +106,15 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 
 		return array_reduce(
 			$attendees,
-			function($count, $attendee)
+			function ($count, $attendee)
 			{
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if ($attendee->confirmed && !$attendee->cancelled && ! $attendee->waitinglist)
 				{
 					$count++;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $count;
 			}
@@ -121,7 +124,7 @@ final class PlgAesir_FieldRedevent_EventEntityTwigSession extends AbstractTwigEn
 	/**
 	 * Get booked places
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getLeft()
 	{

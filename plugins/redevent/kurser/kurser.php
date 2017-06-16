@@ -52,7 +52,6 @@ class PlgRedeventKurser extends JPlugin
 			'Contextual Keywords',
 			'Final URL',
 			'Tracking Template',
-//			'Action'
 		);
 
 		$text .= RedeventHelper::writecsvrow($stdcols);
@@ -84,7 +83,6 @@ class PlgRedeventKurser extends JPlugin
 					'',
 					$item->getLink(),
 					JRoute::_($item->getLink('inherit', false), true, -1),
-//					'Add'
 				];
 
 				$text .= RedeventHelper::writecsvrow($new);
@@ -130,6 +128,13 @@ class PlgRedeventKurser extends JPlugin
 		return $rows;
 	}
 
+	/**
+	 * Add categories to sessions
+	 *
+	 * @param   array  $sessions  sessions data
+	 *
+	 * @return void
+	 */
 	private function addCategories(&$sessions)
 	{
 		$ids = JArrayHelper::getColumn($sessions, 'item_id');

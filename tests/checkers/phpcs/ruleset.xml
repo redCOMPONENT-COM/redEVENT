@@ -40,4 +40,5 @@
 	<exclude-pattern>modules/frontend/mod_rokminievents</exclude-pattern>
 	<exclude-pattern>modules/frontend/mod_redevent_categories/helper.php</exclude-pattern>
 
+	<exclude-pattern>plugins/ibc/sessionsdump/*</exclude-pattern>
 </ruleset>

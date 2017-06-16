@@ -218,7 +218,7 @@ class RedeventViewRegistration extends JViewLegacy
 	/**
 	 * check if we should filter this registration
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function filterAnalyticsEmails()
 	{
