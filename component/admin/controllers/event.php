@@ -47,8 +47,7 @@ class RedeventControllerEvent extends RedeventControllerForm
 					'formName' => $formName,
 					'showToolbar' => true,
 					'action' => 'index.php?option=com_redevent&view=event&model=sessions',
-					'return' => base64_encode('index.php?option=com_redevent&view=event&layout=edit&id='
-						. $eventId . '&tab=sessions&from_form=1')
+					'return' => base64_encode('index.php?option=com_redevent&view=event&layout=edit&id=' . $eventId . '&tab=sessions&from_form=1')
 				)
 			);
 		}
@@ -58,5 +57,30 @@ class RedeventControllerEvent extends RedeventControllerForm
 		}
 
 		$app->close();
+	}
+
+	/**
+	 * Get the JRoute object for a redirect to list.
+	 *
+	 * @param   string  $append  An optionnal string to append to the route
+	 *
+	 * @return  JRoute  The JRoute object
+	 */
+	protected function getRedirectToListRoute($append = null)
+	{
+		$returnUrl = $this->input->get('return', '', 'Base64');
+		$returnUrl = $returnUrl ? base64_decode($returnUrl) : false;
+
+		/**
+		 * In return url, we have to check the 'view' value to be sure we are not looping after coming back from editing a session.
+		 */
+		if ($returnUrl && !strstr($returnUrl, '&view=event'))
+		{
+			return JRoute::_($returnUrl . $append, false);
+		}
+		else
+		{
+			return JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $append, false);
+		}
 	}
 }

@@ -52,7 +52,7 @@ class RedeventTableAttachment extends RedeventTable
 	/**
 	 * Check if attachement already exists
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function checkExists()
 	{

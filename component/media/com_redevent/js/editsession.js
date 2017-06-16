@@ -6,7 +6,7 @@
 (function($){
 	$(function(){
 		document.formvalidator.setHandler('futuredate', function(value, $el) {
-			if (!value) {
+			if (!value || !value.test([1-9])) {
 				return true;
 			}
 

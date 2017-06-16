@@ -22,6 +22,15 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigVenuescategory extends AbstractTwigEntity
 {
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigVenuescategory[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntityVenuescategory  $entity  The entity
@@ -29,6 +38,25 @@ final class RedeventEntityTwigVenuescategory extends AbstractTwigEntity
 	public function __construct(\RedeventEntityVenuescategory $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntityVenuescategory  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigVenuescategory
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -53,7 +81,7 @@ final class RedeventEntityTwigVenuescategory extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{

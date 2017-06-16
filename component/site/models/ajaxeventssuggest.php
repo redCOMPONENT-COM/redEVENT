@@ -106,7 +106,8 @@ class RedeventModelAjaxeventssuggest extends RModelList
 		if ($this->getState('filter.language'))
 		{
 			$query->where('(e.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR e.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR e.language IS NULL)'
+			);
 		}
 
 		$query->order($this->getState('list.ordering', 'e.title') . ' ' . $this->getState('list.direction', 'ASC'));

@@ -247,7 +247,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 
 		$query->select('f.*')
 			->from('#__redevent_fields AS f')
-			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR ' . 'f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
+			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
 			->order('f.ordering');
 
 		$this->_db->setQuery($query);
@@ -311,16 +311,6 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			return false;
 		}
 
-		if (!$this->saveRoles($data))
-		{
-			return false;
-		}
-
-		if (!$this->savePrices($data))
-		{
-			return false;
-		}
-
 		$isNew = isset($data['id']) && $data['id'] ? false : true;
 		$notify = RModel::getFrontInstance('Editsessionnotify');
 		$notify->notify($this->getState($this->getName() . '.id'), $isNew);
@@ -331,7 +321,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	/**
 	 * Try to save event
 	 *
-	 * @param   array  &$data  post data
+	 * @param   array  $data  post data
 	 *
 	 * @return boolean
 	 */
@@ -377,7 +367,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	 *
 	 * @param   array  $data  post data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function saveRecurrence($data)
 	{
@@ -442,121 +432,6 @@ class RedeventModelEditsession extends RedeventModelAdmin
 		{
 			$recurrenceHelper = new RedeventRecurrenceHelper;
 			$recurrenceHelper->generaterecurrences($recurrence->id);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Save roles data
-	 *
-	 * @param   array  $data  post data
-	 *
-	 * @return bool
-	 */
-	private function saveRoles($data)
-	{
-		if (!$sessionId = $this->getState($this->getName() . '.id'))
-		{
-			return false;
-		}
-
-		// First remove current rows
-		$query = $this->_db->getQuery(true);
-
-		$query->delete('#__redevent_sessions_roles')
-			->where('xref = ' . $sessionId);
-		$this->_db->setQuery($query);
-
-		if (!$this->_db->execute())
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
-
-		if (!isset($data['rrole']))
-		{
-			return true;
-		}
-
-		// Then recreate them if any
-		foreach ((array) $data['rrole'] as $k => $r)
-		{
-			if (!($data['rrole'][$k] && $data['urole'][$k]))
-			{
-				continue;
-			}
-
-			$new = RTable::getAdminInstance('Sessionrole');
-			$new->set('xref', $sessionId);
-			$new->set('role_id', $r);
-			$new->set('user_id', $data['urole'][$k]);
-
-			if (!($new->check() && $new->store()))
-			{
-				$this->setError($new->getError());
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Save prices data
-	 *
-	 * @param   array  $data  post data
-	 *
-	 * @return bool
-	 */
-	private function savePrices($data)
-	{
-		if (!$sessionId = $this->getState($this->getName() . '.id'))
-		{
-			return false;
-		}
-
-		// First remove current rows
-		$query = $this->_db->getQuery(true);
-
-		$query->delete('#__redevent_sessions_pricegroups')
-			->where('xref = ' . $sessionId);
-		$this->_db->setQuery($query);
-
-		if (!$this->_db->execute())
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
-
-		if (empty($data['pricegroup']))
-		{
-			return true;
-		}
-
-		// Then recreate them if any
-		foreach ((array) $data['pricegroup'] as $k => $r)
-		{
-			if (!($data['pricegroup'][$k]))
-			{
-				continue;
-			}
-
-			$new = RTable::getInstance('Sessionpricegroup', 'RedeventTable');
-			$new->set('xref', $sessionId);
-			$new->set('pricegroup_id', $r);
-			$new->set('price', $data['price'][$k]);
-			$new->set('currency', $data['currency'][$k]);
-
-			if (!($new->check() && $new->store()))
-			{
-				$this->setError($new->getError());
-
-				return false;
-			}
 		}
 
 		return true;

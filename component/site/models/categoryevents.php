@@ -84,15 +84,16 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
-		$query = parent::_buildWhere($query);
+		$query = parent::buildWhere($query);
 
 		$category = $this->getItem();
 		$query->where(' a.published <> 0 ');
 
 		$query->where('(c.id = ' . $this->_db->Quote($category->id)
-		. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');
+			. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))'
+		);
 
 		return $query;
 	}
@@ -152,7 +153,7 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 
 			$pagination = $this->getPagination();
 			$this->data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
@@ -168,9 +169,9 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 	 *
 	 * @return string
 	 */
-	protected function _buildQuery()
+	protected function buildQuery()
 	{
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 
 		if ($this->getState('results_type') == 0)
 		{
@@ -203,7 +204,7 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 			$map[$ev->id] = $k;
 		}
 
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 		$query->clear('order');
 		$query->where('a.id IN (' . implode(",", $event_ids) . ')');
 

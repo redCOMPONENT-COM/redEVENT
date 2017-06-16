@@ -16,7 +16,7 @@
 
 	$(function(){
 		$('#jform_dates_v').change(function(){
-			if ($(this).datepicker('getDate') > $('#jform_enddates_v').datepicker('getDate')) {
+			if ($(this).val()) {
 				$('#jform_enddates_v').datepicker('option', 'minDate', $(this).val());
 			}
 		}).change();

@@ -6,7 +6,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Class RedeventsyncQueueMessage
@@ -44,7 +44,7 @@ class ResyncQueueMessage
 	/**
 	 * Return first found transaction id
 	 *
-	 * @return int|string
+	 * @return integer|string
 	 */
 	public function getTransactionId()
 	{

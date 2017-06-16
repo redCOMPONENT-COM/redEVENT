@@ -175,7 +175,7 @@ class RedeventRecurrenceHelper
 	 *
 	 * @param   int  $recurrence_id  recurrence id
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 *
 	 * @TODO: refactor !
 	 */
@@ -193,7 +193,10 @@ class RedeventRecurrenceHelper
 		$query->select('MAX(rp.xref_id) as xref_id, r.rrule, r.id as recurrence_id')
 			->from('#__redevent_repeats AS rp')
 			->join('INNER', '#__redevent_recurrences AS r on r.id = rp.recurrence_id')
-			->join('INNER', '#__redevent_event_venue_xref AS x on x.id = rp.xref_id') /* make sure there are still events associated...*/
+
+			// Make sure there are still events associated...
+			->join('INNER', '#__redevent_event_venue_xref AS x on x.id = rp.xref_id')
+
 			->where('r.ended = 0')
 			->where('x.dates > 0');
 
@@ -312,7 +315,7 @@ class RedeventRecurrenceHelper
 	 *
 	 * @param   string  $date  date in ical format
 	 *
-	 * @return bool|string
+	 * @return boolean|string
 	 */
 	private function icalDatetotime($date)
 	{

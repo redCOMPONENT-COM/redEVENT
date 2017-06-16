@@ -19,15 +19,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<div id="redevent" class="jlmap">
+<div id="redevent" class="jlmap<?= $this->params->get('pageclass_sfx') ?>">
   <div id="goback"><a href="javascript:history.back()"><?php echo JText::_('COM_REDEVENT_Back'); ?></a></div>
-  <h1 class="componentheading">
-    <?php echo JText::_('COM_REDEVENT_VENUES_MAP'); ?>
-  </h1>
+
+	<?php if ($this->params->def('show_page_heading', 1)) : ?>
+		<h1 class='componentheading'>
+			<?php echo $this->escape($this->pagetitle); ?>
+		</h1>
+	<?php endif; ?>
 
 <script type="text/javascript">
 var venueurl = '<?php echo JRoute::_($this->ajaxurl, false); ?>';
@@ -65,45 +67,49 @@ venues.push(<?php echo json_encode($obj); ?>);
 
 <?php if ($this->params->get('show_cat_filter', 1) || $this->params->get('show_vcat_filter', 1) || $this->params->get('show_custom_filters', 1)) : ?>
 <form action="<?php echo JRoute::_($this->action); ?>" method="post" id="filterform">
-<div id="red_filter" class="floattext">
-    <div class="el_fleft">
-    <table>
-	    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
-	      <tr>
-	        <td>
-			      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_VENUES_CATEGORY'); ?></label>
-			    </td>
-			    <td>
-			      <?php echo $this->lists['venuescats']; ?>
-	        </td>
-		    </tr>
-	    <?php endif; ?>
-	    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
-	      <tr>
-	        <td>
-		      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_EVENTS_CATEGORY'); ?></label>
-	        </td>
-	        <td>
-		      <?php echo $this->lists['eventscats']; ?>
-	        </td>
-	      </tr>
-      <?php endif; ?>
-      <?php if ($this->params->get('show_custom_filters', 1)) : ?>
-	      <?php foreach ((array) $this->lists['customfilters'] as $filter) : ?>
-	      <tr>
-	        <td>
-		      <label for="filter_type"><?php echo $filter->name; ?></label>
-	        </td>
-	        <td>
-		      <?php echo $filter->renderFilter(array('class' =>"customfilter"), isset($this->filter_customs[$filter->id]) ? $this->filter_customs[$filter->id] : null); ?>
-	        </td>
-	      </tr>
-	      <?php endforeach; ?>
-      <?php endif; ?>
-    </table>
-    </div>
-</div>
-<input type="hidden" name="filter" id="filter" value="0"/>
+	<div id="red_filter">
+	    <div class="venue_filters">
+	    <table>
+		    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
+		      <tr>
+		        <td>
+				      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_VENUES_CATEGORY'); ?></label>
+				    </td>
+				    <td>
+				      <?php echo $this->lists['venuescats']; ?>
+		        </td>
+			    </tr>
+		    <?php endif; ?>
+		    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
+		      <tr>
+		        <td>
+			      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_EVENTS_CATEGORY'); ?></label>
+		        </td>
+		        <td>
+			      <?php echo $this->lists['eventscats']; ?>
+		        </td>
+		      </tr>
+	      <?php endif; ?>
+	      <?php if ($this->params->get('show_custom_filters', 1)) : ?>
+		      <?php foreach ((array) $this->lists['customfilters'] as $filter) : ?>
+		      <tr>
+		        <td>
+			      <label for="filter_type"><?php echo $filter->name; ?></label>
+		        </td>
+		        <td>
+			      <?php echo $filter->renderFilter(array('class' =>"customfilter"), isset($this->filter_customs[$filter->id]) ? $this->filter_customs[$filter->id] : null); ?>
+		        </td>
+		      </tr>
+		      <?php endforeach; ?>
+	      <?php endif; ?>
+	    </table>
+	    </div>
+	</div>
+	<div class="filter-buttons">
+		<button type="submit"><?= JText::_('COM_REDEVENT_SEARCH') ?></button>
+	</div>
+
+	<input type="hidden" name="filter" id="filter" value="0"/>
 </form>
 <?php endif; ?>
 

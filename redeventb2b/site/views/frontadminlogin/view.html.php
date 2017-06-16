@@ -32,13 +32,13 @@ class Redeventb2bViewFrontadminlogin extends RViewSite
 
 		$user = JFactory::getUser();
 
-		$frontadminRoute = JRoute::_(Redeventb2bHelperRoute::getFrontadminRoute());
+		$frontadminRoute = JRoute::_(Redeventb2bHelperRoute::getFrontadminRoute(), false);
 
 		if ($user->get('id'))
 		{
 			$app->redirect($frontadminRoute);
 
-			return;
+			return true;
 		}
 
 		$params = $app->getParams();
@@ -58,6 +58,6 @@ class Redeventb2bViewFrontadminlogin extends RViewSite
 		$this->return = base64_encode($frontadminRoute);
 		$this->params = $app->getParams();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

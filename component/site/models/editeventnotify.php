@@ -70,7 +70,8 @@ class RedeventModelEditeventnotify extends RModel
 			{
 				$mail = RdfHelper::getMailer();
 
-				$state = $event->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
+				$state = $event->published ?
+					JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
 
 				$replaceOptionsExtra = array(
 					'[state]' => $state,

@@ -42,7 +42,7 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 			$this->canEdit = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -70,22 +70,16 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
-			if ($this->state->get('filter.cancelled') == 1)
-			{
-				$restore = RToolbarBuilder::createStandardButton(
-					'registrations.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', '', ' icon-circle-arrow-left'
-				);
-				$firstGroup->addButton($restore);
+			$cancel = RToolbarBuilder::createCancelButton('registrations.cancelreg', '', 'btn-warning');
+			$firstGroup->addButton($cancel);
 
-				$delete = RToolbarBuilder::createDeleteButton('registrations.delete');
-				$firstGroup->addButton($delete);
-			}
+			$restore = RToolbarBuilder::createStandardButton(
+				'registrations.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', 'btn-success', ' icon-circle-arrow-left'
+			);
+			$firstGroup->addButton($restore);
 
-			if ($this->state->get('filter.cancelled') == 0)
-			{
-				$cancel = RToolbarBuilder::createCancelButton('registrations.cancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL');
-				$firstGroup->addButton($cancel);
-			}
+			$delete = RToolbarBuilder::createDeleteButton('registrations.delete');
+			$firstGroup->addButton($delete);
 		}
 
 		$toolbar = new RToolbar;

@@ -144,7 +144,7 @@ class RedeventTagsRegistrationSession
 	{
 		$form = $this->getRedformForm();
 		$multi = $this->getNumberOfSignup();
-		$prices = $this->session->getPricegroups(true);
+		$prices = $this->session->getActivePricegroups(true);
 
 		$options = array('extrafields' => array());
 		$options['sessionId'] = $this->session->id;
@@ -182,8 +182,8 @@ class RedeventTagsRegistrationSession
 		$renderData = array(
 			'form' => $form,
 			'redformHtml' => $this->rfcore->getFormFields(
-					$this->session->getEvent()->getEventtemplate()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
-				),
+				$this->session->getEvent()->getEventtemplate()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
+			),
 			'session' => $this->session,
 			'submitKey' => $this->submitKey
 		);
@@ -232,7 +232,7 @@ class RedeventTagsRegistrationSession
 	/**
 	 * Get number of signup to display
 	 *
-	 * @return int
+	 * @return integer
 	 *
 	 * @throws Exception
 	 */
@@ -268,8 +268,19 @@ class RedeventTagsRegistrationSession
 
 		if ($this->session->hasMaxAttendees())
 		{
-			$left = $this->session->getNumberLeft();
-			$multi = min($left, $multi);
+			// We can't allow multiple registrations to be split between attending and waiting list, so we need to check separately.
+			if ($left = $this->session->getNumberLeft())
+			{
+				$multi = min($left, $multi);
+			}
+			elseif ($left = $this->session->getNumberWaitingLeft())
+			{
+				$multi = min($left, $multi);
+			}
+			else
+			{
+				$multi = 0;
+			}
 		}
 
 		if ($multi < 1)

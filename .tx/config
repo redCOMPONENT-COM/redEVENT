@@ -260,14 +260,14 @@ source_file = plugins/redevent/redmemberlogin/language/en-GB/en-GB.plg_redevent_
 source_lang = en-GB
 
 # ========== REDFORM =============
-[redevent3.admin-plg_redform_paymentnotificationemail-ini]
-file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redform_paymentnotificationemail.ini
-source_file = plugins/redform/paymentnotificationemail/language/en-GB/en-GB.plg_redform_paymentnotificationemail.ini
+[redevent3.admin-plg_redevent_paymentnotificationemail-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_paymentnotificationemail.ini
+source_file = plugins/redevent/paymentnotificationemail/language/en-GB/en-GB.plg_redevent_paymentnotificationemail.ini
 source_lang = en-GB
 
-[redevent3.admin-plg_redform_paymentnotificationemail-sys-ini]
-file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redform_paymentnotificationemail.sys.ini
-source_file = plugins/redform/paymentnotificationemail/language/en-GB/en-GB.plg_redform_paymentnotificationemail.sys.ini
+[redevent3.admin-plg_redevent_paymentnotificationemail-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_paymentnotificationemail.sys.ini
+source_file = plugins/redevent/paymentnotificationemail/language/en-GB/en-GB.plg_redevent_paymentnotificationemail.sys.ini
 source_lang = en-GB
 
 # ========== REDFORM_FIELD =============

@@ -90,6 +90,12 @@ class RedeventModelEventscsvimport extends RModel
 	private $errorMessages = array();
 
 	/**
+	 * @var    integer
+	 * @since  __deploy_version__
+	 */
+	private $currentEventId;
+
+	/**
 	 * Return error messages
 	 *
 	 * @return array
@@ -133,7 +139,7 @@ class RedeventModelEventscsvimport extends RModel
 
 		$count = array(
 			'added' => $this->createdEvents, 'updated' => $this->updatedEvents, 'ignored' => $this->ignoredEvents,
-			'addedSessions' => $this->createdSessions, 'updatedSession' => $this->updatedSessions, 'ignoredSessions' => $this->ignoredSessions
+			'addedSessions' => $this->createdSessions, 'updatedSessions' => $this->updatedSessions, 'ignoredSessions' => $this->ignoredSessions
 		);
 
 		return $count;
@@ -142,7 +148,7 @@ class RedeventModelEventscsvimport extends RModel
 	/**
 	 * Convert custom fields keys from import to custom<id> keys
 	 *
-	 * @param   array  &$row  data
+	 * @param   array  $row  data
 	 *
 	 * @return array
 	 */
@@ -196,7 +202,7 @@ class RedeventModelEventscsvimport extends RModel
 	 *
 	 * @param   array  $data  event data from import
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function storeEvent($data)
 	{
@@ -261,16 +267,12 @@ class RedeventModelEventscsvimport extends RModel
 			// Store !
 			if (!$ev->check())
 			{
-				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $ev->getError(), 'error');
-
-				return false;
+				throw new InvalidArgumentException(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $ev->getError());
 			}
 
 			if (!$ev->store())
 			{
-				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $ev->getError(), 'error');
-
-				return false;
+				throw new InvalidArgumentException(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $ev->getError());
 			}
 
 			// Track created
@@ -283,7 +285,13 @@ class RedeventModelEventscsvimport extends RModel
 
 			($updating ? $this->updatedEvents++ : $this->createdEvents++);
 
-			return $ev->id;
+			$this->currentEventId = $ev->id;
+
+			return $this->currentEventId;
+		}
+		elseif ($this->currentEventId)
+		{
+			return $this->currentEventId;
 		}
 
 		return false;
@@ -299,8 +307,6 @@ class RedeventModelEventscsvimport extends RModel
 	 */
 	private function storeSession($data, $eventId)
 	{
-		$app = JFactory::getApplication();
-
 		if (isset($data['xref']))
 		{
 			$data['id'] = $data['xref'];
@@ -328,35 +334,6 @@ class RedeventModelEventscsvimport extends RModel
 			$data['icaldetails'] = $data['session_icaldetails'] ?: null;
 			$data['published'] = $data['session_published'] ?: null;
 
-			if ($exists && $this->duplicateMethod == self::DUPLICATE_CREATE_NEW)
-			{
-				$session->reset();
-				$session->bind($data);
-				$session->id = null;
-				$isUpdate = false;
-			}
-			else
-			{
-				$isUpdate = $exists;
-				$session->bind($data);
-			}
-
-			// Check
-			if (!$session->check())
-			{
-				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $session->getError(), 'error');
-
-				return false;
-			}
-
-			// Store
-			if (!$session->store())
-			{
-				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $session->getError(), 'error');
-
-				return false;
-			}
-
 			// Import pricegroups
 			if (isset($data['pricegroups_names']))
 			{
@@ -365,6 +342,8 @@ class RedeventModelEventscsvimport extends RModel
 				$currencies = explode('#!#', $data['currencies']);
 				$pricegroups = array();
 
+				$i = 0;
+
 				foreach ($pgs as $k => $v)
 				{
 					if (empty($v))
@@ -372,14 +351,40 @@ class RedeventModelEventscsvimport extends RModel
 						continue;
 					}
 
-					$price = new stdclass;
-					$price->pricegroup_id    = $this->getPgId($v);
-					$price->price = $prices[$k];
-					$price->currency = $currencies[$k];
-					$pricegroups[] = $price;
+					$pricegroups['pricegroup'][$i] = $this->getPgId($v);
+					$pricegroups['price'][$i] = $prices[$k];
+					$pricegroups['currency'][$i] = $currencies[$k];
+					$i++;
 				}
 
-				$session->setPrices($pricegroups);
+				$data['new_prices'] = $pricegroups;
+			}
+
+			if ($this->duplicateMethod == self::DUPLICATE_UPDATE && $exists)
+			{
+				$isUpdate = true;
+				$session->bind($data);
+			}
+			else
+			{
+				$isUpdate = false;
+				$session->reset();
+				$session->bind($data);
+
+				// If session->id is set, JTable will run an update query, which is not what we want.
+				$session->id = null;
+			}
+
+			// Check
+			if (!$session->check())
+			{
+				throw new InvalidArgumentException(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $session->getError());
+			}
+
+			// Store
+			if (!$session->store())
+			{
+				throw new InvalidArgumentException(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $session->getError());
 			}
 
 			// Trigger plugins
@@ -389,14 +394,12 @@ class RedeventModelEventscsvimport extends RModel
 
 			if ($isUpdate)
 			{
-				$this->updatedSession++;
+				$this->updatedSessions++;
 			}
 			else
 			{
 				$this->createdSessions++;
 			}
-
-			return true;
 		}
 
 		return true;
@@ -460,7 +463,7 @@ class RedeventModelEventscsvimport extends RModel
 	 *
 	 * @param   array  $data  csv row data
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function getTemplateId($data)
 	{
@@ -527,7 +530,7 @@ class RedeventModelEventscsvimport extends RModel
 	 * @param   string  $name  venue name
 	 * @param   string  $city  venue city
 	 *
-	 * @return int id
+	 * @return integer id
 	 */
 	private function getVenueId($name, $city)
 	{
@@ -594,7 +597,7 @@ class RedeventModelEventscsvimport extends RModel
 	 *
 	 * @param   string  $name  price group name
 	 *
-	 * @return int id
+	 * @return integer id
 	 */
 	private function getPgId($name)
 	{

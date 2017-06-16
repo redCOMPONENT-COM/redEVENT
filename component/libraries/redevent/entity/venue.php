@@ -200,8 +200,13 @@ class RedeventEntityVenue extends RedeventEntityBase
 				->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
 				->where('x.venueid = ' . $this->id)
 				->where('x.published = 1')
-				->where('e.published = 1')
-				->order('x.dates ASC');
+				->where('e.published = 1');
+
+			$open_order = RedeventHelper::config()->get('open_dates_ordering', 0);
+			$ordering_def = ($open_order ? 'x.dates = 0 ' : 'x.dates > 0 ') . 'ASC'
+				. ', x.dates ASC, x.times ASC';
+
+			$query->order($ordering_def);
 
 			$db->setQuery($query);
 			$res = $db->loadObjectList() ?: array();
@@ -221,7 +226,7 @@ class RedeventEntityVenue extends RedeventEntityBase
 	{
 		return array_filter(
 			$this->getSessions(),
-			function($session)
+			function ($session)
 			{
 				return $session->isUpcoming();
 			}

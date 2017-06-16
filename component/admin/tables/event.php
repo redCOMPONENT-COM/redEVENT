@@ -94,9 +94,6 @@ class RedeventTableEvent extends RedeventTable
 			$this->alias = $alias;
 		}
 
-		// Prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
-		$this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
-
 		return true;
 	}
 
@@ -128,7 +125,7 @@ class RedeventTableEvent extends RedeventTable
 	/**
 	 * Load categories array
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function loadCategories()
 	{
@@ -184,7 +181,7 @@ class RedeventTableEvent extends RedeventTable
 	 *
 	 * @param   int  $xref  session id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function loadBySessionId($xref)
 	{
@@ -244,7 +241,7 @@ class RedeventTableEvent extends RedeventTable
 	 *
 	 * @param   array  $categoryIds  category ids for the event
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	function setCategories($categoryIds = array())
 	{

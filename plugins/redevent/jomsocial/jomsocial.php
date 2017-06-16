@@ -28,7 +28,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 * @param   int   $event_id  event id
 	 * @param   bool  $isNew     is new
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventEdited($event_id, $isNew)
 	{
@@ -69,7 +69,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.editevent';
 		$act->actor = $user->get('id');
-		$act->target = 0;  /* No target */
+		$act->target = 0;
+
 		$act->title = sprintf(($isNew) ? JText::_('{actor} added event %s') : JText::_('{actor} edited event %s'), $eventlink);
 		$act->content = '';
 		$act->app = 'redevent';
@@ -97,7 +98,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 * @param   int   $venue_id  venue id
 	 * @param   bool  $isNew     is new
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onVenueEdited($venue_id, $isNew)
 	{
@@ -135,7 +136,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.editvenue';
 		$act->actor = $user->get('id');
-		$act->target = 0; /* no target */
+		$act->target = 0;
+
 		$act->title = sprintf(($isNew) ? JText::_('{actor} added venue %s') : JText::_('{actor} edited venue %s'), $link);
 		$act->content = '';
 		$act->app = 'redevent';
@@ -162,7 +164,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 *
 	 * @param   int  $xref  session id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventUserRegistered($xref)
 	{
@@ -201,7 +203,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.register';
 		$act->actor = $user->get('id');
-		$act->target = 0; /* no target */
+		$act->target = 0;
+
 		$act->title = sprintf(JText::_('{actor} registered to %s'), $eventlink);
 		$act->content = '';
 		$act->app = 'redevent';
@@ -225,7 +228,7 @@ class PlgRedeventjomsocial extends JPlugin
 	 *
 	 * @param   int  $xref  session id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventUserUnregistered($xref)
 	{
@@ -264,7 +267,8 @@ class PlgRedeventjomsocial extends JPlugin
 		$act = new stdClass;
 		$act->cmd = 'redevent.unregister';
 		$act->actor = $user->get('id');
-		$act->target = 0; /* no target */
+		$act->target = 0;
+
 		$act->title = sprintf(JText::_('{actor} unregistered from %s'), $eventlink);
 		$act->content = '';
 		$act->app = 'redevent';
@@ -287,9 +291,9 @@ class PlgRedeventjomsocial extends JPlugin
 	 * On attendee display
 	 *
 	 * @param   int     $user_id  user id
-	 * @param   string  &$text    text
+	 * @param   string  $text     text
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onAttendeeDisplay($user_id, &$text)
 	{
@@ -308,9 +312,9 @@ class PlgRedeventjomsocial extends JPlugin
 	 * On event createor display
 	 *
 	 * @param   int     $user_id  user id
-	 * @param   Object  &$object  object
+	 * @param   Object  $object   object
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function onEventCreatorDisplay($user_id, &$object)
 	{

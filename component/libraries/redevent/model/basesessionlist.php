@@ -143,7 +143,7 @@ class RedeventModelBasesessionlist extends RModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 
 			$pagination = $this->getPagination();
 			$this->data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
@@ -166,7 +166,7 @@ class RedeventModelBasesessionlist extends RModel
 		// Lets load the total nr if it doesn't already exist
 		if (empty($this->total))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 			$this->total = $this->_getListCount($query);
 		}
 
@@ -206,11 +206,11 @@ class RedeventModelBasesessionlist extends RModel
 	 *
 	 * @return string
 	 */
-	protected function _buildQuery()
+	protected function buildQuery()
 	{
-		$query = $this->_buildSelectFrom();
-		$query = $this->_buildWhere($query);
-		$query = $this->_buildOrderBy($query);
+		$query = $this->buildSelectFrom();
+		$query = $this->buildWhere($query);
+		$query = $this->buildOrderBy($query);
 
 		return $query;
 	}
@@ -220,7 +220,7 @@ class RedeventModelBasesessionlist extends RModel
 	 *
 	 * @return JDatabaseQuery
 	 */
-	protected function _buildSelectFrom()
+	protected function buildSelectFrom()
 	{
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
@@ -233,7 +233,9 @@ class RedeventModelBasesessionlist extends RModel
 		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('a.*');
-		$query->select('t.*, a.id AS id'); /* B/C compatibility as template table was extracted from event table */
+
+		// B/C compatibility as template table was extracted from event table
+		$query->select('t.*, a.id AS id');
 		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription, l.venue_code, l.id AS venue_id');
 		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
@@ -271,7 +273,7 @@ class RedeventModelBasesessionlist extends RModel
 	 *
 	 * @return object
 	 */
-	protected function _buildOrderBy($query)
+	protected function buildOrderBy($query)
 	{
 		$filter_order = $this->getState('filter_order');
 		$filter_order_dir = $this->getState('filter_order_Dir');
@@ -307,7 +309,7 @@ class RedeventModelBasesessionlist extends RModel
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
 		$app = JFactory::getApplication();
 
@@ -419,7 +421,9 @@ class RedeventModelBasesessionlist extends RModel
 
 			if ($category)
 			{
-				$query->where('(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))');
+				$query->where(
+					'(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))'
+				);
 			}
 		}
 
@@ -620,7 +624,9 @@ class RedeventModelBasesessionlist extends RModel
 
 			if ($this->getState('filter.language'))
 			{
-				$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+				$query->where(
+					'(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)'
+				);
 			}
 
 			$db->setQuery($query);
@@ -766,7 +772,7 @@ class RedeventModelBasesessionlist extends RModel
 		{
 			uasort(
 				$fields,
-				function($a, $b){
+				function ($a, $b) {
 					return $a->ordering - $b->ordering;
 				}
 			);
@@ -820,7 +826,7 @@ class RedeventModelBasesessionlist extends RModel
 	/**
 	 * return filter for event custom fields
 	 *
-	 * @return void
+	 * @return RedeventAbstractCustomfield[]
 	 */
 	public function getCustomFilters()
 	{
@@ -985,7 +991,7 @@ class RedeventModelBasesessionlist extends RModel
 	 */
 	public function getEventsOptions()
 	{
-		$query = $this->_buildSelectFrom();
+		$query = $this->buildSelectFrom();
 		$query->select('a.id AS value, a.title AS text');
 		$query->where(' a.published <> 0');
 		$query->clear('group')->group('a.id');
@@ -1013,7 +1019,8 @@ class RedeventModelBasesessionlist extends RModel
 				$query->where(
 					'(c.id = ' . $this->_db->Quote($category->id)
 					. ' OR (c.lft > ' . $this->_db->Quote($category->lft)
-					. ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');
+					. ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))'
+				);
 			}
 		}
 
@@ -1083,7 +1090,8 @@ class RedeventModelBasesessionlist extends RModel
 		{
 			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
 			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)'
+			);
 		}
 
 		$db->setQuery($query);
@@ -1111,7 +1119,8 @@ class RedeventModelBasesessionlist extends RModel
 		{
 			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
 			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)'
+			);
 		}
 
 		if ($filter_country = $this->getState('filter_country'))
@@ -1157,7 +1166,8 @@ class RedeventModelBasesessionlist extends RModel
 		{
 			$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
 			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)'
+			);
 		}
 
 		$db->setQuery($query);

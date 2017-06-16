@@ -63,6 +63,63 @@ class RedeventTableSession extends RedeventTable
 	public $event;
 
 	/**
+	 * @var array
+	 * @since 3.2.3
+	 */
+	private $prices;
+
+	/**
+	 * @var array
+	 * @since 3.2.3
+	 */
+	private $roles;
+
+	/**
+	 * @var array
+	 * @since 3.2.3
+	 */
+	private $new_prices;
+
+	/**
+	 * @var array
+	 * @since 3.2.3
+	 */
+	private $new_roles;
+
+	/**
+	 * Method to bind an associative array or object to the JTable instance.This
+	 * method only binds properties that are publicly accessible and optionally
+	 * takes an array of properties to ignore when binding.
+	 *
+	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @throws  InvalidArgumentException
+	 */
+	public function bind($src, $ignore = array())
+	{
+		// If the source value is an object, get its accessible properties.
+		if (is_object($src))
+		{
+			$src = get_object_vars($src);
+		}
+
+		if (isset($src['new_prices']))
+		{
+			$this->new_prices = $src['new_prices'];
+		}
+
+		if (isset($src['new_roles']))
+		{
+			$this->new_roles = $src['new_roles'];
+		}
+
+		return parent::bind($src, $ignore);
+	}
+
+	/**
 	 * Checks that the object is valid and able to be stored.
 	 *
 	 * This method checks that the parent_id is non-zero and exists in the database.
@@ -93,53 +150,6 @@ class RedeventTableSession extends RedeventTable
 		}
 
 		return true;
-	}
-
-	/**
-	 * Set prices
-	 *
-	 * @param   array  $prices  prices
-	 *
-	 * @return bool
-	 */
-	public function setPrices($prices = array())
-	{
-		// First remove current rows
-		$query = $this->_db->getQuery(true);
-
-		$query->delete('#__redevent_sessions_pricegroups')
-			->where('xref = ' . $this->_db->Quote($this->id));
-
-		$this->_db->setQuery($query);
-
-		if (!$this->_db->execute())
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
-
-		// Then recreate them if any
-		foreach ((array) $prices as $k => $price)
-		{
-			if (!isset($price->pricegroup_id) || !isset($price->price))
-			{
-				continue;
-			}
-
-			$new = RTable::getAdminInstance('Sessionpricegroup', array(), 'com_redevent');
-			$new->set('xref',          $this->id);
-			$new->set('pricegroup_id', $price->pricegroup_id);
-			$new->set('price',         $price->price);
-			$new->set('currency',      $price->currency);
-
-			if (!($new->check() && $new->store()))
-			{
-				$this->setError($new->getError());
-
-				return false;
-			}
-		}
 	}
 
 	/**
@@ -283,7 +293,7 @@ class RedeventTableSession extends RedeventTable
 	 *
 	 * @param   string  $pk  imploded ids
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function checkNoAttendees($pk)
 	{
@@ -406,5 +416,305 @@ class RedeventTableSession extends RedeventTable
 		{
 			throw new Exception($table->getError());
 		}
+	}
+
+	/**
+	 * Called after load().
+	 *
+	 * @param   mixed   $keys    An optional primary key value to load the row by, or an array of fields to match.  If not
+	 *                           set the instance property value is used.
+	 * @param   boolean $reset   True to reset the default values before loading the new row.
+	 *
+	 * @return  boolean  True if successful. False if row not found.
+	 */
+	protected function afterLoad($keys = null, $reset = true)
+	{
+		$this->loadPrices();
+
+		$this->loadRoles();
+
+		return parent::afterLoad($keys, $reset);
+	}
+
+	/**
+	 * Load associated prices
+	 *
+	 * @return boolean
+	 *
+	 * @since 3.2.3
+	 */
+	private function loadPrices()
+	{
+		if (is_null($this->prices))
+		{
+			$this->prices = array();
+
+			if (empty($this->id))
+			{
+				return true;
+			}
+
+			$db = $this->getDbo();
+			$query = $db->getQuery(true)
+				->select('spg.*')
+				->from($db->qn('#__redevent_sessions_pricegroups', 'spg'))
+				->where($db->qn('spg.xref') . ' = ' . (int) $this->id);
+			$db->setQuery($query);
+
+			$this->prices = $db->loadObjectList() ?: array();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Load associated roles
+	 *
+	 * @return boolean
+	 *
+	 * @since 3.2.3
+	 */
+	private function loadRoles()
+	{
+		$this->roles = array();
+
+		if (empty($this->id))
+		{
+			return true;
+		}
+
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('r.*')
+			->from($db->qn('#__redevent_sessions_roles', 'r'))
+			->where($db->qn('r.xref') . ' = ' . (int) $this->id);
+		$db->setQuery($query);
+
+		$this->roles = $db->loadObjectList() ?: array();
+
+		return true;
+	}
+
+	/**
+	 * Called after store().
+	 *
+	 * @param   boolean  $updateNulls  True to update null values as well.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function afterStore($updateNulls = false)
+	{
+		$this->savePrices();
+
+		$this->saveRoles();
+
+		return parent::afterStore($updateNulls);
+	}
+
+	/**
+	 * Save prices
+	 *
+	 * @return boolean
+	 *
+	 * @since 3.2.3
+	 */
+	private function savePrices()
+	{
+		if (empty($this->id) || is_null($this->new_prices))
+		{
+			return true;
+		}
+
+		$this->cleanPrices();
+
+		$newPrices = $this->new_prices;
+
+		// Save them
+		if (empty($newPrices['pricegroup']))
+		{
+			return true;
+		}
+
+		foreach ((array) $newPrices['pricegroup'] as $k => $r)
+		{
+			if (!($newPrices['pricegroup'][$k]))
+			{
+				continue;
+			}
+
+			$new = RTable::getInstance('Sessionpricegroup', 'RedeventTable');
+			$new->set('xref', $this->id);
+			$new->set('pricegroup_id', $r);
+			$new->set('price', $newPrices['price'][$k]);
+			$new->set('vatrate', $newPrices['vatrate'][$k]);
+			$new->set('sku', $newPrices['sku'][$k]);
+			$new->set('currency', $newPrices['currency'][$k]);
+			$new->set('active', 1);
+
+			if ($found = $this->findSessionPricegroup($new))
+			{
+				$new->set('id', $found->id);
+			}
+
+			if (!($new->check() && $new->store()))
+			{
+				$this->setError($new->getError());
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Save roles
+	 *
+	 * @return boolean
+	 *
+	 * @since 3.2.3
+	 */
+	private function saveRoles()
+	{
+		if (empty($this->id) || is_null($this->new_roles))
+		{
+			return true;
+		}
+
+		$this->cleanRoles();
+
+		$newRoles = $this->new_roles;
+
+		// Save them
+		if (empty($newRoles['rrole']))
+		{
+			return true;
+		}
+
+		// Then recreate them if any
+		foreach ((array) $newRoles['rrole'] as $k => $r)
+		{
+			if (!($newRoles['rrole'][$k] && $newRoles['urole'][$k]))
+			{
+				continue;
+			}
+
+			$new = RTable::getAdminInstance('Sessionrole');
+			$new->set('xref', $this->id);
+			$new->set('role_id', $r);
+			$new->set('user_id', $newRoles['urole'][$k]);
+
+			if (!($new->check() && $new->store()))
+			{
+				$this->setError($new->getError());
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Clean roles from db before saving
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.3
+	 */
+	private function cleanRoles()
+	{
+		if (empty($this->id))
+		{
+			return;
+		}
+
+		$query = $this->_db->getQuery(true);
+
+		$query->delete('#__redevent_sessions_roles')
+			->where('xref = ' . $this->id);
+		$this->_db->setQuery($query);
+		$this->_db->execute();
+	}
+
+	/**
+	 * Clean prices from db before saving
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.3
+	 */
+	private function cleanPrices()
+	{
+		if (empty($this->id))
+		{
+			return;
+		}
+
+		// We can only remove delete a price group if there is no attendee associated to it, so first list those
+		$query = $this->_db->getQuery(true)
+			->select('spg.id')
+			->from('#__redevent_sessions_pricegroups AS spg')
+			->join('LEFT', '#__redevent_register AS r ON r.	sessionpricegroup_id = spg.id')
+			->where('r.id IS NULL')
+			->where('spg.xref = ' . $this->id);
+
+		$this->_db->setQuery($query);
+
+		// Them we can safely delete them
+		if ($res = $this->_db->loadColumn())
+		{
+			$query = $this->_db->getQuery(true)
+				->delete('#__redevent_sessions_pricegroups')
+				->where('id IN (' . implode(",", $res) . ')');
+
+			$this->_db->setQuery($query);
+			$this->_db->execute();
+		}
+
+		// Disable the one that are remaining
+		$query = $this->_db->getQuery(true);
+
+		$query->update('#__redevent_sessions_pricegroups')
+			->set('active = 0')
+			->where('xref = ' . $this->id);
+		$this->_db->setQuery($query);
+		$this->_db->execute();
+
+		// Empty cache
+		$this->prices = null;
+	}
+
+	/**
+	 * Check if row is already in table
+	 *
+	 * @param   RTable  $row  session price group row
+	 *
+	 * @return boolean
+	 *
+	 * @since 3.2.3
+	 */
+	private function findSessionPricegroup(RTable $row)
+	{
+		$this->loadPrices();
+
+		if (empty($this->prices))
+		{
+			return false;
+		}
+
+		foreach ($this->prices as $sessionPriceGroup)
+		{
+			if ($sessionPriceGroup->pricegroup_id == $row->pricegroup_id
+				&& $sessionPriceGroup->price == $row->price
+				&& $sessionPriceGroup->vatrate == $row->vatrate
+				&& $sessionPriceGroup->sku == $row->sku
+				&& $sessionPriceGroup->currency == $row->currency)
+			{
+				return $sessionPriceGroup;
+			}
+		}
+
+		return false;
 	}
 }

@@ -144,7 +144,8 @@ class RedeventModelDetails extends RModel
 			$query->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone, t.review_message');
 			$query->select('t.confirmation_message, a.course_code, t.submission_types');
 			$query->select(' t.submission_type_webform, t.submission_type_formal_offer, '
-				. ' t.submission_type_email_pdf, t.submission_type_formal_offer_pdf, t.send_pdf_form, t.pdf_form_data');
+				. ' t.submission_type_email_pdf, t.submission_type_formal_offer_pdf, t.send_pdf_form, t.pdf_form_data'
+			);
 
 			$query->select('x.id AS xref, x.title as session_title');
 			$query->select('x.*');
@@ -284,7 +285,7 @@ class RedeventModelDetails extends RModel
 			return null;
 		}
 
-		/* At least 1 redFORM field must be selected to show the user data from */
+		// At least 1 redFORM field must be selected to show the user data from
 		$table_fields = array();
 		$fields_names = array();
 
@@ -379,7 +380,7 @@ class RedeventModelDetails extends RModel
 			$allowed = explode(",", $this->details->showfields);
 			$fields = array_filter(
 				$fields,
-				function($item) use ($allowed)
+				function ($item) use ($allowed)
 				{
 					return in_array($item->fieldId, $allowed);
 				}
@@ -468,7 +469,7 @@ class RedeventModelDetails extends RModel
 	/**
 	 * Can user manage attendees ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getManageAttendees()
 	{
@@ -480,7 +481,7 @@ class RedeventModelDetails extends RModel
 	/**
 	 * Can user view full attendees details ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getViewFullAttendees()
 	{
@@ -588,6 +589,7 @@ class RedeventModelDetails extends RModel
 			->join('INNER', '#__redevent_event_template AS t ON t.id =  e.template_id')
 			->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id')
 			->where('sp.xref = ' . $this->_db->Quote($event->xref))
+			->where('sp.active = 1')
 			->order('p.ordering ASC');
 
 		$this->_db->setQuery($query);

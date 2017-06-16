@@ -25,7 +25,7 @@ class RedeventModelPaymentreminder extends RModel
 	 *
 	 * @param   array  $attendeeIds  attendee ids
 	 *
-	 * @return int count of notifications sent
+	 * @return integer count of notifications sent
 	 *
 	 * @throws RuntimeException
 	 */
@@ -52,17 +52,17 @@ class RedeventModelPaymentreminder extends RModel
 		{
 			$attendee = new RedeventAttendee($attendeeId);
 
-			/* Load the mailer */
+			// Load the mailer
 			$mailer = $attendee->prepareEmail($subject, $body);
 			$emails = $attendee->getContactEmails();
 
 			foreach ($emails as $email)
 			{
-				/* Add the email address */
+				// Add the email address
 				$mailer->AddAddress($email['email'], $email['fullname']);
 			}
 
-			/* send */
+			// Send
 			if (!$mailer->Send())
 			{
 				throw new RuntimeException('Error sending payment reminder message');
@@ -78,7 +78,7 @@ class RedeventModelPaymentreminder extends RModel
 	/**
 	 * Get total of reminders to send
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getTotal()
 	{
@@ -110,15 +110,15 @@ class RedeventModelPaymentreminder extends RModel
 		if (!$this->attendees)
 		{
 			$query = $this->_db->getQuery(true)
-					->select('r.id')
-					->from('#__redevent_register AS r')
-					->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref')
-					->join('INNER', '#__rwf_submitters AS s ON s.id = r.sid')
-					->join('INNER', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND paid = 0')
-					->where('(x.dates = 0 OR x.dates > NOW())')
-					->where('r.cancelled = 0')
-					->where('(r.payment_reminder_sent = 0 OR TIMESTAMPDIFF(MINUTE, NOW(), r.payment_reminder_sent) > ' . $minimumDelay . ')')
-					->where('pr.price > 0');
+				->select('r.id')
+				->from('#__redevent_register AS r')
+				->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref')
+				->join('INNER', '#__rwf_submitters AS s ON s.id = r.sid')
+				->join('INNER', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND paid = 0')
+				->where('(x.dates = 0 OR x.dates > NOW())')
+				->where('r.cancelled = 0')
+				->where('(r.payment_reminder_sent = 0 OR TIMESTAMPDIFF(MINUTE, NOW(), r.payment_reminder_sent) > ' . $minimumDelay . ')')
+				->where('pr.price > 0');
 
 			$this->_db->setQuery($query);
 
@@ -138,9 +138,9 @@ class RedeventModelPaymentreminder extends RModel
 	private function updateReminderSent($attendeeId)
 	{
 		$query = $this->_db->getQuery(true)
-				->update('#__redevent_register')
-				->set('payment_reminder_sent = NOW()')
-				->where('id = ' . $attendeeId);
+			->update('#__redevent_register')
+			->set('payment_reminder_sent = NOW()')
+			->where('id = ' . $attendeeId);
 
 		$this->_db->setQuery($query);
 		$this->_db->execute();

@@ -30,7 +30,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 	<?php	echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );	?>
 </p>
 
-<?php if ($this->params->def( 'show_page_title', 1 )) : ?>
+<?php if ($this->params->def( 'show_page_heading', 1 )) : ?>
 
     <h1 class="componentheading">
 		<?php echo $this->escape($this->pagetitle); ?>

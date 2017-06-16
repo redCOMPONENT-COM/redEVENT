@@ -60,6 +60,6 @@ class RedeventViewCategoriesdetailed extends RedeventViewFront
 		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns', $cols);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

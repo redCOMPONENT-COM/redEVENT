@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent" method="upgrade">
+    <name>PLG_REDEVENT_AESIRTAGSREPLACEMENT</name>
+    <creationDate>##DATE##</creationDate>
+    <author>redWEB Aps</author>
+    <authorEmail>email@redweb.dk</authorEmail>
+    <authorUrl>www.redcomponent.com</authorUrl>
+    <copyright>(C) 2013 redCOMPONENT.com</copyright>
+    <license>GNU/GPL</license>
+    <version>3.2.3</version>
+    <tag>##VERSION##</tag>
+    <description>PLG_REDEVENT_AESIRTAGSREPLACEMENT_XML_DESCRIPTION</description>
+
+    <files>
+        <file plugin="aesirtagsreplacement">aesirtagsreplacement.php</file>
+        <filename>index.html</filename>
+        <folder>language</folder>
+    </files>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_REDEVENT_AESIRTAGSREPLACEMENT_XML_FIELDSET_GENERAL">
+            </fieldset>
+        </fields>
+    </config>
+
+    <updateservers>
+        <server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/plg_redform_aesirtagsreplacement.xml</server>
+    </updateservers>
+</extension>

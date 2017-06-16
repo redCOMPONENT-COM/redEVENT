@@ -74,7 +74,7 @@ class RedeventViewSearch extends RedeventViewSessionlist
 			$this->assign('columns', $cols);
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -112,7 +112,7 @@ class RedeventViewSearch extends RedeventViewSessionlist
 	 */
 	protected function getFeedLink()
 	{
-		return false;
+		return;
 	}
 
 	/**

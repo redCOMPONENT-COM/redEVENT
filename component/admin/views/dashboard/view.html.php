@@ -41,6 +41,6 @@ class RedeventViewDashboard extends RedeventViewAdmin
 		$this->venuesStats = $this->get('VenuesStats');
 		$this->categoriesStats = $this->get('CategoriesStats');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

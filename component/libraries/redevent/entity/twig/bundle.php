@@ -22,6 +22,15 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigBundle extends AbstractTwigEntity
 {
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigBundle[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntityBundle  $entity  The entity
@@ -29,6 +38,25 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	public function __construct(\RedeventEntityBundle $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntityBundle  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigBundle
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -53,7 +81,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -74,6 +102,8 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		{
 			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
 		}
+
+		return false;
 	}
 
 	/**
@@ -89,9 +119,9 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($bundleEvent)
+			function ($bundleEvent)
 			{
-				return new \RedeventEntityTwigEvent($bundleEvent->getEvent());
+				return \RedeventEntityTwigEvent::getInstance($bundleEvent->getEvent());
 			},
 			$bundleEvents
 		);
@@ -106,7 +136,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	{
 		if ($session = $this->entity->getNextSession())
 		{
-			return new \RedeventEntityTwigSession($session);
+			return \RedeventEntityTwigSession::getInstance($session);
 		}
 
 		return false;
@@ -125,9 +155,9 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($session)
+			function ($session)
 			{
-				return new \RedeventEntityTwigSession($session);
+				return \RedeventEntityTwigSession::getInstance($session);
 			},
 			$sessions
 		);
@@ -156,9 +186,9 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($venue)
+			function ($venue)
 			{
-				return new \RedeventEntityTwigVenue($venue);
+				return \RedeventEntityTwigVenue::getInstance($venue);
 			},
 			$venues
 		);

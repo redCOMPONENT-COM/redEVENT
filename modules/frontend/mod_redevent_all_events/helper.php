@@ -22,7 +22,7 @@ class ModRedeventAlleventsHelper
 	/**
 	 * Method to get the events
 	 *
-	 * @param   JRegistry  &$params  params
+	 * @param   JRegistry  $params  params
 	 *
 	 * @return array
 	 */

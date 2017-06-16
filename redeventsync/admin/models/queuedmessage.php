@@ -22,7 +22,7 @@ class RedeventsyncModelQueuedmessage extends RModelAdmin
 	 *
 	 * @param   mixed  $ids  id or array of ids of items to be processed
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @throws Exception
 	 */
@@ -59,6 +59,7 @@ class RedeventsyncModelQueuedmessage extends RModelAdmin
 			}
 			else
 			{
+				$this->updateErrorCount($message);
 				ResyncHelperMessagelog::log(
 					REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeueing failed'
 				);
@@ -83,6 +84,25 @@ class RedeventsyncModelQueuedmessage extends RModelAdmin
 
 		$query->delete('#__redeventsync_queuedmessages');
 		$query->where('id = ' . $message->id);
+
+		$db->setQuery($query);
+		$db->execute();
+	}
+
+	/**
+	 * Update error count
+	 *
+	 * @param   object  $message  message
+	 *
+	 * @return void
+	 */
+	private function updateErrorCount($message)
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->update('#__redeventsync_queuedmessages')
+			->set('errors = errors  + 1')
+			->where('id = ' . $message->id);
 
 		$db->setQuery($query);
 		$db->execute();

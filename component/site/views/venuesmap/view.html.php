@@ -42,7 +42,8 @@ class RedeventViewVenuesmap extends RedeventViewFront
 		$cat = $this->state->get('cat');
 		$custom = $this->get('CustomFilters');
 		$filter_customs = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.filter_customs',
-			'filtercustom', array(), 'array');
+			'filtercustom', array(), 'array'
+		);
 
 		$rows = $this->get('Data');
 		$countries = $this->get('Countries');
@@ -85,7 +86,7 @@ class RedeventViewVenuesmap extends RedeventViewFront
 		$this->assign('ajaxurl', $ajaxurl);
 		$this->assign('filter_customs', $filter_customs);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

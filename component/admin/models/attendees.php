@@ -155,6 +155,12 @@ class RedeventModelAttendees extends RModelList
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
 		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
 		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 0');
+
+		// Join on redform cart to filter by invoice id
+		$query->join('LEFT', '#__rwf_payment_request AS pr2 ON pr2.submission_id = s.id')
+			->join('LEFT', '#__rwf_cart_item AS ci ON ci.payment_request_id = pr2.id')
+			->join('LEFT', '#__rwf_cart AS cart ON cart.id = ci.cart_id');
+
 		$query->group('r.id');
 
 		// Add associated form fields
@@ -241,6 +247,7 @@ class RedeventModelAttendees extends RModelList
 				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
+				'cart.invoice_id LIKE "%' . $this->getState('filter.search') . '%"',
 				'CONCAT(a.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
 			);
 
@@ -388,7 +395,7 @@ class RedeventModelAttendees extends RModelList
 	 *
 	 * @param   mixed  $pks  ids to delete
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function delete($pks = null)
 	{
@@ -479,18 +486,11 @@ class RedeventModelAttendees extends RModelList
 	{
 		if (count($cid))
 		{
-			$date = JFactory::getDate();
-
-			$query = $this->_db->getQuery(true);
-
-			$query->update('#__redevent_register')
-				->set('confirmed = 1')
-				->set('confirmdate = ' . $this->_db->Quote($date->toSql()))
-				->where('id IN (' . implode(', ', $cid) . ')');
-
-			$this->_db->setQuery($query);
-
-			$this->_db->execute();
+			foreach ($cid as $id)
+			{
+				$attendee = new RedeventAttendee($id);
+				$attendee->confirm();
+			}
 		}
 
 		return true;

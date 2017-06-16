@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent" method="upgrade">
+    <name>PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL</name>
+    <creationDate>##DATE##</creationDate>
+    <author>redWEB Aps</author>
+    <authorEmail>email@redweb.dk</authorEmail>
+    <authorUrl>www.redcomponent.com</authorUrl>
+    <copyright>(C) 2013 redCOMPONENT.com</copyright>
+    <license>GNU/GPL</license>
+    <version>3.2.3</version>
+    <tag>##VERSION##</tag>
+    <description>PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_DESCRIPTION</description>
+
+    <files>
+        <file plugin="paymentnotificationemail">paymentnotificationemail.php</file>
+        <filename>index.html</filename>
+        <folder>language</folder>
+    </files>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_FIELDSET_GENERAL">
+                <field name="subject" type="text" size="80"
+                       label="PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_SUBJECT_LABEL"
+                       description="PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_SUBJECT_DESC"
+                        />
+
+                <field name="body" type="editor"
+                       label="PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_BODY_LABEL"
+                       description="PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_BODY_DESC"
+                       filter="safehtml"
+                        />
+            </fieldset>
+        </fields>
+    </config>
+
+    <updateservers>
+        <server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/plg_redform_paymentnotificationemail.xml</server>
+    </updateservers>
+</extension>

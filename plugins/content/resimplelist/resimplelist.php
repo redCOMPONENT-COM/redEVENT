@@ -41,10 +41,10 @@ class PlgContentResimplelist extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An optional associative array of configuration settings.
-	 *                             Recognized key values include 'name', 'group', 'params', 'language'
-	 *                             (this list is not meant to be comprehensive).
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An optional associative array of configuration settings.
+	 *                            Recognized key values include 'name', 'group', 'params', 'language'
+	 *                            (this list is not meant to be comprehensive).
 	 *
 	 * @since   11.1
 	 */
@@ -57,10 +57,10 @@ class PlgContentResimplelist extends JPlugin
 	/**
 	 * Plugin that loads events lists within content
 	 *
-	 * @param   string  $context   The context of the content being passed to the plugin.
-	 * @param   object  &$article  The article object.  Note $article->text is also available
-	 * @param   object  &$params   The article params
-	 * @param   int     $page      The 'page' number
+	 * @param   string  $context  The context of the content being passed to the plugin.
+	 * @param   object  $article  The article object.  Note $article->text is also available
+	 * @param   object  $params   The article params
+	 * @param   int     $page     The 'page' number
 	 *
 	 * @return void
 	 */
@@ -199,6 +199,7 @@ class PlgContentResimplelist extends JPlugin
 		}
 
 		$i = 0;
+		// @codingStandardsIgnoreStart
 		ob_start();
 		?>
 		<table class="plg_resimplelist" border="0" cellspacing="0" cellpadding="0">
@@ -292,6 +293,7 @@ class PlgContentResimplelist extends JPlugin
 		<?php
 		$html = ob_get_contents();
 		ob_end_clean();
+		// @codingStandardsIgnoreEnd
 
 		return $html;
 	}

@@ -35,7 +35,7 @@ class RedeventControllerSession extends RedeventControllerForm
 	 * Function that allows child controller access to model data
 	 * after the data has been saved.
 	 *
-	 * @param   JModelLegacy  &$model     The data model object.
+	 * @param   JModelLegacy  $model      The data model object.
 	 * @param   array         $validData  The validated data.
 	 *
 	 * @return  void
@@ -54,7 +54,8 @@ class RedeventControllerSession extends RedeventControllerForm
 			return;
 		}
 
-		/* Check if people need to be moved on or off the waitinglist */
+		// Check if people need to be moved on or off the waitinglist
+
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($sessionId);
 		$model_wait->UpdateWaitingList();

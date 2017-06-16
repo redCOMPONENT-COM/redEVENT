@@ -108,7 +108,7 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 	/**
 	 * Get total
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getTotal()
 	{

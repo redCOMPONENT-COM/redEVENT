@@ -24,6 +24,15 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	use Traits\HasCheckin, Traits\HasFeatured, Traits\HasState;
 
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigSession[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntitySession  $entity  The entity
@@ -34,12 +43,33 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntitySession  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigSession
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
+	}
+
+	/**
 	 * is triggered when invoking inaccessible methods in an object context.
 	 *
 	 * @param   method  $name       method name
 	 * @param   array   $arguments  arguments
 	 *
 	 * @return mixed
+	 *
+	 * @throws LogicException
 	 */
 	public function __call($name, $arguments)
 	{
@@ -47,6 +77,8 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 		{
 			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
 		}
+
+		throw new LogicException('wrong function call');
 	}
 
 	/**
@@ -71,7 +103,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -81,7 +113,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	/**
 	 * Return number of booked places
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getBooked()
 	{
@@ -114,13 +146,13 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	{
 		$event = $this->entity->getEvent();
 
-		return $event->isValid() ? new \RedeventEntityTwigEvent($event) : false;
+		return $event->isValid() ? \RedeventEntityTwigEvent::getInstance($event) : false;
 	}
 
 	/**
 	 * Return number of places left
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getLeft()
 	{
@@ -130,21 +162,33 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	/**
 	 * Get session price groups
 	 *
-	 * @return   array|bool
+	 * @return   array|boolean
 	 */
 	public function getPrices()
 	{
-		$prices = $this->entity->getPricegroups();
+		$prices = $this->entity->getUserActivePricegroups();
 
 		return $prices
 			? array_map(
-				function($entity)
+				function ($entity)
 				{
-					return new \RedeventEntityTwigSessionpricegroup($entity);
+					return \RedeventEntityTwigSessionpricegroup::getInstance($entity);
 				},
 				$prices
 			)
 			: false;
+	}
+
+	/**
+	 * Return signup form
+	 *
+	 * @return string
+	 */
+	public function getSignupform()
+	{
+		$helper = new \RedeventTagsRegistrationSession($this->entity->id);
+
+		return $helper->getHtml();
 	}
 
 	/**
@@ -166,7 +210,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	{
 		$venue = $this->entity->getVenue();
 
-		return $venue->isValid() ? new \RedeventEntityTwigVenue($venue) : false;
+		return $venue->isValid() ? \RedeventEntityTwigVenue::getInstance($venue) : false;
 	}
 
 	/**

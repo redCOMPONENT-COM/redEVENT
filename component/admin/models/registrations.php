@@ -70,7 +70,6 @@ class RedeventModelRegistrations extends RModelList
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
-		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.xref');
 		$id	.= ':' . $this->getState('filter.confirmed');
 		$id .= ':' . $this->getState('filter.waiting');
@@ -135,6 +134,11 @@ class RedeventModelRegistrations extends RModelList
 		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
 		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 0');
 
+		// Join on redform cart to filter by invoice id
+		$query->join('LEFT', '#__rwf_payment_request AS pr2 ON pr2.submission_id = s.id')
+			->join('LEFT', '#__rwf_cart_item AS ci ON ci.payment_request_id = pr2.id')
+			->join('LEFT', '#__rwf_cart AS cart ON cart.id = ci.cart_id');
+
 		$this->buildWhere($query);
 
 		$query->order(
@@ -148,15 +152,17 @@ class RedeventModelRegistrations extends RModelList
 	/**
 	 * Add where part from filters
 	 *
-	 * @param   JDatabaseQuery  &$query  query
+	 * @param   JDatabaseQuery  $query  query
 	 *
 	 * @return JDatabaseQuery
 	 */
 	private function buildWhere(&$query)
 	{
-		if (!empty($this->getState('filter.confirmed')))
+		$filterConfirmed = $this->getState('filter.confirmed');
+
+		if (!empty($filterConfirmed))
 		{
-			switch ($this->getState('filter.confirmed'))
+			switch ($filterConfirmed)
 			{
 				case "unconfirmed":
 					$query->where('r.confirmed = 0');
@@ -167,9 +173,11 @@ class RedeventModelRegistrations extends RModelList
 			}
 		}
 
-		if (!empty($this->getState('filter.waiting')))
+		$filterWaiting = $this->getState('filter.waiting');
+
+		if (!empty($filterWaiting))
 		{
-			switch ($this->getState('filter.waiting'))
+			switch ($this->getState($filterWaiting))
 			{
 				case "attending":
 					$query->where('r.waitinglist = 0');
@@ -180,44 +188,61 @@ class RedeventModelRegistrations extends RModelList
 			}
 		}
 
-		if (!empty($this->getState('filter.cancelled')))
+		$filterCancelled = $this->getState('filter.cancelled', 0);
+
+		switch ($filterCancelled)
 		{
-			switch ($this->getState('filter.cancelled'))
-			{
-				case "active":
-					$query->where('r.cancelled = 0');
-					break;
-				case "cancelled":
-					$query->where('r.cancelled = 1');
-					break;
-			}
+			case 1:
+				$query->where('r.cancelled = 1');
+				break;
+			case 2:
+				$query->where('r.cancelled = 0');
+				break;
 		}
 
-		if ($this->getState('filter.search'))
+		$filterSearch = $this->getState('filter.search');
+
+		if ($filterSearch)
 		{
 			$where = array(
 				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
-				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
+				's.submit_key = "' . $this->getState('filter.search') . '"',
+				'cart.invoice_id LIKE "%' . $this->getState('filter.search') . '%"',
+				'cart.reference = "' . $this->getState('filter.search') . '"',
+				'CONCAT(e.course_code, "-", x.id, "-", r.id) LIKE "%' . $filterSearch . '%"'
 			);
+
+			if (strstr($filterSearch, 'payment:'))
+			{
+				$search = substr($filterSearch, strlen('payment:'));
+				$query->innerJoin('#__rwf_payment AS pay ON pay.cart_id = cart.id');
+				$where[] = 'pay.data LIKE ' . $this->_db->q('%' . $search . '%');
+			}
 
 			$query->where('(' . implode(' OR ', $where) . ')');
 		}
 
-		if ($this->getState('filter.origin'))
+		$filterOrigin = $this->getState('filter.origin');
+
+		if ($filterOrigin)
 		{
-			$query->where('r.origin LIKE "%' . $this->getState('filter.origin') . '%"');
+			$query->where('r.origin LIKE "%' . $filterOrigin . '%"');
 		}
 
-		if (is_numeric($this->getState('filter.venue')))
+		$filterVenue = $this->getState('filter.venue');
+
+		if (is_numeric($filterVenue))
 		{
-			$query->where('x.venueid = ' . $this->getState('filter.venue'));
+			$query->where('x.venueid = ' . $filterVenue);
 		}
 
-		if ($this->getState('filter.session'))
+		$filterSession = $this->getState('filter.session');
+
+		if ($filterSession)
 		{
-			$query->where('r.xref = ' . $this->getState('filter.session'));
+			$query->where('r.xref = ' . $filterSession);
 		}
 
 		return $query;
@@ -332,5 +357,20 @@ class RedeventModelRegistrations extends RModelList
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * @param   string $ordering  An optional ordering field.
+	 * @param   string $direction An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   __deploy_version__
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		return parent::populateState($ordering ?: 'r.uregdate', $direction ?: 'desc');
 	}
 }

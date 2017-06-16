@@ -64,7 +64,7 @@ class RedeventControllerFront extends JControllerLegacy
 				break;
 		}
 
-		parent::display();
+		return parent::display();
 	}
 
 	/**
@@ -115,7 +115,7 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'showfilters':
 					if ($v)
 					{
-						$myuri->setVar($filter, $v);
+						$myuri->setVar($filter, urlencode($v));
 						$vars++;
 					}
 					break;
@@ -137,14 +137,14 @@ class RedeventControllerFront extends JControllerLegacy
 							{
 								if ($sub)
 								{
-									$myuri->setVar("filtercustom[$n][$k]", $sub);
+									$myuri->setVar("filtercustom[$n][$k]", urlencode($sub));
 									$vars++;
 								}
 							}
 						}
 						elseif ($val)
 						{
-							$myuri->setVar("filtercustom[$n]", $val);
+							$myuri->setVar("filtercustom[$n]", urlencode($val));
 							$vars++;
 						}
 					}
@@ -156,7 +156,7 @@ class RedeventControllerFront extends JControllerLegacy
 					{
 						if ($v)
 						{
-							$myuri->setVar($filter, $v);
+							$myuri->setVar($filter, urlencode($v));
 							$vars++;
 						}
 					}

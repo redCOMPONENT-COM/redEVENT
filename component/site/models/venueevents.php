@@ -59,7 +59,9 @@ class RedeventModelVenueevents extends RedeventModelBasesessionlist
 		{
 			// Get the filter request variables
 			$this->setState('filter_order',     JFactory::getApplication()->input->getCmd('filter_order', 'a.title'));
-			$this->setState('filter_order_Dir', strtoupper(JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+			$this->setState(
+				'filter_order_Dir', strtoupper(JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC'
+			);
 		}
 
 		$this->setState('results_type', $results_type);
@@ -96,7 +98,7 @@ class RedeventModelVenueevents extends RedeventModelBasesessionlist
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 
 			$pagination = $this->getPagination();
 			$this->data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
@@ -114,11 +116,11 @@ class RedeventModelVenueevents extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
-		$query = parent::_buildWhere($query);
+		$query = parent::buildWhere($query);
 
-		/* Check if a venue ID is set */
+		// Check if a venue ID is set
 		if ($this->id > 0)
 		{
 			$query->where('x.venueid = ' . $this->id);
@@ -187,7 +189,7 @@ class RedeventModelVenueevents extends RedeventModelBasesessionlist
 			$map[$ev->id] = $k;
 		}
 
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 		$query->clear('order');
 		$query->where('a.id IN (' . implode(",", $event_ids) . ')');
 

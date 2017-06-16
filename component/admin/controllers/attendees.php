@@ -27,7 +27,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	{
 		if (!(is_array($cid) && count($cid)))
 		{
-			return false;
+			return;
 		}
 
 		foreach ($cid as $attendee_id)
@@ -43,7 +43,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	 *
 	 * @TODO: reimplement for 3.x
 	 *
-	 * @return true on sucess
+	 * @return void
 	 */
 	public function move()
 	{
@@ -53,7 +53,8 @@ class RedeventControllerAttendees extends RControllerAdmin
 		$total = count($cid);
 		$formid = $this->input->getInt('form_id');
 
-		/* Check if anything is selected */
+		// Check if anything is selected
+
 		if (!is_array($cid) || count($cid) < 1)
 		{
 			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_attendee_to_move'));
@@ -62,21 +63,27 @@ class RedeventControllerAttendees extends RControllerAdmin
 		if (!$dest)
 		{
 			// Display the form to chose destination
-			/* Create the view object */
+			// Create the view object
+
 			$view = $this->getView('attendees', 'html');
 
-			/* Standard model */
+			// Standard model
+
 			$view->setModel($this->getModel('attendees', 'RedeventModel'), true);
-			/* set layout */
+
+			// Set layout
+
 			$view->setLayout('move');
 
-			/* Now display the view */
+			// Now display the view
+
 			$view->display();
 
 			return;
 		}
 
-		/* Get all submitter ID's */
+		// Get all submitter ID's
+
 		$model = $this->getModel('attendees');
 
 		if (!$model->move($cid, $dest))
@@ -92,7 +99,8 @@ class RedeventControllerAttendees extends RControllerAdmin
 			$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 		}
 
-		/* Check if we have space on the waiting list */
+		// Check if we have space on the waiting list
+
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
@@ -111,7 +119,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * confirm an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function confirm()
 	{
@@ -155,7 +163,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * remove confirm status from an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function unconfirm()
 	{
@@ -199,7 +207,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * set cancelled status to an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function cancelreg()
 	{
@@ -210,7 +218,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 		if ($model->cancelreg($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
-			$this->setRedirect($this->getRedirectToListRoute('&filter[cancelled]=1'), $msg);
+			$this->setRedirect($this->getRedirectToListRoute(), $msg);
 
 			foreach ($cid as $attendee_id)
 			{
@@ -229,7 +237,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * remove cancelled status from an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function uncancelreg()
 	{
@@ -240,7 +248,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 		if ($model->uncancelreg($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
-			$this->setRedirect($this->getRedirectToListRoute('&filter[cancelled]=0'), $msg);
+			$this->setRedirect($this->getRedirectToListRoute(), $msg);
 
 			foreach ($cid as $attendee_id)
 			{
@@ -259,7 +267,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * puts attendees on the waiting list of the session
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function onwaiting()
 	{
@@ -303,7 +311,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/**
 	 * puts attendees off the waiting list of the session
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function offwaiting()
 	{
@@ -370,7 +378,7 @@ class RedeventControllerAttendees extends RControllerAdmin
 
 				if (!$sessionId)
 				{
-					die( 'Missing session Id' );
+					die('Missing session Id');
 				}
 			}
 

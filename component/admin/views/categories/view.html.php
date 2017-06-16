@@ -59,7 +59,7 @@ class RedeventViewCategories extends RedeventViewAdmin
 			$this->canEditState = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -99,7 +99,9 @@ class RedeventViewCategories extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('category.edit');
 			$secondGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('categoriescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false);
+			$importExport = RToolbarBuilder::createStandardButton(
+				'categoriescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false
+			);
 			$secondGroup->addButton($importExport);
 		}
 

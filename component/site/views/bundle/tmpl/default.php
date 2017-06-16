@@ -12,8 +12,15 @@ RHelperAsset::load('lib/handlebars.js');
 RHelperAsset::load('site/bundle-addtocart.js');
 RHelperAsset::load('site/bundle-addtocart.css');
 ?>
-<div id="redevent" class="bundle-details">
-<h2><?= $this->bundle->name ?></h2>
+<div id="redevent" class="bundle-details<?= $this->params->get('pageclass_sfx') ?>">
+
+	<?php if ($this->params->def( 'show_page_heading', 1 )) : ?>
+		<h1 class="componentheading">
+			<?php echo $this->escape($this->pagetitle); ?>
+		</h1>
+	<?php endif; ?>
+
+	<h2><?= $this->bundle->name ?></h2>
 
 	<div class="description"><?= $this->bundle->description ?></div>
 

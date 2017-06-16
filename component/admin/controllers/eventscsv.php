@@ -22,7 +22,7 @@ class RedeventControllerEventscsv extends RControllerForm
 	 * @param   string  $urlVar  The name of the URL variable if different from the primary key
 	 * (sometimes required to avoid router collisions).
 	 *
-	 * @return  boolean  True if access level check and checkout passes, false otherwise.
+	 * @return  void
 	 */
 	public function edit($key = null, $urlVar = null)
 	{
@@ -42,7 +42,8 @@ class RedeventControllerEventscsv extends RControllerForm
 		if (!isset($jformFiles['import']))
 		{
 			$msg = JText::_('COM_REDEVENT_IMPORT_ERROR_MISSING_FILE');
-			$this->redirect('index.php?options=com_redevent&view=eventscsv', $msg, 'error');
+			$this->setRedirect('index.php?options=com_redevent&view=eventscsv', $msg, 'error');
+			$this->redirect();
 		}
 
 		$file = $jformFiles['import'][0];
@@ -56,8 +57,7 @@ class RedeventControllerEventscsv extends RControllerForm
 		{
 			$msg = JText::_('COM_REDEVENT_Cannot_open_uploaded_file.');
 			$this->setRedirect('index.php?option=com_redevent&view=eventscsv', $msg, 'error');
-
-			return;
+			$this->redirect();
 		}
 
 		// Get fields, on first row of the file
@@ -76,7 +76,8 @@ class RedeventControllerEventscsv extends RControllerForm
 		// If there is no validated fields, there is a problem...
 		if (!count($fields))
 		{
-			$msg .= "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />try to export first to get an example of formatting</p>\n";
+			$msg .= "<p>Error parsing column names. Are you sure this is a proper csv export ?<br />"
+				. "try to export first to get an example of formatting</p>\n";
 			$this->setRedirect('index.php?option=com_redevent&view=eventscsv', $msg, 'error');
 
 			return;
@@ -141,8 +142,8 @@ class RedeventControllerEventscsv extends RControllerForm
 			$msg .= "<p>total ignored events: " . $result['ignored'] . "</p>\n";
 
 			$msg .= "<p>total added sessions: " . $result['addedSessions'] . "</p>\n";
-			$msg .= "<p>total updated sessions: " . $result['addedSessions'] . "</p>\n";
-			$msg .= "<p>total ignored sessions: " . $result['addedSessions'] . "</p>\n";
+			$msg .= "<p>total updated sessions: " . $result['updatedSessions'] . "</p>\n";
+			$msg .= "<p>total ignored sessions: " . $result['ignoredSessions'] . "</p>\n";
 		}
 
 		$this->setRedirect('index.php?option=com_redevent&view=eventscsv', $msg, $msgType);

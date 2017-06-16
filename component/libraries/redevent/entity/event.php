@@ -37,6 +37,50 @@ class RedeventEntityEvent extends RedeventEntityBase
 	private $template;
 
 	/**
+	 * @var RedeventEntityBundle[]
+	 */
+	private $bundles;
+
+	/**
+	 * @var RedeventEntityVenue[]
+	 */
+	private $activeVenues;
+
+	/**
+	 * Get venues used by published event sessions
+	 *
+	 * @return RedeventEntityVenue[]
+	 */
+	public function getActiveVenues()
+	{
+		if (is_null($this->activeVenues))
+		{
+			$sessions = $this->getPublishedSessions();
+
+			$this->activeVenues = array_reduce(
+				$sessions,
+				function ($list, $session)
+				{
+					$venue = $session->getVenue();
+
+					// PHPCS Indentation error false-positive
+					// @codingStandardsIgnoreStart
+					if (empty($list[$venue->id]))
+					{
+						$list[$venue->id] = new RedeventEntityTwigVenue($venue);
+					}
+					// @codingStandardsIgnoreEnd
+
+					return $list;
+				},
+				array()
+			);
+		}
+
+		return $this->activeVenues;
+	}
+
+	/**
 	 * Get event categories
 	 *
 	 * @return RedeventEntityCategory[]
@@ -68,7 +112,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 		}
 
 		$this->categories = array_map(
-			function($row)
+			function ($row)
 			{
 				return RedeventEntityCategory::getInstance($row->id)->bind($row);
 			},
@@ -105,26 +149,31 @@ class RedeventEntityEvent extends RedeventEntityBase
 	 */
 	public function getBundles()
 	{
-		if (!$this->hasId())
+		if (is_null($this->bundles))
 		{
-			return false;
+			if (!$this->hasId())
+			{
+				return false;
+			}
+
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('b.*')
+				->from('#__redevent_bundle AS b')
+				->join('INNER', '#__redevent_bundle_event AS be ON be.bundle_id = b.id')
+				->where('be.event_id = ' . $this->id);
+
+			$db->setQuery($query);
+
+			if (!$res = $db->loadObjectList())
+			{
+				return false;
+			}
+
+			$this->bundles = RedeventEntityBundle::loadArray($res);
 		}
 
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select('b.*')
-			->from('#__redevent_bundle AS b')
-			->join('INNER', '#__redevent_bundle_event AS be ON be.bundle_id = b.id')
-			->where('be.event_id = ' . $this->id);
-
-		$db->setQuery($query);
-
-		if (!$res = $db->loadObjectList())
-		{
-			return false;
-		}
-
-		return RedeventEntityBundle::loadArray($res);
+		return $this->bundles;
 	}
 
 	/**
@@ -173,17 +222,76 @@ class RedeventEntityEvent extends RedeventEntityBase
 	 */
 	public function getSessions($order = null, $orderDir = null, $filters = array())
 	{
-		$sessions = $this->getAllSessions();
-		$sessions = $this->filterSessions($sessions, $filters);
-		$sessions = $this->orderSessions($sessions, $order, $orderDir);
+		if (!$this->isValid())
+		{
+			return false;
+		}
 
-		return $sessions;
+		$order = $order ?: 'dates';
+		$orderDir = $orderDir ?: 'asc';
+
+		$hash = "order=$order&orderDir=$orderDir";
+
+		if (!empty($filters))
+		{
+			foreach ($filters as $k => $val)
+			{
+				$hash .= "$k=$val";
+			}
+		}
+
+		if (is_null($this->sessions[$hash]))
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('*')
+				->from('#__redevent_event_venue_xref')
+				->where('eventid = ' . $this->id);
+
+			$query = $this->filterSessions($query, $filters);
+			$query = $this->orderSessions($query, $order, $orderDir);
+
+			$db->setQuery($query);
+
+			if (!$res = $db->loadObjectList())
+			{
+				$this->sessions[$hash] = false;
+
+				return false;
+			}
+
+			$this->sessions[$hash] = array_map(
+				function ($row)
+				{
+					return RedeventEntitySession::getInstance($row->id)->bind($row);
+				},
+				$res
+			);
+		}
+
+		return $this->sessions[$hash];
+	}
+
+	/**
+	 * Get event sessions
+	 *
+	 * @param   string  $order     order string (startdate, venue)
+	 * @param   string  $orderDir  order direction
+	 * @param   array   $filters   array of filters (only published for now)
+	 *
+	 * @return RedeventEntitySession[]
+	 */
+	public function getPublishedSessions($order = null, $orderDir = null, $filters = array())
+	{
+		$filters = array_merge(array('published' => 1), $filters);
+
+		return $this->getSessions($order, $orderDir, $filters);
 	}
 
 	/**
 	 * Check if event has a valid review text
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function hasReview()
 	{
@@ -198,16 +306,16 @@ class RedeventEntityEvent extends RedeventEntityBase
 	/**
 	 * filter sessions
 	 *
-	 * @param   RedeventEntitySession[]  $sessions  sessions to order
-	 * @param   array                    $filters   array of filters
+	 * @param   JDatabaseQuery  $query    query
+	 * @param   array           $filters  array of filters
 	 *
-	 * @return array
+	 * @return JDatabaseQuery
 	 */
-	private function filterSessions($sessions, $filters = array())
+	private function filterSessions($query, $filters = array())
 	{
 		if (!$filters)
 		{
-			return $sessions;
+			return $query;
 		}
 
 		foreach ($filters as $filter => $value)
@@ -215,113 +323,58 @@ class RedeventEntityEvent extends RedeventEntityBase
 			switch ($filter)
 			{
 				case 'published':
-					$sessions = array_filter(
-						$sessions,
-						function($session) use ($value)
-						{
-							return $session->published == $value;
-						}
-					);
+					$query->where('published = ' . (int) $value);
 					break;
 
 				case 'upcoming':
-					$sessions = array_filter(
-						$sessions,
-						function($session) use ($value)
-						{
-							$upcoming = $session->isUpcoming();
+					$where = array();
 
-							return $value ? $upcoming : !$upcoming;
-						}
-					);
+					if (RedeventHelper::config()->get('open_as_upcoming'))
+					{
+						$where[] = "dates = 0";
+					}
+
+					$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates, " ", x.times) ELSE x.dates END > NOW())';
+
+					$query->where('(' . implode(" OR ", $where) . ')');
+					break;
+
+				case 'featured':
+					$query->where('featured = 1');
 					break;
 			}
 		}
 
-		return $sessions;
+		return $query;
 	}
 
 	/**
-	 * Get all event sessions
+	 * filter sessions
 	 *
-	 * @return RedeventEntitySession[]
+	 * @param   JDatabaseQuery  $query     query
+	 * @param   string          $order     property to use for ordering
+	 * @param   string          $orderDir  direction
+	 *
+	 * @return JDatabaseQuery
 	 */
-	private function getAllSessions()
+	private function orderSessions($query, $order = null, $orderDir = null)
 	{
-		if (!$this->isValid())
-		{
-			return false;
-		}
-
-		if (is_null($this->sessions))
-		{
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
-				->select('*')
-				->from('#__redevent_event_venue_xref')
-				->where('eventid = ' . $this->id);
-
-			$db->setQuery($query);
-
-			if (!$res = $db->loadObjectList())
-			{
-				$this->sessions = false;
-
-				return false;
-			}
-
-			$this->sessions = array_map(
-				function($row)
-				{
-					return RedeventEntitySession::getInstance($row->id)->bind($row);
-				},
-				$res
-			);
-		}
-
-		return $this->sessions;
-	}
-
-	/**
-	 * order sessions
-	 *
-	 * @param   RedeventEntitySession[]  $sessions  sessions to order
-	 * @param   string                   $order     property to use for ordering
-	 * @param   string                   $orderDir  direction
-	 *
-	 * @return array
-	 */
-	private function orderSessions($sessions, $order = null, $orderDir = null)
-	{
-		$orderDir = strtolower($orderDir) == 'asc' ? 'ASC' : 'DESC';
+		$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
+		$ordering_def = ($open_order ? 'dates = 0 ' : 'dates > 0 ') . $orderDir
+			. ', dates ' . $orderDir . ', times ' . $orderDir . ', featured DESC';
 
 		switch ($order)
 		{
 			case 'dates':
-				usort(
-					$sessions,
-					function($a, $b)
-					{
-						$dateA = JFactory::getDate($a->dates . ' ' . $a->times);
-						$dateB = JFactory::getDate($b->dates . ' ' . $b->times);
-
-						if ($dateA == $dateB)
-						{
-							return 0;
-						}
-
-						return $dateA > $dateB ? 1 : - 1;
-					}
-				);
-
-				if ($orderDir == 'DESC')
-				{
-					$sessions = array_reverse($sessions);
-				}
-
+				$ordering = $ordering_def;
 				break;
+
+			default:
+				$ordering = $order . ' ' . $orderDir . ', ' . $ordering_def;
 		}
 
-		return $sessions;
+		$query->order($ordering);
+
+		return $query;
 	}
 }

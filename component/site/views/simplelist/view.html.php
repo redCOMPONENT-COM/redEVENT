@@ -28,7 +28,7 @@ class RedeventViewSimpleList extends RedeventViewSessionlist
 		$this->assign('list_link', RedeventHelperRoute::getSimpleListRoute(null, 'default'));
 		$this->assign('dellink', JFactory::getUser()->authorise('re.createevent'));
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -42,7 +42,7 @@ class RedeventViewSimpleList extends RedeventViewSessionlist
 		$menuItem = $app->getMenu()->getActive();
 		$params = $app->getParams();
 
-		$params->def('page_title', (isset($menuItem->title) ? $menuItem->title : JText::_('COM_REDEVENT_Events')));
+		$params->def('page_heading', (isset($menuItem->title) ? $menuItem->title : JText::_('COM_REDEVENT_Events')));
 
 		return $params->get('page_title');
 	}

@@ -53,5 +53,7 @@ class RedeventViewVenues extends RViewSite
 
 			$doc->addItem($item);
 		}
+
+		return true;
 	}
 }

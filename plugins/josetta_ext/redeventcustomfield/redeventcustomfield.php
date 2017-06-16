@@ -100,7 +100,7 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 	 * @param   object  $item     item
 	 * @param   array   &$errors  errors
 	 *
-	 * @return bool|void
+	 * @return boolean|void
 	 */
 	public function onJosettaSaveItem($context, $item, &$errors)
 	{

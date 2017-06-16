@@ -146,7 +146,7 @@ class RedeventControllerRegistrations extends RControllerAdmin
 	/**
 	 * confirm an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function confirm()
 	{
@@ -190,7 +190,7 @@ class RedeventControllerRegistrations extends RControllerAdmin
 	/**
 	 * remove confirm status from an attendee registration
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function unconfirm()
 	{
@@ -234,7 +234,7 @@ class RedeventControllerRegistrations extends RControllerAdmin
 	/**
 	 * puts attendees on the waiting list of the session
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function onwaiting()
 	{
@@ -278,7 +278,7 @@ class RedeventControllerRegistrations extends RControllerAdmin
 	/**
 	 * puts attendees off the waiting list of the session
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function offwaiting()
 	{

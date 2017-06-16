@@ -23,26 +23,6 @@ class RedeventModelVenuesmap extends RModel
 	protected $data = null;
 
 	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		$app = JFactory::getApplication();
-
-		// Get the paramaters of the active menu item
-		$params = $app->getParams('com_redevent');
-
-		$this->setState('vcat', $app->input->get('filter_venuecategory', $params->def('vcat', 0), 'string'));
-		$this->setState('cat', $app->input->get('filter_category', $params->def('cat', 0), 'string'));
-
-		$this->setState('filter.language', $app->getLanguageFilter());
-	}
-
-	/**
 	 * Method to get the Venues
 	 *
 	 * @return array
@@ -69,7 +49,7 @@ class RedeventModelVenuesmap extends RModel
 				$venue->limage = RedeventImage::flyercreator($venue->locimage);
 
 				// Generate Venuedescription
-				if (!empty ($venue->locdescription))
+				if (!empty($venue->locdescription))
 				{
 					// Execute plugins
 					$venue->locdescription = JHTML::_('content.prepare', $venue->locdescription);
@@ -117,7 +97,7 @@ class RedeventModelVenuesmap extends RModel
 		$app = JFactory::getApplication();
 		$vcat = $this->getState('vcat');
 		$cat = $this->getState('cat');
-		$customs = $app->getUserState('com_redevent.venuesmap.filter_customs');
+		$customs = $this->getState('filter_customs');
 
 		$params = $app->getParams();
 
@@ -163,21 +143,31 @@ class RedeventModelVenuesmap extends RModel
 
 		foreach ((array) $customs as $key => $custom)
 		{
-			if ($custom != '')
+			if ($custom)
 			{
 				if (is_array($custom))
 				{
-					$custom = implode("/n", $custom);
-				}
+					$or = array();
 
-				$query->where('custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $custom . '%'));
+					foreach ($custom as $c)
+					{
+						$or[] = 'custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $c . '%');
+					}
+
+					$query->where('(' . implode(" OR ", $or) . ')');
+				}
+				else
+				{
+					$query->where('custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $custom . '%'));
+				}
 			}
 		}
 
 		if ($this->getState('filter.language'))
 		{
 			$query->where('(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR v.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR v.language IS NULL)'
+			);
 		}
 
 		$query->group('v.id');
@@ -250,9 +240,13 @@ class RedeventModelVenuesmap extends RModel
 	 */
 	public function getCustomFilters()
 	{
-		$query = ' SELECT f.* FROM #__redevent_fields AS f '
-			. ' WHERE f.published = 1 AND f.searchable = 1 AND f.object_key = ' . $this->_db->Quote("redevent.event")
-			. ' ORDER BY f.ordering ASC ';
+		$query = $this->_db->getQuery(true)
+			->select('f.*')
+			->from('#__redevent_fields AS f')
+			->where('f.published = 1')
+			->where('f.searchable = 1')
+			->order('f.ordering ASC');
+
 		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
 
@@ -266,5 +260,34 @@ class RedeventModelVenuesmap extends RModel
 		}
 
 		return $filters;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2.3
+	 */
+	protected function populateState()
+	{
+		parent::populateState();
+
+		$app = JFactory::getApplication();
+
+		// Get the paramaters of the active menu item
+		$params = $app->getParams('com_redevent');
+
+		$this->setState('vcat', $app->input->get('filter_venuecategory', $params->def('vcat', 0), 'string'));
+		$this->setState('cat', $app->input->get('filter_category', $params->def('cat', 0), 'string'));
+
+		$this->setState('filter.language', $app->getLanguageFilter());
+
+		$customs      = $app->input->get('filtercustom', array(), 'array');
+		$this->setState('filter_customs', $customs);
 	}
 }

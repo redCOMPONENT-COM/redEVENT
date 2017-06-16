@@ -17,6 +17,12 @@ $link = JHTML::link(JRoute::_('index.php?option=com_redform&view=payments&submit
 		<?php foreach ($row->paymentRequests as $pr): ?>
 			<?php $link = JHTML::link(JRoute::_('index.php?option=com_redform&view=payments&pr=' . $pr->id), JText::_('COM_REDEVENT_history')); ?>
 			<li>
+				<?php if ($pr->invoice_id): ?>
+					<?= $pr->invoice_id ?>
+				<?php else: ?>
+					<?= JText::_('COM_REDEVENT_REGISTRATION_NO_INVOICE_ID_YET') ?>
+				<?php endif; ?>
+				<br>
 				<?php echo RHelperCurrency::getFormattedPrice($pr->price + $pr->vat, $pr->currency); ?>
 				<?php if (!$pr->paid): ?>
 					<?php echo RHtml::tooltip(JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID'), '', false, '<i class="icon-remove"></i>' . $link); ?>

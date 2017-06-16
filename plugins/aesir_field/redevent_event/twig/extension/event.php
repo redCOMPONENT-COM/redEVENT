@@ -1,22 +1,20 @@
 <?php
 /**
- * @package     Aesir.Library
+ * @package     Redevent.Library
  * @subpackage  Twig.Extension
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-use Aesir\Twig\Extension;
-
 defined('_JEXEC') or die;
 
 /**
  * Event Twig extension.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  3.2.3
  */
-class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
+class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends Redevent\Twig\Plugin
 {
 	/**
 	 * Inject our filter.
@@ -25,8 +23,9 @@ class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
 	 */
 	public function getFunctions()
 	{
-		return array(
-			new \Twig_SimpleFunction('redevent_event', array($this, 'getInstance'))
+		return array_merge(
+			parent::getFunctions(),
+			array(new \Twig_SimpleFunction('redevent_event', array($this, 'getInstance')))
 		);
 	}
 
@@ -35,13 +34,17 @@ class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends \Twig_Extension
 	 *
 	 * @param   integer  $id  Item identifier
 	 *
-	 * @return  mixed  \Aesir\Entity\Twig\Category || null
+	 * @return  mixed  \RedeventEntityTwigEvent || null
 	 */
 	public function getInstance($id)
 	{
-		$item = \RedeventEntityEvent::load((int) $id);
+		if (empty(self::$twigEntities[$id]))
+		{
+			$item = \RedeventEntityEvent::load((int) $id);
+			self::$twigEntities[$id] = $item->isLoaded() ? \RedeventEntityTwigEvent::getInstance($item) : null;
+		}
 
-		return $item->isLoaded() ? new \RedeventEntityTwigEvent($item) : null;
+		return self::$twigEntities[$id];
 	}
 
 	/**

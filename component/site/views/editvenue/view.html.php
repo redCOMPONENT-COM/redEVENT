@@ -37,17 +37,17 @@ class RedeventViewEditvenue extends RViewSite
 		{
 			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
 
-			return;
+			return false;
 		}
 		elseif (!$this->item->id && !$acl->canAddVenue())
 		{
 			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
 
-			return;
+			return false;
 		}
 
 		// Display the template
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

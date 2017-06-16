@@ -29,7 +29,7 @@ class RedeventViewRegistration extends JViewLegacy
 
 		$event = $this->get('SessionDetails');
 
-		/* Start the tag replacer */
+		// Start the tag replacer
 		$tags = new RedeventTags;
 		$tags->setXref($event->xref);
 
@@ -47,17 +47,17 @@ class RedeventViewRegistration extends JViewLegacy
 		}
 		elseif ($this->getLayout() == 'edit')
 		{
-			return $this->_displayEdit($tpl);
+			return $this->displayEdit($tpl);
 		}
 		elseif ($this->getLayout() == 'cancel')
 		{
-			return $this->_displayCancel($tpl);
+			return $this->displayCancel($tpl);
 		}
 		else
 		{
 			echo 'layout not defined';
 
-			return;
+			return false;
 		}
 
 		$message = $tags->replaceTags($message);
@@ -66,7 +66,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assignRef('message', $message);
 		$this->assignRef('event',   $event);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class RedeventViewRegistration extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	protected function _displayEdit($tpl = null)
+	protected function displayEdit($tpl = null)
 	{
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
@@ -143,7 +143,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assign('rfields',  $rfields);
 		$this->assign('xref',     $xref);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -153,7 +153,7 @@ class RedeventViewRegistration extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	protected function _displayCancel($tpl)
+	protected function displayCancel($tpl)
 	{
 		$xref = JFactory::getApplication()->input->getInt('xref');
 		$rid  = JFactory::getApplication()->input->getInt('rid');
@@ -174,7 +174,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$this->assignRef('cancellink', $cancellink);
 		$this->assignRef('action',     JRoute::_('index.php?option=com_redevent&xref=' . $xref . '&rid=' . $rid));
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

@@ -27,6 +27,6 @@ class RedeventViewAttendeeanswers extends RViewBase
 		$data = $this->get('data');
 		$this->data = $data;
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

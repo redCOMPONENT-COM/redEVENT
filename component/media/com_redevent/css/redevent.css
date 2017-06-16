@@ -90,7 +90,7 @@ border: none;
  *
  * Event Details
  */
-div#redevent.el_details dl
+div#redevent.el_details dl,
 div#redevent.el_venueevents dl,
 div#redevent.el_venuesview dl {
 margin: 0 5px;
@@ -694,4 +694,8 @@ div.coords-pinpoint {
 	width: 24px;
 	height: 24px;
 	margin: 0 auto;
+}
+
+div#redevent form.loading {
+	opacity:0.3;
 }

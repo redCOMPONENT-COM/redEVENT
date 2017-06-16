@@ -22,7 +22,7 @@ class ModRedEventHelper
 	/**
 	 * Method to get the events
 	 *
-	 * @param   array  &$params  parameters
+	 * @param   array  $params  parameters
 	 *
 	 * @return array
 	 */
@@ -162,8 +162,7 @@ class ModRedEventHelper
 		$rows = $db->loadObjectList();
 		$rows = self::_categories($rows);
 
-		$i		= 0;
-		$lists	= array();
+		$lists = array();
 		$title_length = $params->get('cuttitle', '18');
 
 		switch ($params->get('title_type', 0))
@@ -180,7 +179,7 @@ class ModRedEventHelper
 				break;
 		}
 
-		foreach ( $rows as $k => $row )
+		foreach ($rows as $k => $row)
 		{
 			$rowtitle = $row->$title_type;
 
@@ -221,8 +220,8 @@ class ModRedEventHelper
 	/**
 	 * Method to a formated and structured string of date infos
 	 *
-	 * @param   object  $row      data
-	 * @param   array   &$params  parameters
+	 * @param   object  $row     data
+	 * @param   array   $params  parameters
 	 *
 	 * @return string
 	 */
@@ -320,7 +319,9 @@ class ModRedEventHelper
 
 			if ($app->getLanguageFilter())
 			{
-				$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+				$query->where(
+					'(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)'
+				);
 			}
 
 			$db->setQuery($query);

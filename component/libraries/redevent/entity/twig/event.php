@@ -22,9 +22,23 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigEvent extends AbstractTwigEntity
 {
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigEvent[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * @var RedeventEntitySession[][]
 	 */
 	private $sessions;
+
+	/**
+	 * @var RedeventEntityVenue[]
+	 */
+	private $venues;
 
 	/**
 	 * Constructor.
@@ -34,6 +48,25 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	public function __construct(\RedeventEntityEvent $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntityEvent  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigEvent
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -58,7 +91,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -80,7 +113,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 		// Filter published
 		$published = array_filter(
 			$bundles,
-			function($bundle)
+			function ($bundle)
 			{
 				return $bundle->published;
 			}
@@ -88,9 +121,9 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		// Return twig entities
 		return $published ? array_map(
-			function($bundle)
+			function ($bundle)
 			{
-				return new \RedeventEntityTwigBundle($bundle);
+				return \RedeventEntityTwigBundle::getInstance($bundle);
 			}, $published
 		) : false;
 	}
@@ -108,7 +141,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	/**
 	 * Get duration max in days
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMax()
 	{
@@ -119,7 +152,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		return array_reduce(
 			$sessions,
-			function($value, $session)
+			function ($value, $session)
 			{
 				return max($value, $session->getDurationDays());
 			}
@@ -129,7 +162,7 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	/**
 	 * Get duration min in days
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMin()
 	{
@@ -140,14 +173,17 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		return array_reduce(
 			$sessions,
-			function($value, $session)
+			function ($value, $session)
 			{
 				$duration = $session->getDurationDays();
 
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if (!$duration)
 				{
 					return $value;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $value ? min($value, $duration) : $duration;
 			}
@@ -168,18 +204,30 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 
 		$upcomings = array_filter(
 			$sessions,
-			function($session)
+			function ($session)
 			{
-				return $session->isUpcoming();
+				return $session->isUpcoming() && !$session->isOpenDate();
 			}
 		);
+
+		if (!$upcomings)
+		{
+			// Try allowing open dates
+			$upcomings = array_filter(
+				$sessions,
+				function ($session)
+				{
+					return $session->isUpcoming();
+				}
+			);
+		}
 
 		if (!$upcomings)
 		{
 			return false;
 		}
 
-		return new \RedeventEntityTwigSession(reset($upcomings));
+		return \RedeventEntityTwigSession::getInstance(reset($upcomings));
 	}
 
 	/**
@@ -211,16 +259,16 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 * @param   string  $ordering   ordering
 	 * @param   bool    $featured   filtered featured
 	 *
-	 * @return array|bool
+	 * @return array|boolean
 	 */
 	public function getSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
 		$sessions = $this->getEventSessions($published, $ordering, $featured);
 
 		return $sessions ? array_map(
-			function($session)
+			function ($session)
 			{
-				return new \RedeventEntityTwigSession($session);
+				return \RedeventEntityTwigSession::getInstance($session);
 			},
 			$sessions
 		) : false;
@@ -233,28 +281,44 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	public function getVenues()
 	{
+		if (is_null($this->venues))
+		{
+			$this->venues = $this->entity->getActiveVenues();
+		}
+
+		return $this->venues;
+	}
+
+	/**
+	 * Get all start dates of active sessions
+	 *
+	 * @return string[]
+	 *
+	 * @since 3.2.3
+	 */
+	public function getStartDates()
+	{
 		if (!$sessions = $this->getEventSessions())
 		{
 			return false;
 		}
 
-		$venues = array_reduce(
+		return array_reduce(
 			$sessions,
-			function($value, $session)
+			function ($values, $session)
 			{
-				$venue = $session->getVenue();
-
-				if (empty($value[$venue->id]))
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
+				if (!in_array($session->dates, $values))
 				{
-					$value[$venue->id] = new RedeventEntityTwigVenue($venue);
+					$values[] = $session->dates;
 				}
+				// @codingStandardsIgnoreEnd
 
-				return $value;
+				return $values;
 			},
 			array()
 		);
-
-		return $venues;
 	}
 
 	/**
@@ -268,46 +332,36 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	 */
 	private function getEventSessions($published = 1, $ordering = 'dates.asc', $featured = false)
 	{
-		$hash = "published=$published&$ordering=$ordering&featured=$featured";
+		$hash = "published=$published&ordering=$ordering&featured=$featured";
 
 		if (!isset($this->sessions[$hash]))
 		{
-			$db = \JFactory::getDbo();
-			$query = $db->getQuery(true)
-				->select('*')
-				->from('#__redevent_event_venue_xref')
-				->where('eventid = ' . $this->entity->id);
-
 			switch ($ordering)
 			{
 				case 'dates.desc':
-					$query->order('dates DESC, times DESC');
+					$order = 'dates';
+					$orderDir = 'desc';
 					break;
+
 				case 'dates.asc':
 				default:
-					$query->order('dates ASC, times ASC');
+					$order = 'dates';
+					$orderDir = 'asc';
 			}
+
+			$filters = array();
 
 			if (is_numeric($published))
 			{
-				$query->where('published = ' . $published);
+				$filters['published'] = $published;
 			}
 
 			if ($featured)
 			{
-				$query->where('featured = 1');
+				$filters['featured'] = 1;
 			}
 
-			$db->setQuery($query);
-			$res = $db->loadObjectList();
-
-			$this->sessions[$hash] = $res ? array_map(
-				function($row)
-				{
-					return \RedeventEntitySession::getInstance($row->id)->bind($row);
-				},
-				$res
-			) : false;
+			$this->sessions[$hash] = $this->entity->getSessions($order, $orderDir, $filters);
 		}
 
 		return $this->sessions[$hash];

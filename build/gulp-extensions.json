@@ -17,7 +17,7 @@
 		]
 	},
 	"plugins" : {
-		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue"],
+		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue", "redevent_category"],
 		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
@@ -34,13 +34,22 @@
 			"redeventvenue",
 			"redeventvenuecategory"
 		],
-		"redevent" : ["jomsocial", "redmemberlogin", "acymailinglists", "eventnewslettersignup", "kurser", "ibcaffiliate", "event_clean_ibc"],
-		"redevent_config" : ["ibc"],
-		"redform" : ["paymentnotificationemail"],
+		"redevent" : [
+			"jomsocial",
+			"redmemberlogin",
+			"acymailinglists",
+			"eventnewslettersignup",
+			"paymentnotificationemail",
+			"aesirtagsreplacement",
+			"kurser",
+			"ibcaffiliate",
+			"event_clean_ibc"
+		],
+		"redevent_config" : ["aesir", "ibc"],
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
-		"system" : ["autotweetredevent"],
+		"system" : ["autotweetredevent", "aesir_redevent_sync", "redevent_labels"],
 		"xmap" : ["redevent"]
 	}
 }

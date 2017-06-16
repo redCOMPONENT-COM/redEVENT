@@ -22,6 +22,15 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigSessionpricegroup extends AbstractTwigEntity
 {
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigSessionpricegroup[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntitySessionpricegroup  $entity  The entity
@@ -29,6 +38,25 @@ final class RedeventEntityTwigSessionpricegroup extends AbstractTwigEntity
 	public function __construct(\RedeventEntitySessionpricegroup $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntitySessionpricegroup  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigSessionpricegroup
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -53,7 +81,7 @@ final class RedeventEntityTwigSessionpricegroup extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{

@@ -238,7 +238,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @param   array  $params  params
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	public static function getSelect($params)
 	{
@@ -397,7 +397,7 @@ class ModRedeventAttendingHelper
 	/**
 	 * adds submission price to rows     *
 	 *
-	 * @param   array  &$rows  rows
+	 * @param   array  $rows  rows
 	 *
 	 * @return boolean true on success
 	 */
@@ -450,7 +450,7 @@ class ModRedeventAttendingHelper
 	 *
 	 * @param   array  $rows  rows
 	 *
-	 * @return bool|int
+	 * @return boolean|integer
 	 */
 	public static function getTotal($rows)
 	{

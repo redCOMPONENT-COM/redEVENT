@@ -23,8 +23,8 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 	/**
 	 * filters available gateways based on venue
 	 *
-	 * @param   array           &$gateways  current allowed gateways
-	 * @param   RdfPaymentInfo  $details    submission details
+	 * @param   array           $gateways  current allowed gateways
+	 * @param   RdfPaymentInfo  $details   submission details
 	 *
 	 * @return boolean
 	 */
@@ -82,10 +82,10 @@ class PlgRedform_PaymentFiltervenue extends JPlugin
 	/**
 	 * Filter from session reference
 	 *
-	 * @param   int    $xref       session id
-	 * @param   array  &$gateways  gateways array
+	 * @param   int    $xref      session id
+	 * @param   array  $gateways  gateways array
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function filterSession($xref, &$gateways)
 	{

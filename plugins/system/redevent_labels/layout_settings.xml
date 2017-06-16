@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="basic">
+	<field
+			name="label_content"
+			type="redevent.textsnippet"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_LABEL_CONTENT"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_LABEL_CONTENT_DESC"
+			required="1"
+	>
+		<option value="">JSELECT</option>
+	</field>
+
+	<field
+			name="print_layout"
+			type="list"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_PRINT_LAYOUT"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_PRINT_LAYOUT_DESC"
+			default="L7163"
+			required="1">
+		<option value="">JSELECT</option>
+		<option value="5160">Avery 5160</option>
+		<option value="5161">Avery 5161</option>
+		<option value="5162">Avery 5162</option>
+		<option value="5163">Avery 5163</option>
+		<option value="5164">Avery 5164</option>
+		<option value="8600">Avery 8600</option>
+		<option value="L7163">Avery L7163</option>
+		<option value="3422">Avery 3422</option>
+		<option value="custom">PLG_SYSTEM_REDEVENT_LABELS_XML_PRINT_LAYOUT_CUSTOM</option>
+	</field>
+
+	<field
+			name="custom_paper_size"
+			showon="print_layout:custom"
+			type="list"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_PAPER_SIZE"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_PAPER_SIZE_DESC"
+			default="A4"
+	>
+		<option value="letter">letter</option>
+		<option value="A4">A4</option>
+	</field>
+
+	<field
+			name="custom_marginLeft"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_MARGINLEFT"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_MARGINLEFT_DESC"
+			default="5"
+	>
+	</field>
+
+	<field
+			name="custom_marginTop"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_MARGINTOP"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_MARGINTOP_DESC"
+			default="15"
+	>
+	</field>
+
+	<field
+			name="custom_nx"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_NX"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_NX_DESC"
+			default="2"
+	>
+	</field>
+
+	<field
+			name="custom_ny"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_NY"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_ny_DESC"
+			default="7"
+	>
+	</field>
+
+	<field
+			name="custom_SpaceX"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_SPACEX"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_SpaceX_DESC"
+			default="25"
+	>
+	</field>
+
+	<field
+			name="custom_SpaceY"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_SpaceY"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_SpaceY_DESC"
+			default="0"
+	>
+	</field>
+
+	<field
+			name="custom_width"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_WIDTH"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_width_DESC"
+			default="99.1"
+	>
+	</field>
+
+	<field
+			name="custom_height"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_HEIGHT"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_height_DESC"
+			default="38.1"
+	>
+	</field>
+
+	<field
+			name="custom_font_size"
+			showon="print_layout:custom"
+			type="text"
+			label="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_FONT_SIZE"
+			description="PLG_SYSTEM_REDEVENT_LABELS_XML_CUSTOM_font_size_DESC"
+			default="9"
+	>
+	</field>
+
+	</fieldset>
+</form>

@@ -24,10 +24,14 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 $days = $this->sortByDay();
 ?>
-<div id="redevent" class="weekview">
-	<h1 class="componentheading">
-		<?php echo $this->params->get('page_title'); ?>
-	</h1>
+<div id="redevent" class="weekview<?= $this->params->get('pageclass_sfx') ?>">
+
+	<?php if ($this->params->def('show_page_heading', 1)) : ?>
+		<h1 class='componentheading'>
+			<?php echo $this->escape($this->pagetitle); ?>
+		</h1>
+	<?php endif; ?>
+
 	<div class="week-details"><?php echo date('l, j F Y',strtotime(reset($this->weekdays))).' - '.date('l, j F Y',strtotime(end($this->weekdays))); ?></div>
 	<table class="week-nav">
 		<tbody>

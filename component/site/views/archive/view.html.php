@@ -60,7 +60,7 @@ class RedeventViewArchive extends RedeventViewSessionlist
 		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns', $cols);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

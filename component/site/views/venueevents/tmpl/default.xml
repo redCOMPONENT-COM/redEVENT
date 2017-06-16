@@ -7,11 +7,10 @@
 	</layout>
 
 	<fields name="request" addfieldpath="/libraries/redevent/form/fields">
-   	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-      <field name="id" type="revenuelist" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE" />
-    </fieldset>
-   	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-
+		<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="id" type="revenuelist" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE" />
+		</fieldset>
+		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 			<field name="show_pagination" type="list"
 				description="JGLOBAL_PAGINATION_DESC"
 				label="JGLOBAL_PAGINATION_LABEL"
@@ -31,6 +30,20 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-   	</fieldset>
+
+			<field name="display_num" type="list" default="" label="COM_REDEVENT_EVENT_NUMBER"
+				   description="COM_REDEVENT_EVENT_NUMBER_TIP">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+				<option value="25">25</option>
+				<option value="30">30</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+				<option value="200">200</option>
+			</field>
+		</fieldset>
 	</fields>
 </metadata>

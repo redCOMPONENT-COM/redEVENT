@@ -7,4 +7,4 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-echo RedeventLayoutHelper::render('roles.edit', $this, null, array('component' => 'com_redevent'));
+echo RedeventLayoutHelper::render('redevent.roles.edit', $this, null, array('component' => 'com_redevent'));

@@ -47,7 +47,7 @@ class RedeventViewDay extends RedeventViewSessionlist
 		$this->daydate = $daydate;
 		$this->dayId = $app->input->getString('id');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

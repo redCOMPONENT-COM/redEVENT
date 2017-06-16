@@ -78,6 +78,8 @@ class RedeventViewAttendeescsv extends RViewCsv
 			$filters['attending']
 		);
 
+		$useServerTz = RedeventHelperConfig::config()->get('csv_export_attendees_server_tz', 0);
+
 		if ($attendees)
 		{
 			foreach ((array) $attendees as $r)
@@ -95,7 +97,7 @@ class RedeventViewAttendeescsv extends RViewCsv
 				}
 
 				$svals = array(
-					$r->uregdate,
+					$useServerTz ? RedeventHelperDate::utcToServerTz($r->uregdate) : $r->uregdate,
 					$r->uip,
 					$r->course_code . '-' . $r->xref . '-' . $r->id,
 					$r->name,
@@ -116,5 +118,7 @@ class RedeventViewAttendeescsv extends RViewCsv
 		$title = JFile::makeSafe('attendees_' . $date . '.csv');
 		header('Content-Disposition: attachment; filename="' . $title . '"');
 		echo $text;
+
+		return true;
 	}
 }

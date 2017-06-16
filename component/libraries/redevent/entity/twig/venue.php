@@ -22,6 +22,15 @@ defined('_JEXEC') or die;
 final class RedeventEntityTwigVenue extends AbstractTwigEntity
 {
 	/**
+	 * Instances cache
+	 *
+	 * @var RedeventEntityTwigVenue[]
+	 *
+	 * @since 3.2.3
+	 */
+	private static $instances = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   \RedeventEntityVenue  $entity  The entity
@@ -29,6 +38,25 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function __construct(\RedeventEntityVenue $entity)
 	{
 		$this->entity = $entity;
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @param   \RedeventEntityVenue  $entity  The entity
+	 *
+	 * @return RedeventEntityTwigVenue
+	 *
+	 * @since 3.2.3
+	 */
+	public static function getInstance($entity)
+	{
+		if (empty(self::$instances[$entity->id]))
+		{
+			self::$instances[$entity->id] = new static($entity);
+		}
+
+		return self::$instances[$entity->id];
 	}
 
 	/**
@@ -58,7 +86,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -73,9 +101,9 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getBundles()
 	{
 		return array_map(
-			function($bundle)
+			function ($bundle)
 			{
-				return new RedeventEntityTwigBundle($bundle);
+				return \RedeventEntityTwigBundle::getInstance($bundle);
 			},
 			$this->entity->getBundles()
 		);
@@ -99,9 +127,9 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getCategories()
 	{
 		return array_map(
-			function($entity)
+			function ($entity)
 			{
-				return new RedeventEntityTwigVenuescategory($entity);
+				return \RedeventEntityTwigVenuescategory::getInstance($entity);
 			},
 			$this->entity->getCategories()
 		);
@@ -115,9 +143,9 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getEvents()
 	{
 		return array_map(
-			function($event)
+			function ($event)
 			{
-				return new RedeventEntityTwigEvent($event);
+				return RedeventEntityTwigEvent::getInstance($event);
 			},
 			$this->entity->getEvents()
 		);
@@ -131,11 +159,48 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getUpcomingsessions()
 	{
 		return array_map(
-			function($session)
+			function ($session)
 			{
-				return new RedeventEntityTwigSession($session);
+				return RedeventEntityTwigSession::getInstance($session);
 			},
 			$this->entity->getUpcomings()
 		);
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return array
+	 */
+	public function getUpcomingsessionsCount()
+	{
+		return count($this->entity->getUpcomings());
+	}
+
+	/**
+	 * Get upcoming sessions
+	 *
+	 * @return array
+	 */
+	public function getUsedLanguages()
+	{
+		$res = array_reduce(
+			$this->entity->getUpcomings(),
+			function ($values, $session)
+			{
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
+				if (!in_array($session->session_language, $values))
+				{
+					$values[] = $session->session_language;
+				}
+				// @codingStandardsIgnoreEnd
+
+				return $values;
+			},
+			array()
+		);
+
+		return $res;
 	}
 }

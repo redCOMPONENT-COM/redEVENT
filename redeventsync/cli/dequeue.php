@@ -42,17 +42,11 @@ $config = new JConfig;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$loader = JPATH_LIBRARIES . '/redeventsync/bootstrap.php';
+$loadBootstrap = false;
 
-if (!file_exists($loader))
-{
-	throw new Exception(JText::_('COM_redeventsync_LIB_INIT_FAILED'), 404);
-}
+require_once dirname(__FILE__) . '/bootstrap_redcore.php';
 
-include_once $loader;
-
-// Bootstraps redEVENTSYNC
-ResyncBootstrap::bootstrap();
+require_once dirname(__FILE__) . '/bootstrap_resync.php';
 
 /**
  * This script will checkin all checked out items in database
@@ -62,6 +56,8 @@ ResyncBootstrap::bootstrap();
  */
 class RedeventsyncDequeue extends JApplicationCli
 {
+	const MAX_RETRY = 20;
+
 	/**
 	 * Entry point for the script
 	 *
@@ -129,6 +125,7 @@ class RedeventsyncDequeue extends JApplicationCli
 		}
 		else
 		{
+			$this->updateErrorCount($message);
 			ResyncHelperMessagelog::log(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeueing failed'
 			);
@@ -166,12 +163,32 @@ class RedeventsyncDequeue extends JApplicationCli
 		$query = $db->getQuery(true)
 			->select('*')
 			->from('#__redeventsync_queuedmessages')
+			->where('errors <= ' . static::MAX_RETRY)
 			->order('id ASC');
 
 		$db->setQuery($query);
 		$messages = $db->loadObjectList();
 
 		return $messages;
+	}
+
+	/**
+	 * Update error count
+	 *
+	 * @param   object  $message  message
+	 *
+	 * @return void
+	 */
+	private function updateErrorCount($message)
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->update('#__redeventsync_queuedmessages')
+			->set('errors = errors  + 1')
+			->where('id = ' . $message->id);
+
+		$db->setQuery($query);
+		$db->execute();
 	}
 }
 

@@ -253,7 +253,7 @@ class RedeventTableVenue extends RedeventTable
 		// Check if there are events assigned to these categories
 		if (!$this->haveNoSessions($pk))
 		{
-			$this->setError('COM_REDEVENT_VENUE_DELETE_ERROR_HAS_SESSIONS');
+			$this->setError(JText::_('COM_REDEVENT_VENUE_DELETE_ERROR_HAS_SESSIONS'));
 
 			return false;
 		}
@@ -320,7 +320,7 @@ class RedeventTableVenue extends RedeventTable
 	 *
 	 * @param   array  $quotedIds  quoted ids
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function haveNoSessions($quotedIds)
 	{

@@ -1165,7 +1165,7 @@ class RECalendar
 	 * @param int $day   [optional]
 	 * @param int $year  [optional]
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	function mkActiveTime($hr, $min, $sec, $month = false, $day = false, $year = false)
 	{

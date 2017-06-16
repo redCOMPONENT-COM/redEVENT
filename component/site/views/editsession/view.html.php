@@ -50,17 +50,17 @@ class RedeventViewEditsession extends RViewSite
 		{
 			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_SESSION');
 
-			return;
+			return false;
 		}
 		elseif (!$this->item->id && !$acl->canAddSession())
 		{
 			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_SESSION');
 
-			return;
+			return false;
 		}
 
 		// Display the template
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
