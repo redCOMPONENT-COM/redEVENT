@@ -85,15 +85,17 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 				throw new LogicException('Session default access is not set in config plugin');
 			}
 
+			$title = RdfLayoutHelper::render(
+				'aesir_redevent_sync.session.title',
+				compact('session'),
+				null,
+				array('component' => 'com_redform', 'defaultLayoutsPath' => PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS)
+			);
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_session_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_session_template_id'),
-				'title'   => JText::sprintf(
-					'PLG_AESIR_REDEVENT_SYNC_ITEM_SESSION_TITLE_FORMAT',
-					$session->getEvent()->title,
-					$session->getVenue()->name,
-					$session->getFormattedStartDate()
-				),
+				'title'   => $title,
 				'access'  => 1,
 				'custom_fields' => array(
 					$sessionSelectField->fieldcode => $session->id

@@ -30,6 +30,11 @@ JLoader::import('reditem.library');
 // Register library prefix
 RLoader::registerPrefix('PlgSystemAesir_Redevent_Sync', __DIR__ . '/lib');
 
+if (!defined('PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS'))
+{
+	define('PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS', __DIR__ . '/layouts');
+}
+
 /**
  * Class PlgSystemAesir_redevent_sync
  *

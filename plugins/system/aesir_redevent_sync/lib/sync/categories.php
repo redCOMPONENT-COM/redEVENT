@@ -86,10 +86,17 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 				$parentId = $parent->isValid() ? $parent->id : RedeventHelperConfig::get('aesir_category_parent_id');
 			}
 
+			$title = RdfLayoutHelper::render(
+				'aesir_redevent_sync.category.title',
+				compact('category'),
+				null,
+				array('component' => 'com_redform', 'defaultLayoutsPath' => PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS)
+			);
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
-				'title'   => $category->name,
+				'title'   => $title,
 				'access'  => RedeventHelperConfig::get('aesir_category_access'),
 				'parent_id' => $parentId,
 				'custom_fields' => array(
