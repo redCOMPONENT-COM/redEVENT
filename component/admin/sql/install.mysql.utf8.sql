@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
 CREATE TABLE IF NOT EXISTS `#__redevent_bundle` (
   `id` int(11) UNSIGNED NOT NULL auto_increment,
   `name` varchar(255) NOT NULL default '',
-  `alias` varchar(100) NOT NULL default '',
+  `alias` varchar(255) NOT NULL default '',
   `description` text NOT NULL,
   `published` tinyint(2) NOT NULL default '0',
   `checked_out` int(11) NOT NULL default '0',
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `parent_id` int(11) unsigned NOT NULL default '0',
 `name` varchar(255) NOT NULL default '',
-`alias` varchar(100) NOT NULL default '',
+`alias` varchar(255) NOT NULL default '',
 `description` mediumtext NOT NULL,
 `meta_keywords` text NOT NULL,
 `meta_description` text NOT NULL,
@@ -140,8 +140,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `id` int(11) unsigned NOT NULL auto_increment,
-  `title` varchar(100) NOT NULL default '',
-  `alias` varchar(100) NOT NULL default '',
+  `title` varchar(255) NOT NULL default '',
+  `alias` varchar(255) NOT NULL default '',
   `course_code` varchar(255) NOT NULL,
   `template_id` int(11) NOT NULL,
   `author_ip` varchar(15) NOT NULL default '',
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_event_template` (
   `id` int(11) unsigned NOT NULL auto_increment,
-  `name` VARCHAR(100) NOT NULL default '',
+  `name` VARCHAR(255) NOT NULL default '',
   `redform_id` int(11) default NULL,
   `meta_keywords` varchar(200) NOT NULL default '',
   `meta_description` varchar(255) NOT NULL default '',
@@ -256,8 +256,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_organizations` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
 `id` int(11) unsigned NOT NULL auto_increment,
-`name` varchar(150) NOT NULL default '',
-`alias` varchar(150) NOT NULL default '',
+`name` varchar(255) NOT NULL default '',
+`alias` varchar(255) NOT NULL default '',
 `tooltip` varchar(255) NOT NULL default '',
 `image` varchar(100) NOT NULL default '',
 `access` int(11) unsigned NOT NULL default '1',
@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_roles` (
 `id` int(11) unsigned NOT NULL auto_increment,
-`name` varchar(150) NOT NULL default '',
+`name` varchar(255) NOT NULL default '',
 `description` mediumtext NOT NULL,
 `ordering` int(11) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
@@ -381,8 +381,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `id` int(11) unsigned NOT NULL auto_increment,
-`venue` varchar(50) NOT NULL default '',
-`alias` varchar(100) NOT NULL default '',
+`venue` varchar(255) NOT NULL default '',
+`alias` varchar(255) NOT NULL default '',
 `venue_code` varchar(100) NOT NULL default '',
 `url` varchar(200)  NOT NULL default '',
 `company` varchar(200) default NULL,
@@ -419,8 +419,8 @@ KEY `idx_language` (`language`)
 CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `parent_id` int(11) unsigned NOT NULL default '0',
-  `name` varchar(100) NOT NULL,
-  `alias` varchar(100) NOT NULL default '',
+  `name` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL default '',
   `description` mediumtext NOT NULL,
   `meta_keywords` text NOT NULL,
   `meta_description` text NOT NULL,
