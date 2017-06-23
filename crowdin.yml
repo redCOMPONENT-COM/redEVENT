@@ -1,0 +1,15 @@
+#
+# Choose file structure in crowdin
+# e.g. true or false
+#
+"preserve_hierarchy": true
+
+#
+# Files configuration
+#
+files: [
+ {
+  "source" : "component/admin/language/en-GB/en-GB.com_redevent.ini",
+  "translation" : "languages/%locale%/admin/%locale%/%locale%.com_redevent.ini",
+ }
+]
