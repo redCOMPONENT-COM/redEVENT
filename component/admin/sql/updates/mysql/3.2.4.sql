@@ -8,25 +8,25 @@ ALTER TABLE `#__redevent_categories`
    CHANGE `alias` `alias` varchar(255) NOT NULL default '';
 
 ALTER TABLE `#__redevent_events`
-   CHANGE `title` `title` varchar(255) NOT NULL default ''
+   CHANGE `title` `title` varchar(255) NOT NULL default '',
    CHANGE `alias` `alias` varchar(255) NOT NULL default '';
 
 ALTER TABLE `#__redevent_event_template`
    CHANGE `name` `name` varchar(255) NOT NULL default '';
 
 ALTER TABLE `#__redevent_pricegroups`
-   CHANGE `name` `name` varchar(255) NOT NULL default ''
+   CHANGE `name` `name` varchar(255) NOT NULL default '',
    CHANGE `alias` `alias` varchar(255) NOT NULL default '';
 
 ALTER TABLE `#__redevent_roles`
    CHANGE `name` `name` varchar(255) NOT NULL default '';
 
 ALTER TABLE `#__redevent_venues`
-   CHANGE `venue` `venue` varchar(255) NOT NULL default ''
+   CHANGE `venue` `venue` varchar(255) NOT NULL default '',
    CHANGE `alias` `alias` varchar(255) NOT NULL default '';
 
 ALTER TABLE `#__redevent_venues_categories`
-   CHANGE `name` `name` varchar(255) NOT NULL default ''
+   CHANGE `name` `name` varchar(255) NOT NULL default '',
    CHANGE `alias` `alias` varchar(255) NOT NULL default '';
 
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
