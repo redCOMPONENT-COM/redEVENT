@@ -22,9 +22,9 @@ gulp.task('getAdminFiles', function(){
 	return gulp.src(['../component/admin/**/*.ini', '../plugins/**/*.ini', '../modules/backend/**/*.ini'], {base: '../'})
 		.pipe(through.obj(function (file, enc, cb) {
 			iniJsons.push({
-                "source": file.relative,
-				"translation": "languages/%locale%/admin/%locale%/%locale%." + stripPrefix(path.basename(file.path)),
-				// "dest": "languages/admin/" + stripPrefix(path.basename(file.path))
+                "source": "/" + file.relative,
+				"translation": "/languages/%locale%/admin/%locale%/%locale%." + stripPrefix(path.basename(file.path)),
+				"dest": "/languages/admin/" + stripPrefix(path.basename(file.path))
             });
 			cb(null, file);
 		}))
@@ -34,9 +34,9 @@ gulp.task('getSiteFiles', function(){
 	return gulp.src(['../component/**/*.ini', '!../component/admin/**/*', '../modules/frontend/**/*.ini'], {base: '../'})
 		.pipe(through.obj(function (file, enc, cb) {
 			iniJsons.push({
-				"source": file.relative,
-				"translation": "languages/%locale%/site/%locale%/%locale%." + stripPrefix(path.basename(file.path)),
-				// "dest": "languages/site/" + stripPrefix(path.basename(file.path))
+				"source": "/" + file.relative,
+				"translation": "/languages/%locale%/site/%locale%/%locale%." + stripPrefix(path.basename(file.path)),
+				"dest": "/languages/site/" + stripPrefix(path.basename(file.path))
 			});
 			cb(null, file);
 		}))
