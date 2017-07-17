@@ -55,7 +55,7 @@ class RedeventAttendee extends JObject
 	/**
 	 * @var \RedeventTags
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	protected $tagHelper;
 

@@ -367,7 +367,7 @@ class RedeventModelRegistrations extends RModelList
 	 *
 	 * @return  void
 	 *
-	 * @since   __deploy_version__
+	 * @since   3.2.4
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{

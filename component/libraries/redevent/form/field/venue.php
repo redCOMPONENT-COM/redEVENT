@@ -15,7 +15,7 @@ RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
  * redEVENT venue form field
  *
  * @package  Redevent.admin
- * @since    __deploy_version__
+ * @since    3.2.4
  */
 class RedeventFormFieldVenue extends JFormFieldList
 {

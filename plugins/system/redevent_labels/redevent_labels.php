@@ -17,7 +17,7 @@ require_once __DIR__ . '/labels.php';
 /**
  * redEVENT labels plugin
  *
- * @since  __deploy_version__
+ * @since  3.2.4
  */
 class PlgSystemRedevent_Labels extends JPlugin
 {
@@ -60,7 +60,7 @@ class PlgSystemRedevent_Labels extends JPlugin
 	 *
 	 * @return void
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function onRedeventViewGetToolbar(RedeventViewAdmin $view, RToolbar &$toolbar)
 	{
@@ -96,7 +96,7 @@ CSS
 	 *
 	 * @return string
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	public function onAjaxGetAttendeesLabels()
 	{
@@ -146,7 +146,7 @@ CSS
 	 *
 	 * @return RedeventEntitySession
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function getSession()
 	{
@@ -163,7 +163,7 @@ CSS
 	 *
 	 * @return void
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function getPdf()
 	{
@@ -197,7 +197,7 @@ CSS
 	 *
 	 * @return object
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function getTextFromTextlibrary($tagName)
 	{
@@ -217,7 +217,7 @@ CSS
 	 *
 	 * @return array|mixed
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function getFormat()
 	{

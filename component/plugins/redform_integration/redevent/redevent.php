@@ -134,7 +134,7 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	 *
 	 * @return void
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function onAfterRedformCartPaymentAccepted(RdfEntityCart $cart)
 	{

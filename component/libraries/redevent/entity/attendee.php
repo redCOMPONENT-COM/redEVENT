@@ -50,7 +50,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	 *
 	 * @return bool true on success
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	public function confirm()
 	{

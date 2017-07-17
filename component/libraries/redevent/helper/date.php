@@ -308,7 +308,7 @@ class RedeventHelperDate
 	 *
 	 * @return string
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public static function utcToServerTz($value)
 	{

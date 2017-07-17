@@ -324,7 +324,7 @@ class RedeventTags
 	 *
 	 * @return RedeventTagsParsed[]
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	public function extractTags($text)
 	{
