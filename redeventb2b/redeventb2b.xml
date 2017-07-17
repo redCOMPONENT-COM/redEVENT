@@ -7,7 +7,7 @@
 	<copyright>(C) 2015 redCOMPONENT.com</copyright>
 	<creationDate>##DATE##</creationDate>
 	<license>GNU GPL v3 or later</license>
-	<version>3.2.3</version>
+	<version>3.2.4</version>
 	<tag>##VERSION##</tag>
 	<redcore version="1.8.9" />
 	<description>COM_REDEVENTB2B_XML_DESCRIPTION</description>
