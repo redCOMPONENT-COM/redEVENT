@@ -412,7 +412,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		if ($config->get('b2b_show_open', 1) == 0)
 		{
-			$query->where('x.dates > 0');
+			$query->where('x.dates IS NOT NULL');
 		}
 
 		$db->setQuery($query);
@@ -733,7 +733,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$query->where('r.cancelled = 0');
 
 		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
+		$query->where('(x.dates IS NULL OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
 		$filter_order = $this->getState('booked_order');
 		$filter_order_dir = $this->getState('booked_order_dir');
@@ -774,7 +774,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$query->where('r.uid = ' . $this->uid);
 
 		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('x.dates > 0');
+		$query->where('x.dates IS NOT NULL');
 		$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now));
 
 		$filter_order = $this->getState('previous_order');
@@ -882,12 +882,12 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		if ($to = $this->getState('filter_to') && RedeventHelperDate::isValidDate($this->getState('filter_to')))
 		{
-			$query->where('x.dates > 0 AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
+			$query->where('x.dates AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
 		}
 
 		if ($config->get('b2b_show_open', 1) == 0)
 		{
-			$query->where('x.dates > 0');
+			$query->where('x.dates IS NOT NULL');
 		}
 
 		return $query;

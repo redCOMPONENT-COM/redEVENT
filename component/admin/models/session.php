@@ -423,4 +423,26 @@ class RedeventModelSession extends RModelAdmin
 			$this->setState('eventId', $eventId);
 		}
 	}
+
+	/**
+	 * Prepare and sanitise the table data prior to saving.
+	 *
+	 * @param   JTable  $table  A reference to a JTable object.
+	 *
+	 * @return  void
+	 */
+	protected function prepareTable($table)
+	{
+		parent::prepareTable($table);
+
+		$defnull = array('dates', 'times', 'enddates', 'endtimes', 'registrationend');
+
+		foreach ($defnull as $val)
+		{
+			if (!strlen($table->$val))
+			{
+				$table->$val = null;
+			}
+		}
+	}
 }

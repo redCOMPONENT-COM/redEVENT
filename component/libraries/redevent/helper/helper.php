@@ -86,11 +86,11 @@ class RedeventHelper
 					break;
 
 				case 'registration':
-					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.registrationend > 0, x.registrationend, x.dates))) >= 0 ';
+					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.registrationend, x.registrationend, x.dates))) >= 0 ';
 					break;
 
 				case 'end':
-					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.enddates > 0, x.enddates, x.dates))) >= 0 ';
+					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.enddates, x.enddates, x.dates))) >= 0 ';
 					break;
 			}
 

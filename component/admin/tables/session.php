@@ -166,7 +166,7 @@ class RedeventTableSession extends RedeventTable
 	 * @link	http://docs.joomla.org/JTable/store
 	 * @since   11.1
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = true)
 	{
 		if (!$this->language)
 		{

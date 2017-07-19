@@ -284,7 +284,7 @@ class RedeventModelBasesessionlist extends RModel
 		}
 
 		$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
-		$ordering_def = ($open_order ? 'x.dates = 0 ' : 'x.dates > 0 ') . $filter_order_dir
+		$ordering_def = ($open_order ? 'x.dates IS NULL ' : 'x.dates IS NOT NULL ') . $filter_order_dir
 			. ', x.dates ' . $filter_order_dir . ', x.times ' . $filter_order_dir . ', x.featured DESC';
 
 		switch ($filter_order)
@@ -436,7 +436,7 @@ class RedeventModelBasesessionlist extends RModel
 		}
 		elseif ($sstate == 2)
 		{
-			$query->where('x.dates = 0');
+			$query->where('x.dates IS NULL');
 		}
 
 		// State
@@ -589,7 +589,7 @@ class RedeventModelBasesessionlist extends RModel
 		}
 		elseif ($sstate == 2)
 		{
-			$where[] = 'x.dates = 0';
+			$where[] = 'x.dates IS NULL';
 		}
 
 		return ' WHERE ' . implode(' AND ', $where);

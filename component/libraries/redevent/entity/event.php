@@ -331,7 +331,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 
 					if (RedeventHelper::config()->get('open_as_upcoming'))
 					{
-						$where[] = "dates = 0";
+						$where[] = "dates IS NULL";
 					}
 
 					$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates, " ", x.times) ELSE x.dates END > NOW())';
@@ -360,7 +360,7 @@ class RedeventEntityEvent extends RedeventEntityBase
 	private function orderSessions($query, $order = null, $orderDir = null)
 	{
 		$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
-		$ordering_def = ($open_order ? 'dates = 0 ' : 'dates > 0 ') . $orderDir
+		$ordering_def = ($open_order ? 'dates IS NULL ' : 'dates IS NOT NULL ') . $orderDir
 			. ', dates ' . $orderDir . ', times ' . $orderDir . ', featured DESC';
 
 		switch ($order)

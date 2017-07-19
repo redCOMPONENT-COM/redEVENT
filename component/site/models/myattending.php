@@ -142,7 +142,7 @@ class RedeventModelMyattending extends RedeventModelBasesessionlist
 
 		// Upcoming !
 		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
+		$query->where('(x.dates IS NULL OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
 		// Then if the user is attending the event
 		$query->where('r.uid = ' . $this->_db->Quote($user->id));
