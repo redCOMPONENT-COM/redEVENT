@@ -48,13 +48,16 @@ $script = <<<JS
 			var options = $options;
 			$('#{$id}_v').datetimepicker(options);
 			
-			try {
-				var current = $.datepicker.parseDateTime(options.altFormat, options.altTimeFormat, $('#{$id}').val());
-				$('#{$id}_v').datetimepicker('setDate', current);
-			}
-			catch (e) {
-				// do nothing
-			}
+            if ($('#{$id}').val())
+            {
+                try {
+                    var current = $.datepicker.parseDateTime(options.altFormat, options.altTimeFormat, $('#{$id}').val());
+                    $('#{$id}_v').datetimepicker('setDate', current);
+                }
+                catch (e) {
+                    // do nothing
+                }			            
+            }
 			
 			$('#{$id}_v').change(function(){
 				if ($(this).val() == "") {

@@ -94,7 +94,7 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 			->where('e.published = 1');
 
 		$open_order = RedeventHelper::config()->get('open_dates_ordering', 0);
-		$ordering_def = ($open_order ? 'x.dates = 0 ' : 'x.dates > 0 ') . 'ASC'
+		$ordering_def = ($open_order ? 'x.dates IS NULL ' : 'x.dates IS NOT NULL ') . 'ASC'
 			. ', x.dates ASC, x.times ASC';
 
 		$query->order($ordering_def);

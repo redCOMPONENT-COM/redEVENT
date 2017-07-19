@@ -56,7 +56,7 @@ class Modredeventcalhelper
 			->where('c.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . ')')
 			->where(
 				'(x.dates BETWEEN ' . $db->Quote($monthstart) . ' AND ' . $db->Quote($monthend)
-				. ' OR (x.enddates IS NOT NULL AND x.enddates > "0000-00-00" AND x.enddates BETWEEN '
+				. ' OR (x.enddates AND x.enddates BETWEEN '
 				. $db->Quote($monthstart) . ' AND ' . $db->Quote($monthend) . ') ) '
 			)
 			->group('x.id');

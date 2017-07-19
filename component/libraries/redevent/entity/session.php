@@ -209,27 +209,26 @@ class RedeventEntitySession extends RedeventEntityBase
 			return array(JText::_('LIB_REDEVENT_OPEN_DATE'));
 		}
 
-		if (!is_null($dateFormat))
-		{
-			$format = $dateFormat . (!is_null($timeFormat) && $item->allday ? '' : ' ' . $timeFormat);
-		}
-		else
-		{
-			$format = null;
-		}
-
 		$res = array();
 
+		$startFormat = $dateFormat
+			? $dateFormat . ($timeFormat && !$item->allday && $item->times ? ' ' . $timeFormat : '')
+			: null;
+
 		$res[] = RedeventHelperDate::formatdatetime(
-			$item->allday ? $item->dates : $item->dates . ' ' . $item->times,
-			$format
+			$item->allday ? $item->dates : $item->dates . ($item->times ? ' ' . $item->times : ''),
+			$startFormat
 		);
 
 		if (RedeventHelperDate::isValidDate($item->enddates))
 		{
+			$endFormat = $dateFormat
+				? $dateFormat . ($timeFormat && !$item->allday && $item->endtimes ? ' ' . $timeFormat : '')
+				: null;
+
 			$res[] = RedeventHelperDate::formatdatetime(
-				$item->allday ? $item->enddates : $item->enddates . ' ' . $item->endtimes,
-				$format
+				$item->allday ? $item->enddates : $item->enddates . ($item->endtimes ? ' ' . $item->endtimes : ''),
+				$endFormat
 			);
 		}
 
