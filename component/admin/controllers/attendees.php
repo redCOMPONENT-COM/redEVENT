@@ -219,13 +219,29 @@ class RedeventControllerAttendees extends RControllerAdmin
 		{
 			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
 			$this->setRedirect($this->getRedirectToListRoute(), $msg);
+		}
+		else
+		{
+			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED_ERROR') . ': ' . $model->getError();
+			$this->setRedirect($this->getRedirectToListRoute(), $msg, 'error');
+		}
+	}
 
-			foreach ($cid as $attendee_id)
-			{
-				JPluginHelper::importPlugin('redevent');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('onAttendeeModified', array($attendee_id));
-			}
+	/**
+	 * set cancelled status to an attendee registration
+	 *
+	 * @return void
+	 */
+	public function cancelmultiple()
+	{
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'post', 'array');
+
+		$model = $this->getModel('attendees');
+
+		if ($model->cancelMultipleReg($cid))
+		{
+			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
+			$this->setRedirect($this->getRedirectToListRoute(), $msg);
 		}
 		else
 		{
