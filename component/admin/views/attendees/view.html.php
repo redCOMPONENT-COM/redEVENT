@@ -108,6 +108,14 @@ class RedeventViewAttendees extends RedeventViewAdmin
 			$cancel = RToolbarBuilder::createCancelButton('attendees.cancelreg', '', 'btn-warning');
 			$thirdGroup->addButton($cancel);
 
+			$cancelmultiple = RToolbarBuilder::createStandardButton(
+				'attendees.cancelmultiple',
+				'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL_MULTIPLE',
+				'btn-warning',
+				'icon-remove'
+			);
+			$thirdGroup->addButton($cancelmultiple);
+
 			$restore = RToolbarBuilder::createStandardButton(
 				'attendees.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', 'btn-success', ' icon-circle-arrow-left'
 			);
