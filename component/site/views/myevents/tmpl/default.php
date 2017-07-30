@@ -22,6 +22,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+$returnAppend = '&return=' . base64_encode(RedeventHelperRoute::getMyeventsRoute());
 ?>
 <div id="redevent" class="el_eventlist<?= $this->params->get('pageclass_sfx') ?>">
 
@@ -43,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php endif; ?>
 
 	<?php if ($this->canAddXref): ?>
-		<div><?php echo JHTML::link('index.php?option=com_redevent&task=editsession.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
+		<div><?php echo JHTML::link('index.php?option=com_redevent&task=editsession.add' . $returnAppend, JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
 	<?php endif; ?>
 
 <?php if (!empty($this->events)): ?>
@@ -56,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php endif; ?>
 
 <?php if ($this->canAddEvent): ?>
-	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editevent.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
+	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editevent.add' . $returnAppend, JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
 <?php endif; ?>
 
 <?php if (count((array) $this->venues)): ?>
@@ -65,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php endif; ?>
 
 <?php if ($this->canAddVenue): ?>
-	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editvenue.add', JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
+	<div><?php echo JHTML::link('index.php?option=com_redevent&task=editvenue.add' . $returnAppend, JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
 <?php endif; ?>
 
 <?php if (count((array)$this->attending)): ?>
