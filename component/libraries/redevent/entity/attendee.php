@@ -46,6 +46,11 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	private $user;
 
 	/**
+	 * @var RdfEntitySubmitter
+	 */
+	private $submitter;
+
+	/**
 	 * Set attendee as confirmed
 	 *
 	 * @return bool true on success
@@ -298,6 +303,26 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		$model->setAnswers($answers);
 
 		return $model->updatePrice();
+	}
+
+	/**
+	 * Return associated event
+	 *
+	 * @return RdfEntitySubmitter
+	 */
+	public function getSubmitter()
+	{
+		if (!$this->submitter)
+		{
+			$item = $this->getItem();
+
+			if (!empty($item))
+			{
+				$this->submitter = RdfEntitySubmitter::load($item->sid);
+			}
+		}
+
+		return $this->submitter;
 	}
 
 	/**
