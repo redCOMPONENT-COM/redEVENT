@@ -634,6 +634,7 @@ class RedeventAttendee extends JObject
 			$this->tagHelper->setSubmitkey($data->submit_key);
 			$this->tagHelper->setXref($this->getXref());
 			$this->tagHelper->addOptions(array('sids' => array($data->sid)));
+			$this->tagHelper->addOptions(array('attendeeIds' => array($data->id)));
 		}
 
 		$text = $this->tagHelper->replaceTags($text);
