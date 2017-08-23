@@ -42,6 +42,7 @@
 			"aesirtagsreplacement"
 		],
 		"redevent_config" : ["aesir"],
+		"redevent_field" : ["aesir_organisation"],
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
