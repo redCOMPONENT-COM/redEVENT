@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" version="2.5" method="upgrade" group="redevent">
+<extension type="plugin" version="2.5" method="upgrade" group="redevent_field">
 	<name>PLG_REDEVENT_FIELD_AESIR_ORGANISATION</name>
 	<author>redCOMPONENT</author>
 	<creationDate>August 2017</creationDate>
