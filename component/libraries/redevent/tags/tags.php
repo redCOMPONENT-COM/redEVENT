@@ -590,7 +590,7 @@ class RedeventTags
 	 */
 	public function getAttendees()
 	{
-		if (empty($this->submitkey))
+		if (empty($this->submitkey) && !$this->getOption('attendeeIds'))
 		{
 			return false;
 		}
@@ -600,7 +600,19 @@ class RedeventTags
 			return $this->attendees;
 		}
 
-		$this->attendees = RedeventEntityAttendee::loadBySubmitKey($this->submitkey);
+		if ($ids = $this->getOption('attendeeIds'))
+		{
+			$this->attendees = array();
+
+			foreach ($ids as $attendeeId)
+			{
+				$this->attendees[] = RedeventEntityAttendee::load($attendeeId);
+			}
+		}
+		else
+		{
+			$this->attendees = RedeventEntityAttendee::loadBySubmitKey($this->submitkey);
+		}
 
 		return $this->attendees;
 	}
