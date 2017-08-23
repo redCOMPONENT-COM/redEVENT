@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
  * Tag to return the total cost for one specific attendee
  *
  * @package  Redevent.Library
- * @since    __deploy_version__
+ * @since    3.2.5
  */
 class RedeventTagsLibAttendee_Price extends \Redevent\Tag\Replacer
 {
@@ -21,7 +21,7 @@ class RedeventTagsLibAttendee_Price extends \Redevent\Tag\Replacer
 	 *
 	 * @return  RedeventTagsTag
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.5
 	 */
 	public function getDescription()
 	{
@@ -33,7 +33,7 @@ class RedeventTagsLibAttendee_Price extends \Redevent\Tag\Replacer
 	 *
 	 * @return string
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.5
 	 */
 	public function getReplace()
 	{
