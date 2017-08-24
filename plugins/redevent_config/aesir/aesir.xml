@@ -48,6 +48,13 @@
 						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_ACCESS_DESC">
 					<option value="">JSELECT</option>
 				</field>
+				<field
+						name="event_organisation_field"
+						type="redevent.customfield"
+						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_EVENT_ORGANISATION_FIELD"
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_EVENT_ORGANISATION_FIELD_DESC">
+					<option value="">JSELECT</option>
+				</field>
 			</fieldset>
 
 			<fieldset name="sessions" label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_FIELDSET_SESSIONS">
