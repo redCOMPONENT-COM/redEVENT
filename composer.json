@@ -1,0 +1,19 @@
+{
+    "name": "redcomponent/redevent",
+    "description": "a joomla extension",
+    "type": "project",
+    "license": "GNU General Public License version 2 or later",
+    "authors": [
+        {
+            "name": "redCOMPONENT",
+            "email": "email@redcomponent.com"
+        }
+    ],
+    "require": {
+        "mledoze/countries": "^1.8"
+    },
+    "scripts": {
+        "post-install-cmd":  "php -r \"copy('vendor/mledoze/countries/dist/countries.json', 'component/libraries/redevent/helper/countries.json');\"",
+        "post-update-cmd":  "php -r \"copy('vendor/mledoze/countries/dist/countries.json', 'component/libraries/redevent/helper/countries.json');\""
+    }
+}
