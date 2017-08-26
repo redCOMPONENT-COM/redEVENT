@@ -28,7 +28,7 @@ class RedeventHelperLanguages
 		if (is_null($codes))
 		{
 			$codes = array();
-			$list = file_get_contents(__DIR__ . '/ISO-639-2_8859-1.txt');
+			$list = file_get_contents(__DIR__ . '/ISO-639-2_utf-8.txt');
 
 			foreach (explode("\n", $list) as $line)
 			{
@@ -39,9 +39,12 @@ class RedeventHelperLanguages
 					continue;
 				}
 
-				$codes[$parts[0]] = array(
+				// Use T code for alpha3 if exists
+				$alpha3 = empty($parts[1]) ? $parts[0] : $parts[1];
+
+				$codes[$alpha3] = array(
 					'iso1' => $parts[2],
-					'iso2' => $parts[0],
+					'iso2' => $alpha3,
 					'name' => $parts[3],
 				);
 			}
@@ -228,6 +231,18 @@ class RedeventHelperLanguages
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get iso 2 code
+	 *
+	 * @param   string  $iso  an iso code, e.g en
+	 *
+	 * @return string: iso-2 code (3 letters)
+	 */
+	public static function getIso2($iso)
+	{
+		return self::convertToIso2($iso);
 	}
 
 	/**
