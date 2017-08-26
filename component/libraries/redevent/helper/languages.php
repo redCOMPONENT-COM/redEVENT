@@ -83,9 +83,9 @@ class RedeventHelperLanguages
 			$options[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_SELECT'));
 		}
 
-		foreach ($codes AS $k => $c)
+		foreach ($codes AS $code)
 		{
-			$options[] = JHTML::_('select.option', $c['iso2'], self::getName($c['iso2']), $value_tag, $text_tag);
+			$options[] = JHTML::_('select.option', $code['iso2'], self::getName($code['iso2']), $value_tag, $text_tag);
 		}
 
 		return $options;
@@ -238,7 +238,9 @@ class RedeventHelperLanguages
 	 *
 	 * @param   string  $iso  an iso code, e.g en
 	 *
-	 * @return string: iso-2 code (3 letters)
+	 * @return string iso-2 code (3 letters)
+	 *
+	 * @since  __deploy_version__
 	 */
 	public static function getIso2($iso)
 	{

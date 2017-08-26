@@ -52,6 +52,7 @@ composer.phar
 tests/vendor/*
 libraries/redevent/vendor/*
 plugins/**/vendor/*
+vendor/*
 
 # Robo
 robo.phar

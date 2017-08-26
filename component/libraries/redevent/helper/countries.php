@@ -71,7 +71,6 @@ class RedeventHelperCountries
 	 */
 	public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $add_select = false)
 	{
-		$countries = self::getCountries();
 		$options = array();
 
 		if ($add_select)
@@ -79,9 +78,9 @@ class RedeventHelperCountries
 			$options[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_SELECT_COUNTRY'));
 		}
 
-		foreach ($countries AS $k => $c)
+		foreach (self::getCountries() AS $country)
 		{
-			$options[] = JHTML::_('select.option', $c['iso2'], $c['common'], $value_tag, $text_tag);
+			$options[] = JHTML::_('select.option', $country['iso2'], $country['common'], $value_tag, $text_tag);
 		}
 
 		return $options;
@@ -92,13 +91,13 @@ class RedeventHelperCountries
 	 *
 	 * @param   string  $iso_code_2  iso code 2
 	 *
-	 * @return string
+	 * @return string|boolean
 	 */
 	public static function convertIso2to3($iso_code_2)
 	{
-		foreach (self::getCountries() as $iso3 => $c)
+		foreach (self::getCountries() as $iso3 => $country)
 		{
-			if ($c['iso2'] == $iso_code_2)
+			if ($country['iso2'] == $iso_code_2)
 			{
 				return $iso3;
 			}
@@ -112,7 +111,7 @@ class RedeventHelperCountries
 	 *
 	 * @param   string  $iso_code_3  iso code 3
 	 *
-	 * @return string
+	 * @return string|boolean
 	 */
 	public static function convertIso3to2($iso_code_3)
 	{
