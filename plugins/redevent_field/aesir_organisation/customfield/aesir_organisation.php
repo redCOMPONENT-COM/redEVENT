@@ -37,7 +37,7 @@ class RedeventCustomfieldAesir_Organisation extends \RedeventCustomfieldSelect
 
 		$user = \JFactory::getUser();
 
-		if (false && !$user->authorise('core.manage', 'com_reditem'))
+		if (!$user->authorise('core.manage', 'com_reditem'))
 		{
 			$member = \ReditemEntityMember::getInstance();
 			$member->loadActive();
@@ -52,7 +52,7 @@ class RedeventCustomfieldAesir_Organisation extends \RedeventCustomfieldSelect
 			return array();
 		}
 
-		$options = array();
+		$options = array(JHtml::_('select.option', '', JText::_('JSELECT')));
 
 		foreach ($items as $organisation)
 		{
