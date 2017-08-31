@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="redevent_config" method="aesir">
+<extension version="2.5" type="plugin" group="redevent_config" method="upgrade">
 	<name>PLG_REDEVENT_CONFIG_AESIR</name>
 	<creationDate>##DATE##</creationDate>
 	<author>redWEB Aps</author>
