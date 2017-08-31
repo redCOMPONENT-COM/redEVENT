@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
+	<fieldset name="basic" label="COM_REDEVENTB2B_SETTINGS_BASIC_LABEL" description="COM_REDEVENTB2B_SETTINGS_BASIC_DESC">
+		<field name="redmember_user_status"
+			   type="text"
+			   label="COM_REDEVENTB2B_SETTINGS_REDMEMBER_USER_STATUS_LABEL"
+			   description="COM_REDEVENTB2B_SETTINGS_REDMEMBER_USER_STATUS_DESC"/>
+	</fieldset>
 	<fieldset name="COM_REDEVENTB2B_SETTINGS_GA" label="COM_REDEVENTB2B_SETTINGS_GA" description="COM_REDEVENTB2B_SETTINGS_GA_DESC">
 		<field name="gacode" type="text" label="COM_REDEVENTB2B_SETTINGS_GACODE" description="COM_REDEVENTB2B_SETTINGS_GACODE_DESC" />
 		<field name="gaaffiliation" type="text" label="COM_REDEVENTB2B_SETTINGS_GAAFFILIATION" description="COM_REDEVENTB2B_SETTINGS_GAAFFILIATION_DESC" />
 	</fieldset>
 
 	<fieldset
-		name="permissions"
-		label="JCONFIG_PERMISSIONS_LABEL"
-		description="JCONFIG_PERMISSIONS_DESC"
-		>
+			name="permissions"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			description="JCONFIG_PERMISSIONS_DESC"
+	>
 
 		<field
-			name="rules"
-			type="rules"
-			label="JCONFIG_PERMISSIONS_LABEL"
-			class="inputbox"
-			filter="rules"
-			component="com_redeventb2b"
-			section="component" />
+				name="rules"
+				type="rules"
+				label="JCONFIG_PERMISSIONS_LABEL"
+				class="inputbox"
+				filter="rules"
+				component="com_redeventb2b"
+				section="component" />
 	</fieldset>
 </config>

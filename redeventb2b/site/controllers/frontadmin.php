@@ -676,6 +676,12 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 			$data = array_merge($dataForm, $customDataClean);
 
+			if (!$rmUser->user_status)
+			{
+				$config = JComponentHelper::getParams('com_redeventb2b');
+				$data['user_status'] = $config->get('redmember_user_status');
+			}
+
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onRemapB2bUserData', array(&$data));
