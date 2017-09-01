@@ -110,13 +110,22 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 			)
 		);
 
+		if ($aesirCategory->isValid())
+		{
+			$data['id'] = $aesirCategory->id;
+		}
+
 		// TODO: remove this workaround when aesir code gets fixed
 		$jform = JFactory::getApplication()->input->get('jform', null, 'array');
 		$jform['access'] = RedeventHelperConfig::get('aesir_category_access');
 		JFactory::getApplication()->input->set('jform', $jform);
 
-		$aesirCategory->bind($data);
-		$aesirCategory->save();
+		$model = RModel::getAdminInstance('Category', array('ignore_request' => true), 'com_reditem');
+
+		if (!$model->save($data))
+		{
+			throw new LogicException($model->getError());
+		}
 
 		return true;
 	}
