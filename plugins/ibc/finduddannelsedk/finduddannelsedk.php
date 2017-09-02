@@ -153,7 +153,7 @@ class PlgIbcFinduddannelsedk extends JPlugin
 			$education = $educations->addChild('education');
 			$education->addAttribute('uniqueIdentifier', 'education' . $event->id);
 			$education->addAttribute('name', $event->title);
-			$education->addAttribute('educationTypeID', 1);
+			$education->addAttribute('educationTypeID', $this->params->get('educationTypeID', 1));
 			$education->addChild('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($event->id), true, -1));
 
 			$contentFields = $education->addChild('contentFields');
@@ -204,7 +204,7 @@ class PlgIbcFinduddannelsedk extends JPlugin
 			$eventNode = $events->addChild('event');
 			$eventNode->addAttribute('xmlns:xsi:type', 'LocationEvent');
 			$eventNode->addAttribute('uniqueIdentifier', 'session' . $session->id);
-			$eventNode->addAttribute('eventTypeID', '1');
+			$eventNode->addAttribute('eventTypeID', $this->params->get('eventTypeID', 1));
 			$eventNode->addAttribute('locationUID', 'location' . $session->venueid);
 
 			$start = $eventNode->addChild('start');

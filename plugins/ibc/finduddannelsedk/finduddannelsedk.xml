@@ -24,6 +24,16 @@
 					   label="Institute ID"
 					   required="1"
 					   />
+				<field name="educationTypeID"
+					   type="text"
+					   label="educationTypeID"
+					   required="1"
+				/>
+				<field name="eventTypeID"
+					   type="text"
+					   label="eventTypeID"
+					   required="1"
+				/>
 			</fieldset>
 		</fields>
 	</config>
