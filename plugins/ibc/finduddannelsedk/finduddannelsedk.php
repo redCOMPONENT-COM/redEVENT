@@ -87,7 +87,20 @@ class PlgIbcFinduddannelsedk extends JPlugin
 
 		$xml = $message->asXML();
 
-		echo $xml;
+		$dom = new DOMDocument('1.0');
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		libxml_use_internal_errors(true);
+
+		if (!$dom->loadXML($xml))
+		{
+			$errors = libxml_get_errors();
+			var_dump($errors);
+		}
+		else
+		{
+			echo $dom->saveXML();
+		}
 
 		JFactory::getApplication()->close();
 	}
@@ -130,7 +143,7 @@ class PlgIbcFinduddannelsedk extends JPlugin
 
 			if (!empty($venue->locdescription))
 			{
-				$location->addChild('description', $venue->locdescription);
+				$location->addChild('description', $this->cleanHtml($venue->locdescription));
 			}
 		}
 	}
@@ -160,7 +173,7 @@ class PlgIbcFinduddannelsedk extends JPlugin
 
 			if (!empty($event->summary))
 			{
-				$description = $contentFields->addChild('field', $event->summary);
+				$description = $contentFields->addChild('field', $this->cleanHtml($event->summary));
 				$description->addAttribute('xmlns:xsi:type', 'default');
 				$description->addAttribute('name', 'description');
 			}
@@ -321,5 +334,19 @@ class PlgIbcFinduddannelsedk extends JPlugin
 		}
 
 		return $this->events;
+	}
+
+	/**
+	 * Clean html
+	 *
+	 * @param   string  $text  text to clean
+	 *
+	 * @return string
+	 *
+	 * @since 1.0
+	 */
+	private function cleanHtml($text)
+	{
+		return str_replace(array('&nbsp;'), array(''), $text);
 	}
 }
