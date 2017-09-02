@@ -254,14 +254,26 @@ class RECalendar
 	*/
 	function enableDatePicker($startYear = false, $endYear = false, $link = false, $button = false)
 	{
-		if ($link) $this->urlPicker = $link;
-		else $this->urlPicker = $_SERVER['PHP_SELF'];
+		$this->urlPicker = $link ?: JURI::getInstance()->toString();
+
 		if ($startYear && $endYear)
 		{
-			if ($startYear >= $this->startYear && $startYear < $this->endYear) $this->startYear = $startYear;
-			if ($endYear > $this->startYear && $endYear <= $this->endYear) $this->endYear = $endYear;
+			if ($startYear >= $this->startYear && $startYear < $this->endYear)
+			{
+				$this->startYear = $startYear;
+			}
+
+			if ($endYear > $this->startYear && $endYear <= $this->endYear)
+			{
+				$this->endYear = $endYear;
+			}
 		}
-		if ($button) $this->selBtn = $button;
+
+		if ($button)
+		{
+			$this->selBtn = $button;
+		}
+
 		$this->datePicker = true;
 	}
 

@@ -80,7 +80,7 @@ class RedeventTableEvent extends RedeventTable
 			return false;
 		}
 
-		if ($titlelength > 100)
+		if ($titlelength > 255)
 		{
 			$this->setError(JText::_('COM_REDEVENT_ERROR_TITLE_LONG'));
 

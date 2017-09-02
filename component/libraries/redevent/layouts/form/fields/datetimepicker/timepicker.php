@@ -43,12 +43,15 @@ $script = <<<JS
 			var options = $options;
 			$('#{$id}_v').timepicker(options);
 			
-			try {
-				var current = $.datepicker.formatTime(options.timeFormat, $.datepicker.parseTime(options.altTimeFormat, $('#{$id}').val()));
-				$('#{$id}_v').timepicker('setTime', current);
-			}
-			catch (e) {
-				// do nothing
+            if ($('#{$id}').val())
+            {
+                try {
+                        var current = $.datepicker.formatTime(options.timeFormat, $.datepicker.parseTime(options.altTimeFormat, $('#{$id}').val()));
+                        $('#{$id}_v').timepicker('setTime', current);
+                }
+                catch (e) {
+                    // do nothing
+                }
 			}
 			
 			$('#{$id}_v').change(function(){

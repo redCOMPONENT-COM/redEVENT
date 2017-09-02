@@ -120,7 +120,7 @@ class RedeventControllerMyevents extends RedeventControllerFront
 	 *
 	 * @return void
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function setEventPublishState($id, $state)
 	{
@@ -228,7 +228,7 @@ class RedeventControllerMyevents extends RedeventControllerFront
 	 *
 	 * @return void
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function setVenuePublishState($id, $state)
 	{

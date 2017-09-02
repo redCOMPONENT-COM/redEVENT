@@ -66,48 +66,65 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 	 */
 	public function syncCategory(RedeventEntityCategory $category)
 	{
-		$item = $this->getAesirCategory($category->id);
+		$aesirCategory = $this->getAesirCategory($category->id);
+		$aesirCategory->loadItem();
 
-		if (!$item->isValid())
+		if (!$aesirCategory->isValid())
 		{
 			if (!$access = RedeventHelperConfig::get('aesir_category_access'))
 			{
 				throw new LogicException('Category default access is not set in config plugin');
 			}
+		}
+		else
+		{
+			$access = $aesirCategory->access;
+		}
 
-			// Try to find existing parent aesir category, if not use default
-			if (empty($category->parent_id))
-			{
-				$parentId = RedeventHelperConfig::get('aesir_category_parent_id');
-			}
-			else
-			{
-				$parent = $this->getAesirCategory($category->parent_id);
-				$parentId = $parent->isValid() ? $parent->id : RedeventHelperConfig::get('aesir_category_parent_id');
-			}
+		// Try to find existing parent aesir category, if not use default
+		if (empty($category->parent_id))
+		{
+			$parentId = RedeventHelperConfig::get('aesir_category_parent_id');
+		}
+		else
+		{
+			$parent = $this->getAesirCategory($category->parent_id);
+			$parentId = $parent->isValid() ? $parent->id : RedeventHelperConfig::get('aesir_category_parent_id');
+		}
 
-			$data = array(
-				'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
-				'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
-				'title'   => $category->name,
-				'access'  => RedeventHelperConfig::get('aesir_category_access'),
-				'parent_id' => $parentId,
-				'custom_fields' => array(
-					$this->getCategorySelectField()->fieldcode => $category->id
-				)
-			);
+		$title = RdfLayoutHelper::render(
+			'aesir_redevent_sync.category.title',
+			compact('category'),
+			null,
+			array('component' => 'com_redform', 'defaultLayoutsPath' => PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS)
+		);
 
-			// TODO: remove this workaround when aesir code gets fixed
-			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
-			$jform['access'] = RedeventHelperConfig::get('aesir_category_access');
-			JFactory::getApplication()->input->set('jform', $jform);
+		$data = array(
+			'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
+			'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
+			'title'   => $title,
+			'access'  => $access,
+			'parent_id' => $parentId,
+			'custom_fields' => array(
+				$this->getCategorySelectField()->fieldcode => $category->id
+			)
+		);
 
-			$model = RModel::getAdminInstance('Category', array('ignore_request' => true), 'com_reditem');
+		if ($aesirCategory->isValid())
+		{
+			$data['id'] = $aesirCategory->id;
+		}
 
-			if (!$model->save($data))
-			{
-				throw new LogicException($model->getError());
-			}
+		// TODO: remove this workaround when aesir code gets fixed
+		$jform = JFactory::getApplication()->input->get('jform', null, 'array');
+		$jform['access'] = RedeventHelperConfig::get('aesir_category_access');
+		JFactory::getApplication()->input->set('jform', $jform);
+
+		$model = RModel::getAdminInstance('Category', array('ignore_request' => true), 'com_reditem');
+
+		if (!$model->save($data))
+		{
+			throw new LogicException($model->getError());
 		}
 
 		return true;

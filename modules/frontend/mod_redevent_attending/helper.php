@@ -53,7 +53,7 @@ class ModRedeventAttendingHelper
 
 		if ($params->get('includeopen', 0))
 		{
-			$date_cond[] = ' x.dates = 0 ';
+			$date_cond[] = ' x.dates IS NULL ';
 		}
 
 		$type = JRequest::getInt('reattspan', $params->get('type', '0'));

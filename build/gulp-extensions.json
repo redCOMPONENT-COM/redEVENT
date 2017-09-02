@@ -46,6 +46,7 @@
 			"event_clean_ibc"
 		],
 		"redevent_config" : ["aesir", "ibc"],
+		"redevent_field" : ["aesir_organisation"],
 		"redform_field" : ["eventacymailinglists"],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],

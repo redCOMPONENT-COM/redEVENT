@@ -73,10 +73,17 @@ class PlgSystemAesir_Redevent_SyncSyncVenues
 				throw new LogicException('Venue default access is not set in config plugin');
 			}
 
+			$title = RdfLayoutHelper::render(
+				'aesir_redevent_sync.venue.title',
+				compact('venue'),
+				null,
+				array('component' => 'com_redform', 'defaultLayoutsPath' => PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS)
+			);
+
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_venue_type_id'),
 				'template_id' => RedeventHelperConfig::get('aesir_venue_template_id'),
-				'title'   => $venue->name,
+				'title'   => $title,
 				'access'  => RedeventHelperConfig::get('aesir_venue_access'),
 				'custom_fields' => array(
 					$this->getVenueSelectField()->fieldcode => $venue->id

@@ -305,7 +305,7 @@ class RedeventModelEvents extends RModelList
 		$query = $this->_db->getQuery(true)
 			->update('#__redevent_event_venue_xref AS x')
 			->set('x.published = -1')
-			->where('DATE_SUB(NOW(), INTERVAL 1 DAY) > (IF (x.enddates > 0, x.enddates, x.dates))')
+			->where('DATE_SUB(NOW(), INTERVAL 1 DAY) > (IF (x.enddates, x.enddates, x.dates))')
 			->where('x.eventid IN (' . implode(', ', $event_ids) . ')');
 
 		$this->_db->setQuery($query);

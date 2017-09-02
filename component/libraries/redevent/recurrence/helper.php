@@ -198,7 +198,7 @@ class RedeventRecurrenceHelper
 			->join('INNER', '#__redevent_event_venue_xref AS x on x.id = rp.xref_id')
 
 			->where('r.ended = 0')
-			->where('x.dates > 0');
+			->where('x.dates IS NOT NULL');
 
 		if ($recurrence_id)
 		{

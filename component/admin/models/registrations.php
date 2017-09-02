@@ -139,6 +139,8 @@ class RedeventModelRegistrations extends RModelList
 			->join('LEFT', '#__rwf_cart_item AS ci ON ci.payment_request_id = pr2.id')
 			->join('LEFT', '#__rwf_cart AS cart ON cart.id = ci.cart_id');
 
+		$query->group('r.id');
+
 		$this->buildWhere($query);
 
 		$query->order(
@@ -367,7 +369,7 @@ class RedeventModelRegistrations extends RModelList
 	 *
 	 * @return  void
 	 *
-	 * @since   __deploy_version__
+	 * @since   3.2.4
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{

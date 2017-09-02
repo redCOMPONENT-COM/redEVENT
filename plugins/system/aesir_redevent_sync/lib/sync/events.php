@@ -67,6 +67,7 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 	public function syncEvent(RedeventEntityEvent $event)
 	{
 		$item = $this->getAesirEventItem($event->id);
+		$item->loadItem();
 
 		if (!$item->isValid())
 		{
@@ -74,37 +75,50 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 			{
 				throw new LogicException('Event default access is not set in config plugin');
 			}
-
-			$data = array(
-				'type_id' => RedeventHelperConfig::get('aesir_event_type_id'),
-				'template_id' => RedeventHelperConfig::get('aesir_event_template_id'),
-				'title'   => $event->title,
-				'access'  => RedeventHelperConfig::get('aesir_event_access'),
-				'custom_fields' => array(
-					$this->getEventSelectField()->fieldcode => $event->id
-				)
-			);
-
-			$categories = array();
-			$eventCategories = $event->getCategories();
-			$categoryHelper = new PlgSystemAesir_Redevent_SyncSyncCategories;
-
-			foreach ($eventCategories as $eventCategory)
-			{
-				if ($category = $categoryHelper->getAesirCategory($eventCategory->id))
-				{
-					$categories[] = $category->id;
-				}
-			}
-
-			// TODO: remove this workaround when aesir code gets fixed
-			$jform = JFactory::getApplication()->input->get('jform', null, 'array');
-			$jform['access'] = RedeventHelperConfig::get('aesir_session_access');
-			$jform['categories'] = $categories;
-			JFactory::getApplication()->input->set('jform', $jform);
-
-			$item->save($data);
 		}
+		else
+		{
+			$access = $item->access;
+		}
+
+		$title = RdfLayoutHelper::render(
+			'aesir_redevent_sync.event.title',
+			compact('event'),
+			null,
+			array('component' => 'com_redform', 'defaultLayoutsPath' => PLGSYSTEMAESIR_REDEVENT_SYNC_LAYOUTS)
+		);
+
+		$data = array(
+			'type_id' => RedeventHelperConfig::get('aesir_event_type_id'),
+			'template_id' => RedeventHelperConfig::get('aesir_event_template_id'),
+			'title'   => $title,
+			'access'  => $access,
+			'organisation_id' => $this->getOrganisationId($event),
+			'custom_fields' => array(
+				$this->getEventSelectField()->fieldcode => $event->id
+			)
+		);
+
+		$categories = array();
+		$eventCategories = $event->getCategories();
+		$categoryHelper = new PlgSystemAesir_Redevent_SyncSyncCategories;
+
+		foreach ($eventCategories as $eventCategory)
+		{
+			if ($category = $categoryHelper->getAesirCategory($eventCategory->id))
+			{
+				$categories[] = $category->id;
+			}
+		}
+
+		// TODO: remove this workaround when aesir code gets fixed
+		$jform = JFactory::getApplication()->input->get('jform', null, 'array');
+		$jform['access'] = RedeventHelperConfig::get('aesir_session_access');
+		$jform['categories'] = $categories;
+		JFactory::getApplication()->input->set('jform', $jform);
+
+		$item->bind($data);
+		$item->save();
 
 		return true;
 	}
@@ -307,5 +321,26 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 		}
 
 		return RedeventEntityEvent::loadArray($res);
+	}
+
+	/**
+	 * Get associated organisation
+	 *
+	 * @param   RedeventEntityEvent  $event  event
+	 *
+	 * @return string
+	 *
+	 * @since  __deploy_version__
+	 */
+	private function getOrganisationId(RedeventEntityEvent $event)
+	{
+		if (!$customFieldId = RedeventHelperConfig::get('event_organisation_field'))
+		{
+			return false;
+		}
+
+		$prop = 'custom' . $customFieldId;
+
+		return empty($event->$prop) ? false : $event->$prop;
 	}
 }

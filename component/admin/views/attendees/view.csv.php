@@ -59,7 +59,7 @@ class RedEventViewAttendees extends RViewCsv
 	 *
 	 * @return string
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function preprocess($column, $value)
 	{

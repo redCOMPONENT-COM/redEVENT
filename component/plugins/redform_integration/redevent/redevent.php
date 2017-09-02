@@ -134,10 +134,12 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 	 *
 	 * @return void
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function onAfterRedformCartPaymentAccepted(RdfEntityCart $cart)
 	{
+		$submitKeys = array();
+
 		foreach ($cart->getSubmitters() as $submitter)
 		{
 			if ($submitter->integration != 'redevent')
@@ -151,6 +153,18 @@ class PlgRedform_IntegrationRedevent extends JPlugin
 			{
 				RedeventHelperLog::simpleLog('Redevent error confirming ' . $attendee->id);
 			}
+
+			$submitKeys[] = $submitter->submit_key;
+		}
+
+		$submitKeys = array_unique($submitKeys);
+
+		foreach ($submitKeys as $submitKey)
+		{
+			// Trigger event for custom handling
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAfterPaymentVerifiedRedevent', array($submitKey));
 		}
 	}
 

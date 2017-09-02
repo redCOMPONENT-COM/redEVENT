@@ -89,7 +89,7 @@ class ModRedEventHelper
 		{
 			$where[] = 'x.published = 1';
 			$where[] = 'a.published = 1';
-			$where[] = 'x.dates = 0';
+			$where[] = 'x.dates IS NULL';
 		}
 		elseif ($type == 4) // Just passed dates
 		{
