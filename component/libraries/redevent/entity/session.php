@@ -260,7 +260,7 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return RedeventHelperDate::formatdatetime(
-			$item->dates . ($item->all_day ? '' : ' ' . $item->times),
+			$item->dates . ($item->all_day || empty($item->times) ? '' : ' ' . $item->times),
 			$format
 		);
 	}
@@ -284,7 +284,7 @@ class RedeventEntitySession extends RedeventEntityBase
 
 		$format = $dateFormat ?: RedeventHelper::config()->get('formatdate');
 
-		if (!$item->all_day)
+		if (!$item->all_day && !empty($item->endtimes))
 		{
 			if (!is_null($timeFormat))
 			{
