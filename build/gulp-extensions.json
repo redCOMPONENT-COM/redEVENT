@@ -21,7 +21,7 @@
 		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
-		"ibc" : ["sessionsdump"],
+		"ibc" : ["sessionsdump", "finduddannelsedk"],
 		"jomsocial" : ["redevent"],
 		"josetta_ext" : [
 			"redeventcategory",
