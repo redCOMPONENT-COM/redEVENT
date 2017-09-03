@@ -96,11 +96,23 @@ class PlgIbcFinduddannelsedk extends JPlugin
 		{
 			$errors = libxml_get_errors();
 			var_dump($errors);
+			JFactory::getApplication()->close();
+		}
+
+		if (JFactory::getApplication()->input->getInt('asfile', 0))
+		{
+			$doc = JFactory::getDocument();
+			$doc->setMimeEncoding('text/xml');
+			$date = md5(date('Y-m-d-h-i-s'));
+			$title = JFile::makeSafe('courses' . $date . '.xml');
+			header('Content-Disposition: attachment; filename="' . $title . '"');
 		}
 		else
 		{
-			echo $dom->saveXML();
+			header("Content-type: application/xml");
 		}
+
+		echo $dom->saveXML();
 
 		JFactory::getApplication()->close();
 	}
