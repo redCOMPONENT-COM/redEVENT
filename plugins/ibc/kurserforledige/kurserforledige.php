@@ -318,7 +318,7 @@ class PlgIbcKurserforledige extends JPlugin
 			{
 				$venue = $session->getVenue();
 
-				if (!in_array($venue->id, $ids))
+				if ($venue->isValid() && !in_array($venue->id, $ids))
 				{
 					$this->locations[] = $venue;
 					$ids[] = $venue->id;
