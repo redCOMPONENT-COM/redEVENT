@@ -172,13 +172,24 @@ class PlgIbcFinduddannelsedk extends JPlugin
 	private function addEducations(SimpleXMLElement $institute)
 	{
 		$educations = $institute->addChild('educations');
+		$educationTypeIds = array(
+			10 => 'AMU',
+			15 => 'Andet kursus',
+		);
 
 		foreach ($this->getEvents() as $event)
 		{
+			$eductationTypeId = array_search($event->educationTypeId, $educationTypeIds);
+
+			if ($eductationTypeId === false)
+			{
+				continue;
+			}
+
 			$education = $educations->addChild('education');
 			$education->addAttribute('uniqueIdentifier', 'education' . $event->id);
 			$education->addAttribute('name', $event->title);
-			$education->addAttribute('educationTypeID', $this->params->get('educationTypeID', 1));
+			$education->addAttribute('educationTypeID', $eductationTypeId);
 			$education->addChild('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($event->id), true, -1));
 
 			$contentFields = $education->addChild('contentFields');
@@ -339,6 +350,7 @@ class PlgIbcFinduddannelsedk extends JPlugin
 
 				if (!in_array($event->id, $ids))
 				{
+					$event->educationTypeId = $session->custom5;
 					$this->events[] = $event;
 					$ids[] = $event->id;
 				}
