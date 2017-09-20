@@ -795,7 +795,7 @@ class RedeventUserAcl
 		$canPublishOwn = $this->getUser()->authorise('re.publishvenueown', 'com_redevent');
 		$canPublishAny = $this->getUser()->authorise('re.publishvenueany', 'com_redevent');
 
-		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		if (!$canPublishOwn && !$canPublishAny)
 		{
 			return false;
 		}
@@ -813,12 +813,15 @@ class RedeventUserAcl
 		$query->from('#__redevent_venues AS v');
 		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
 		$query->where('v.id = ' . $id);
-		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
-		if (!$canPublishAny)
+		$filterOr = array('v.created_by = ' . $db->Quote($this->userid));
+
+		if (count($cats) && $canPublishAny)
 		{
-			$query->where('v.created_by = ' . $db->Quote($this->userid));
+			$filterOr[] = 'xcat.category_id IN (' . implode(', ', $cats) . ')';
 		}
+
+		$query->where('(' . implode(' OR ', $filterOr) . ')');
 
 		$db->setQuery($query);
 
