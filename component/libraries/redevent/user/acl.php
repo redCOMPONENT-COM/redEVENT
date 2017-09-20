@@ -192,7 +192,7 @@ class RedeventUserAcl
 		$canPublishOwn = $this->getUser()->authorise('re.publishown', 'com_redevent');
 		$canPublishAny = $this->getUser()->authorise('re.publishany', 'com_redevent');
 
-		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		if (!$canPublishOwn && !$canPublishAny)
 		{
 			return false;
 		}
@@ -210,9 +210,15 @@ class RedeventUserAcl
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->where('e.id = ' . $eventid);
-		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
-		if (!$canPublishAny)
+		if ($cats && $canPublishAny)
+		{
+			$query->where(
+				'(xcat.category_id IN (' . implode(', ', $cats) . ')'
+				. ' OR e.created_by = ' . $db->Quote($this->userid) . ')'
+			);
+		}
+		else
 		{
 			$query->where('e.created_by = ' . $db->Quote($this->userid));
 		}
