@@ -212,11 +212,14 @@ class RedeventModelEvents extends RModelList
 
 			if (!$categoryIds)
 			{
-				$query->where('0');
+				$query->where('obj.created_by = ' . JFactory::getUser()->get('id'));
 			}
 			else
 			{
-				$query->where('cat.id IN (' . implode(',', $categoryIds) . ')');
+				$query->where(
+					'(cat.id IN (' . implode(',', $categoryIds) . ')'
+					. ' OR obj.created_by = ' . JFactory::getUser()->get('id') . ')'
+				);
 			}
 		}
 
