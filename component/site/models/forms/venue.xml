@@ -76,6 +76,7 @@
 			required="true"
             multiple="true"
             size="10"
+			acl_check="true"
 			class="inputbox" />
 
 		<field
