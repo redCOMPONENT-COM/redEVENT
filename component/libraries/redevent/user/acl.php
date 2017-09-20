@@ -247,11 +247,10 @@ class RedeventUserAcl
 			return true;
 		}
 
-		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$canPublishOwn = $this->getUser()->authorise('re.publishown', 'com_redevent');
 		$canPublishAny = $this->getUser()->authorise('re.publishany', 'com_redevent');
 
-		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		if (!$canPublishOwn && !$canPublishAny)
 		{
 			return false;
 		}
@@ -263,7 +262,7 @@ class RedeventUserAcl
 		}
 
 		// Otherwise find corresponding event, and check for this event
-		$db      = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('x.eventid');
