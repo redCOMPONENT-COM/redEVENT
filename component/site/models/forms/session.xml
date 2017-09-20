@@ -453,7 +453,7 @@
 
 			<field
 					name="datimage"
-					type="rmedia"
+					type="media"
 					label="COM_REDEVENT_CHOOSE_IMAGE"
 					description="COM_REDEVENT_CHOOSE_IMAGE"
 					directory="redevent/events"
