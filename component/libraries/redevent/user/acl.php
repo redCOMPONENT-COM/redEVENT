@@ -395,7 +395,7 @@ class RedeventUserAcl
 	{
 		if (!$this->userid)
 		{
-			return array();
+			return false;
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
