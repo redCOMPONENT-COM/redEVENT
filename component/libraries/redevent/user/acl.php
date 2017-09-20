@@ -417,38 +417,44 @@ class RedeventUserAcl
 
 		if (!$allowedAll)
 		{
-			if (!$cats)
+			if (!$canEdit && !$canEditOwn)
 			{
 				return false;
 			}
 
-			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+			if ((empty($cats) || (empty($venuescats) && empty($cats))) && !$canEditOwn)
+			{
+				return false;
+			}
+
+			$conditionsAcl = array('e.created_by = ' . $db->Quote($this->userid));
+			$conditionsAnd = array();
+
+			if (!empty($cats))
+			{
+				$conditionsAnd[] = 'xcat.category_id IN (' . implode(', ', $cats) . ')';
+			}
 
 			if (count($venuescats) && count($venues))
 			{
-				$query->where('(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+				$conditionsAnd[]
+					= '(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))';
 			}
 			elseif (count($venuescats))
 			{
-				$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
+				$conditionsAnd[] = 'xvcat.category_id IN (' . implode(', ', $venuescats) . ')';
 			}
 			elseif (count($venues))
 			{
-				$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
-			}
-			else
-			{
-				return false;
+				$conditionsAnd[] = 'x.venueid IN (' . implode(', ', $venues) . ')';
 			}
 
-			if ((!$canEdit) && $canEditOwn)
+			if (!empty($conditionsAnd))
 			{
-				$query->where('e.created_by = ' . $db->Quote($this->userid));
+				$conditionsAcl[] = '(' . implode(' AND ', $conditionsAnd) . ')';
 			}
-			elseif (!$canEdit)
-			{
-				return false;
-			}
+
+			$query->where('(' . implode(' OR ', $conditionsAcl) . ')');
 		}
 
 		$db->setQuery($query);
