@@ -42,7 +42,6 @@ $returnAppend = '&return=' . base64_encode(RedeventHelperRoute::getMyeventsRoute
 	</div>
 
 <?php endif; ?>
-
 	<?php if ($this->canAddXref): ?>
 		<div><?php echo JHTML::link('index.php?option=com_redevent&task=editsession.add' . $returnAppend, JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
 	<?php endif; ?>
