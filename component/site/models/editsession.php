@@ -296,11 +296,6 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			return false;
 		}
 
-		if (!$pk)
-		{
-			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
-		}
-
 		if (!$pk && !RedeventUserAcl::getInstance()->canPublishXref())
 		{
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
