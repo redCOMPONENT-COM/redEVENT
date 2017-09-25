@@ -210,7 +210,7 @@ class RedeventModelEvents extends RModelList
 			$acl = RedeventUserAcl::getInstance();
 			$categoryIds = $acl->getManagedCategories();
 
-			if (!$categoryIds)
+			if (empty($categoryIds))
 			{
 				$query->where('obj.created_by = ' . JFactory::getUser()->get('id'));
 			}

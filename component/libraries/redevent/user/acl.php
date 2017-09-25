@@ -211,7 +211,7 @@ class RedeventUserAcl
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->where('e.id = ' . $eventid);
 
-		if ($cats && $canPublishAny)
+		if (!empty($cats) && $canPublishAny)
 		{
 			$query->where(
 				'(xcat.category_id IN (' . implode(', ', $cats) . ')'
