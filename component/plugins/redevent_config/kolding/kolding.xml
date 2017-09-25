@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent_config" method="upgrade">
+  <name>PLG_REDEVENT_CONFIG_KOLDING</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2013 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>3.2.3</version>
+	<tag>##VERSION##</tag>
+  <description>PLG_REDEVENT_CONFIG_KOLDING_XML_DESCRIPTION</description>
+
+	<files>
+		<file plugin="kolding">kolding.php</file>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+			</fieldset>
+		</fields>
+	</config>
+</extension>
