@@ -249,8 +249,8 @@ class RedeventModelMysessions extends RedeventModelBasesessionlist
 
 		if (!$acl->superuser())
 		{
-			$xrefs = $acl->getCanEditXrefs();
-			$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
+			$xrefs = $acl->getCanEditXrefs() ?: array();
+			$xrefs = array_merge($acl->getXrefsCanViewAttendees() ?: array(), $xrefs);
 			$xrefs = array_unique($xrefs);
 
 			if ($xrefs && count($xrefs))

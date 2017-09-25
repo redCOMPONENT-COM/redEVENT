@@ -41,8 +41,8 @@ class JFormFieldReeventlist extends JFormFieldList
 
 		if (isset($this->element['acl_check']))
 		{
-			$val = (string) $this->element['acl_check'];
-			$model->setState('filter.acl', $val == 'true' || $val == '1');
+			$val = filter_var((string) $this->element['acl_check'], FILTER_VALIDATE_BOOLEAN);
+			$model->setState('filter.acl', $val);
 		}
 
 		$showLang = isset($this->element['show_lang']) && ($this->element['show_lang'] == 'true' || $this->element['show_lang'] == '1');

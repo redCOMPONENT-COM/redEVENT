@@ -192,7 +192,7 @@ class RedeventUserAcl
 		$canPublishOwn = $this->getUser()->authorise('re.publishown', 'com_redevent');
 		$canPublishAny = $this->getUser()->authorise('re.publishany', 'com_redevent');
 
-		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		if (!$canPublishOwn && !$canPublishAny)
 		{
 			return false;
 		}
@@ -210,9 +210,15 @@ class RedeventUserAcl
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->where('e.id = ' . $eventid);
-		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
-		if (!$canPublishAny)
+		if (!empty($cats) && $canPublishAny)
+		{
+			$query->where(
+				'(xcat.category_id IN (' . implode(', ', $cats) . ')'
+				. ' OR e.created_by = ' . $db->Quote($this->userid) . ')'
+			);
+		}
+		else
 		{
 			$query->where('e.created_by = ' . $db->Quote($this->userid));
 		}
@@ -241,11 +247,10 @@ class RedeventUserAcl
 			return true;
 		}
 
-		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$canPublishOwn = $this->getUser()->authorise('re.publishown', 'com_redevent');
 		$canPublishAny = $this->getUser()->authorise('re.publishany', 'com_redevent');
 
-		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		if (!$canPublishOwn && !$canPublishAny)
 		{
 			return false;
 		}
@@ -257,7 +262,7 @@ class RedeventUserAcl
 		}
 
 		// Otherwise find corresponding event, and check for this event
-		$db      = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('x.eventid');
@@ -395,7 +400,7 @@ class RedeventUserAcl
 	{
 		if (!$this->userid)
 		{
-			return array();
+			return false;
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
@@ -417,38 +422,44 @@ class RedeventUserAcl
 
 		if (!$allowedAll)
 		{
-			if (!$cats)
+			if (!$canEdit && !$canEditOwn)
 			{
 				return false;
 			}
 
-			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+			if ((empty($cats) || (empty($venuescats) && empty($cats))) && !$canEditOwn)
+			{
+				return false;
+			}
+
+			$conditionsAcl = array('e.created_by = ' . $db->Quote($this->userid));
+			$conditionsAnd = array();
+
+			if (!empty($cats))
+			{
+				$conditionsAnd[] = 'xcat.category_id IN (' . implode(', ', $cats) . ')';
+			}
 
 			if (count($venuescats) && count($venues))
 			{
-				$query->where('(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+				$conditionsAnd[]
+					= '(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))';
 			}
 			elseif (count($venuescats))
 			{
-				$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
+				$conditionsAnd[] = 'xvcat.category_id IN (' . implode(', ', $venuescats) . ')';
 			}
 			elseif (count($venues))
 			{
-				$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
-			}
-			else
-			{
-				return false;
+				$conditionsAnd[] = 'x.venueid IN (' . implode(', ', $venues) . ')';
 			}
 
-			if ((!$canEdit) && $canEditOwn)
+			if (!empty($conditionsAnd))
 			{
-				$query->where('e.created_by = ' . $db->Quote($this->userid));
+				$conditionsAcl[] = '(' . implode(' AND ', $conditionsAnd) . ')';
 			}
-			elseif (!$canEdit)
-			{
-				return false;
-			}
+
+			$query->where('(' . implode(' OR ', $conditionsAcl) . ')');
 		}
 
 		$db->setQuery($query);
@@ -795,7 +806,7 @@ class RedeventUserAcl
 		$canPublishOwn = $this->getUser()->authorise('re.publishvenueown', 'com_redevent');
 		$canPublishAny = $this->getUser()->authorise('re.publishvenueany', 'com_redevent');
 
-		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		if (!$canPublishOwn && !$canPublishAny)
 		{
 			return false;
 		}
@@ -813,12 +824,15 @@ class RedeventUserAcl
 		$query->from('#__redevent_venues AS v');
 		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
 		$query->where('v.id = ' . $id);
-		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
-		if (!$canPublishAny)
+		$filterOr = array('v.created_by = ' . $db->Quote($this->userid));
+
+		if (count($cats) && $canPublishAny)
 		{
-			$query->where('v.created_by = ' . $db->Quote($this->userid));
+			$filterOr[] = 'xcat.category_id IN (' . implode(', ', $cats) . ')';
 		}
+
+		$query->where('(' . implode(' OR ', $filterOr) . ')');
 
 		$db->setQuery($query);
 
