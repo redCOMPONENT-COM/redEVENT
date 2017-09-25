@@ -222,7 +222,7 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 	 *
 	 * @return ReditemEntityItem
 	 */
-	private function getAesirSessionItem($sessionId)
+	public function getAesirSessionItem($sessionId)
 	{
 		$db = JFactory::getDbo();
 
