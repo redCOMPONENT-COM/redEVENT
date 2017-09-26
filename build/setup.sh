@@ -8,8 +8,8 @@ sudo apt-get update -qq
 
 sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi > /dev/null
 sudo mkdir $(pwd)/.run
-chmod a+x build/redCORE/tests/travis-php-fpm.sh
-sudo ./build/redCORE/tests/travis-php-fpm.sh $USER $(phpenv version-name)
+chmod a+x build/redFORM/build/redCORE/tests/travis-php-fpm.sh
+sudo ./build/redFORM/build/redCORE/tests/travis-php-fpm.sh $USER $(phpenv version-name)
 sudo a2enmod rewrite actions fastcgi alias
 echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
