@@ -26,6 +26,7 @@ install:
 before_script:
   - "export DISPLAY=:99.0"
   - ./build/setup.sh
+  - cd tests
 
 script:
 - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
