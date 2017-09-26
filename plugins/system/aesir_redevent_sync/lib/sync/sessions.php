@@ -230,23 +230,15 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 		$sessionSelectField = $db->qn('s.' . $this->getSessionSelectField()->fieldcode);
 
 		$query = $db->getQuery(true)
-			->select('s.*')
+			->select('s.id')
 			->from($sessionTableName)
 			->join('INNER', '#__reditem_items AS i ON i.id = s.id')
 			->where($sessionSelectField . ' = ' . $sessionId);
 
 		$db->setQuery($query);
+		$res = $db->loadResult();
 
-		if ($res = $db->loadObject())
-		{
-			$entity = ReditemEntityItem::getInstance($res->id)->bind($res);
-		}
-		else
-		{
-			$entity = ReditemEntityItem::getInstance();
-		}
-
-		return $entity;
+		return ReditemEntityItem::getInstance($res ?: null);
 	}
 
 	/**
