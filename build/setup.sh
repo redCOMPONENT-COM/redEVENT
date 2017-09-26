@@ -36,3 +36,5 @@ mv gulp-config.json.dist gulp-config.json
 gulp release --skip-version --testRelease
 cd ../tests
 composer install --prefer-dist
+pwd
+ls vendor/bin
