@@ -141,6 +141,8 @@ $cancelCol = array_reduce(
 										JText::_('COM_REDEVENT_MYEVENTS_GO_TO_PAYMENT'), array('target' => '_self')
 								);
 							?>
+                        <?php else: ?>
+                            <a href="<?= RedeventHelperRoute::getRegistrationRoute($row->xslug, 'registration.confirm', $row->submit_key); ?>"><?= JText::_('COM_REDEVENT_MYEVENTS_RECEIPT') ?></a>
 						<?php endif; ?>
 					</td>
 

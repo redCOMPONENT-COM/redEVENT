@@ -55,7 +55,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php if ($this->params->get('showcat', 1)) : ?>
 					<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
-			</tr>
+                <th id="el_receipt" class="sectiontableheader" align="left"><?= JText::_('COM_REDEVENT_TABLE_HEADER_RECEIPT') ?></th>
+
+            </tr>
 		</thead>
 
 		<tbody>
@@ -114,6 +116,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						</div>
 					</td>
 				<?php endif; ?>
+
+                <td headers="el_receipt">
+                <a href="<?= RedeventHelperRoute::getRegistrationRoute($row->xslug, 'registration.confirm', $row->submit_key); ?>"><?= JText::_('COM_REDEVENT_MYEVENTS_RECEIPT') ?></a>
+                </td>
 
 			</tr>
 
