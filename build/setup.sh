@@ -1,37 +1,38 @@
 #!/bin/bash
 set -ev
 
+composer config -g github-oauth.github.com $GITHUB_TOKEN
+composer global require hirak/prestissimo
 sudo sed -i '1s/^/127.0.0.1 localhost\n/' /etc/hosts # forcing localhost to be the 1st alias of 127.0.0.1 in /etc/hosts (https://github.com/seleniumhq/selenium/issues/2074)
 sudo apt-get update -qq
-sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi php5-curl php5-mysql php5-intl php5-gd > /dev/null
+
+sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi > /dev/null
 sudo mkdir $(pwd)/.run
-sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-sudo sed -e "s,listen = 127.0.0.1:9000,listen = /tmp/php5-fpm.sock,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-sudo sed -e "s,;listen.owner = nobody,listen.owner = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-sudo sed -e "s,;listen.group = nobody,listen.group = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-sudo sed -e "s,;listen.mode = 0660,listen.mode = 0666,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-sudo sed -e "s,user = nobody,;user = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-sudo sed -e "s,group = nobody,;group = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+chmod a+x build/redCORE/tests/travis-php-fpm.sh
+sudo ./build/redCORE/tests/travis-php-fpm.sh $USER $(phpenv version-name)
 sudo a2enmod rewrite actions fastcgi alias
 echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-sudo cp -f tests/travis-ci-apache.conf /etc/apache2/sites-available/default
+sudo cp -f build/redCORE/tests/travis-ci-apache.conf /etc/apache2/sites-available/default
 sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+sudo sed -e "s?%PHPVERSION%?${TRAVIS_PHP_VERSION:0:1}?g" --in-place /etc/apache2/sites-available/default
 sudo service apache2 restart
 
 sh -e /etc/init.d/xvfb start
 sleep 3 # give xvfb some time to start
+sudo apt-get install fluxbox -y --force-yes
+fluxbox &
+sleep 3 # give fluxbox some time to start
 
 git submodule update --init --recursive
 cd component/libraries/redevent
 composer dump-autoload
 cd ../../../build
-npm install gulp -g # install globally so that it's available to robo
+
+npm install -g gulp-cli
 npm install
+
 mv gulp-config.json.dist gulp-config.json
 gulp release --skip-version --testRelease
 cd ../tests
-composer config -g github-oauth.github.com $GITHUB_TOKEN
 composer install --prefer-dist
-
