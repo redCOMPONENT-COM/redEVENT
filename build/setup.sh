@@ -16,6 +16,7 @@ echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php
 sudo cp -f build/redFORM/build/redCORE/tests/travis-ci-apache.conf /etc/apache2/sites-available/default
 sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
 sudo sed -e "s?%PHPVERSION%?${TRAVIS_PHP_VERSION:0:1}?g" --in-place /etc/apache2/sites-available/default
+cat /etc/apache2/sites-available/default
 sudo service apache2 restart
 
 sh -e /etc/init.d/xvfb start
