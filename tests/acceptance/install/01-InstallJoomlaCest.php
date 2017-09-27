@@ -12,6 +12,7 @@ class InstallJoomlaCest
 	{
 		$I->wantToTest('Joomla 3 Installation');
 		$I->amOnPage('http://localhost');
+		$I->seeElement(['id' => 'dummy']);
 		$I->installJoomlaRemovingInstallationFolder();
 		$I->doAdministratorLogin();
 		$I->disableStatistics();
