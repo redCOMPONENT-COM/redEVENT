@@ -11,8 +11,6 @@ class InstallJoomlaCest
 	public function installJoomla(\AcceptanceTester $I)
 	{
 		$I->wantToTest('Joomla 3 Installation');
-		$I->amOnUrl('http://localhost/tests/index.html');
-		$I->seeElement(['id' => 'dummy']);
 		$I->installJoomlaRemovingInstallationFolder();
 		$I->doAdministratorLogin();
 		$I->disableStatistics();
