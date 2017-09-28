@@ -9,7 +9,7 @@
 		"squizlabs/php_codesniffer": "^2.8.0",
 		"phpmd/phpmd": "*",
 		"codeception/codeception": "2.1.6",
-		"joomla-projects/joomla-browser": "v3.7.5",
+		"joomla-projects/joomla-browser": "v3.6.0.1",
 		"codegyre/robo": "~0.6",
 		"redcomponent/robo": "dev-master",
 		"flow/jsonpath": "dev-master",
