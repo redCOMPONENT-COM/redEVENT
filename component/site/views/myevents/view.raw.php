@@ -89,6 +89,8 @@ class RedeventViewMyevents extends RViewSite
 		$this->assignRef('acl',         $acl);
 		$this->assignRef('lists',      $lists);
 
+		$this->canAddEvent = $acl->canAddEvent();
+
 		$this->setLayout('default');
 		echo $this->loadTemplate('events');
 
@@ -145,6 +147,8 @@ class RedeventViewMyevents extends RViewSite
 		$this->assignRef('acl',         $acl);
 		$this->assignRef('lists',      $lists);
 
+		$this->canAddXref = $acl->canAddXref();
+
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
@@ -194,6 +198,8 @@ class RedeventViewMyevents extends RViewSite
 		$this->assignRef('venues_pageNav', $pageNav);
 		$this->assignRef('acl',         $acl);
 		$this->assignRef('lists',      $lists);
+
+		$this->canAddVenue = $acl->canAddVenue();
 
 		$this->setLayout('default');
 		echo $this->loadTemplate('venues');
