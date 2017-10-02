@@ -97,6 +97,7 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 				'template_id' => RedeventHelperConfig::get('aesir_session_template_id'),
 				'title'   => $title,
 				'access'  => 1,
+				'organisation_id' => $this->getOrganisationId($session->getEvent()),
 				'custom_fields' => array(
 					$sessionSelectField->fieldcode => $session->id
 				)
@@ -289,5 +290,26 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 		}
 
 		return $this->sessionSelectField;
+	}
+
+	/**
+	 * Get associated organisation
+	 *
+	 * @param   RedeventEntityEvent  $event  event
+	 *
+	 * @return string
+	 *
+	 * @since  __deploy_version__
+	 */
+	private function getOrganisationId(RedeventEntityEvent $event)
+	{
+		if (!$customFieldId = RedeventHelperConfig::get('event_organisation_field'))
+		{
+			return false;
+		}
+
+		$prop = 'custom' . $customFieldId;
+
+		return empty($event->$prop) ? false : $event->$prop;
 	}
 }
