@@ -90,6 +90,7 @@
 		<plugin name="redevent" group="redform_integration" />
 		<plugin name="redevent" group="installer" />
 		<plugin name="redevent_session" group="redform_field" />
+		<plugin name="altdatetag" group="redevent" />
 	</plugins>
 
 	<!-- Libraries to install -->
