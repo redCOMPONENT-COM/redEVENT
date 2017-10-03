@@ -71,9 +71,16 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	 * Get email
 	 *
 	 * @return string
+	 *
+	 * @throws RuntimeException
 	 */
 	public function getEmail()
 	{
+		if (!$this->isValid())
+		{
+			throw new RuntimeException('Invalid attendee');
+		}
+
 		if (!$this->email)
 		{
 			$answers = $this->getAnswers();
