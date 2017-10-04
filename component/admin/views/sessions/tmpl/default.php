@@ -43,6 +43,10 @@ $search = $this->state->get('filter.search');
 		}
 		form.submit();
 	}
+
+	jQuery(function () {
+		jQuery('[data-toggle="popover"]').popover()
+	})
 </script>
 <form action="index.php?option=com_redevent&view=sessions" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
@@ -241,18 +245,18 @@ $search = $this->state->get('filter.search');
 					</td>
 					<td>
 						<?php
-						$created	 	= JHTML::Date( $row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
-						$edited 		= JHTML::Date( $row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
-						$tip 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$created.'<br />';
+						$created = JHTML::Date( $row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
+						$edited = JHTML::Date( $row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
+						$popoverContent = JText::sprintf('COM_REDEVENT_POPOVER_CONTENT_CREATED', $created, $row->author);
 
-						if ($row->modified != '0000-00-00 00:00:00')
+						if (RedeventHelperDate::isValidDate($row->modified) && $row->modified != $row->created)
 						{
-							$tip 	.= JText::_('COM_REDEVENT_EDITED_AT' ).': '.$edited.'<br />';
-							$tip 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
+							$popoverContent .= '<br/>' . JText::sprintf('COM_REDEVENT_POPOVER_CONTENT_EDITED', $edited, $row->editor);
 						}
-
-						echo RHtml::tooltip($tip, '', null, $row->id);
 						?>
+						<a href="#" data-toggle="popover" data-content="<?= $popoverContent ?>" data-placement="left">
+							<?= $row->id ?>
+						</a>
 					</td>
 				</tr>
 			<?php endforeach; ?>
