@@ -254,9 +254,9 @@ $search = $this->state->get('filter.search');
 							$popoverContent .= '<br/>' . JText::sprintf('COM_REDEVENT_POPOVER_CONTENT_EDITED', $edited, $row->editor);
 						}
 						?>
-						<a href="#" data-toggle="popover" data-content="<?= $popoverContent ?>" data-placement="left">
+						<span class="session-info-popover" data-toggle="popover" data-content="<?= $popoverContent ?>" data-placement="left">
 							<?= $row->id ?>
-						</a>
+						</span>
 					</td>
 				</tr>
 			<?php endforeach; ?>
