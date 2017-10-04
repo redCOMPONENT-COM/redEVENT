@@ -81,10 +81,9 @@ class PlgRedeventAltdatetag extends JPlugin implements \Redevent\Plugin\TagRepla
 			{
 				$search[] = $tag->getFullMatch();
 
-				if ($session->isOpenDate() && RedeventHelperDate::isValidDate($session->custom3))
+				if ($session->isOpenDate() && !empty($session->custom3))
 				{
-					$date = JFactory::getDate($session->custom3);
-					$string = $date->format($format);
+					$string = $session->custom3;
 				}
 				else
 				{
