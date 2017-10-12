@@ -200,6 +200,16 @@ class RedeventModelMysessions extends RedeventModelBasesessionlist
 					case 'type':
 						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
 						break;
+
+					default:
+						$filterOr = array(
+							' LOWER( a.title ) LIKE ' . $filter,
+							' LOWER( x.title ) LIKE ' . $filter,
+							' LOWER( l.venue ) LIKE ' . $filter,
+							' LOWER( l.city ) LIKE ' . $filter,
+							' LOWER( c.name ) LIKE ' . $filter,
+						);
+						$where[] = '(' . implode(' OR ', $filterOr) . ')';
 				}
 			}
 		}
