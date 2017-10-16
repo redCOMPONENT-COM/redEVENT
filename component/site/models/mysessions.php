@@ -225,115 +225,31 @@ class RedeventModelMysessions extends RedeventModelBasesessionlist
 	}
 
 	/**
-	 * Build the where clause
-	 *
-	 * @return string
-	 */
-	protected function _buildEventsOptionsWhere()
-	{
-		$mainframe = JFactory::getApplication();
-
-		// Get the paramaters of the active menu item
-		$params = $mainframe->getParams();
-
-		$where = array();
-		$where[] = ' x.published > -1 ';
-
-		$acl = RedeventUserAcl::getInstance();
-
-		if (!$acl->superuser())
-		{
-			$xrefs = $acl->getCanEditXrefs() ?: array();
-			$xrefs = array_merge($acl->getXrefsCanViewAttendees() ?: array(), $xrefs);
-			$xrefs = array_unique($xrefs);
-
-			if ($xrefs && count($xrefs))
-			{
-				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
-			}
-			else
-			{
-				$where[] = '0';
-			}
-		}
-
-		if ($params->get('showopendates', 1) == 0)
-		{
-			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
-		}
-
-		if ($params->get('shownonbookable', 1) == 0)
-		{
-			$where[] = ' a.registra > 0 ';
-		}
-
-		/*
-		 * If we have a filter, and this is enabled... lets tack the AND clause
-		* for the filter onto the WHERE clause of the item query.
-		*/
-		if ($params->get('filter_text'))
-		{
-			$filter = JFactory::getApplication()->input->getString('filter', '', 'request');
-			$filter_type = JFactory::getApplication()->input->getWord('filter_type', '', 'request');
-
-			if ($filter)
-			{
-				// Clean filter variables
-				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
-				$filter_type = JString::strtolower($filter_type);
-
-				switch ($filter_type)
-				{
-					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
-						break;
-
-					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
-						break;
-
-					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
-						break;
-
-					case 'type':
-						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
-						break;
-				}
-			}
-		}
-
-		$where = ' WHERE ' . implode(' AND ', $where);
-
-		return $where;
-	}
-
-	/**
 	 * Get events as options
 	 *
 	 * @return mixed
 	 */
 	public function getEventsOptions()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where = $this->_buildEventsOptionsWhere();
+		$options = array();
+		$model = RModel::getAdminInstance('Events', array('ignore_request' => true), 'com_redevent');
+		$model->setState('list.ordering', 'obj.title');
+		$model->setState('list.direction', 'asc');
+		$model->setState('list.limit', 0);
+		$model->setState('filter.published', 1);
+		$model->setState('filter.acl', true);
 
-		// Get Events from Database
-		$query = ' SELECT a.id AS value, a.title as text '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. $where
-		. ' GROUP BY (a.id) '
-		. ' ORDER BY a.title ';
+		$rows = $model->getItems();
 
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
+		if ($rows)
+		{
+			foreach ($rows as $row)
+			{
+				$options[] = JHtml::_('select.option', $row->id, $row->title);
+			}
+		}
 
-		return $res;
+		return $options;
 	}
 
 	/**
