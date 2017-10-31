@@ -1636,6 +1636,23 @@ class RedeventTags
 	 *
 	 * @return string
 	 */
+	private function getTag_session_title(RedeventTagsParsed $tag)
+	{
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
+		return $session->title;
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
 	private function getTag_date(RedeventTagsParsed $tag)
 	{
 		if (!$session = $this->getSession())
