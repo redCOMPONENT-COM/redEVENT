@@ -286,6 +286,9 @@ class RedeventRecurrenceHelper
 					{
 						RedeventHelperLog::simpleLog('saving repeat error: ' . $db->getErrorMsg());
 					}
+
+					$dispatcher = RFactory::getDispatcher();
+					$dispatcher->trigger('onContentAfterSave', array('com_redevent.recurrence.session.edit', $object, true));
 				}
 				else
 				{
