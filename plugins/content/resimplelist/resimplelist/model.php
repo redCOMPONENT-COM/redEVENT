@@ -167,11 +167,11 @@ class PlgReSimplistModel extends RedeventModelBasesessionlist
 
 		if ($sstate == 'past')
 		{
-			$where[] = '(x.dates > 0 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now) . ')';
+			$where[] = '(x.dates AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now) . ')';
 		}
 		elseif ($sstate == 'future')
 		{
-			$where[] = '(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')';
+			$where[] = '(x.dates IS NULL OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')';
 		}
 
 		return $query->where(implode(' AND ', $where));

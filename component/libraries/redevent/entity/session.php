@@ -209,27 +209,26 @@ class RedeventEntitySession extends RedeventEntityBase
 			return array(JText::_('LIB_REDEVENT_OPEN_DATE'));
 		}
 
-		if (!is_null($dateFormat))
-		{
-			$format = $dateFormat . (!is_null($timeFormat) && $item->allday ? '' : ' ' . $timeFormat);
-		}
-		else
-		{
-			$format = null;
-		}
-
 		$res = array();
 
+		$startFormat = $dateFormat
+			? $dateFormat . ($timeFormat && !$item->allday && $item->times ? ' ' . $timeFormat : '')
+			: null;
+
 		$res[] = RedeventHelperDate::formatdatetime(
-			$item->allday ? $item->dates : $item->dates . ' ' . $item->times,
-			$format
+			$item->allday ? $item->dates : $item->dates . ($item->times ? ' ' . $item->times : ''),
+			$startFormat
 		);
 
 		if (RedeventHelperDate::isValidDate($item->enddates))
 		{
+			$endFormat = $dateFormat
+				? $dateFormat . ($timeFormat && !$item->allday && $item->endtimes ? ' ' . $timeFormat : '')
+				: null;
+
 			$res[] = RedeventHelperDate::formatdatetime(
-				$item->allday ? $item->enddates : $item->enddates . ' ' . $item->endtimes,
-				$format
+				$item->allday ? $item->enddates : $item->enddates . ($item->endtimes ? ' ' . $item->endtimes : ''),
+				$endFormat
 			);
 		}
 
@@ -261,7 +260,7 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return RedeventHelperDate::formatdatetime(
-			$item->dates . ($item->all_day ? '' : ' ' . $item->times),
+			$item->dates . ($item->all_day || empty($item->times) ? '' : ' ' . $item->times),
 			$format
 		);
 	}
@@ -285,7 +284,7 @@ class RedeventEntitySession extends RedeventEntityBase
 
 		$format = $dateFormat ?: RedeventHelper::config()->get('formatdate');
 
-		if (!$item->all_day)
+		if (!$item->all_day && !empty($item->endtimes))
 		{
 			if (!is_null($timeFormat))
 			{
@@ -476,13 +475,15 @@ class RedeventEntitySession extends RedeventEntityBase
 			$user = $user ?: JFactory::getUser();
 			$access = $user->getAuthorisedViewLevels();
 
-			return array_filter(
+			$groups = array_filter(
 				$this->pricegroups,
 				function ($sessionpricegroup) use ($access)
 				{
 					return in_array($sessionpricegroup->getPricegroup()->access, $access);
 				}
 			);
+
+			return !empty($groups) ? array_values($groups) : $groups;
 		}
 
 		return $this->pricegroups;
@@ -503,13 +504,15 @@ class RedeventEntitySession extends RedeventEntityBase
 			return $this->pricegroups;
 		}
 
-		return array_filter(
+		$groups = array_filter(
 			$pricegroups,
 			function ($pricegroup)
 			{
 				return $pricegroup->active > 0;
 			}
 		);
+
+		return !empty($groups) ? array_values($groups) : $groups;
 	}
 
 	/**
@@ -526,13 +529,15 @@ class RedeventEntitySession extends RedeventEntityBase
 			return false;
 		}
 
-		return array_filter(
+		$groups = array_filter(
 			$pricegroups,
 			function ($pricegroup)
 			{
 				return $pricegroup->active == 1;
 			}
 		);
+
+		return !empty($groups) ? array_values($groups) : $groups;
 	}
 
 	/**

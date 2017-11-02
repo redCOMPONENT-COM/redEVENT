@@ -120,7 +120,7 @@ class RedeventControllerMyevents extends RedeventControllerFront
 	 *
 	 * @return void
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function setEventPublishState($id, $state)
 	{
@@ -228,35 +228,25 @@ class RedeventControllerMyevents extends RedeventControllerFront
 	 *
 	 * @return void
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	private function setVenuePublishState($id, $state)
 	{
-		$useracl = RedeventUserAcl::getInstance();
-
 		$msgType = 'message';
 
-		if (!$useracl->canPublishVenue($id))
+		$model = $this->getModel('editvenue');
+
+		$ids = array($id);
+		$res = $model->publish($ids, $state);
+
+		if ($res)
 		{
-			$msg = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
-			$msgType = 'error';
+			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
 		}
 		else
 		{
-			$model = $this->getModel('editvenue');
-
-			$ids = array($id);
-			$res = $model->publish($ids, $state);
-
-			if ($res)
-			{
-				$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
-			}
-			else
-			{
-				$msg = $model->getError();
-				$msgType = 'error';
-			}
+			$msg = $model->getError();
+			$msgType = 'error';
 		}
 
 		$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, $msgType);

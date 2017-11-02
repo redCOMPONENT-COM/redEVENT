@@ -91,7 +91,7 @@ class RedeventModelEventscsvimport extends RModel
 
 	/**
 	 * @var    integer
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	private $currentEventId;
 

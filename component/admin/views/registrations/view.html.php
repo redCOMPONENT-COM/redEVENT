@@ -66,24 +66,36 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 	{
 		$user = JFactory::getUser();
 
-		$firstGroup		= new RToolbarButtonGroup;
+		$firstGroup	= new RToolbarButtonGroup;
+		$secondGroup = new RToolbarButtonGroup;
+		$thirdGroup	= new RToolbarButtonGroup;
 
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
 			$cancel = RToolbarBuilder::createCancelButton('registrations.cancelreg', '', 'btn-warning');
 			$firstGroup->addButton($cancel);
 
+			$cancelmultiple = RToolbarBuilder::createStandardButton(
+				'registrations.cancelmultiple',
+				'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL_MULTIPLE',
+				'btn-warning',
+				'icon-remove'
+			);
+			$firstGroup->addButton($cancelmultiple);
+
 			$restore = RToolbarBuilder::createStandardButton(
 				'registrations.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', 'btn-success', ' icon-circle-arrow-left'
 			);
-			$firstGroup->addButton($restore);
+			$secondGroup->addButton($restore);
 
 			$delete = RToolbarBuilder::createDeleteButton('registrations.delete');
-			$firstGroup->addButton($delete);
+			$thirdGroup->addButton($delete);
 		}
 
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($firstGroup);
+		$toolbar->addGroup($secondGroup);
+		$toolbar->addGroup($thirdGroup);
 
 		$this->toolbar = $toolbar;
 

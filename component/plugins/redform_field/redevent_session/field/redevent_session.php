@@ -113,7 +113,7 @@ class RdfFieldRedevent_Session extends RdfRfieldSelect
 			->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
 			->where('x.published = 1')
 			->where('e.published = 1')
-			->order('x.dates > 0 DESC, x.dates ASC, x.times ASC');
+			->order('x.dates IS NOT NULL DESC, x.dates ASC, x.times ASC');
 
 		if (is_numeric($filterState))
 		{

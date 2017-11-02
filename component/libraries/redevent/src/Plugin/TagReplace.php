@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 /**
  * Interface for tag replacement plugin
  *
- * @since  __deploy_version__
+ * @since  3.2.4
  */
 interface TagReplace
 {
@@ -24,7 +24,7 @@ interface TagReplace
 	 *
 	 * @return mixed
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function onRedeventGetAvailableTags(&$tags);
 
@@ -37,7 +37,7 @@ interface TagReplace
 	 *
 	 * @return mixed
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function onRedeventTagsReplace(\RedeventTags $replacer, &$text, &$recurse);
 }

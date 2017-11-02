@@ -62,7 +62,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</td>
 			<td headers="el_edit" align="left" valign="top"><?php echo $this->venueeditbutton($row->id); ?></td>
 			<td headers="el_delete" align="left" valign="top">
-				<?php if ($this->acl->canEditVenue($row->xref)): ?>
+				<?php if ($this->acl->canEditVenue($row->id)): ?>
 					<?php echo JHTML::link('index.php?option=com_redevent&task=myevents.deletevenue&id='. $row->id, RHelperAsset::load('no.png', null, array('alt' => JText::_('COM_REDEVENT_DELETE')))); ?>
 				<?php endif; ?>
 			</td>

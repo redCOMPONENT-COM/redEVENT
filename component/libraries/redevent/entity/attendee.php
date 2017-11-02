@@ -46,11 +46,16 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	private $user;
 
 	/**
+	 * @var RdfEntitySubmitter
+	 */
+	private $submitter;
+
+	/**
 	 * Set attendee as confirmed
 	 *
 	 * @return bool true on success
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.4
 	 */
 	public function confirm()
 	{
@@ -66,9 +71,16 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	 * Get email
 	 *
 	 * @return string
+	 *
+	 * @throws RuntimeException
 	 */
 	public function getEmail()
 	{
+		if (!$this->isValid())
+		{
+			throw new RuntimeException('Invalid attendee');
+		}
+
 		if (!$this->email)
 		{
 			$answers = $this->getAnswers();
@@ -298,6 +310,26 @@ class RedeventEntityAttendee extends RedeventEntityBase
 		$model->setAnswers($answers);
 
 		return $model->updatePrice();
+	}
+
+	/**
+	 * Return associated event
+	 *
+	 * @return RdfEntitySubmitter
+	 */
+	public function getSubmitter()
+	{
+		if (!$this->submitter)
+		{
+			$item = $this->getItem();
+
+			if (!empty($item))
+			{
+				$this->submitter = RdfEntitySubmitter::load($item->sid);
+			}
+		}
+
+		return $this->submitter;
 	}
 
 	/**

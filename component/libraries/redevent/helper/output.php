@@ -424,7 +424,7 @@ class RedeventHelperOutput
 		$document = JFactory::getDocument();
 		JHTML::_('behavior.framework');
 
-		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
+		$document->addScript('https://maps.googleapis.com/maps/api/js?sensor=false');
 		RHelperAsset::load('venuemap.js');
 		$document->addScriptDeclaration('
 			var basepath = "' . JURI::root() . '";
@@ -472,7 +472,7 @@ class RedeventHelperOutput
 		RHelperAsset::load('gmapsoverlay.css');
 
 		$document = JFactory::getDocument();
-		$document->addScript('https://maps.google.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
+		$document->addScript('https://maps.googleapis.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
 
 		$document->addScriptDeclaration('var mymapDefaultaddress = "' . $params->get('pinpoint_defaultaddress', 'usa') . '";');
 

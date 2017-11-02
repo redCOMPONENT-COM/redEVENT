@@ -59,7 +59,7 @@ class RedeventTagsLibPriceswitch extends \Redevent\Tag\Replacer
 	 *
 	 * @return boolean
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	private function isFree()
 	{

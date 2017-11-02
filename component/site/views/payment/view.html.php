@@ -100,13 +100,6 @@ class RedeventViewPayment extends RViewSite
 			case 'accepted':
 				$text = $tags->replaceTags($row->paymentaccepted);
 				$this->addTracking();
-				$model->checkAndConfirm();
-
-				// Trigger event for custom handling
-				JPluginHelper::importPlugin('redevent');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('onAfterPaymentVerifiedRedevent', array($submit_key));
-
 				break;
 
 			case 'refused':

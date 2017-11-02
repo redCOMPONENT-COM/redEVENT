@@ -115,7 +115,7 @@ class RedeventModelPaymentreminder extends RModel
 				->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref')
 				->join('INNER', '#__rwf_submitters AS s ON s.id = r.sid')
 				->join('INNER', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND paid = 0')
-				->where('(x.dates = 0 OR x.dates > NOW())')
+				->where('(x.dates IS NULL OR x.dates > NOW())')
 				->where('r.cancelled = 0')
 				->where('(r.payment_reminder_sent = 0 OR TIMESTAMPDIFF(MINUTE, NOW(), r.payment_reminder_sent) > ' . $minimumDelay . ')')
 				->where('pr.price > 0');

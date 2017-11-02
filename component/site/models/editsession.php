@@ -296,7 +296,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			return false;
 		}
 
-		if (!$pk)
+		if (!$pk && !RedeventUserAcl::getInstance()->canPublishXref())
 		{
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
 		}
@@ -515,5 +515,27 @@ class RedeventModelEditsession extends RedeventModelAdmin
 		$acl = RedeventUserAcl::getInstance();
 
 		return $acl->canEditXref($record->id);
+	}
+
+	/**
+	 * Prepare and sanitise the table data prior to saving.
+	 *
+	 * @param   JTable  $table  A reference to a JTable object.
+	 *
+	 * @return  void
+	 */
+	protected function prepareTable($table)
+	{
+		parent::prepareTable($table);
+
+		$defnull = array('dates', 'times', 'enddates', 'endtimes', 'registrationend');
+
+		foreach ($defnull as $val)
+		{
+			if (!strlen($table->$val))
+			{
+				$table->$val = null;
+			}
+		}
 	}
 }

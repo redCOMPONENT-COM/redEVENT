@@ -45,15 +45,15 @@ class Dates
 			throw new \InvalidArgumentException('Dates requires an array or object');
 		}
 
-		if (!isset($data['dates']) || !isset($data['enddates']) || !isset($data['times']) || !isset($data['endtimes']) || !isset($data['allday']))
+		if (!isset($data['allday']))
 		{
-			throw new \InvalidArgumentException('Dates requires properties dates, times, enddates, enddtimes, allday from input object');
+			throw new \InvalidArgumentException('Dates requires properties allday from input object');
 		}
 
-		$this->dates = $data['dates'];
-		$this->enddates = $data['enddates'];
-		$this->times = $data['times'];
-		$this->endtimes = $data['endtimes'];
+		$this->dates = empty($data['dates']) ? null : $data['dates'];
+		$this->enddates = empty($data['enddates']) ? null : $data['enddates'];
+		$this->times = empty($data['times']) ? null : $data['times'];
+		$this->endtimes = empty($data['endtimes']) ? null : $data['endtimes'];
 		$this->allday = $data['allday'];
 	}
 
@@ -175,7 +175,7 @@ class Dates
 			return null;
 		}
 
-		return strtotime($this->enddates . ($this->isAllDay() ? '' : ' ' . $item->endtimes));
+		return strtotime($this->enddates . ($this->isAllDay() ? '' : ' ' . $this->endtimes));
 	}
 
 	/**
@@ -229,11 +229,17 @@ class Dates
 
 		if (\RedeventHelperDate::isValidDate($this->enddates))
 		{
-			return strtotime($this->enddates . ($this->allday ? ' 23:59:59' : ' ' . $this->endtimes)) < $cmp;
+			$time = strtotime(
+				$this->enddates . ($this->allday || !$this->endtimes ? ' 23:59:59' : ' ' . $this->endtimes)
+			);
 		}
 		else
 		{
-			return strtotime($this->dates . ' ' . ($this->allday ? '' : ' ' . $this->times)) < $cmp;
+			$time = strtotime(
+				$this->dates . ' ' . ($this->allday || !$this->times ? '' : ' ' . $this->times)
+			);
 		}
+
+		return $time < $cmp;
 	}
 }

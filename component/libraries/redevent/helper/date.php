@@ -24,6 +24,11 @@ class RedeventHelperDate
 	 */
 	public static function isValidDate($date)
 	{
+		if (!$date)
+		{
+			return false;
+		}
+
 		$format = strlen($date) > 10 ? 'Y-m-d H:i:s' : 'Y-m-d';
 		$d = DateTime::createFromFormat($format, $date);
 
@@ -39,6 +44,11 @@ class RedeventHelperDate
 	 */
 	public static function isValidTime($time)
 	{
+		if (!$time)
+		{
+			return false;
+		}
+
 		$format = strlen($time) > 5 ? 'H:i:s' : 'H:i';
 		$d = DateTime::createFromFormat($format, $time);
 
@@ -308,7 +318,7 @@ class RedeventHelperDate
 	 *
 	 * @return string
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public static function utcToServerTz($value)
 	{

@@ -67,25 +67,7 @@ if ($this->row->venueid != 0) {
 
   	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
-			<?php
-			$tmp = RedeventHelperDate::formatdate($this->row->dates, $this->row->times);
-
-			if (RedeventHelperDate::isValidTime($this->row->times) && !$this->row->allday)
-			{
-				$tmp .= ' ' . RedeventHelperDate::formattime($this->row->dates, $this->row->times);
-			}
-
-			if (RedeventHelperDate::isValidDate($this->row->enddates) && $this->row->enddates != $this->row->dates)
-			{
-				$tmp .= ' - ' . RedeventHelperDate::formatdate($this->row->enddates, $this->row->endtimes);
-			}
-
-			if (RedeventHelperDate::isValidTime($this->row->endtimes) && !$this->row->allday)
-			{
-				$tmp .= ' ' . RedeventHelperDate::formattime($this->row->dates, $this->row->endtimes);
-			}
-			echo $tmp;
-			?>
+			<?= RedeventHelperDate::formatEventDateTime($this->row) ?>
 		</dd>
   		<?php
   		if ($this->row->venueid != 0) :

@@ -20,7 +20,7 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 /**
  * Specific parameters for redEVENT.
  *
- * @since  __deploy_version__
+ * @since  3.2.4
  */
 class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugin\TagReplace
 {
@@ -28,7 +28,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
 	 * @var    boolean
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	protected $autoloadLanguage = true;
 
@@ -39,7 +39,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 	 *
 	 * @return mixed
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function onRedeventGetAvailableTags(&$tags)
 	{
@@ -60,7 +60,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 	 *
 	 * @return mixed
 	 *
-	 * @since  __deploy_version__
+	 * @since  3.2.4
 	 */
 	public function onRedeventTagsReplace(RedeventTags $replacer, &$text, &$recurse)
 	{
