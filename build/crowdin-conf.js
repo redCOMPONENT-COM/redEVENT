@@ -23,8 +23,7 @@ gulp.task('getAdminFiles', function(){
 		.pipe(through.obj(function (file, enc, cb) {
 			iniJsons.push({
                 "source": "/" + file.relative,
-				"translation": "/languages/%locale%/admin/%locale%/%locale%." + stripPrefix(path.basename(file.path)),
-				"dest": "/languages/admin/" + stripPrefix(path.basename(file.path))
+				"translation": "/languages/%locale%/admin/%locale%/%locale%." + stripPrefix(path.basename(file.path))
             });
 			cb(null, file);
 		}))
@@ -35,8 +34,7 @@ gulp.task('getSiteFiles', function(){
 		.pipe(through.obj(function (file, enc, cb) {
 			iniJsons.push({
 				"source": "/" + file.relative,
-				"translation": "/languages/%locale%/site/%locale%/%locale%." + stripPrefix(path.basename(file.path)),
-				"dest": "/languages/site/" + stripPrefix(path.basename(file.path))
+				"translation": "/languages/%locale%/site/%locale%/%locale%." + stripPrefix(path.basename(file.path))
 			});
 			cb(null, file);
 		}))
