@@ -15,28 +15,47 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventModelWaitinglist extends RModel
 {
+	/**
+	 * @var integer
+	 */
 	private $xref = null;
 
+	/**
+	 * @var integer
+	 */
 	private $eventid = null;
 
+	/**
+	 * @var object
+	 */
 	private $event_data = null;
 
+	/**
+	 * @var integer
+	 */
 	private $move_on = null;
 
+	/**
+	 * @var integer
+	 */
 	private $move_off = null;
 
+	/**
+	 * @var array
+	 */
 	private $move_on_ids = array();
 
+	/**
+	 * @var array
+	 */
 	private $move_off_ids = array();
-
-	private $mailer = null;
 
 	/**
 	 * set xref
 	 *
 	 * @param   int  $id  xref id
 	 *
-	 * @return integer
+	 * @return void
 	 */
 	public function setXrefId($id)
 	{
@@ -72,7 +91,6 @@ class RedeventModelWaitinglist extends RModel
 		$this->move_off = null;
 		$this->move_on_ids = null;
 		$this->move_off_ids = null;
-		$this->mailer = null;
 	}
 
 	/**
@@ -80,7 +98,7 @@ class RedeventModelWaitinglist extends RModel
 	 *
 	 * @return boolean true on success
 	 */
-	public function UpdateWaitingList()
+	public function updateWaitingList()
 	{
 		$this->getEventData();
 
@@ -93,13 +111,13 @@ class RedeventModelWaitinglist extends RModel
 			foreach ($xrefids AS $key => $xref)
 			{
 				$this->setXrefId($xref);
-				$this->ProcessWaitingList();
+				$this->processWaitingList();
 				$this->clean();
 			}
 		}
 		else
 		{
-			if (!$this->ProcessWaitingList())
+			if (!$this->processWaitingList())
 			{
 				return false;
 			}
@@ -113,7 +131,7 @@ class RedeventModelWaitinglist extends RModel
 	 *
 	 * @return boolean true on success
 	 */
-	private function ProcessWaitingList()
+	private function processWaitingList()
 	{
 		// Get attendee total first
 		$this->getWaitingList();
@@ -127,20 +145,20 @@ class RedeventModelWaitinglist extends RModel
 				{
 					// No more limit, and still user on waiting list !
 					$this->move_off = $this->waitinglist[1]->total;
-					$this->MoveOffWaitingList();
+					$this->moveOffWaitingList();
 				}
 			}
 			elseif ($this->event_data->maxattendees < $this->waitinglist[0]->total)
 			{
 				// Need to move people on the waitinglist
 				$this->move_on = $this->waitinglist[0]->total - $this->event_data->maxattendees;
-				$this->MoveOnWaitingList();
+				$this->moveOnWaitingList();
 			}
 			elseif ($this->event_data->maxattendees > $this->waitinglist[0]->total)
 			{
 				// Need to move people off the waitinglist
 				$this->move_off = $this->event_data->maxattendees - $this->waitinglist[0]->total;
-				$this->MoveOffWaitingList();
+				$this->moveOffWaitingList();
 			}
 		}
 		elseif (isset($this->waitinglist[1]))
@@ -149,7 +167,7 @@ class RedeventModelWaitinglist extends RModel
 			 Nobody going yet, maximum number of attendees can go off the waitinglist
 			 */
 			$this->move_off = $this->event_data->maxattendees;
-			$this->MoveOffWaitingList();
+			$this->moveOffWaitingList();
 		}
 
 		return true;
@@ -199,7 +217,7 @@ class RedeventModelWaitinglist extends RModel
 	 *
 	 * @return boolean
 	 */
-	private function MoveOffWaitingList()
+	private function moveOffWaitingList()
 	{
 		$query = $this->_db->getQuery(true);
 
@@ -239,7 +257,7 @@ class RedeventModelWaitinglist extends RModel
 	 *
 	 * @return boolean
 	 */
-	private function MoveOnWaitingList()
+	private function moveOnWaitingList()
 	{
 		$query = $this->_db->getQuery(true);
 
@@ -312,13 +330,13 @@ class RedeventModelWaitinglist extends RModel
 	/**
 	 * put people off from the waiting list
 	 *
-	 * @param   array  $register_ids  register ids to put off waiting
+	 * @param   array  $registerIds  register ids to put off waiting
 	 *
 	 * @return boolean
 	 */
-	public function putOffWaitingList($register_ids)
+	public function putOffWaitingList($registerIds)
 	{
-		if (!count($register_ids))
+		if (!count($registerIds))
 		{
 			return true;
 		}
@@ -339,11 +357,11 @@ class RedeventModelWaitinglist extends RModel
 			*/
 			if ($this->event_data->maxattendees)
 			{
-				$this->move_off_ids = array_slice($register_ids, 0, $remaining);
+				$this->move_off_ids = array_slice($registerIds, 0, $remaining);
 			}
 			else
 			{
-				$this->move_off_ids = $register_ids;
+				$this->move_off_ids = $registerIds;
 			}
 
 			foreach ($this->move_off_ids as $rid)
@@ -371,16 +389,16 @@ class RedeventModelWaitinglist extends RModel
 	/**
 	 * put people on the waiting list
 	 *
-	 * @param   array  $register_ids  register ids to put on waiting list
+	 * @param   array  $registerIds  register ids to put on waiting list
 	 *
 	 * @return boolean
 	 */
-	public function putOnWaitingList($register_ids)
+	public function putOnWaitingList($registerIds)
 	{
 		// Check if there are too many ppl going to the event
-		if (count($register_ids))
+		if (count($registerIds))
 		{
-			foreach ($register_ids as $rid)
+			foreach ($registerIds as $rid)
 			{
 				$attendee = new RedeventAttendee($rid);
 
