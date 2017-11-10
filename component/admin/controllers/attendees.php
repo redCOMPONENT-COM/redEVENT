@@ -103,10 +103,10 @@ class RedeventControllerAttendees extends RControllerAdmin
 
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($xref);
-		$model_wait->UpdateWaitingList();
+		$model_wait->updateWaitingList();
 
 		$model_wait->setXrefId($dest);
-		$model_wait->UpdateWaitingList();
+		$model_wait->updateWaitingList();
 
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();

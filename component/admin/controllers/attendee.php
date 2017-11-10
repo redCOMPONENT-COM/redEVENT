@@ -79,7 +79,7 @@ class RedeventControllerAttendee extends RControllerForm
 		{
 			$model_wait = $this->getModel('Waitinglist');
 			$model_wait->setXrefId($xref);
-			$model_wait->UpdateWaitingList();
+			$model_wait->updateWaitingList();
 
 			$cache = JFactory::getCache('com_redevent');
 			$cache->clean();

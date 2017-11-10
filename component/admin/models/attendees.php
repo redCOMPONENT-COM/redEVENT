@@ -501,7 +501,7 @@ class RedeventModelAttendees extends RModelList
 		{
 			$model = RModel::getAdminInstance('Waitinglist');
 			$model->setXrefId($sessionId);
-			$model->UpdateWaitingList();
+			$model->updateWaitingList();
 		}
 	}
 
