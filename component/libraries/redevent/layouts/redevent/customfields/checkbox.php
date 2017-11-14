@@ -12,6 +12,7 @@ extract($displayData);
 
 ?>
 <?php if ($options): ?>
+    <input type="hidden" name="jform[<?php echo $field->fieldname; ?>]" value=""/>
 	<?php foreach ($options as $option): ?>
 		<?php $checked = in_array($option->value, $selected) ? ' checked="checked"' : ''; ?>
 		<div class="checkbox">
