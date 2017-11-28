@@ -128,7 +128,7 @@ class RedeventControllerEditsession extends RControllerForm
 			$model_wait = RModel::getAdminInstance('waitinglist');
 			$xref = $model->getState($this->context . '.id');
 			$model_wait->setXrefId($xref);
-			$model_wait->UpdateWaitingList();
+			$model_wait->updateWaitingList();
 		}
 
 		JPluginHelper::importPlugin('redevent');
