@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JFormHelper::loadFieldClass('list');
 
+jimport('redevent.bootstrap');
+
 /**
  * redEVENT event form field
  *
