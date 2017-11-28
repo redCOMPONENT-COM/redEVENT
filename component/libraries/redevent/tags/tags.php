@@ -1167,6 +1167,13 @@ class RedeventTags
 			return false;
 		}
 
+		$formId = $this->getEvent()->getEventtemplate()->redform_id;
+
+		if (!$formId)
+        {
+            return false;
+        }
+
 		$rfcore = $this->getRFCore();
 		$fields = $rfcore->getFields($this->getEvent()->getEventtemplate()->redform_id);
 
