@@ -20,7 +20,7 @@ class RedeventTags
 {
 	/**
 	 * Session id
-	 * @var int
+	 * @var integer
 	 */
 	private $xref;
 
@@ -32,13 +32,13 @@ class RedeventTags
 
 	/**
 	 * A session id belonging to the event
-	 * @var int
+	 * @var integer
 	 */
 	private $anEventXref;
 
 	/**
 	 * The event id
-	 * @var int
+	 * @var integer
 	 */
 	private $eventid;
 
@@ -78,7 +78,7 @@ class RedeventTags
 	private $options = null;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	private $canregister = null;
 
@@ -1170,9 +1170,9 @@ class RedeventTags
 		$formId = $this->getEvent()->getEventtemplate()->redform_id;
 
 		if (!$formId)
-        {
-            return false;
-        }
+		{
+			return false;
+		}
 
 		$rfcore = $this->getRFCore();
 		$fields = $rfcore->getFields($this->getEvent()->getEventtemplate()->redform_id);
