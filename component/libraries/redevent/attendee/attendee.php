@@ -386,6 +386,10 @@ class RedeventAttendee extends JObject
 
 		try
 		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAttendeeWaitingStatusChanged', array($this->id, $waiting));
+
 			$this->sendWaitinglistStatusEmail($waiting);
 			$this->sendWLAdminNotification($waiting);
 		}

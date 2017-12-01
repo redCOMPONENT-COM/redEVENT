@@ -97,6 +97,7 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 				'template_id' => RedeventHelperConfig::get('aesir_session_template_id'),
 				'title'   => $title,
 				'access'  => 1,
+				'organisation_id' => $this->getOrganisationId($session->getEvent()),
 				'custom_fields' => array(
 					$sessionSelectField->fieldcode => $session->id
 				)
@@ -222,7 +223,7 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 	 *
 	 * @return ReditemEntityItem
 	 */
-	private function getAesirSessionItem($sessionId)
+	public function getAesirSessionItem($sessionId)
 	{
 		$db = JFactory::getDbo();
 
@@ -230,23 +231,15 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 		$sessionSelectField = $db->qn('s.' . $this->getSessionSelectField()->fieldcode);
 
 		$query = $db->getQuery(true)
-			->select('s.*')
+			->select('s.id')
 			->from($sessionTableName)
 			->join('INNER', '#__reditem_items AS i ON i.id = s.id')
 			->where($sessionSelectField . ' = ' . $sessionId);
 
 		$db->setQuery($query);
+		$res = $db->loadResult();
 
-		if ($res = $db->loadObject())
-		{
-			$entity = ReditemEntityItem::getInstance($res->id)->bind($res);
-		}
-		else
-		{
-			$entity = ReditemEntityItem::getInstance();
-		}
-
-		return $entity;
+		return ReditemEntityItem::getInstance($res ?: null);
 	}
 
 	/**
@@ -297,5 +290,26 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 		}
 
 		return $this->sessionSelectField;
+	}
+
+	/**
+	 * Get associated organisation
+	 *
+	 * @param   RedeventEntityEvent  $event  event
+	 *
+	 * @return string
+	 *
+	 * @since  __deploy_version__
+	 */
+	private function getOrganisationId(RedeventEntityEvent $event)
+	{
+		if (!$customFieldId = RedeventHelperConfig::get('event_organisation_field'))
+		{
+			return false;
+		}
+
+		$prop = 'custom' . $customFieldId;
+
+		return empty($event->$prop) ? false : $event->$prop;
 	}
 }

@@ -35,6 +35,13 @@ class JFormFieldRevenuecategorylist extends JFormFieldList
 		$model->setState('list.ordering', 'name');
 		$model->setState('list.direction', 'asc');
 		$model->setState('list.limit', 0);
+
+		if (isset($this->element['acl_check']))
+		{
+			$val = filter_var((string) $this->element['acl_check'], FILTER_VALIDATE_BOOLEAN);
+			$model->setState('filter.acl', $val);
+		}
+
 		$categories = $model->getItems();
 
 		if ($categories)

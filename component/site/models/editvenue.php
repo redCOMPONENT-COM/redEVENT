@@ -115,9 +115,10 @@ class RedeventModelEditvenue extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		$userAcl = RedeventUserAcl::getInstance();
 		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
 
-		if (!$pk)
+		if (!$pk && !$userAcl->canPublishVenue())
 		{
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
 		}
@@ -300,5 +301,21 @@ class RedeventModelEditvenue extends RModelAdmin
 				RedeventHelperLog::simpleLog('Error sending created/edited venue notification to venue owner');
 			}
 		}
+	}
+
+	/**
+	 * Method to test whether a record can be deleted.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
+	 *
+	 * @since   __deploy_version__
+	 */
+	protected function canEditState($record)
+	{
+		$userAcl = RedeventUserAcl::getInstance();
+
+		return $userAcl->canPublishVenue($record->id);
 	}
 }

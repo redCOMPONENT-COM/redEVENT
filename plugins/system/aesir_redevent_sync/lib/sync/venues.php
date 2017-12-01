@@ -159,7 +159,7 @@ class PlgSystemAesir_Redevent_SyncSyncVenues
 	 *
 	 * @return ReditemEntityItem
 	 */
-	private function getAesirVenueItem($venueId)
+	public function getAesirVenueItem($venueId)
 	{
 		if (!isset($this->aesirVenues[$venueId]))
 		{

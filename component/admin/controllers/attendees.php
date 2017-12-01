@@ -103,10 +103,10 @@ class RedeventControllerAttendees extends RControllerAdmin
 
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($xref);
-		$model_wait->UpdateWaitingList();
+		$model_wait->updateWaitingList();
 
 		$model_wait->setXrefId($dest);
-		$model_wait->UpdateWaitingList();
+		$model_wait->updateWaitingList();
 
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
@@ -363,6 +363,23 @@ class RedeventControllerAttendees extends RControllerAdmin
 				$this->setMessage($msg, 'error');
 			}
 		}
+
+		// Set redirect
+		$this->setRedirect($this->getRedirectToListRoute());
+	}
+
+	/**
+	 * Process waiting list
+	 *
+	 * @return void
+	 */
+	public function processwaiting()
+	{
+		$xref = $this->input->getInt('xref');
+
+		$modelWait = $this->getModel('waitinglist');
+		$modelWait->setXrefId($xref);
+		$modelWait->updateWaitingList();
 
 		// Set redirect
 		$this->setRedirect($this->getRedirectToListRoute());

@@ -58,7 +58,7 @@ class RedeventControllerSession extends RedeventControllerForm
 
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($sessionId);
-		$model_wait->UpdateWaitingList();
+		$model_wait->updateWaitingList();
 
 		if ($input->get('task') == 'saveAndTwit')
 		{

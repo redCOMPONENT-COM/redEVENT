@@ -158,6 +158,8 @@ class RedeventModelEvent extends RModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
+		$return = true;
+
 		if ($data['id'] && $this->hasAttendees($data['id']))
 		{
 			$form->setFieldAttribute('template_id', 'required', '0');
@@ -166,20 +168,34 @@ class RedeventModelEvent extends RModelAdmin
 		// First get the data from form itself
 		if (!$validData = parent::validate($form, $data, $group))
 		{
-			return false;
+			$return = false;
 		}
 
 		// Now add custom fields
 		$fields = $this->getEventCustomFieldsFromDb();
+		$session = JFactory::getSession();
 
-		foreach ($fields as $field)
+		foreach ($fields as $key => $field)
 		{
 			$dbname = 'custom' . $field->id;
+
+			if ($field->required && isset($data[$dbname]) && empty($data[$dbname]))
+			{
+				$message = JText::sprintf('JLIB_FORM_VALIDATE_FIELD_REQUIRED', $field->name);
+				$this->setError($message);
+				$session->set($this->context . '.error.' . $key, $message);
+				$return = false;
+			}
 
 			if (isset($data[$dbname]))
 			{
 				$validData[$dbname] = is_array($data[$dbname]) ? implode("\n", $data[$dbname]) : $data[$dbname];
 			}
+		}
+
+		if ($return === false)
+		{
+			return false;
 		}
 
 		return $validData;

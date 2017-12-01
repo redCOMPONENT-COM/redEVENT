@@ -50,6 +50,9 @@ class RedeventModelRegistration extends RModel
 	 */
 	protected $prices = null;
 
+	/**
+	 * @var string
+	 */
 	protected $origin = '';
 
 	/**
@@ -75,27 +78,27 @@ class RedeventModelRegistration extends RModel
 	/**
 	 * Set session id
 	 *
-	 * @param   int  $xref_id  session id
+	 * @param   int  $xrefId  session id
 	 *
 	 * @return void
 	 */
-	public function setXref($xref_id)
+	public function setXref($xrefId)
 	{
-		$this->xref = (int) $xref_id;
+		$this->xref = (int) $xrefId;
 	}
 
 	/**
 	 * Set submit key
 	 *
-	 * @param   string  $submit_key  submit key
+	 * @param   string  $submitKey  submit key
 	 *
 	 * @return void
 	 */
-	public function setSubmitKey($submit_key)
+	public function setSubmitKey($submitKey)
 	{
-		if ($submit_key && $this->submit_key != $submit_key)
+		if ($submitKey && $this->submit_key != $submitKey)
 		{
-			$this->submit_key = $submit_key;
+			$this->submit_key = $submitKey;
 			$this->rf_answers = null;
 			$this->rf_fields  = null;
 		}
@@ -120,12 +123,12 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   object  $user                  performing the registration
 	 * @param   int     $sid                   associated redform submitter id
-	 * @param   string  $submit_key            associated redform submit key
+	 * @param   string  $submitKey             associated redform submit key
 	 * @param   int     $sessionpricegroup_id  pricegroup id for registration
 	 *
 	 * @return boolean|object attendee row or false if failed
 	 */
-	public function register($user, $sid, $submit_key, $sessionpricegroup_id)
+	public function register($user, $sid, $submitKey, $sessionpricegroup_id)
 	{
 		$config  = RedeventHelper::config();
 		$session = $this->getSessionDetails();
@@ -150,7 +153,7 @@ class RedeventModelRegistration extends RModel
 		$obj->sid        = $sid;
 		$obj->xref       = $this->xref;
 		$obj->sessionpricegroup_id = $sessionpricegroup_id;
-		$obj->submit_key = $submit_key;
+		$obj->submit_key = $submitKey;
 		$obj->uid        = $user ? $user->id : 0;
 		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
 		$obj->uip        = $config->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';

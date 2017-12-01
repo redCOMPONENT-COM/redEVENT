@@ -30,26 +30,6 @@
             <option value="1">JYES</option>
         </field>
 
-		<field type="spacer" label="COM_REDEVENT_MAIL_HANDLING"/>
-		<field name="mailinform" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_SUBMISSION"
-			   description="COM_REDEVENT_MAIL_NEW_SUBMISSION_TIP">
-			<option value="0">COM_REDEVENT_DISABLED</option>
-			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
-			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
-			<option value="3">COM_REDEVENT_BOTH</option>
-		</field>
-		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT"
-			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"
-				showon="mailinform:1,2,3"/>
-
-		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION"
-			   description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
-			<option value="0">COM_REDEVENT_DISABLED</option>
-			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
-			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
-			<option value="3">COM_REDEVENT_BOTH</option>
-		</field>
-
 		<field type="spacer" label="COM_REDEVENT_IMAGE_HANDLING"/>
 		<field name="sizelimit" type="text" default="100" label="COM_REDEVENT_IMAGE_FILESIZE"
 			   description="COM_REDEVENT_IMAGE_FILESIZE_TIP"/>
@@ -751,6 +731,26 @@
 			   description="COM_REDEVENT_SETTINGS_FRONTEND_EDITRECURRENCE_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
+		</field>
+
+		<field type="spacer" label="COM_REDEVENT_MAIL_HANDLING"/>
+		<field name="mailinform" type="list" default="0" label="COM_REDEVENT_MAIL_NEW_SUBMISSION"
+			   description="COM_REDEVENT_MAIL_NEW_SUBMISSION_TIP">
+			<option value="0">COM_REDEVENT_DISABLED</option>
+			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
+			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
+			<option value="3">COM_REDEVENT_BOTH</option>
+		</field>
+		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT"
+			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"
+			   showon="mailinform:1,2,3"/>
+
+		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION"
+			   description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
+			<option value="0">COM_REDEVENT_DISABLED</option>
+			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
+			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
+			<option value="3">COM_REDEVENT_BOTH</option>
 		</field>
 	</fieldset>
 

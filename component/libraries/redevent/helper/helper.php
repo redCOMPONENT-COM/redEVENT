@@ -1052,7 +1052,7 @@ class RedeventHelper
 		{
 			$model = JModel::getInstance('waitinglist', 'RedeventModel');
 			$model->setXrefId($xref);
-			$model->UpdateWaitingList();
+			$model->updateWaitingList();
 		}
 
 		return true;

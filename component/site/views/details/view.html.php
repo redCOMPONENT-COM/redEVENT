@@ -207,7 +207,7 @@ class RedeventViewDetails extends JViewLegacy
 
 		if ($params->get('gplusone', 1))
 		{
-			$document->addScript('https://apis.google.com/js/plusone.js');
+			$document->addScript('https://apis.googleapis.com/js/plusone.js');
 		}
 
 		if ($params->get('tweet', 1))

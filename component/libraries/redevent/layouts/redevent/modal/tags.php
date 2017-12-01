@@ -22,6 +22,6 @@ extract($displayData);
 	</div>
 	<iframe src="" style="border: 0px none transparent; padding: 0px; overflow: hidden;" frameborder="0" width="95%" class="modal-body"></iframe>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('COM_REDEVENT_CLOSE'); ?></button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JTOOLBAR_CLOSE'); ?></button>
 	</div>
 </div>

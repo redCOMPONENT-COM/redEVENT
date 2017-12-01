@@ -95,27 +95,11 @@ class RedeventModelMysessions extends RedeventModelBasesessionlist
 	 */
 	protected function _buildQuerySelect()
 	{
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('x.dates, x.enddates, x.allday, x.times, x.endtimes, x.registrationend');
-		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code');
-		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
-		$query->select('c.name AS catname, c.id AS catid');
-		$query->select('x.featured, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
+		$query = parent::buildSelectFrom();
+		$query->select('l.id as locid');
+		$query->select('x.published');
 		$query->select('r.id AS attendee_id, r.sid, r.submit_key');
-		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
-		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
-		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
-		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
-		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
-		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('LEFT', '#__redevent_register AS r ON r.xref = x.id');
-		$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
-		$query->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid');
-		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
-		$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
-		$query->group('x.id');
 
 		return $query;
 	}
@@ -216,6 +200,16 @@ class RedeventModelMysessions extends RedeventModelBasesessionlist
 					case 'type':
 						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
 						break;
+
+					default:
+						$filterOr = array(
+							' LOWER( a.title ) LIKE ' . $filter,
+							' LOWER( x.title ) LIKE ' . $filter,
+							' LOWER( l.venue ) LIKE ' . $filter,
+							' LOWER( l.city ) LIKE ' . $filter,
+							' LOWER( c.name ) LIKE ' . $filter,
+						);
+						$where[] = '(' . implode(' OR ', $filterOr) . ')';
 				}
 			}
 		}
@@ -231,115 +225,31 @@ class RedeventModelMysessions extends RedeventModelBasesessionlist
 	}
 
 	/**
-	 * Build the where clause
-	 *
-	 * @return string
-	 */
-	protected function _buildEventsOptionsWhere()
-	{
-		$mainframe = JFactory::getApplication();
-
-		// Get the paramaters of the active menu item
-		$params = $mainframe->getParams();
-
-		$where = array();
-		$where[] = ' x.published > -1 ';
-
-		$acl = RedeventUserAcl::getInstance();
-
-		if (!$acl->superuser())
-		{
-			$xrefs = $acl->getCanEditXrefs();
-			$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
-			$xrefs = array_unique($xrefs);
-
-			if ($xrefs && count($xrefs))
-			{
-				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
-			}
-			else
-			{
-				$where[] = '0';
-			}
-		}
-
-		if ($params->get('showopendates', 1) == 0)
-		{
-			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
-		}
-
-		if ($params->get('shownonbookable', 1) == 0)
-		{
-			$where[] = ' a.registra > 0 ';
-		}
-
-		/*
-		 * If we have a filter, and this is enabled... lets tack the AND clause
-		* for the filter onto the WHERE clause of the item query.
-		*/
-		if ($params->get('filter_text'))
-		{
-			$filter = JFactory::getApplication()->input->getString('filter', '', 'request');
-			$filter_type = JFactory::getApplication()->input->getWord('filter_type', '', 'request');
-
-			if ($filter)
-			{
-				// Clean filter variables
-				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
-				$filter_type = JString::strtolower($filter_type);
-
-				switch ($filter_type)
-				{
-					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
-						break;
-
-					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
-						break;
-
-					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
-						break;
-
-					case 'type':
-						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
-						break;
-				}
-			}
-		}
-
-		$where = ' WHERE ' . implode(' AND ', $where);
-
-		return $where;
-	}
-
-	/**
 	 * Get events as options
 	 *
 	 * @return mixed
 	 */
 	public function getEventsOptions()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where = $this->_buildEventsOptionsWhere();
+		$options = array();
+		$model = RModel::getAdminInstance('Events', array('ignore_request' => true), 'com_redevent');
+		$model->setState('list.ordering', 'obj.title');
+		$model->setState('list.direction', 'asc');
+		$model->setState('list.limit', 0);
+		$model->setState('filter.published', 1);
+		$model->setState('filter.acl', true);
 
-		// Get Events from Database
-		$query = ' SELECT a.id AS value, a.title as text '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. $where
-		. ' GROUP BY (a.id) '
-		. ' ORDER BY a.title ';
+		$rows = $model->getItems();
 
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
+		if ($rows)
+		{
+			foreach ($rows as $row)
+			{
+				$options[] = JHtml::_('select.option', $row->id, $row->title);
+			}
+		}
 
-		return $res;
+		return $options;
 	}
 
 	/**

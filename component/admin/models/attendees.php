@@ -501,7 +501,7 @@ class RedeventModelAttendees extends RModelList
 		{
 			$model = RModel::getAdminInstance('Waitinglist');
 			$model->setXrefId($sessionId);
-			$model->UpdateWaitingList();
+			$model->updateWaitingList();
 		}
 	}
 
@@ -649,6 +649,13 @@ class RedeventModelAttendees extends RModelList
 			else
 			{
 				$item->paymentRequests = false;
+			}
+
+			if ($item->cancelled == 1
+				&& $this->getState('streamOutput') == 'csv'
+				&& RedeventHelperConfig::get('attendees_export_csv_cancelled_as_unpaid', 0))
+			{
+				$item->paid = 0;
 			}
 		}
 

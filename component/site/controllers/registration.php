@@ -794,7 +794,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		// Check if we have space on the waiting list
 		$model_wait = RModel::getAdminInstance('waitinglist');
 		$model_wait->setXrefId($xref);
-		$model_wait->UpdateWaitingList();
+		$model_wait->updateWaitingList();
 
 		JPluginHelper::importPlugin('redevent');
 		$dispatcher = JDispatcher::getInstance();

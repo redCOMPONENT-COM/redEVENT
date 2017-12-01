@@ -168,6 +168,20 @@ class RedeventModelCategories extends RModelList
 			$query->where('LOWER(c.name) LIKE \'%' . $search . '%\'');
 		}
 
+		if ($this->getState('filter.acl'))
+		{
+			$access = JFactory::getUser()->getAuthorisedViewLevels();
+
+			if (empty($access))
+			{
+				$query->where('0');
+			}
+			else
+			{
+				$query->where('c.access IN (' . implode(",", $access) . ')');
+			}
+		}
+
 		return $query;
 	}
 
@@ -238,6 +252,11 @@ class RedeventModelCategories extends RModelList
 		$id	.= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.language');
 		$id	.= ':' . $this->getState('filter.published');
+
+		if ($this->getState('filter.acl'))
+		{
+			$id .= ':' . serialize(JFactory::getUser()->getAuthorisedViewLevels());
+		}
 
 		return parent::getStoreId($id);
 	}

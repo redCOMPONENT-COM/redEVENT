@@ -475,13 +475,15 @@ class RedeventEntitySession extends RedeventEntityBase
 			$user = $user ?: JFactory::getUser();
 			$access = $user->getAuthorisedViewLevels();
 
-			return array_filter(
+			$groups = array_filter(
 				$this->pricegroups,
 				function ($sessionpricegroup) use ($access)
 				{
 					return in_array($sessionpricegroup->getPricegroup()->access, $access);
 				}
 			);
+
+			return !empty($groups) ? array_values($groups) : $groups;
 		}
 
 		return $this->pricegroups;
@@ -502,13 +504,15 @@ class RedeventEntitySession extends RedeventEntityBase
 			return $this->pricegroups;
 		}
 
-		return array_filter(
+		$groups = array_filter(
 			$pricegroups,
 			function ($pricegroup)
 			{
 				return $pricegroup->active > 0;
 			}
 		);
+
+		return !empty($groups) ? array_values($groups) : $groups;
 	}
 
 	/**
@@ -525,13 +529,15 @@ class RedeventEntitySession extends RedeventEntityBase
 			return false;
 		}
 
-		return array_filter(
+		$groups = array_filter(
 			$pricegroups,
 			function ($pricegroup)
 			{
 				return $pricegroup->active == 1;
 			}
 		);
+
+		return !empty($groups) ? array_values($groups) : $groups;
 	}
 
 	/**

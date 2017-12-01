@@ -20,7 +20,7 @@ class RedeventTags
 {
 	/**
 	 * Session id
-	 * @var int
+	 * @var integer
 	 */
 	private $xref;
 
@@ -32,13 +32,13 @@ class RedeventTags
 
 	/**
 	 * A session id belonging to the event
-	 * @var int
+	 * @var integer
 	 */
 	private $anEventXref;
 
 	/**
 	 * The event id
-	 * @var int
+	 * @var integer
 	 */
 	private $eventid;
 
@@ -78,7 +78,7 @@ class RedeventTags
 	private $options = null;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	private $canregister = null;
 
@@ -1167,6 +1167,13 @@ class RedeventTags
 			return false;
 		}
 
+		$formId = $this->getEvent()->getEventtemplate()->redform_id;
+
+		if (!$formId)
+		{
+			return false;
+		}
+
 		$rfcore = $this->getRFCore();
 		$fields = $rfcore->getFields($this->getEvent()->getEventtemplate()->redform_id);
 
@@ -1627,6 +1634,23 @@ class RedeventTags
 		}
 
 		return $session->details;
+	}
+
+	/**
+	 * Parses a tag
+	 *
+	 * @param   RedeventTagsParsed  $tag  tag
+	 *
+	 * @return string
+	 */
+	private function getTag_session_title(RedeventTagsParsed $tag)
+	{
+		if (!$session = $this->getSession())
+		{
+			return false;
+		}
+
+		return $session->title;
 	}
 
 	/**

@@ -50,11 +50,16 @@ class RedeventModelEditevent extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		$userAcl = RedeventUserAcl::getInstance();
 		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
 
 		if (!$pk)
 		{
 			$data = $this->mergeTemplateData($data);
+		}
+
+		if (!$pk && !$userAcl->canPublishEvent())
+		{
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
 		}
 
