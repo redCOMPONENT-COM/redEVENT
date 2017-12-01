@@ -368,6 +368,12 @@ class RedeventAttendee extends JObject
 			$waiting = $data->waitinglist ? 0 : 1;
 		}
 
+		if ($data->waitinglist == $waiting)
+		{
+			// Nothing to do
+			return true;
+		}
+
 		$query = $this->db->getQuery(true);
 
 		$query->update('#__redevent_register')
