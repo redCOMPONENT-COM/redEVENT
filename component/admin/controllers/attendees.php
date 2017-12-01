@@ -369,6 +369,23 @@ class RedeventControllerAttendees extends RControllerAdmin
 	}
 
 	/**
+	 * Process waiting list
+	 *
+	 * @return void
+	 */
+	public function processwaiting()
+	{
+		$xref = $this->input->getInt('xref');
+
+		$modelWait = $this->getModel('waitinglist');
+		$modelWait->setXrefId($xref);
+		$modelWait->updateWaitingList();
+
+		// Set redirect
+		$this->setRedirect($this->getRedirectToListRoute());
+	}
+
+	/**
 	 * Get the JRoute object for a redirect to list.
 	 *
 	 * @param   string  $append  An optional string to append to the route
