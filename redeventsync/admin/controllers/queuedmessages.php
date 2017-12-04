@@ -38,6 +38,10 @@ class RedeventsyncControllerQueuedmessages extends RControllerAdmin
 		{
 			// Make sure the item ids are integers
 			JArrayHelper::toInteger($cid);
+
+			// Order by id asc
+			sort($cid);
+
 			$model = $this->getModel();
 
 			if (!$model->process($cid))
