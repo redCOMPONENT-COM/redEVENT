@@ -183,6 +183,19 @@ JFactory::getDocument()->addScriptDeclaration(
 								</div>
 							</div>
 						<?php endif; ?>
+
+						<?php foreach ($this->customfields as $field): ?>
+
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $field->getLabel(); ?>
+								</div>
+								<div class="controls">
+									<?php echo $field->render(); ?>
+								</div>
+							</div>
+
+						<?php endforeach; ?>
 					</div>
 			</fieldset>
 		</div>
