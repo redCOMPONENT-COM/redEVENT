@@ -184,6 +184,17 @@ JFactory::getDocument()->addScriptDeclaration(
 							</div>
 						<?php endif; ?>
 
+						<?php if ($this->params->get('allow_attachments', 1)): ?>
+							<div class="control-group event-attachments">
+								<div class="control-label">
+									<?php echo JText::_('COM_REDEVENT_ATTACHMENTS'); ?>
+								</div>
+								<div class="controls">
+									<?php echo RedeventLayoutHelper::render('attachments.edit', $this); ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
 						<?php if ($this->params->get('edit_customs', 0) && count($this->customfields)):?>
 							<?php foreach ($this->customfields as $field): ?>
 								<div class="control-group">
