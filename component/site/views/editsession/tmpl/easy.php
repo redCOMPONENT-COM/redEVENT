@@ -183,6 +183,12 @@ JFactory::getDocument()->addScriptDeclaration(
 								</div>
 							</div>
 						<?php endif; ?>
+
+						<?php if ($this->params->get('allow_attachments', 1)): ?>
+                            <div class="event-attachments">
+                                <?php echo RedeventLayoutHelper::render('attachments.edit', $this); ?>
+                            </div>
+						<?php endif; ?>
 					</div>
 			</fieldset>
 		</div>
