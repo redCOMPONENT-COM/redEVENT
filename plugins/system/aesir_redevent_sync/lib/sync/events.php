@@ -330,7 +330,7 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 	 *
 	 * @return string
 	 *
-	 * @since  __deploy_version__
+	 * @since  $registerIds
 	 */
 	private function getOrganisationId(RedeventEntityEvent $event)
 	{

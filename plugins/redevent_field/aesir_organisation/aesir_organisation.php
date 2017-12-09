@@ -14,7 +14,7 @@ jimport('joomla.plugin.plugin');
 /**
  * redEVENT Integration plugin
  *
- * @since  __deploy_version__
+ * @since  $registerIds
  */
 class PlgRedevent_FieldAesir_Organisation extends JPlugin
 {
@@ -27,7 +27,7 @@ class PlgRedevent_FieldAesir_Organisation extends JPlugin
 	 * The plugin identifier.
 	 *
 	 * @var    string
-	 * @since  __deploy_version__
+	 * @since  $registerIds
 	 */
 	protected $context = 'aesir_organisation';
 
@@ -39,7 +39,7 @@ class PlgRedevent_FieldAesir_Organisation extends JPlugin
 	 *
 	 * @return void
 	 *
-	 * @since  __deploy_version__
+	 * @since  $registerIds
 	 */
 	public function onRedeventGetCustomField($classname, &$instance)
 	{
@@ -58,7 +58,7 @@ class PlgRedevent_FieldAesir_Organisation extends JPlugin
 	 *
 	 * @return void
 	 *
-	 * @since  __deploy_version__
+	 * @since  $registerIds
 	 */
 	public function onRedeventGetCustomFieldTypes(&$types)
 	{
