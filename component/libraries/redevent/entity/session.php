@@ -202,7 +202,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	 */
 	public function getFormattedDates($dateFormat = null, $timeFormat = null)
 	{
-		$item = $this->loadItem();
+		$item = $this->getItem();
 
 		if (!RedeventHelperDate::isValidDate($item->dates))
 		{
