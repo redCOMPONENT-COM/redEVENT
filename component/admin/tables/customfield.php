@@ -210,6 +210,8 @@ class RedeventTableCustomfield extends RedeventTable
 		$db->setQuery($query);
 		$db->execute();
 
+		$this->updateSchema($table, JFactory::getDate());
+
 		return true;
 	}
 
@@ -249,6 +251,8 @@ class RedeventTableCustomfield extends RedeventTable
 
 			return false;
 		}
+
+		$this->updateSchema($tablename, JFactory::getDate());
 
 		return true;
 	}
