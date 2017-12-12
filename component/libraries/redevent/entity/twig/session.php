@@ -78,7 +78,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
 		}
 
-		throw new LogicException('wrong function call');
+		return false;
 	}
 
 	/**
