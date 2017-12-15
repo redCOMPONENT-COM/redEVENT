@@ -66,6 +66,11 @@ foreach ($this->rows as $row)
 	//walk through categories assigned to an event
 	foreach($row->categories AS $category)
 	{
+		if (isset($category->published) && !$category->published)
+		{
+			continue;
+		}
+
 		$cat_classes[] = 'cat'.$category->id;
 
 		//attach category color if any in front of the catname
@@ -176,6 +181,12 @@ foreach ($this->rows as $row)
 
 		//walk through events
 		foreach ($this->categories as $category):
+
+			if (isset($category->published) && !$category->published)
+			{
+				continue;
+			}
+
 			$eventsCount = isset($countcatevents[$category->id]) ? $countcatevents[$category->id] : 0;
 
 			//build legend

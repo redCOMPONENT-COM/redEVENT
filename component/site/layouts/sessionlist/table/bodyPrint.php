@@ -66,6 +66,11 @@ $colnames = array_map('trim', $colnames);
 
 							foreach ($row->categories as $cat)
 							{
+								if (isset($cat->published) && !$cat->published)
+								{
+									continue;
+								}
+
 								$cats[] = $this->escape($cat->name);
 							}
 

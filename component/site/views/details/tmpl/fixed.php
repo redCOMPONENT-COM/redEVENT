@@ -90,11 +90,16 @@ if ($this->row->venueid != 0) {
 		?>
 
 		<dt class="category"><?php echo $n < 2 ? JText::_('COM_REDEVENT_CATEGORY' ) : JText::_('COM_REDEVENT_CATEGORIES' ); ?>:</dt>
-    		<dd class="category">
-    			<?php
+			<dd class="category">
+				<?php
 				$i = 0;
-    			foreach ($this->row->categories as $category) :
-    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
+				foreach ($this->row->categories as $category) :
+					if (isset($category->published) && !$category->published)
+					{
+						continue;
+					}
+
+					echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
 						$i++;
 						if ($i != $n) :
 							echo ',';

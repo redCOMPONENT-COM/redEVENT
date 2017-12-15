@@ -102,18 +102,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php break;?>
 
 				<?php case 'category': ?>
-				  <td class="re_category">
-				  <?php $cats = array();
-					      foreach ($row->categories as $cat)
-					      {
-					      	if ($this->params->get('catlinklist', 1) == 1) {
-					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
-					      	}
-					      	else {
-					      		$cats[] = $this->escape($cat->name);
-					      	}
-					      }
-					      echo implode("<br/>", $cats);
+					<td class="re_category">
+						<?php $cats = array();
+							foreach ($row->categories as $cat)
+							{
+								if (isset($cat->published) && !$cat->published)
+								{
+									continue;
+								}
+
+								if ($this->params->get('catlinklist', 1) == 1)
+								{
+									$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
+								}
+								else
+								{
+									$cats[] = $this->escape($cat->name);
+								}
+							}
+
+							echo implode("<br/>", $cats);
 					?>
 					</td>
 				<?php break;?>
