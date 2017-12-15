@@ -384,6 +384,7 @@ class RedeventHelper
 	 */
 	public static function canRegister($xref_id, $user_id = null)
 	{
+		$user_id = $user_id ?: JFactory::getUser()->id;
 		$helper = new RedeventRegistrationCanregister($xref_id);
 
 		return $helper->canRegister($user_id);
