@@ -43,7 +43,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif;
 
 foreach($this->categories as $category) :
-?>
+
+	if (isset($category->published) && !$category->published)
+	{
+		continue;
+	}
+	?>
 	<h2 class="eventlist cat<?php echo $category->id; ?>">
 		<?php echo $this->escape($category->name); ?>
 	</h2>

@@ -411,6 +411,11 @@ class PlgContentResimplelist extends JPlugin
 
 		foreach ($event->categories as $cat)
 		{
+			if (isset($cat->published) && !$cat->published)
+			{
+				continue;
+			}
+
 			$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
 		}
 

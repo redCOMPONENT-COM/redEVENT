@@ -236,7 +236,6 @@ class AbstractEventsModel extends \RModelList
 			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 			$query->from('#__redevent_categories as c');
 			$query->join('INNER', '#__redevent_event_category_xref as xcat ON xcat.category_id = c.id');
-			$query->where('c.published = 1');
 			$query->where('xcat.event_id = ' . $this->_db->Quote($rows[$i]->id));
 			$query->group('c.id');
 			$query->order('c.ordering');
