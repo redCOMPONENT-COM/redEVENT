@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 /**
  * Session Twig extension.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  $registerIds
  */
 class PlgAesir_FieldRedevent_SessionTwigExtensionSession extends Redevent\Twig\Plugin
 {

@@ -17,7 +17,7 @@ use Aesir\Core\Helper\ModelFinder;
  * Renders a select Custom field
  *
  * @package  Redevent.Library
- * @since    __deploy_version__
+ * @since    $registerIds
  */
 class RedeventCustomfieldAesir_Organisation extends \RedeventCustomfieldSelect
 {
@@ -26,7 +26,7 @@ class RedeventCustomfieldAesir_Organisation extends \RedeventCustomfieldSelect
 	 *
 	 * @return array
 	 *
-	 * @since  __deploy_version__
+	 * @since  $registerIds
 	 */
 	protected function getOptions()
 	{

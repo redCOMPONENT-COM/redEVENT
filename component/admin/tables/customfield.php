@@ -208,7 +208,15 @@ class RedeventTableCustomfield extends RedeventTable
 
 		$query = 'ALTER TABLE ' . $db->qn($table) . ' ADD COLUMN ' . $db->qn('custom' . $this->id) . ' TEXT';
 		$db->setQuery($query);
-		$db->execute();
+
+		if (!$db->execute())
+		{
+			$this->setError(($db->getError()));
+
+			return false;
+		}
+
+		$this->forceRedcoreSchemaUpdate($table);
 
 		return true;
 	}
@@ -243,13 +251,35 @@ class RedeventTableCustomfield extends RedeventTable
 		$query = ' ALTER TABLE ' . $tablename . ' DROP custom' . $customId;
 		$db->setQuery($query);
 
-		if (!$res = $db->execute())
+		if (!$db->execute())
 		{
 			$this->setError(($db->getError()));
 
 			return false;
 		}
 
+		$this->forceRedcoreSchemaUpdate($tablename);
+
 		return true;
+	}
+
+	/**
+	 * Force redCORE schema update
+	 *
+	 * @param   string  $table  table name
+	 *
+	 * @return void
+	 *
+	 * @todo It would be better to use RTable updateSchema method once it works (1.10.5)
+	 */
+	private function forceRedcoreSchemaUpdate($table)
+	{
+		$db = $this->_db;
+		$query = $db->getQuery(true)
+			->delete('#__redcore_schemas')
+			->where('asset_id = ' . $db->q($table));
+
+		$db->setQuery($query);
+		$db->execute();
 	}
 }

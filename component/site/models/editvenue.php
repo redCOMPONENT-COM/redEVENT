@@ -310,7 +310,7 @@ class RedeventModelEditvenue extends RModelAdmin
 	 *
 	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
 	 *
-	 * @since   __deploy_version__
+	 * @since   $registerIds
 	 */
 	protected function canEditState($record)
 	{

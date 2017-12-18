@@ -51,6 +51,10 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			$item->recurrence = $rule->getFormData();
 			$item->recurrence->recurrenceid = $res->recurrence_id;
 			$item->recurrence->repeat = $res->count;
+
+			$helper = new RedeventHelperAttachment;
+			$files = $helper->getAttachments('event' . $item->eventid);
+			$item->attachments = $files;
 		}
 		else
 		{
@@ -58,6 +62,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			$item->recurrence = $rule->getFormData();
 			$item->recurrence->recurrenceid = 0;
 			$item->recurrence->repeat = 0;
+			$item->attachments = array();
 		}
 
 		return $item;
@@ -337,6 +342,10 @@ class RedeventModelEditsession extends RedeventModelAdmin
 		}
 
 		$data['eventid'] = $model->getState('editevent.id');
+
+		// Attachments
+		$helper = new RedeventHelperAttachment;
+		$helper->store('event' . $data['eventid']);
 
 		return true;
 	}
