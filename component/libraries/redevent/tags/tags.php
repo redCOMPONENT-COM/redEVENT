@@ -352,6 +352,7 @@ class RedeventTags
 	protected function replace($text)
 	{
 		$recurse = false;
+		$session = $this->getSession();
 
 		// First, let's do the library tags replacement
 		$text = $this->replaceLibraryTags($text);
@@ -374,7 +375,8 @@ class RedeventTags
 			{
 				// Check for conditions tags
 				if ($tag_obj->getParam('condition_hasplacesleft') == "0"
-					&& $this->getSession()->getNumberLeft())
+					&& (!$session->hasMaxAttendees()
+					|| $this->getSession()->getNumberLeft()))
 				{
 					$search[] = $tag_obj->getFullMatch();
 					$replace[] = '';
@@ -382,7 +384,7 @@ class RedeventTags
 				}
 
 				if ($tag_obj->getParam('condition_hasplacesleft') == "1"
-					&& $this->getSession()->maxattendees > 0
+					&& $this->getSession()->hasMaxAttendees()
 					&& !$this->getSession()->getNumberLeft())
 				{
 					$search[] = $tag_obj->getFullMatch();
