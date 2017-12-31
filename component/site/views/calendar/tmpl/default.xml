@@ -60,8 +60,7 @@
 			</field>
 
 			<field name="selected_categories" type="recategorylist" default="0" multiple="true"
-				   size="15" label="COM_REDEVENT_VIEW_CALENDAR_SELECTED_CATEGORIES" description="COM_REDEVENT_VIEW_CALENDAR_SELECTED_CATEGORIES_DESC">
-				<option value="">JNONE</option>
+				size="15" label="COM_REDEVENT_VIEW_CALENDAR_SELECTED_CATEGORIES" description="COM_REDEVENT_VIEW_CALENDAR_SELECTED_CATEGORIES_DESC">
 			</field>
 		</fieldset>
 	</fields>
