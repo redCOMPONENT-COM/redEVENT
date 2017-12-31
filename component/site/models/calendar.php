@@ -254,6 +254,14 @@ class RedeventModelCalendar extends RModel
 			}
 		}
 
+		// Check if a category is specified
+		$selectedCategories = $params->get('selected_categories');
+
+		if (!empty($selectedCategories))
+		{
+			$query->where('xcat.category_id IN (' . implode(', ', $selectedCategories) . ')');
+		}
+
 		// Acl
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -276,6 +284,7 @@ class RedeventModelCalendar extends RModel
 	 */
 	public function getCategories($eventId = null)
 	{
+		$params = JFactory::getApplication()->getParams('com_redevent');
 		$query = $this->_db->getQuery(true);
 
 		$query->select('c.id, c.name, c.color');
@@ -291,12 +300,20 @@ class RedeventModelCalendar extends RModel
 		}
 
 		// Check if a category is specified
-		$topcat = JFactory::getApplication()->getParams('com_redevent')->get('topcat', 0);
+		$topcat = $params->get('topcat', 0);
 
 		if (is_numeric($topcat) && $topcat)
 		{
 			$query->join('inner', '#__redevent_categories AS top ON top.lft <= c.lft AND top.rgt >= c.rgt');
 			$query->where('top.id = ' . (int) $topcat);
+		}
+
+		// Check if a category is specified
+		$selectedCategories = $params->get('selected_categories');
+
+		if (!empty($selectedCategories))
+		{
+			$query->where('c.id IN (' . implode(', ', $selectedCategories) . ')');
 		}
 
 		$this->_db->setQuery($query);

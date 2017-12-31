@@ -55,9 +55,14 @@
 				description="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_DESC" />
 
 			<field name="topcat" type="recategorylist" default="0" reset="true"
-				size="15" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC">
-                <option value="">JALL</option>
-            </field>
+				size="15" label="COM_REDEVENT_VIEW_CALENDAR_TOPCAT" description="COM_REDEVENT_VIEW_CALENDAR_TOPCAT_DESC">
+				<option value="">JNONE</option>
+			</field>
+
+			<field name="selected_categories" type="recategorylist" default="0" multiple="true"
+				   size="15" label="COM_REDEVENT_VIEW_CALENDAR_SELECTED_CATEGORIES" description="COM_REDEVENT_VIEW_CALENDAR_SELECTED_CATEGORIES_DESC">
+				<option value="">JNONE</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>
