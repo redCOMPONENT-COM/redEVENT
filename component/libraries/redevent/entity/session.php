@@ -501,7 +501,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	{
 		if (!$pricegroups = $this->getPricegroups($filterAcl, $user))
 		{
-			return $this->pricegroups;
+			return false;
 		}
 
 		$groups = array_filter(
