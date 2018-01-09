@@ -7,11 +7,19 @@
 	</layout>
 
 	<fields name="request" addfieldpath="/libraries/redevent/form/fields">
-   	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+		<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 			<field name="id" type="recategorylist" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" required="true"/>
 		</fieldset>
+	</fields>
 
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+
+		<field name="session_state" type="list" default="0" label="COM_REDEVENT_VIEW_FILTER_SESSION_STATE" description="COM_REDEVENT_VIEW_FILTER_SESSION_STATE_DESC">
+			<option value="0">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_ALL</option>
+			<option value="1">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_UPCOMINGS</option>
+			<option value="2">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_OPENDATE</option>
+		</field>
 
 		<field name="show_pagination" type="list"
 			description="JGLOBAL_PAGINATION_DESC"
@@ -31,7 +39,6 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-
 
 		<field name="display_num" type="list" default="" label="COM_REDEVENT_EVENT_NUMBER"
 			   description="COM_REDEVENT_EVENT_NUMBER_TIP">
