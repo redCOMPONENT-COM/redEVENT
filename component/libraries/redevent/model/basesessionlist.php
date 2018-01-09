@@ -52,64 +52,6 @@ class RedeventModelBasesessionlist extends RModel
 	protected $pagination = null;
 
 	/**
-	 * Constructor
-	 *
-	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
-	 *
-	 * @since   12.2
-	 * @throws  Exception
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct();
-
-		$app = JFactory::getApplication();
-
-		// Get the paramaters of the active menu item
-		$params = $app->getParams('com_redevent');
-
-		// Get the number of events from database
-		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart		= $app->input->getInt('limitstart', 0);
-
-		// In case limit has been changed, adjust it
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-		// Get the filter request variables
-		$this->setState('filter_order',     $app->input->getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_Dir', strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
-
-		$this->setState('filter',      $app->input->get('filter', '', 'string'));
-		$this->setState('filter_type', $app->input->get('filter_type', '', 'string'));
-
-		$this->setState('filter_event',    $app->input->get('filter_event', 0, 'int'));
-		$this->setState('filter_category', $app->input->get('filter_category', 0, 'int'));
-		$this->setState('filter_venue', $app->input->get('filter_venue', 0, 'int'));
-		$this->setState('filter_date', $app->input->get('filter_date', '', 'string'));
-		$this->setState('filter_date_from', $app->input->get('filter_date_from', '', 'string'));
-		$this->setState('filter_date_to', $app->input->get('filter_date_to', '', 'string'));
-
-		$this->setState('filter_multicategory', $app->input->get('filter_multicategory', null, 'array'));
-		$this->setState('filter_multivenue',    $app->input->get('filter_multivenue',    null, 'array'));
-
-		$this->setState('filter_continent', $app->input->get('filter_continent', '', 'string'));
-		$this->setState('filter_country', $app->input->get('filter_country', '', 'string'));
-		$this->setState('filter_state', $app->input->get('filter_state', '', 'string'));
-		$this->setState('filter_city', $app->input->get('filter_city', '', 'string'));
-
-		$filter_venuecategory = $app->input->get('filter_venuecategory', 0, 'int');
-		$this->setState('filter_venuecategory', $app->input->getInt('filter_venuecategory', 0));
-
-		$customs      = $app->input->get('filtercustom', array(), 'array');
-		$this->setState('filter_customs', $customs);
-
-		$this->setState('filter.language', $app->getLanguageFilter());
-	}
-
-	/**
 	 * set limit
 	 *
 	 * @param   int  $value  value
@@ -1222,5 +1164,64 @@ class RedeventModelBasesessionlist extends RModel
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
+	 */
+	protected function populateState()
+	{
+		parent::populateState();
+
+		$app = JFactory::getApplication();
+
+		// Get the paramaters of the active menu item
+		$params = $app->getParams('com_redevent');
+
+		// Get the number of events from database
+		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limitstart		= $app->input->getInt('limitstart', 0);
+
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+
+		$this->setState('limit', $limit);
+		$this->setState('limitstart', $limitstart);
+
+		// Get the filter request variables
+		$this->setState('filter_order',     $app->input->getCmd('filter_order', 'x.dates'));
+		$this->setState('filter_order_Dir', strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+
+		$this->setState('filter',      $app->input->get('filter', '', 'string'));
+		$this->setState('filter_type', $app->input->get('filter_type', '', 'string'));
+
+		$this->setState('filter_event',    $app->input->get('filter_event', 0, 'int'));
+		$this->setState('filter_category', $app->input->get('filter_category', 0, 'int'));
+		$this->setState('filter_venue', $app->input->get('filter_venue', 0, 'int'));
+		$this->setState('filter_date', $app->input->get('filter_date', '', 'string'));
+		$this->setState('filter_date_from', $app->input->get('filter_date_from', '', 'string'));
+		$this->setState('filter_date_to', $app->input->get('filter_date_to', '', 'string'));
+
+		$this->setState('filter_multicategory', $app->input->get('filter_multicategory', null, 'array'));
+		$this->setState('filter_multivenue',    $app->input->get('filter_multivenue',    null, 'array'));
+
+		$this->setState('filter_continent', $app->input->get('filter_continent', '', 'string'));
+		$this->setState('filter_country', $app->input->get('filter_country', '', 'string'));
+		$this->setState('filter_state', $app->input->get('filter_state', '', 'string'));
+		$this->setState('filter_city', $app->input->get('filter_city', '', 'string'));
+
+		$filter_venuecategory = $app->input->get('filter_venuecategory', 0, 'int');
+		$this->setState('filter_venuecategory', $app->input->getInt('filter_venuecategory', 0));
+
+		$customs      = $app->input->get('filtercustom', array(), 'array');
+		$this->setState('filter_customs', $customs);
+
+		$this->setState('filter.language', $app->getLanguageFilter());
 	}
 }

@@ -23,13 +23,17 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 	protected $category = null;
 
 	/**
-	 * Constructor
+	 * Method to auto-populate the model state.
 	 *
-	 * @since 0.9
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
 	 */
-	public function __construct()
+	protected function populateState()
 	{
-		parent::__construct();
+		parent::populateState();
 
 		$app = JFactory::getApplication();
 
@@ -73,7 +77,7 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 	public function setId($id)
 	{
 		// Set new category ID and wipe data
-		$this->_id			= $id;
+		$this->setState('category_id', $id);
 		$this->data		= null;
 	}
 
@@ -118,7 +122,7 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 			$query->from('#__redevent_categories AS c');
 			$query->join('LEFT', '#__assets AS asset ON asset.id = c.asset_id');
-			$query->where('c.id = ' . $this->_id);
+			$query->where('c.id = ' . $this->getState('category_id'));
 			$query->where('c.access IN (' . $gids . ')');
 
 			$db->setQuery($query);

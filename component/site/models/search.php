@@ -23,13 +23,17 @@ class RedeventModelSearch extends RedeventModelBasesessionlist
 	protected $filter = null;
 
 	/**
-	 * Constructor
+	 * Method to auto-populate the model state.
 	 *
-	 * @since 0.9
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
 	 */
-	public function __construct()
+	protected function populateState()
 	{
-		parent::__construct();
+		parent::populateState();
 
 		$mainframe = JFactory::getApplication();
 
