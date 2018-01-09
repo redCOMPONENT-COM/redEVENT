@@ -223,13 +223,14 @@ class RedeventHelper
 	/**
 	 * returns indented event category options
 	 *
-	 * @param   bool  $show_empty        show categories with no publish xref associated
-	 * @param   bool  $show_unpublished  show unpublished categories
-	 * @param   bool  $enabled           id of enabled categories
+	 * @param   boolean  $show_empty        show categories with no publish xref associated
+	 * @param   boolean  $show_unpublished  show unpublished categories
+	 * @param   boolean  $enabled           id of enabled categories
+	 * @param   integer  $root              id of root category
 	 *
 	 * @return array
 	 */
-	public static function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false)
+	public static function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false, $root = null)
 	{
 		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
@@ -280,6 +281,12 @@ class RedeventHelper
 		if ($app->getLanguageFilter())
 		{
 			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+		}
+
+		if ($root)
+		{
+			$rootCategory = RedeventEntityCategory::load($root);
+			$query->where('(c.lft BETWEEN ' . $rootCategory->lft . ' AND ' . $rootCategory->rgt . ')');
 		}
 
 		$db->setQuery($query);

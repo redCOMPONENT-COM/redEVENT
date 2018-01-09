@@ -40,9 +40,6 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 		$id = $app->input->getInt('id');
 		$this->setId((int) $id);
 
-		// For the toggles
-		$this->setState('filter_category', $id);
-
 		$params    = $app->getParams('com_redevent');
 
 		if ($params->exists('results_type'))
@@ -228,5 +225,31 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 		}
 
 		return $data;
+	}
+
+	/**
+	 * get list of categories as options, according to acl
+	 *
+	 * @return array
+	 */
+	public function getCategoriesOptions()
+	{
+		// Save filter_category filter, as we don't want it for this query
+		$filterCategory = $this->getState('filter_category');
+		$this->setState('filter_category', null);
+
+		$query = $this->buildQuery()
+			->clear('select')
+			->clear('group')
+			->select('c.id')
+			->group('c.id');
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadColumn();
+
+		// Restore state
+		$this->setState('filter_category', $filterCategory);
+
+		return RedeventHelper::getEventsCatOptions(true, false, $res, $this->getState('category_id'));
 	}
 }

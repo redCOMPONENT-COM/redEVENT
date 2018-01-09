@@ -107,17 +107,4 @@ class RedeventViewCategoryevents extends RedeventViewSessionlist
 	{
 		return RedeventHelperRoute::getCategoryEventsRoute($this->category->slug) . '&format=feed';
 	}
-
-	/**
-	 * Method to build the sort lists
-	 *
-	 * @return void
-	 */
-	protected function buildSortLists()
-	{
-		parent::buildSortLists();
-
-		// We don't want the category filter...
-		unset($this->lists['categoryfilter']);
-	}
 }

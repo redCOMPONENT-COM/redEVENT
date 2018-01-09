@@ -146,7 +146,7 @@ class RedeventModelBasesessionlist extends RModel
 	/**
 	 * Build the query
 	 *
-	 * @return string
+	 * @return JDatabaseQuery
 	 */
 	protected function buildQuery()
 	{
@@ -382,13 +382,13 @@ class RedeventModelBasesessionlist extends RModel
 		}
 
 		// State
-		if ($state = JFactory::getApplication()->input->get('state', '', 'request', 'string'))
+		if ($state = $this->getState('state', '', 'request', 'string'))
 		{
 			$query->where(' STRCMP(l.state, ' . $this->_db->Quote($state) . ') = 0 ');
 		}
 
 		// Country
-		if ($country = JFactory::getApplication()->input->get('country', '', 'request', 'string'))
+		if ($country = $this->getState('country', '', 'request', 'string'))
 		{
 			$query->where(' STRCMP(l.country, ' . $this->_db->Quote($country) . ') = 0 ');
 		}
@@ -453,18 +453,16 @@ class RedeventModelBasesessionlist extends RModel
 		// Get the paramaters of the active menu item
 		$params 	= $app->getParams();
 
-		$task 		= JFactory::getApplication()->input->getWord('task');
-
 		$where = array();
 
 		// First thing we need to do is to select only needed events
-		if ($task == 'archive')
+		if ($filter_published = $this->getState('filter_published'))
 		{
-			$where[] = ' x.published = -1 ';
+			$where[] = ' x.published = ' . (int) $filter_published;
 		}
 		else
 		{
-			$where[] = ' x.published = 1 ';
+			$where[] = ' x.published = 1';
 		}
 
 		$where[] = ' a.published <> 0';
@@ -808,62 +806,11 @@ class RedeventModelBasesessionlist extends RModel
 	 */
 	public function getCategoriesOptions()
 	{
-		$app = JFactory::getApplication();
-		$filter_venuecategory = JFactory::getApplication()->input->get('filter_venuecategory');
-		$filter_venue         = JFactory::getApplication()->input->get('filter_venue');
-		$task 		            = JFactory::getApplication()->input->getWord('task');
-
-		$gids = JFactory::getUser()->getAuthorisedViewLevels();
-		$gids = implode(',', $gids);
-
-		// Get Events from Database
-		$query  = ' SELECT c.id '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
-		. ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
-		. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id';
-
-		$where = array();
-
-		// First thing we need to do is to select only needed events
-		if ($task == 'archive')
-		{
-			$where[] = ' x.published = -1';
-		}
-		else
-		{
-			$where[] = ' x.published = 1';
-		}
-
-		$where[] = ' a.published <> 0 ';
-
-		// Filter category
-		if ($filter_venuecategory)
-		{
-			$category = $this->getVenueCategory((int) $filter_venuecategory);
-			$where[] = '(vc.id = ' . $this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft)
-				. ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-		}
-
-		if ($filter_venue)
-		{
-			$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);
-		}
-
-		// Acl
-		$where[] = ' (l.access IN (' . $gids . ')) ';
-		$where[] = ' (c.access IN (' . $gids . ')) ';
-		$where[] = ' (vc.id IS NULL OR vc.access IN (' . $gids . ')) ';
-
-		if (count($where))
-		{
-			$query .= ' WHERE ' . implode(' AND ', $where);
-		}
-
-		$query .= ' GROUP BY c.id ';
+		$query = $this->buildQuery()
+			->clear('select')
+			->clear('group')
+			->select('c.id')
+			->group('c.id');
 
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadColumn();
@@ -878,10 +825,9 @@ class RedeventModelBasesessionlist extends RModel
 	 */
 	public function getVenuesOptions()
 	{
-		$app = JFactory::getApplication();
-		$vcat    = JFactory::getApplication()->input->get('filter_venuecategory');
-		$city    = JFactory::getApplication()->input->get('filter_city');
-		$country = JFactory::getApplication()->input->get('filter_country');
+		$vcat    = $this->getState('filter_venuecategory');
+		$city    = $this->getState('filter_city');
+		$country = $this->getState('filter_country');
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
