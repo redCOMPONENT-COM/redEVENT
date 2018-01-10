@@ -23,21 +23,22 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 	protected $category = null;
 
 	/**
-	 * Constructor
+	 * Method to auto-populate the model state.
 	 *
-	 * @since 0.9
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
 	 */
-	public function __construct()
+	protected function populateState()
 	{
-		parent::__construct();
+		parent::populateState();
 
 		$app = JFactory::getApplication();
 
 		$id = $app->input->getInt('id');
 		$this->setId((int) $id);
-
-		// For the toggles
-		$this->setState('filter_category', $id);
 
 		$params    = $app->getParams('com_redevent');
 
@@ -73,7 +74,7 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 	public function setId($id)
 	{
 		// Set new category ID and wipe data
-		$this->_id			= $id;
+		$this->setState('category_id', $id);
 		$this->data		= null;
 	}
 
@@ -118,7 +119,7 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 			$query->from('#__redevent_categories AS c');
 			$query->join('LEFT', '#__assets AS asset ON asset.id = c.asset_id');
-			$query->where('c.id = ' . $this->_id);
+			$query->where('c.id = ' . $this->getState('category_id'));
 			$query->where('c.access IN (' . $gids . ')');
 
 			$db->setQuery($query);
@@ -224,5 +225,31 @@ class RedeventModelCategoryevents extends RedeventModelBasesessionlist
 		}
 
 		return $data;
+	}
+
+	/**
+	 * get list of categories as options, according to acl
+	 *
+	 * @return array
+	 */
+	public function getCategoriesOptions()
+	{
+		// Save filter_category filter, as we don't want it for this query
+		$filterCategory = $this->getState('filter_category');
+		$this->setState('filter_category', null);
+
+		$query = $this->buildQuery()
+			->clear('select')
+			->clear('group')
+			->select('c.id')
+			->group('c.id');
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadColumn();
+
+		// Restore state
+		$this->setState('filter_category', $filterCategory);
+
+		return RedeventHelper::getEventsCatOptions(true, false, $res, $this->getState('category_id'));
 	}
 }

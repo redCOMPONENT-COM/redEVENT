@@ -17,17 +17,17 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelArchive extends RedeventModelBasesessionlist
 {
 	/**
-	 * Constructor
+	 * Method to auto-populate the model state.
 	 *
-	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
 	 *
-	 * @since   12.2
-	 * @throws  Exception
+	 * @return  void
 	 */
-	public function __construct($config = array())
+	protected function populateState()
 	{
-		parent::__construct($config);
-
+		parent::populateState();
 		$this->setState('filter_published', -1);
 	}
 }
