@@ -70,7 +70,10 @@ class DumpModel
 			->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
 			->innerJoin('#__redevent_venues AS v ON v.id = x.venueid')
 			->leftJoin('#__reditem_types_kursus_1 AS k ON k.event = e.id')
-			->order('x.dates ASC, e.title ASC');
+			// Only published and archived (active and inactive)
+			->where('e.published <> 0')
+			->where('x.published <> 0')
+			->order('x.published = 1 DESC, x.dates = 0 DESC, x.dates DESC, e.title ASC');
 
 		$this->db->setQuery($query);
 

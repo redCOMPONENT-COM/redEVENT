@@ -162,37 +162,33 @@ class Tablerow
 	 */
 	private function getPrice($name = null)
 	{
-		$sessions = array_reverse($this->sessions);
+		$currentSession = $this->sessions[0];
+		$sessionPrices = $currentSession->prices;
 
-		foreach ($sessions as $session)
+		if (empty($sessionPrices))
 		{
-			if (!$session_prices = $session->prices)
-			{
-				return 0;
-			}
-
-			if ($name)
-			{
-				$session_prices = array_filter(
-					$session_prices,
-					function($element) use ($name)
-					{
-						return strcasecmp($element->name, $name) == 0;
-					}
-				);
-			}
-
-			if (!$session_prices)
-			{
-				return 0;
-			}
-
-			$prices = JArrayHelper::getColumn($session_prices, 'price');
-
-			return max($prices);
+			return 0;
 		}
 
-		return 0;
+		if ($name)
+		{
+			$sessionPrices = array_filter(
+				$sessionPrices,
+				function ($element) use ($name)
+				{
+					return strcasecmp($element->name, $name) == 0;
+				}
+			);
+		}
+
+		if (empty($sessionPrices))
+		{
+			return 0;
+		}
+
+		$prices = JArrayHelper::getColumn($sessionPrices, 'price');
+
+		return max($prices);
 	}
 
 	/**
