@@ -151,7 +151,7 @@ class RedeventTagsRegistrationSession
 		$options['eventId'] = $this->session->eventid;
 
 		// Multiple pricegroup handling
-		if (count($prices))
+		if ($prices && count($prices))
 		{
 			$selectedPricegroup = $this->getSelectedPriceGroup($prices);
 
@@ -338,7 +338,7 @@ class RedeventTagsRegistrationSession
 		}
 
 		// Otherwise check if set
-		if (count($sessionPriceGroups) == 1)
+		if ($sessionPriceGroups && count($sessionPriceGroups) == 1)
 		{
 			return current($sessionPriceGroups);
 		}
