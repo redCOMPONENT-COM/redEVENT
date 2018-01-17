@@ -1141,8 +1141,13 @@ class RedeventModelBasesessionlist extends RModel
 		$this->setState('limitstart', $limitstart);
 
 		// Get the filter request variables
-		$this->setState('filter_order',     $app->input->getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_Dir', strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+		$filterOrder = $params->get('session_orderby', $app->input->getCmd('filter_order', 'x.dates'));
+		$this->setState('filter_order', $filterOrder);
+		$filterOrderDir = $params->get(
+			'session_orderby_dir',
+			strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC'
+		);
+		$this->setState('filter_order_Dir', $filterOrderDir);
 
 		$this->setState('filter',      $app->input->get('filter', '', 'string'));
 		$this->setState('filter_type', $app->input->get('filter_type', '', 'string'));
@@ -1162,7 +1167,6 @@ class RedeventModelBasesessionlist extends RModel
 		$this->setState('filter_state', $app->input->get('filter_state', '', 'string'));
 		$this->setState('filter_city', $app->input->get('filter_city', '', 'string'));
 
-		$filter_venuecategory = $app->input->get('filter_venuecategory', 0, 'int');
 		$this->setState('filter_venuecategory', $app->input->getInt('filter_venuecategory', 0));
 
 		$customs      = $app->input->get('filtercustom', array(), 'array');

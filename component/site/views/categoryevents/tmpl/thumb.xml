@@ -18,6 +18,17 @@
 			<option value="2">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_OPENDATE</option>
 		</field>
 
+		<field name="session_orderby" type="list" default="" label="COM_REDEVENT_VIEW_SESSION_ORDERBY" description="COM_REDEVENT_VIEW_SESSION_ORDERBY_DESC">
+			<option value="">JDEFAULT</option>
+			<option value="x.dates">COM_REDEVENT_VIEW_SESSION_ORDERBY_DATES</option>
+		</field>
+
+		<field name="session_orderby_dir" type="list" default="" label="COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR" description="COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR_DESC">
+			<option value="default">JDEFAULT</option>
+			<option value="ASC">COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR_ASCENDING</option>
+			<option value="DESC">COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR_DESCENDING</option>
+		</field>
+
 		<field name="show_pagination" type="list"
 			description="JGLOBAL_PAGINATION_DESC"
 			label="JGLOBAL_PAGINATION_LABEL"
