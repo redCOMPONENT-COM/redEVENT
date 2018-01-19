@@ -51,10 +51,11 @@ class RdfFieldRedevent_Session extends RdfRfieldSelect
 	public function getOptions()
 	{
 		$options = parent::getOptions();
+		$sessions = $this->getSessions();
 
-		if (!$sessions = $this->getSessions())
+		if (!$sessions)
 		{
-			return $sessions;
+			return array();
 		}
 
 		$formatValue = $this->getParam('label_format', '[session_id]');
@@ -67,8 +68,12 @@ class RdfFieldRedevent_Session extends RdfRfieldSelect
 				$tags->setXref($session->id);
 
 				$option = new stdClass;
-				$option->value = $tags->replaceTags($formatValue, ['extra' => ['[session_id]' => $session->id]]);
-				$option->label = $tags->replaceTags($formatText, ['extra' => ['[session_id]' => $session->id]]);
+				$option->value = $tags->replaceTags(
+					$formatValue, array('extra' => array('[session_id]' => $session->id))
+				);
+				$option->label = $tags->replaceTags(
+					$formatText, array('extra' => array('[session_id]' => $session->id))
+				);
 				$option->price = 0;
 				$option->sku = "";
 
@@ -108,11 +113,9 @@ class RdfFieldRedevent_Session extends RdfRfieldSelect
 
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('x.*')
+			->select('x.id')
 			->from('#__redevent_event_venue_xref AS x')
 			->innerJoin('#__redevent_events AS e ON e.id = x.eventid')
-			->where('x.published = 1')
-			->where('e.published = 1')
 			->order('x.dates IS NOT NULL DESC, x.dates ASC, x.times ASC');
 
 		if (is_numeric($filterState))
