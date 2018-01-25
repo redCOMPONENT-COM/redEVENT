@@ -231,6 +231,16 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get form id
+	 *
+	 * @return integer
+	 */
+	public function getFormId()
+	{
+		return $this->entity->getEventtemplate()->redform_id;
+	}
+
+	/**
 	 * Return signup form
 	 *
 	 * @return string

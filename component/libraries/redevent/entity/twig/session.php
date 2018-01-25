@@ -150,6 +150,16 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get form id
+	 *
+	 * @return integer
+	 */
+	public function getFormId()
+	{
+		return $this->entity->getEvent()->getEventtemplate()->redform_id;
+	}
+
+	/**
 	 * Return number of places left
 	 *
 	 * @return integer
