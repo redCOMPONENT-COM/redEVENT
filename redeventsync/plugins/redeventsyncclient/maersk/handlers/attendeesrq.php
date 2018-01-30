@@ -125,91 +125,82 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			$row = RTable::getAdminInstance('Attendee', array(), 'com_redevent');
 
 			// Create attendee from the xml info
-			$attendee = $this->parseAttendeeXml($xml);
+			$attendeeData = $this->parseAttendeeXml($xml);
 
 			// Try to find attendee
-			$existing = RedeventsyncclientMaerskHelper::findAttendee($attendee->user_email, $attendee->session_code, $attendee->venue_code);
+			$existingAttendeeData = RedeventsyncclientMaerskHelper::findAttendee($attendeeData->user_email, $attendeeData->session_code, $attendeeData->venue_code);
 
-			if ($existing)
+			if ($existingAttendeeData)
 			{
-				$row->bind(get_object_vars($existing));
+				$row->bind(get_object_vars($existingAttendeeData));
 			}
 			else
 			{
-				if (!isset($attendee->waitinglist))
+				if (!isset($attendeeData->waitinglist))
 				{
-					$attendee->waitinglist = 0;
+					$attendeeData->waitinglist = 0;
 				}
 
 				$row->origin = "picasso";
 			}
 
 			// Make sure we have an user !
-			$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
-
-			if (!$rmUser)
-			{
-				// We need an user, trigger a special Exception to force getting one
-				throw new PlgresyncmaerskExceptionMissinguser($attendee->user_email, $attendee->venue_code);
-			}
-			elseif ($attendee->firstname != $rmUser->rm_firstname || $attendee->lastname != $rmUser->rm_lastname)
-			{
-				// Just try to update it
-				$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $rmUser->rm_firstname, $rmUser->rm_lastname);
-			}
+			$rmUser = $this->getRedmemberUser($attendeeData);
 
 			// We will first add to redform submitters, then to corresponding redform form,
 			// and then to register table
-			$session_details = RedeventsyncclientMaerskHelper::getSessionDetails($attendee->session_code, $attendee->venue_code);
+			$session_details = RedeventsyncclientMaerskHelper::getSessionDetails($attendeeData->session_code, $attendeeData->venue_code);
 
-			// Post to redform
-			$rfcore = new RdfCore;
-			$rfcore->setFormId($session_details->redform_id);
+			$row->bind(get_object_vars($attendeeData));
+			$row->xref = $session_details->session_id;
+			$row->uid = $rmUser->joomla_user_id;
 
-			$data = array();
-
-			$token = JSession::getFormToken();
-			$data[$token] = 1;
-			$data['form_id'] = $session_details->redform_id;
-
-			if ($row->submit_key)
+			if (!$existingAttendeeData)
 			{
-				$data['submit_key'] = $row->submit_key;
-			}
+				// Post to redform
+				$rfcore = new RdfCore;
+				$rfcore->setFormId($session_details->redform_id);
 
-			if ($row->sid)
-			{
-				$data['sid'] = $row->sid;
-			}
+				$data = array();
 
-			if (isset($attendee->answers))
-			{
-				foreach ($attendee->answers as $a)
+				$token = JSession::getFormToken();
+				$data[$token] = 1;
+				$data['form_id'] = $session_details->redform_id;
+
+				if ($row->submit_key)
 				{
-					$field = "field" . $a->id;
-					$data[$field] = $a->value;
+					$data['submit_key'] = $row->submit_key;
 				}
 
-				$result = $rfcore->saveAnswers('redevent', null, $data);
-			}
-			else
-			{
-				// Use quickSubmit method
-				$result = $rfcore->quickSubmit($rmUser->joomla_user_id, 'redevent', $data);
-			}
+				if ($row->sid)
+				{
+					$data['sid'] = $row->sid;
+				}
 
-			if (!$result)
-			{
-				throw new Exception($rfcore->getError());
+				if (isset($attendeeData->answers))
+				{
+					foreach ($attendeeData->answers as $a)
+					{
+						$field = "field" . $a->id;
+						$data[$field] = $a->value;
+					}
+
+					$result = $rfcore->saveAnswers('redevent', null, $data);
+				}
+				else
+				{
+					// Use quickSubmit method
+					$result = $rfcore->quickSubmit($rmUser->joomla_user_id, 'redevent', $data);
+				}
+
+				if (!$result)
+				{
+					throw new Exception($rfcore->getError());
+				}
+
+				$row->sid = $result->posts[0]['sid'];
+				$row->submit_key = $result->submit_key;
 			}
-
-			$sid = $result->posts[0]['sid'];
-
-			$row->bind(get_object_vars($attendee));
-			$row->xref = $session_details->session_id;
-			$row->sid = $sid;
-			$row->submit_key = $result->submit_key;
-			$row->uid = $rmUser->joomla_user_id;
 
 			// Now save !
 			if (!($row->check() && $row->store()))
@@ -218,9 +209,9 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			}
 
 			// Save payment if there is one
-			if ($attendee->payment)
+			if ($attendeeData->payment)
 			{
-				RedeventsyncclientMaerskHelper::recordPayment($result->submit_key, $attendee->payment);
+				RedeventsyncclientMaerskHelper::recordPayment($row->submit_key, $attendeeData->payment);
 			}
 
 			// Log
@@ -601,6 +592,8 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 				$this->appendElement($message, $a);
 
+				// Prevent adding multiple payment
+				break;
 			}
 		}
 
@@ -634,5 +627,39 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		}
 
 		return true;
+	}
+
+	private function getRedmemberUser($attendee)
+	{
+		// Make sure we have an user !
+		$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
+
+		if (!$rmUser)
+		{
+			return $this->createRedmemberUser($attendee);
+		}
+
+		if ($attendee->firstname != $rmUser->rm_firstname || $attendee->lastname != $rmUser->rm_lastname)
+		{
+			// Try to update it
+			$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $rmUser->rm_firstname, $rmUser->rm_lastname);
+		}
+
+		return $rmUser;
+	}
+
+	private function createRedmemberUser($attendee)
+	{
+		if (!$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $attendee->firstname, $attendee->lastname))
+		{
+			throw new Exception('CustomerRQ sync failed');
+		}
+
+		if (!$rmUser = RedeventsyncclientMaerskHelper::getUser($attendee->user_email))
+		{
+			throw new Exception('User still not found after CustomerRQ');
+		}
+
+		return $rmUser;
 	}
 }
