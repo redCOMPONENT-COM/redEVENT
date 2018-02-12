@@ -190,24 +190,7 @@ class RedeventTagsRegistrationSession
 
 		$html = RedeventLayoutHelper::render('redevent.registration.session', $renderData);
 
-		if (RdfHelperAnalytics::isEnabled())
-		{
-			if ($this->isReview)
-			{
-				$label = "display review registration form for event " . $this->session->getEvent()->title;
-			}
-			else
-			{
-				$label = "display registration form for event " . $this->session->getEvent()->title;
-			}
-
-			$event = new stdclass;
-			$event->category = 'registration form';
-			$event->action = 'display';
-			$event->label = $label;
-			$event->value = null;
-			RdfHelperAnalytics::trackEvent($event);
-		}
+		$this->addAnalytics();
 
 		return $html;
 	}
@@ -355,5 +338,32 @@ class RedeventTagsRegistrationSession
 		}
 
 		return false;
+	}
+
+	/**
+	 * Add analytics tracking
+	 *
+	 * @return void
+	 */
+	private function addAnalytics()
+	{
+		if (RdfHelperAnalytics::isEnabled())
+		{
+			if ($this->isReview)
+			{
+				$label = "display review registration form for event " . $this->session->getEvent()->title;
+			}
+			else
+			{
+				$label = "display registration form for event " . $this->session->getEvent()->title;
+			}
+
+			$event           = new stdclass;
+			$event->category = 'registration form';
+			$event->action   = 'display';
+			$event->label    = $label;
+			$event->value    = null;
+			RdfHelperAnalytics::trackEvent($event);
+		}
 	}
 }
