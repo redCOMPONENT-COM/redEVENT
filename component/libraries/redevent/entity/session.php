@@ -801,6 +801,18 @@ class RedeventEntitySession extends RedeventEntityBase
 	}
 
 	/**
+	 * Check if there are prices set for session
+	 *
+	 * @return boolean
+	 */
+	public function hasActivePrices()
+	{
+		$activePrices = $this->getActivePricegroups(false);
+
+		return !empty($activePrices);
+	}
+
+	/**
 	 * Return true if it's an open date
 	 *
 	 * @return boolean

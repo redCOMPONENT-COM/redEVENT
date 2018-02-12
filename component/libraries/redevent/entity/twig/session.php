@@ -232,4 +232,14 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	{
 		return $this->entity->isFull();
 	}
+
+	/**
+	 * Check if session has prices set (if not, it's free)
+	 *
+	 * @return   array|boolean
+	 */
+	public function hasPrices()
+	{
+		return $this->entity->hasActivePrices();
+	}
 }
