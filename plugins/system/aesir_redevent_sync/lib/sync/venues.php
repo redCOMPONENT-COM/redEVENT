@@ -32,25 +32,25 @@ class PlgSystemAesir_Redevent_SyncSyncVenues
 
 		if (empty($cid))
 		{
-			return $this->globalSync();
+			$this->globalSync();
+
+			return;
 		}
-		else
+
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		foreach ($cid as $id)
 		{
-			// Check for request forgeries
-			JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+			$entity = RedeventEntityVenue::load($id);
 
-			foreach ($cid as $id)
+			if ($this->syncVenue($entity))
 			{
-				$entity = RedeventEntityVenue::load($id);
-
-				if ($this->syncVenue($entity))
-				{
-					$synced++;
-				}
+				$synced++;
 			}
-
-			$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_VENUES_SYNCED', $synced);
 		}
+
+		$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_VENUES_SYNCED', $synced);
 
 		$app->redirect('index.php?option=com_redevent&view=venues', $msg);
 	}
