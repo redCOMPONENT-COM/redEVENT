@@ -33,7 +33,7 @@ class RedeventRegistrationCanregister
 	private $session;
 
 	/**
-	 * @var bool
+	 * @var object
 	 */
 	private $result;
 
@@ -281,7 +281,7 @@ class RedeventRegistrationCanregister
 	{
 		$hasPrices = $this->session->getActivePricegroups(false);
 
-		if (!$hasPrices)
+		if (empty($hasPrices))
 		{
 			// Session is free for all
 			return true;

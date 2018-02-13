@@ -96,7 +96,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	 *
 	 * @param   JUser  $user  user
 	 *
-	 * @return boolean
+	 * @return object
 	 */
 	public function getCanRegisterStatus($user = null)
 	{
