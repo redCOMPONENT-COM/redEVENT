@@ -53,7 +53,7 @@ class RedeventEntityAttendee extends RedeventEntityBase
 	/**
 	 * Set attendee as confirmed
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 *
 	 * @since 3.2.4
 	 */

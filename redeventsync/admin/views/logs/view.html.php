@@ -48,7 +48,7 @@ class RedeventsyncViewLogs extends ResyncView
 	 *
 	 * @param   string  $tpl  The template name
 	 *
-	 * @return  void
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{

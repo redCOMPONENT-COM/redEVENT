@@ -21,7 +21,7 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @param   string  $tpl  template file to load
 	 *
-	 * @return strin|boolean
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{
@@ -164,7 +164,7 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @param   string  $tpl  template file to load
 	 *
-	 * @return void
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	protected function displayVenues($tpl)
 	{
@@ -212,7 +212,7 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @param   string  $tpl  template file to load
 	 *
-	 * @return void
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	protected function displayAttending($tpl)
 	{
@@ -258,7 +258,7 @@ class RedeventViewMyevents extends RViewSite
 	 *
 	 * @param   string  $tpl  template file to load
 	 *
-	 * @return void
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	protected function displayAttended($tpl)
 	{

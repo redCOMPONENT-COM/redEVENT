@@ -576,6 +576,7 @@ class RedeventModelDetails extends RModel
 	 */
 	public function getPrices()
 	{
+		$allowedViewLevels = JFactory::getUser()->getAuthorisedViewLevels();
 		$event = $this->getDetails();
 
 		$query = $this->_db->getQuery(true)
@@ -590,6 +591,7 @@ class RedeventModelDetails extends RModel
 			->join('LEFT', '#__rwf_forms AS f on t.redform_id = f.id')
 			->where('sp.xref = ' . $this->_db->Quote($event->xref))
 			->where('sp.active = 1')
+			->where('p.access in (' . implode(',', $allowedViewLevels) . ')')
 			->order('p.ordering ASC');
 
 		$this->_db->setQuery($query);

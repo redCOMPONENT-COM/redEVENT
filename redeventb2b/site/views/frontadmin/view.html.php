@@ -19,7 +19,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 	 *
 	 * @param   string  $tpl  template to display
 	 *
-	 * @return void
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 *
 	 * @since 2.5
 	 */

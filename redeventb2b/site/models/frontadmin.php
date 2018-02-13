@@ -633,7 +633,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 	/**
 	 * build the organization booked events query
 	 *
-	 * @return void
+	 * @return JDatabaseQuery
 	 */
 	protected function _buildQueryBookings()
 	{

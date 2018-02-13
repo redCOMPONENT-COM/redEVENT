@@ -111,7 +111,7 @@ abstract class RedeventViewSessionlist extends RedeventViewFront
 	/**
 	 * Get feed link
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFeedLink()
 	{
