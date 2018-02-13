@@ -242,4 +242,24 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	{
 		return $this->entity->hasActivePrices();
 	}
+
+	/**
+	 * Return true if user can register
+	 *
+	 * @return boolean
+	 */
+	public function canRegister()
+	{
+		return $this->entity->canRegister();
+	}
+
+	/**
+	 * Return can register status (if error...)
+	 *
+	 * @return object
+	 */
+	public function getCanRegisterStatus()
+	{
+		return $this->entity->getCanRegisterStatus();
+	}
 }
