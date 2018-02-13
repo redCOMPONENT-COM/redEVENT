@@ -95,7 +95,7 @@ class RedeventRegistrationCanregister
 
 		if (!$this->checkPrices())
 		{
-			return $this->results;
+			return $this->result;
 		}
 
 		return $this->result;
