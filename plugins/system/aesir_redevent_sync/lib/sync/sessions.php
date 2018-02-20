@@ -94,7 +94,7 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_session_type_id'),
-				'template_id' => RedeventHelperConfig::get('aesir_session_template_id'),
+				'layout' => RedeventHelperConfig::get('aesir_session_default_layout'),
 				'title'   => $title,
 				'access'  => 1,
 				'organisation_id' => $this->getOrganisationId($session->getEvent()),

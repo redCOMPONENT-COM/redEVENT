@@ -90,7 +90,7 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 
 		$data = array(
 			'type_id' => RedeventHelperConfig::get('aesir_event_type_id'),
-			'template_id' => RedeventHelperConfig::get('aesir_event_template_id'),
+			'layout' => RedeventHelperConfig::get('aesir_event_default_layout'),
 			'title'   => $title,
 			'access'  => $access,
 			'organisation_id' => $this->getOrganisationId($event),

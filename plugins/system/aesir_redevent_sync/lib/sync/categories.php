@@ -101,7 +101,7 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 
 		$data = array(
 			'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
-			'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
+			'layout' => RedeventHelperConfig::get('aesir_category_default_layout'),
 			'title'   => $title,
 			'access'  => $access,
 			'parent_id' => $parentId,

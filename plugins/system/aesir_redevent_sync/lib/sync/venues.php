@@ -82,7 +82,7 @@ class PlgSystemAesir_Redevent_SyncSyncVenues
 
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_venue_type_id'),
-				'template_id' => RedeventHelperConfig::get('aesir_venue_template_id'),
+				'layout' => RedeventHelperConfig::get('aesir_venue_default_layout'),
 				'title'   => $title,
 				'access'  => RedeventHelperConfig::get('aesir_venue_access'),
 				'custom_fields' => array(
