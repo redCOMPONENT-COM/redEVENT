@@ -55,7 +55,7 @@ class RedeventModelWaitinglist extends RModel
 	 *
 	 * @param   int  $id  xref id
 	 *
-	 * @return void
+	 * @return integer
 	 */
 	public function setXrefId($id)
 	{

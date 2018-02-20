@@ -151,32 +151,33 @@ class RedeventTagsRegistrationSession
 		$options['eventId'] = $this->session->eventid;
 
 		// Multiple pricegroup handling
-		if ($prices && count($prices))
+		$selectedPricegroup = $this->getSelectedPriceGroup($prices);
+
+		// We add one field per signup
+		for ($index = 1; $index < $multi + 1; $index++)
 		{
-			$selectedPricegroup = $this->getSelectedPriceGroup($prices);
+			$field = new RedeventRfieldSessionprice;
+			$field->setOptions($prices);
+			$field->setFormIndex($index);
 
-			// We add one field per signup
-			for ($index = 1; $index < $multi + 1; $index++)
+			if ($selectedPricegroup)
 			{
-				$field = new RedeventRfieldSessionprice;
-				$field->setOptions($prices);
-				$field->setFormIndex($index);
-
-				if ($selectedPricegroup)
-				{
-					$field->setValue($selectedPricegroup->id);
-				}
-
-				$options['extrafields'][$index] = array($field);
+				$field->setValue($selectedPricegroup->id);
 			}
 
-			$currency = $selectedPricegroup ? $selectedPricegroup->currency : current($prices)->currency;
-			$options['currency'] = $currency;
+			$options['extrafields'][$index] = array($field);
+		}
 
-			if (RedeventHelper::config()->get('payBeforeConfirm'))
-			{
-				$options['selectPaymentGateway'] = 1;
-			}
+		if (!empty($prices))
+		{
+			$options['currency'] = $selectedPricegroup
+				? $selectedPricegroup->currency
+				: current($prices)->currency;
+		}
+
+		if (RedeventHelper::config()->get('payBeforeConfirm'))
+		{
+			$options['selectPaymentGateway'] = 1;
 		}
 
 		$renderData = array(
@@ -190,24 +191,7 @@ class RedeventTagsRegistrationSession
 
 		$html = RedeventLayoutHelper::render('redevent.registration.session', $renderData);
 
-		if (RdfHelperAnalytics::isEnabled())
-		{
-			if ($this->isReview)
-			{
-				$label = "display review registration form for event " . $this->session->getEvent()->title;
-			}
-			else
-			{
-				$label = "display registration form for event " . $this->session->getEvent()->title;
-			}
-
-			$event = new stdclass;
-			$event->category = 'registration form';
-			$event->action = 'display';
-			$event->label = $label;
-			$event->value = null;
-			RdfHelperAnalytics::trackEvent($event);
-		}
+		$this->addAnalytics();
 
 		return $html;
 	}
@@ -355,5 +339,32 @@ class RedeventTagsRegistrationSession
 		}
 
 		return false;
+	}
+
+	/**
+	 * Add analytics tracking
+	 *
+	 * @return void
+	 */
+	private function addAnalytics()
+	{
+		if (RdfHelperAnalytics::isEnabled())
+		{
+			if ($this->isReview)
+			{
+				$label = "display review registration form for event " . $this->session->getEvent()->title;
+			}
+			else
+			{
+				$label = "display registration form for event " . $this->session->getEvent()->title;
+			}
+
+			$event           = new stdclass;
+			$event->category = 'registration form';
+			$event->action   = 'display';
+			$event->label    = $label;
+			$event->value    = null;
+			RdfHelperAnalytics::trackEvent($event);
+		}
 	}
 }

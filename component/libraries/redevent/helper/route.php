@@ -701,7 +701,7 @@ class RedeventHelperRoute
 	 *
 	 * @param   string  $viewName  view name
 	 *
-	 * @return integer|bool false on failure
+	 * @return integer|boolean false on failure
 	 */
 	public static function getViewItemId($viewName)
 	{

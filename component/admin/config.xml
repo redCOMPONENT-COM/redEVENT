@@ -580,6 +580,13 @@
 			<option value="radio">COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_RADIO</option>
 		</field>
 
+		<field name="show_no_price_as_free" type="list" default="select"
+			   label="COM_REDEVENT_SETTINGS_REGISTRATION_SHOW_NO_PRICE_AS_FREE_LABEL"
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_SHOW_NO_PRICE_AS_FREE_DESC">
+			<option value="1">JYes</option>
+			<option value="0">JNo</option>
+		</field>
+
 	</fieldset>
 
 	<fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit"

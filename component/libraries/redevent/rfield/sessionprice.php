@@ -371,4 +371,23 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 
 		return $sessionPriceGroup->getPricegroup()->name;
 	}
+
+	/**
+	 * Get default currency
+	 *
+	 * @return mixed
+	 *
+	 * @since __deploy_version__
+	 *
+	 * @throws RuntimeException
+	 */
+	public function getDefaultCurrency()
+	{
+		if (!$this->form || !$this->form->isValid())
+		{
+			throw new RuntimeException('Form not defined');
+		}
+
+		return $this->form->currency;
+	}
 }

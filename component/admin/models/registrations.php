@@ -373,6 +373,6 @@ class RedeventModelRegistrations extends RModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		return parent::populateState($ordering ?: 'r.uregdate', $direction ?: 'desc');
+		parent::populateState($ordering ?: 'r.uregdate', $direction ?: 'desc');
 	}
 }

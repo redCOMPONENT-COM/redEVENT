@@ -35,10 +35,14 @@
 					<option value="">JSELECT</option>
 				</field>
 				<field
-						name="aesir_event_template_id"
-						type="reditem.template"
+						name="aesir_event_default_layout"
+						type="reditem.view_twig_template"
+						renderLayout="aesir.field.renderfield"
+						layout-suffixes="bs2"
+						viewName="itemdetail"
 						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TEMPLATE_ID_LABEL"
-						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TEMPLATE_ID_DESC">
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_EVENT_TEMPLATE_ID_DESC"
+				>
 					<option value="">JSELECT</option>
 				</field>
 				<field
@@ -73,10 +77,14 @@
 					<option value="">JSELECT</option>
 				</field>
 				<field
-						name="aesir_session_template_id"
-						type="reditem.template"
+						name="aesir_session_default_layout"
+						type="reditem.view_twig_template"
+						renderLayout="aesir.field.renderfield"
+						layout-suffixes="bs2"
+						viewName="itemdetail"
 						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_LABEL"
-						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_DESC">
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_SESSION_TEMPLATE_ID_DESC"
+				>
 					<option value="">JSELECT</option>
 				</field>
 				<field
@@ -111,10 +119,14 @@
 					<option value="">JSELECT</option>
 				</field>
 				<field
-						name="aesir_category_template_id"
-						type="reditem.template"
+						name="aesir_category_default_layout"
+						type="reditem.view_twig_template"
+						renderLayout="aesir.field.renderfield"
+						layout-suffixes="bs2"
+						viewName="category_items"
 						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_TEMPLATE_ID_LABEL"
-						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_TEMPLATE_ID_DESC">
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_CATEGORY_TEMPLATE_ID_DESC"
+				>
 					<option value="">JSELECT</option>
 				</field>
 				<field
@@ -142,10 +154,14 @@
 					<option value="">JSELECT</option>
 				</field>
 				<field
-						name="aesir_venue_template_id"
-						type="reditem.template"
+						name="aesir_venue_default_layout"
+						type="reditem.view_twig_template"
+						renderLayout="aesir.field.renderfield"
+						layout-suffixes="bs2"
+						viewName="itemdetail"
 						label="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TEMPLATE_ID_LABEL"
-						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TEMPLATE_ID_DESC">
+						description="PLG_REDEVENT_CONFIG_AESIR_SYNC_XML_AESIR_VENUE_TEMPLATE_ID_DESC"
+				>
 					<option value="">JSELECT</option>
 				</field>
 				<field
