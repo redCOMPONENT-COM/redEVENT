@@ -126,7 +126,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Init result object
 	 *
-	 * @return void;
+	 * @return void
 	 */
 	private function initResult()
 	{
@@ -162,7 +162,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Is registration over ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function isRegistrationOver()
 	{
@@ -174,7 +174,9 @@ class RedeventRegistrationCanregister
 
 		if (RedeventHelperDate::isValidDate($this->session->registrationend))
 		{
-			if (strtotime($this->session->registrationend) < $now_unix)
+			$registrationEnd = JFactory::getDate($this->session->registrationend, new DateTimeZone("UTC"));
+
+			if ($registrationEnd < $now)
 			{
 				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
@@ -197,7 +199,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Is registration disabled ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function isRegistrationDisabled()
 	{
@@ -230,7 +232,9 @@ class RedeventRegistrationCanregister
 			{
 				if ($attendee->uid == $this->user->get('id') && $attendee->confirmed == 0 && $attendee->cancelled == 0)
 				{
-					$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION'), static::ERROR_HAS_PENDING);
+					$this->setResultError(
+						JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION'), static::ERROR_HAS_PENDING
+					);
 
 					return true;
 				}
@@ -243,7 +247,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * User Reached Max Registrations ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function userReachedMaxRegistrations()
 	{
@@ -258,5 +262,7 @@ class RedeventRegistrationCanregister
 
 			return true;
 		}
+
+		return false;
 	}
 }

@@ -44,6 +44,6 @@ class RedeventViewCategories extends RedeventViewFront
 		$this->assignRef('canCreate', $canCreate);
 		$this->assignRef('pageNav', $pageNav);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

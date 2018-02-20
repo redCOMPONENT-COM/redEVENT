@@ -18,13 +18,17 @@ defined('_JEXEC') or die('Restricted access');
 class PlgReSimplistModel extends RedeventModelBasesessionlist
 {
 	/**
-	 * Constructor
+	 * Method to auto-populate the model state.
 	 *
-	 * @since 0.9
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
 	 */
-	public function __construct()
+	protected function populateState()
 	{
-		parent::__construct();
+		parent::populateState();
 
 		// Get the number of events from database
 		$limit = 20;
@@ -55,7 +59,7 @@ class PlgReSimplistModel extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
 		$where = array();
 
@@ -167,11 +171,11 @@ class PlgReSimplistModel extends RedeventModelBasesessionlist
 
 		if ($sstate == 'past')
 		{
-			$where[] = '(x.dates > 0 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now) . ')';
+			$where[] = '(x.dates AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now) . ')';
 		}
 		elseif ($sstate == 'future')
 		{
-			$where[] = '(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')';
+			$where[] = '(x.dates IS NULL OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')';
 		}
 
 		return $query->where(implode(' AND ', $where));

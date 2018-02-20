@@ -45,15 +45,15 @@ class Dates
 			throw new \InvalidArgumentException('Dates requires an array or object');
 		}
 
-		if (!isset($data['dates']) || !isset($data['enddates']) || !isset($data['times']) || !isset($data['endtimes']) || !isset($data['allday']))
+		if (!isset($data['allday']))
 		{
-			throw new \InvalidArgumentException('Dates requires properties dates, times, enddates, enddtimes, allday from input object');
+			throw new \InvalidArgumentException('Dates requires properties allday from input object');
 		}
 
-		$this->dates = $data['dates'];
-		$this->enddates = $data['enddates'];
-		$this->times = $data['times'];
-		$this->endtimes = $data['endtimes'];
+		$this->dates = empty($data['dates']) ? null : $data['dates'];
+		$this->enddates = empty($data['enddates']) ? null : $data['enddates'];
+		$this->times = empty($data['times']) ? null : $data['times'];
+		$this->endtimes = empty($data['endtimes']) ? null : $data['endtimes'];
 		$this->allday = $data['allday'];
 	}
 
@@ -74,8 +74,8 @@ class Dates
 
 		$date_start = \RedeventHelperDate::formatdate($this->dates, $this->times);
 		$time_start = $showtime && !$this->isAllDay() ? \RedeventHelperDate::formattime($this->dates, $this->times) : '';
-		$date_end   = $showend          ? \RedeventHelperDate::formatdate($this->enddates, $this->endtimes) : '';
-		$time_end   = $showtime && !$this->isAllDay() ? \RedeventHelperDate::formattime($this->enddates, $this->endtimes) :  '';
+		$date_end   = $showend ? \RedeventHelperDate::formatdate($this->enddates, $this->endtimes) : '';
+		$time_end   = $showtime && !$this->isAllDay() ? \RedeventHelperDate::formattime($this->enddates, $this->endtimes) : '';
 
 		if ($this->isOneDay())
 		{
@@ -131,7 +131,7 @@ class Dates
 	/**
 	 * Get session duration in days (On how many days it spans)
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationDays()
 	{
@@ -175,13 +175,13 @@ class Dates
 			return null;
 		}
 
-		return strtotime($this->enddates . ($this->isAllDay() ? '' : ' ' . $item->endtimes));
+		return strtotime($this->enddates . ($this->isAllDay() ? '' : ' ' . $this->endtimes));
 	}
 
 	/**
 	 * Return true if it's a full day session
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isAllDay()
 	{
@@ -191,7 +191,7 @@ class Dates
 	/**
 	 * Return true if it's a one day session
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isOneDay()
 	{
@@ -215,7 +215,7 @@ class Dates
 	 *
 	 * @param   bool  $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isOver($day_check = true)
 	{
@@ -229,11 +229,17 @@ class Dates
 
 		if (\RedeventHelperDate::isValidDate($this->enddates))
 		{
-			return strtotime($this->enddates . ($this->allday ? ' 23:59:59' : ' ' . $this->endtimes)) < $cmp;
+			$time = strtotime(
+				$this->enddates . ($this->allday || !$this->endtimes ? ' 23:59:59' : ' ' . $this->endtimes)
+			);
 		}
 		else
 		{
-			return strtotime($this->dates . ' ' . ($this->allday ? '' : ' ' . $this->times)) < $cmp;
+			$time = strtotime(
+				$this->dates . ' ' . ($this->allday || !$this->times ? '' : ' ' . $this->times)
+			);
 		}
+
+		return $time < $cmp;
 	}
 }

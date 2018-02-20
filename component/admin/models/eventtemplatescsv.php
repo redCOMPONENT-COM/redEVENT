@@ -48,12 +48,15 @@ class RedeventModelEventtemplatescsv extends RModelAdmin
 		$unset = array("checked_out", "checked_out_time", "redform_id");
 
 		$results = $rows ? array_map(
-			function($row) use ($unset)
+			function ($row) use ($unset)
 			{
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				foreach ($unset as $property)
 				{
 					unset($row[$property]);
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $row;
 			}, $rows

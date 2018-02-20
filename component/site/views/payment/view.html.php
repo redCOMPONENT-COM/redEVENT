@@ -27,7 +27,7 @@ class RedeventViewPayment extends RViewSite
 		$mainframe = JFactory::getApplication();
 		$model = $this->getModel();
 
-		/* Set which page to show */
+		// Set which page to show
 		$state = JFactory::getApplication()->input->get('state', '');
 		$submit_key = JFactory::getApplication()->input->get('submit_key', '');
 
@@ -38,8 +38,8 @@ class RedeventViewPayment extends RViewSite
 
 		$row = $this->get('Event');
 
-		/* This loads the tags replacer */
-		JFactory::getApplication()->input->set('xref', $row->xref); // neede for tag constructor
+		// This loads the tags replacer
+		JFactory::getApplication()->input->set('xref', $row->xref);
 		$tags = new RedeventTags;
 		$tags->setXref($row->xref);
 		$tags->setSubmitkey($submit_key);
@@ -100,13 +100,6 @@ class RedeventViewPayment extends RViewSite
 			case 'accepted':
 				$text = $tags->replaceTags($row->paymentaccepted);
 				$this->addTracking();
-				$model->checkAndConfirm();
-
-				// Trigger event for custom handling
-				JPluginHelper::importPlugin('redevent');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('onAfterPaymentVerifiedRedevent', array($submit_key));
-
 				break;
 
 			case 'refused':
@@ -129,7 +122,7 @@ class RedeventViewPayment extends RViewSite
 
 		$tpl = JFactory::getApplication()->input->get('tpl', $tpl);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

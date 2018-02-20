@@ -517,7 +517,7 @@ class rsscalCreator extends rCbase
 	 * @param string $filename  optional default generated
 	 * @param string $delimiter optional, default '/'
 	 *
-	 * @return bool FALSE if not writable else TRUE
+	 * @return boolean FALSE if not writable else TRUE
 	 */
 	function setFilename($directory = FALSE, $filename = FALSE, $delimiter = '/')
 	{

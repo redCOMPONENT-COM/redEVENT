@@ -66,9 +66,9 @@ class RedeventModelVenuecategory extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
-		$query = parent::_buildWhere($query);
+		$query = parent::buildWhere($query);
 		$category = $this->getItem();
 
 		$query->where('vc.lft BETWEEN ' . $this->_db->Quote($category->lft) . ' AND ' . $this->_db->Quote($category->rgt));

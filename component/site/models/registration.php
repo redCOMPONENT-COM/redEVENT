@@ -50,6 +50,9 @@ class RedeventModelRegistration extends RModel
 	 */
 	protected $prices = null;
 
+	/**
+	 * @var string
+	 */
 	protected $origin = '';
 
 	/**
@@ -75,27 +78,27 @@ class RedeventModelRegistration extends RModel
 	/**
 	 * Set session id
 	 *
-	 * @param   int  $xref_id  session id
+	 * @param   int  $xrefId  session id
 	 *
 	 * @return void
 	 */
-	public function setXref($xref_id)
+	public function setXref($xrefId)
 	{
-		$this->xref = (int) $xref_id;
+		$this->xref = (int) $xrefId;
 	}
 
 	/**
 	 * Set submit key
 	 *
-	 * @param   string  $submit_key  submit key
+	 * @param   string  $submitKey  submit key
 	 *
 	 * @return void
 	 */
-	public function setSubmitKey($submit_key)
+	public function setSubmitKey($submitKey)
 	{
-		if ($submit_key && $this->submit_key != $submit_key)
+		if ($submitKey && $this->submit_key != $submitKey)
 		{
-			$this->submit_key = $submit_key;
+			$this->submit_key = $submitKey;
 			$this->rf_answers = null;
 			$this->rf_fields  = null;
 		}
@@ -120,12 +123,12 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   object  $user                  performing the registration
 	 * @param   int     $sid                   associated redform submitter id
-	 * @param   string  $submit_key            associated redform submit key
+	 * @param   string  $submitKey             associated redform submit key
 	 * @param   int     $sessionpricegroup_id  pricegroup id for registration
 	 *
 	 * @return boolean|object attendee row or false if failed
 	 */
-	public function register($user, $sid, $submit_key, $sessionpricegroup_id)
+	public function register($user, $sid, $submitKey, $sessionpricegroup_id)
 	{
 		$config  = RedeventHelper::config();
 		$session = $this->getSessionDetails();
@@ -150,7 +153,7 @@ class RedeventModelRegistration extends RModel
 		$obj->sid        = $sid;
 		$obj->xref       = $this->xref;
 		$obj->sessionpricegroup_id = $sessionpricegroup_id;
-		$obj->submit_key = $submit_key;
+		$obj->submit_key = $submitKey;
 		$obj->uid        = $user ? $user->id : 0;
 		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
 		$obj->uip        = $config->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
@@ -202,7 +205,7 @@ class RedeventModelRegistration extends RModel
 	 */
 	public function getRegistrationFromActivationLink($submit_key, $register_id, $uid, $xref)
 	{
-		/* Check the db if this entry exists */
+		// Check the db if this entry exists
 		$query = $this->_db->getQuery(true)
 			->select('r.confirmed')
 			->from('#__redevent_register AS r')
@@ -221,7 +224,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   object  $registration  registration data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function confirmOnPayment($registration)
 	{
@@ -302,7 +305,7 @@ class RedeventModelRegistration extends RModel
 	/**
 	 * Get session details
 	 *
-	 * @return bool|mixed|object
+	 * @return boolean|mixed|object
 	 */
 	public function getSessionDetails()
 	{
@@ -320,8 +323,8 @@ class RedeventModelRegistration extends RModel
 				->select('a.registra, a.unregistra, t.activate, t.notify, t.redform_id as form_id')
 				->select('t.enable_activation_confirmation, t.notify_confirm_body, t.notify_confirm_subject, t.notify_subject, t.notify_body')
 				->select('t.notify_off_list_subject, t.notify_off_list_body, t.notify_on_list_subject, t.notify_on_list_body')
-				->select('x.*, x.title as session_name, a.created_by, t.redform_id, x.maxwaitinglist, x.maxattendees, t.juser, t.show_names, t.showfields')
-				->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone')
+				->select('x.*, x.title as session_name, a.created_by, t.redform_id, x.maxwaitinglist, x.maxattendees, t.juser, t.show_names')
+				->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone, t.showfields')
 				->select('v.venue')
 				->select('u.name AS creator_name, u.email AS creator_email')
 				->select('t.confirmation_message, t.review_message')
@@ -385,10 +388,10 @@ class RedeventModelRegistration extends RModel
 	 */
 	public function sendNotificationEmail($submit_key)
 	{
-		/* Load database connection */
+		// Load database connection
 		$db = JFactory::getDBO();
 
-		/* Get registration settings */
+		// Get registration settings
 		$query = $this->_db->getQuery(true)
 			->select('r.id')
 			->from('#__redevent_register AS r')
@@ -426,7 +429,7 @@ class RedeventModelRegistration extends RModel
 	 * @param   bool    $unreg       is this an unregistration ?
 	 * @param   int     $reg_id      registration id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function notifyManagers($submit_key, $unreg = false, $reg_id = 0)
 	{
@@ -436,7 +439,7 @@ class RedeventModelRegistration extends RModel
 		}
 		else
 		{
-			/* Get registration settings */
+			// Get registration settings
 			$query = $this->_db->getQuery(true)
 				->select('r.id')
 				->from('#__redevent_register AS r')
@@ -473,7 +476,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $submitter_id  submitter id
 	 *
-	 * @return bool|mixed
+	 * @return boolean|mixed
 	 */
 	public function getRegistration($submitter_id)
 	{
@@ -546,7 +549,7 @@ class RedeventModelRegistration extends RModel
 		if (!$this->prices)
 		{
 			$session = RedeventEntitySession::load($this->xref);
-			$this->prices = $session->getPricegroups('true');
+			$this->prices = $session->getActivePricegroups('true');
 		}
 
 		return $this->prices;
@@ -641,7 +644,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $sid  submitter id
 	 *
-	 * @return bool|JUser
+	 * @return boolean|JUser
 	 */
 	protected function createRedmemberUser($sid)
 	{
@@ -816,7 +819,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   int  $sid  submitter id
 	 *
-	 * @return bool|JUser
+	 * @return boolean|JUser
 	 *
 	 * @throws Exception
 	 */
@@ -896,7 +899,7 @@ class RedeventModelRegistration extends RModel
 	 *
 	 * @param   string  $email  The email to search on
 	 *
-	 * @return int The user id or 0 if not found
+	 * @return integer The user id or 0 if not found
 	 */
 	protected function _getUserIdFromEmail($email)
 	{

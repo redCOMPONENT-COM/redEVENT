@@ -42,7 +42,7 @@ class RedeventHelper
 	 *
 	 * @param   int  $forced  force cleanup
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function cleanup($forced = 0)
 	{
@@ -86,11 +86,11 @@ class RedeventHelper
 					break;
 
 				case 'registration':
-					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.registrationend > 0, x.registrationend, x.dates))) >= 0 ';
+					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.registrationend, x.registrationend, x.dates))) >= 0 ';
 					break;
 
 				case 'end':
-					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.enddates > 0, x.enddates, x.dates))) >= 0 ';
+					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.enddates, x.enddates, x.dates))) >= 0 ';
 					break;
 			}
 
@@ -202,6 +202,8 @@ class RedeventHelper
 			// Update recron file with latest update
 			JFile::write($cronfile, $now);
 		}
+
+		return true;
 	}
 
 	/**
@@ -221,13 +223,14 @@ class RedeventHelper
 	/**
 	 * returns indented event category options
 	 *
-	 * @param   bool  $show_empty        show categories with no publish xref associated
-	 * @param   bool  $show_unpublished  show unpublished categories
-	 * @param   bool  $enabled           id of enabled categories
+	 * @param   boolean  $show_empty        show categories with no publish xref associated
+	 * @param   boolean  $show_unpublished  show unpublished categories
+	 * @param   boolean  $enabled           id of enabled categories
+	 * @param   integer  $root              id of root category
 	 *
 	 * @return array
 	 */
-	public static function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false)
+	public static function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false, $root = null)
 	{
 		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
@@ -278,6 +281,12 @@ class RedeventHelper
 		if ($app->getLanguageFilter())
 		{
 			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+		}
+
+		if ($root)
+		{
+			$rootCategory = RedeventEntityCategory::load($root);
+			$query->where('(c.lft BETWEEN ' . $rootCategory->lft . ' AND ' . $rootCategory->rgt . ')');
 		}
 
 		$db->setQuery($query);
@@ -382,6 +391,7 @@ class RedeventHelper
 	 */
 	public static function canRegister($xref_id, $user_id = null)
 	{
+		$user_id = $user_id ?: JFactory::getUser()->id;
 		$helper = new RedeventRegistrationCanregister($xref_id);
 
 		return $helper->canRegister($user_id);
@@ -393,7 +403,7 @@ class RedeventHelper
 	 * @param   int  $xref_id  session id
 	 * @param   int  $user_id  user id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function canUnregister($xref_id, $user_id = null)
 	{
@@ -479,7 +489,7 @@ class RedeventHelper
 	 * @param   object  $session    event data
 	 * @param   bool    $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @deprecated
 	 */
@@ -615,10 +625,10 @@ class RedeventHelper
 	/**
 	 * Add event to ical
 	 *
-	 * @param   vcalendar  &$calendartool  calendar object
-	 * @param   object     $session        session data
+	 * @param   vcalendar  $calendartool  calendar object
+	 * @param   object     $session       session data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function icalAddEvent(&$calendartool, $session)
 	{
@@ -882,8 +892,8 @@ class RedeventHelper
 	{
 		$params = static::config();
 
-		$delimiter_esc = preg_quote($delimiter, '/');
-		$enclosure_esc = preg_quote($enclosure, '/');
+		$delimiterEsc = preg_quote($delimiter, '/');
+		$enclosureEsc = preg_quote($enclosure, '/');
 
 		$output = array();
 
@@ -895,7 +905,7 @@ class RedeventHelper
 				$field = str_replace(array("\n"), "", $field);
 			}
 
-			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
+			$output[] = preg_match("/(?:${delimiterEsc}|${enclosureEsc}|\s)/", $field) ? (
 				$enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
 				) : $field;
 		}
@@ -1050,7 +1060,7 @@ class RedeventHelper
 		{
 			$model = JModel::getInstance('waitinglist', 'RedeventModel');
 			$model->setXrefId($xref);
-			$model->UpdateWaitingList();
+			$model->updateWaitingList();
 		}
 
 		return true;
@@ -1311,7 +1321,7 @@ class RedeventHelper
 		}
 
 		$fields = array_map(
-			function($row)
+			function ($row)
 			{
 				$field = RedeventFactoryCustomfield::getField($row->type);
 				$field->bind($row);

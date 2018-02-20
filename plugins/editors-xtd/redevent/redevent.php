@@ -21,8 +21,8 @@ class PlgButtonRedevent extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
 	 */
 	public function __construct(&$subject, $config)
 	{

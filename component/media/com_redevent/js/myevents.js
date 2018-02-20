@@ -8,9 +8,16 @@
 			red_ajaxnav.submitForm($(this).parents('form'));
 		});
 
-		$('#redevent').on('change' , '#filter_event, #limit', function(event){
+		$('#redevent').on('change' , '#filter_event, #limit, #filter', function(event){
 			event.preventDefault();
 			red_ajaxnav.submitForm($(this).parents('form'));
+		});
+
+		$('#redevent').on('keypress keydown keyup', '#filter', function(event){
+			if (event.keyCode == 13) {
+				event.preventDefault();
+				red_ajaxnav.submitForm($(this).parents('form'));
+			}
 		});
 
 		$('#redevent').on('click' , '#filter-reset', function(event){

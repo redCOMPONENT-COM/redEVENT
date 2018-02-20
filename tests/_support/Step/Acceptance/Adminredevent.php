@@ -383,7 +383,7 @@ class Adminredevent extends \AcceptanceTester
 		$I->click(['xpath' => '//button[contains(@onclick, "field.add")]']);
 		$I->waitForText('Name', 30, ['css' => 'label']);
 		$I->fillField(['id' => 'jform_field'], $params['name']);
-		$I->selectOptionInChosenByIdUsingJs('jform_fieldtype', $params['fieldtype']);
+		$I->selectOptionInChosenById('jform_fieldtype', $params['fieldtype']);
 
 		if (isset($params['field_header']))
 		{

@@ -56,7 +56,7 @@ class RedeventViewWeek extends RedeventViewSessionlist
 		$start = JComponentHelper::getParams('com_redevent')->get('week_start') == 'MO' ? 1 : 0;
 		$this->assign('start', $start);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

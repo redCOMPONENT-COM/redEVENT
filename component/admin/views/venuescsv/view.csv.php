@@ -76,6 +76,8 @@ class RedeventViewVenuescsv extends RViewCsv
 		fclose($stream);
 
 		JFactory::getApplication()->close();
+
+		return true;
 	}
 
 	/**

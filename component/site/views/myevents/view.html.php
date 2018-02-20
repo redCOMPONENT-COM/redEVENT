@@ -73,7 +73,7 @@ class RedeventViewMyevents extends RedeventViewFront
 		JFactory::getDocument()->setTitle($pagetitle);
 
 		// Create select lists
-		$lists = $this->_buildSortLists();
+		$lists = $this->buildSortLists();
 
 		if ($lists['filter'])
 		{
@@ -99,7 +99,9 @@ class RedeventViewMyevents extends RedeventViewFront
 			$options = array_merge($options, $ev);
 		}
 
-		$lists['filter_event'] = JHTML::_('select.genericlist', $options, 'filter_event', '', 'value', 'text', $modelSessions->getState()->get('filter'));
+		$lists['filter_event'] = JHTML::_(
+			'select.genericlist', $options, 'filter_event', '', 'value', 'text', $modelSessions->getState()->get('filter')
+		);
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
@@ -136,7 +138,7 @@ class RedeventViewMyevents extends RedeventViewFront
 	 *
 	 * @return array
 	 */
-	protected function _buildSortLists()
+	protected function buildSortLists()
 	{
 		$filter_order = JFactory::getApplication()->input->getCmd('filter_order', 'x.dates');
 		$filter_order_Dir = JFactory::getApplication()->input->getWord('filter_order_Dir', 'ASC');

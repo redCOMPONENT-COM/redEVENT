@@ -42,6 +42,8 @@ class RedeventModelTags extends RModel
 		$dispatcher = RFactory::getDispatcher();
 		$dispatcher->trigger('onRedeventGetAvailableTags', array(&$tags));
 
+		$this->addTagsClasses($tags);
+
 		return $this->tagsBySection($tags);
 	}
 
@@ -87,6 +89,7 @@ class RedeventModelTags extends RModel
 		$tags[] = new RedeventTagsTag('session_details', JText::_('COM_REDEVENT_TAG_SESSION_DETAILS_DESC'));
 		$tags[] = new RedeventTagsTag('session_created', JText::_('COM_REDEVENT_TAG_SESSION_CREATED_DESC'));
 		$tags[] = new RedeventTagsTag('session_modified', JText::_('COM_REDEVENT_TAG_SESSION_MODIFIED_DESC'));
+		$tags[] = new RedeventTagsTag('session_title', JText::_('COM_REDEVENT_TAG_SESSION_TITLE_DESC'));
 
 		$tags[] = new RedeventTagsTag('venue_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUE'), 'venue');
 		$tags[] = new RedeventTagsTag('venue_code', JText::_('COM_REDEVENT_VENUE_CODE'), 'venue');
@@ -212,5 +215,27 @@ class RedeventModelTags extends RModel
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Add tags from library classes
+	 *
+	 * @param   array  $tags  tags
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.3
+	 */
+	private function addTagsClasses(&$tags)
+	{
+		$files = JFolder::files(JPATH_LIBRARIES . '/redevent/tags/lib', ".php", false, true);
+
+		foreach ($files as $file)
+		{
+			$name = substr(basename($file), 0, -4);
+			$className = 'RedeventTagsLib' . ucfirst($name);
+			$instance = new $className;
+			$tags[] = $instance->getDescription();
+		}
 	}
 }

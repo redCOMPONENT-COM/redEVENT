@@ -32,13 +32,19 @@ class PlgRedevent_ConfigExample extends JPlugin
 	/**
 	 * Alters component parameters
 	 *
-	 * @param   JRegistry  &$params  parameters
+	 * @param   JRegistry  $params  parameters
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 */
 	public function onGetRedeventConfig(&$params)
 	{
-		$params->set('b2b_show_open', 0);
-		$params->set('redirect_search_unique_result_to_details', 1);
+		// Add some fixed values
+		$params->set('param_a', 0);
+		$params->set('param_b', 1);
+
+		// Merge params from plugin
+		$params->merge($this->params);
+
+		return true;
 	}
 }

@@ -33,7 +33,7 @@ class PlgRedeventRedmemberlogin extends JPlugin
 	 *
 	 * @param   string  $message  the redirect message
 	 *
-	 * @return bool true on success
+	 * @return void
 	 */
 	public function onRequireUserBeforeRegistration($message)
 	{

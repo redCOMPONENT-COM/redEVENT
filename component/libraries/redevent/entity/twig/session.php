@@ -68,6 +68,8 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	 * @param   array   $arguments  arguments
 	 *
 	 * @return mixed
+	 *
+	 * @throws LogicException
 	 */
 	public function __call($name, $arguments)
 	{
@@ -75,6 +77,8 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 		{
 			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
 		}
+
+		return false;
 	}
 
 	/**
@@ -99,7 +103,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -109,7 +113,7 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	/**
 	 * Return number of booked places
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getBooked()
 	{
@@ -146,9 +150,19 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get form id
+	 *
+	 * @return integer
+	 */
+	public function getFormId()
+	{
+		return $this->entity->getEvent()->getEventtemplate()->redform_id;
+	}
+
+	/**
 	 * Return number of places left
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getLeft()
 	{
@@ -158,21 +172,33 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	/**
 	 * Get session price groups
 	 *
-	 * @return   array|bool
+	 * @return   array|boolean
 	 */
 	public function getPrices()
 	{
-		$prices = $this->entity->getPricegroups();
+		$prices = $this->entity->getUserActivePricegroups();
 
 		return $prices
 			? array_map(
-				function($entity)
+				function ($entity)
 				{
 					return \RedeventEntityTwigSessionpricegroup::getInstance($entity);
 				},
 				$prices
 			)
 			: false;
+	}
+
+	/**
+	 * Return signup form
+	 *
+	 * @return string
+	 */
+	public function getSignupform()
+	{
+		$helper = new \RedeventTagsRegistrationSession($this->entity->id);
+
+		return $helper->getHtml();
 	}
 
 	/**

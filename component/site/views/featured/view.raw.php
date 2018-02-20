@@ -39,7 +39,7 @@ class RedeventViewFeatured extends JViewLegacy
 		$vcal->setProperty('unique_id', 'allevents@' . $mainframe->getCfg('sitename'));
 		$vcal->setConfig("filename", "events.ics");
 
-		foreach ( $rows as $row )
+		foreach ($rows as $row)
 		{
 			RedeventHelper::icalAddEvent($vcal, $row);
 		}
@@ -47,5 +47,7 @@ class RedeventViewFeatured extends JViewLegacy
 		$vcal->returnCalendar();
 
 		$mainframe->close();
+
+		return true;
 	}
 }

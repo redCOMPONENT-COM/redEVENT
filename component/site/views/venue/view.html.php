@@ -41,7 +41,7 @@ class RedeventViewVenue extends RedeventViewFront
 		$this->assignRef('row', $row);
 		$this->assignRef('elsettings', $settings);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -57,7 +57,7 @@ class RedeventViewVenue extends RedeventViewFront
 		$this->prepareView();
 
 		$document = JFactory::getDocument();
-		$document->addScript('https://maps.google.com/maps/api/js?key=' . $config->get('googlemapsApiKey'));
+		$document->addScript('https://maps.googleapis.com/maps/api/js?key=' . $config->get('googlemapsApiKey'));
 		RHelperAsset::load('venuemap.js');
 		JText::script("COM_REDEVENT_GET_DIRECTIONS");
 
@@ -88,6 +88,6 @@ class RedeventViewVenue extends RedeventViewFront
 		$this->assignRef('row', $row);
 		$this->assignRef('address', $address);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

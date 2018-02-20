@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" client="site" type="plugin" group="aesir_field" method="upgrade">
+	<name>PLG_AESIR_FIELD_REDEVENT_CATEGORY</name>
+	<version>3.2.3</version>
+	<creationDate>March 2017</creationDate>
+	<author>redCOMPONENT.com</author>
+	<copyright>Copyright (C) 2017 redCOMPONENT.com. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>PLG_AESIR_FIELD_REDEVENT_CATEGORY_DESC</description>
+	<files>
+		<folder>form</folder>
+		<folder>language</folder>
+		<folder>layouts</folder>
+		<folder>twig</folder>
+		<filename plugin="redevent_category">redevent_category.php</filename>
+		<filename>redevent_category.xml</filename>
+	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="redEVENT update">http://updates.redcomponent.com/redevent/plg_aesir_field_redevent_category.xml</server>
+	</updateservers>
+</extension>

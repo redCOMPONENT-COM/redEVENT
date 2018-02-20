@@ -51,7 +51,7 @@ class RedeventViewOrganizations extends RedeventViewAdmin
 			$this->canEdit = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -92,7 +92,7 @@ class RedeventViewOrganizations extends RedeventViewAdmin
 				'',
 				'icon-refresh',
 				false
-				);
+			);
 			$secondGroup->addButton($button);
 		}
 

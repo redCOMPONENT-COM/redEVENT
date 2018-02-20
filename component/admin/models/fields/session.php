@@ -26,7 +26,7 @@ class JFormFieldSession extends JFormField
 	/**
 	 * Method to get the field input markup
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getInput()
 	{

@@ -34,7 +34,7 @@ class RedeventsyncViewLog extends ResyncViewAdmin
 		$this->item = $this->get('Item');
 
 		// Display the template
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -56,7 +56,9 @@ class RedeventsyncViewLog extends ResyncViewAdmin
 	{
 		$group = new RToolbarButtonGroup;
 
-		$group->addButton(RToolbarBuilder::createLinkButton('index.php?option=com_redeventsync&view=logs', 'back', 'icon-arrow-left', 'btn btn-danger'));
+		$group->addButton(
+			RToolbarBuilder::createLinkButton('index.php?option=com_redeventsync&view=logs', 'back', 'icon-arrow-left', 'btn btn-danger')
+		);
 
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($group);

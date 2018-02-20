@@ -43,5 +43,7 @@ class RedeventViewUpcomingevents extends RViewSite
 			// Loads item info into rss array
 			$document->addItem($item);
 		}
+
+		return true;
 	}
 }

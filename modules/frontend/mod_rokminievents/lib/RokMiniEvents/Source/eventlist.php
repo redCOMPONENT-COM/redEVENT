@@ -112,7 +112,7 @@ class RokMiniEventsSourceEventList extends RokMiniEvents_SourceBase
 
     /**
      * Checks to see if the source is available to be used
-     * @return bool
+     * @return boolean
      */
     function available()
     {
@@ -163,7 +163,7 @@ class RokMiniEventsSourceEventList extends RokMiniEvents_SourceBase
      * @param array The id and view
      * @since 0.9
      *
-     * @return int Itemid
+     * @return integer Itemid
      */
     function _findItem($needles)
     {

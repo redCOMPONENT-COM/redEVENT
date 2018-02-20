@@ -17,8 +17,8 @@
 		]
 	},
 	"plugins" : {
-		"aesir" : ["maersk_categorydetail"],
-		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue"],
+      "aesir" : ["maersk_categorydetail"],
+		"aesir_field" : ["redevent_event", "redevent_bundle", "redevent_session", "redevent_venue", "redevent_category"],
 		"content" : ["resimplelist"],
 		"editors-xtd" : ["redevent"],
 		"finder" : ["re_events", "re_venues"],
@@ -34,13 +34,26 @@
 			"redeventvenue",
 			"redeventvenuecategory"
 		],
-		"redevent" : ["jomsocial", "redmemberlogin", "acymailinglists", "eventnewslettersignup", "maerskregistration", "notifycompanyadmin", "paymentnotificationemail"],
-		"redevent_config" : ["maersk"],
-		"redeventsyncclient" : ["maersk"],
-		"redform_field" : ["eventacymailinglists"],
+		"redevent" : [
+			"jomsocial",
+			"redmemberlogin",
+			"acymailinglists",
+			"eventnewslettersignup",
+			"paymentnotificationemail",
+			"aesirtagsreplacement",
+			"maerskregistration",
+			"notifycompanyadmin"
+		],
+		"redevent_config" : ["aesir", "maersk"],
+        "redeventsyncclient" : ["maersk"],
+		"redevent_field" : ["aesir_organisation"],
+		"redform_field" : [
+			"eventacymailinglists",
+			"redevent_session"
+		],
 		"redform_payment" : ["filtervenue"],
 		"search" : ["redevent"],
-		"system" : ["autotweetredevent", "aesirsessionssync"],
+		"system" : ["autotweetredevent", "aesir_redevent_sync", "redevent_labels"],
 		"xmap" : ["redevent"]
 	}
 }

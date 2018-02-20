@@ -52,7 +52,7 @@ class RedeventTableAttachment extends RedeventTable
 	/**
 	 * Check if attachement already exists
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function checkExists()
 	{
@@ -65,7 +65,7 @@ class RedeventTableAttachment extends RedeventTable
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadColumn();
 
-		if ($res && (!$this->id || in_array($this->id, $res)))
+		if ($res && (!$this->id || !in_array($this->id, $res)))
 		{
 			$this->setError(JText::_('LIB_REDEVENT_ATTACHMENT_ALREADY_EXISTS'));
 

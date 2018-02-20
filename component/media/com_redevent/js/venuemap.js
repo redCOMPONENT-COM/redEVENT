@@ -91,7 +91,7 @@ var mymap = (function($) {
 		div.append(txt);
 
 		if (venue.address) {
-			$('<a></a>').attr('href', 'http://maps.google.com/maps?daddr=' + encodeURI(venue.address) + '@' + venue.latitude + ',' + venue.longitude)
+			$('<a></a>').attr('href', 'http://maps.googleapis.com/maps?daddr=' + encodeURI(venue.address) + '@' + venue.latitude + ',' + venue.longitude)
 				.append(Joomla.JText._('COM_REDEVENT_GET_DIRECTIONS')).appendTo(div);
 		}
 

@@ -65,6 +65,13 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 		$twig->addExtension(new PlgAesir_FieldRedevent_venueTwigExtensionVenue);
 	}
 
+	/**
+	 * Dislplay active sessions for venue
+	 *
+	 * @return void
+	 *
+	 * @since 3.2.3
+	 */
 	public function onAjaxGetVenueActiveSessions()
 	{
 		$app = JFactory::getApplication();
@@ -87,7 +94,7 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 			->where('e.published = 1');
 
 		$open_order = RedeventHelper::config()->get('open_dates_ordering', 0);
-		$ordering_def = ($open_order ? 'x.dates = 0 ' : 'x.dates > 0 ') . 'ASC'
+		$ordering_def = ($open_order ? 'x.dates IS NULL ' : 'x.dates IS NOT NULL ') . 'ASC'
 			. ', x.dates ASC, x.times ASC';
 
 		$query->order($ordering_def);
@@ -98,7 +105,7 @@ final class PlgAesir_FieldRedevent_Venue extends AbstractFieldPlugin
 		$sessions = RedeventEntitySession::loadArray($res);
 
 		$twigEntities = array_map(
-			function($session)
+			function ($session)
 			{
 				return RedeventEntityTwigSession::getInstance($session);
 			},

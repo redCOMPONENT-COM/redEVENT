@@ -774,7 +774,7 @@ class RedeventHelperCountries
 	 *
 	 * @param   string  $iso  iso code 2 or 3
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function isValid($iso)
 	{

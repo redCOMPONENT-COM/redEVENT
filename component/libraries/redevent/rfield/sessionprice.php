@@ -149,25 +149,27 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	 */
 	public function getPrice()
 	{
-		$options = $this->getOptions();
-
-		if (count($options))
+		if (!$selected = $this->getSelectedOption())
 		{
-			if ($value = $this->getValue())
-			{
-				foreach ($this->options as $option)
-				{
-					if ($option->value == $value)
-					{
-						return $option->price;
-					}
-				}
-
-				throw new RuntimeException('undefined sessionprice value');
-			}
+			return false;
 		}
 
-		return $this->getValue();
+		return $selected->price ? : 0;
+	}
+
+	/**
+	 * Return vat, possibly depending on current field value
+	 *
+	 * @return float
+	 */
+	public function getVat()
+	{
+		if (!$selected = $this->getSelectedOption())
+		{
+			return false;
+		}
+
+		return $selected->vat ? $selected->vat * $selected->price / 100 : 0;
 	}
 
 	/**
@@ -265,7 +267,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	/**
 	 * Try to get a default value from integrations
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function lookupDefaultValue()
 	{
@@ -300,7 +302,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 		{
 			if ($option->value == $this->getValue())
 			{
-				$sku[] = $option->sku ?: 'REGISTRATION' . '_' . $option->value;
+				$sku[] = $option->sku ?: 'REGISTRATION_' . $option->value;
 			}
 		}
 
@@ -315,7 +317,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	/**
 	 * Is required ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isReadonly()
 	{
@@ -327,7 +329,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	/**
 	 * Is required ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isRequired()
 	{

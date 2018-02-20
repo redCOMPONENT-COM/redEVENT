@@ -38,7 +38,7 @@ class RokMiniEvents_SourceLoader implements RTCommon_Loader
 
     /**
      * @param  string $className the class name to look for and load
-     * @return bool True if the class was found and loaded.
+     * @return boolean True if the class was found and loaded.
      */
     public function loadClass($className)
     {

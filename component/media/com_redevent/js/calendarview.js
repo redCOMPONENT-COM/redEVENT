@@ -44,10 +44,10 @@
 				// Make only this one visible
 				allvisible = false;
 				$('.eventCat').addClass('catoff');
-				this.removeClass('catoff');
+                $(this).removeClass('catoff');
 			}
 			else {
-				this.toggleClass('catoff');
+                $(this).toggleClass('catoff');
 			}
 			toggleEvents();
 		});
@@ -62,5 +62,4 @@
 			toggleEvents();
 		});
 	});
-})(jQuery)
-
+})(jQuery);

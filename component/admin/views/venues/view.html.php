@@ -60,7 +60,7 @@ class RedeventViewVenues extends RedeventViewAdmin
 			$this->canEditState = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -102,7 +102,9 @@ class RedeventViewVenues extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('venue.edit');
 			$secondGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('venuescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false);
+			$importExport = RToolbarBuilder::createStandardButton(
+				'venuescsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false
+			);
 			$secondGroup->addButton($importExport);
 		}
 

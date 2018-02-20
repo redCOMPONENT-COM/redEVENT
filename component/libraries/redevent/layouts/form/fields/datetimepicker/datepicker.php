@@ -41,13 +41,16 @@ $script = <<<JS
 			var options = $options;
 			$('#{$id}_v').datepicker(options);
 			
-			try {
-				var current = $.datepicker.parseDate(options.altFormat, $('#{$id}').val());
-				$('#{$id}_v').datepicker('setDate', current);
-			}
-			catch (e) {
-				// do nothing
-			}
+			if ($('#{$id}').val())
+            {
+                try {
+                    var current = $.datepicker.parseDate(options.altFormat, $('#{$id}').val());
+                    $('#{$id}_v').datepicker('setDate', current);
+                }
+                catch (e) {
+                    // do nothing
+                }			        
+            }
 			
 			$('#{$id}_v').change(function(){
 				if ($(this).val() == "") {

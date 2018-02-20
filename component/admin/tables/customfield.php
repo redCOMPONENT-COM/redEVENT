@@ -184,7 +184,7 @@ class RedeventTableCustomfield extends RedeventTable
 	/**
 	 * Create column in object table
 	 *
-	 * @return bool true on success
+	 * @return boolean true on success
 	 *
 	 * @throws Exception
 	 */
@@ -208,7 +208,15 @@ class RedeventTableCustomfield extends RedeventTable
 
 		$query = 'ALTER TABLE ' . $db->qn($table) . ' ADD COLUMN ' . $db->qn('custom' . $this->id) . ' TEXT';
 		$db->setQuery($query);
-		$db->execute();
+
+		if (!$db->execute())
+		{
+			$this->setError(($db->getError()));
+
+			return false;
+		}
+
+		$this->forceRedcoreSchemaUpdate($table);
 
 		return true;
 	}
@@ -219,7 +227,9 @@ class RedeventTableCustomfield extends RedeventTable
 	 * @param   int     $customId    custom field id
 	 * @param   string  $object_key  type of object the custom field belongs to
 	 *
-	 * @return bool
+	 * @return boolean
+	 *
+	 * @throws LogicException
 	 */
 	private function dropColumn($customId, $object_key)
 	{
@@ -234,20 +244,42 @@ class RedeventTableCustomfield extends RedeventTable
 				break;
 
 			default:
-				return;
+				throw new LogicException('unknown custom field object key');
 		}
 
 		$db = $this->_db;
 		$query = ' ALTER TABLE ' . $tablename . ' DROP custom' . $customId;
 		$db->setQuery($query);
 
-		if (!$res = $db->execute())
+		if (!$db->execute())
 		{
 			$this->setError(($db->getError()));
 
 			return false;
 		}
 
+		$this->forceRedcoreSchemaUpdate($tablename);
+
 		return true;
+	}
+
+	/**
+	 * Force redCORE schema update
+	 *
+	 * @param   string  $table  table name
+	 *
+	 * @return void
+	 *
+	 * @todo It would be better to use RTable updateSchema method once it works (1.10.5)
+	 */
+	private function forceRedcoreSchemaUpdate($table)
+	{
+		$db = $this->_db;
+		$query = $db->getQuery(true)
+			->delete('#__redcore_schemas')
+			->where('asset_id = ' . $db->q($table));
+
+		$db->setQuery($query);
+		$db->execute();
 	}
 }

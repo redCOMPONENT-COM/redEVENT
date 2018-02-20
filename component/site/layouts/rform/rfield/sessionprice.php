@@ -33,7 +33,7 @@ $params = JComponentHelper::getParams('com_redevent');
 			<select <?php echo $data->propertiesToString($properties); ?>>
 				<?php foreach ($data->options as $option): ?>
 					<?php $properties = $data->getOptionProperties($option); ?>
-					<option value="<?= $option->value ?>" price="<?= $option->price ?>" currency="<?= $option->currency ?>"
+					<option value="<?= $option->value ?>" price="<?= $option->price ?>" vat="<?= $option->vat ?>" currency="<?= $option->currency ?>"
 						<?= ($option->value == $data->getValue()) ? 'selected="selected"' : '' ?>>
 						<?php echo $option->label; ?>
 					</option>

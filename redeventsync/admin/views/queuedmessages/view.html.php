@@ -42,7 +42,7 @@ class RedeventsyncViewQueuedmessages extends ResyncView
 			$this->canEdit = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

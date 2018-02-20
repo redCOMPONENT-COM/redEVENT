@@ -82,7 +82,7 @@ class RedeventModelCalendar extends RModel
 	public function getData()
 	{
 		// Lets load the content if it doesn't already exist
-		if ( empty($this->data))
+		if (empty($this->data))
 		{
 			$query = $this->_buildQuery();
 			$this->data = $this->_getList($query);
@@ -131,7 +131,7 @@ class RedeventModelCalendar extends RModel
 				}
 
 				// Remove event with a start date from previous months
-				if ( strftime('%m', strtotime($item->dates)) != strftime('%m', $this->date) )
+				if (strftime('%m', strtotime($item->dates)) != strftime('%m', $this->date))
 				{
 					array_shift($this->data);
 				}
@@ -174,9 +174,11 @@ class RedeventModelCalendar extends RModel
 		if ($this->getState('filter.language'))
 		{
 			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)'
+			);
 			$query->where('(cat.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR cat.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR cat.language IS NULL)'
+			);
 		}
 
 		// Get the WHERE clauses for the query
@@ -212,7 +214,8 @@ class RedeventModelCalendar extends RModel
 		$monthend = mktime(0, 0, -1, strftime('%m', $this->date) + 1, 1, strftime('%Y', $this->date));
 
 		$query->where(' ((x.dates BETWEEN (\'' . strftime('%Y-%m-%d', $monthstart) . '\') AND (\'' . strftime('%Y-%m-%d', $monthend) . '\'))'
-				. ' OR (x.enddates BETWEEN (\'' . strftime('%Y-%m-%d', $monthstart) . '\') AND (\'' . strftime('%Y-%m-%d', $monthend) . '\')))');
+			. ' OR (x.enddates BETWEEN (\'' . strftime('%Y-%m-%d', $monthstart) . '\') AND (\'' . strftime('%Y-%m-%d', $monthend) . '\')))'
+		);
 
 		// Check if a category is specified
 		$topcat = $params->get('topcat', '');
@@ -251,6 +254,14 @@ class RedeventModelCalendar extends RModel
 			}
 		}
 
+		// Check if a category is specified
+		$selectedCategories = $params->get('selected_categories');
+
+		if (!empty($selectedCategories))
+		{
+			$query->where('xcat.category_id IN (' . implode(', ', $selectedCategories) . ')');
+		}
+
 		// Acl
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -273,6 +284,7 @@ class RedeventModelCalendar extends RModel
 	 */
 	public function getCategories($eventId = null)
 	{
+		$params = JFactory::getApplication()->getParams('com_redevent');
 		$query = $this->_db->getQuery(true);
 
 		$query->select('c.id, c.name, c.color');
@@ -288,12 +300,20 @@ class RedeventModelCalendar extends RModel
 		}
 
 		// Check if a category is specified
-		$topcat = JFactory::getApplication()->getParams('com_redevent')->get('topcat', 0);
+		$topcat = $params->get('topcat', 0);
 
 		if (is_numeric($topcat) && $topcat)
 		{
 			$query->join('inner', '#__redevent_categories AS top ON top.lft <= c.lft AND top.rgt >= c.rgt');
 			$query->where('top.id = ' . (int) $topcat);
+		}
+
+		// Check if a category is specified
+		$selectedCategories = $params->get('selected_categories');
+
+		if (!empty($selectedCategories))
+		{
+			$query->where('c.id IN (' . implode(', ', $selectedCategories) . ')');
 		}
 
 		$this->_db->setQuery($query);

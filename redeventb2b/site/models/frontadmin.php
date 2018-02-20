@@ -83,11 +83,13 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$this->setState(
 			'filter_organization',
 			$app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',
-				'filter_organization',    $this->getUserDefaultOrganization(), 'int')
+				'filter_organization',    $this->getUserDefaultOrganization(), 'int'
+			)
 		);
 		$this->setState(
 			'filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',
-			'filter_person',    '', 'string')
+				'filter_person',    '', 'string'
+			)
 		);
 
 		$this->setState('filter_bookings_state', $app->input->get('filter_bookings_state', 1));
@@ -95,15 +97,18 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		// Manage sessions filters
 		$this->setState(
 			'filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',
-			'filter_session',    0, 'int')
+				'filter_session',    0, 'int'
+			)
 		);
 		$this->setState(
 			'filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',
-			'filter_from',    '', 'string')
+				'filter_from',    '', 'string'
+			)
 		);
 		$this->setState(
 			'filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',
-			'filter_to',    '', 'string')
+				'filter_to',    '', 'string'
+			)
 		);
 
 		// Sessions
@@ -407,7 +412,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		if ($config->get('b2b_show_open', 1) == 0)
 		{
-			$query->where('x.dates > 0');
+			$query->where('x.dates IS NOT NULL');
 		}
 
 		$db->setQuery($query);
@@ -728,7 +733,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$query->where('r.cancelled = 0');
 
 		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
+		$query->where('(x.dates IS NULL OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
 		$filter_order = $this->getState('booked_order');
 		$filter_order_dir = $this->getState('booked_order_dir');
@@ -769,7 +774,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 		$query->where('r.uid = ' . $this->uid);
 
 		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('x.dates > 0');
+		$query->where('x.dates IS NOT NULL');
 		$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now));
 
 		$filter_order = $this->getState('previous_order');
@@ -877,12 +882,12 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		if ($to = $this->getState('filter_to') && RedeventHelperDate::isValidDate($this->getState('filter_to')))
 		{
-			$query->where('x.dates > 0 AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
+			$query->where('x.dates AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
 		}
 
 		if ($config->get('b2b_show_open', 1) == 0)
 		{
-			$query->where('x.dates > 0');
+			$query->where('x.dates IS NOT NULL');
 		}
 
 		return $query;
@@ -947,7 +952,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		$useracl = RedeventUserAcl::getInstance();
 
-		if (!$useracl->canManageAttendees($res->xref) or 1)
+		if (!$useracl->canManageAttendees($res->xref) || 1)
 		{
 			$this->setError(JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED'));
 
@@ -1067,7 +1072,7 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 	 *
 	 * @param   int  $uid  uid, null for current user
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getUserDefaultOrganization($uid = null)
 	{

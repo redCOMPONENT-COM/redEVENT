@@ -114,9 +114,39 @@ class RedeventModelAttendee extends RModelAdmin
 	}
 
 	/**
+	 * Method to delete one or more records.
+	 *
+	 * @param   array  $pks  An array of record primary keys.
+	 *
+	 * @return  boolean  True if successful, false if an error occurs.
+	 *
+	 * @since __deploy_version__
+	 */
+	public function delete(&$pks)
+	{
+		$sessionIds = $this->getAttendeesSessionIds($pks);
+
+		if (!parent::delete($pks))
+		{
+			return false;
+		}
+
+		$this->updateWaitingLists($sessionIds);
+
+		foreach ($pks as $attendeeId)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAttendeeDeleted', array($attendeeId));
+		}
+
+		return true;
+	}
+
+	/**
 	 * Init data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function initData()
 	{
@@ -297,5 +327,71 @@ class RedeventModelAttendee extends RModelAdmin
 		}
 
 		return $this->pricegroups;
+	}
+
+	/**
+	 * Get attendees sessions ids
+	 *
+	 * @param   mixed  $pks  ids
+	 *
+	 * @return mixed
+	 *
+	 * @since __deploy_version__
+	 */
+	private function getAttendeesSessionIds($pks)
+	{
+		$rows = $this->getRowsByIds($pks);
+
+		return $rows ? array_unique(JArrayHelper::getColumn($rows, 'xref')) : false;
+	}
+
+	/**
+	 * Get rows by ids
+	 *
+	 * @param   int[]  $ids  ids
+	 *
+	 * @return mixed
+	 *
+	 * @since __deploy_version__
+	 */
+	private function getRowsByIds($ids)
+	{
+		if (!$ids)
+		{
+			return false;
+		}
+
+		JArrayHelper::toInteger($ids);
+		$id = RHelperArray::quote($ids);
+		$id = implode(',', $id);
+
+		$query = $this->_db->getQuery(true)
+			->select('*')
+			->from('#__redevent_register')
+			->where('id IN (' . $id . ')');
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+
+		return $res;
+	}
+
+	/**
+	 * Update sessions waiting list
+	 *
+	 * @param   array  $sessionIds  sessions ids
+	 *
+	 * @return void
+	 *
+	 * @since __deploy_version__
+	 */
+	private function updateWaitingLists($sessionIds)
+	{
+		foreach ($sessionIds as $sessionId)
+		{
+			$model = RModel::getAdminInstance('Waitinglist');
+			$model->setXrefId($sessionId);
+			$model->updateWaitingList();
+		}
 	}
 }

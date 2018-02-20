@@ -66,7 +66,7 @@ class RedeventViewCalendar extends RedeventViewFront
 		$this->year = $year;
 		$this->month = $month;
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

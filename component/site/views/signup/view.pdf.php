@@ -29,7 +29,7 @@ class RedeventViewSignup extends RViewSite
 
 		$dispatcher = JDispatcher::getInstance();
 
-		/* Load the event details */
+		// Load the event details
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
 
@@ -57,7 +57,7 @@ class RedeventViewSignup extends RViewSite
 		$pdf->AddPage();
 		$pdf->SetFontSize(10);
 
-		/* This loads the tags replacer */
+		// This loads the tags replacer
 		$tags = new RedeventTags;
 		$tags->setXref(JRequest::getInt('xref'));
 
@@ -85,5 +85,7 @@ class RedeventViewSignup extends RViewSite
 		// Output the file
 		$pdf->Output($course->title . ".pdf", "I");
 		$mainframe->close();
+
+		return true;
 	}
 }

@@ -89,10 +89,10 @@ class RedeventViewAttendees extends RViewSite
 		// Lists
 		$lists = array();
 
-		/* Call the state object */
+		// Call the state object
 		$state = $this->get('state');
 
-		/* Get the values from the state object that were inserted in the model's construct function */
+		// Get the values from the state object that were inserted in the model's construct function
 		$lists['order_Dir'] = $state->get('filter_order_Dir');
 		$lists['order'] = $state->get('filter_order');
 
@@ -111,7 +111,7 @@ class RedeventViewAttendees extends RViewSite
 		$this->assignRef('action', JRoute::_('index.php?option=com_redevent&view=attendees&xref=' . $session->slug));
 		$this->assignRef('lists', $lists);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -192,10 +192,10 @@ class RedeventViewAttendees extends RViewSite
 		// Lists
 		$lists = array();
 
-		/* Call the state object */
+		// Call the state object
 		$state = $this->get('state');
 
-		/* Get the values from the state object that were inserted in the model's construct function */
+		// Get the values from the state object that were inserted in the model's construct function
 		$lists['order_Dir'] = $state->get('filter_order_Dir');
 		$lists['order'] = $state->get('filter_order');
 
@@ -211,7 +211,7 @@ class RedeventViewAttendees extends RViewSite
 		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id=' . $session->slug));
 		$this->assign('lists', $lists);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

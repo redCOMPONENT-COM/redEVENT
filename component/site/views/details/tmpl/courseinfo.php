@@ -53,7 +53,7 @@ function tableOrdering( order, dir, view )
 <?php
 $elsettings = RedeventHelper::config();
 $imagepath = JURI::base() . 'media/com_redevent/images/';
-foreach ($this->eventlinks as $key => $event) {
+foreach ($this->eventlinks as $event) {
 	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug));
 	$venue_url = JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($event->venueslug));
 	?>
@@ -81,7 +81,7 @@ foreach ($this->eventlinks as $key => $event) {
 			$venues_html = '';
 			/* Get the different submission types */
 			$submissiontypes = explode(',', $event->submission_types);
-			foreach ($submissiontypes as $key => $subtype)
+			foreach ($submissiontypes as $subtype)
 			{
 				switch ($subtype) {
 					case 'email':

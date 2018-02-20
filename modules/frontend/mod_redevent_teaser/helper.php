@@ -22,7 +22,7 @@ class ModRedeventTeaserHelper
 	/**
 	 * Method to get the events
 	 *
-	 * @param   array  &$params  parameters
+	 * @param   array  $params  parameters
 	 *
 	 * @return array
 	 */
@@ -36,7 +36,8 @@ class ModRedeventTeaserHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.allday, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state')
+		$query->select('a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.allday, x.times, x.endtimes')
+			->select('l.venue, l.city, l.url , l.locimage, l.state')
 			->select('CONCAT_WS(",", c.image) AS categories_images')
 			->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
 			->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug')
@@ -279,8 +280,8 @@ class ModRedeventTeaserHelper
 	/**
 	 * format date
 	 *
-	 * @param   object  $row      event data
-	 * @param   array   &$params  module params
+	 * @param   object  $row     event data
+	 * @param   array   $params  module params
 	 *
 	 * @return string
 	 */
@@ -375,8 +376,8 @@ class ModRedeventTeaserHelper
 	/**
 	 * Method to format date information
 	 *
-	 * @param   object  $row      event data
-	 * @param   array   &$params  module params
+	 * @param   object  $row     event data
+	 * @param   array   $params  module params
 	 *
 	 * @return string
 	 */
@@ -404,9 +405,9 @@ class ModRedeventTeaserHelper
 	/**
 	 * Method to format time information
 	 *
-	 * @param   string  $date     date
-	 * @param   string  $time     time
-	 * @param   array   &$params  module params
+	 * @param   string  $date    date
+	 * @param   string  $time    time
+	 * @param   array   $params  module params
 	 *
 	 * @return string
 	 */

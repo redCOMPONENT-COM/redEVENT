@@ -46,8 +46,8 @@ class PlgSearchRedevent extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -189,7 +189,8 @@ class PlgSearchRedevent extends JPlugin
 					{
 						if ($this->params->get('include_date', 1) == 2 && $row->times <> '00:00:00')
 						{
-							$results[$key]->title .= ' - ' . strftime($this->params->get('date_format', '%x'), strtotime($row->dates . ' ' . $row->times));
+							$results[$key]->title .= ' - '
+								. strftime($this->params->get('date_format', '%x'), strtotime($row->dates . ' ' . $row->times));
 						}
 						else
 						{
@@ -222,8 +223,6 @@ class PlgSearchRedevent extends JPlugin
 				// Search all or any
 				case 'all':
 				case 'any':
-
-				// Set default
 				default:
 					$words = explode(' ', $text);
 					$wheres = array();
@@ -249,13 +248,13 @@ class PlgSearchRedevent extends JPlugin
 				// Oldest first
 				case 'oldest':
 
-				// Popular first
+					// Popular first
 				case 'popular':
 
-				// Newest first
+					// Newest first
 				case 'newest':
 
-				// Default setting: alphabetic, ascending
+					// Default setting: alphabetic, ascending
 				default:
 					$order = 'c.name ASC';
 			}

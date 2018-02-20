@@ -24,6 +24,8 @@ $search = $this->state->get('filter.search');
 JHtml::_('behavior.modal', 'a.answersmodal');
 
 RHelperAsset::load('redevent-backend.css', 'com_redevent');
+
+JText::script("COM_REDEVENT_REGISTRATION_CANCELMULTIPLE_COMFIRM");
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function (pressbutton)
@@ -44,6 +46,13 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 			if (r == true)    form.submit();
 			else return false;
 		}
+        else if (pressbutton == 'registrations.cancelmultiple')
+        {
+            var r = confirm(Joomla.JText._("COM_REDEVENT_REGISTRATION_CANCELMULTIPLE_COMFIRM"));
+            if (r == true)    form.submit();
+            else return false;
+        }
+
 		form.submit();
 	}
 </script>

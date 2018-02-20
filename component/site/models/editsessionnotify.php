@@ -72,7 +72,8 @@ class RedeventModelEditsessionnotify extends RModel
 			{
 				$mail = RdfHelper::getMailer();
 
-				$state = $session->published ? JText::sprintf('COM_REDEVENT_MAIL_SESSION_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_SESSION_UNPUBLISHED');
+				$state = $session->published ?
+					JText::sprintf('COM_REDEVENT_MAIL_SESSION_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_SESSION_UNPUBLISHED');
 
 				$replaceOptionsExtra = array(
 					'[state]' => $state,

@@ -145,7 +145,9 @@ class ModRedEventSearchHelper
 
 		if ($app->getLanguageFilter())
 		{
-			$query->where('(e.language in (' . $this->db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->db->quote('*') . ') OR e.language IS NULL)');
+			$query->where(
+				'(e.language in (' . $this->db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->db->quote('*') . ') OR e.language IS NULL)'
+			);
 		}
 
 		$db->setQuery($query);

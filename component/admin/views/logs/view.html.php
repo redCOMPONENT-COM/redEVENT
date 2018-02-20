@@ -29,7 +29,7 @@ class RedeventViewLogs extends RedeventViewAdmin
 		$this->items = $this->get('Items');
 		$this->state = $this->get('State');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

@@ -47,6 +47,8 @@ class RedeventViewListfeed extends RViewSite
 			// Add item info into rss array
 			$doc->addItem($item);
 		}
+
+		return true;
 	}
 
 	/**
@@ -80,5 +82,7 @@ class RedeventViewListfeed extends RViewSite
 		}
 
 		$feed->returnRSS(CACHE);
+
+		return true;
 	}
 }

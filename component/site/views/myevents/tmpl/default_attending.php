@@ -108,6 +108,12 @@ $cancelCol = array_reduce(
 					<?php if ($this->params->get('showcat', 1)) : ?>
 						<td headers="el_category" align="left" valign="top">
 							<?php foreach ($row->categories as $k => $cat): ?>
+								<?php
+								if (isset($cat->published) && !$cat->published)
+								{
+									continue;
+								}
+								?>
 								<?php if ($this->params->get('catlinklist', 1) == 1) : ?>
 									<a href="<?php echo JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($cat->slug)); ?>">
 										<?php echo $cat->name ? $this->escape($cat->name) : '-'; ?>

@@ -26,7 +26,7 @@ class RedeventModelUpcomingvenueevents extends RedeventModelBasesessionlist
 		$params = RedeventHelper::config();
 		$db = $this->_db;
 
-		$query = parent::_buildQuery();
+		$query = parent::buildQuery();
 		$query->select('t.submission_types');
 
 		$query->where('x.venueid = ' . JFactory::getApplication()->input->getInt('id'));
@@ -36,7 +36,7 @@ class RedeventModelUpcomingvenueevents extends RedeventModelBasesessionlist
 
 		if ($params->get('show_days_no_date', 0) == 1)
 		{
-			$upcoming_cond .= "       OR x.dates = '0000-00-00' ";
+			$upcoming_cond .= "       OR x.dates IS NULL ";
 		}
 
 		$upcoming_cond .= " ) ";

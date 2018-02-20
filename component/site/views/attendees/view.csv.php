@@ -83,5 +83,7 @@ class RedeventViewAttendees extends RViewSite
 		echo $text;
 
 		JFactory::getApplication()->close();
+
+		return true;
 	}
 }

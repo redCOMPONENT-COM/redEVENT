@@ -64,7 +64,7 @@ class RedeventViewEvents extends RedeventViewAdmin
 			$this->canEditState = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -104,7 +104,9 @@ class RedeventViewEvents extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('event.edit');
 			$firstGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('eventscsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false);
+			$importExport = RToolbarBuilder::createStandardButton(
+				'eventscsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false
+			);
 			$fourthGroup->addButton($importExport);
 		}
 
@@ -125,7 +127,9 @@ class RedeventViewEvents extends RedeventViewAdmin
 			$button = RToolbarBuilder::createStandardButton('events.archive', JText::_('COM_REDEVENT_ARCHIVE'), '', 'icon-archive', true);
 			$thirdGroup->addButton($button);
 
-			$button = RToolbarBuilder::createStandardButton('events.archivepast', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), '', 'icon-archive', true);
+			$button = RToolbarBuilder::createStandardButton(
+				'events.archivepast', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), '', 'icon-archive', true
+			);
 			$thirdGroup->addButton($button);
 		}
 
@@ -153,7 +157,8 @@ class RedeventViewEvents extends RedeventViewAdmin
 	 */
 	public function published($row, $i)
 	{
-		$states = array(1 => array('unpublish', 'JPUBLISHED', 'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED', false, 'ok-sign icon-green', 'ok-sign icon-green'),
+		$states = array(
+			1 => array('unpublish', 'JPUBLISHED', 'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED', false, 'ok-sign icon-green', 'ok-sign icon-green'),
 			0 => array('publish', 'JUNPUBLISHED', 'JLIB_HTML_PUBLISH_ITEM', 'JUNPUBLISHED', false, 'remove icon-red', 'remove icon-red'),
 			-1 => array('unpublish', 'JARCHIVED', 'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED', false, 'hdd', 'hdd'),
 		);

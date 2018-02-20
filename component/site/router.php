@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Build route
  *
- * @param   array  &$query  query parts
+ * @param   array  $query  query parts
  *
  * @return array
  */
@@ -89,7 +89,6 @@ function redeventBuildRoute(&$query)
 		case 'venuecategory':
 		case 'venuesmap':
 		case 'categories':
-		case 'confirmation':
 		case 'upcomingvenueevents':
 		case 'venueevents':
 		case 'categoriesdetailed':

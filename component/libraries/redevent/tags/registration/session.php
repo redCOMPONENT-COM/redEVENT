@@ -144,14 +144,14 @@ class RedeventTagsRegistrationSession
 	{
 		$form = $this->getRedformForm();
 		$multi = $this->getNumberOfSignup();
-		$prices = $this->session->getPricegroups(true);
+		$prices = $this->session->getActivePricegroups(true);
 
 		$options = array('extrafields' => array());
 		$options['sessionId'] = $this->session->id;
 		$options['eventId'] = $this->session->eventid;
 
 		// Multiple pricegroup handling
-		if (count($prices))
+		if ($prices && count($prices))
 		{
 			$selectedPricegroup = $this->getSelectedPriceGroup($prices);
 
@@ -182,8 +182,8 @@ class RedeventTagsRegistrationSession
 		$renderData = array(
 			'form' => $form,
 			'redformHtml' => $this->rfcore->getFormFields(
-					$this->session->getEvent()->getEventtemplate()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
-				),
+				$this->session->getEvent()->getEventtemplate()->redform_id, $this->isReview ? null : $this->submitKey, $multi, $options
+			),
 			'session' => $this->session,
 			'submitKey' => $this->submitKey
 		);
@@ -232,7 +232,7 @@ class RedeventTagsRegistrationSession
 	/**
 	 * Get number of signup to display
 	 *
-	 * @return int
+	 * @return integer
 	 *
 	 * @throws Exception
 	 */
@@ -338,7 +338,7 @@ class RedeventTagsRegistrationSession
 		}
 
 		// Otherwise check if set
-		if (count($sessionPriceGroups) == 1)
+		if ($sessionPriceGroups && count($sessionPriceGroups) == 1)
 		{
 			return current($sessionPriceGroups);
 		}

@@ -37,6 +37,7 @@ abstract class RedeventFactoryCustomfield
 		$instance = null;
 
 		JPluginHelper::importPlugin('redevent');
+		JPluginHelper::importPlugin('redevent_field');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onRedeventGetCustomField', array($classname, &$instance));
 
@@ -75,6 +76,7 @@ abstract class RedeventFactoryCustomfield
 		}
 
 		JPluginHelper::importPlugin('redevent');
+		JPluginHelper::importPlugin('redevent_field');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onRedeventGetCustomFieldTypes', array(&$types));
 

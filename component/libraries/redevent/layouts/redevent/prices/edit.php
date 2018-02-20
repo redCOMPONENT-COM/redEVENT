@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+JText::script('COM_REDEVENT_REMOVE');
 RHelperAsset::load('xref_prices.js');
 RHelperAsset::load('editprices.css');
 

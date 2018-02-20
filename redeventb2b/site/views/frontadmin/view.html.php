@@ -186,7 +186,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED");
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -327,7 +327,9 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 			'tip' => $tip
 		);
 
-		$output = JHtml::link('index.php?option=com_redeventb2b&task=frontadmin.getinfoform&tmpl=component&modal=1&xref=' . $row->xref, $image, $attribs);
+		$output = JHtml::link(
+			'index.php?option=com_redeventb2b&task=frontadmin.getinfoform&tmpl=component&modal=1&xref=' . $row->xref, $image, $attribs
+		);
 
 		return $output;
 	}
@@ -337,7 +339,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 	 *
 	 * @param   object  $row  row
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isFull($row)
 	{

@@ -76,6 +76,7 @@
 			required="true"
             multiple="true"
             size="10"
+			acl_check="true"
 			class="inputbox" />
 
 		<field
@@ -90,7 +91,7 @@
 
 		<field
 			name="locimage"
-			type="rmedia"
+			type="media"
 			label="COM_REDEVENT_CHOOSE_IMAGE"
 			description="COM_REDEVENT_CHOOSE_IMAGE"
 			directory="redevent/categories"

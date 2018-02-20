@@ -67,25 +67,7 @@ if ($this->row->venueid != 0) {
 
   	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
-			<?php
-			$tmp = RedeventHelperDate::formatdate($this->row->dates, $this->row->times);
-
-			if (RedeventHelperDate::isValidTime($this->row->times) && !$this->row->allday)
-			{
-				$tmp .= ' ' . RedeventHelperDate::formattime($this->row->dates, $this->row->times);
-			}
-
-			if (RedeventHelperDate::isValidDate($this->row->enddates) && $this->row->enddates != $this->row->dates)
-			{
-				$tmp .= ' - ' . RedeventHelperDate::formatdate($this->row->enddates, $this->row->endtimes);
-			}
-
-			if (RedeventHelperDate::isValidTime($this->row->endtimes) && !$this->row->allday)
-			{
-				$tmp .= ' ' . RedeventHelperDate::formattime($this->row->dates, $this->row->endtimes);
-			}
-			echo $tmp;
-			?>
+			<?= RedeventHelperDate::formatEventDateTime($this->row) ?>
 		</dd>
   		<?php
   		if ($this->row->venueid != 0) :
@@ -108,11 +90,16 @@ if ($this->row->venueid != 0) {
 		?>
 
 		<dt class="category"><?php echo $n < 2 ? JText::_('COM_REDEVENT_CATEGORY' ) : JText::_('COM_REDEVENT_CATEGORIES' ); ?>:</dt>
-    		<dd class="category">
-    			<?php
+			<dd class="category">
+				<?php
 				$i = 0;
-    			foreach ($this->row->categories as $category) :
-    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
+				foreach ($this->row->categories as $category) :
+					if (isset($category->published) && !$category->published)
+					{
+						continue;
+					}
+
+					echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
 						$i++;
 						if ($i != $n) :
 							echo ',';

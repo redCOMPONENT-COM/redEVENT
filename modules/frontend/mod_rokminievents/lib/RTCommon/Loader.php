@@ -14,7 +14,7 @@ interface RTCommon_Loader {
     /**
      * @abstract
      * @param  string $className the class name to look for and load
-     * @return bool True if the class was found and loaded.
+     * @return boolean True if the class was found and loaded.
      */
     function loadClass($className);
 }

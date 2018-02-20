@@ -42,7 +42,7 @@ class RedeventViewCalendar extends RViewSite
 		$vcal->setProperty('unique_id', 'allevents@' . $app->getCfg('sitename'));
 		$vcal->setConfig("filename", "events.ics");
 
-		foreach ( $rows as $row )
+		foreach ($rows as $row)
 		{
 			RedeventHelper::icalAddEvent($vcal, $row);
 		}
@@ -50,5 +50,7 @@ class RedeventViewCalendar extends RViewSite
 		$vcal->returnCalendar();
 
 		$app->close();
+
+		return true;
 	}
 }

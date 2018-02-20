@@ -52,7 +52,7 @@ class RokMiniEventsSourceRedEventModel extends RedeventModelBasesessionlist {
 	 * @access private
 	 * @return string
 	 */
-	function _buildWhere()
+	function buildWhere()
 	{
 		$user		= JFactory::getUser();
 
