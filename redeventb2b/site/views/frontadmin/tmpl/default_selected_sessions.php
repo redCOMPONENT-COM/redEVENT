@@ -21,14 +21,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<form id="selected_users">
-	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECTED_USERS'); ?></h2>
+<div id="selected_sessions">
+	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECTED_SESSIONS'); ?></h2>
 
-	<div id="select-list" class="nouser">
+	<div id="select-list-sessions" class="noselection">
 		<div class="notice">
-			<div><i class="icon-info-sign"></i> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_NO_PARTICIPANT_SELECTED')?></div>
+			<div><i class="icon-info-sign"></i> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_NO_SESSION_SELECTED')?></div>
 		</div>
 	</div>
-	<input name="xref" type="hidden" id="book-xref" value="" />
-	<button type="button" id="book-course" style="display: none" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_BOOK'); ?></button>
-</form>
+</div>

@@ -57,10 +57,50 @@ class plgRedeventMaerskregistration extends JPlugin
 	public function onAttendeeCreated($rid)
 	{
 		$this->registrationId = $rid;
-		$this->updatePoNumber();
-		$this->updateComments();
+		$attendee = RedeventEntityAttendee::load($rid);
+
+		if ($attendee->origin != 'b2b')
+		{
+			$this->updatePoNumber();
+			$this->updateComments();
+		}
 
 		return true;
+	}
+
+	/**
+	 * Callback for onB2BRegistrationAddExtra
+	 *
+	 * @param   integer  $attendeeId  attendee id
+	 * @param   array    $extraData   extra data from form
+	 *
+	 * @return void
+	 */
+	public function onB2BRegistrationAddExtra($attendeeId, $extraData)
+	{
+		if (!isset($extraData['ponumber']) && !isset($extraData['comments']))
+		{
+			return;
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->update('#__redevent_register');
+
+		if (isset($extraData['ponumber']))
+		{
+			$query->set('ponumber = ' . $db->quote($extraData['ponumber']));
+		}
+
+		if (isset($extraData['comments']))
+		{
+			$query->set('comments = ' . $db->quote($extraData['comments']));
+		}
+
+		$query->where('id = ' . $attendeeId);
+
+		$db->setQuery($query);
+		$db->execute();
 	}
 
 	/**
@@ -308,6 +348,13 @@ class plgRedeventMaerskregistration extends JPlugin
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_BIRTHDAY') .': ' . $attendeeInfo->rm_birthday . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_TITLE') .': ' . $attendeeInfo->title_rank . '</li>';
 		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_NOTE') .': ' . $attendeeInfo->rm_note . '</li>';
+
+		if (strtolower($attendee->get('origin')) == 'b2b')
+		{
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_PONUMBER') . ': ' . $attendee->get('ponumber') . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_COMMENTS') . ': ' . $attendee->get('comments') . '</li>';
+		}
+
 		$body .= '</ul>';
 
 		$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_BOOKER_HEADER') . '</h2>';

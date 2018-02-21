@@ -30,14 +30,19 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 			return $this->displaySearchSessions($tpl);
 		}
 
-		if ($this->getLayout() == 'bookings')
+		if ($this->getLayout() == 'searchbookings')
 		{
-			return $this->displayBookings($tpl);
+			return $this->displaySearchBookings($tpl);
 		}
 
 		if ($this->getLayout() == 'attendees')
 		{
 			return $this->displayAttendees($tpl);
+		}
+
+		if ($this->getLayout() == 'members')
+		{
+			return $this->displayMembers($tpl);
 		}
 
 		if ($this->getLayout() == 'editmember')
@@ -99,6 +104,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 			$document->addStyleSheet($params->get('custom_css'));
 		}
 
+		$document->addScript('media/jui/js/jquery.autocomplete.min.js');
 		RHelperAsset::load('b2b.js');
 
 		// For redmember
@@ -142,25 +148,11 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		$this->order     = $state->get('filter_order');
 		$this->order_Dir = $state->get('filter_order_Dir');
 
-		$this->members_limitstart = $modelAttendees->getState('members_limitstart');
-		$this->members_order = $modelAttendees->getState('members_order');
-		$this->members_order_dir = $modelAttendees->getState('members_order_dir');
-
-		$this->bookings_limitstart = $state->get('bookings_limitstart');
-		$this->bookings_order = $state->get('bookings_order');
-		$this->bookings_order_dir = $state->get('bookings_order_dir');
-		$this->bookings_pagination = $this->get('BookingsPagination');
-
 		$this->useracl = $useracl;
 		$this->params  = $params;
 		$this->state   = $state;
 
-		$this->sessions = $this->get('Sessions');
-
 		$this->organization = $this->get('Organization');
-		$this->bookings   = $this->get('OrganizationBookings');
-
-		$this->pagination = $this->get('SessionsPagination');
 		$this->limitstart = $state->get('limitstart');
 
 		// JS language strings
@@ -215,39 +207,37 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		$this->pagination = $this->get('SessionsPagination');
 		$this->limitstart = $state->get('limitstart');
 
-		$this->bookings_pagination = $this->get('BookingsPagination');
-		$this->bookings_limitstart = $state->get('bookings_limitstart');
-
 		parent::display($tpl);
 	}
 
 	/**
-	 * Creates the bookings View
+	 * Creates the search View
 	 *
 	 * @param   string  $tpl  template to display
 	 *
 	 * @return void
 	 */
-	protected function displayBookings($tpl = null)
+	protected function displaySearchBookingss($tpl = null)
 	{
 		$useracl = RedeventUserAcl::getInstance();
 		$params = JFactory::getApplication()->getParams('com_redevent');
 		$state = $this->get('state');
 
-		$this->bookings_order_dir = $state->get('bookings_order_dir');
-		$this->bookings_order     = $state->get('bookings_order');
-
-		$this->bookings_pagination = $this->get('BookingsPagination');
-		$this->bookings_limitstart = $state->get('bookings_limitstart');
+		$this->order_Dir = $state->get('filter_order_dir');
+		$this->order     = $state->get('filter_order');
 
 		$this->params  = $params;
 		$this->state   = $state;
 
 		$this->useracl = $useracl;
-		$this->bookings = $this->get('Bookings');
+		$this->sessions = $this->get('Bookings');
 		$this->params  = $params;
 
-		$this->organization = $this->get('Organization');
+		$this->pagination = $this->get('SessionsPagination');
+		$this->limitstart = $state->get('limitstart');
+
+		$this->bookings_pagination = $this->get('BookingsPagination');
+		$this->bookings_limitstart = $state->get('bookings_limitstart');
 
 		parent::display($tpl);
 	}
@@ -394,6 +384,25 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 	 * @return void
 	 */
 	protected function displayAttendees($tpl= null)
+	{
+		$model = $this->getModel('FrontadminMembers');
+		$state = $model->getState();
+
+		$this->attendees_order = $state->get('members_order');
+		$this->attendees_order_dir = $state->get('members_order_dir');
+		$this->state = $state;
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * Creates the members View
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
+	protected function displayMembers($tpl= null)
 	{
 		$model = $this->getModel('FrontadminMembers');
 		$state = $model->getState();

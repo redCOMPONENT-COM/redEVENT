@@ -17,24 +17,6 @@ defined('_JEXEC') or die('Restricted access');
 class Redeventb2bControllerFrontadmin extends JControllerLegacy
 {
 	/**
-	 * return bookings html table
-	 *
-	 * @return void
-	 */
-	public function searchbookings()
-	{
-		$app = JFactory::getApplication();
-
-		$this->input->set('view', 'frontadmin');
-		$this->input->set('layout', 'searchbookings');
-
-		$this->display();
-
-		// No debug !
-		$app->close();
-	}
-
-	/**
 	 * return sessions html table
 	 *
 	 * @return void
@@ -228,7 +210,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		$orgId = $app->input->get('org', 0, 'int');
 
-		$att = $model->getMembers($orgId, $app->input->get('filter_person', '', 'string'));
+		$att = $model->getAttendees(0, $orgId, $app->input->get('filter_person', '', 'string'));
 
 		$view = $this->getView('frontadmin', 'html');
 		$view->assignRef('members', $att);
@@ -247,7 +229,9 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	 */
 	public function editmember()
 	{
-		$this->input->set('view', 'editmember');
+		$app = JFactory::getApplication();
+
+		$this->input->set('view', 'frontadmin');
 		$this->input->set('layout', 'editmember');
 
 		$this->display();
@@ -324,10 +308,9 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		$app = JFactory::getApplication();
 
-		$xrefs = $app->input->get('xref', array(), 'array');
-		$regs = $app->input->get('member_id', array(), 'array');
+		$xref = $app->input->get('xref', 0, 'int');
+		$regs = $app->input->get('reg', array(), 'array');
 		$orgId = $app->input->get('org', 0, 'int');
-		$extraData = $app->input->get('extra', array(), 'array');
 		JArrayHelper::toInteger($regs);
 
 		$resp = new stdclass;
@@ -336,67 +319,57 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		$acl = RedeventUserAcl::getInstance();
 
-		foreach ($xrefs as $xref)
+		if (!$acl->canManageAttendees($xref))
 		{
-			if (!$acl->canManageAttendees($xref))
-			{
-				$resp->status = 0;
-				$resp->error = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
-			}
-			else
-			{
-				$added = 0;
+			$resp->status = 0;
+			$resp->error = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
+		}
+		else
+		{
+			$added = 0;
 
-				foreach ($regs as $i => $user_id)
+			foreach ($regs as $user_id)
+			{
+				try
 				{
-					try
+					$model = $this->getModel('Frontadminregistration', 'Redeventb2bModel');
+					$attendee = $model->book($user_id, $xref, $orgId);
+					$regresp = new stdclass;
+
+					if ($attendee)
 					{
-						$extra = array();
-
-						foreach ($extraData as $key => $data)
-						{
-							$extra[$key] = $data[$i];
-						}
-
-						$model = $this->getModel('Frontadminregistration', 'Redeventb2bModel');
-						$attendee = $model->book($user_id, $xref, $orgId, $extra);
-						$regresp = new stdclass;
-
-						if ($attendee)
-						{
-							$regresp->status = 1;
-							$regresp->details = $attendee;
-							$resp->submit_key = $attendee->submit_key;
-							$added++;
-
-							JPluginHelper::importPlugin('redevent');
-							$dispatcher = JDispatcher::getInstance();
-							$dispatcher->trigger('onAttendeeCreated', array($attendee->id));
-						}
-						else
-						{
-							$resp->status = 0;
-							$regresp->status = 0;
-							$regresp->error = $model->getError();
-						}
-
-						$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
-						$resp->regs[] = $regresp;
-					}
-					catch (Redeventb2bExceptionNotice $e)
-					{
-						$resp->status = 1;
 						$regresp->status = 1;
-						$regresp->error = $e->getMessage();
-						$resp->regs[] = $regresp;
+						$regresp->details = $attendee;
+						$resp->submit_key = $attendee->submit_key;
+						$added++;
+
+						JPluginHelper::importPlugin('redevent');
+						$dispatcher = JDispatcher::getInstance();
+						$dispatcher->trigger('onAttendeeCreated', array($attendee->id));
 					}
-					catch (Exception $e)
+					else
 					{
 						$resp->status = 0;
 						$regresp->status = 0;
-						$regresp->error = $e->getMessage();
-						$resp->regs[] = $regresp;
+						$regresp->error = $model->getError();
 					}
+
+					$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
+					$resp->regs[] = $regresp;
+				}
+				catch (Redeventb2bExceptionNotice $e)
+				{
+					$resp->status = 1;
+					$regresp->status = 1;
+					$regresp->error = $e->getMessage();
+					$resp->regs[] = $regresp;
+				}
+				catch (Exception $e)
+				{
+					$resp->status = 0;
+					$regresp->status = 0;
+					$regresp->error = $e->getMessage();
+					$resp->regs[] = $regresp;
 				}
 			}
 		}
@@ -615,198 +588,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 			// Check the data.
 			if (!empty($res))
 			{
-				$return = array();
-
-				foreach ($res as $member)
-				{
-					$return[] = $member->name;
-				}
-
-				$response = array('suggestions' => $return);
+				$response = array('suggestions' => $res);
 			}
 		}
-
-		// Use the correct json mime-type
-		header('Content-Type: application/json');
 
 		// Send the response.
-		echo json_encode($response);
-		JFactory::getApplication()->close();
-	}
-
-	/**
-	 * display session info form
-	 *
-	 * @return void
-	 */
-	public function getinfoform()
-	{
-		$app = JFactory::getApplication();
-		$app->input->set('tmpl', 'component');
-
-		$this->viewName  = 'frontadmin';
-		$this->modelName = 'frontadmin';
-		$this->layout    = 'infoform';
-
-		$this->display();
-	}
-
-	/**
-	 * Submit session info form
-	 *
-	 * @return void
-	 */
-	public function submitinfoform()
-	{
-		$app = JFactory::getApplication();
-
-		$xref = $app->input->getInt('xref');
-		$question = $app->input->getString('question');
-		$user = JFactory::getUser();
-
-		$model = $this->getModel('frontadmininfo');
-
-		$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoformfinal';
-		$msgType = '';
-
-		try
-		{
-			$model->sendNotification($xref, $user, $question);
-			$msg = JText::_('COM_REDEVENT_FRONTEND_ADMIN_SESSION_INFO_FORM_SENT');
-		}
-		catch (Exception $e)
-		{
-			$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoform&xref=' . $xref;
-			$msg = $e->getMessage();
-			$msgType = 'error';
-		}
-
-		$this->setRedirect($redirect, $msg, $msgType);
-	}
-
-	/**
-	 * ajax update user
-	 *
-	 * @return void
-	 */
-	public function update_user()
-	{
-		$app = JFactory::getApplication();
-
-		$dataForm = $app->input->get('jform', array(), 'array');
-		$dataCustom = $app->input->get('cform', array(), 'array');
-
-		$rmId = isset($dataForm['id']) && $dataForm['id'] ? (int) $dataForm['id'] : 0;
-
-		$rmUser = RedmemberApi::getUserByRmid($rmId);
-
-		$resp = new stdClass;
-
-		try
-		{
-			if (!$orgId = $app->input->getInt('orgId'))
-			{
-				RedeventHelperLog::simpleLog('Create user B2b missing organization');
-				throw new InvalidArgumentException('Missing organization id');
-			}
-
-			$currentOrgs = $rmUser->getOrganizations();
-
-			if (!isset($currentOrgs[$orgId]))
-			{
-				$currentOrgs[$orgId] = array('organization_id' => $orgId, 'level' => 1);
-			}
-
-			$rmUser->setOrganizations($currentOrgs);
-
-			// Remove type from posted fields
-			$customDataClean = array();
-
-			foreach ($dataCustom as $type => $fieldValues)
-			{
-				foreach ($fieldValues as $fieldcode => $value)
-				{
-					$customDataClean[$fieldcode] = $value;
-				}
-			}
-
-			$data = array_merge($dataForm, $customDataClean);
-
-			if (!$rmUser->user_status)
-			{
-				$config = JComponentHelper::getParams('com_redeventb2b');
-				$data['user_status'] = $config->get('redmember_user_status');
-			}
-
-			JPluginHelper::importPlugin('redevent');
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onRemapB2bUserData', array(&$data));
-
-			$rmUser->save($data);
-
-			$resp->status = 1;
-		}
-		catch (Exception $e)
-		{
-			$resp->status = 0;
-			$resp->error  = $e->getMessage();
-		}
-
-		if ($this->input->get('type') == 'json')
-		{
-			echo json_encode($resp);
-			$app->close();
-		}
-		else
-		{
-			$app->input->set('orgId', $orgId);
-
-			if ($resp->status)
-			{
-				$app->input->set('uid', $rmUser->joomla_user_id);
-				$app->input->set('uname', $rmUser->name);
-
-				if ($app->input->get('modal'))
-				{
-					$this->closemodalmember();
-				}
-				else
-				{
-					$app->enqueueMessage(Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED'));
-					$this->editmember();
-				}
-			}
-			else
-			{
-				$app->enqueueMessage($resp->error, 'error');
-				$this->editmember();
-			}
-		}
-	}
-
-	/**
-	 * Typical view method for MVC based architecture
-	 *
-	 * This function is provide as a default implementation, in most cases
-	 * you will need to override it in your own controllers.
-	 *
-	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return  JController  A JController object to support chaining.
-	 */
-	public function display($cachable = false, $urlparams = array())
-	{
-		if (isset($this->viewName))
-		{
-			$this->input->set('view', $this->viewName);
-		}
-
-		if (isset($this->layout))
-		{
-			$this->input->set('layout', $this->layout);
-		}
-
-		return parent::display($cachable, $urlparams);
+		echo new JResponseJson($response);
 	}
 }

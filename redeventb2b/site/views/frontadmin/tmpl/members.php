@@ -21,55 +21,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<table id="attendees-tbl" class="table">
+<table id="members-tbl" class="table">
 	<thead>
 	<tr>
 		<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_NAME'), 'u.name', $this->members_order_dir, $this->members_order); ?></th>
 		<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'), 'u.email', $this->members_order_dir, $this->members_order); ?></th>
-		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_PO_NUMBER'); ?></th>
-		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?></th>
 		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
-	<?php if ($this->attendees): ?>
-		<?php foreach($this->attendees as $a): ?>
-			<tr<?php echo ($a->registered ? ' class="registered"' : ''); ?> rid="<?php echo $a->registered ? $a->registered->id : ''; ?>" uid="<?php echo $a->id; ?>">
-				<td class="attendee-name"><?php echo $a->name; ?></td>
+	<?php if ($this->members): ?>
+		<?php foreach($this->members as $a): ?>
+			<tr uid="<?php echo $a->id; ?>">
+				<td class="member-name"><?php echo $a->name; ?></td>
 				<td><?php echo $a->email; ?></td>
-
-				<?php if ($a->registered): ?>
-					<td>
-						<input name="ponumber[]" class="input-small ponumber" type="text" maxlength="10" value="<?php echo $a->registered->ponumber; ?>" />
-					</td>
-					<td>
-					<textarea name="comments[]" class="input-medium comments hasTip"
-					          title="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?>"
-					          tip="<?php echo nl2br($a->registered->comments); ?>"
-					          rows="1" cols="30"><?php echo trim($a->registered->comments); ?></textarea>
-					</td>
-				<?php else: ?>
-					<td></td>
-					<td></td>
-				<?php endif; ?>
-
 				<td>
-					<?php
-					if ($a->registered)
-					{
-						if ($a->pastCancellationPeriod)
-						{
-							$cancelTip = JText::sprintf(
-								'COM_REDEVENT_FRONTEND_ADMIN_PAST_CANCEL_REGISTRATION_PERIOD_D_TIP',
-								$a->cancellationPeriod
-							);
-						}
-						else
-						{
-							$cancelTip = JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM');
-						}
-					}
-					?>
 					<?php echo JHTML::image('com_redevent/b2b-edit.png', 'edit'
 							, array('class' => 'hasTip editmember'
 							, 'title' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT')
@@ -85,3 +51,15 @@ defined('_JEXEC') or die('Restricted access');
 	<?php endif; ?>
 	</tbody>
 </table>
+
+<!--pagination-->
+<div class="pagination">
+	<div class="pagination-label"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?></div>
+	<div class="styled-select-admin">
+		<?php echo $this->getLimitBox(); ?>
+	</div>
+	<?php if (($this->members_pagination->get('pages.total') > 1)) : ?>
+		<?php echo $this->members_pagination->getPagesLinks(); ?>
+	<?php  endif; ?>
+</div>
+<!-- pagination end -->

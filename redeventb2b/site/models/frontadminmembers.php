@@ -48,8 +48,8 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 		$this->setState('limit', $limit);
 
 		// Members list
-		$this->setState('members_order',     JRequest::getCmd('members_order', 'u.name'));
-		$this->setState('members_order_dir', strtoupper(JRequest::getCmd('members_order_dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+		$this->setState('members_order',     JRequest::getCmd('members_order') ?: 'u.name');
+		$this->setState('members_order_dir', (strtoupper(JRequest::getCmd('members_order_dir')) ?: 'ASC') == 'DESC' ? 'DESC' : 'ASC');
 
 		$members_limitstart = JRequest::getVar('members_limitstart', 0, '', 'int');
 
@@ -74,7 +74,7 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 		$this->filter_user = $filter_user;
 
 		// Get organization members
-		$this->getMembers();
+		$this->getMembersList();
 
 		// Return with bookings
 		$all = $this->getBooked();
@@ -85,6 +85,27 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 		}
 
 		return false;
+	}
+
+	/**
+	 * return organization members
+	 *
+	 * @param   int     $organization  organization id
+	 * @param   string  $filter_user   filter user
+	 *
+	 * @return array
+	 */
+	public function getMembers($organization, $filter_user)
+	{
+		$this->organizationId = (int) $organization;
+		$this->filter_user = $filter_user;
+
+		// Get organization members
+		$all = $this->getMembersList();
+
+		return $all
+			? array_slice($all, $this->getState('members_limitstart'), $this->getState('limit'))
+			: array();
 	}
 
 	/**
@@ -112,7 +133,7 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 	 */
 	public function getTotal()
 	{
-		return count($this->getMembers());
+		return count($this->getMembersList());
 	}
 
 	/**
@@ -120,7 +141,7 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 	 *
 	 * @return array
 	 */
-	protected function getMembers()
+	protected function getMembersList()
 	{
 		// Get organization members
 		$db      = JFactory::getDbo();
@@ -189,7 +210,6 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 		$regs = $db->loadObjectList('uid');
 
 		$booked = array();
-		$notBooked = array();
 
 		foreach ($this->members as $member)
 		{
@@ -200,16 +220,9 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 				$member->cancellationPeriod = $cancellationPeriod;
 				$booked[] = $member;
 			}
-			else
-			{
-				$member->registered = null;
-				$notBooked[] = $member;
-			}
 		}
 
-		$result = array_merge($booked, $notBooked);
-
-		return $result;
+		return $booked;
 	}
 
 	/**

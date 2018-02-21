@@ -24,15 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
 ?>
 
-<div id="employees-header" class="panel-heading">
-    <h2 class="panel-title">
-        <a data-toggle="collapse" data-parent="#main-results" href="#employees-result-panel">
-            <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?>
-        </a>
-    </h2>
-</div>
-
-<div id="employees-result-panel" class="panel-collapse collapse in">
+<div id="members-result-panel" class="panel-collapse collapse in">
 	<div id="search-member">
 		<input name="filter_person" id="filter_person" type="text"
 		       class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
@@ -41,7 +33,7 @@ JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, fals
 	</div>
 	<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
 
-	<div id="employees-result"></div>
+	<div id="members-result"></div>
 </div>
 
 <script type="application/javascript">

@@ -20,43 +20,52 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+JText::script('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 ?>
+<script>
+    window.onbeforeunload = function(e) {
+        return Joomla.JText._('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
+    };
+</script>
+
+<h1 id="organisation-title"></h1>
+
 <div id="main-content" class="row-fluid">
-	<div id="main-results" class="span9 panel-group">
+	<ul class="nav nav-tabs">
+		<li><a href="#employees" data-toggle="tab">Employees</a></li>
+		<li><a href="#bookings" data-toggle="tab">Bookings</a></li>
+		<li><a href="#newbooking" data-toggle="tab">New Booking</a></li>
+	</ul>
 
-		<div id="main-attendees" class="panel panel-default">
-			<?php echo $this->loadTemplate('attendees'); ?>
+	<div class="tab-content">
+		<div class="tab-pane active" id="employees">
+			<div id="main-members" class="panel panel-default">
+				<?php echo $this->loadTemplate('members'); ?>
+			</div>
 		</div>
+		<div class="tab-pane" id="bookings">
+			<div class="span10">
+				<div id="main-bookings" class="panel panel-default">
+				</div>
+			</div>
 
-		<div id="main-bookings" class="panel panel-default">
-			<?php echo $this->loadTemplate('bookings_search_results'); ?>
+			<div id="main-bookings-search" class="span2">
+				<?php echo $this->loadTemplate('bookings_search'); ?>
+			</div>
 		</div>
+		<div class="tab-pane" id="newbooking">
+			<div id="main-right" class="span10">
+				<div id="selected-members" class="panel panel-default">
+					<?php echo $this->loadTemplate('selected_members'); ?>
+				</div>
 
-		<div id="main-course-results" class="panel panel-default">
-			<?php echo $this->loadTemplate('search_results'); ?>
-		</div>
-	</div>
-
-	<div id="main-right" class="span3">
-		<?php echo $this->loadTemplate('course_search'); ?>
-
-		<?php echo $this->loadTemplate('selected_users'); ?>
-
-		<hr/>
-		<div>
-		<?php if ($this->useracl->canAddEvent()): ?>
-			<?php echo JHtml::link(RedeventHelperRoute::getEditEventRoute().'&tmpl=component',
-				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_EVENT'),
-				array('class' => 'btn xrefmodal')); ?>
-		<?php endif; ?>
-		</div>
-
-		<div>
-		<?php if ($this->useracl->canAddSession()): ?>
-			<?php echo JHtml::link(RedeventHelperRoute::getAddSessionTaskRoute().'&tmpl=component',
-				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_SESSION'),
-				array('class' => 'btn xrefmodal')); ?>
-		<?php endif; ?>
+				<div id="main-course-results" class="panel panel-default">
+				</div>
+			</div>
+			<div id="main-right" class="span2">
+				<?php echo $this->loadTemplate('course_search'); ?>
+			</div>
 		</div>
 	</div>
 </div>
