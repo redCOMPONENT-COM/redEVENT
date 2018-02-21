@@ -49,15 +49,6 @@ JFactory::getDocument()->addScriptDeclaration($script);
 			<div class="styled-select-admin">
 				<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
 			</div>
-
-			<input type="hidden" id="bookings_order" name="bookings_order" value="<?php echo $this->bookings_order; ?>"/>
-			<input type="hidden" id="bookings_order_dir" name="bookings_order_dir" value="<?php echo $this->bookings_order_dir; ?>"/>
-			<input type="hidden" id="bookings_limitstart" name="bookings_limitstart" value="<?php echo $this->bookings_limitstart; ?>"/>
-
-			<input type="hidden" id="members_order" name="members_order" value="<?php echo $this->members_order; ?>"/>
-			<input type="hidden" id="members_order_dir" name="members_order_dir" value="<?php echo $this->members_order_dir; ?>"/>
-			<input type="hidden" id="members_limitstart" name="members_limitstart" value="<?php echo $this->members_limitstart; ?>"/>
-
 			<input type="hidden" name="limit" value="<?php echo $this->state->get('limit'); ?>"/>
 		</form>
 	</li>

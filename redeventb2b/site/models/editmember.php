@@ -39,6 +39,7 @@ class Redeventb2bModelEditmember extends RedeventModelBasesessionlist
 		$this->setState('booked_order',     JRequest::getCmd('booked_order', 'x.dates'));
 		$this->setState('booked_order_dir', strtoupper(JRequest::getCmd('booked_order_dir', 'DESC')) == 'DESC' ? 'DESC' : 'ASC');
 
+		$limit = $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('b2b_sessions_display_num', 15), 'int');
 		$booked_limitstart = JRequest::getVar('booked_limitstart', 0, '', 'int');
 
 		// In case limit has been changed, adjust it

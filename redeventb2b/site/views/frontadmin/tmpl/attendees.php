@@ -24,8 +24,8 @@ defined('_JEXEC') or die('Restricted access');
 <table id="attendees-tbl" class="table">
 	<thead>
 	<tr>
-		<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_NAME'), 'u.name', $this->members_order_dir, $this->members_order); ?></th>
-		<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'), 'u.email', $this->members_order_dir, $this->members_order); ?></th>
+		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_NAME'); ?></th>
+		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'); ?></th>
 		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_PO_NUMBER'); ?></th>
 		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?></th>
 		<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER'); ?></th>
