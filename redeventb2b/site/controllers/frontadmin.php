@@ -742,6 +742,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onRemapB2bUserData', array(&$data));
 
+			if (!$rmId)
+			{
+				$this->checkUserExists($data);
+			}
+
 			$rmUser->save($data);
 
 			$resp->status = 1;
@@ -808,5 +813,28 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		}
 
 		return parent::display($cachable, $urlparams);
+	}
+
+	/**
+	 * Check if user already exists
+	 *
+	 * @param   array  $data  form data
+	 *
+	 * @return void
+	 *
+	 * @throws \InvalidArgumentException
+	 *
+	 * @since __deploy_version__
+	 */
+	private function checkUserExists($data)
+	{
+		$userId = JUserHelper::getUserId($data['email']);
+
+		if ($userId)
+		{
+			throw new \InvalidArgumentException(
+				JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_ALREADY_EXISTS')
+			);
+		}
 	}
 }
