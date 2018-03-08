@@ -38,12 +38,17 @@ var redb2b = (function() {
 
 		var organisationId;
 
+		var itemId;
+
 		/**
 		 * init events
 		 */
 		var init = function () {
 
 			SqueezeBox.initialize();
+
+			// Get Itemid from external
+			itemId = b2bItemid;
 
 			/**
 			 * update sessions options when selecting event
@@ -598,7 +603,7 @@ var redb2b = (function() {
 			var sessionId = this.get('xref');
 
 			var req = new Request.HTML({
-				url: 'index.php?option=com_redeventb2b&task=frontadmin.getAttendees&tmpl=component',
+				url: 'index.php?option=com_redeventb2b&task=frontadmin.getAttendees&tmpl=component&Itemid=' + itemId,
 				data: {'org': organisationId, 'xref': sessionId},
 				onRequest: function () {
 					// sessionRow.set('spinner').spin();
@@ -683,7 +688,7 @@ var redb2b = (function() {
 		 */
 		var getSessions = function () {
 			var req = new Request({
-				url: 'index.php?option=com_redeventb2b&task=frontadmin.searchsessions&tmpl=component',
+				url: 'index.php?option=com_redeventb2b&task=frontadmin.searchsessions&tmpl=component&Itemid=' + itemId,
 				data: document.id('course-search-form'),
 				onRequest: function () {
 					document.id('main-course-results').set('spinner').spin();
@@ -781,7 +786,7 @@ var redb2b = (function() {
 
 		var searchBookings = function () {
 			req = new Request({
-				url: 'index.php?option=com_redeventb2b&view=bookedsessions&orgId=' + organisationId,
+				url: 'index.php?option=com_redeventb2b&view=bookedsessions&orgId=' + organisationId + '&Itemid=' + itemId,
 				data: document.id('bookings-search-form'),
 				method: 'post',
 				onSuccess: function (responseText) {
@@ -869,7 +874,7 @@ var redb2b = (function() {
 		var getMembersList = function () {
 			if (organisationId > 0) {
 				var req = new Request.HTML({
-					url: 'index.php?option=com_redeventb2b&task=frontadmin.getmembers&tmpl=component',
+					url: 'index.php?option=com_redeventb2b&task=frontadmin.getmembers&tmpl=component&Itemid=' + itemId,
 					data: getAllData(),
 					onRequest: function () {
 						document.id('members-result').set('spinner').spin();
@@ -930,7 +935,7 @@ var redb2b = (function() {
 			}
 
 			var dummylink = new Element('a', {
-				href: "index.php?option=com_redeventb2b&task=frontadmin.editmember&tmpl=component&modal=1&orgId=" + orgId
+				href: "index.php?option=com_redeventb2b&task=frontadmin.editmember&tmpl=component&modal=1&orgId=" + orgId + '&Itemid=' + itemId
 			});
 			SqueezeBox.open(dummylink, {handler: 'iframe', size: {x: 800, y: 400}, onClose: getMembersList});
 		};
@@ -943,7 +948,7 @@ var redb2b = (function() {
 				return;
 			}
 			req = new Request({
-				url: 'index.php?option=com_redeventb2b&task=frontadmin.editmember&tmpl=component',
+				url: 'index.php?option=com_redeventb2b&task=frontadmin.editmember&tmpl=component&Itemid=' + itemId,
 				data: {'uid': id, 'orgId': orgId},
 				method: 'post',
 				onSuccess: function (responseText) {
@@ -986,7 +991,7 @@ var redb2b = (function() {
 
 		var updateFormList = function (form) {
 			var req = new Request.HTML({
-				url: 'index.php?option=com_redeventb2b',
+				url: 'index.php?option=com_redeventb2b&Itemid=' + itemId,
 				data: form,
 				onRequest: function () {
 					form.set('spinner').spin();

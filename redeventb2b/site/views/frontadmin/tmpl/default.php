@@ -43,6 +43,7 @@ JS;
 	JFactory::getDocument()->addScriptDeclaration($script);
 }
 
+JFactory::getDocument()->addScriptDeclaration('var b2bItemid = "' . $params->get('menu_item', JFactory::getApplication()->input->getInt('Itemid')) .  '"');
 RHelperAsset::load('lib/bootstrap/css/boostrap.min.css', 'redcore');
 
 JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js', false, false, false, false, true);
