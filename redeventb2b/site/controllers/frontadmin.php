@@ -663,10 +663,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		$xref = $app->input->getInt('xref');
 		$question = $app->input->getString('question');
 		$user = JFactory::getUser();
+		$itemId = $this->input->getInt('Itemid') ? '&Itemid=' . $this->input->getInt('Itemid') : '';
 
 		$model = $this->getModel('frontadmininfo');
 
-		$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoformfinal';
+		$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoformfinal' . $itemId;
 		$msgType = '';
 
 		try
@@ -676,7 +677,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		}
 		catch (Exception $e)
 		{
-			$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoform&xref=' . $xref;
+			$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoform&xref=' . $xref . $itemId;
 			$msg = $e->getMessage();
 			$msgType = 'error';
 		}

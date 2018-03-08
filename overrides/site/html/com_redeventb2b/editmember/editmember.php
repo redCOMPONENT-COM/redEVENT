@@ -46,6 +46,10 @@ $fieldsOrdering[] = 'rm_mobile';
 $fieldsOrdering[] = 'rm_certificate_email';
 $fieldsOrdering[] = 'rm_invoice_email';
 $fieldsOrdering[] = 'rm_invoice_contact';
+
+$itemId = Redeventb2bHelperRoute::getItemId();
+$itemId = $itemId ? '&Itemid=' . $itemId : '';
+$action = JRoute::_('index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component' . $itemId);
 ?>
 <?php if ($this->modal): ?>
 	<script type="text/javascript">
@@ -69,7 +73,7 @@ $fieldsOrdering[] = 'rm_invoice_contact';
 		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_CREATE_MEMBER'); ?></h2>
 	<?php endif; ?>
 
-	<form class="form-horizontal form-validate" id="member-update" method="post" action="index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component" enctype="multipart/form-data">
+	<form class="form-horizontal form-validate" id="member-update" method="post" action="<?= $action ?>" enctype="multipart/form-data">
 
 		<div id="employee-submit">
 		<?php if (!$this->modal): ?>

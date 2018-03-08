@@ -43,6 +43,11 @@ class Redeventb2bHelperRoute
 		return self::buildUrl($parts);
 	}
 
+	public static function getItemId()
+	{
+		return JFactory::getApplication()->input->getInt('Itemid', JComponentHelper::getParams('com_redeventb2b')->get('default_itemid'));
+	}
+
 	/**
 	 * build url from parts
 	 *
