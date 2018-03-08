@@ -766,4 +766,26 @@ class Redeventb2bModelFrontadmin extends RedeventModelBasesessionlist
 
 		return false;
 	}
+
+	/**
+	 * Check if an user exists
+	 *
+	 * @param   string  $email  email
+	 *
+	 * @return boolean
+	 *
+	 * @since __deploy_version__
+	 */
+	public function checkUserExists($email)
+	{
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('id')
+			->from('#__users')
+			->where('(email = ' . $db->q($email) . ' OR username = ' . $db->q($email) . ')');
+
+		$db->setQuery($query);
+
+		return $db->loadResult() ? true : false;
+	}
 }

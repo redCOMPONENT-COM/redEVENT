@@ -829,9 +829,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	 */
 	private function checkUserExists($data)
 	{
-		$userId = JUserHelper::getUserId($data['email']);
-
-		if ($userId)
+		if ($this->getModel('Frontadmin')->checkUserExists($data['email']))
 		{
 			throw new \InvalidArgumentException(
 				JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_ALREADY_EXISTS')
