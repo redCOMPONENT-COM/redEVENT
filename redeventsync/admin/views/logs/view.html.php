@@ -48,7 +48,7 @@ class RedeventsyncViewLogs extends ResyncView
 	 *
 	 * @param   string  $tpl  The template name
 	 *
-	 * @return  void
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{
@@ -60,7 +60,7 @@ class RedeventsyncViewLogs extends ResyncView
 		$this->filterForm = $model->getForm();
 		$this->activeFilters = $model->getActiveFilters();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -86,7 +86,9 @@ class RedeventsyncViewLogs extends ResyncView
 
 		if ($user->authorise('core.manage', 'com_redeventsync'))
 		{
-			$firstGroup->addButton(RToolbarBuilder::createStandardButton('logs.archiveold', 'COM_REDEVENTSYNC_LOGS_ARCHIVE_OLD', '', 'icon-archive', false));
+			$firstGroup->addButton(
+				RToolbarBuilder::createStandardButton('logs.archiveold', 'COM_REDEVENTSYNC_LOGS_ARCHIVE_OLD', '', 'icon-archive', false)
+			);
 		}
 
 		$toolbar = new RToolbar;

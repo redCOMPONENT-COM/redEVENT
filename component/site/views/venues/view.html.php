@@ -58,13 +58,13 @@ class RedeventViewVenues extends RedeventViewFront
 		$this->assignRef('limit', $limit);
 		$this->assignRef('total', $total);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
 	 * Get feed link
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFeedLink()
 	{

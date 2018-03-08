@@ -44,7 +44,7 @@ class RedeventsyncViewQueuedmessage extends ResyncViewAdmin
 		}
 
 		// Display the template
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

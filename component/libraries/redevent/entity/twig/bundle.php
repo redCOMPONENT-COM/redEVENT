@@ -81,7 +81,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -102,6 +102,8 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		{
 			return call_user_func_array(array($this->entity, 'get' . ucfirst($name)), $arguments);
 		}
+
+		return false;
 	}
 
 	/**
@@ -117,7 +119,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($bundleEvent)
+			function ($bundleEvent)
 			{
 				return \RedeventEntityTwigEvent::getInstance($bundleEvent->getEvent());
 			},
@@ -153,7 +155,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($session)
+			function ($session)
 			{
 				return \RedeventEntityTwigSession::getInstance($session);
 			},
@@ -184,7 +186,7 @@ final class RedeventEntityTwigBundle extends AbstractTwigEntity
 		}
 
 		return array_map(
-			function($venue)
+			function ($venue)
 			{
 				return \RedeventEntityTwigVenue::getInstance($venue);
 			},

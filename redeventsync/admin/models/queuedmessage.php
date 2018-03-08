@@ -22,7 +22,7 @@ class RedeventsyncModelQueuedmessage extends RModelAdmin
 	 *
 	 * @param   mixed  $ids  id or array of ids of items to be processed
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @throws Exception
 	 */

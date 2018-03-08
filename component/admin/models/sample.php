@@ -18,7 +18,7 @@ class RedeventModelSample extends RModel
 	/**
 	 * creates sample data for redevent
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function create()
 	{
@@ -34,7 +34,7 @@ class RedeventModelSample extends RModel
 	/**
 	 * return a category id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function getCategory()
 	{
@@ -84,7 +84,7 @@ class RedeventModelSample extends RModel
 	/**
 	 * return a venue id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function getvenue()
 	{
@@ -166,7 +166,7 @@ class RedeventModelSample extends RModel
 	/**
 	 * creates a sample template
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function createTemplate()
 	{

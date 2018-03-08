@@ -237,9 +237,11 @@ class RedeventModelVenues extends RModel
 		if ($this->getState('filter.language'))
 		{
 			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR a.language IS NULL)'
+			);
 			$query->where('(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag())
-				. ',' . $this->_db->quote('*') . ') OR v.language IS NULL)');
+				. ',' . $this->_db->quote('*') . ') OR v.language IS NULL)'
+			);
 		}
 
 		return $query;

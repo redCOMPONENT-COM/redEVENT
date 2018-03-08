@@ -72,6 +72,8 @@ class RedeventRouteDetails
 		{
 			return $item;
 		}
+
+		return false;
 	}
 
 	/**

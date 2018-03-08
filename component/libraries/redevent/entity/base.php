@@ -144,6 +144,8 @@ abstract class RedeventEntityBase
 
 			return $this->id;
 		}
+
+		return false;
 	}
 
 	/**

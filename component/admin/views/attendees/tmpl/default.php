@@ -26,6 +26,8 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 
 JHtml::_('behavior.modal');
 RHelperAsset::load('backend/attendeesmove.js');
+
+JText::script("COM_REDEVENT_REGISTRATION_CANCELMULTIPLE_COMFIRM");
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function (pressbutton)
@@ -53,6 +55,12 @@ RHelperAsset::load('backend/attendeesmove.js');
 
 			return false;
 		}
+        else if (pressbutton == 'attendees.cancelmultiple')
+        {
+            var r = confirm(Joomla.JText._("COM_REDEVENT_REGISTRATION_CANCELMULTIPLE_COMFIRM"));
+            if (r == true)    form.submit();
+            else return false;
+        }
 
 		form.submit();
 	}

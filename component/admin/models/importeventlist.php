@@ -281,7 +281,7 @@ class RedeventModelImporteventlist extends RModel
 	/**
 	 * Add a tag for eventlist imports
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function addLibraryTag()
 	{

@@ -36,7 +36,7 @@ class RedeventHelperLog
 	/**
 	 * Clear logs
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function clear()
 	{

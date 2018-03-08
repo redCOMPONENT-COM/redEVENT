@@ -14,7 +14,11 @@ $properties = $data->getInputProperties();
 $params = JComponentHelper::getParams('com_redevent');
 ?>
 <?php if (!count($data->options)): ?>
-	<?php echo JText::_('COM_REDEVENT_EVENT_PRICE_FREE'); ?>
+	<?php if ($params->get('show_no_price_as_free', 1)): ?>
+		<?php echo JText::_('COM_REDEVENT_EVENT_PRICE_FREE'); ?>
+	<?php else: ?>
+		<?= RHelperCurrency::getFormattedPrice(0, $data->getDefaultCurrency()) ?>
+	<?php endif; ?>
 <?php else: ?>
 	<?php if ($data->readonly || !empty($properties['readonly'])): ?>
 		<?php
@@ -33,7 +37,7 @@ $params = JComponentHelper::getParams('com_redevent');
 			<select <?php echo $data->propertiesToString($properties); ?>>
 				<?php foreach ($data->options as $option): ?>
 					<?php $properties = $data->getOptionProperties($option); ?>
-					<option value="<?= $option->value ?>" price="<?= $option->price ?>" currency="<?= $option->currency ?>"
+					<option value="<?= $option->value ?>" price="<?= $option->price ?>" vat="<?= $option->vat ?>" currency="<?= $option->currency ?>"
 						<?= ($option->value == $data->getValue()) ? 'selected="selected"' : '' ?>>
 						<?php echo $option->label; ?>
 					</option>

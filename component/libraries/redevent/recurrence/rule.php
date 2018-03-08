@@ -92,7 +92,7 @@ class RedeventRecurrenceRule
 	 *
 	 * the form reuse same property for different fields (for clarity)
 	 *
-	 * @return Object
+	 * @return object
 	 */
 	public function getFormData()
 	{

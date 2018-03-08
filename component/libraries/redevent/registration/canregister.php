@@ -20,6 +20,7 @@ class RedeventRegistrationCanregister
 	const ERROR_NO_REGISTRATION = 'noregistration';
 	const ERROR_HAS_PENDING = 'haspending';
 	const ERROR_USER_MAX = 'usermax';
+	const ERROR_NO_PRICE_AVAILABLE = 'nopriceavailable';
 
 	/**
 	 * @var JUser
@@ -32,7 +33,7 @@ class RedeventRegistrationCanregister
 	private $session;
 
 	/**
-	 * @var bool
+	 * @var object
 	 */
 	private $result;
 
@@ -92,6 +93,11 @@ class RedeventRegistrationCanregister
 			return $this->result;
 		}
 
+		if (!$this->checkPrices())
+		{
+			return $this->result;
+		}
+
 		return $this->result;
 	}
 
@@ -126,7 +132,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Init result object
 	 *
-	 * @return void;
+	 * @return void
 	 */
 	private function initResult()
 	{
@@ -162,7 +168,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Is registration over ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function isRegistrationOver()
 	{
@@ -174,7 +180,9 @@ class RedeventRegistrationCanregister
 
 		if (RedeventHelperDate::isValidDate($this->session->registrationend))
 		{
-			if (strtotime($this->session->registrationend) < $now_unix)
+			$registrationEnd = JFactory::getDate($this->session->registrationend, new DateTimeZone("UTC"));
+
+			if ($registrationEnd < $now)
 			{
 				$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_IS_OVER'), static::ERROR_IS_OVER);
 
@@ -197,7 +205,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * Is registration disabled ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function isRegistrationDisabled()
 	{
@@ -230,7 +238,9 @@ class RedeventRegistrationCanregister
 			{
 				if ($attendee->uid == $this->user->get('id') && $attendee->confirmed == 0 && $attendee->cancelled == 0)
 				{
-					$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION'), static::ERROR_HAS_PENDING);
+					$this->setResultError(
+						JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION'), static::ERROR_HAS_PENDING
+					);
 
 					return true;
 				}
@@ -243,7 +253,7 @@ class RedeventRegistrationCanregister
 	/**
 	 * User Reached Max Registrations ?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function userReachedMaxRegistrations()
 	{
@@ -258,5 +268,39 @@ class RedeventRegistrationCanregister
 
 			return true;
 		}
+
+		return false;
+	}
+
+	/**
+	 * Check if there are available prices for user, or free for all
+	 *
+	 * @return boolean true if allowed
+	 */
+	private function checkPrices()
+	{
+		$hasPrices = $this->session->getActivePricegroups(false);
+
+		if (empty($hasPrices))
+		{
+			// Session is free for all
+			return true;
+		}
+
+		$availablePrices = $this->session->getActivePricegroups(true, $this->user);
+
+		if (!empty($availablePrices))
+		{
+			return true;
+		}
+
+		$this->setResultError(
+			$this->user->guest
+				? JText::_('COM_REDEVENT_REGISTRATION_NO_ALLOWED_PRICE_LOGIN_FIRST')
+				: JText::_('COM_REDEVENT_REGISTRATION_NO_ALLOWED_PRICE'),
+			static::ERROR_NO_PRICE_AVAILABLE
+		);
+
+		return false;
 	}
 }

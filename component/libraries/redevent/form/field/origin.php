@@ -43,13 +43,12 @@ class RedeventFormFieldOrigin extends JFormFieldList
 		$res = $db->loadColumn();
 
 		$options = $res ? array_map(
-				function($item)
-				{
+			function ($item)
+			{
 					return array('value' => $item, 'text' => $item);
-				},
-				$res
-			)
-			: array();
+			},
+			$res
+		) : array();
 
 		return array_merge(parent::getOptions(), $options);
 	}

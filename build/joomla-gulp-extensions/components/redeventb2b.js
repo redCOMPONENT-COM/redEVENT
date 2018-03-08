@@ -82,96 +82,12 @@ gulp.task('copy:' + baseTask + ':media', ['clean:' + baseTask + ':media'], funct
 		.pipe(gulp.dest(config.wwwDir + '/media/com_redeventb2b'));
 });
 
-//// Compile LESS
-//gulp.task('less:' + baseTask, function () {
-//	return gulp.src([
-//			'./src/assets/com_redevent/less/backend.less',
-//			'./src/assets/com_redevent/less/frontend.less'
-//		])
-//		.pipe(less({paths: ['./src/assets/less/com_redevent']}))
-//		.pipe(gulp.dest(mediaPath + '/css'))
-//		.pipe(gulp.dest(config.wwwDir + '/media/com_redevent/css'))
-//		.pipe(browserSync.reload({stream:true}))
-//		.pipe(minifyCSS())
-//		.pipe(rename(function (path) {
-//				path.basename += '.min';
-//		}))
-//		.pipe(gulp.dest(mediaPath + '/css'))
-//		.pipe(gulp.dest(config.wwwDir + '/media/com_redevent/css'))
-//		.pipe(browserSync.reload({stream:true}));
-//});
-//
-//function scripts(src, ouputFileName) {
-//	return gulp.src(src)
-//		.pipe(concat(ouputFileName))
-//		.pipe(gulp.dest(mediaPath + '/js'))
-//		.pipe(gulp.dest(config.wwwDir + '/media/com_redevent/js'))
-//		.pipe(browserSync.reload({stream:true}))
-//		.pipe(uglify())
-//		.pipe(rename(function (path) {
-//			path.basename += '.min';
-//		}))
-//		.pipe(gulp.dest(mediaPath + '/js'))
-//		.pipe(gulp.dest(config.wwwDir + '/media/com_redevent/js'))
-//		.pipe(browserSync.reload({stream:true}));
-//}
-//
-//// Backend scripts
-//gulp.task('scripts:' + baseTask + ':backend', function () {
-//	return scripts([
-//		'./src/assets/vendor/jquery/dist/jquery.js',
-//		'./src/assets/vendor/bootstrap/dist/js/bootstrap.js',
-//		'./src/assets/vendor/admin-lte/dist/js/app.js',
-//		'./src/assets/vendor/raphael/raphael-min.js',
-//		'./src/assets/vendor/morris.js/morris.min.js',
-//		'./src/assets/com_redevent/js/backend.js'
-//	], 'backend.js');
-//});
-//
-//// Frontend scripts
-//gulp.task('scripts:' + baseTask + ':frontend', function () {
-//	scripts([
-//		'./src/assets/vendor/raphael/raphael-min.js',
-//		'./src/assets/vendor/morris.js/morris.min.js',
-//		'./src/assets/com_redevent/js/findbeacons.js',
-//		'./src/assets/com_redevent/js/statistics.js'
-//	], 'frontend.js');
-//
-//	scripts([
-//		'./src/assets/com_redevent/js/mobile.js',
-//	], 'mobile.js');
-//
-//	scripts('./src/assets/vendor/selectize/dist/js/standalone/selectize.min.js', 'selectize.min.js');
-//});
-//
-//// Scripts
-//gulp.task('scripts:' + baseTask, ['scripts:' + baseTask + ':backend', 'scripts:' + baseTask + ':frontend']);
-//
-//// Styles
-//gulp.task('styles:' + baseTask, function () {
-//	return gulp.src([
-//			mediaPath + '/css/*.css',
-//			'!' + mediaPath + '/css/*.min.css',
-//			'./src/assets/vendor/morris.js/morris.css',
-//			'./src/assets/vendor/selectize/dist/css/selectize.bootstrap3.css'
-//		])
-//		.pipe(gulp.dest(config.wwwDir + '/media/com_redevent/css'))
-//		.pipe(browserSync.reload({stream:true}))
-//		.pipe(minifyCSS())
-//		.pipe(rename(function (path) {
-//				path.basename += '.min';
-//		}))
-//		.pipe(gulp.dest(mediaPath + '/css'))
-//		.pipe(gulp.dest(config.wwwDir + '/media/com_redevent/css'))
-//		.pipe(browserSync.reload({stream:true}));
-//});
-
 // Watch
 gulp.task('watch:' + baseTask,
 	[
 		'watch:' + baseTask + ':frontend',
-		'watch:' + baseTask + ':backend'
-		//'watch:' + baseTask + ':scripts',
+		'watch:' + baseTask + ':backend',
+		'watch:' + baseTask + ':media'
 		//'watch:' + baseTask + ':less'
 	],
 	function() {
@@ -194,32 +110,13 @@ gulp.task('watch:' + baseTask + ':backend', function() {
 	['copy:' + baseTask + ':backend']);
 });
 
+// Watch: frontend
+gulp.task('watch:' + baseTask + ':media', function() {
+	gulp.watch(mediaPath + '/**',
+		['copy:' + baseTask + ':media']);
+});
+
 // updates sites
 gulp.task('update-sites:' + baseTask, function(){
 	console.log('update-sites:' + baseTask + ' is not implemented yet');
 });
-
-//// Watch: LESS
-//gulp.task('watch:' + baseTask + ':less',
-//	function() {
-//		gulp.watch(
-//			'./src/assets/com_redevent/less/**',
-//			['less:' + baseTask]
-//		);
-//});
-//
-//// Watch: Scripts
-//gulp.task('watch:' + baseTask + ':scripts', function() {
-//	gulp.watch([
-//		'./src/assets/com_redevent/js/*.js'
-//	], ['scripts:' + baseTask]);
-//});
-//
-//// Watch: Styles
-//gulp.task('watch:' + baseTask + ':styles', function() {
-//	gulp.watch([
-//		mediaPath + '/css/*.css',
-//		'!' + mediaPath + '/css/*.min.css'
-//	], ['styles:' + baseTask]);
-//});
-

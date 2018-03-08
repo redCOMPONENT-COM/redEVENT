@@ -30,7 +30,7 @@ class RedeventViewAttendeescsv extends RedeventViewAdmin
 		JHtml::_('behavior.framework');
 
 		// Display the template
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

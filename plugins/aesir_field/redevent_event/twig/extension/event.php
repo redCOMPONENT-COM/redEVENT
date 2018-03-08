@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Event Twig extension.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  3.2.3
  */
 class PlgAesir_FieldRedevent_EventTwigExtensionEvent extends Redevent\Twig\Plugin
 {

@@ -33,7 +33,7 @@ class RedeventViewVenuesmap extends RedeventViewFront
 		$elsettings = RedeventHelper::config();
 
 		JHTML::_('behavior.framework');
-		$document->addScript('https://maps.google.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
+		$document->addScript('https://maps.googleapis.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
 		RHelperAsset::load('markermanager.js');
 		RHelperAsset::load('site/venuesmap.js');
 
@@ -42,7 +42,8 @@ class RedeventViewVenuesmap extends RedeventViewFront
 		$cat = $this->state->get('cat');
 		$custom = $this->get('CustomFilters');
 		$filter_customs = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.filter_customs',
-			'filtercustom', array(), 'array');
+			'filtercustom', array(), 'array'
+		);
 
 		$rows = $this->get('Data');
 		$countries = $this->get('Countries');
@@ -85,7 +86,7 @@ class RedeventViewVenuesmap extends RedeventViewFront
 		$this->assign('ajaxurl', $ajaxurl);
 		$this->assign('filter_customs', $filter_customs);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

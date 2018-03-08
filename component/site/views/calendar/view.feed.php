@@ -51,5 +51,7 @@ class RedeventViewCalendar extends RedeventViewListfeed
 			// Add item info into rss array
 			$doc->addItem($item);
 		}
+
+		return true;
 	}
 }

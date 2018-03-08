@@ -33,7 +33,8 @@ class RedeventModelSession extends RModelAdmin
 			$row->checked_out_time = 0;
 			$row->note = Jtext::sprintf('COM_REDEVENT_COPY_OF_S', $id);
 
-			/* pre-save checks */
+			// Pre-save checks
+
 			if (!$row->check())
 			{
 				$this->setError($row->getError(), 'error');
@@ -41,7 +42,8 @@ class RedeventModelSession extends RModelAdmin
 				return false;
 			}
 
-			/* save the changes */
+			// Save the changes
+
 			if (!$row->store())
 			{
 				$this->setError($row->getError(), 'error');
@@ -59,13 +61,15 @@ class RedeventModelSession extends RModelAdmin
 
 			foreach ($res as $r)
 			{
-				/* Load the table */
+				// Load the table
+
 				$pricerow = $this->getTable('Sessionpricegroup');
 				$pricerow->bind(get_object_vars($r));
 				$pricerow->id = null;
 				$pricerow->xref = $row->id;
 
-				/* save the changes */
+				// Save the changes
+
 				if (!$pricerow->store())
 				{
 					$this->setError($pricerow->getError(), 'error');
@@ -278,7 +282,7 @@ class RedeventModelSession extends RModelAdmin
 	 *
 	 * @param   array  $data  post data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function saveRecurrence($data)
 	{
@@ -417,6 +421,28 @@ class RedeventModelSession extends RModelAdmin
 		if ($eventId)
 		{
 			$this->setState('eventId', $eventId);
+		}
+	}
+
+	/**
+	 * Prepare and sanitise the table data prior to saving.
+	 *
+	 * @param   JTable  $table  A reference to a JTable object.
+	 *
+	 * @return  void
+	 */
+	protected function prepareTable($table)
+	{
+		parent::prepareTable($table);
+
+		$defnull = array('dates', 'times', 'enddates', 'endtimes', 'registrationend');
+
+		foreach ($defnull as $val)
+		{
+			if (!strlen($table->$val))
+			{
+				$table->$val = null;
+			}
 		}
 	}
 }

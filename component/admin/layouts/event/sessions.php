@@ -38,7 +38,6 @@ $filterForm->removeField('category', 'filter');
 $searchToolsOptions = array(
 	'searchField' => 'search',
 	'searchFieldSelector' => '#filter_search',
-	'limitFieldSelector' => '#list_fields_limit',
 	"orderFieldSelector" => "#list_fullordering",
 	"limitFieldSelector" => "#list_session_limit",
 	"activeOrder" => $listOrder,
@@ -223,7 +222,7 @@ if (isset($data['activeFilters']['event']))
 									</a>
 								<?php endif; ?>
 								<span class="linkfront hasTooltip" title="<?php echo JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'); ?>">
-								<?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($item->eventid, $item->id),
+								<?php echo JHTML::link(JURI::root() . RedeventHelperRoute::getDetailsRoute($item->eventid, $item->id),
 									JHTML::image('media/com_redevent/images/linkfront.png',
 										JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 							</span>

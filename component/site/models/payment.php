@@ -49,11 +49,13 @@ class RedeventModelPayment extends JModelLegacy
 	 *
 	 * @param   string  $key  sumbit key
 	 *
-	 * @return true
+	 * @return string
 	 */
 	public function setSubmitKey($key)
 	{
 		$this->submit_key = $key;
+
+		return $this->submit_key;
 	}
 
 	/**
@@ -95,7 +97,7 @@ class RedeventModelPayment extends JModelLegacy
 	/**
 	 * Check that the registration was indeed paid, and confirm the attendee if not yet done
 	 *
-	 * @return true on success
+	 * @return void
 	 */
 	public function checkAndConfirm()
 	{
@@ -110,7 +112,7 @@ class RedeventModelPayment extends JModelLegacy
 	/**
 	 * Confirm attendees for this registration
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function confirmAttendees()
 	{

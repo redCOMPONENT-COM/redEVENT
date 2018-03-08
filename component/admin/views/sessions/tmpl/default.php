@@ -43,6 +43,10 @@ $search = $this->state->get('filter.search');
 		}
 		form.submit();
 	}
+
+	jQuery(function () {
+		jQuery('[data-toggle="popover"]').popover()
+	})
 </script>
 <form action="index.php?option=com_redevent&view=sessions" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
@@ -119,7 +123,7 @@ $search = $this->state->get('filter.search');
 				<th width="40">
 					<?php echo JHTML::_('rsearchtools.sort', 'JGRID_HEADING_LANGUAGE', 'obj.language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10">
+				<th width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_ID', 'obj.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -240,7 +244,19 @@ $search = $this->state->get('filter.search');
 						<?php echo $row->language; ?>
 					</td>
 					<td>
-						<?php echo $row->id; ?>
+						<?php
+						$created = JHTML::Date( $row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
+						$edited = JHTML::Date( $row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
+						$popoverContent = JText::sprintf('COM_REDEVENT_POPOVER_CONTENT_CREATED', $created, $row->author);
+
+						if (RedeventHelperDate::isValidDate($row->modified) && $row->modified != $row->created)
+						{
+							$popoverContent .= '<br/>' . JText::sprintf('COM_REDEVENT_POPOVER_CONTENT_EDITED', $edited, $row->editor);
+						}
+						?>
+						<span class="session-info-popover" data-toggle="popover" data-content="<?= $popoverContent ?>" data-placement="left">
+							<?= $row->id ?>
+						</span>
 					</td>
 				</tr>
 			<?php endforeach; ?>

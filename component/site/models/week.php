@@ -89,7 +89,7 @@ class RedEventModelWeek extends RedeventModelBasesessionlist
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 
 			$this->data = $this->_getList($query);
 			$this->data = $this->_categories($this->data);
@@ -107,13 +107,13 @@ class RedEventModelWeek extends RedeventModelBasesessionlist
 	 *
 	 * @return object
 	 */
-	protected function _buildWhere($query)
+	protected function buildWhere($query)
 	{
 		// Get the paramaters of the active menu item
 		$mainframe = JFactory::getApplication();
 		$params 	= $mainframe->getParams();
 
-		$query = parent::_buildWhere($query);
+		$query = parent::buildWhere($query);
 
 		if (!$this->week)
 		{
@@ -149,7 +149,7 @@ class RedEventModelWeek extends RedeventModelBasesessionlist
 	/**
 	 * return week number
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getWeekNumber()
 	{
@@ -161,7 +161,7 @@ class RedEventModelWeek extends RedeventModelBasesessionlist
 	/**
 	 * return year
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getYear()
 	{

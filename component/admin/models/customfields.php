@@ -156,7 +156,7 @@ class RedeventModelCustomfields extends RModelList
 	 * @param   array  $records  records
 	 * @param   bool   $replace  existing events with same id
 	 *
-	 * @return int count
+	 * @return integer count
 	 */
 	public function import($records, $replace = false)
 	{

@@ -217,7 +217,7 @@ class RedeventTableCategory extends RedeventTable
 	 *
 	 * @param   array  $quotedIds  quoted ids
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function haveNoEvents($quotedIds)
 	{
@@ -239,7 +239,7 @@ class RedeventTableCategory extends RedeventTable
 	 *
 	 * @param   array  $quotedIds  quoted ids
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function haveNoChildren($quotedIds)
 	{

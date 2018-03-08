@@ -28,18 +28,12 @@ class RedeventHelperFileupload
 	 * @param   string   $okMIMETypes        Comma separated string list of allowed MIME types.
 	 * @param   boolean  $customName         If true, system will auto create file name. If false, filename is original name
 	 *
-	 * @return array|bool
+	 * @return array|boolean
 	 */
 	public static function uploadFile($file, $destinationFolder, $maxFileSize = 2, $okFileExtensions = null, $okMIMETypes = null, $customName = true)
 	{
 		$app = JFactory::getApplication();
 		$fileExtension = JFile::getExt($file['name']);
-
-		/* @todo: Can we upload this file type? */
-		/*if (!self::canUpload($file, $maxFileSize, $okFileExtensions, $okMIMETypes))
-		{
-			return false;
-		}*/
 
 		if ($customName === false)
 		{

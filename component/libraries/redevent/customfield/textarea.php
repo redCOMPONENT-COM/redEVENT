@@ -44,6 +44,7 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 				$attributes['class'] = 'required';
 			}
 		}
+
 		/*
 		   * Required to avoid a cycle of encoding &
 		   * html_entity_decode was used in place of htmlspecialchars_decode because
@@ -60,7 +61,7 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<textarea name="' . 'jform[' . $this->fieldname . ']' . '" id="' . $this->fieldid . '" '
+		return '<textarea name="jform[' . $this->fieldname . ']" id="' . $this->fieldid . '" '
 			. $this->attributesToString($attributes) . '>' . $value . '</textarea>';
 	}
 

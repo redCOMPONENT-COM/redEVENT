@@ -51,6 +51,10 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			$item->recurrence = $rule->getFormData();
 			$item->recurrence->recurrenceid = $res->recurrence_id;
 			$item->recurrence->repeat = $res->count;
+
+			$helper = new RedeventHelperAttachment;
+			$files = $helper->getAttachments('event' . $item->eventid);
+			$item->attachments = $files;
 		}
 		else
 		{
@@ -58,6 +62,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			$item->recurrence = $rule->getFormData();
 			$item->recurrence->recurrenceid = 0;
 			$item->recurrence->repeat = 0;
+			$item->attachments = array();
 		}
 
 		return $item;
@@ -247,7 +252,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 
 		$query->select('f.*')
 			->from('#__redevent_fields AS f')
-			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR ' . 'f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
+			->where('(f.object_key = ' . $this->_db->Quote("redevent.xref") . ' OR f.object_key = ' . $this->_db->Quote("redevent.event") . ')')
 			->order('f.ordering');
 
 		$this->_db->setQuery($query);
@@ -296,7 +301,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 			return false;
 		}
 
-		if (!$pk)
+		if (!$pk && !RedeventUserAcl::getInstance()->canPublishXref())
 		{
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
 		}
@@ -321,7 +326,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	/**
 	 * Try to save event
 	 *
-	 * @param   array  &$data  post data
+	 * @param   array  $data  post data
 	 *
 	 * @return boolean
 	 */
@@ -337,6 +342,10 @@ class RedeventModelEditsession extends RedeventModelAdmin
 		}
 
 		$data['eventid'] = $model->getState('editevent.id');
+
+		// Attachments
+		$helper = new RedeventHelperAttachment;
+		$helper->store('event' . $data['eventid']);
 
 		return true;
 	}
@@ -367,7 +376,7 @@ class RedeventModelEditsession extends RedeventModelAdmin
 	 *
 	 * @param   array  $data  post data
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function saveRecurrence($data)
 	{
@@ -515,5 +524,27 @@ class RedeventModelEditsession extends RedeventModelAdmin
 		$acl = RedeventUserAcl::getInstance();
 
 		return $acl->canEditXref($record->id);
+	}
+
+	/**
+	 * Prepare and sanitise the table data prior to saving.
+	 *
+	 * @param   JTable  $table  A reference to a JTable object.
+	 *
+	 * @return  void
+	 */
+	protected function prepareTable($table)
+	{
+		parent::prepareTable($table);
+
+		$defnull = array('dates', 'times', 'enddates', 'endtimes', 'registrationend');
+
+		foreach ($defnull as $val)
+		{
+			if (!strlen($table->$val))
+			{
+				$table->$val = null;
+			}
+		}
 	}
 }

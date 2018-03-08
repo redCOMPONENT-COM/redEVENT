@@ -30,26 +30,6 @@
             <option value="1">JYES</option>
         </field>
 
-		<field type="spacer" label="COM_REDEVENT_MAIL_HANDLING"/>
-		<field name="mailinform" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_SUBMISSION"
-			   description="COM_REDEVENT_MAIL_NEW_SUBMISSION_TIP">
-			<option value="0">COM_REDEVENT_DISABLED</option>
-			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
-			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
-			<option value="3">COM_REDEVENT_BOTH</option>
-		</field>
-		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT"
-			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"
-				showon="mailinform:1,2,3"/>
-
-		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION"
-			   description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
-			<option value="0">COM_REDEVENT_DISABLED</option>
-			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
-			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
-			<option value="3">COM_REDEVENT_BOTH</option>
-		</field>
-
 		<field type="spacer" label="COM_REDEVENT_IMAGE_HANDLING"/>
 		<field name="sizelimit" type="text" default="100" label="COM_REDEVENT_IMAGE_FILESIZE"
 			   description="COM_REDEVENT_IMAGE_FILESIZE_TIP"/>
@@ -600,6 +580,13 @@
 			<option value="radio">COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_RADIO</option>
 		</field>
 
+		<field name="show_no_price_as_free" type="list" default="select"
+			   label="COM_REDEVENT_SETTINGS_REGISTRATION_SHOW_NO_PRICE_AS_FREE_LABEL"
+			   description="COM_REDEVENT_SETTINGS_REGISTRATION_SHOW_NO_PRICE_AS_FREE_DESC">
+			<option value="1">JYes</option>
+			<option value="0">JNo</option>
+		</field>
+
 	</fieldset>
 
 	<fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit"
@@ -752,6 +739,26 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+
+		<field type="spacer" label="COM_REDEVENT_MAIL_HANDLING"/>
+		<field name="mailinform" type="list" default="0" label="COM_REDEVENT_MAIL_NEW_SUBMISSION"
+			   description="COM_REDEVENT_MAIL_NEW_SUBMISSION_TIP">
+			<option value="0">COM_REDEVENT_DISABLED</option>
+			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
+			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
+			<option value="3">COM_REDEVENT_BOTH</option>
+		</field>
+		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT"
+			   description="COM_REDEVENT_MAIL_RECIPIENT_TIP"
+			   showon="mailinform:1,2,3"/>
+
+		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION"
+			   description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
+			<option value="0">COM_REDEVENT_DISABLED</option>
+			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
+			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
+			<option value="3">COM_REDEVENT_BOTH</option>
+		</field>
 	</fieldset>
 
 	<fieldset name="COM_REDEVENT_SETTINGS_REMINDER" label="COM_REDEVENT_SETTINGS_REMINDER"
@@ -830,6 +837,11 @@
 			  description="COM_REDEVENT_SETTINGS_MISC">
 		<field name="defaultredformid" type="RFForm" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID"
 			   description="COM_REDEVENT_DEFAULT_FORM_ID_TIP"/>
+		<field name="default_template" type="redevent.eventtemplate" default="0"
+			   label="COM_REDEVENT_SETTINGS_DEFAULT_TEMPLATE"
+			   description="COM_REDEVENT_SETTINGS_DEFAULT_TEMPLATE_DESC">
+			<option value="">JSELECT</option>
+		</field>
 		<field name="open_as_upcoming" type="radio" default="0"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_OPEN_AS_UPCOMING_LABEL"
@@ -874,6 +886,13 @@
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL"
 			   description="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="csv_export_attendees_server_tz" type="radio" default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SETTINGS_CSV_EXPORT_ATTENDEES_SERVER_TZ_LABEL"
+			   description="COM_REDEVENT_SETTINGS_CSV_EXPORT_ATTENDEES_SERVER_TZ_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
@@ -986,7 +1005,7 @@
 			  description="JCONFIG_PERMISSIONS_DESC">
 		<field
 				name="rules"
-				type="rrules"
+				type="rules"
 				label="JCONFIG_PERMISSIONS_LABEL"
 				class="inputbox"
 				validate="rules"

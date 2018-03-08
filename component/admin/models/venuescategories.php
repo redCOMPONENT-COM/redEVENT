@@ -146,7 +146,7 @@ class RedeventModelVenuescategories extends RModelList
 			{
 				$query->where('c.published = 1');
 			}
-			elseif ($filter_state == '0' )
+			elseif ($filter_state == '0')
 			{
 				$query->where('c.published = 0');
 			}
@@ -162,6 +162,20 @@ class RedeventModelVenuescategories extends RModelList
 		if ($search)
 		{
 			$query->where('LOWER(c.name) LIKE \'%' . $search . '%\'');
+		}
+
+		if ($this->getState('filter.acl'))
+		{
+			$access = JFactory::getUser()->getAuthorisedViewLevels();
+
+			if (empty($access))
+			{
+				$query->where('0');
+			}
+			else
+			{
+				$query->where('c.access IN (' . implode(",", $access) . ')');
+			}
 		}
 
 		return $query;
@@ -190,7 +204,7 @@ class RedeventModelVenuescategories extends RModelList
 	 *
 	 * @param   int  $id  venue category id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	private function countCategoryVenues($id)
 	{
@@ -227,6 +241,11 @@ class RedeventModelVenuescategories extends RModelList
 		$id	.= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.language');
 		$id	.= ':' . $this->getState('filter.published');
+
+		if ($this->getState('filter.acl'))
+		{
+			$id .= ':' . serialize(JFactory::getUser()->getAuthorisedViewLevels());
+		}
 
 		return parent::getStoreId($id);
 	}

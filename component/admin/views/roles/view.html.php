@@ -51,7 +51,7 @@ class RedeventViewRoles extends RedeventViewAdmin
 			$this->canEdit = true;
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

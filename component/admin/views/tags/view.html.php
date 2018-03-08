@@ -24,10 +24,8 @@ class RedeventViewTags extends RViewBase
 	 */
 	public function display($tpl = null)
 	{
-		$user = JFactory::getUser();
-
 		$this->items = $this->get('Items');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

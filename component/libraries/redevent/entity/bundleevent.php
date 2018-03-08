@@ -29,7 +29,7 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 	/**
 	 * Get maximum duration for event
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMax()
 	{
@@ -50,7 +50,7 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 	/**
 	 * Get minium duration for event
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMin()
 	{
@@ -65,10 +65,13 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 			{
 				$duration = $session->getDurationDays();
 
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if (!$duration)
 				{
 					return $min;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $min ? min($min, $duration) : $duration;
 			}
@@ -109,7 +112,7 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 
 		$upcomings = array_filter(
 			$sessions,
-			function($session)
+			function ($session)
 			{
 				return $session->isUpcoming();
 			}
@@ -123,7 +126,7 @@ class RedeventEntityBundleevent extends RedeventEntityBase
 		// Order
 		uasort(
 			$upcomings,
-			function($a, $b)
+			function ($a, $b)
 			{
 				return $a->getUnixStart() - $b->getUnixStart();
 			}

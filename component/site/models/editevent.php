@@ -50,11 +50,16 @@ class RedeventModelEditevent extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		$userAcl = RedeventUserAcl::getInstance();
 		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
 
 		if (!$pk)
 		{
 			$data = $this->mergeTemplateData($data);
+		}
+
+		if (!$pk && !$userAcl->canPublishEvent())
+		{
 			$data['published'] = RedeventHelper::config()->get('default_submit_published_state');
 		}
 
@@ -282,7 +287,8 @@ class RedeventModelEditevent extends RModelAdmin
 			{
 				$unset = array_fill_keys(
 					array(
-						'id', 'title', 'alias', 'course_code', 'created_by', 'modified', 'modified_by', 'author_ip', 'created', 'alias', 'alias', 'alias'
+						'id', 'title', 'alias', 'course_code', 'created_by', 'modified', 'modified_by',
+						'author_ip', 'created', 'alias', 'alias', 'alias'
 						, 'checked_out', 'checked_out_time', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias', 'alias'
 					),
 					0

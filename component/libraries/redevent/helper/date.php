@@ -24,6 +24,11 @@ class RedeventHelperDate
 	 */
 	public static function isValidDate($date)
 	{
+		if (!$date)
+		{
+			return false;
+		}
+
 		$format = strlen($date) > 10 ? 'Y-m-d H:i:s' : 'Y-m-d';
 		$d = DateTime::createFromFormat($format, $date);
 
@@ -39,6 +44,11 @@ class RedeventHelperDate
 	 */
 	public static function isValidTime($time)
 	{
+		if (!$time)
+		{
+			return false;
+		}
+
 		$format = strlen($time) > 5 ? 'H:i:s' : 'H:i';
 		$d = DateTime::createFromFormat($format, $time);
 
@@ -52,7 +62,7 @@ class RedeventHelperDate
 	 * @param   object  $session    event data
 	 * @param   bool    $day_check  daycheck: if true, events are over only the next day, otherwise, use time too.
 	 *
-	 * @return bool
+	 * @return boolean
 	 *
 	 * @throws Exception
 	 */
@@ -102,7 +112,7 @@ class RedeventHelperDate
 			if (!static::isValidDate($event->enddates) || $event->enddates == $event->dates)
 			{
 				// Same day
-				return '1' . ' ' . JText::_('COM_REDEVENT_Day');
+				return '1 ' . JText::_('COM_REDEVENT_Day');
 			}
 			else
 			{
@@ -203,7 +213,7 @@ class RedeventHelperDate
 
 		if (!self::isValidTime($time))
 		{
-			return;
+			return false;
 		}
 
 		$date = $date ?: 'today';
@@ -299,5 +309,22 @@ class RedeventHelperDate
 		}
 
 		return $date;
+	}
+
+	/**
+	 * Convert a utc date/time string to server offset
+	 *
+	 * @param   string  $value  date/time string
+	 *
+	 * @return string
+	 *
+	 * @since  3.2.4
+	 */
+	public static function utcToServerTz($value)
+	{
+		$date = JFactory::getDate($value, 'UTC');
+		$date->setTimezone(new DateTimeZone(JFactory::getConfig()->get('offset')));
+
+		return $date->toSql(true);
 	}
 }

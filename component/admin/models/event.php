@@ -38,18 +38,16 @@ class RedeventModelEvent extends RModelAdmin
 			$categories = $this->getEventCategories($id);
 			$row->categories = array_keys($categories);
 
-			/* pre-save checks */
 			if (!$row->check())
 			{
-				$this->setError($row->getError(), 'error');
+				$this->setError($row->getError());
 
 				return false;
 			}
 
-			/* save the changes */
 			if (!$row->store())
 			{
-				$this->setError($row->getError(), 'error');
+				$this->setError($row->getError());
 
 				return false;
 			}
@@ -160,6 +158,8 @@ class RedeventModelEvent extends RModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
+		$return = true;
+
 		if ($data['id'] && $this->hasAttendees($data['id']))
 		{
 			$form->setFieldAttribute('template_id', 'required', '0');
@@ -168,20 +168,34 @@ class RedeventModelEvent extends RModelAdmin
 		// First get the data from form itself
 		if (!$validData = parent::validate($form, $data, $group))
 		{
-			return false;
+			$return = false;
 		}
 
 		// Now add custom fields
 		$fields = $this->getEventCustomFieldsFromDb();
+		$session = JFactory::getSession();
 
-		foreach ($fields as $field)
+		foreach ($fields as $key => $field)
 		{
 			$dbname = 'custom' . $field->id;
+
+			if ($field->required && isset($data[$dbname]) && empty($data[$dbname]))
+			{
+				$message = JText::sprintf('JLIB_FORM_VALIDATE_FIELD_REQUIRED', $field->name);
+				$this->setError($message);
+				$session->set($this->context . '.error.' . $key, $message);
+				$return = false;
+			}
 
 			if (isset($data[$dbname]))
 			{
 				$validData[$dbname] = is_array($data[$dbname]) ? implode("\n", $data[$dbname]) : $data[$dbname];
 			}
+		}
+
+		if ($return === false)
+		{
+			return false;
 		}
 
 		return $validData;
@@ -219,7 +233,7 @@ class RedeventModelEvent extends RModelAdmin
 	/**
 	 * Method to change the published state of one or more records.
 	 *
-	 * @param   array    &$pks   A list of the primary keys to change.
+	 * @param   array    $pks    A list of the primary keys to change.
 	 * @param   integer  $value  The value of the published state.
 	 *
 	 * @return  boolean  True on success.
@@ -275,15 +289,15 @@ class RedeventModelEvent extends RModelAdmin
 	 *
 	 * @param   int  $event_id  event id
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	private function hasAttendees($event_id)
 	{
 		$query = $this->_db->getQuery(true)
-				->select('r.id')
-				->from('#__redevent_register AS r')
-				->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref')
-				->where('x.eventid = ' . (int) $event_id);
+			->select('r.id')
+			->from('#__redevent_register AS r')
+			->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref')
+			->where('x.eventid = ' . (int) $event_id);
 
 		$this->_db->setQuery($query, 0, 1);
 		$res = $this->_db->loadResult();

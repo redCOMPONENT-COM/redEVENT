@@ -67,6 +67,8 @@ class RedeventRouteVenue
 		{
 			return $item;
 		}
+
+		return false;
 	}
 
 	/**

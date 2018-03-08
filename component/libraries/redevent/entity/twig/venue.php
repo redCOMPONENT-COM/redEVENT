@@ -86,7 +86,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	 *
 	 * @param   string  $name  string
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -101,7 +101,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getBundles()
 	{
 		return array_map(
-			function($bundle)
+			function ($bundle)
 			{
 				return \RedeventEntityTwigBundle::getInstance($bundle);
 			},
@@ -127,7 +127,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getCategories()
 	{
 		return array_map(
-			function($entity)
+			function ($entity)
 			{
 				return \RedeventEntityTwigVenuescategory::getInstance($entity);
 			},
@@ -143,7 +143,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getEvents()
 	{
 		return array_map(
-			function($event)
+			function ($event)
 			{
 				return RedeventEntityTwigEvent::getInstance($event);
 			},
@@ -159,7 +159,7 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 	public function getUpcomingsessions()
 	{
 		return array_map(
-			function($session)
+			function ($session)
 			{
 				return RedeventEntityTwigSession::getInstance($session);
 			},
@@ -188,10 +188,13 @@ final class RedeventEntityTwigVenue extends AbstractTwigEntity
 			$this->entity->getUpcomings(),
 			function ($values, $session)
 			{
+				// PHPCS Indentation error false-positive
+				// @codingStandardsIgnoreStart
 				if (!in_array($session->session_language, $values))
 				{
 					$values[] = $session->session_language;
 				}
+				// @codingStandardsIgnoreEnd
 
 				return $values;
 			},

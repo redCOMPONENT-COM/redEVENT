@@ -155,6 +155,12 @@ class RedeventModelAttendees extends RModelList
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
 		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
 		$query->join('LEFT', '#__rwf_payment_request AS pr ON pr.submission_id = s.id AND pr.paid = 0');
+
+		// Join on redform cart to filter by invoice id
+		$query->join('LEFT', '#__rwf_payment_request AS pr2 ON pr2.submission_id = s.id')
+			->join('LEFT', '#__rwf_cart_item AS ci ON ci.payment_request_id = pr2.id')
+			->join('LEFT', '#__rwf_cart AS cart ON cart.id = ci.cart_id');
+
 		$query->group('r.id');
 
 		// Add associated form fields
@@ -241,6 +247,7 @@ class RedeventModelAttendees extends RModelList
 				'u.name LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.username LIKE "%' . $this->getState('filter.search') . '%"',
 				'u.email LIKE "%' . $this->getState('filter.search') . '%"',
+				'cart.invoice_id LIKE "%' . $this->getState('filter.search') . '%"',
 				'CONCAT(a.course_code, "-", x.id, "-", r.id) LIKE "%' . $this->getState('filter.search') . '%"'
 			);
 
@@ -341,6 +348,62 @@ class RedeventModelAttendees extends RModelList
 			{
 				$helper = new RdfPaymentTurnsubmission($sid);
 				$helper->turn();
+				$helper->processRefund();
+			}
+
+			foreach ($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('onAttendeeModified', array($attendee_id));
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Cancel registrations
+	 *
+	 * @param   array  $cid  cids
+	 *
+	 * @return true on success
+	 */
+	public function cancelMultipleReg($cid = array())
+	{
+		if (count($cid))
+		{
+			$submitKeys = $this->getAttendeesSubmitKeys($cid);
+			$escapedKeys = array_map(array($this->_db, 'q'), $submitKeys);
+
+			$query = $this->_db->getQuery(true);
+
+			$query->update('#__redevent_register AS r')
+				->set('r.cancelled = 1')
+				->set('r.waitinglist = 1')
+				->where('r.submit_key IN (' . implode(', ', $escapedKeys) . ')');
+			$this->_db->setQuery($query);
+
+			$this->_db->execute();
+
+			// Update waiting list for all cancelled regs
+			$updated = $this->getRowsByIds($cid);
+			$sessionIds = array_unique(JArrayHelper::getColumn($updated, 'xref'));
+			$this->updateWaitingLists($sessionIds);
+
+			// Generate negative payment request if already paid
+			foreach ($submitKeys as $submitKey)
+			{
+				$helper = new RdfPaymentTurnmultiple($submitKey);
+				$helper->turn();
+				$helper->processRefund();
+			}
+
+			foreach ($this->getMultipleAttendeesIds($cid) as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}
 		}
 
@@ -384,34 +447,6 @@ class RedeventModelAttendees extends RModelList
 	}
 
 	/**
-	 * Delete attendees
-	 *
-	 * @param   mixed  $pks  ids to delete
-	 *
-	 * @return bool
-	 */
-	public function delete($pks = null)
-	{
-		$sessionIds = $this->getAttendeesSessionIds($pks);
-
-		if (!parent::delete($pks))
-		{
-			return false;
-		}
-
-		$this->updateWaitingLists($sessionIds);
-
-		foreach ($pks as $attendee_id)
-		{
-			JPluginHelper::importPlugin('redevent');
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
-		}
-
-		return parent::delete($pks);
-	}
-
-	/**
 	 * Get attendees sessions ids
 	 *
 	 * @param   mixed  $pks  ids
@@ -438,7 +473,7 @@ class RedeventModelAttendees extends RModelList
 		{
 			$model = RModel::getAdminInstance('Waitinglist');
 			$model->setXrefId($sessionId);
-			$model->UpdateWaitingList();
+			$model->updateWaitingList();
 		}
 	}
 
@@ -479,18 +514,11 @@ class RedeventModelAttendees extends RModelList
 	{
 		if (count($cid))
 		{
-			$date = JFactory::getDate();
-
-			$query = $this->_db->getQuery(true);
-
-			$query->update('#__redevent_register')
-				->set('confirmed = 1')
-				->set('confirmdate = ' . $this->_db->Quote($date->toSql()))
-				->where('id IN (' . implode(', ', $cid) . ')');
-
-			$this->_db->setQuery($query);
-
-			$this->_db->execute();
+			foreach ($cid as $id)
+			{
+				$attendee = new RedeventAttendee($id);
+				$attendee->confirm();
+			}
 		}
 
 		return true;
@@ -594,6 +622,13 @@ class RedeventModelAttendees extends RModelList
 			{
 				$item->paymentRequests = false;
 			}
+
+			if ($item->cancelled == 1
+				&& $this->getState('streamOutput') == 'csv'
+				&& RedeventHelperConfig::get('attendees_export_csv_cancelled_as_unpaid', 0))
+			{
+				$item->paid = 0;
+			}
 		}
 
 		return $items;
@@ -626,5 +661,44 @@ class RedeventModelAttendees extends RModelList
 		$res = $this->_db->loadObjectList();
 
 		return $res;
+	}
+
+	/**
+	 * Get submit keys matching attendees ids
+	 *
+	 * @param   integer[]  $cid  attendee ids
+	 *
+	 * @return string[]
+	 */
+	private function getAttendeesSubmitKeys($cid)
+	{
+		$query = $this->_db->getQuery(true)
+			->select('DISTINCT submit_key')
+			->from('#__redevent_register')
+			->where('id IN (' . implode(",", $cid) . ')');
+
+		$this->_db->setQuery($query);
+
+		return $this->_db->loadColumn();
+	}
+
+	/**
+	 * Get booked together attendee ids
+	 *
+	 * @param   integer[]  $cid  attendee ids
+	 *
+	 * @return integer[]
+	 */
+	private function getMultipleAttendeesIds($cid)
+	{
+		$query = $this->_db->getQuery(true)
+			->select('DISTINCT rj.id')
+			->from('#__redevent_register as r')
+			->innerJoin('#__redevent_register as rj On rj.submit_key = r.submit_key')
+			->where('r.id IN (' . implode(",", $cid) . ')');
+
+		$this->_db->setQuery($query);
+
+		return $this->_db->loadColumn();
 	}
 }

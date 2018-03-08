@@ -33,11 +33,19 @@ class RedeventTableAttendee extends RedeventTable
 
 	/**
 	 * Store associated submitter ids for delete
-	 * @var
+	 * @var array
 	 */
 	private $submitterIds;
 
-	function check()
+	/**
+	 * Checks that the object is valid and able to be stored.
+	 *
+	 * This method checks that the parent_id is non-zero and exists in the database.
+	 * Note that the root node (parent_id = 0) cannot be manipulated with this class.
+	 *
+	 * @return  boolean  True if all checks pass.
+	 */
+	public function check()
 	{
 		if (!$this->sid)
 		{

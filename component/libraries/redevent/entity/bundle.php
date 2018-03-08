@@ -24,7 +24,7 @@ class RedeventEntityBundle extends RedeventEntityBase
 	/**
 	 * Get bundle max duration
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMax()
 	{
@@ -45,7 +45,7 @@ class RedeventEntityBundle extends RedeventEntityBase
 	/**
 	 * Get bundle min duration
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getDurationMin()
 	{
@@ -136,7 +136,7 @@ class RedeventEntityBundle extends RedeventEntityBase
 		// Sort by date
 		usort(
 			$upcoming,
-			function($a, $b)
+			function ($a, $b)
 			{
 				return $a->getUnixStart() - $b->getUnixStart();
 			}

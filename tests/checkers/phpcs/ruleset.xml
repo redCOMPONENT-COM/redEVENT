@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<ruleset name="redEVENT Custom Standard">
+
+	<rule ref="./Joomla/Joomla">
+		<exclude name="Joomla.NamingConventions.ValidFunctionName.ScopeNotCamelCaps"/>
+		<exclude name="Joomla.NamingConventions.ValidVariableName.NotCamelCaps"/>
+		<exclude name="Joomla.NamingConventions.ValidVariableName.MemberNotCamelCaps"/>
+		<exclude name="Joomla.NamingConventions.ValidFunctionName.FunctionNoCapital"/>
+		<!-- Exclude rule for class members doc bloc -->
+		<exclude name="Squiz.Commenting.VariableComment" />
+
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+
+		<exclude name="Joomla.NamingConventions.ValidFunctionName.MethodUnderscore"/>
+		<exclude name="Joomla.NamingConventions.ValidVariableName.ClassVarHasUnderscore"/>
+	</rule>
+
+	<exclude-pattern>*/tmpl/*</exclude-pattern>
+	<exclude-pattern>component/admin/falang/*</exclude-pattern>
+	<exclude-pattern>component/admin/layouts/*</exclude-pattern>
+	<exclude-pattern>component/admin/tables/*</exclude-pattern>
+	<exclude-pattern>component/libraries/redevent/layouts/*</exclude-pattern>
+	<exclude-pattern>component/libraries/redevent/vendor/*</exclude-pattern>
+	<exclude-pattern>component/site/views/*/tmpl/*</exclude-pattern>
+	<exclude-pattern>component/site/layouts/*</exclude-pattern>
+	<exclude-pattern>component/site/classes/*</exclude-pattern>
+	<exclude-pattern>component/site/sef_ext/*</exclude-pattern>
+	<exclude-pattern>component/media</exclude-pattern>
+	<exclude-pattern>component/plugins/**/layouts/*</exclude-pattern>
+	<exclude-pattern>redeventb2b/*/layouts/*</exclude-pattern>
+	<exclude-pattern>redeventsync/admin/tables/*</exclude-pattern>
+	<exclude-pattern>redeventsync/*/layouts/*</exclude-pattern>
+	<exclude-pattern>plugins/aesir_field/*/layouts/*</exclude-pattern>
+	<exclude-pattern>plugins/**/media/*</exclude-pattern>
+	<exclude-pattern>plugins/jomsocial/*</exclude-pattern>
+	<exclude-pattern>plugins/josetta_ext/*</exclude-pattern>
+	<exclude-pattern>plugins/**/layouts/*</exclude-pattern>
+	<exclude-pattern>plugins/**/vendor/*</exclude-pattern>
+	<exclude-pattern>plugins/system/redevent_labels/labels.php</exclude-pattern>
+	<exclude-pattern>modules/frontend/mod_rokminievents</exclude-pattern>
+	<exclude-pattern>modules/frontend/mod_redevent_categories/helper.php</exclude-pattern>
+
+</ruleset>

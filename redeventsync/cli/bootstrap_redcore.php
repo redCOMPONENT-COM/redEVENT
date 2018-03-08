@@ -20,7 +20,7 @@ if (!defined('JPATH_REDCORE'))
 	define('JPATH_REDCORE', JPATH_LIBRARIES . '/redcore');
 }
 
-if ($loadBootstrap && !defined('REDCORE_BOOTSTRAPPED'))
+if (!empty($loadBootstrap) && !defined('REDCORE_BOOTSTRAPPED'))
 {
 	define('REDCORE_BOOTSTRAPPED', 1);
 }

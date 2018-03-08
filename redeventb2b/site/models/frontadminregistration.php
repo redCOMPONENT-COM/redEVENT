@@ -80,7 +80,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	 *
 	 * @return  object  attendee
 	 */
-	public function book($user_id, $xref, $orgId)
+	public function book($user_id, $xref, $orgId, $extraData)
 	{
 		$this->setUserId($user_id);
 		$this->setXref($xref);
@@ -97,6 +97,10 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 			// Do the registration
 			$redformResult = $this->redformRegistration();
 			$registration = $this->register($redformResult);
+
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onB2BRegistrationAddExtra', array($registration->id, $extraData));
 
 			// Force confirm
 			$this->getRegistrationModel()->confirm($registration->id);
@@ -211,11 +215,11 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 		}
 
 		// For tracking
-		$details = $this->getSession();
-		$reg->event_name   = $details->event_name;
-		$reg->session_name = $details->session_name;
-		$reg->venue        = $details->venue;
-		$reg->categories   = $details->categories;
+		$session = $this->getSession();
+		$reg->event_name   = $session->getEvent()->title;
+		$reg->session_name = $session->title;
+		$reg->venue        = $session->getVenue()->venue;
+		$reg->categories   = $session->getEvent()->getCategories();
 		$reg->price = $pricegroup->price;
 		$reg->currency = $pricegroup->currency;
 
@@ -298,7 +302,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	/**
 	 * Notify organization admins
 	 *
-	 * @return void
+	 * @return string
 	 *
 	 * @throws Exception
 	 */
@@ -331,7 +335,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 		if ($this->pricegroup === null)
 		{
 			$session = RedeventEntitySession::load($this->xref);
-			$priceGroups = $session->getPricegroups();
+			$priceGroups = $session->getActivePricegroups();
 
 			if (!empty($priceGroups))
 			{
@@ -366,25 +370,23 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	/**
 	 * Return redform id
 	 *
-	 * @return mixed
+	 * @return integer
 	 */
 	private function getRedformId()
 	{
-		$details = $this->getSession();
-
-		return $details->redform_id;
+		return $this->getSession()->getEvent()->getEventtemplate()->redform_id;
 	}
 
 	/**
 	 * Return session details
 	 *
-	 * @return object
+	 * @return RedeventEntitySession
 	 */
 	private function getSession()
 	{
 		if (!$this->session)
 		{
-			$this->session = $this->getRegistrationModel()->getSessionDetails();
+			$this->session = RedeventEntitySession::load($this->xref);
 		}
 
 		return $this->session;

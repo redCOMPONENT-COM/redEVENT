@@ -68,7 +68,7 @@ class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
 
     /**
      * Checks to see if the source is available to be used
-     * @return bool
+     * @return boolean
      */
     function available()
     {

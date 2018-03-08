@@ -31,7 +31,7 @@ class RedeventViewMoreinfo extends RViewSite
 		{
 			echo Jtext::_('COM_REDEVENT_MOREINFO_ERROR_DISABLED_BY_ADMIN');
 
-			return;
+			return true;
 		}
 
 		if ($this->getLayout() == 'final')
@@ -53,6 +53,6 @@ class RedeventViewMoreinfo extends RViewSite
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref)));
 		$this->assignRef('user', $user);
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 }

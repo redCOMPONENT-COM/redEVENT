@@ -19,7 +19,7 @@ class ResyncLoggerSession
 	/**
 	 * create a new log
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function init()
 	{
@@ -32,7 +32,7 @@ class ResyncLoggerSession
 	 *
 	 * @param   string  $data  string to append to the log
 	 *
-	 * @return boolean true on success
+	 * @return void
 	 */
 	public function write($data)
 	{

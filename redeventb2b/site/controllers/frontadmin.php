@@ -17,6 +17,24 @@ defined('_JEXEC') or die('Restricted access');
 class Redeventb2bControllerFrontadmin extends JControllerLegacy
 {
 	/**
+	 * return bookings html table
+	 *
+	 * @return void
+	 */
+	public function searchbookings()
+	{
+		$app = JFactory::getApplication();
+
+		$this->input->set('view', 'frontadmin');
+		$this->input->set('layout', 'searchbookings');
+
+		$this->display();
+
+		// No debug !
+		$app->close();
+	}
+
+	/**
 	 * return sessions html table
 	 *
 	 * @return void
@@ -194,15 +212,42 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	}
 
 	/**
+	 * Get members list
+	 *
+	 * @return void
+	 */
+	public function getmembers()
+	{
+		$app = JFactory::getApplication();
+
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'members';
+
+		$model = $this->getModel('FrontadminMembers');
+
+		$orgId = $app->input->get('org', 0, 'int');
+
+		$att = $model->getMembers($orgId, $app->input->get('filter_person', '', 'string'));
+
+		$view = $this->getView('frontadmin', 'html');
+		$view->assignRef('members', $att);
+		$view->assign('orgId', $orgId);
+		$view->setModel($model, false);
+		$view->setLayout($this->layout);
+		$this->display();
+
+		JFactory::getApplication()->close();
+	}
+
+	/**
 	 * Show edit member view
 	 *
 	 * @return void
 	 */
 	public function editmember()
 	{
-		$app = JFactory::getApplication();
-
-		$this->input->set('view', 'frontadmin');
+		$this->input->set('view', 'editmember');
 		$this->input->set('layout', 'editmember');
 
 		$this->display();
@@ -279,9 +324,10 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		$app = JFactory::getApplication();
 
-		$xref = $app->input->get('xref', 0, 'int');
-		$regs = $app->input->get('reg', array(), 'array');
+		$xrefs = $app->input->get('xref', array(), 'array');
+		$regs = $app->input->get('member_id', array(), 'array');
 		$orgId = $app->input->get('org', 0, 'int');
+		$extraData = $app->input->get('extra', array(), 'array');
 		JArrayHelper::toInteger($regs);
 
 		$resp = new stdclass;
@@ -290,57 +336,67 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 
 		$acl = RedeventUserAcl::getInstance();
 
-		if (!$acl->canManageAttendees($xref))
+		foreach ($xrefs as $xref)
 		{
-			$resp->status = 0;
-			$resp->error = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
-		}
-		else
-		{
-			$added = 0;
-
-			foreach ($regs as $user_id)
+			if (!$acl->canManageAttendees($xref))
 			{
-				try
+				$resp->status = 0;
+				$resp->error = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
+			}
+			else
+			{
+				$added = 0;
+
+				foreach ($regs as $i => $user_id)
 				{
-					$model = $this->getModel('Frontadminregistration', 'Redeventb2bModel');
-					$attendee = $model->book($user_id, $xref, $orgId);
-					$regresp = new stdclass;
-
-					if ($attendee)
+					try
 					{
-						$regresp->status = 1;
-						$regresp->details = $attendee;
-						$resp->submit_key = $attendee->submit_key;
-						$added++;
+						$extra = array();
 
-						JPluginHelper::importPlugin('redevent');
-						$dispatcher = JDispatcher::getInstance();
-						$dispatcher->trigger('onAttendeeCreated', array($attendee->id));
+						foreach ($extraData as $key => $data)
+						{
+							$extra[$key] = $data[$i];
+						}
+
+						$model = $this->getModel('Frontadminregistration', 'Redeventb2bModel');
+						$attendee = $model->book($user_id, $xref, $orgId, $extra);
+						$regresp = new stdclass;
+
+						if ($attendee)
+						{
+							$regresp->status = 1;
+							$regresp->details = $attendee;
+							$resp->submit_key = $attendee->submit_key;
+							$added++;
+
+							JPluginHelper::importPlugin('redevent');
+							$dispatcher = JDispatcher::getInstance();
+							$dispatcher->trigger('onAttendeeCreated', array($attendee->id));
+						}
+						else
+						{
+							$resp->status = 0;
+							$regresp->status = 0;
+							$regresp->error = $model->getError();
+						}
+
+						$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
+						$resp->regs[] = $regresp;
 					}
-					else
+					catch (Redeventb2bExceptionNotice $e)
+					{
+						$resp->status = 1;
+						$regresp->status = 1;
+						$regresp->error = $e->getMessage();
+						$resp->regs[] = $regresp;
+					}
+					catch (Exception $e)
 					{
 						$resp->status = 0;
 						$regresp->status = 0;
-						$regresp->error = $model->getError();
+						$regresp->error = $e->getMessage();
+						$resp->regs[] = $regresp;
 					}
-
-					$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
-					$resp->regs[] = $regresp;
-				}
-				catch (Redeventb2bExceptionNotice $e)
-				{
-					$resp->status = 1;
-					$regresp->status = 1;
-					$regresp->error = $e->getMessage();
-					$resp->regs[] = $regresp;
-				}
-				catch (Exception $e)
-				{
-					$resp->status = 0;
-					$regresp->status = 0;
-					$regresp->error = $e->getMessage();
-					$resp->regs[] = $regresp;
 				}
 			}
 		}
@@ -686,6 +742,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onRemapB2bUserData', array(&$data));
 
+			if (!$rmId)
+			{
+				$this->checkUserExists($data);
+			}
+
 			$rmUser->save($data);
 
 			$resp->status = 1;
@@ -752,5 +813,28 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		}
 
 		return parent::display($cachable, $urlparams);
+	}
+
+	/**
+	 * Check if user already exists
+	 *
+	 * @param   array  $data  form data
+	 *
+	 * @return void
+	 *
+	 * @throws \InvalidArgumentException
+	 *
+	 * @since __deploy_version__
+	 */
+	private function checkUserExists($data)
+	{
+		$userId = JUserHelper::getUserId($data['email']);
+
+		if ($userId)
+		{
+			throw new \InvalidArgumentException(
+				JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_ALREADY_EXISTS')
+			);
+		}
 	}
 }

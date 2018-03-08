@@ -207,6 +207,11 @@ $colnames = array_map('trim', $colnames);
 				  <?php $cats = array();
 					      foreach ($row->categories as $cat)
 					      {
+							if (isset($cat->published) && !$cat->published)
+							{
+								continue;
+							}
+
 					      	if ($this->params->get('catlinklist', 1) == 1) {
 					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
 					      	}

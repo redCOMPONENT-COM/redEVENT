@@ -16,13 +16,17 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventModelMyattending extends RedeventModelBasesessionlist
 {
 	/**
-	 * Constructor
+	 * Method to auto-populate the model state.
 	 *
-	 * @since 0.9
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
 	 */
-	public function __construct()
+	protected function populateState()
 	{
-		parent::__construct();
+		parent::populateState();
 
 		$mainframe = JFactory::getApplication();
 
@@ -53,7 +57,7 @@ class RedeventModelMyattending extends RedeventModelBasesessionlist
 		// Lets load the content if it doesn't already exist
 		if (empty($this->data))
 		{
-			$query = $this->_buildQuery();
+			$query = $this->buildQuery();
 			$pagination = $this->getPagination();
 
 			if ($pop)
@@ -79,7 +83,7 @@ class RedeventModelMyattending extends RedeventModelBasesessionlist
 	 *
 	 * @return JDatabaseQuery
 	 */
-	protected function _buildQuery()
+	protected function buildQuery()
 	{
 		$query = $this->_buildQueryEventsSelect();
 		$query->where('r.cancelled = 0');
@@ -102,27 +106,10 @@ class RedeventModelMyattending extends RedeventModelBasesessionlist
 	 */
 	protected function _buildQueryEventsSelect()
 	{
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('x.dates, x.enddates, x.allday, x.times, x.endtimes, x.registrationend');
-		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code');
-		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
-		$query->select('c.name AS catname, c.id AS catid');
-		$query->select('x.featured, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
+		$query = parent::buildSelectFrom();
+		$query->select('l.id as locid');
 		$query->select('r.id AS attendee_id, r.sid, r.submit_key');
-		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
-		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
-		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
-		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
-		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
-		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('LEFT', '#__redevent_register AS r ON r.xref = x.id');
-		$query->join('LEFT', '#__redevent_events AS a ON a.id = x.eventid');
-		$query->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid');
-		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
-		$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
-		$query->group('x.id');
 
 		return $query;
 	}
@@ -142,7 +129,7 @@ class RedeventModelMyattending extends RedeventModelBasesessionlist
 
 		// Upcoming !
 		$now = strftime('%Y-%m-%d %H:%M');
-		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
+		$query->where('(x.dates IS NULL OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
 		// Then if the user is attending the event
 		$query->where('r.uid = ' . $this->_db->Quote($user->id));

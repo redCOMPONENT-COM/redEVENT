@@ -42,7 +42,7 @@ class RedeventViewEventtemplate extends RedeventViewAdmin
 		}
 
 		// Display the template
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

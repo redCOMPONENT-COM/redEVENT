@@ -28,7 +28,7 @@ abstract class RedeventViewFront extends RViewSite
 	{
 		$this->prepareView();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -102,7 +102,7 @@ abstract class RedeventViewFront extends RViewSite
 	 */
 	protected function getFeedLink()
 	{
-		return false;
+		return;
 	}
 
 	/**
