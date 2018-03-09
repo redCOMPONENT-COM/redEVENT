@@ -130,13 +130,13 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 
 		// Post to redform
 		$rfcore = new RdfCore;
-		$rfcore->setFormId($session_details->redform_id);
+		$rfcore->setFormId($session_details->getEvent()->getEventTemplate()->redform_id);
 
 		$data = array();
 
 		$token = JSession::getFormToken();
 		$data[$token] = 1;
-		$data['form_id'] = $session_details->redform_id;
+		$data['form_id'] = $session_details->getEvent()->getEventTemplate()->redform_id;
 
 		if ($row->submit_key)
 		{
@@ -180,7 +180,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		$sid = $result->posts[0]['sid'];
 
 		$row->bind(get_object_vars($attendee));
-		$row->xref = $session_details->session_id;
+		$row->xref = $session_details->id;
 		$row->sid = $sid;
 		$row->submit_key = $result->submit_key;
 

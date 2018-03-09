@@ -65,7 +65,7 @@ class RedeventsyncclientMaerskHelper
 	 * @param   string  $session_code  session code
 	 * @param   string  $venue_code    venue code
 	 *
-	 * @return object
+	 * @return RedeventEntitySession
 	 *
 	 * @throws Exception
 	 */
@@ -84,8 +84,7 @@ class RedeventsyncclientMaerskHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.id AS session_id');
-		$query->select('e.redform_id');
+		$query->select('x.*');
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
 		$query->join('INNER', '#__redevent_venues AS v on v.id = x.venueid');
@@ -100,7 +99,10 @@ class RedeventsyncclientMaerskHelper
 			throw new Exception(sprintf('Session not found (%s @ %s)', $session_code, $venue_code));
 		}
 
-		return $res;
+		$session = RedeventEntitySession::getInstance($res->id);
+		$session->bind($res);
+
+		return $session;
 	}
 
 	/**
