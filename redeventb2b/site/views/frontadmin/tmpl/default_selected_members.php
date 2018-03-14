@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->loadTemplate('selected_sessions'); ?>
 	</div>
 
-	<button type="button" id="book-course" style="display: none" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_BOOK'); ?></button>
+	<button type="button" id="book-course" disabled="disabled" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_BOOK'); ?></button>
 </div>
 
 <script type="application/javascript">

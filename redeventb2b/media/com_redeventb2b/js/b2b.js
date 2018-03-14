@@ -620,6 +620,11 @@ var redb2b = (function() {
 		};
 
 		var bookAttendees = function(){
+			if (!selectedMembersIds.length) {
+				alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_MEMBER_FIRST"));
+				return false;
+			}
+
 			if (!selectedSessionsIds.length) {
 				alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
 				return false;
@@ -1096,7 +1101,7 @@ var redb2b = (function() {
 
 			if (!selectedMembers.length) {
 				// Show book button
-				document.id('book-course').set('styles', {'display': 'none'});
+				document.id('book-course').setProperty('disabled', 'disabled');
 
 				return;
 			}
@@ -1109,6 +1114,7 @@ var redb2b = (function() {
 					var index = selectedMembersIds.indexOf(member.id);
 					selectedMembersIds.splice(index, 1);
 					selectedMembers.splice(index, 1);
+					refreshSelectedMembersDisplay();
 				});
 				var inputId = new Element('input', {'name': 'member_id[]', 'value': member.id, 'type': 'hidden'});
 				var inputspan = new Element('td.member-name').appendText(member.name);
@@ -1140,7 +1146,7 @@ var redb2b = (function() {
 			});
 
 			// Show book button
-			document.id('book-course').set('styles', {'display': 'block'});
+			document.id('book-course').removeProperty('disabled');
 		};
 
 		var closeModalMember = function (uid, name) {
