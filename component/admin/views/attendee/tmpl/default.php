@@ -52,7 +52,7 @@ $options = array(
 		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_REGDATE' ); ?>:
 		</label></td>
 		<td>
-			<?php echo $this->row->uregdate; ?>
+			<?php echo JHTML::Date($this->row->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME')); ?>
 		</td>
 	</tr>
 	<tr>
