@@ -663,10 +663,11 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		$xref = $app->input->getInt('xref');
 		$question = $app->input->getString('question');
 		$user = JFactory::getUser();
+		$itemId = $this->input->getInt('Itemid') ? '&Itemid=' . $this->input->getInt('Itemid') : '';
 
 		$model = $this->getModel('frontadmininfo');
 
-		$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoformfinal';
+		$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoformfinal' . $itemId;
 		$msgType = '';
 
 		try
@@ -676,7 +677,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 		}
 		catch (Exception $e)
 		{
-			$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoform&xref=' . $xref;
+			$redirect = 'index.php?option=com_redeventb2b&view=frontadmin&layout=infoform&xref=' . $xref . $itemId;
 			$msg = $e->getMessage();
 			$msgType = 'error';
 		}
@@ -828,9 +829,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 	 */
 	private function checkUserExists($data)
 	{
-		$userId = JUserHelper::getUserId($data['email']);
-
-		if ($userId)
+		if ($this->getModel('Frontadmin')->checkUserExists($data['email']))
 		{
 			throw new \InvalidArgumentException(
 				JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_ALREADY_EXISTS')

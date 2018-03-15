@@ -22,7 +22,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.formvalidation');
-$action = JRoute::_('index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component');
+$itemId = Redeventb2bHelperRoute::getItemId();
+$itemId = $itemId ? '&Itemid=' . $itemId : '';
+$action = JRoute::_('index.php?option=com_redeventb2b&task=frontadmin.update_user&tmpl=component' . $itemId);
 ?>
 
 <?php if ($this->modal): ?>
