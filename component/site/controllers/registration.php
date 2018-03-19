@@ -240,7 +240,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				$dispatcher->trigger('onAttendeeCreated', array($res->id));
 			}
 
-			if ($session->getEvent()->notify)
+			if ($session->getEvent()->getEventtemplate()->notify)
 			{
 				$model->sendNotificationEmail($submit_key);
 			}
