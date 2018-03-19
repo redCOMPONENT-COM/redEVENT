@@ -275,8 +275,8 @@ class RedeventAttendee extends JObject
 		if (empty($this->data))
 		{
 			$query = ' SELECT r.* '
-					. ' FROM #__redevent_register AS r '
-					. ' WHERE r.id = ' . $this->db->Quote($this->id);
+				. ' FROM #__redevent_register AS r '
+				. ' WHERE r.id = ' . $this->db->Quote($this->id);
 			$this->db->setQuery($query);
 			$res = $this->db->loadObject();
 			$this->data = $res;
@@ -301,9 +301,9 @@ class RedeventAttendee extends JObject
 
 		// First, changed status to confirmed
 		$query = ' UPDATE #__redevent_register '
-				. ' SET confirmed = 1, confirmdate = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
-				. '   , paymentstart = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
-				. ' WHERE id = ' . $this->id;
+			. ' SET confirmed = 1, confirmdate = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
+			. '   , paymentstart = ' . $this->db->Quote(gmdate('Y-m-d H:i:s'))
+			. ' WHERE id = ' . $this->id;
 		$this->db->setQuery($query);
 		$res = $this->db->query();
 
@@ -427,7 +427,6 @@ class RedeventAttendee extends JObject
 			return true;
 		}
 
-		$app = JFactory::getApplication();
 		$data = $this->load();
 		$session = $this->getSessionDetails();
 		$template = $session->getEvent()->getEventtemplate();
@@ -437,19 +436,19 @@ class RedeventAttendee extends JObject
 		$rfcore = RdfCore::getInstance();
 		$emails = $rfcore->getSidContactEmails($sid);
 
-		$valid_emails = false;
+		$validEmails = false;
 
 		foreach ($emails as $e)
 		{
 			if (JMailHelper::isEmailAddress($e['email']))
 			{
-				$valid_emails = true;
+				$validEmails = true;
 				break;
 			}
 		}
 
 		// Stop if no valid emails
-		if (!$valid_emails)
+		if (!$validEmails)
 		{
 			return true;
 		}
@@ -459,64 +458,57 @@ class RedeventAttendee extends JObject
 			if ($template->notify_off_list_subject)
 			{
 				$subject = $template->notify_off_list_subject;
-				$body = $template->notify_off_list_body;
 			}
 			elseif ($template->notify_subject)
 			{
 				$subject = $template->notify_subject;
-				$body = $template->notify_body;
 			}
 			else
 			{
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_SUBJECT');
-				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');
 			}
 
-			$body = $this->replaceTags($body);
-			$subject = $this->replaceTags($subject);
+			if ($template->notify_off_list_body)
+			{
+				$body = $template->notify_off_list_body;
+			}
+			elseif ($template->notify_body)
+			{
+				$body = $template->notify_body;
+			}
+			else
+			{
+				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');
+			}
 		}
 		else
 		{
-			if ($template->notify_on_list_body)
+			if ($template->notify_on_list_subject)
 			{
 				$subject = $template->notify_on_list_subject;
-				$body = $template->notify_on_list_body;
 			}
 			else
 			{
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_SUBJECT');
-				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');
 			}
 
-			$body = $this->replaceTags($body);
-			$subject = $this->replaceTags($subject);
+			if ($template->notify_on_list_body)
+			{
+				$body = $template->notify_on_list_body;
+			}
+			else
+			{
+				$body = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');
+			}
 		}
 
-		if (empty($subject))
-		{
-			// Not sending !
-			throw new Exception(JText::_('COM_REDEVENT_WL_NOTIFICATION_MISSING_SUBJECT'));
-		}
-
-		// Update image paths in body
-		$body = RedeventHelperOutput::ImgRelAbs($body);
-
-		$mailer = RdfHelper::getMailer();
-
-		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($sender);
+		$mailer = $this->prepareEmail($subject, $body);
 
 		foreach ($emails as $email)
 		{
 			// Add the email address
 			$mailer->AddAddress($email['email'], $email['fullname']);
 		}
-
-		// Mail submitter
-		$htmlmsg = '<html><head><title></title></title></head><body>' . $body . '</body></html>';
-		$mailer->MsgHTML($htmlmsg);
-		$mailer->setSubject($subject);
 
 		// Send the mail
 		if (!$mailer->Send())
@@ -564,11 +556,11 @@ class RedeventAttendee extends JObject
 		}
 
 		$subject = $waiting
-				? $params->get('wl_notify_admin_waiting_subject')
-				: $params->get('wl_notify_admin_attending_subject');
+			? $params->get('wl_notify_admin_waiting_subject')
+			: $params->get('wl_notify_admin_attending_subject');
 		$body = $waiting
-				? $params->get('wl_notify_admin_waiting_body')
-				: $params->get('wl_notify_admin_attending_body');
+			? $params->get('wl_notify_admin_waiting_body')
+			: $params->get('wl_notify_admin_attending_body');
 
 		$mailer = $this->prepareEmail($subject, $body);
 
@@ -756,11 +748,11 @@ class RedeventAttendee extends JObject
 		if (!isset(self::$attending[$this->getXref()]))
 		{
 			$query = ' SELECT r.id '
-					. ' FROM #__redevent_register AS r '
-					. ' WHERE r.xref = ' . $this->getXref()
-					. '   AND r.confirmed = 1 '
-					. '   AND r.cancelled = 0 '
-					. '   AND r.waitinglist = 0 ';
+				. ' FROM #__redevent_register AS r '
+				. ' WHERE r.xref = ' . $this->getXref()
+				. '   AND r.confirmed = 1 '
+				. '   AND r.cancelled = 0 '
+				. '   AND r.waitinglist = 0 ';
 			$this->db->setQuery($query);
 			self::$attending[$this->getXref()] = $this->db->loadColumn();
 		}
@@ -860,8 +852,8 @@ class RedeventAttendee extends JObject
 		}
 
 		$subject = $unreg ?
-				$params->get('unregistration_notification_subject')
-				: $params->get('registration_notification_subject');
+			$params->get('unregistration_notification_subject')
+			: $params->get('registration_notification_subject');
 
 		$body = '<HTML><HEAD>
 			<STYLE TYPE="text/css">
@@ -976,21 +968,21 @@ class RedeventAttendee extends JObject
 		// TODO: use the route helper !
 		$url = JRoute::_(
 			JURI::root()
-				. 'index.php?option=com_redevent&task=registration.activate'
-				. '&confirmid=' . str_replace(".", "_", $this->data->uip)
-				. 'x' . $this->data->xref
-				. 'x' . $this->data->uid
-				. 'x' . $this->data->id
-				. 'x' . $this->data->submit_key
+			. 'index.php?option=com_redevent&task=registration.activate'
+			. '&confirmid=' . str_replace(".", "_", $this->data->uip)
+			. 'x' . $this->data->xref
+			. 'x' . $this->data->uid
+			. 'x' . $this->data->id
+			. 'x' . $this->data->submit_key
 		);
 		$activatelink = '<a href="' . $url . '">' . JText::_('COM_REDEVENT_Activate') . '</a>';
 
 		$cancellinkurl = JRoute::_(
 			JURI::root()
-				. 'index.php?option=com_redevent&task=registration.emailcancelregistration'
-				. '&rid=' . $this->data->id
-				. '&xref=' . $this->data->xref
-				. '&submit_key=' . $this->data->submit_key
+			. 'index.php?option=com_redevent&task=registration.emailcancelregistration'
+			. '&rid=' . $this->data->id
+			. '&xref=' . $this->data->xref
+			. '&submit_key=' . $this->data->submit_key
 		);
 		$cancellink = '<a href="' . $cancellinkurl . '">' . JText::_('COM_REDEVENT_CANCEL') . '</a>';
 
@@ -1001,6 +993,7 @@ class RedeventAttendee extends JObject
 
 		// Convert urls
 		$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
+		$htmlmsg = RdfHelper::wrapMailHtmlBody($htmlmsg);
 		$mailer->setBody($htmlmsg);
 
 		$subject = $tags->replaceTags($subject);
