@@ -5,3 +5,9 @@ table#re-attachments {
 table#re-attachments td, table#re-attachments th {
 	padding: 10px;
 }
+
+ul.re-files {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
