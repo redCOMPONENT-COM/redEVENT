@@ -779,4 +779,16 @@ class RedeventHelperRoute
 
 		return $parts;
 	}
+
+	/**
+	 * Url to attachement file
+	 *
+	 * @param   integer  $attachmentId  attachmentId
+	 *
+	 * @return string
+	 */
+	public static function getAttachment($attachmentId)
+	{
+		return 'index.php?option=com_redevent&task=attachments.getfile&format=raw&file=' . $attachmentId;
+	}
 }

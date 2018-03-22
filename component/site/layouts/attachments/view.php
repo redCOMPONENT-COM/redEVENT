@@ -23,7 +23,7 @@ RHelperAsset::load('attachements.css', 'com_redevent');
 				$name = $file->name ?: $file->file;
 				$tip = JHtml::tooltipText(JText::_('COM_REDEVENT_Download') . ' ' . $name);
 			?>
-			<a href="<?= JRoute::_('index.php?option=com_redevent&task=getfile&format=raw&file=' . $file->id) ?>"
+			<a href="<?= JRoute::_(RedeventHelperRoute::getAttachment($file->id)) ?>"
 			   title="<?= $tip ?>">
 				<i class="icon icon-download"></i> <span class="re-file-name"><?= $name ?></span>
 			</a>
