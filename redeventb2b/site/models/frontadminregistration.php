@@ -298,7 +298,7 @@ class Redeventb2bModelFrontadminregistration extends JModelLegacy
 	/**
 	 * Notify organization admins
 	 *
-	 * @return void
+	 * @return string
 	 *
 	 * @throws Exception
 	 */

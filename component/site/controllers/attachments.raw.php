@@ -1,23 +1,22 @@
 <?php
 /**
  * @package    Redevent.Site
- *
- * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright  Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Redevent Component Controller
+ * redEVENT Component Myevents Controller
  *
  * @package  Redevent.Site
- * @since    3.2.2
+ * @since    __deploy_version__
  */
-class RedeventController extends RedeventControllerFront
+class RedeventControllerAttachments extends JControllerLegacy
 {
 	/**
-	 * for attachement downloads
+	 * return sessions html table
 	 *
 	 * @return void
 	 */
@@ -28,20 +27,19 @@ class RedeventController extends RedeventControllerFront
 		$user = JFactory::getUser();
 		$helper = new RedeventHelperAttachment;
 		$path = $helper->getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
+		$fileName = basename($path);
 
 		// The header is fine tuned to work with grump ie8... if you modify a property, make sure it's still ok !
 		header('Content-Description: File Transfer');
 
 		// Mime
-		$mime = RedeventHelper::getMime($path);
-		$doc = JFactory::getDocument();
-		$doc->setMimeEncoding($mime);
+		$mime = RedeventHelper::getMime($path) ?: 'octet-stream';
 
-		header('Content-Disposition: attachment; filename="' . basename($path) . '"');
-		header('Content-Transfer-Encoding: binary');
-		header('Expires: 0');
-		header('Cache-Control: no-store, no-cache');
-		header('Pragma: no-cache');
+		header("Pragma: public");
+		header("Expires: -1");
+		header("Cache-Control: public, must-revalidate, post-check=0, pre-check=0");
+		header("Content-Disposition: attachment; filename=\"$fileName\"");
+		header("Content-Type: " . $mime);
 
 		if ($fd = fopen($path, "r"))
 		{

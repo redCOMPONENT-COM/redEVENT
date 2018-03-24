@@ -27,19 +27,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php if ($this->row->attachments && count($this->row->attachments)):?>
 <div class="re-files">
 <div class="re-section-title"><?php echo JText::_( 'COM_REDEVENT_FILES' ); ?></div>
-<table>
-	<tbody>
-	<?php foreach ($this->row->attachments as $file): ?>
-		<tr>
-			<td><span class="el-file-dl-icon hasTooltip"
-			          title="<?php echo JText::_('COM_REDEVENT_Download').' '.($file->file).'<br/>'.($file->description);?>"><?php
-			          echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id,
-			                           JHTML::image('media/com_redevent/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
-			</td>
-			<td class="re-file-name"><?php echo ($file->name ? $file->name : $file->file); ?></td>
-		</tr>
-	</tbody>
-	<?php endforeach; ?>
-</table>
+	<?= RedeventLayoutHelper::render('attachments.view', array('attachments' => $this->row->attachments)); ?>
 </div>
 <?php endif;

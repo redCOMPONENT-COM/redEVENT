@@ -96,7 +96,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	 *
 	 * @param   JUser  $user  user
 	 *
-	 * @return boolean
+	 * @return object
 	 */
 	public function getCanRegisterStatus($user = null)
 	{
@@ -501,7 +501,7 @@ class RedeventEntitySession extends RedeventEntityBase
 	{
 		if (!$pricegroups = $this->getPricegroups($filterAcl, $user))
 		{
-			return $this->pricegroups;
+			return false;
 		}
 
 		$groups = array_filter(
@@ -798,6 +798,18 @@ class RedeventEntitySession extends RedeventEntityBase
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if there are prices set for session
+	 *
+	 * @return boolean
+	 */
+	public function hasActivePrices()
+	{
+		$activePrices = $this->getActivePricegroups(false);
+
+		return !empty($activePrices);
 	}
 
 	/**

@@ -34,25 +34,25 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 
 		if (empty($cid))
 		{
-			return $this->globalSync();
+			$this->globalSync();
+
+			return;
 		}
-		else
+
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		foreach ($cid as $id)
 		{
-			// Check for request forgeries
-			JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+			$entity = RedeventEntityCategory::load($id);
 
-			foreach ($cid as $id)
+			if ($this->syncCategory($entity))
 			{
-				$entity = RedeventEntityCategory::load($id);
-
-				if ($this->syncCategory($entity))
-				{
-					$synced++;
-				}
+				$synced++;
 			}
-
-			$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_CATEGORIES_SYNCED', $synced);
 		}
+
+		$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_CATEGORIES_SYNCED', $synced);
 
 		$app->redirect('index.php?option=com_redevent&view=categories', $msg);
 	}
@@ -101,7 +101,7 @@ class PlgSystemAesir_Redevent_SyncSyncCategories
 
 		$data = array(
 			'type_id' => RedeventHelperConfig::get('aesir_category_type_id'),
-			'template_id' => RedeventHelperConfig::get('aesir_category_template_id'),
+			'layout' => RedeventHelperConfig::get('aesir_category_default_layout'),
 			'title'   => $title,
 			'access'  => $access,
 			'parent_id' => $parentId,

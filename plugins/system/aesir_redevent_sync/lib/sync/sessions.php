@@ -32,25 +32,25 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 
 		if (empty($cid))
 		{
-			return $this->globalSync();
+			$this->globalSync();
+
+			return;
 		}
-		else
+
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		foreach ($cid as $sessionId)
 		{
-			// Check for request forgeries
-			JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+			$session = RedeventEntitySession::load($sessionId);
 
-			foreach ($cid as $sessionId)
+			if ($this->syncSession($session))
 			{
-				$session = RedeventEntitySession::load($sessionId);
-
-				if ($this->syncSession($session))
-				{
-					$synced++;
-				}
+				$synced++;
 			}
-
-			$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_SESSIONS_SYNCED', $synced);
 		}
+
+		$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_SESSIONS_SYNCED', $synced);
 
 		$app->redirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
@@ -94,7 +94,7 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 
 			$data = array(
 				'type_id' => RedeventHelperConfig::get('aesir_session_type_id'),
-				'template_id' => RedeventHelperConfig::get('aesir_session_template_id'),
+				'layout' => RedeventHelperConfig::get('aesir_session_default_layout'),
 				'title'   => $title,
 				'access'  => 1,
 				'organisation_id' => $this->getOrganisationId($session->getEvent()),

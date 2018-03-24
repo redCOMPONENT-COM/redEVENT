@@ -1214,7 +1214,7 @@ class RedeventTags
 		{
 			if ($f->field_id == $id)
 			{
-				return $f->value;
+				return $f->renderValue();
 			}
 		}
 
@@ -1243,7 +1243,7 @@ class RedeventTags
 		{
 			if ($f->id == $id)
 			{
-				return $f->value;
+				return $f->renderValue();
 			}
 		}
 

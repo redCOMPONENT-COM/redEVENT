@@ -447,34 +447,6 @@ class RedeventModelAttendees extends RModelList
 	}
 
 	/**
-	 * Delete attendees
-	 *
-	 * @param   mixed  $pks  ids to delete
-	 *
-	 * @return boolean
-	 */
-	public function delete($pks = null)
-	{
-		$sessionIds = $this->getAttendeesSessionIds($pks);
-
-		if (!parent::delete($pks))
-		{
-			return false;
-		}
-
-		$this->updateWaitingLists($sessionIds);
-
-		foreach ($pks as $attendee_id)
-		{
-			JPluginHelper::importPlugin('redevent');
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
-		}
-
-		return parent::delete($pks);
-	}
-
-	/**
 	 * Get attendees sessions ids
 	 *
 	 * @param   mixed  $pks  ids

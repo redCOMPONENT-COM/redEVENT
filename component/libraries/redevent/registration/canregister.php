@@ -20,6 +20,7 @@ class RedeventRegistrationCanregister
 	const ERROR_NO_REGISTRATION = 'noregistration';
 	const ERROR_HAS_PENDING = 'haspending';
 	const ERROR_USER_MAX = 'usermax';
+	const ERROR_NO_PRICE_AVAILABLE = 'nopriceavailable';
 
 	/**
 	 * @var JUser
@@ -32,7 +33,7 @@ class RedeventRegistrationCanregister
 	private $session;
 
 	/**
-	 * @var bool
+	 * @var object
 	 */
 	private $result;
 
@@ -88,6 +89,11 @@ class RedeventRegistrationCanregister
 		}
 
 		if ($this->userReachedMaxRegistrations())
+		{
+			return $this->result;
+		}
+
+		if (!$this->checkPrices())
 		{
 			return $this->result;
 		}
@@ -262,6 +268,38 @@ class RedeventRegistrationCanregister
 
 			return true;
 		}
+
+		return false;
+	}
+
+	/**
+	 * Check if there are available prices for user, or free for all
+	 *
+	 * @return boolean true if allowed
+	 */
+	private function checkPrices()
+	{
+		$hasPrices = $this->session->getActivePricegroups(false);
+
+		if (empty($hasPrices))
+		{
+			// Session is free for all
+			return true;
+		}
+
+		$availablePrices = $this->session->getActivePricegroups(true, $this->user);
+
+		if (!empty($availablePrices))
+		{
+			return true;
+		}
+
+		$this->setResultError(
+			$this->user->guest
+				? JText::_('COM_REDEVENT_REGISTRATION_NO_ALLOWED_PRICE_LOGIN_FIRST')
+				: JText::_('COM_REDEVENT_REGISTRATION_NO_ALLOWED_PRICE'),
+			static::ERROR_NO_PRICE_AVAILABLE
+		);
 
 		return false;
 	}

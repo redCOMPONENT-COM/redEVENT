@@ -150,6 +150,16 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	}
 
 	/**
+	 * Get form id
+	 *
+	 * @return integer
+	 */
+	public function getFormId()
+	{
+		return $this->entity->getEvent()->getEventtemplate()->redform_id;
+	}
+
+	/**
 	 * Return number of places left
 	 *
 	 * @return integer
@@ -221,5 +231,35 @@ final class RedeventEntityTwigSession extends AbstractTwigEntity
 	public function getFull()
 	{
 		return $this->entity->isFull();
+	}
+
+	/**
+	 * Check if session has prices set (if not, it's free)
+	 *
+	 * @return   array|boolean
+	 */
+	public function hasPrices()
+	{
+		return $this->entity->hasActivePrices();
+	}
+
+	/**
+	 * Return true if user can register
+	 *
+	 * @return boolean
+	 */
+	public function canRegister()
+	{
+		return $this->entity->canRegister();
+	}
+
+	/**
+	 * Return can register status (if error...)
+	 *
+	 * @return object
+	 */
+	public function getCanRegisterStatus()
+	{
+		return $this->entity->getCanRegisterStatus();
 	}
 }

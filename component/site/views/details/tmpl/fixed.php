@@ -126,6 +126,7 @@ if ($this->row->venueid != 0) {
   	$strip_details = $this->row->details;
   	$strip_details = JFilterOutput::cleanText($strip_details);
   	$strip_details = trim($strip_details);
+
   	if ($strip_details) : ?>
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_SESSION_DETAILS' ); ?></h2>
@@ -134,25 +135,9 @@ if ($this->row->venueid != 0) {
   		</div>
 
   	<?php endif; ?>
-
   	<?php if ($this->row->attachments && count($this->row->attachments)):?>
   	    <h2 class="description"><?php echo JText::_( 'COM_REDEVENT_FILES' ); ?></h2>
-  		<div>
-  			<table class="event-file">
-  				<tbody>
-  			<?php foreach ($this->row->attachments as $file): ?>
-	  				<tr>
-	  					<td>
-		  					<span class="event-file-dl-icon hasTooltip" title="<?php echo JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file).'<br/>'.$this->escape($file->description);?>">
-		  					<?php echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id,
-		  					                       JHTML::image('media/com_redevent/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
-	  					</td>
-	  					<td class="event-file-name"><?php echo $this->escape($file->name ? $file->name : $file->file); ?></td>
-	  				</tr>
-  				</tbody>
-  			<?php endforeach; ?>
-  			</table>
-  		</div>
+  		<?= RedeventLayoutHelper::render('attachments.view', array('attachments' => $this->row->attachments)); ?>
   	<?php endif; ?>
 
 <!--  	Venue  -->

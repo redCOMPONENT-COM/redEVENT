@@ -34,25 +34,25 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 
 		if (empty($cid))
 		{
-			return $this->globalSync();
+			$this->globalSync();
+
+			return;
 		}
-		else
+
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		foreach ($cid as $eventId)
 		{
-			// Check for request forgeries
-			JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+			$event = RedeventEntityEvent::load($eventId);
 
-			foreach ($cid as $eventId)
+			if ($this->syncEvent($event))
 			{
-				$event = RedeventEntityEvent::load($eventId);
-
-				if ($this->syncEvent($event))
-				{
-					$synced++;
-				}
+				$synced++;
 			}
-
-			$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_EVENTS_SYNCED', $synced);
 		}
+
+		$msg = JText::sprintf('PLG_AESIR_REDEVENT_SYNC_D_EVENTS_SYNCED', $synced);
 
 		$app->redirect('index.php?option=com_redevent&view=events', $msg);
 	}
@@ -90,7 +90,7 @@ class PlgSystemAesir_Redevent_SyncSyncEvents
 
 		$data = array(
 			'type_id' => RedeventHelperConfig::get('aesir_event_type_id'),
-			'template_id' => RedeventHelperConfig::get('aesir_event_template_id'),
+			'layout' => RedeventHelperConfig::get('aesir_event_default_layout'),
 			'title'   => $title,
 			'access'  => $access,
 			'organisation_id' => $this->getOrganisationId($event),
