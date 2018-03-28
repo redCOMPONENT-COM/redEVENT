@@ -105,7 +105,7 @@ class Redeventb2bViewFrontadmin extends RViewAdmin
 		}
 
 		$document->addScript('media/jui/js/jquery.autocomplete.min.js');
-		RHelperAsset::load('b2b.js');
+		Redeventb2bHelperScript::load('b2b.js');
 
 		// For redmember
 		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');
