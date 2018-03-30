@@ -991,13 +991,13 @@ class RedeventAttendee extends JObject
 		$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
 		$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
 
-		// Convert urls
-		$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
-		$htmlmsg = RdfHelper::wrapMailHtmlBody($htmlmsg);
-		$mailer->setBody($htmlmsg);
-
 		$subject = $tags->replaceTags($subject);
 		$mailer->setSubject($subject);
+
+		// Convert urls
+		$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
+		$htmlmsg = RdfHelper::wrapMailHtmlBody($htmlmsg, $subject);
+		$mailer->setBody($htmlmsg);
 
 		return $mailer;
 	}
