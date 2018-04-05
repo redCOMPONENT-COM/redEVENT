@@ -34,6 +34,10 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			$object = $this->parseSessionXml($xml);
 			$row = RTable::getAdminInstance('Session', array(), 'com_redevent');
 
+			if ($object->id && !$row->load($object->id))
+			{
+				throw new Exception($row->getError());
+			}
 
 			if (!$row->bind(get_object_vars($object)))
 			{
