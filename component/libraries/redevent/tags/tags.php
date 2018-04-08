@@ -3005,6 +3005,17 @@ class RedeventTags
 	}
 
 	/**
+	 * Parses total_price tag
+	 * total price for registration, including redform fields
+	 *
+	 * @return string
+	 */
+	private function getTag_totalprice()
+	{
+		return $this->getSubmissionTotalPrice();
+	}
+
+	/**
 	 * returns gps position of the venue
 	 *
 	 * @return string
