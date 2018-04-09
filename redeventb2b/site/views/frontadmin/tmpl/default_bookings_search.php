@@ -51,11 +51,11 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div class="date-filter-label"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_DATE_FILTER'); ?></div>
 	<div>
-		<?php echo JHtml::calendar(null, 'filter_from', 'bookings_filter_from', '%Y-%m-%d',
+		<?php echo JHtml::_('calendar', null, 'filter_from', 'bookings_filter_from', '%Y-%m-%d',
 			array('class' => 'input-small', 'placeholder' => JText::_('COM_REDEVENT_FROM'))); ?>
 	</div>
 	<div>
-		<?php echo JHTML::calendar(null, 'filter_to', 'bookings_filter_to', '%Y-%m-%d',
+		<?php echo JHtml::_('calendar', null, 'filter_to', 'bookings_filter_to', '%Y-%m-%d',
 			array('class' => 'input-small', 'placeholder' => JText::_('COM_REDEVENT_TO'))); ?>
 	</div>
 
