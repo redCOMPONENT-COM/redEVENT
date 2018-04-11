@@ -68,11 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td><?php echo RedeventHelperLanguages::getFormattedIso1($row->session_language); ?></td>
 					<td>
-						<?php if (!$this->isFull($row)): ?>
-							<?php echo $this->manageBookingButton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
-						<?php else: ?>
-							<?php echo $this->printInfoIcon($row); ?>
-						<?php endif; ?>
+						<?php echo $this->manageBookingButton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
 					</td>
 				</tr>
 			<?php endforeach;?>

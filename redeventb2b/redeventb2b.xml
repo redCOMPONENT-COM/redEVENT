@@ -10,6 +10,7 @@
 	<version>3.2.4</version>
 	<tag>##VERSION##</tag>
 	<redcore version="1.8.9" />
+	<scriptsVersion>1</scriptsVersion>
 	<description>COM_REDEVENTB2B_XML_DESCRIPTION</description>
 
 	<!-- Public front end files -->
