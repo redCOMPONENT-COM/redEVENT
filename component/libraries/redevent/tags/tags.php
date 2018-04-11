@@ -1134,6 +1134,32 @@ class RedeventTags
 	 *
 	 * @return boolean|mixed
 	 */
+	private function getSubmissionFormattedTotalPrice()
+	{
+		if (!$this->submitkey)
+		{
+			return false;
+		}
+
+		$db = $this->db;
+		$query = $db->getQuery(true);
+
+		$query->select('SUM(s.price + s.vat) AS total, s.currency')
+			->from('#__rwf_submitters AS s')
+			->where('s.submit_key = ' . $db->quote($this->submitkey))
+			->group('s.submit_key');
+
+		$db->setQuery($query);
+		$res = $db->loadObject();
+
+		return RHelperCurrency::getFormattedPrice($res->total, $res->currency);
+	}
+
+	/**
+	 * Get submission price
+	 *
+	 * @return boolean|mixed
+	 */
 	private function getSubmissionTotalPrice()
 	{
 		if (!$this->submitkey)
@@ -2991,6 +3017,17 @@ class RedeventTags
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Parses total_price tag
+	 * total price for registration, including redform fields
+	 *
+	 * @return string
+	 */
+	private function getTag_formatted_total_price()
+	{
+		return $this->getSubmissionFormattedTotalPrice();
 	}
 
 	/**
