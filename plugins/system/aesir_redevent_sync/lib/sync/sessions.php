@@ -130,7 +130,6 @@ class PlgSystemAesir_Redevent_SyncSyncSessions
 
 		if (!in_array($sessionItemId, $relatedItems))
 		{
-			echo "<p>Adding $session->id $session->dates / $sessionItemId</p>";
 			$relatedItems[] = $sessionItemId;
 
 			$params->set('related_items', $relatedItems);
