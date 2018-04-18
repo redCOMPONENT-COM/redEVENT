@@ -351,7 +351,7 @@ class Redeventb2bControllerFrontadmin extends JControllerLegacy
 				{
 					try
 					{
-						$extra = array();
+						$extra = array('organisation_id' => $orgId);
 
 						foreach ($extraData as $key => $data)
 						{

@@ -78,7 +78,7 @@ class plgRedeventMaerskregistration extends JPlugin
 	 */
 	public function onB2BRegistrationAddExtra($attendeeId, $extraData)
 	{
-		if (!isset($extraData['ponumber']) && !isset($extraData['comments']))
+		if (!isset($extraData['ponumber']) && !isset($extraData['comments']) && !isset($extraData['organisation_id']))
 		{
 			return;
 		}
@@ -95,6 +95,11 @@ class plgRedeventMaerskregistration extends JPlugin
 		if (isset($extraData['comments']))
 		{
 			$query->set('comments = ' . $db->quote($extraData['comments']));
+		}
+
+		if (isset($extraData['organisation_id']))
+		{
+			$query->set('organisation_id = ' . $db->quote($extraData['organisation_id']));
 		}
 
 		$query->where('id = ' . $attendeeId);
