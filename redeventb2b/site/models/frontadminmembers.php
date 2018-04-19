@@ -206,7 +206,7 @@ class Redeventb2bModelFrontadminMembers extends RedeventModelBasesessionlist
 		$query->where('r.uid IN (' . implode(',', $memberIds) . ')');
 		$query->where('r.cancelled = 0');
 		$query->where('(r.origin = ' . $db->q('b2b') . ' OR r.origin = ' . $db->q('picasso') . ')');
-		$query->where('(r.organisation_id = 0 OR r.organisation_id = ' . $this->organizationId . ')');
+		$query->where('(r.organisation_id IS NULL OR r.organisation_id = 0 OR r.organisation_id = ' . $this->organizationId . ')');
 
 		$db->setQuery($query);
 		$regs = $db->loadObjectList('uid');
