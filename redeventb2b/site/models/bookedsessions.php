@@ -199,7 +199,7 @@ class Redeventb2bModelBookedsessions extends RedeventModelBasesessionlist
 		}
 
 		// Only bookings associated to organisation, or not if new
-		$query->where('r.origin = ' . $db->q('b2b'));
+		$query->where('(r.origin = ' . $db->q('b2b') . ' OR r.origin = ' . $db->q('picasso') . ')');
 		$query->where('(r.organisation_id = 0 OR r.organisation_id = ' . $this->getState('filter_organization') . ')');
 
 		$filter_order = $this->getState('filter_order');
