@@ -49,6 +49,9 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception($row->getError());
 			}
 
+			$dispatcher = RFactory::getDispatcher();
+			$dispatcher->trigger('onContentAfterSave', array('com_redevent.b2b.session.sync', $row, true));
+
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
@@ -129,6 +132,9 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			{
 				throw new Exception($row->getError());
 			}
+
+			$dispatcher = RFactory::getDispatcher();
+			$dispatcher->trigger('onContentAfterSave', array('com_redevent.b2b.session.sync', $row, false));
 
 			// Log
 			$this->log(

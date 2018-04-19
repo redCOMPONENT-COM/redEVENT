@@ -35,8 +35,16 @@
 					type="text"
 					label="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_TIMEOUT_LABEL"
 					description="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_TIMEOUT_DESC"
-                    default="20"
+					default="20"
 					/>
+				<field
+						name="sync_user"
+						type="user"
+						label="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_SYNC_USER_LABEL"
+						description="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_SYNC_USER_DESC"
+						required="true"
+				/>
+
 			</fieldset>
 		</fields>
 	</config>

@@ -101,6 +101,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 
 		try
 		{
+			JFactory::getSession()->set('user', JUser::getInstance($this->params->get('sync_user')));
 			$this->handle($data);
 		}
 		catch (PlgresyncmaerskExceptionMismatchuser $e)
