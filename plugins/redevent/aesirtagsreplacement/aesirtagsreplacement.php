@@ -81,7 +81,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 				$item = $this->getAesirSessionItem($session->id);
 
 				$search[] = $tag->getFullMatch();
-				$replace[] = JRoute::_($item->getLink());
+				$replace[] = $item->getLink();
 			}
 			elseif (strstr($tag->getName(), 'aesir_session_item_'))
 			{
