@@ -86,7 +86,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 			elseif (strstr($tag->getName(), 'aesir_session_item_'))
 			{
 				$item = $this->getAesirSessionItem($session->id);
-				$field = substr($tag->getName(), strlen(aesir_session_item_));
+				$field = substr($tag->getName(), strlen('aesir_session_item_'));
 
 				if (isset($item->{$field}))
 				{
