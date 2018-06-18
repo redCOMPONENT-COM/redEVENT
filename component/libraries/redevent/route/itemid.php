@@ -72,7 +72,7 @@ class RedeventRouteItemid
 		$menus = JFactory::getApplication()->getMenu('site');
 		$active = $menus->getActive();
 
-		if ($active && $active->component == 'com_redevent')
+		if ($active)
 		{
 			return $active;
 		}
