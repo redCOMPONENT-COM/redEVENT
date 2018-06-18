@@ -1141,12 +1141,11 @@ class RedeventModelBasesessionlist extends RModel
 		$this->setState('limitstart', $limitstart);
 
 		// Get the filter request variables
-		$filterOrder = $params->get('session_orderby', $app->input->getCmd('filter_order', 'x.dates'));
+		$filterOrder = $params->get('session_orderby') ?: $app->input->getCmd('filter_order', 'x.dates');
 		$this->setState('filter_order', $filterOrder);
-		$filterOrderDir = $params->get(
-			'session_orderby_dir',
-			strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC'
-		);
+
+		$filterOrderDir = $params->get('session_orderby_dir') ?:
+			strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC';
 		$this->setState('filter_order_Dir', $filterOrderDir);
 
 		$this->setState('filter',      $app->input->get('filter', '', 'string'));
