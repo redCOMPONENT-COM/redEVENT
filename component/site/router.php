@@ -39,6 +39,13 @@ class RedeventRouter extends JComponentRouterBase
 
 		switch ($view)
 		{
+			case 'registration':
+				if (isset($query['layout']))
+				{
+					$segments[] = $query['layout'];
+					unset($query['layout']);
+				}
+				break;
 			case 'confirmation':
 				break;
 			case 'editevent':
@@ -477,6 +484,15 @@ class RedeventRouter extends JComponentRouterBase
 					$vars['task'] = $segments[2];
 				}
 
+				break;
+
+			case 'registration':
+				$vars['view'] = $segments[0];
+
+				if (isset($segments[1]))
+				{
+					$vars['layout'] = $segments[1];
+				}
 				break;
 
 			case 'archive':
