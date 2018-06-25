@@ -119,7 +119,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 			$sessionSelectField = $db->qn('s.' . $this->getSessionSelectField()->fieldcode);
 
 			$query = $db->getQuery(true)
-				->select('s.*')
+				->select('s.id')
 				->from($sessionTableName)
 				->join('INNER', '#__reditem_items AS i ON i.id = s.id')
 				->where($sessionSelectField . ' = ' . $sessionId);
@@ -128,7 +128,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 
 			if ($res = $db->loadObject())
 			{
-				$this->sessionItem = ReditemEntityItem::getInstance($res->id)->bind($res);
+				$this->sessionItem = ReditemEntityItem::load($res->id);
 			}
 			else
 			{
