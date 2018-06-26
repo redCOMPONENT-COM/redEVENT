@@ -429,6 +429,13 @@ class RedeventAttendee extends JObject
 
 		$data = $this->load();
 		$session = $this->getSessionDetails();
+
+		// Disable sending of waiting list status emails for past or unpublished sessions
+		if (!$session->isUpcoming() || $session->published != 1 || $session->getEvent()->published != 1)
+		{
+			return true;
+		}
+
 		$template = $session->getEvent()->getEventtemplate();
 
 		$sid = $data->sid;
