@@ -126,7 +126,7 @@
 	<fieldset name="registra">
 		<field
 				name="registra"
-				type="radio"
+				type="list"
 				class="inputbox"
 				default="0"
 				size="1"
@@ -137,7 +137,7 @@
 		</field>
 		<field
 				name="unregistra"
-				type="radio"
+				type="list"
 				class="inputbox"
 				default="0"
 				size="1"
