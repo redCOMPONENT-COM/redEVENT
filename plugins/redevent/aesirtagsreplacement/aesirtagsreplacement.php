@@ -94,6 +94,11 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 					$search[] = $tag->getFullMatch();
 					$replace[] = $item->{$field};
 				}
+				else
+				{
+					$search[] = $tag->getFullMatch();
+					$replace[] = $item->getFieldValue($field);
+				}
 			}
 		}
 
