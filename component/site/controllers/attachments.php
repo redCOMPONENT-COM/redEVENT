@@ -57,4 +57,36 @@ class RedeventControllerAttachments extends JControllerLegacy
 
 		$app->close();
 	}
+
+	/**
+	 * Delete attachment
+	 *
+	 * @return void
+	 */
+	public function remove()
+	{
+		$app = JFactory::getApplication();
+		$id = $app->input->getInt('id', 0);
+
+		$response = new stdClass;
+
+		$helper = new RedeventHelperAttachment;
+
+		$res = $helper->remove($id);
+
+		if ($res)
+		{
+			$response->success = 1;
+			$cache = JFactory::getCache('com_redevent');
+			$cache->clean();
+		}
+		else
+		{
+			$response->success = 0;
+			$response->error = $helper->getError();
+		}
+
+		echo json_encode($response);
+		$app->close();
+	}
 }
