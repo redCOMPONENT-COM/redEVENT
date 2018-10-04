@@ -287,6 +287,11 @@ class RedeventEntityAttendee extends RedeventEntityBase
 			$rfcore = RdfCore::getInstance();
 			$sidsanswers = $rfcore->getAnswers(array($item->sid));
 			$this->answers = $sidsanswers->getSubmissionBySid($item->sid);
+
+			// Don't forget to add the session price as extra
+			$field = $this->getSession()->getPricefield();
+			$field->setValue($item->sessionpricegroup_id);
+			$this->answers->addField($field);
 		}
 
 		return $this->answers;
