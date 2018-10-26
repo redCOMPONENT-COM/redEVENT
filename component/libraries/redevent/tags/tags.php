@@ -2995,7 +2995,7 @@ class RedeventTags
 				$link .= '&lang=' . $lang;
 			}
 
-			$link = $this->absoluteUrls($link, false);
+			$link = JRoute::_(JUri::root() . $link, false);
 		}
 
 		return $link;
