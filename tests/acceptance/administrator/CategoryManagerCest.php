@@ -59,6 +59,6 @@ class CategoryManagerCest
         $I->buttonClear($this->categoryName1,$this->categoryName2);
         $I->wantToTest('delete a category 2 in redEVENT');
         $I->deleteCategory($this->categoryName1);
-
     }
 }
+

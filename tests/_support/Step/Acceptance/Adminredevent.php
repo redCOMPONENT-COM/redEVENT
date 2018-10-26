@@ -1,6 +1,19 @@
 <?php
+/**
+ * @package     Redevent
+ * @subpackage  Tests
+ * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 namespace Step\Acceptance;
+
 use \Page\Acceptance\Administrator\AbstractPage;
+
+/**
+ * Class Adminredevent
+ * @package Step\Acceptance
+ */
 class Adminredevent extends \AcceptanceTester
 {
 	/**
@@ -518,13 +531,13 @@ class Adminredevent extends \AcceptanceTester
 	}
 
 	/**
-     * Function search for item
-     *
+	 * Function search for item
+	 *
 	 * @param  string $URL   url of page
 	 * @param  string $name  name of item
-     *
-     * @return  void
-     * @throws \Exception
+	 *
+	 * @return  void
+	 * @throws \Exception
 	 */
 	public function search($URL,$name)
 	{
@@ -536,12 +549,12 @@ class Adminredevent extends \AcceptanceTester
 	}
 
 	/**
-     * Function clear for item
-     *
+	 * Function clear for item
+	 *
 	 * @param  string $name1   name1 of item
 	 * @param  string $name2   name2 of item
-     *
-     * @throws \Exception
+	 *
+	 * @throws \Exception
 	 */
 	public function buttonClear($name1,$name2)
 	{
@@ -554,12 +567,12 @@ class Adminredevent extends \AcceptanceTester
 	}
 
 	/**
-     * * Function delete for item
-     *
+	 * Function delete for item
+	 *
 	 * @param string $URL      url of page
 	 * @param string $title    title of page
 	 * @param string $name     name of item
-     *
+	 *
 	 * @throws \Exception
 	 */
 	public function delete($URL,$title,$name)
