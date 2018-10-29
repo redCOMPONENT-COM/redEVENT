@@ -8,13 +8,13 @@
 
 namespace Step\Acceptance\Administrator;
 use \Page\Acceptance\Administrator\CategoryManagerPage;
-use Step\Acceptance\AdminRedEvent;
+use Step\Acceptance\Adminredevent;
 
 /**
  * Class CategoryManagerSteps
  * @package Step\Acceptance\Administrator
  */
-class CategoryManagerSteps extends AdminRedEvent
+class CategoryManagerSteps extends Adminredevent
 {
 	/**
 	 * @param $nameCategory
