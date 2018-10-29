@@ -25,7 +25,22 @@ class CategoryManagerSteps extends Adminredevent
 		$I = $this;
 		$I->createItem(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,CategoryManagerPage::$categoryTitleNew,$nameCategory);
 	}
+    public function createCategory($params)
+    {
+        $I = $this;
+        $I->amOnPage(CategoryManagerPage::$URL);
+        $I->waitForText(CategoryManagerPage::$categoryTitle, 30, ['css' => 'H1']);
+        $I->click(CategoryManagerPage:: $buttonNew);
+        $I->waitForText(CategoryManagerPage::$categoryTitleNew, 30, ['css' => 'label']);
+        $I->fillField(CategoryManagerPage::$fieldName, $params['name']);
 
+        if (!empty($params['description']))
+        {
+            $I->fillTinyMceEditorById(CategoryManagerPage::$fieldDescription, $params['description']);
+        }
+
+        $I->click(CategoryManagerPage::$buttonSave);
+    }
 	/**
 	 * @param $nameCategory
 	 * @throws \Exception

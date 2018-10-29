@@ -48,4 +48,10 @@ class CategoryManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $buttonNew          = '//button[contains(@onclick, "category.add")]';
+
+    /**
+     * Button new
+     * @var string
+     */
+    public static $buttonSave          = '//button[contains(@onclick, "category.save")]';
 }
