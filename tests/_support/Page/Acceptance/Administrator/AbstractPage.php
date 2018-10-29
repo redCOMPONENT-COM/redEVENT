@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Page\acceptance\administrator;
+namespace Page\Acceptance\Administrator;
 
 
 class AbstractPage
@@ -16,7 +16,8 @@ class AbstractPage
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldName          = '#jform_name';
+	public static $fieldName                   = '#jform_name';
+
 	/**
 	 * Locator for message
 	 * @var string
