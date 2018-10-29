@@ -522,7 +522,7 @@ class Adminredevent extends \AcceptanceTester
 	{
 		$I = $this;
 		$I->amOnPage($URL);
-		$I->waitForText($title, 120);
+		$I->waitForText($title, 30,['css' => 'H1']);
 		$I->click(AbstractPage::$buttonNew);
 		$I->waitForText($titleNew, 120);
 		$I->waitForElement(AbstractPage::$fieldName,120);
