@@ -44,7 +44,7 @@ class CategoryManagerSteps extends Adminredevent
 	{
 		$I = $this;
 		$I->amOnPage(CategoryManagerPage::$URL);
-		$I->waitForText(CategoryManagerPage::$categoryTitle, 30);
+		$I->waitForText(CategoryManagerPage::$categoryTitle, 30,['css' => 'H1']);
 		$I->search(CategoryManagerPage::$URL,$nameCategory);
 		$I->see($nameCategory, CategoryManagerPage::$tableResult);
 		$I->click(CategoryManagerPage::$checkAll);
