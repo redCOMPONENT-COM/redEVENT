@@ -12,6 +12,12 @@ namespace Page\acceptance\administrator;
 class AbstractPage
 {
 	/**
+	 * Locator for field name
+	 * @var array
+	 * @since 1.0.0
+	 */
+	public static $fieldName          = '#jform_name';
+	/**
 	 * Locator for message
 	 * @var string
 	 */
