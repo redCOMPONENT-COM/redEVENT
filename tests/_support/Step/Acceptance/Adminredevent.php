@@ -522,10 +522,10 @@ class Adminredevent extends \AcceptanceTester
 	{
 		$I = $this;
 		$I->amOnPage($URL);
-		$I->waitForText($title, 30);
+		$I->waitForText($title, 120);
 		$I->click(AbstractPage::$buttonNew);
-		$I->waitForText($titleNew, 30);
-		$I->waitForElement(AbstractPage::$fieldName,30);
+		$I->waitForText($titleNew, 120);
+		$I->waitForElement(AbstractPage::$fieldName,120);
 		$I->fillField(AbstractPage::$fieldName, $name);
 		$I->click(AbstractPage::$buttonSave);
 	}
@@ -579,7 +579,7 @@ class Adminredevent extends \AcceptanceTester
 	{
 		$I = $this;
 		$I->amOnPage($URL);
-		$I->waitForText($title, 30);
+		$I->waitForText($title, 120);
 		$I->Search($URL,$name);
 		$I->see($name, AbstractPage::$tableResult);
 		$I->click(AbstractPage::$checkAll);
@@ -589,7 +589,7 @@ class Adminredevent extends \AcceptanceTester
 		$I->wantTo('Test with delete product then accept');
 		$I->click(AbstractPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(AbstractPage::$messageDeleteProductSuccess, 60, AbstractPage::$message);
+		$I->waitForText(AbstractPage::$messageDeleteProductSuccess, 120, AbstractPage::$message);
 		$I->dontSee($name);
 	}
 }
