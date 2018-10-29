@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Trang
- * Date: 10/22/2018
- * Time: 5:43 PM
+ * @package     Redevent
+ * @subpackage  Tests
+ * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Page\acceptance\administrator;

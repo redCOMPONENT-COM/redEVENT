@@ -29,7 +29,7 @@ class CategoryManagerCest
     protected $categoryName2;
 
     /**
-     * CategoryManagerCest constructor.
+     * 04-CategoryManagerCest constructor.
      *
      * @since 1.0.0
      */

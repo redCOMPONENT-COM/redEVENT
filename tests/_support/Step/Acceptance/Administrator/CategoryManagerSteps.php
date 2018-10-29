@@ -6,7 +6,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 namespace Step\Acceptance\Administrator;
 use \Page\Acceptance\Administrator\CategoryManagerPage;
 use Step\Acceptance\AdminRedEvent;
@@ -59,3 +58,4 @@ class CategoryManagerSteps extends AdminRedEvent
 		$I->dontSee($nameCategory);
 	}
 }
+
