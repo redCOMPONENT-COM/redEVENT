@@ -27,14 +27,14 @@ class CategoryManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $categoryTitle      = "Categories - redEVENT";
+	public static $categoryTitle      = "Categories";
 
 	/**
 	 * Title of this page new category.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $categoryTitleNew   = "Add/edit category - redEVENT";
+	public static $categoryTitleNew   = "Category";
 
 	/**
 	 * Locator for field name
