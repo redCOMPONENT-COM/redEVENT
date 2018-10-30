@@ -8,7 +8,7 @@
 	"require-dev": {
 		"squizlabs/php_codesniffer": "^2.8.0",
 		"phpmd/phpmd": "*",
-		"codeception/codeception": "~2.4",
+		"codeception/codeception": "2.1.6",
 		"joomla-projects/joomla-browser": "v3.8.10",
 		"codegyre/robo": "~0.6",
 		"redcomponent/robo": "dev-master",
@@ -17,7 +17,7 @@
 		"knplabs/github-api": "1.4.12",
 		"ifsnop/mysqldump-php": "1.*",
 		"fzaninotto/faker": "^1.5",
-		"joomla-projects/selenium-server-standalone": "v3.8.1",
+		"joomla-projects/selenium-server-standalone": "v2.53.1",
 		"nette/reflection": "~2"
 	}
 }
