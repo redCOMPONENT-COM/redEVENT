@@ -718,23 +718,4 @@ class RoboFile extends \Robo\Tasks
             ->run()
             ->stopOnFail();
     }
-
-    public function uploadPatch($githubToken, $repoOwner, $repo, $pull)
-    {
-        $body = 'Please Download the Patch Package for testing from the following Path: http://test.redcomponent.com/redEVENT/PR/' . $pull . '/redEVENT.zip';
-
-        $this->say('Creating Github Comment');
-        $client = new \Github\Client;
-        $client->authenticate($githubToken, \Github\Client::AUTH_HTTP_TOKEN);
-        $client
-            ->api('issue')
-            ->comments()->create(
-                $repoOwner, $repo, $pull,
-                array(
-                    'body' => $body
-                )
-            );
-    }
-
-
 }
