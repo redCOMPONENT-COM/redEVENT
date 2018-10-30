@@ -8,6 +8,9 @@
 
 class AddACategoryCest
 {
+	/**
+	 * @param \Step\Acceptance\Adminredevent $I
+	 */
 	public function addCategory(\Step\Acceptance\Adminredevent $I)
 	{
 		$I->wantToTest('Add a category in redEVENT');
