@@ -36,7 +36,7 @@ class CategoryManagerCest
 	 */
 	public function __construct()
 	{
-		$this->faker       = Factory::create();
+		$this->faker         = Factory::create();
 		$this->categoryName1 = $this->faker->bothify("Category Name 1 ##??");
 		$this->categoryName2 = $this->faker->bothify("Category Name 2 ##??");
 	}

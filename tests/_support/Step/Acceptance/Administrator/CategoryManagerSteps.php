@@ -24,9 +24,9 @@ class CategoryManagerSteps extends Adminredevent
 	{
 		$I = $this;
 		$I->amOnPage(CategoryManagerPage::$URL);
-		$I->waitForText(CategoryManagerPage::$categoryTitle, 30, ['css' => 'H1']);
+		$I->waitForText(CategoryManagerPage::$categoryTitle, 30);
 		$I->click(CategoryManagerPage:: $buttonNew);
-		$I->waitForText(CategoryManagerPage::$categoryTitleNew, 30, ['css' => 'label']);
+		$I->waitForText(CategoryManagerPage::$categoryTitleNew, 30);
 		$I->fillField(CategoryManagerPage::$fieldName, $params['name']);
 
 		if (!empty($params['description']))
@@ -54,7 +54,7 @@ class CategoryManagerSteps extends Adminredevent
 	{
 		$I = $this;
 		$I->amOnPage(CategoryManagerPage::$URL);
-		$I->waitForText(CategoryManagerPage::$categoryTitle, 30,['css' => 'H1']);
+		$I->waitForText(CategoryManagerPage::$categoryTitle, 30);
 		$I->search(CategoryManagerPage::$URL,$nameCategory);
 		$I->see($nameCategory, CategoryManagerPage::$tableResult);
 		$I->click(CategoryManagerPage::$checkAll);
