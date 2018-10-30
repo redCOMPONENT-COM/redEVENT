@@ -48,7 +48,7 @@ before_script:
 - gulp release --skip-version --testRelease
 - cd ../tests
 - composer config -g github-oauth.github.com $GITHUB_TOKEN
-- composer install --prefer-dist
+- composer install
 
 script:
 - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
