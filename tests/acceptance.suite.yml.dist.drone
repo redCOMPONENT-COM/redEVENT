@@ -16,8 +16,6 @@ settings:
     webservice:
         client_id: 'test'
         client_secret: 'dfe2ec3470c3693031535191566b8665b102a54fe63851cf29a6ebc1222bbdaa382f2029b4eae10f'
-
-class_name: AcceptanceTester
 modules:
     enabled:
         - JoomlaBrowser
@@ -37,7 +35,8 @@ modules:
             restart: true
             port: 9515
             capabilities:
-              unexpectedAlertBehaviour: 'accept'
+              chromeOptions:
+                args: ["--headless", "--disable-gpu", "--no-sandbox", "window-size=1920x1080"]
             username: '%tests_user%'               # UserName for the Administrator
             password: 'admin'                      # Password for the Administrator
             database host: 'db'                    # place where the Application is Hosted #server Address
