@@ -3,7 +3,7 @@ dist: precise
 sudo: required
 
 php:
-- 7
+- 7.1
 env:
   global:
     - CLOUD_NAME=redcomponent
