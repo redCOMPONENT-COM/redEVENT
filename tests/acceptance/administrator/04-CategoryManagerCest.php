@@ -52,7 +52,7 @@ class CategoryManagerCest
 	public function AllCaseCategory(CategoryManagerSteps $I)
 	{
 		$I->wantToTest('Add a category 1 in redEVENT');
-		$I->createCategory(
+		$I->createCategoryNew(
 			array(
 				'name' => $this->categoryName1,
 				'description' => '<p>The description goes here</p>'
@@ -60,7 +60,7 @@ class CategoryManagerCest
 		);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 		$I->wantToTest('Add a category 2 in redEVENT');
-		$I->createCategory(
+		$I->createCategoryNew(
 			array(
 				'name' => $this->categoryName2,
 				'description' => '<p>The description goes here</p>'
