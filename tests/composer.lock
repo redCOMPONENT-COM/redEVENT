@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "32a2632b8d0b44d5cc95da9f96439f64",
-    "content-hash": "0fc82d0c9117370f06a626aaaaa01284",
+    "hash": "3e453ddd23ba2793b44e9e718dc2998e",
+    "content-hash": "d042d44d914f4804ba789b22cdc0fa05",
     "packages": [],
     "packages-dev": [
         {
@@ -1236,16 +1236,16 @@
         },
         {
             "name": "joomla-projects/joomla-browser",
-            "version": "v3.8.10",
+            "version": "v3.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/joomla-browser.git",
-                "reference": "69fae8ee0cb8d73a1bc1547db21cf73f299a8b5a"
+                "reference": "7b1e25f27396f6b2d4f6b0e881d43e30a616e2d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/69fae8ee0cb8d73a1bc1547db21cf73f299a8b5a",
-                "reference": "69fae8ee0cb8d73a1bc1547db21cf73f299a8b5a",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/7b1e25f27396f6b2d4f6b0e881d43e30a616e2d7",
+                "reference": "7b1e25f27396f6b2d4f6b0e881d43e30a616e2d7",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 "acceptance testing",
                 "joomla"
             ],
-            "time": "2018-06-28 07:41:43"
+            "time": "2017-08-23 22:51:35"
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
