@@ -33,7 +33,7 @@ class Adminredevent extends \AcceptanceTester
 	 *
 	 * @return void
 	 */
-	public function createCategory($params)
+	public function createCategoryOld($params)
 	{
 		$I = $this;
 		$I->amOnPage('administrator/index.php?option=com_redevent&view=categories');

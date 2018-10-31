@@ -53,13 +53,13 @@ class CategoryManagerCest
 	public function addCategory(Adminredevent $I)
 	{
 		$I->wantToTest('Add a category in redEVENT');
-		$I->createCategory(
+		$I->createCategoryOld(
 			array(
 				'name' => 'Category 1',
 				'description' => '<p>The description goes here</p>'
 			)
 		);
-		$I->waitForText('Item successfully saved', 30, ['id' => 'system-message-container']);
+		$I->waitForText('Item saved', 30, ['id' => 'system-message-container']);
 		$I->seeElement('//*[@id="table-items"]//td//*[contains(., "Category 1")]');
 	}
 	/**
