@@ -23,18 +23,7 @@ class CategoryManagerSteps extends Adminredevent
 	public function createCategoryNew($params)
 	{
         $I = $this;
-        $I->amOnPage(CategoryManagerPage::$URL);
-        $I->waitForText(CategoryManagerPage::$categoryTitle, 30, CategoryManagerPage::$H1);
-        $I->click(CategoryManagerPage::$buttonNew);
-        $I->waitForText(CategoryManagerPage::$categoryTitleNew, 30, CategoryManagerPage::$label);
-        $I->fillField(CategoryManagerPage::$fieldName, $params['name']);
-
-        if (!empty($params['description']))
-        {
-            $I->fillTinyMceEditorById(CategoryManagerPage::$fieldDescription, $params['description']);
-        }
-
-        $I->click(CategoryManagerPage::$buttonSave);
+        $I->createItemNew(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,CategoryManagerPage::$categoryTitleNew,$params);
 	}
 	/**
 	 * @param $nameCategory
@@ -53,19 +42,7 @@ class CategoryManagerSteps extends Adminredevent
 	public function deleteCategory($nameCategory)
 	{
 		$I = $this;
-		$I->amOnPage(CategoryManagerPage::$URL);
-		$I->waitForText(CategoryManagerPage::$categoryTitle, 30);
-		$I->search(CategoryManagerPage::$URL,$nameCategory);
-		$I->see($nameCategory, CategoryManagerPage::$tableResult);
-		$I->click(CategoryManagerPage::$checkAll);
-		$I->click(CategoryManagerPage::$buttonDelete);
-		$I->wantTo('Test with delete category but then cancel');
-		$I->cancelPopup();
-		$I->wantTo('Test with delete product then accept');
-		$I->click(CategoryManagerPage::$buttonDelete);
-		$I->acceptPopup();
-		$I->waitForText(CategoryManagerPage::$messageDeleteProductSuccess, 60, CategoryManagerPage::$message);
-		$I->dontSee($nameCategory);
+        $I->delete(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,$nameCategory);
 	}
 }
 

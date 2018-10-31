@@ -492,6 +492,23 @@ class Adminredevent extends \AcceptanceTester
 		return true;
 	}
 
+    public function createItemNew($URL,$categoryTitle,$categoryTitleNew,$params)
+    {
+        $I = $this;
+        $I->amOnPage($URL);
+        $I->waitForText($categoryTitle, 30, AbstractPage::$H1);
+        $I->click(AbstractPage::$buttonNew);
+        $I->waitForText($categoryTitleNew, 30, AbstractPage::$label);
+        $I->fillField(AbstractPage::$fieldName, $params['name']);
+
+        if (!empty($params['description']))
+        {
+            $I->fillTinyMceEditorById(AbstractPage::$fieldDescription, $params['description']);
+        }
+
+        $I->click(AbstractPage::$buttonSaveClose);
+    }
+
 	/**
 	 * Function search for item
 	 *
