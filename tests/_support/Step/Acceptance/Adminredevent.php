@@ -26,7 +26,29 @@ class Adminredevent extends \AcceptanceTester
 
 		$I->click(['xpath' => '//button[contains(@onclick, "bundle.save")]']);
 	}
+	/**
+	 * Create a Category
+	 *
+	 * @param   array  $params  parameters
+	 *
+	 * @return void
+	 */
+	public function createCategory($params)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_redevent&view=categories');
+		$I->waitForText('Categories', 30, ['css' => 'H1']);
+		$I->click(['xpath' => '//button[contains(@onclick, "category.add")]']);
+		$I->waitForText('Category', 30, ['css' => 'label']);
+		$I->fillField(['id' => 'jform_name'], $params['name']);
 
+		if (!empty($params['description']))
+		{
+			$I->fillTinyMceEditorById('jform_description', $params['description']);
+		}
+
+		$I->click(['xpath' => '//button[contains(@onclick, "category.save")]']);
+	}
 	/**
 	 * Create a Tag
 	 *
