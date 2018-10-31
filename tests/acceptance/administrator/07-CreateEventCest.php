@@ -8,7 +8,7 @@
 
 class AddAnEventCest
 {
-	public function addEvent(\Step\Acceptance\Adminredevent $I)
+	public function addEvent(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add an event in redEVENT with created template');
 		$I->doAdministratorLogin();
@@ -24,7 +24,7 @@ class AddAnEventCest
 		$I->seeElement('//*[@id="table-items"]//td//*[contains(., "' . $name . '")]');
 	}
 
-	public function addEventWithDefaultTemplate(\Step\Acceptance\Adminredevent $I)
+	public function addEventWithDefaultTemplate(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add an event in redEVENT with default template');
 		$I->doAdministratorLogin();

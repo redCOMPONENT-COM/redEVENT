@@ -8,7 +8,7 @@
 
 class CreateTemplateCest
 {
-	public function addTemplate(\Step\Acceptance\Adminredevent $I)
+	public function addTemplate(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add a template in redEVENT');
 		$I->doAdministratorLogin();

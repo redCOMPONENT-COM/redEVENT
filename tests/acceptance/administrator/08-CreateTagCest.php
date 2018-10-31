@@ -8,7 +8,7 @@
 
 class CreateTagCest
 {
-	public function addTag(\Step\Acceptance\Adminredevent $I)
+	public function addTag(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add a tag in redEVENT');
 		$I->doAdministratorLogin();

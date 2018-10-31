@@ -8,7 +8,7 @@
 
 class CreatePriceGroupCest
 {
-	public function createPriceGroup(\Step\Acceptance\Adminredevent $I)
+	public function createPriceGroup(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add a price group in redEVENT');
 		$I->doAdministratorLogin();

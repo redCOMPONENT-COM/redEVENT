@@ -8,7 +8,7 @@
 
 class CreateSessionCest
 {
-	public function createSession(\Step\Acceptance\Adminredevent $I)
+	public function createSession(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add an open date session in redEVENT');
 		$I->doAdministratorLogin();

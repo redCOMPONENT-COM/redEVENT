@@ -8,7 +8,7 @@
 
 class CreateCustomFieldsCest
 {
-	public function addEventTextField(\Step\Acceptance\Adminredevent $I)
+	public function addEventTextField(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add an event custom text field in redEVENT');
 		$I->doAdministratorLogin();
@@ -26,7 +26,7 @@ class CreateCustomFieldsCest
 		$I->see("text", '//*[@id="table-items"]//td//*[contains(., "' .$name . '")]/ancestor::tr/td[9]');
 	}
 
-	public function addSessionTextField(\Step\Acceptance\Adminredevent $I)
+	public function addSessionTextField(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add an session custom text field in redEVENT');
 		$I->doAdministratorLogin();

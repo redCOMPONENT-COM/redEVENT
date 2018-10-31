@@ -8,7 +8,7 @@
 
 class CheckSessionListFilterCest
 {
-	public function checkSearchFilterCest(\Step\Acceptance\Adminredevent $I)
+	public function checkSearchFilterCest(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->doAdministratorLogin();
 

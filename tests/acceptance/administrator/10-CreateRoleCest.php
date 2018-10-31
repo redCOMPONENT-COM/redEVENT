@@ -8,7 +8,7 @@
 
 class CreateRoleCest
 {
-	public function createRole(\Step\Acceptance\Adminredevent $I)
+	public function createRole(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add a role in redEVENT');
 		$I->doAdministratorLogin();

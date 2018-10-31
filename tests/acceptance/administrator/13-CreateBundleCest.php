@@ -8,7 +8,7 @@
 
 class CreateBundleCest
 {
-	public function createBundle(\Step\Acceptance\Adminredevent $I)
+	public function createBundle(\Step\Acceptance\AdminRedevent $I)
 	{
 		$I->wantToTest('Add a bundle in redEVENT');
 		$I->doAdministratorLogin();

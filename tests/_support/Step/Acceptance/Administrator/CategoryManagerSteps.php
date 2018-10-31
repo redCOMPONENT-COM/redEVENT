@@ -2,19 +2,19 @@
 /**
  * @package     Redevent
  * @subpackage  Tests
- * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Step\Acceptance\Administrator;
 use \Page\Acceptance\Administrator\CategoryManagerPage;
-use Step\Acceptance\Adminredevent;
+use Step\Acceptance\AdminRedevent;
 
 /**
  * Class CategoryManagerSteps
  * @package Step\Acceptance\Administrator
  */
-class CategoryManagerSteps extends Adminredevent
+class CategoryManagerSteps extends AdminRedevent
 {
 	/**
 	 * @param $params

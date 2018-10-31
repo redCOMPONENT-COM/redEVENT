@@ -1,7 +1,7 @@
 <?php
 namespace Step\Acceptance;
 use \Page\Acceptance\Administrator\AbstractPage;
-class Adminredevent extends \AcceptanceTester
+class AdminRedevent extends \AcceptanceTester
 {
 	/**
 	 * Create a Bundle
