@@ -19,7 +19,7 @@ class AbstractPage
 	public static $fieldName                   = '#jform_name';
 
 	/**
-	 * Locator for field name
+	 * Locator for field description
 	 * @var array
 	 * @since 1.0.0
 	 */
