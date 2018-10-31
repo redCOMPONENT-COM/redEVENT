@@ -20,7 +20,7 @@ class CategoryManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $URL               = 'Administrator/index.php?option=com_redevent&view=categories';
+	public static $URL               = 'administrator/index.php?option=com_redevent&view=categories';
 
 	/**
 	 * Title of this page.
@@ -34,14 +34,14 @@ class CategoryManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $categoryTitleNew   = "Name";
+	public static $categoryTitleNew   = "Category";
 
 	/**
 	 * Locator for field name
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldName          = '#jform_name';
+	public static $fieldName          = ['id' => 'jform_name'];
 
 	/**
 	 * Button new
@@ -53,5 +53,5 @@ class CategoryManagerPage extends AbstractPage
      * Button new
      * @var string
      */
-    public static $buttonSave          = '//button[contains(@onclick, "category.save")]';
+    public static $buttonSave          = ['xpath' => '//button[contains(@onclick, "category.save")]'];
 }
