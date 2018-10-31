@@ -34,7 +34,7 @@ class CategoryManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $categoryTitleNew   = "Category";
+	public static $categoryTitleNew   = "Name";
 
 	/**
 	 * Locator for field name
@@ -47,7 +47,7 @@ class CategoryManagerPage extends AbstractPage
 	 * Button new
 	 * @var string
 	 */
-	public static $buttonNew          = '//button[contains(@onclick, "category.add")]';
+	public static $buttonNew          = ['xpath' => '//button[contains(@onclick, "category.add")]'];
 
     /**
      * Button new

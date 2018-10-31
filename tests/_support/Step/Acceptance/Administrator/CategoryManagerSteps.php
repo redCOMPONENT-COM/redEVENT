@@ -22,19 +22,19 @@ class CategoryManagerSteps extends Adminredevent
 	 */
 	public function createCategoryNew($params)
 	{
-		$I = $this;
-		$I->amOnPage(CategoryManagerPage::$URL);
-		$I->waitForText('Categories', 30, ['css' => 'H1']);
+        $I = $this;
+        $I->amOnPage('administrator/index.php?option=com_redevent&view=categories');
+        $I->waitForText('Categories', 30, ['css' => 'H1']);
         $I->click(['xpath' => '//button[contains(@onclick, "category.add")]']);
-		$I->waitForText(CategoryManagerPage::$categoryTitleNew, 30,['css' => 'label']);
-		$I->fillField(CategoryManagerPage::$fieldName, $params['name']);
+        $I->waitForText('Category', 30, ['css' => 'label']);
+        $I->fillField(['id' => 'jform_name'], $params['name']);
 
-		if (!empty($params['description']))
-		{
-			$I->fillTinyMceEditorById(CategoryManagerPage::$fieldDescription, $params['description']);
-		}
+        if (!empty($params['description']))
+        {
+            $I->fillTinyMceEditorById('jform_description', $params['description']);
+        }
 
-		$I->click(CategoryManagerPage::$buttonSaveClose);
+        $I->click(['xpath' => '//button[contains(@onclick, "category.save")]']);
 	}
 	/**
 	 * @param $nameCategory
