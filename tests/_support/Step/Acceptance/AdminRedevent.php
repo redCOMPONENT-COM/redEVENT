@@ -248,7 +248,7 @@ class AdminRedevent extends \AcceptanceTester
 
 		$I->click(['xpath' => '//button[contains(@onclick, "venue.save")]']);
 	}
-	
+
 	/**
 	 * Create a section
 	 *

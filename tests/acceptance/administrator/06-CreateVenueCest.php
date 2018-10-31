@@ -8,7 +8,7 @@
 
 class AddAVenueCest
 {
-	public function addVenue(\Step\Acceptance\AdminRedevent $I)
+	public function addVenue(\Step\Acceptance\Adminredevent $I)
 	{
 		$I->wantToTest('Add a venue in redEVENT');
 		$I->doAdministratorLogin();
