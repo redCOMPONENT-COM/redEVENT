@@ -24,8 +24,8 @@ class CategoryManagerSteps extends Adminredevent
 	{
 		$I = $this;
 		$I->amOnPage(CategoryManagerPage::$URL);
-		$I->waitForText(CategoryManagerPage::$categoryTitle, 30,['css' => 'H1']);
-		$I->click(CategoryManagerPage:: $buttonNew);
+		$I->waitForText('Categories', 30, ['css' => 'H1']);
+        $I->click(['xpath' => '//button[contains(@onclick, "category.add")]']);
 		$I->waitForText(CategoryManagerPage::$categoryTitleNew, 30,['css' => 'label']);
 		$I->fillField(CategoryManagerPage::$fieldName, $params['name']);
 
@@ -34,7 +34,7 @@ class CategoryManagerSteps extends Adminredevent
 			$I->fillTinyMceEditorById(CategoryManagerPage::$fieldDescription, $params['description']);
 		}
 
-		$I->click(CategoryManagerPage::$buttonSave);
+		$I->click(CategoryManagerPage::$buttonSaveClose);
 	}
 	/**
 	 * @param $nameCategory

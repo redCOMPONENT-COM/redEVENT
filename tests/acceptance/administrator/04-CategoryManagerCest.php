@@ -9,7 +9,6 @@ use Faker\Generator;
 use Faker\Factory;
 use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\CategoryManagerSteps;
-use Step\Acceptance\Adminredevent;
 class CategoryManagerCest
 {
 	/**
@@ -46,22 +45,6 @@ class CategoryManagerCest
 		$i->doAdministratorLogin();
 	}
 
-	/**
-	 * @param Adminredevent $I
-	 * @throws Exception
-	 */
-	public function addCategory(Adminredevent $I)
-	{
-		$I->wantToTest('Add a category in redEVENT');
-		$I->createCategoryOld(
-			array(
-				'name' => 'Category 1',
-				'description' => '<p>The description goes here</p>'
-			)
-		);
-		$I->waitForText('Item saved', 30, ['id' => 'system-message-container']);
-		$I->seeElement('//*[@id="table-items"]//td//*[contains(., "Category 1")]');
-	}
 	/**
 	 * @param CategoryManagerSteps $I
 	 * @throws Exception
