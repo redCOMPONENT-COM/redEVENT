@@ -474,20 +474,20 @@ class Adminredevent extends \AcceptanceTester
      * Function create for item
      *
      * @param $URL
-     * @param $categoryTitle
-     * @param $categoryTitleNew
+     * @param $itemTitle
+     * @param $itemTitleNew
      * @param $params
      *
      * @return  void
      * @throws \Exception
      */
-    public function createItemNew($URL,$categoryTitle,$categoryTitleNew,$params)
+    public function createItemNew($URL,$itemTitle,$itemTitleNew,$params)
     {
         $I = $this;
         $I->amOnPage($URL);
-        $I->waitForText($categoryTitle, 30, AbstractPage::$H1);
+        $I->waitForText($itemTitle, 30, AbstractPage::$H1);
         $I->click(AbstractPage::$buttonNew);
-        $I->waitForText($categoryTitleNew, 30, AbstractPage::$label);
+        $I->waitForText($itemTitleNew, 30, AbstractPage::$label);
         $I->fillField(AbstractPage::$fieldName, $params['name']);
 
         if (!empty($params['description']))
