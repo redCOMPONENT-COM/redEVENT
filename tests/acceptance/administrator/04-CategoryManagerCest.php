@@ -9,6 +9,7 @@ use Faker\Generator;
 use Faker\Factory;
 use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\CategoryManagerSteps;
+use Step\Acceptance\Adminredevent;
 class CategoryManagerCest
 {
 	/**
@@ -45,10 +46,13 @@ class CategoryManagerCest
 		$i->doAdministratorLogin();
 	}
 
-	public function addCategory(\Step\Acceptance\Adminredevent $I)
+	/**
+	 * @param Adminredevent $I
+	 * @throws Exception
+	 */
+	public function addCategory(Adminredevent $I)
 	{
 		$I->wantToTest('Add a category in redEVENT');
-		$I->doAdministratorLogin();
 		$I->createCategory(
 			array(
 				'name' => 'Category 1',
