@@ -22,9 +22,9 @@ class redFormManagerSteps extends AdminRedevent
     {
         $I = $this;
         $I->amOnPage(redFormManagerPage::$URLSection);
-        $I->waitForText(redFormManagerPage::$SectionTitle, 30, ['css' => 'H1']);
+        $I->waitForText(redFormManagerPage::$SectionTitle, 30, redFormManagerPage::$H1);
         $I->click(redFormManagerPage::$buttonNew);
-        $I->waitForText(redFormManagerPage::$SectionTitleNew, 30, ['css' => 'label']);
+        $I->waitForText(redFormManagerPage::$SectionTitleNew, 30, redFormManagerPage::$label);
         $I->fillField(redFormManagerPage::$fieldName, $params['name']);
 
         if (!empty($params['class']))
@@ -51,9 +51,9 @@ class redFormManagerSteps extends AdminRedevent
     {
         $I = $this;
         $I->amOnPage(redFormManagerPage::$URLSection);
-        $I->waitForText(redFormManagerPage::$SectionTitle, 30, ['css' => 'H1']);
+        $I->waitForText(redFormManagerPage::$SectionTitle, 30, redFormManagerPage::$H1);
 
-        if ($I->isElementPresent('//*[@id="sectionList"]//td//*[contains(., "' . $params['name'] . '")]'))
+        if ($I->isElementPresent(redFormManagerPage::returnValueSection($params)))
         {
             return;
         }
@@ -72,9 +72,9 @@ class redFormManagerSteps extends AdminRedevent
     {
         $I = $this;
         $I->amOnPage(redFormManagerPage::$URLField);
-        $I->waitForText(redFormManagerPage::$FieldTitle, 30, ['css' => 'H1']);
+        $I->waitForText(redFormManagerPage::$FieldTitle, 30, redFormManagerPage::$H1);
 
-        if ($I->isElementPresent('//*[@id="fieldList"]//td//*[contains(., "' . $params['name'] . '")]'))
+        if ($I->isElementPresent(redFormManagerPage::returnValueField($params)))
         {
             return;
         }
@@ -93,11 +93,11 @@ class redFormManagerSteps extends AdminRedevent
     {
         $I = $this;
         $I->amOnPage(redFormManagerPage::$URLField);
-        $I->waitForText(redFormManagerPage::$FieldTitle, 30, ['css' => 'H1']);
+        $I->waitForText(redFormManagerPage::$FieldTitle, 30, redFormManagerPage::$H1);
         $I->click(redFormManagerPage::$buttonNew);
-        $I->waitForText(redFormManagerPage::$FieldTitleNew, 30, ['css' => 'label']);
+        $I->waitForText(redFormManagerPage::$FieldTitleNew, 30, redFormManagerPage::$label);
         $I->fillField(redFormManagerPage::$inputField, $params['name']);
-        $I->selectOptionInChosenById('jform_fieldtype', $params['fieldtype']);
+        $I->selectOptionInChosenById(redFormManagerPage::$inputFieldType, $params['fieldtype']);
 
         if (isset($params['field_header']))
         {
@@ -128,9 +128,9 @@ class redFormManagerSteps extends AdminRedevent
     {
         $I = $this;
         $I->amOnPage(redFormManagerPage::$URLForm);
-        $I->waitForText(redFormManagerPage::$FormTitle, 30, ['css' => 'H1']);
+        $I->waitForText(redFormManagerPage::$FormTitle, 30, redFormManagerPage::$H1);
 
-        if ($I->isElementPresent('//*[@id="formList"]//td//*[contains(., "' . $params['name'] . '")]'))
+        if ($I->isElementPresent(redFormManagerPage::returnValueForm($params)))
         {
             return;
         }
@@ -149,9 +149,9 @@ class redFormManagerSteps extends AdminRedevent
     {
         $I = $this;
         $I->amOnPage(redFormManagerPage::$URLForm);
-        $I->waitForText(redFormManagerPage::$FormTitle, 30, ['css' => 'H1']);
+        $I->waitForText(redFormManagerPage::$FormTitle, 30, redFormManagerPage::$H1);
         $I->click(redFormManagerPage::$buttonNew);
-        $I->waitForText(redFormManagerPage::$FormTitleNew, 30, ['css' => 'label']);
+        $I->waitForText(redFormManagerPage::$FormTitleNew, 30, redFormManagerPage::$label);
         $I->fillField(redFormManagerPage::$inputFormName, $params['name']);
 
         $I->click(redFormManagerPage::$buttonSaveClose);
@@ -160,14 +160,14 @@ class redFormManagerSteps extends AdminRedevent
         {
             $I->waitForText(redFormManagerPage::$messageSaveSuccess, 30, redFormManagerPage::$message);
             $I->click('//*[@id="formList"]//td//*[contains(., "' . $params['name'] . '")]');
-            $I->waitForText(redFormManagerPage::$FormTitleNew, 30, ['css' => 'label']);
+            $I->waitForText(redFormManagerPage::$FormTitleNew, 30, redFormManagerPage::$label);
 
             foreach ($params['fields'] as $fieldName)
             {
-                $I->click(['xpath' => '//*[@id="formTabs"]/li/a[normalize-space(text()) = "Fields"]']);
+                $I->click(redFormManagerPage::$formTabs);
 
                 $I->click(redFormManagerPage::$buttonNew);
-                $I->waitForText(redFormManagerPage:: $FormFields, 30, ['css' => 'h1']);
+                $I->waitForText(redFormManagerPage:: $FormFields, 30, redFormManagerPage::$H1);
                 $I->selectOptionInChosenByIdUsingJs(redFormManagerPage:: $fieldId, $fieldName);
                 $I->click(redFormManagerPage::$buttonSaveClose);
 

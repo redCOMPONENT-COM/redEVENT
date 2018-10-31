@@ -1,11 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Trang
- * Date: 10/31/2018
- * Time: 3:55 PM
+ * @package     Redevent
+ * @subpackage  Tests
+ * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 namespace Step\Acceptance\Administrator;
 use \Page\Acceptance\Administrator\TemplateManagerPage;
 use Step\Acceptance\redFormManagerSteps;
@@ -23,9 +22,9 @@ class TemplateManagerSteps extends redFormManagerSteps
     {
         $I = $this;
         $I->amOnPage(TemplateManagerPage::$URL);
-        $I->waitForText(TemplateManagerPage::$Title, 30, ['css' => 'H1']);
+        $I->waitForText(TemplateManagerPage::$Title, 30, TemplateManagerPage::$H1);
         $I->click(TemplateManagerPage::$buttonNew);
-        $I->waitForText(TemplateManagerPage::$TitleNew, 30, ['css' => 'label']);
+        $I->waitForText(TemplateManagerPage::$TitleNew, 30, TemplateManagerPage::$label);
         $I->fillField(TemplateManagerPage::$fieldName, $params['name']);
 
         if (!empty($params['meta_description']))
