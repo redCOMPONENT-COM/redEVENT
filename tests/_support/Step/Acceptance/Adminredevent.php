@@ -563,3 +563,4 @@ class Adminredevent extends \AcceptanceTester
 		$I->dontSee($name);
 	}
 }
+

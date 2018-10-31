@@ -45,4 +45,3 @@ class CategoryManagerSteps extends Adminredevent
         $I->delete(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,$nameCategory);
 	}
 }
-
