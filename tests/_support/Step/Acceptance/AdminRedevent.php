@@ -248,31 +248,7 @@ class AdminRedevent extends \AcceptanceTester
 
 		$I->click(['xpath' => '//button[contains(@onclick, "venue.save")]']);
 	}
-
-	/**
-	 * Create a Venue Category
-	 *
-	 * @param   array  $params  parameters
-	 *
-	 * @return void
-	 */
-	public function createVenueCategory($params)
-	{
-		$I = $this;
-		$I->amOnPage('administrator/index.php?option=com_redevent&view=venuescategories');
-		$I->waitForText('Venue categories', 30, ['css' => 'h1']);
-		$I->click(['xpath' => '//button[contains(@onclick, "venuescategory.add")]']);
-		$I->waitForText('Category', 30, ['css' => 'label']);
-		$I->fillField(['id' => 'jform_name'], $params['name']);
-
-		if (!empty($params['description']))
-		{
-			$I->fillTinyMceEditorById('jform_description', $params['description']);
-		}
-
-		$I->click(['xpath' => '//button[contains(@onclick, "venuescategory.save")]']);
-	}
-
+	
 	/**
 	 * Create a section
 	 *
