@@ -41,17 +41,17 @@ class CategoryManagerPage extends AbstractPage
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldName          = ['id' => 'jform_name'];
+	public static $fieldName          =  '#jform_name';
 
 	/**
 	 * Button new
 	 * @var string
 	 */
-	public static $buttonNew          = ['xpath' => '//button[contains(@onclick, "category.add")]'];
+	public static $buttonNew          = '//button[contains(@onclick, "category.add")]';
 
     /**
      * Button new
      * @var string
      */
-    public static $buttonSave          = ['xpath' => '//button[contains(@onclick, "category.save")]'];
+    public static $buttonSave          =  '//button[contains(@onclick, "category.save")]';
 }

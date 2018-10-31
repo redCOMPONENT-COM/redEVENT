@@ -12,6 +12,20 @@ namespace Page\Acceptance\Administrator;
 class AbstractPage
 {
 	/**
+	 * Locator for H1
+	 * @var array
+	 * @since 1.0.0
+	 */
+	public static $H1                         = ['css' => 'H1'];
+
+	/**
+	 * Locator for label
+	 * @var array
+	 * @since 1.0.0
+	 */
+	public static $label                      = ['css' => 'label'];
+
+	/**
 	 * Locator for field name
 	 * @var array
 	 * @since 1.0.0
