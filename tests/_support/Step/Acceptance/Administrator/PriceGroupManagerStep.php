@@ -8,9 +8,9 @@
 
 namespace Step\Acceptance\Administrator;
 use \Page\Acceptance\Administrator\PriceGroupManagerPage;
-use Step\Acceptance\AdminRedEvent;
+use Step\Acceptance\AdminRedevent;
 
-class PriceGroupManagerStep extends AdminRedEvent
+class PriceGroupManagerStep extends AdminRedevent
 {
 	/**
 	 * @param $namePrice
