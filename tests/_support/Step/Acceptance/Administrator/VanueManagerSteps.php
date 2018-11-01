@@ -19,7 +19,12 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 	public function createVenueNew($nameVanue,$nameVanueCategory)
 	{
 		$I = $this;
-		$I ->createVenueCategoryNew($nameVanueCategory);
+		$I->createVenueCategoryNew(
+			array(
+				'name' => $nameVanueCategory,
+				'description' => '<p>The description goes here</p>'
+			)
+		);
 		$I->amOnPage(VanueManagerPage::$URL);
 		$I->waitForText(VanueManagerPage::$venueTitle, 30);
 		$I->click(VanueManagerPage::$buttonNew);
