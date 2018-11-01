@@ -10,7 +10,7 @@ use Faker\Factory;
 use Page\Acceptance\Administrator\CustomFieldsManagerPage;
 use Step\Acceptance\Administrator\CustomFieldsManagerSteps;
 
-class CreateCustomFieldsCest
+class CustomFieldsManagerCest
 {
 	/**
 	 * @var   Generator
@@ -31,7 +31,7 @@ class CreateCustomFieldsCest
 	protected $CustomFieldName2;
 
 	/**
-	 * CategoryManagerCest constructor.
+	 * CustomFieldsManagerCest constructor.
 	 *
 	 * @since 1.0.0
 	 */
