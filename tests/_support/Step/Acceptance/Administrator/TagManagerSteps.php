@@ -10,9 +10,9 @@
 namespace Step\Acceptance\Administrator;
 
 use \Page\Acceptance\Administrator\TagManagerPage;
-use Step\Acceptance\AdminRedEvent;
+use Step\Acceptance\AdminRedevent;
 
-class TagManagerSteps extends AdminRedEvent
+class TagManagerSteps extends AdminRedevent
 {
 	/**
 	 * @param $name
