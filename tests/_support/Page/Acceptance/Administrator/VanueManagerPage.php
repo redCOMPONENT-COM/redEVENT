@@ -11,7 +11,7 @@ namespace Page\acceptance\administrator;
 
 class VanueManagerPage extends AbstractPage
 {
-	public static $URL = 'Administrator/index.php?option=com_redevent&view=venues';
+	public static $URL = 'administrator/index.php?option=com_redevent&view=venues';
 
 	public static $venueTitle = "Venues - redEVENT";
 	public static $venueTitleNew= "Add/edit venue - redEVENT";
