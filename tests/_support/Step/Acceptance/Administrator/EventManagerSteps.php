@@ -20,7 +20,10 @@ class EventManagerSteps  extends CategoryManagerSteps
 	public function createEventNew($nameEvent,$nameCategory,$templateName)
 	{
 		$I = $this;
-		$I ->createCategoryNew($nameCategory);
+		$I ->createCategoryNew(array(
+			'name' => $nameCategory,
+			'description' => '<p>The description goes here</p>'
+		));
 		$I->amOnPage(EventManagerPage::$URL);
 		$I->waitForText(EventManagerPage::$eventTitle, 30);
 		$I->click(EventManagerPage::$buttonNew);
