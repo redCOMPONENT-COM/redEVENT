@@ -59,7 +59,6 @@ class CustomFieldsManagerSteps extends AdminRedevent
         $I->wantTo('Test with delete product then accept');
         $I->click(CustomFieldsManagerPage::$buttonDelete);
         $I->acceptPopup();
-        $I->waitForText(CustomFieldsManagerPage::$messageDeleteProductSuccess, 60, CustomFieldsManagerPage::$message);
         $I->dontSee($nameCustomFields);
 	}
 }
