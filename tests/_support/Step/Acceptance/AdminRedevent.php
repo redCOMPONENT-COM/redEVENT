@@ -291,7 +291,7 @@ class AdminRedevent extends \AcceptanceTester
 		$I->amOnPage('administrator/index.php?option=com_redform&view=sections');
 		$I->waitForText('Sections', 30, ['css' => 'H1']);
 
-		if ($I->isElementPresent('//*[@id="table-items"]//td//*[contains(., "' . $params['name'] . '")]'))
+		if ($I->isElementPresent('//*[@id="sectionList"]//td//*[contains(., "' . $params['name'] . '")]'))
 		{
 			return;
 		}
