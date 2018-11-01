@@ -27,7 +27,7 @@ class CustomFieldsManagerSteps extends AdminRedevent
 		$I->selectOptionInChosenByIdUsingJs(CustomFieldsManagerPage::$fieldObject, $object);
 		$I->selectOptionInChosenByIdUsingJs(CustomFieldsManagerPage::$fieldType, $type);
 
-		$I->click(CustomFieldsManagerPage::$buttonSave);
+		$I->click(CustomFieldsManagerPage::$buttonSaveClose);
 
 	}
 
