@@ -17,7 +17,7 @@ class PriceGroupManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $URL                  = 'Administrator/index.php?option=com_redevent&view=pricegroups';
+	public static $URL                  = 'administrator/index.php?option=com_redevent&view=pricegroups';
 
 	/**
 	 * Title of this page.
