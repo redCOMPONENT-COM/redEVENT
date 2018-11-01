@@ -16,49 +16,49 @@ class CustomFieldsManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $URL = 'administrator/index.php?option=com_redevent&view=customfields';
+	public static $URL                   = 'administrator/index.php?option=com_redevent&view=customfields';
 
 	/**
 	 * Title of this page.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $customFieldsTitle ='Custom fields';
+	public static $customFieldsTitle      ='Custom fields';
 
 	/**
 	 * Title  of this page new Custom fields
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $customFieldsTitleNew= "Add/edit custom field - redEVENT";
+	public static $customFieldsTitleNew    = "Add/edit custom field - redEVENT";
 
 	/**
 	 * Locator for field name
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldName = '#jform_name';
+	public static $fieldName                = '#jform_name';
 
 	/**
 	 * Locator for field tag
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldTag ='#jform_tag';
+	public static $fieldTag                 = '#jform_tag';
 
 	/**
 	 * Locator for field object
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $fieldObject ='jform_object_key';
+	public static $fieldObject              = 'jform_object_key';
 
 	/**
 	 * Locator for field type
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $fieldType ='jform_type';
+	public static $fieldType                = 'jform_type';
 
 	/**
 	 * Button Save
@@ -66,7 +66,7 @@ class CustomFieldsManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $buttonSave ='//button[contains(@onclick, "customfield.save")]';
+	public static $buttonSave               = '//button[contains(@onclick, "customfield.save")]';
 
 	/**
 	 * Locator for object on table
@@ -74,7 +74,7 @@ class CustomFieldsManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $objectResult ='//table[@id=\'table-items\']/tbody/tr[1]/td[7]';
+	public static $objectResult              = '//table[@id=\'table-items\']/tbody/tr[1]/td[7]';
 
 	/**
 	 * Locator for type on table
@@ -82,5 +82,5 @@ class CustomFieldsManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0s
 	 */
-	public static $typeResult ='//table[@id=\'table-items\']/tbody/tr[1]/td[8]';
+	public static $typeResult                 = '//table[@id=\'table-items\']/tbody/tr[1]/td[8]';
 }

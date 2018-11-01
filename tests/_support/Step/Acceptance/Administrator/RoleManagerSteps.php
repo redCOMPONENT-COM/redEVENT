@@ -13,47 +13,47 @@ use Step\Acceptance\AdminRedevent;
 
 class RoleManagerSteps extends AdminRedevent
 {
-    /**
-     * @param $params
-     * @throws \Exception
-     */
-    public function createRoleNew($params)
-    {
-        $I = $this;
-        $I->createItemNew(RoleManagerPage::$URL,RoleManagerPage::$roleTitle,RoleManagerPage::$roleTitleNew,$params);
+	/**
+	 * @param $params
+	 * @throws \Exception
+	 */
+	public function createRoleNew($params)
+	{
+		$I = $this;
+		$I->createItemNew(RoleManagerPage::$URL,RoleManagerPage::$roleTitle,RoleManagerPage::$roleTitleNew,$params);
 
-    }
+	}
 
-    /**
-     * @param $nameRole
-     * @throws \Exception
-     */
-    public function SearchRole($nameRole)
-    {
-        $I = $this;
-        $I->Search(RoleManagerPage::$URL,$nameRole);
-    }
+	/**
+	 * @param $nameRole
+	 * @throws \Exception
+	 */
+	public function SearchRole($nameRole)
+	{
+		$I = $this;
+		$I->Search(RoleManagerPage::$URL,$nameRole);
+	}
 
-    /**
-     * @param $nameRole
-     * @throws \Exception
-     */
+	/**
+	 * @param $nameRole
+	 * @throws \Exception
+	 */
 
-    public function deleteRole($nameRole)
-    {
-        $I = $this;
-        $I->amOnPage(RoleManagerPage::$URL);
-        $I->waitForText(RoleManagerPage::$roleTitle, 30);
-        $I->SearchRole($nameRole);
-        $I->see($nameRole, RoleManagerPage::$tableResult);
-        $I->click(RoleManagerPage::$checkAll);
-        $I->click(RoleManagerPage::$buttonDelete);
-        $I->wantTo('Test with delete Role but then cancel');
-        $I->cancelPopup();
-        $I->wantTo('Test with delete Role then accept');
-        $I->click(RoleManagerPage::$buttonDelete);
-        $I->acceptPopup();
-        $I->waitForText(RoleManagerPage::$messageDeleteProductSuccess, 60, RoleManagerPage::$message);
-        $I->dontSee($nameRole);
-    }
+	public function deleteRole($nameRole)
+	{
+		$I = $this;
+		$I->amOnPage(RoleManagerPage::$URL);
+		$I->waitForText(RoleManagerPage::$roleTitle, 30);
+		$I->SearchRole($nameRole);
+		$I->see($nameRole, RoleManagerPage::$tableResult);
+		$I->click(RoleManagerPage::$checkAll);
+		$I->click(RoleManagerPage::$buttonDelete);
+		$I->wantTo('Test with delete Role but then cancel');
+		$I->cancelPopup();
+		$I->wantTo('Test with delete Role then accept');
+		$I->click(RoleManagerPage::$buttonDelete);
+		$I->acceptPopup();
+		$I->waitForText(RoleManagerPage::$messageDeleteProductSuccess, 60, RoleManagerPage::$message);
+		$I->dontSee($nameRole);
+	}
 }

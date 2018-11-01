@@ -10,31 +10,31 @@ namespace Page\Acceptance\Administrator;
 
 class RoleManagerPage extends AbstractPage
 {
-    /**
-     * Include url of current page
-     *
-     * @var   string
-     * @since 1.0.0
-     */
-    public static $URL = 'administrator/index.php?option=com_redevent&view=roles';
+	/**
+	 * Include url of current page
+	 *
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $URL            = 'administrator/index.php?option=com_redevent&view=roles';
 
-    /**
-     * Title of this page.
-     * @var   string
-     * @since 1.0.0
-     */
-    public static $roleTitle      = "Roles";
+	/**
+	 * Title of this page.
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $roleTitle      = "Roles";
 
-    /**
-     * Title  of this page new Custom Roles
-     * @var   string
-     * @since 1.0.0
-     */
-    public static $roleTitleNew   = "Add/edit role";
+	/**
+	 * Title  of this page new Custom Roles
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $roleTitleNew    = "Add/edit role";
 
-    /**
-     * @var string
-     * @since 1.0.0
-     */
-    public static $tableResult = '//table[@id=\'table-items\']/tbody/tr[1]/td[4]';
+	/**
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $tableResult      = '//table[@id=\'table-items\']/tbody/tr[1]/td[4]';
 }
