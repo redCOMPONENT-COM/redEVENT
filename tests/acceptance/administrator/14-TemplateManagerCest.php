@@ -9,7 +9,7 @@ use Step\Acceptance\Administrator\TemplateManagerSteps;
 use Faker\Generator;
 use Faker\Factory;
 use Page\Acceptance\Administrator\AbstractPage;
-class CreateTemplateCest
+class TemplateManagerCest
 {
 	/**
 	 * @var   Generator
@@ -30,7 +30,7 @@ class CreateTemplateCest
 	protected $nameTemplate2;
 
 	/**
-	 * 04-CategoryManagerCest constructor.
+	 * 14-TemplateManagerCest constructor.
 	 *
 	 * @since 1.0.0
 	 */
