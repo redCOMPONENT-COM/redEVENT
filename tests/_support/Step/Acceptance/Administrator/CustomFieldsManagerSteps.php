@@ -14,7 +14,7 @@ class CustomFieldsManagerSteps extends AdminRedevent
 	public function createCustomFieldNew($params)
 	{
 		$I = $this;
-		$I->amOnPage(CustomFieldsManagerPage:: $URL);
+		$I->amOnPage(CustomFieldsManagerPage::$URL);
 		$I->waitForText(CustomFieldsManagerPage::$customFieldsTitle, 30);
 		$I->click(CustomFieldsManagerPage::$buttonNew);
 		$I->waitForText(CustomFieldsManagerPage::$customFieldsTitleNew, 30);

@@ -7,7 +7,6 @@
  */
 use Faker\Generator;
 use Faker\Factory;
-use Page\Acceptance\Administrator\AbstractPage;
 use Page\Acceptance\Administrator\CustomFieldsManagerPage;
 use Step\Acceptance\Administrator\CustomFieldsManagerSteps;
 
@@ -63,7 +62,7 @@ class CreateCustomFieldsCest
 				'type' => 'Text'
 			)
 		);
-		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
+		$I->waitForText(CustomFieldsManagerPage::$messageSaveSuccess, 30, CustomFieldsManagerPage::$message);
 		$I->wantToTest('Search Custom Fields in redEVENT');
 		$I->SearchCustomField($this->CustomFieldName1);
 		$I->see("Event", CustomFieldsManagerPage::$objectResult);
@@ -84,7 +83,7 @@ class CreateCustomFieldsCest
 				'type' => 'Text'
 			)
 		);
-		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
+		$I->waitForText(CustomFieldsManagerPage::$messageSaveSuccess, 30, CustomFieldsManagerPage::$message);
 		$I->wantToTest('Search Custom Fields in redEVENT');
 		$I->SearchCustomField($this->CustomFieldName2);
 		$I->see("Session",CustomFieldsManagerPage::$objectResult);
