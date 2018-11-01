@@ -30,7 +30,7 @@ class RoleManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $roleTitleNew    = "Add/edit role";
+	public static $roleTitleNew    = "Name";
 
 	/**
 	 * @var string
