@@ -17,7 +17,7 @@ class EventManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $URL = 'Administrator/index.php?option=com_redevent&view=events';
+	public static $URL = 'administrator/index.php?option=com_redevent&view=events';
 
 	/**
 	 * Title of this page.
