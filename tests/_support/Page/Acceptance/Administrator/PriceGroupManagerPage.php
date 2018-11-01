@@ -31,7 +31,7 @@ class PriceGroupManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $priceGroupTitleNew   = "Add/edit pricegroup";
+	public static $priceGroupTitleNew   = "Name";
 
 	/**
 	 * @var string
