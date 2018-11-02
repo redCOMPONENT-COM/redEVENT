@@ -75,7 +75,7 @@ class CustomFieldsManagerCest
 	public function addSessionTextField(CustomFieldsManagerSteps $I)
 	{
 		$I->wantToTest('Add an session custom text field in redEVENT');
-		$I->createCustomField(
+		$I->createCustomFieldNew(
 			array(
 				'name' => $this->CustomFieldName2,
 				'object' => 'Session',
