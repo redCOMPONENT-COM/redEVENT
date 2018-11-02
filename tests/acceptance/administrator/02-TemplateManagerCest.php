@@ -63,7 +63,6 @@ class TemplateManagerCest
 		);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 		$I->wantToTest('Add a template 2 in redEVENT');
-		$I->createMinimalRegistrationForm(['name' => 'Registration']);
 		$I->createTemplateNew(
 			array(
 				'name' =>$this->nameTemplate2,
