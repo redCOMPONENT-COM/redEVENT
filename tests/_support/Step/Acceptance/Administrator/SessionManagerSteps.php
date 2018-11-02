@@ -42,7 +42,7 @@ class SessionManagerSteps extends AdminRedevent
 	public function searchSession($nameSession)
 	{
 		$I = $this;
-		$I->Search(SessionManagerPage::$URL,$nameSession);
+		$I->search(SessionManagerPage::$URL,$nameSession);
 	}
 	/**
 	 * @param $nameSession

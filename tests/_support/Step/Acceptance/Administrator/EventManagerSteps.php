@@ -44,7 +44,7 @@ class EventManagerSteps  extends CategoryManagerSteps
 	public function searchEvent($nameEvent)
 	{
 		$I = $this;
-		$I->Search(EventManagerPage::$URL,$nameEvent);
+		$I->search(EventManagerPage::$URL,$nameEvent);
 	}
 
 	/**

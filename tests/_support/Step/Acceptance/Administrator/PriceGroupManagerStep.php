@@ -29,7 +29,7 @@ class PriceGroupManagerStep extends AdminRedevent
 	public function searchPriceGroup($PriceGroup)
 	{
 		$I = $this;
-		$I->Search(PriceGroupManagerPage::$URL,$PriceGroup);
+		$I->search(PriceGroupManagerPage::$URL,$PriceGroup);
 	}
 
 	/**

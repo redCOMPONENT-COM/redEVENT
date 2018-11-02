@@ -69,7 +69,7 @@ class RoleMangerCest
 			)
 		);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
-		$I->SearchRole($this->roleName1);
+		$I->searchRole($this->roleName1);
 		$I->dontSee($this->roleName2);
 		$I->buttonClear($this->roleName1,$this->roleName2);
 		$I->wantToTest('delete a role 1 in redEVENT');

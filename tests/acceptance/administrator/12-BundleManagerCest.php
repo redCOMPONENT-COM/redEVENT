@@ -68,10 +68,10 @@ class BundleManagerCest
 			)
 		);
 
-		$I->Search(BundleManagerPage::$URL,$this->bundleName1);
+		$I->searchBundle($this->bundleName1);
 		$I->dontSee($this->bundleName2);
 
-		$I-> ButtonClear($this->bundleName1,$this->bundleName2);
+		$I-> buttonClear($this->bundleName1,$this->bundleName2);
 
 		$I->wantToTest('Delete a bundle 1 in redEVENT');
 		$I->deleteBundle( $this->bundleName1);

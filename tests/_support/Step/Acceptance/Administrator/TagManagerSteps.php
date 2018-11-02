@@ -45,7 +45,7 @@ class TagManagerSteps extends AdminRedevent
 	public function searchTag($TagName)
 	{
 		$I = $this;
-		$I->Search(TagManagerPage::$URL,$TagName);
+		$I->search(TagManagerPage::$URL,$TagName);
 	}
 	/**
 	 * @param $Tagname

@@ -117,7 +117,7 @@ class SessionManagerCest
 		$I->wantToTest('Add an open date session in redEVENT');
 		$I->createSessionNew($this->eventName,$this->VanueName,$this->SessionName2 );
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
-		$I->SearchSession($this->SessionName1);
+		$I->searchSession($this->SessionName1);
 		$I->dontSee($this->SessionName2);
 		$I->buttonClear($this->SessionName1,$this->SessionName2);
 		$I->wantToTest('delete a session 1 in redEVENT');

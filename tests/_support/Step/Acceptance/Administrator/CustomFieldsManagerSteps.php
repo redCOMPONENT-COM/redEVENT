@@ -35,10 +35,10 @@ class CustomFieldsManagerSteps extends AdminRedevent
 	 * @param $nameCustomFields
 	 * @throws \Exception
 	 */
-	public function SearchCustomField($nameCustomFields)
+	public function searchCustomField($nameCustomFields)
 	{
 		$I = $this;
-		$I->Search(CustomFieldsManagerPage::$URL,$nameCustomFields);
+		$I->search(CustomFieldsManagerPage::$URL,$nameCustomFields);
 	}
 
 	/**
@@ -50,7 +50,7 @@ class CustomFieldsManagerSteps extends AdminRedevent
 		$I = $this;
         $I->amOnPage(CustomFieldsManagerPage::$URL);
         $I->waitForText(CustomFieldsManagerPage::$customFieldsTitle, 30);
-        $I->SearchCustomField($nameCustomFields);
+        $I->searchCustomField($nameCustomFields);
         $I->see($nameCustomFields, CustomFieldsManagerPage::$tableResult);
         $I->click(CustomFieldsManagerPage::$checkAll);
         $I->click(CustomFieldsManagerPage::$buttonDelete);

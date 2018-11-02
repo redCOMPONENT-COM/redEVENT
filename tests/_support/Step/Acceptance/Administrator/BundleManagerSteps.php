@@ -29,7 +29,7 @@ class BundleManagerSteps extends AdminRedevent
 	public function searchBundle($bundleName)
 	{
 		$I = $this;
-		$I->Search(BundleManagerPage::$URL,$bundleName);
+		$I->search(BundleManagerPage::$URL,$bundleName);
 	}
 
 	/**
@@ -41,7 +41,7 @@ class BundleManagerSteps extends AdminRedevent
 		$I = $this;
 		$I->amOnPage(BundleManagerPage::$URL);
 		$I->waitForText(BundleManagerPage::$bundleTitle, 30);
-		$I->Search(BundleManagerPage::$URL,$bundleName);
+		$I->searchBundle($bundleName);
 		$I->see($bundleName, BundleManagerPage::$tableResult);
 		$I->click(BundleManagerPage::$checkAll);
 		$I->click(BundleManagerPage::$buttonDelete);

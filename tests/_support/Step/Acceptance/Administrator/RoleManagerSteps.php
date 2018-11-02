@@ -28,10 +28,10 @@ class RoleManagerSteps extends AdminRedevent
 	 * @param $nameRole
 	 * @throws \Exception
 	 */
-	public function SearchRole($nameRole)
+	public function searchRole($nameRole)
 	{
 		$I = $this;
-		$I->Search(RoleManagerPage::$URL,$nameRole);
+		$I->search(RoleManagerPage::$URL,$nameRole);
 	}
 
 	/**
@@ -44,7 +44,7 @@ class RoleManagerSteps extends AdminRedevent
 		$I = $this;
 		$I->amOnPage(RoleManagerPage::$URL);
 		$I->waitForText(RoleManagerPage::$roleTitle, 30);
-		$I->SearchRole($nameRole);
+		$I->searchRole($nameRole);
 		$I->see($nameRole, RoleManagerPage::$tableResult);
 		$I->click(RoleManagerPage::$checkAll);
 		$I->click(RoleManagerPage::$buttonDelete);

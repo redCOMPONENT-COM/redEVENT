@@ -42,7 +42,7 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 	public function searchVanue($nameVanue)
 	{
 		$I = $this;
-		$I->Search(VanueManagerPage::$URL,$nameVanue);
+		$I->search(VanueManagerPage::$URL,$nameVanue);
 	}
 
 	/**

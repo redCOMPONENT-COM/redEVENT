@@ -63,7 +63,7 @@ class CustomFieldsManagerCest
 			)
 		);
 		$I->wantToTest('Search Custom Fields in redEVENT');
-		$I->SearchCustomField($this->CustomFieldName1);
+		$I->searchCustomField($this->CustomFieldName1);
 		$I->see("Event", CustomFieldsManagerPage::$objectResult);
 		$I->see("text", CustomFieldsManagerPage::$typeResult);
 	}
@@ -83,7 +83,7 @@ class CustomFieldsManagerCest
 			)
 		);
 		$I->wantToTest('Search Custom Fields in redEVENT');
-		$I->SearchCustomField($this->CustomFieldName2);
+		$I->searchCustomField($this->CustomFieldName2);
 		$I->see("Session",CustomFieldsManagerPage::$objectResult);
 		$I->see("text", CustomFieldsManagerPage::$typeResult);
 	}
@@ -93,7 +93,7 @@ class CustomFieldsManagerCest
 	 */
 	public function AllCaseCategory(CustomFieldsManagerSteps $I)
 	{
-		$I->SearchCustomField($this->CustomFieldName1);
+		$I->searchCustomField($this->CustomFieldName1);
 		$I->dontSee($this->CustomFieldName2);
 		$I->buttonClear($this->CustomFieldName1,$this->CustomFieldName2);
 		$I->wantToTest('delete a Custom Field 1 in redEVENT');

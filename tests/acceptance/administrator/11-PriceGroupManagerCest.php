@@ -70,7 +70,7 @@ class PriceGroupManagerCest
 		);
 		$I->searchPriceGroup($this->namePriceGroup1);
 		$I->dontSee($this->namePriceGroup2);
-		$I->ButtonClear($this->namePriceGroup1,$this->namePriceGroup2);
+		$I->buttonClear($this->namePriceGroup1,$this->namePriceGroup2);
 		$I->wantToTest('delete a Price Group 1 in redEVENT');
 		$I->deletePriceGroup($this->namePriceGroup1);
 		$I->wantToTest('delete a Price Group 2 in redEVENT');
