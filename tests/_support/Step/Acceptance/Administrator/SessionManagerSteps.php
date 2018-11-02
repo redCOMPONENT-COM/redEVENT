@@ -51,7 +51,19 @@ class SessionManagerSteps extends AdminRedevent
 	public function deleteSession($nameSession)
 	{
 		$I = $this;
-		$I->delete(SessionManagerPage::$URL,SessionManagerPage::$sessionTitle,$nameSession);
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
+		$I->searchSession($nameSession);
+		$I->see($nameSession, SessionManagerPage::$tableResult);
+		$I->click(SessionManagerPage::$checkAll);
+		$I->click(SessionManagerPage::$buttonDelete);
+		$I->wantTo('Test with delete category but then cancel');
+		$I->cancelPopup();
+		$I->wantTo('Test with delete product then accept');
+		$I->click(SessionManagerPage::$buttonDelete);
+		$I->acceptPopup();
+		$I->waitForText(SessionManagerPage::$messageDeleteProductSuccess, 60, SessionManagerPage::$message);
+		$I->dontSee($nameSession);
 	}
 
 

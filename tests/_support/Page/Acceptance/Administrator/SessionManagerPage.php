@@ -69,4 +69,11 @@ class SessionManagerPage extends AbstractPage
 	 * @since 1.0.0
 	 */
 	public static $buttonSave ='//button[contains(@onclick, "session.save")]';
+    /**
+     *
+     * @var string
+     * @since 1.0.0
+     */
+
+    public static $tableResult = '//table[@id=\'table-items\']/tbody/tr/td[9]';
 }
