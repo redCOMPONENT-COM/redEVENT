@@ -8,7 +8,7 @@
  */
 
 namespace Step\Acceptance\Administrator;
-use Page\acceptance\administrator\SessionManagerPage;
+use Page\Acceptance\Administrator\SessionManagerPage;
 use Step\Acceptance\AdminRedevent;
 
 class SessionManagerSteps extends AdminRedevent
