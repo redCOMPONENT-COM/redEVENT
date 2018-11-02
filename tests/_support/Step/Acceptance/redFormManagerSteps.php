@@ -22,9 +22,9 @@ class redFormManagerSteps extends AdminRedevent
 	{
 		$I = $this;
 		$I->amOnPage(redFormManagerPage::$URLSection);
-		$I->waitForText(redFormManagerPage::$SectionTitle, 30, redFormManagerPage::$H1);
+		$I->waitForText(redFormManagerPage::$sectionTitle, 30, redFormManagerPage::$H1);
 		$I->click(redFormManagerPage::$buttonNew);
-		$I->waitForText(redFormManagerPage::$SectionTitleNew, 30, redFormManagerPage::$label);
+		$I->waitForText(redFormManagerPage::$sectionTitleNew, 30, redFormManagerPage::$label);
 		$I->fillField(redFormManagerPage::$fieldName, $params['name']);
 
 		if (!empty($params['class']))
@@ -51,7 +51,7 @@ class redFormManagerSteps extends AdminRedevent
 	{
 		$I = $this;
 		$I->amOnPage(redFormManagerPage::$URLSection);
-		$I->waitForText(redFormManagerPage::$SectionTitle, 30, redFormManagerPage::$H1);
+		$I->waitForText(redFormManagerPage::$sectionTitle, 30, redFormManagerPage::$H1);
 
 		if ($I->isElementPresent($params))
 		{
@@ -72,7 +72,7 @@ class redFormManagerSteps extends AdminRedevent
 	{
 		$I = $this;
 		$I->amOnPage(redFormManagerPage::$URLField);
-		$I->waitForText(redFormManagerPage::$FieldTitle, 30, redFormManagerPage::$H1);
+		$I->waitForText(redFormManagerPage::$fieldTitle, 30, redFormManagerPage::$H1);
 
 		if ($I->isElementPresent($params))
 		{
@@ -93,9 +93,9 @@ class redFormManagerSteps extends AdminRedevent
 	{
 		$I = $this;
 		$I->amOnPage(redFormManagerPage::$URLField);
-		$I->waitForText(redFormManagerPage::$FieldTitle, 30, redFormManagerPage::$H1);
+		$I->waitForText(redFormManagerPage::$fieldTitle, 30, redFormManagerPage::$H1);
 		$I->click(redFormManagerPage::$buttonNew);
-		$I->waitForText(redFormManagerPage::$FieldTitleNew, 30, redFormManagerPage::$label);
+		$I->waitForText(redFormManagerPage::$fieldTitleNew, 30, redFormManagerPage::$label);
 		$I->fillField(redFormManagerPage::$inputField, $params['name']);
 		$I->selectOptionInChosenById(redFormManagerPage::$inputFieldType, $params['fieldtype']);
 
@@ -128,7 +128,7 @@ class redFormManagerSteps extends AdminRedevent
 	{
 		$I = $this;
 		$I->amOnPage(redFormManagerPage::$URLForm);
-		$I->waitForText(redFormManagerPage::$FormTitle, 30, redFormManagerPage::$H1);
+		$I->waitForText(redFormManagerPage::$formTitle, 30, redFormManagerPage::$H1);
 
 		if ($I->isElementPresent($params))
 		{
@@ -149,9 +149,9 @@ class redFormManagerSteps extends AdminRedevent
 	{
 		$I = $this;
 		$I->amOnPage(redFormManagerPage::$URLForm);
-		$I->waitForText(redFormManagerPage::$FormTitle, 30, redFormManagerPage::$H1);
+		$I->waitForText(redFormManagerPage::$formTitle, 30, redFormManagerPage::$H1);
 		$I->click(redFormManagerPage::$buttonNew);
-		$I->waitForText(redFormManagerPage::$FormTitleNew, 30, redFormManagerPage::$label);
+		$I->waitForText(redFormManagerPage::$formTitleNew, 30, redFormManagerPage::$label);
 		$I->fillField(redFormManagerPage::$inputFormName, $params['name']);
 
 		$I->click(redFormManagerPage::$buttonSaveClose);
@@ -164,14 +164,14 @@ class redFormManagerSteps extends AdminRedevent
 			$I->click(redFormManagerPage::$buttonSearch);
 			$I->seeElement(redFormManagerPage::$valueForm);
 			$I->click(redFormManagerPage::$valueForm);
-			$I->waitForText(redFormManagerPage::$FormTitleNew, 30, redFormManagerPage::$label);
+			$I->waitForText(redFormManagerPage::$formTitleNew, 30, redFormManagerPage::$label);
 
 			foreach ($params['fields'] as $fieldName)
 			{
 				$I->click(redFormManagerPage::$formTabs);
 
 				$I->click(redFormManagerPage::$buttonNew);
-				$I->waitForText(redFormManagerPage:: $FormFields, 30, redFormManagerPage::$H1);
+				$I->waitForText(redFormManagerPage:: $formFields, 30, redFormManagerPage::$H1);
 				$I->selectOptionInChosenByIdUsingJs(redFormManagerPage:: $fieldId, $fieldName);
 				$I->click(redFormManagerPage::$buttonSaveClose);
 
@@ -179,6 +179,11 @@ class redFormManagerSteps extends AdminRedevent
 			}
 		}
 	}
+
+    /**
+     * @param $params
+     * @return bool
+     */
 	protected function isElementPresent($params)
 	{
 		$I = $this;

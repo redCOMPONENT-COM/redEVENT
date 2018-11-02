@@ -1,4 +1,11 @@
 <?php
+/**
+ * @package     Redevent
+ * @subpackage  Tests
+ * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 namespace Step\Acceptance;
 use \Page\Acceptance\Administrator\AbstractPage;
 class AdminRedevent extends \AcceptanceTester

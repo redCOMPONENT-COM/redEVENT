@@ -67,7 +67,7 @@ class VenueCategoryManagerCest
             )
         );
         $I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
-        $I->SearchVenueCategory($this->categoryVenueName1);
+        $I->searchVenueCategory($this->categoryVenueName1);
         $I->dontSee($this->categoryVenueName2);
         $I->buttonClear($this->categoryVenueName1,$this->categoryVenueName2);
         $I->wantToTest('delete a  venue category 1 in redEVENT');

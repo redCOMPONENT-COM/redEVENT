@@ -39,14 +39,14 @@ class redFormManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $SectionTitle             = "Sections";
+	public static $sectionTitle             = "Sections";
 
 	/**
 	 * Title of Section page.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $SectionTitleNew          = "Name";
+	public static $sectionTitleNew          = "Name";
 
 	/**
 	 * Title of Field  page.
@@ -54,35 +54,35 @@ class redFormManagerPage extends AbstractPage
 	 * @since 1.0.0
 	 */
 
-	public static $FieldTitle               = "Fields";
+	public static $fieldTitle               = "Fields";
 
 	/**
 	 * Title of Form  page.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $FormTitle                = "Forms";
+	public static $formTitle                = "Forms";
 
 	/**
 	 * Title of Form name.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $FormTitleNew             = "Form name";
+	public static $formTitleNew             = "Form name";
 
 	/**
 	 * Title of Form name.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $FormFields               = "Form field";
+	public static $formFields               = "Form field";
 
 	/**
 	 * Title of this page new category.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $FieldTitleNew            = "Name";
+	public static $fieldTitleNew            = "Name";
 
 	/**
 	 * Locator for field name

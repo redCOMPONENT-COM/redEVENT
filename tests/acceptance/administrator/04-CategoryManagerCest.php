@@ -67,7 +67,7 @@ class CategoryManagerCest
 			)
 		);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
-		$I->SearchCategory($this->categoryName1);
+		$I->searchCategory($this->categoryName1);
 		$I->dontSee($this->categoryName2);
 		$I->buttonClear($this->categoryName1,$this->categoryName2);
 		$I->wantToTest('delete a category 1 in redEVENT');
