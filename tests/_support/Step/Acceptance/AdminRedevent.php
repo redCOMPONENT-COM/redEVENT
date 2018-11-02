@@ -55,7 +55,7 @@ class AdminRedevent extends \AcceptanceTester
 
 		$I->click(['xpath' => '//button[contains(@onclick, "session.save")]']);
 	}
-	
+
 	/**
 	 * Create a template
 	 *
