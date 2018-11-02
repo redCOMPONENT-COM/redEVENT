@@ -53,7 +53,7 @@ class redFormManagerSteps extends AdminRedevent
 		$I->amOnPage(redFormManagerPage::$URLSection);
 		$I->waitForText(redFormManagerPage::$SectionTitle, 30, redFormManagerPage::$H1);
 
-		if ($I->isElementPresent(redFormManagerPage::$valueSection,$params))
+		if ($I->isElementPresent($params))
 		{
 			return;
 		}
@@ -74,7 +74,7 @@ class redFormManagerSteps extends AdminRedevent
 		$I->amOnPage(redFormManagerPage::$URLField);
 		$I->waitForText(redFormManagerPage::$FieldTitle, 30, redFormManagerPage::$H1);
 
-		if ($I->isElementPresent(redFormManagerPage::$valueField,$params))
+		if ($I->isElementPresent($params))
 		{
 			return;
 		}
@@ -130,7 +130,7 @@ class redFormManagerSteps extends AdminRedevent
 		$I->amOnPage(redFormManagerPage::$URLForm);
 		$I->waitForText(redFormManagerPage::$FormTitle, 30, redFormManagerPage::$H1);
 
-		if ($I->isElementPresent(redFormManagerPage::$valueForm,$params))
+		if ($I->isElementPresent($params))
 		{
 			return;
 		}
@@ -179,13 +179,13 @@ class redFormManagerSteps extends AdminRedevent
 			}
 		}
 	}
-	protected function isElementPresent($element,$params)
+	protected function isElementPresent($params)
 	{
 		$I = $this;
 
 		try
 		{
-			$I->See($params['name'], $element);
+			$I->See($params['name']);
 			return true;
 		}
 		catch (\PHPUnit_Framework_AssertionFailedError $f)
