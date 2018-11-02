@@ -204,9 +204,8 @@ class redFormManagerSteps extends AdminRedevent
 	public function createMinimalRegistrationForm($params)
 	{
 		$I = $this;
-		$I->createRedformSectionIfNotExists(['name' => $params['name']]);
 		$I->createRedformFieldIfNotExists(['name' => 'Name', 'fieldtype' => 'Textfield']);
 		$I->createRedformFieldIfNotExists(['name' => 'Email', 'fieldtype' => 'E-mail']);
-		$I->createRedformFormIfNotExists(['name' => 'Registration', 'fields' => ['Name', 'Email']]);
+		$I->createRedformFormIfNotExists(['name' =>  $params['name'], 'fields' => ['Name', 'Email']]);
 	}
 }
