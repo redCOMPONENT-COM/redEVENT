@@ -155,42 +155,35 @@ class redFormManagerPage extends AbstractPage
 	public static $inputFormName            = '#jform_formname';
 
 	/**
+	 * Field search
+	 * @var string
+	 */
+	public static $fieldSearch                 = '#filter_search_forms';
+
+	/**
 	 * Locator for form Tabs
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $formTabs                 = '//*[@id="formTabs"]/li/a[normalize-space(text()) = "Fields"]';
+	public static $formTabs                    = '//ul[@id="formTabs"]/li/a[normalize-space(text()) = "Fields"]';
 
 	/**
 	 * @param $params
 	 * @return string
 	 */
-	public static function returnValueSection($params)
-	{
-		$path = '//*[@id="sectionList"]//td//*[contains(., "' . $params['name'] . '")]';
+	public static $valueSection                = '//table[@id=\'sectionList\']/tbody/tr/td[4]';
+	/**
+	 * @param $params
+	 * @return string
+	 */
+	public static $valueField                  = '//table[@id=\'fieldList\']/tbody/tr/td[3]';
 
-		return $path;
-	}
 
 	/**
 	 * @param $params
 	 * @return string
 	 */
-	public static function returnValueField($params)
-	{
-		$path = '//*[@id="fieldList"]//td//*[contains(., "' . $params['name'] . '")]';
+	public static $valueForm                   = '//table[@id=\'formList\']/tbody/tr/td[3]';
 
-		return $path;
-	}
 
-	/**
-	 * @param $params
-	 * @return string
-	 */
-	public static function returnValueForm($params)
-	{
-		$path ='//*[@id="formList"]//td//*[contains(., "' . $params['name'] . '")]';
-
-		return $path;
-	}
 }

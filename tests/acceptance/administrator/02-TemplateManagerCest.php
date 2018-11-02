@@ -53,7 +53,7 @@ class TemplateManagerCest
 	{
 		$I->wantToTest('Add a template 1 in redEVENT');
 		$I->createMinimalRegistrationForm(['name' => 'Registration']);
-		$I->createTemplate(
+		$I->createTemplateNew(
 			array(
 				'name' =>$this->nameTemplate1,
 				'meta_description' => 'This is the meta description of the event [event_title], session at [venue]',
@@ -64,7 +64,7 @@ class TemplateManagerCest
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 		$I->wantToTest('Add a template 2 in redEVENT');
 		$I->createMinimalRegistrationForm(['name' => 'Registration']);
-		$I->createTemplate(
+		$I->createTemplateNew(
 			array(
 				'name' =>$this->nameTemplate2,
 				'meta_description' => 'This is the meta description of the event [event_title], session at [venue]',

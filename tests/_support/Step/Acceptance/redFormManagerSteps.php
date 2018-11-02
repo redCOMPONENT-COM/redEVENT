@@ -53,7 +53,7 @@ class redFormManagerSteps extends AdminRedevent
 		$I->amOnPage(redFormManagerPage::$URLSection);
 		$I->waitForText(redFormManagerPage::$SectionTitle, 30, redFormManagerPage::$H1);
 
-		if ($I->isElementPresent(redFormManagerPage::returnValueSection($params)))
+		if ($I->isElementPresent(redFormManagerPage::$valueSection,$params))
 		{
 			return;
 		}
@@ -74,7 +74,7 @@ class redFormManagerSteps extends AdminRedevent
 		$I->amOnPage(redFormManagerPage::$URLField);
 		$I->waitForText(redFormManagerPage::$FieldTitle, 30, redFormManagerPage::$H1);
 
-		if ($I->isElementPresent(redFormManagerPage::returnValueField($params)))
+		if ($I->isElementPresent(redFormManagerPage::$valueField,$params))
 		{
 			return;
 		}
@@ -130,7 +130,7 @@ class redFormManagerSteps extends AdminRedevent
 		$I->amOnPage(redFormManagerPage::$URLForm);
 		$I->waitForText(redFormManagerPage::$FormTitle, 30, redFormManagerPage::$H1);
 
-		if ($I->isElementPresent(redFormManagerPage::returnValueForm($params)))
+		if ($I->isElementPresent(redFormManagerPage::$valueForm,$params))
 		{
 			return;
 		}
@@ -159,7 +159,11 @@ class redFormManagerSteps extends AdminRedevent
 		if (!empty($params['fields']))
 		{
 			$I->waitForText(redFormManagerPage::$messageSaveSuccess, 30, redFormManagerPage::$message);
-			$I->click(redFormManagerPage::returnValueForm($params));
+			$I->amOnPage(redFormManagerPage::$URLForm);
+			$I->fillField(redFormManagerPage::$fieldSearch, $params['name']);
+			$I->click(redFormManagerPage::$buttonSearch);
+			$I->seeElement(redFormManagerPage::$valueForm);
+			$I->click(redFormManagerPage::$valueForm);
 			$I->waitForText(redFormManagerPage::$FormTitleNew, 30, redFormManagerPage::$label);
 
 			foreach ($params['fields'] as $fieldName)
@@ -173,6 +177,20 @@ class redFormManagerSteps extends AdminRedevent
 
 				$I->waitForText(redFormManagerPage::$messageSaveSuccess, 30, redFormManagerPage::$message);
 			}
+		}
+	}
+	protected function isElementPresent($element,$params)
+	{
+		$I = $this;
+
+		try
+		{
+			$I->See($params['name'], $element);
+			return true;
+		}
+		catch (\PHPUnit_Framework_AssertionFailedError $f)
+		{
+			return false;
 		}
 	}
 
@@ -191,5 +209,6 @@ class redFormManagerSteps extends AdminRedevent
 		$I->createRedformFieldIfNotExists(['name' => 'Email', 'fieldtype' => 'E-mail']);
 		$I->createRedformFormIfNotExists(['name' => 'Registration', 'fields' => ['Name', 'Email']]);
 	}
+
 
 }

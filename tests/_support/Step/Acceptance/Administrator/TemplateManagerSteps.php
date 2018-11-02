@@ -18,13 +18,13 @@ class TemplateManagerSteps extends redFormManagerSteps
 	 *
 	 * @return void
 	 */
-	public function createTemplate($params)
+	public function createTemplateNew($params)
 	{
 		$I = $this;
 		$I->amOnPage(TemplateManagerPage::$URL);
-		$I->waitForText(TemplateManagerPage::$Title, 30, TemplateManagerPage::$H1);
+		$I->waitForText(TemplateManagerPage::$title, 30, TemplateManagerPage::$H1);
 		$I->click(TemplateManagerPage::$buttonNew);
-		$I->waitForText(TemplateManagerPage::$TitleNew, 30, TemplateManagerPage::$label);
+		$I->waitForText(TemplateManagerPage::$titleNew, 30, TemplateManagerPage::$label);
 		$I->fillField(TemplateManagerPage::$fieldName, $params['name']);
 
 		if (!empty($params['meta_description']))
@@ -39,7 +39,7 @@ class TemplateManagerSteps extends redFormManagerSteps
 
 		if (!empty($params['redform']))
 		{
-			$I->click(TemplateManagerPage::returnValueRedForm($params));
+			$I->click('Registration');
 			$I->selectOptionInChosenByIdUsingJs(TemplateManagerPage::$redFormId, $params['redform']);
 		}
 
@@ -67,7 +67,7 @@ class TemplateManagerSteps extends redFormManagerSteps
 	{
 		$I = $this;
 		$I->amOnPage(TemplateManagerPage::$URL);
-		$I->waitForText(TemplateManagerPage::$Title, 120);
+		$I->waitForText(TemplateManagerPage::$title, 120);
 		$I->searchTemplate($nameTemplate);
 		$I->see($nameTemplate, TemplateManagerPage::$tableResult);
 		$I->click(TemplateManagerPage::$checkAll);

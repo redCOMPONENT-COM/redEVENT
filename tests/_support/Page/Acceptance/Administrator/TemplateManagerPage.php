@@ -24,14 +24,14 @@ class TemplateManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $Title                = 'Event Templates';
+	public static $title                = 'Event Templates';
 
 	/**
 	 * Title of this page new category.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $TitleNew             = "Name";
+	public static $titleNew             = "Name";
 
 	/**
 	 * Locator for meta description
@@ -59,15 +59,4 @@ class TemplateManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $tableResult          = '//table[@id=\'table-items\']/tbody/tr[1]/td[4]';
-
-	/**
-	 * @param $params
-	 * @return string
-	 */
-	public static function returnValueRedForm($params)
-	{
-		$path = '//*[@id="eventTab"]/li/a[*/text() = "' . $params['redform'].'"]';
-
-		return $path;
-	}
 }
