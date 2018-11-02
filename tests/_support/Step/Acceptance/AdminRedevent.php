@@ -3,30 +3,6 @@ namespace Step\Acceptance;
 use \Page\Acceptance\Administrator\AbstractPage;
 class AdminRedevent extends \AcceptanceTester
 {
-	/**
-	 * Create a Bundle
-	 *
-	 * @param   array  $params  parameters
-	 *
-	 * @return void
-	 */
-	public function createBundle($params)
-	{
-		$I = $this;
-		$I->amOnPage('administrator/index.php?option=com_redevent&view=bundles');
-		$I->waitForText('Bundles', 30, ['css' => 'H1']);
-		$I->click(['xpath' => '//button[contains(@onclick, "bundle.add")]']);
-		$I->waitForText('Name', 30, ['css' => 'label']);
-		$I->fillField(['id' => 'jform_name'], $params['name']);
-
-		if (!empty($params['description']))
-		{
-			$I->fillTinyMceEditorById('jform_description', $params['description']);
-		}
-
-		$I->click(['xpath' => '//button[contains(@onclick, "bundle.save")]']);
-	}
-
     /**
      * Function create for item
      *

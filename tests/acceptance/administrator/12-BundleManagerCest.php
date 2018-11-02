@@ -79,5 +79,5 @@ class BundleManagerCest
 		$I->wantToTest('Delete a bundle 2 in redEVENT');
 		$I->deleteBundle( $this->bundleName2);
 	}
-
 }
+

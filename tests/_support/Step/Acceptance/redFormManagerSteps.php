@@ -209,6 +209,4 @@ class redFormManagerSteps extends AdminRedevent
 		$I->createRedformFieldIfNotExists(['name' => 'Email', 'fieldtype' => 'E-mail']);
 		$I->createRedformFormIfNotExists(['name' => 'Registration', 'fields' => ['Name', 'Email']]);
 	}
-
-
 }

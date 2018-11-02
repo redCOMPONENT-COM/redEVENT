@@ -178,12 +178,9 @@ class redFormManagerPage extends AbstractPage
 	 */
 	public static $valueField                  = '//table[@id=\'fieldList\']/tbody/tr/td[3]';
 
-
 	/**
 	 * @param $params
 	 * @return string
 	 */
 	public static $valueForm                   = '//table[@id=\'formList\']/tbody/tr/td[3]';
-
-
 }
