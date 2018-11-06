@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3f39829ccc39f3836ed9986dd0bd3c2",
+    "content-hash": "9ca80d896d3a314579aa48baec2304a5",
     "packages": [],
     "packages-dev": [
         {
@@ -1535,36 +1535,27 @@
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
-            "version": "v3.8.1",
+            "version": "v2.53.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/selenium-server-standalone.git",
-                "reference": "ca0d0b64ac458c59f0b447b768448b94ab64a1b0"
+                "reference": "24bc596a89fe0f6e524c72a7950c09a4927a4020"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/ca0d0b64ac458c59f0b447b768448b94ab64a1b0",
-                "reference": "ca0d0b64ac458c59f0b447b768448b94ab64a1b0",
+                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/24bc596a89fe0f6e524c72a7950c09a4927a4020",
+                "reference": "24bc596a89fe0f6e524c72a7950c09a4927a4020",
                 "shasum": ""
             },
             "bin": [
                 "bin/selenium-server-standalone"
             ],
             "type": "library",
-            "autoload": {
-                "files": [
-                    "Selenium.php"
-                ]
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache 2.0"
             ],
             "authors": [
-                {
-                    "name": "Sven Eisenschmidt",
-                    "email": "sven.eisenschmidt@gmail.com"
-                },
                 {
                     "name": "Javier Gomez",
                     "email": "javier.gomez@community.joomla.org"
@@ -1576,7 +1567,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2017-12-29T09:21:40+00:00"
+            "time": "2016-07-04T17:23:12+00:00"
         },
         {
             "name": "knplabs/github-api",
