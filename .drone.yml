@@ -15,9 +15,9 @@ pipeline:
       - touch tests/.cache.joomla-cms.tmp
 
       # redFORM
-      - mkdir -p tests/extension/redFORM
+      - mkdir -p build/redFORM
       - gpg --pinentry-mode loopback --passphrase "6f8f19c330a0f899458e4b0670824deb8cdfe391" -o /opt/cache/redFORM.tgz --decrypt /opt/cache/redFORM.tgz.gpg
-      - tar -xzf /opt/cache/redFORM.tgz -C tests/extension/redFORM
+      - tar -xzf /opt/cache/redFORM.tgz -C build/redFORM
       - touch tests/.cache.redFORM.tmp
 
   00-setup:
