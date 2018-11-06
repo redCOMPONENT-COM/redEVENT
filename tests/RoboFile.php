@@ -252,7 +252,7 @@ class RoboFile extends \Robo\Tasks
     protected function getredFORMExtensionForIntegrationTests($cleanUp = 1)
     {
         // Get redFORM Clean Testing sites
-        if (is_dir('tests/extension/redFORM'))
+        if (is_dir('build/redFORM'))
         {
             if (!$cleanUp)
             {
@@ -261,13 +261,13 @@ class RoboFile extends \Robo\Tasks
                 return;
             }
 
-            $this->taskDeleteDir('tests/extension/redFORM')->run();
+            $this->taskDeleteDir('build/redFORM')->run();
         }
 
         $version = '3.3.15';
-        $this->_exec("git clone -b $version --single-branch --depth 1 https://redJOHNNY:redjohnnyredweb2013github@github.com/redCOMPONENT-COM/redFORM.git tests/extension/redFORM");
+        $this->_exec("git clone -b $version --single-branch --depth 1 https://redJOHNNY:redjohnnyredweb2013github@github.com/redCOMPONENT-COM/redFORM.git build/redFORM");
 
-        $this->say("redFORM ($version) cloned at tests/extension/");
+        $this->say("redFORM ($version) cloned at build/");
     }
 
 	/**
