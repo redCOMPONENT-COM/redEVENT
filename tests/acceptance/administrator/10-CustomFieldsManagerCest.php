@@ -37,9 +37,8 @@ class CustomFieldsManagerCest
 	 */
 	public function __construct()
 	{
-		$this->faker       = Factory::create();
+		$this->faker            = Factory::create();
 		$this->CustomFieldName1 = $this->faker->bothify("some text ##??");
-
 		$this->CustomFieldName2 = $this->faker->bothify("some text for session ##??");
 	}
 

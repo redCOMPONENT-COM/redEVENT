@@ -33,12 +33,12 @@ class EventManagerCest
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	protected $EventName1;
+	protected $eventName1;
 	/**
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	protected $EventName2;
+	protected $eventName2;
 
 	/**
 	 * @var   string
@@ -46,11 +46,11 @@ class EventManagerCest
 	 */
 	protected $templateName;
 
-    /**
-     * @var   string
-     * @since 1.0.0
-     */
-    protected $templateName2;
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	protected $templateName2;
 
 	/**
 	 * EventManagerCest constructor.
@@ -59,13 +59,13 @@ class EventManagerCest
 	 */
 	public function __construct()
 	{
-		$this->faker       = Factory::create();
+		$this->faker         = Factory::create();
 		$this->categoryName1 = $this->faker->bothify("Category Name 1 ##??");
 		$this->categoryName2 = $this->faker->bothify("Category Name 2 ##??");
-		$this->EventName1 = $this->faker->bothify("Event Name 1 ##??");
-		$this->EventName2 = $this->faker->bothify("Event Name 2 ##??");
-		$this->templateName =  'default template';
-        $this->templateName2 =  'template 1';
+		$this->eventName1    = $this->faker->bothify("Event Name 1 ##??");
+		$this->eventName2    = $this->faker->bothify("Event Name 2 ##??");
+		$this->templateName  = 'default template';
+		$this->templateName2 = 'template 1';
 	}
 	public function _before(\AcceptanceTester $i)
 	{
@@ -79,37 +79,37 @@ class EventManagerCest
 	public function addEventWithDefaultTemplate(EventManagerSteps $I)
 	{
 		$I->wantToTest('Add an event 1 in redEVENT with default template');
-		$I->createEventNew($this->EventName1,$this->categoryName1, $this->templateName);
+		$I->createEventNew($this->eventName1,$this->categoryName1, $this->templateName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
-    /**
-     * @param TemplateManagerSteps $I
-     */
-    public function addTemplate(TemplateManagerSteps $I){
-        $I->wantToTest('Add an template in redEVENT');
-        $I->createTemplate($this->templateName2);
-    }
+	/**
+	 * @param TemplateManagerSteps $I
+	 */
+	public function addTemplate(TemplateManagerSteps $I){
+		$I->wantToTest('Add an template in redEVENT');
+		$I->createTemplate($this->templateName2);
+	}
 
-    /**
-     * @param EventManagerSteps $I
-     * @throws Exception
-     */
+	/**
+	 * @param EventManagerSteps $I
+	 * @throws Exception
+	 */
 	public function addEvent(EventManagerSteps $I)
 	{
 		$I->wantToTest('Add an event in redEVENT with template');
-        $I->createEventNew($this->EventName2,$this->categoryName2, $this->templateName2);
-        $I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
+		$I->createEventNew($this->eventName2,$this->categoryName2, $this->templateName2);
+		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 
-        $I->wantToTest('Search Event 1 in redEvent');
-        $I->searchEvent($this->EventName1);
-        $I->dontSee($this->EventName2);
-        $I->buttonClear($this->EventName1,$this->EventName2);
+		$I->wantToTest('Search Event 1 in redEvent');
+		$I->searchEvent($this->eventName1);
+		$I->dontSee($this->eventName2);
+		$I->buttonClear($this->eventName1,$this->eventName2);
 
-        $I->wantToTest('Delete Event 1 in redEvent');
-        $I->deleteEvent($this->EventName1);
+		$I->wantToTest('Delete Event 1 in redEvent');
+		$I->deleteEvent($this->eventName1);
 
-        $I->wantToTest('Delete Event 2 in redEvent');
-        $I->deleteEvent($this->EventName2);
+		$I->wantToTest('Delete Event 2 in redEvent');
+		$I->deleteEvent($this->eventName2);
 	}
 }

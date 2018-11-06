@@ -26,11 +26,9 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->click(JoomlaManagerPage::$checkbox);
 		$I->click(JoomlaManagerPage::$buttonUninstall);
 		$I->acceptPopup();
-		$I->waitForText(JoomlaManagerPage::$messageUninstall, 30, JoomlaManagerPage::$message);
 		$I->see(JoomlaManagerPage::$messageUninstall, JoomlaManagerPage::$message);
 		$I->fillField(JoomlaManagerPage::$fieldSearch, $nameExtensions);
 		$I->click(JoomlaManagerPage::$buttonSearch);
-		$I->waitForText(JoomlaManagerPage::$messageFailedSearch, 30, JoomlaManagerPage::$messageFailed);
 		$I->see(JoomlaManagerPage::$messageFailedSearch,JoomlaManagerPage::$messageFailed);
 	}
 }
