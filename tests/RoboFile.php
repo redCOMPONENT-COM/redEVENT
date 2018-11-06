@@ -265,7 +265,7 @@ class RoboFile extends \Robo\Tasks
         }
 
         $version = '3.3.15';
-        $this->_exec("git clone -b $version --single-branch --depth 1 https://redJOHNNY:redjohnnyredweb2013github@github.com/redCOMPONENT-COM/redFORM.git build/redFORM");
+        $this->_exec("git clone -b $version --single-branch --depth 1 https://travisredweb:travisredweb2013github@github.com/redCOMPONENT-COM/redFORM.git build/redFORM");
 
         $this->say("redFORM ($version) cloned at build/");
     }
