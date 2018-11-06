@@ -57,7 +57,7 @@ script:
 - mv acceptance.suite.dist.yml acceptance.suite.yml
 - vendor/bin/robo run:tests
 - vendor/bin/robo send:screenshot-from-travis-to-github $CLOUD_NAME $API_KEY $API_SECRET $GITHUB_TOKEN $ORGANIZATION $REPO $TRAVIS_PULL_REQUEST;
-- vendor/bin/robo run:unit-tests
+#- vendor/bin/robo run:unit-tests
 
 notifications:
   slack: redweb:egb7X6jqHYp9PCwbUuQt0pVE

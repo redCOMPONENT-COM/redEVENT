@@ -19,7 +19,7 @@
 		"knplabs/github-api": "1.4.12",
 		"ifsnop/mysqldump-php": "1.*",
 		"fzaninotto/faker": "^1.5",
-		"joomla-projects/selenium-server-standalone": "3.8.1",
+		"joomla-projects/selenium-server-standalone": "v2.53.1",
 		"nette/reflection": "~2"
 	}
 }
