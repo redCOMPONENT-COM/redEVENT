@@ -472,7 +472,42 @@ class RoboFile extends \Robo\Tasks
 		$this->_exec("joomla-cms3/libraries/vendor/phpunit/phpunit/phpunit")
 			->stopOnFail();
 	}
-
+	
+	public function testsSitePreparation($use_htaccess = 1, $cleanUp = 1)
+	{
+		$skipCleanup = false;
+		// Get Joomla Clean Testing sites
+		if (is_dir('tests/joomla-cms'))
+		{
+			if (!$cleanUp)
+			{
+				$skipCleanup = true;
+				$this->say('Using cached version of Joomla CMS and skipping clone process');
+			}
+			else
+			{
+				$this->taskDeleteDir('tests/joomla-cms')->run();
+			}
+		}
+		if (!$skipCleanup)
+		{
+			$version = 'staging';
+			/*
+			* When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
+			* Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
+			*/
+			$version = '3.9.0';
+			$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms");
+			$this->say("Joomla CMS ($version) site created at tests/joomla-cms");
+		}
+		// Optionally uses Joomla default htaccess file
+		if ($use_htaccess == 1)
+		{
+			$this->_copy('tests/joomla-cms/htaccess.txt', 'tests/joomla-cms/.htaccess');
+			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms/,g" --in-place tests/joomla-cms/.htaccess');
+		}
+	}
+	
 	/**
 	 * Stops Selenium Standalone Server
 	 *
