@@ -54,7 +54,9 @@ class JoomlaManagerPage extends AbstractPage
 	 *
 	 * @var string
 	 */
-	public static $messageUninstall           = 'Uninstalling the component was successfull';
+	public static $messageUninstall           = 'Uninstalling the component was successful.';
+
+	public static $message                    = '.alert-message';
 
 	/**
 	 * Message not find component
@@ -68,5 +70,5 @@ class JoomlaManagerPage extends AbstractPage
 	 *
 	 * @var string
 	 */
-	public static $messageFailed               = '#alert-no-items';
+	public static $messageFailed              = '.alert-no-items';
 }
