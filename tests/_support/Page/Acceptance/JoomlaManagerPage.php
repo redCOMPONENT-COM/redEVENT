@@ -54,7 +54,7 @@ class JoomlaManagerPage extends AbstractPage
 	 *
 	 * @var string
 	 */
-	public static $messageUninstall           = 'Uninstalling the component was successful.l';
+	public static $messageUninstall           = 'Uninstalling the component was successfull';
 
 	/**
 	 * Message not find component
