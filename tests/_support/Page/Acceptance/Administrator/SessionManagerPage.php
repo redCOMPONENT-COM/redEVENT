@@ -18,49 +18,49 @@ class SessionManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $URL = 'administrator/index.php?option=com_redevent&view=sessions';
+	public static $URL               = 'administrator/index.php?option=com_redevent&view=sessions';
 
 	/**
 	 * Title of this page.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $sessionTitle = 'Sessions';
+	public static $sessionTitle      = 'Sessions';
 
 	/**
 	 * Title  of this page new session
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $sessionTitleNew= "Event";
+	public static $sessionTitleNew   = "Event";
 
 	/**
 	 * Locator for field name
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldName = '#jform_title';
+	public static $fieldName         = '#jform_title';
 
 	/**
 	 * Locator for field Description
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldDescription ='#jform_description';
+	public static $fieldDescription  = '#jform_description';
 
 	/**
 	 * Locator for select venue
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $venueSelect = 'jform_venueid';
+	public static $venueSelect      = 'jform_venueid';
 
 	/**
 	 * Locator for select event
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $eventSelect ='jform_eventid';
+	public static $eventSelect      = 'jform_eventid';
 
 	/**
 	 * Button Save
@@ -68,12 +68,12 @@ class SessionManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $buttonSave ='//button[contains(@onclick, "session.save")]';
+	public static $buttonSave       = '//button[contains(@onclick, "session.save")]';
     /**
      *
      * @var string
      * @since 1.0.0
      */
 
-    public static $tableResult = '//table[@id=\'table-items\']/tbody/tr/td[9]';
+    public static $tableResult      = '//table[@id=\'table-items\']/tbody/tr/td[9]';
 }

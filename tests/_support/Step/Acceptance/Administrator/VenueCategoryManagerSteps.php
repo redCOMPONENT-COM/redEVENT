@@ -12,32 +12,32 @@ use \Page\Acceptance\Administrator\VenueCategoryManagerPage;
 use Step\Acceptance\AdminRedevent;
 class VenueCategoryManagerSteps extends AdminRedevent
 {
-    /**
-     * @param $params
-     * @throws \Exception
-     */
-    public function createVenueCategoryNew($params)
-    {
-        $I = $this;
-        $I->createItemNew(VenueCategoryManagerPage::$URL,VenueCategoryManagerPage::$venueCategoryTitle,VenueCategoryManagerPage::$venueCategoryTitleNew,$params);
-    }
-    /**
-     * @param $nameVenueCategory
-     * @throws \Exception
-     */
-    public function searchVenueCategory($nameVenueCategory)
-    {
-        $I = $this;
-        $I->search(VenueCategoryManagerPage::$URL,$nameVenueCategory);
-    }
+	/**
+	 * @param $params
+	 * @throws \Exception
+	 */
+	public function createVenueCategoryNew($params)
+	{
+		$I = $this;
+		$I->createItemNew(VenueCategoryManagerPage::$URL,VenueCategoryManagerPage::$venueCategoryTitle,VenueCategoryManagerPage::$venueCategoryTitleNew,$params);
+	}
+	/**
+	 * @param $nameVenueCategory
+	 * @throws \Exception
+	 */
+	public function searchVenueCategory($nameVenueCategory)
+	{
+		$I = $this;
+		$I->search(VenueCategoryManagerPage::$URL,$nameVenueCategory);
+	}
 
-    /**
-     * @param $nameVenueCategory
-     * @throws \Exception
-     */
-    public function deleteVenueCategory($nameVenueCategory)
-    {
-        $I = $this;
-        $I->delete(VenueCategoryManagerPage::$URL,VenueCategoryManagerPage::$venueCategoryTitle,$nameVenueCategory);
-    }
+	/**
+	 * @param $nameVenueCategory
+	 * @throws \Exception
+	 */
+	public function deleteVenueCategory($nameVenueCategory)
+	{
+		$I = $this;
+		$I->delete(VenueCategoryManagerPage::$URL,VenueCategoryManagerPage::$venueCategoryTitle,$nameVenueCategory);
+	}
 }

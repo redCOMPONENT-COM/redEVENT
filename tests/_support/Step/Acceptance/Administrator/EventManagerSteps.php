@@ -34,7 +34,6 @@ class EventManagerSteps  extends CategoryManagerSteps
 		$I->waitForElement(EventManagerPage::$templateSelect, 30);
 		$I->selectOptionInChosenByIdUsingJs(EventManagerPage::$templateItem, $templateName);
 		$I->click(EventManagerPage::$buttonSave);
-
 	}
 
 	/**

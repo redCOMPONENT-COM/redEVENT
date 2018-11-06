@@ -21,7 +21,6 @@ class RoleManagerSteps extends AdminRedevent
 	{
 		$I = $this;
 		$I->createItemNew(RoleManagerPage::$URL,RoleManagerPage::$roleTitle,RoleManagerPage::$roleTitleNew,$params);
-
 	}
 
 	/**

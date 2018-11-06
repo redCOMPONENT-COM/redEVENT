@@ -45,23 +45,23 @@ class TemplateManagerSteps extends redFormManagerSteps
 
 		$I->click(TemplateManagerPage::$buttonSaveClose);
 	}
-    /**
-     * Create a template
-     *
-     * @param   string  $nameTemplate
-     *
-     * @return void
-     */
-    public function createTemplate($nameTemplate)
-    {
-        $I = $this;
-        $I->amOnPage(TemplateManagerPage::$URL);
-        $I->waitForText(TemplateManagerPage::$title, 30, TemplateManagerPage::$H1);
-        $I->click(TemplateManagerPage::$buttonNew);
-        $I->waitForText(TemplateManagerPage::$titleNew, 30, TemplateManagerPage::$label);
-        $I->fillField(TemplateManagerPage::$fieldName, $nameTemplate);
-        $I->click(TemplateManagerPage::$buttonSaveClose);
-    }
+	/**
+	 * Create a template
+	 *
+	 * @param   string  $nameTemplate
+	 *
+	 * @return void
+	 */
+	public function createTemplate($nameTemplate)
+	{
+		$I = $this;
+		$I->amOnPage(TemplateManagerPage::$URL);
+		$I->waitForText(TemplateManagerPage::$title, 30, TemplateManagerPage::$H1);
+		$I->click(TemplateManagerPage::$buttonNew);
+		$I->waitForText(TemplateManagerPage::$titleNew, 30, TemplateManagerPage::$label);
+		$I->fillField(TemplateManagerPage::$fieldName, $nameTemplate);
+		$I->click(TemplateManagerPage::$buttonSaveClose);
+	}
 
 	/**
 	 * @param $nameTemplate

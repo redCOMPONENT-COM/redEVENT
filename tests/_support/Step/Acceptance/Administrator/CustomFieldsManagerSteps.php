@@ -28,7 +28,6 @@ class CustomFieldsManagerSteps extends AdminRedevent
 		$I->selectOptionInChosenByIdUsingJs(CustomFieldsManagerPage::$fieldType, $type);
 
 		$I->click(CustomFieldsManagerPage::$buttonSaveClose);
-
 	}
 
 	/**
@@ -48,17 +47,17 @@ class CustomFieldsManagerSteps extends AdminRedevent
 	public function deleteCustomFields($nameCustomFields)
 	{
 		$I = $this;
-        $I->amOnPage(CustomFieldsManagerPage::$URL);
-        $I->waitForText(CustomFieldsManagerPage::$customFieldsTitle, 30);
-        $I->searchCustomField($nameCustomFields);
-        $I->see($nameCustomFields, CustomFieldsManagerPage::$tableResult);
-        $I->click(CustomFieldsManagerPage::$checkAll);
-        $I->click(CustomFieldsManagerPage::$buttonDelete);
-        $I->wantTo('Test with delete category but then cancel');
-        $I->cancelPopup();
-        $I->wantTo('Test with delete product then accept');
-        $I->click(CustomFieldsManagerPage::$buttonDelete);
-        $I->acceptPopup();
-        $I->dontSee($nameCustomFields);
+		$I->amOnPage(CustomFieldsManagerPage::$URL);
+		$I->waitForText(CustomFieldsManagerPage::$customFieldsTitle, 30);
+		$I->searchCustomField($nameCustomFields);
+		$I->see($nameCustomFields, CustomFieldsManagerPage::$tableResult);
+		$I->click(CustomFieldsManagerPage::$checkAll);
+		$I->click(CustomFieldsManagerPage::$buttonDelete);
+		$I->wantTo('Test with delete category but then cancel');
+		$I->cancelPopup();
+		$I->wantTo('Test with delete product then accept');
+		$I->click(CustomFieldsManagerPage::$buttonDelete);
+		$I->acceptPopup();
+		$I->dontSee($nameCustomFields);
 	}
 }

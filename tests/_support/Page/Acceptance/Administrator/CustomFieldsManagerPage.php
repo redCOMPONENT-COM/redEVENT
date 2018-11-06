@@ -23,14 +23,14 @@ class CustomFieldsManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $customFieldsTitle      ='Custom fields';
+	public static $customFieldsTitle        = 'Custom fields';
 
 	/**
 	 * Title  of this page new Custom fields
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $customFieldsTitleNew    = "Add/edit custom field - redEVENT";
+	public static $customFieldsTitleNew     = "Add/edit custom field - redEVENT";
 
 	/**
 	 * Locator for field name
@@ -66,7 +66,7 @@ class CustomFieldsManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $buttonSave               = '//button[contains(@onclick, "customfield.save")]';
+	public static $buttonSave               = '//button[contains(@OnClick, "customfield.save")]';
 
 	/**
 	 * Locator for object on table
@@ -74,7 +74,7 @@ class CustomFieldsManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $objectResult              = '//table[@id=\'table-items\']/tbody/tr[1]/td[7]';
+	public static $objectResult               = '//table[@id=\'table-items\']/tbody/tr[1]/td[7]';
 
 	/**
 	 * Locator for type on table

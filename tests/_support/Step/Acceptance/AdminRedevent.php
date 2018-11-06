@@ -10,33 +10,33 @@ namespace Step\Acceptance;
 use \Page\Acceptance\Administrator\AbstractPage;
 class AdminRedevent extends \AcceptanceTester
 {
-    /**
-     * Function create for item
-     *
-     * @param $URL
-     * @param $itemTitle
-     * @param $itemTitleNew
-     * @param $params
-     *
-     * @return  void
-     * @throws \Exception
-     */
-    public function createItemNew($URL,$itemTitle,$itemTitleNew,$params)
-    {
-        $I = $this;
-        $I->amOnPage($URL);
-        $I->waitForText($itemTitle, 30, AbstractPage::$H1);
-        $I->click(AbstractPage::$buttonNew);
-        $I->waitForText($itemTitleNew, 30, AbstractPage::$label);
-        $I->fillField(AbstractPage::$fieldName, $params['name']);
+	/**
+	 * Function create for item
+	 *
+	 * @param $URL
+	 * @param $itemTitle
+	 * @param $itemTitleNew
+	 * @param $params
+	 *
+	 * @return  void
+	 * @throws \Exception
+	 */
+	public function createItemNew($URL,$itemTitle,$itemTitleNew,$params)
+	{
+		$I = $this;
+		$I->amOnPage($URL);
+		$I->waitForText($itemTitle, 30, AbstractPage::$H1);
+		$I->click(AbstractPage::$buttonNew);
+		$I->waitForText($itemTitleNew, 30, AbstractPage::$label);
+		$I->fillField(AbstractPage::$fieldName, $params['name']);
 
-        if (!empty($params['description']))
-        {
-            $I->fillTinyMceEditorById(AbstractPage::$fieldDescription, $params['description']);
-        }
+		if (!empty($params['description']))
+		{
+			$I->fillTinyMceEditorById(AbstractPage::$fieldDescription, $params['description']);
+		}
 
-        $I->click(AbstractPage::$buttonSaveClose);
-    }
+		$I->click(AbstractPage::$buttonSaveClose);
+	}
 
 	/**
 	 * Function search for item
@@ -62,7 +62,7 @@ class AdminRedevent extends \AcceptanceTester
 	 * @param  string $name1   name1 of item
 	 * @param  string $name2   name2 of item
 	 *
-     * @return  void
+	 * @return  void
 	 * @throws \Exception
 	 */
 	public function buttonClear($name1,$name2)
@@ -82,7 +82,7 @@ class AdminRedevent extends \AcceptanceTester
 	 * @param string $title    title of page
 	 * @param string $name     name of item
 	 *
-     * @return  void
+	 * @return  void
 	 * @throws \Exception
 	 */
 	public function delete($URL,$title,$name)

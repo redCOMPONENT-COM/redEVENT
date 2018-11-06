@@ -16,21 +16,21 @@ class RoleManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $URL            = 'administrator/index.php?option=com_redevent&view=roles';
+	public static $URL              = 'administrator/index.php?option=com_redevent&view=roles';
 
 	/**
 	 * Title of this page.
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $roleTitle      = "Roles";
+	public static $roleTitle        = "Roles";
 
 	/**
 	 * Title  of this page new Custom Roles
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $roleTitleNew    = "Name";
+	public static $roleTitleNew     = "Name";
 
 	/**
 	 * @var string

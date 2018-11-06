@@ -45,7 +45,7 @@ class EventManagerPage extends AbstractPage
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public static $fieldDescription   ='#jform_datdescription';
+	public static $fieldDescription   = '#jform_datdescription';
 
 	/**
 	 * Locator for select category
@@ -81,6 +81,6 @@ class EventManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $buttonSave         ='//button[contains(@onclick, "event.save")]';
+	public static $buttonSave         = '//button[contains(@OnClick, "event.save")]';
 
 }

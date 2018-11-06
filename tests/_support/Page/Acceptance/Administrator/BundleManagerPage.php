@@ -43,5 +43,5 @@ class BundleManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $buttonSave       = '//button[contains(@onclick,"bundle.save")]';
+	public static $buttonSave       = '//button[contains(@OnClick,"bundle.save")]';
 }

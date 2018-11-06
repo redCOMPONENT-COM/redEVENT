@@ -65,6 +65,4 @@ class SessionManagerSteps extends AdminRedevent
 		$I->waitForText(SessionManagerPage::$messageDeleteProductSuccess, 60, SessionManagerPage::$message);
 		$I->dontSee($nameSession);
 	}
-
-
 }

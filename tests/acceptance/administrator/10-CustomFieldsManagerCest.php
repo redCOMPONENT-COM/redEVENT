@@ -99,6 +99,5 @@ class CustomFieldsManagerCest
 		$I->deleteCustomFields($this->CustomFieldName1);
 		$I->wantToTest('delete a Custom Field 2 in redEVENT');
 		$I->deleteCustomFields($this->CustomFieldName2);
-
 	}
 }

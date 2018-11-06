@@ -22,8 +22,8 @@ class CategoryManagerSteps extends AdminRedevent
 	 */
 	public function createCategoryNew($params)
 	{
-        $I = $this;
-        $I->createItemNew(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,CategoryManagerPage::$categoryTitleNew,$params);
+		$I = $this;
+		$I->createItemNew(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,CategoryManagerPage::$categoryTitleNew,$params);
 	}
 	/**
 	 * @param $nameCategory
@@ -42,6 +42,6 @@ class CategoryManagerSteps extends AdminRedevent
 	public function deleteCategory($nameCategory)
 	{
 		$I = $this;
-        $I->delete(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,$nameCategory);
+		$I->delete(CategoryManagerPage::$URL,CategoryManagerPage::$categoryTitle,$nameCategory);
 	}
 }
