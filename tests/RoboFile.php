@@ -18,7 +18,6 @@ class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
 	use Joomla\Testing\Robo\Tasks\LoadTasks;
-
 	// Load tasks from composer, see composer.json
 	use Joomla\Testing\Robo\Tasks\LoadTasks;
 
@@ -230,9 +229,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+		$this->taskSeleniumStandaloneServer()
+			->setURL("http://localhost:4444")
+			->runSelenium()
+			->waitForSelenium()
 			->run()
 			->stopOnFail();
 
@@ -264,9 +264,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+		$this->taskSeleniumStandaloneServer()
+			->setURL("http://localhost:4444")
+			->runSelenium()
+			->waitForSelenium()
 			->run()
 			->stopOnFail();
 
