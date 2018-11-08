@@ -410,13 +410,12 @@ class RoboFile extends \Robo\Tasks
 	 * @param   string $githubPRNo          GitHub PR #
 	 * @param   string $slackWebhook        Slack Webhook URL
 	 * @param   string $slackChannel        Slack channel
-	 * @param   string $buildURL            Build URL
 	 *
 	 * @return  void
 	 *
 	 * @since   5.1
 	 */
-	public function sendBuildReportErrorTravisToSlack($cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL)
+	public function sendBuildReportErrorTravisToSlack($cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel)
 	{
 		$errorSelenium = true;
 		$reportError   = false;
@@ -467,7 +466,6 @@ class RoboFile extends \Robo\Tasks
 					->setCloudinaryApiSecret($cloudinaryApiSecret)
 					->setGithubRepo($githubRepository)
 					->setGithubPR($githubPRNo)
-					->setBuildURL($buildURL)
 					->setSlackWebhook($slackWebhook)
 					->setSlackChannel($slackChannel)
 					->setTapLog($errorLog);
