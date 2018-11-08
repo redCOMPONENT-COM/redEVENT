@@ -56,7 +56,6 @@ script:
 - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
 - vendor/bin/robo check:for-missed-debug-code
 - vendor/bin/robo check:for-parse-errors
-- vendor/bin/robo check:codestyle
 - mv acceptance.suite.dist.yml acceptance.suite.yml
 - vendor/bin/robo run:tests
 
