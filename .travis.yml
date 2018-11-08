@@ -13,6 +13,7 @@ env:
     - REPO=redEVENT
     - SLACK_WEBHOOK='https://hooks.slack.com/services/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'
     - SLACK_CHANNEL='#redevent'
+    - BUILD_URL='https://travis-ci.com/$TRAVIS_REPO_SLUG/jobs/$TRAVIS_JOB_ID'
 
 addons:
   firefox: "47.0.2"
@@ -58,7 +59,7 @@ script:
 - vendor/bin/robo check:codestyle
 - mv acceptance.suite.dist.yml acceptance.suite.yml
 - vendor/bin/robo run:tests
-- vendor/bin/robo send:build-report-error-travis-to-slack $CLOUD_NAME $API_KEY $API_SECRET $TRAVIS_REPO_SLUG $TRAVIS_PULL_REQUEST $SLACK_WEBHOOK $SLACK_CHANNEL;
+- vendor/bin/robo send:build-report-error-travis-to-slack $CLOUD_NAME $API_KEY $API_SECRET $TRAVIS_REPO_SLUG $TRAVIS_PULL_REQUEST $SLACK_WEBHOOK $SLACK_CHANNEL $BUILD_URL;
 
 notifications:
   slack: redweb:egb7X6jqHYp9PCwbUuQt0pVE
