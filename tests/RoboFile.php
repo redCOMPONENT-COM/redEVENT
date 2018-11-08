@@ -240,8 +240,6 @@ class RoboFile extends \Robo\Tasks
 		$this->_exec("vendor/bin/codecept build");
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/install/')
@@ -275,8 +273,6 @@ class RoboFile extends \Robo\Tasks
 		$this->_exec("vendor/bin/codecept build");
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/install/')
@@ -284,8 +280,6 @@ class RoboFile extends \Robo\Tasks
 			->stopOnFail();
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/administrator/')
@@ -302,8 +296,6 @@ class RoboFile extends \Robo\Tasks
 //			->stopOnFail();
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/uninstall/')
