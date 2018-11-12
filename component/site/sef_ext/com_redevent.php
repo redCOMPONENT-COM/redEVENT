@@ -480,7 +480,14 @@ if (!$shHomePageFlag)
 		/* Handle the RSS feed */
 		if (isset($format))
 		{
-			if (strtolower($format) == 'feed') $title[] = 'feed';
+			if (strtolower($format) == 'feed')
+			{
+				$title[] = 'feed';
+			}
+			elseif (strtolower($format) == 'csv')
+			{
+				//$title[] = 'format=' . $format;
+			}
 			shRemoveFromGETVarsList('format');
 		}
 		if (isset($type))
