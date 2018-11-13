@@ -486,7 +486,7 @@ if (!$shHomePageFlag)
 			}
 			elseif (strtolower($format) == 'csv')
 			{
-				//$title[] = 'format=' . $format;
+				$title[] = 'format=' . $format;
 			}
 			shRemoveFromGETVarsList('format');
 		}
