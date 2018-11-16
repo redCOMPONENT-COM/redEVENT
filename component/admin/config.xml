@@ -831,6 +831,15 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="sh404sef_categoryevents_alias"
+			   type="radio"
+			   default="0"
+			   class="btn-group"
+			   label="COM_REDEVENT_SH404SEF_CATEGORYEVENTS_ALIAS"
+			   description="COM_REDEVENT_SH404SEF_CATEGORYEVENTS_ALIAS_TIP">
+			<option value="0">COM_REDEVENT_DEFAULT</option>
+			<option value="1">COM_REDEVENT_JOOMLA_MENU_ALIAS</option>
+		</field>
 	</fieldset>
 
 	<fieldset name="COM_REDEVENT_SETTINGS_MISC" label="COM_REDEVENT_SETTINGS_MISC"
