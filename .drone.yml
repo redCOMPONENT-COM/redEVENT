@@ -1,9 +1,10 @@
-pipeline:
-  clone:
-    image: plugins/git
-    recursive: false
-    depth: 1
+clone:
+ default:
+   image: plugins/clone
+   tags: true
+   recursive: false
 
+pipeline:
   00-cache:
     group: 00-setup
     image: redwebaps/redevent-cache:dev
