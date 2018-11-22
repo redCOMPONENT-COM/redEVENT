@@ -2,6 +2,7 @@ pipeline:
   clone:
     image: plugins/git
     recursive: false
+    depth: 1
 
   00-cache:
     group: 00-setup
