@@ -1,6 +1,6 @@
 pipeline:
   clone:
-    image: plugins/clone
+    image: plugins/git
     recursive: false
 
   00-cache:
