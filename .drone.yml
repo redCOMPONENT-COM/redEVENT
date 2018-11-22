@@ -1,8 +1,8 @@
 pipeline:
   clone:
     default:
-     image: plugins/clone
-     recursive: false
+      image: plugins/clone
+      recursive: false
 
   00-cache:
     group: 00-setup
