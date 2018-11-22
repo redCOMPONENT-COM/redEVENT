@@ -1,8 +1,7 @@
 clone:
- default:
-   image: plugins/clone
-   tags: true
-   recursive: false
+  image: plugins/clone
+  tags: true
+  recursive: false
 
 pipeline:
   00-cache:
