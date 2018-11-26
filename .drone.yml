@@ -49,8 +49,8 @@ pipeline:
       #- while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
       - ls
       - mv vendor tests/
-      - mv node_modules build
-      - mv build/gulp-config.json.dist gulp-config.json
+      - mv node_modules build/
+      - mv build/gulp-config.json.dist build/gulp-config.json
       - gulp release --skip-version --testRelease
 
       # Codeception setup
