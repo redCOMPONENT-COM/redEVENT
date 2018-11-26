@@ -60,7 +60,7 @@ pipeline:
       - cp tests/acceptance.suite.yml.dist.drone tests/acceptance.suite.yml
       # Test setup
       - while [ ! -f tests/.cache.joomla-cms.tmp ]; do sleep 1; done        # Comment if not using Joomla CMS cache
-      #- vendor/bin/robo tests:site-preparation 1 0
+      #- vendor/bin/robo tests:site-preparation 1 1
       # Ownership for uid 82
       - chown -R www-data:www-data .
       # Creating first clone for tests setup
@@ -68,6 +68,7 @@ pipeline:
       - rsync -a tests/joomla-cms/ tests/$tests_suite/joomla-cms
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
+      - su www-data -c 'vendor/bin/robo tests:setup 0 0'
 
   00-setup-stages:
     group: tests
