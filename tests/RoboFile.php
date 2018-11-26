@@ -209,9 +209,9 @@ class RoboFile extends \Robo\Tasks
 	public function prepareSiteForSystemTests()
 	{
 		// Get Joomla Clean Testing sites
-		if (is_dir('joomla-cms3'))
+		if (is_dir('joomla-cms'))
 		{
-			$this->taskDeleteDir('joomla-cms3')->run();
+			$this->taskDeleteDir('joomla-cms')->run();
 		}
 
 		$this->cloneJoomla();
@@ -225,19 +225,19 @@ class RoboFile extends \Robo\Tasks
 	public function prepareSiteForUnitTests()
 	{
 		// Make sure we have joomla
-		if (!is_dir('joomla-cms3'))
+		if (!is_dir('joomla-cms'))
 		{
 			$this->cloneJoomla();
 		}
 
-		if (!is_dir('joomla-cms3/libraries/vendor/phpunit'))
+		if (!is_dir('joomla-cms/libraries/vendor/phpunit'))
 		{
 			$this->getComposer();
-			$this->taskComposerInstall('../composer.phar')->dir('joomla-cms3')->run();
+			$this->taskComposerInstall('../composer.phar')->dir('joomla-cms')->run();
 		}
 
 		// Copy extension. No need to install, as we don't use mysql db for unit tests
-		$joomlaPath = __DIR__ . '/joomla-cms3';
+		$joomlaPath = __DIR__ . '/joomla-cms';
 		$this->_exec("gulp copy --wwwDir=$joomlaPath --gulpfile ../build/gulpfile.js");
 	}
 
@@ -469,10 +469,10 @@ class RoboFile extends \Robo\Tasks
 	public function runUnitTests()
 	{
 		$this->prepareSiteForUnitTests();
-		$this->_exec("joomla-cms3/libraries/vendor/phpunit/phpunit/phpunit")
+		$this->_exec("joomla-cms/libraries/vendor/phpunit/phpunit/phpunit")
 			->stopOnFail();
 	}
-	
+
 	public function testsSitePreparation($use_htaccess = 1, $cleanUp = 1)
 	{
 		$skipCleanup = false;
@@ -507,7 +507,7 @@ class RoboFile extends \Robo\Tasks
 			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms/,g" --in-place tests/joomla-cms/.htaccess');
 		}
 	}
-	
+
 	/**
 	 * Stops Selenium Standalone Server
 	 *
@@ -698,9 +698,9 @@ class RoboFile extends \Robo\Tasks
 		 */
 		$version = '3.6.2';
 
-		$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms3");
+		$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms");
 
-		$this->say("Joomla CMS ($version) site created at joomla-cms3/");
+		$this->say("Joomla CMS ($version) site created at joomla-cms/");
 	}
 
     /**
