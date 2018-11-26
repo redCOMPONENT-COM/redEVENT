@@ -79,19 +79,25 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 			if ($tag->getName() == 'aesir_session_item_link')
 			{
 				$item = $this->getAesirSessionItem($session->id);
+				$menuItemId = $tag->getParam('itemid', 'inherit');
 
 				$search[] = $tag->getFullMatch();
-				$replace[] = JRoute::_($item->getLink());
+				$replace[] = $item->getLink($menuItemId);
 			}
 			elseif (strstr($tag->getName(), 'aesir_session_item_'))
 			{
 				$item = $this->getAesirSessionItem($session->id);
-				$field = substr($tag->getName(), strlen(aesir_session_item_));
+				$field = substr($tag->getName(), strlen('aesir_session_item_'));
 
 				if (isset($item->{$field}))
 				{
 					$search[] = $tag->getFullMatch();
 					$replace[] = $item->{$field};
+				}
+				else
+				{
+					$search[] = $tag->getFullMatch();
+					$replace[] = $item->getFieldValue($field);
 				}
 			}
 		}
@@ -118,7 +124,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 			$sessionSelectField = $db->qn('s.' . $this->getSessionSelectField()->fieldcode);
 
 			$query = $db->getQuery(true)
-				->select('s.*')
+				->select('s.id')
 				->from($sessionTableName)
 				->join('INNER', '#__reditem_items AS i ON i.id = s.id')
 				->where($sessionSelectField . ' = ' . $sessionId);
@@ -127,7 +133,7 @@ class PlgRedeventAesirtagsreplacement extends JPlugin implements \Redevent\Plugi
 
 			if ($res = $db->loadObject())
 			{
-				$this->sessionItem = ReditemEntityItem::getInstance($res->id)->bind($res);
+				$this->sessionItem = ReditemEntityItem::load($res->id);
 			}
 			else
 			{

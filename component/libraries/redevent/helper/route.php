@@ -632,6 +632,96 @@ class RedeventHelperRoute
 	/**
 	 * Get route
 	 *
+	 * @param   int     $xref        session id
+	 * @param   string  $task        task
+	 * @param   string  $submit_key  submit_key
+	 *
+	 * @return string
+	 */
+	public static function getRegistrationConfirmRoute($xref, $submit_key = null)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => 'registration',
+			"layout"   => 'confirmed',
+			"xref" => $xref,
+		);
+
+		if (!empty($submit_key))
+		{
+			$parts['submit_key'] = $submit_key;
+		}
+
+		if (JLanguageMultilang::isEnabled())
+		{
+			$db		= JFactory::getDBO();
+			$query	= $db->getQuery(true);
+			$query->select('a.sef AS sef');
+			$query->select('a.lang_code AS lang_code');
+			$query->from('#__redevent_event_venue_xref AS x');
+			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+			$query->join('INNER', '#__languages AS a ON a.lang_code = e.language');
+			$query->where('x.id = ' . (int) $xref);
+
+			$db->setQuery($query);
+
+			if ($lang = $db->loadObject())
+			{
+				$parts['lang'] = $lang->sef;
+			}
+		}
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Get route
+	 *
+	 * @param   int     $xref        session id
+	 * @param   string  $task        task
+	 * @param   string  $submit_key  submit_key
+	 *
+	 * @return string
+	 */
+	public static function getRegistrationReviewRoute($xref, $submit_key = null)
+	{
+		$parts = array(
+			"option" => "com_redevent",
+			"view"   => 'registration',
+			"layout"   => 'review',
+			"xref" => $xref,
+		);
+
+		if (!empty($submit_key))
+		{
+			$parts['submit_key'] = $submit_key;
+		}
+
+		if (JLanguageMultilang::isEnabled())
+		{
+			$db		= JFactory::getDBO();
+			$query	= $db->getQuery(true);
+			$query->select('a.sef AS sef');
+			$query->select('a.lang_code AS lang_code');
+			$query->from('#__redevent_event_venue_xref AS x');
+			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+			$query->join('INNER', '#__languages AS a ON a.lang_code = e.language');
+			$query->where('x.id = ' . (int) $xref);
+
+			$db->setQuery($query);
+
+			if ($lang = $db->loadObject())
+			{
+				$parts['lang'] = $lang->sef;
+			}
+		}
+
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Get route
+	 *
 	 * @param   int     $registrationId  session id
 	 * @param   string  $xref            xref
 	 * @param   string  $task            task
@@ -778,5 +868,17 @@ class RedeventHelperRoute
 		}
 
 		return $parts;
+	}
+
+	/**
+	 * Url to attachement file
+	 *
+	 * @param   integer  $attachmentId  attachmentId
+	 *
+	 * @return string
+	 */
+	public static function getAttachment($attachmentId)
+	{
+		return 'index.php?option=com_redevent&task=attachments.getfile&format=raw&file=' . $attachmentId;
 	}
 }

@@ -421,10 +421,17 @@ class RedeventHelperOutput
 	 */
 	public static function map($data, $attributes = array())
 	{
+		$params = RedeventHelper::config();
+
+		if (!$key = $params->get('googlemapsApiKey'))
+		{
+			return '';
+		}
+
 		$document = JFactory::getDocument();
 		JHTML::_('behavior.framework');
 
-		$document->addScript('https://maps.googleapis.com/maps/api/js?sensor=false');
+		$document->addScript('https://maps.googleapis.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
 		RHelperAsset::load('venuemap.js');
 		$document->addScriptDeclaration('
 			var basepath = "' . JURI::root() . '";

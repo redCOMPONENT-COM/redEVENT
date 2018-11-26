@@ -27,7 +27,7 @@
 		</field>
 
 		<field name="session_orderby_dir" type="list" default="" label="COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR" description="COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR_DESC">
-			<option value="default">JDEFAULT</option>
+			<option value="">JDEFAULT</option>
 			<option value="ASC">COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR_ASCENDING</option>
 			<option value="DESC">COM_REDEVENT_VIEW_SESSION_ORDERBY_DIR_DESCENDING</option>
 		</field>

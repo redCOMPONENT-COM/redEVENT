@@ -74,94 +74,98 @@ JFactory::getDocument()->addScriptDeclaration("
 					</a>
 				</li>
 			<?php endif; ?>
+
+			<?php if ($this->params->get('edit_registration', 0)) :?>
+				<li>
+					<a href="#registration" data-toggle="tab">
+						<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_REGISTRATION'); ?></strong>
+					</a>
+				</li>
+			<?php endif; ?>
 		</ul>
 
 		<div class="tab-content">
 			<div class="tab-pane active" id="editmain">
-				<div class="row-fluid">
-					<div class="span12">
-						<fieldset class="form-horizontal">
-							<div class="span9">
+				<fieldset class="form-horizontal row-fluid">
+					<div class="span9">
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('title'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('title'); ?>
+							</div>
+						</div>
+
+						<?php if ($this->params->get('edit_categories', 0)): ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('categories'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('categories'); ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ($this->canpublish): ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('published'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('published'); ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ($this->params->get('edit_customs', 0) && count($this->customfields)): ?>
+							<?php foreach ($this->customfields as $field): ?>
 								<div class="control-group">
 									<div class="control-label">
-										<?php echo $this->form->getLabel('title'); ?>
+										<?php echo $field->getLabel(); ?>
 									</div>
 									<div class="controls">
-										<?php echo $this->form->getInput('title'); ?>
+										<?php echo $field->render(); ?>
 									</div>
 								</div>
+							<?php endforeach; ?>
+						<?php endif; ?>
 
-								<?php if ($this->params->get('edit_categories', 0)): ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $this->form->getLabel('categories'); ?>
-										</div>
-										<div class="controls">
-											<?php echo $this->form->getInput('categories'); ?>
-										</div>
-									</div>
-								<?php endif; ?>
-
-								<?php if ($this->canpublish): ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $this->form->getLabel('published'); ?>
-										</div>
-										<div class="controls">
-											<?php echo $this->form->getInput('published'); ?>
-										</div>
-									</div>
-								<?php endif; ?>
-
-								<?php if ($this->params->get('edit_customs', 0) && count($this->customfields)): ?>
-									<?php foreach ($this->customfields as $field): ?>
-										<div class="control-group">
-											<div class="control-label">
-												<?php echo $field->getLabel(); ?>
-											</div>
-											<div class="controls">
-												<?php echo $field->render(); ?>
-											</div>
-										</div>
-									<?php endforeach; ?>
-								<?php endif; ?>
-
-								<?php if (($this->params->get('edit_image', 1) == 2) || ($this->params->get('edit_image', 1) == 1)) : ?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $this->form->getLabel('datimage'); ?>
-										</div>
-										<div class="controls">
-											<?php echo $this->form->getInput('datimage'); ?>
-										</div>
-									</div>
-								<?php endif; ?>
-
-								<?php if ($this->params->get('edit_summary', 1)) :?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $this->form->getLabel('summary'); ?>
-										</div>
-										<div class="controls">
-											<?php echo $this->form->getInput('summary'); ?>
-										</div>
-									</div>
-								<?php endif; ?>
-
-								<?php if ($this->params->get('edit_description', 0)) :?>
-									<div class="control-group">
-										<div class="control-label">
-											<?php echo $this->form->getLabel('datdescription'); ?>
-										</div>
-										<div class="controls">
-											<?php echo $this->form->getInput('datdescription'); ?>
-										</div>
-									</div>
-								<?php endif; ?>
+						<?php if (($this->params->get('edit_image', 1) == 2) || ($this->params->get('edit_image', 1) == 1)) : ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('datimage'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('datimage'); ?>
+								</div>
 							</div>
-						</fieldset>
+						<?php endif; ?>
+
+						<?php if ($this->params->get('edit_summary', 1)) :?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('summary'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('summary'); ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ($this->params->get('edit_description', 0)) :?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('datdescription'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('datdescription'); ?>
+								</div>
+							</div>
+						<?php endif; ?>
 					</div>
-				</div>
+				</fieldset>
 			</div>
 
 			<?php if ($this->params->get('allow_attachments', 1)): ?>
@@ -171,6 +175,39 @@ JFactory::getDocument()->addScriptDeclaration("
 						<?php echo RedeventLayoutHelper::render('attachments.edit', $this); ?>
 					</div>
 				</div>
+			</div>
+			<?php endif; ?>
+
+			<?php if ($this->params->get('edit_registration', 0)) :?>
+			<div class="tab-pane" id="registration">
+				<fieldset class="form-horizontal row-fluid">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('registra'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('registra'); ?>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('unregistra'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('unregistra'); ?>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('max_multi_signup'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('max_multi_signup'); ?>
+						</div>
+					</div>
+				</fieldset>
 			</div>
 			<?php endif; ?>
 		</div>

@@ -240,7 +240,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				$dispatcher->trigger('onAttendeeCreated', array($res->id));
 			}
 
-			if ($session->getEvent()->notify)
+			if ($session->getEvent()->getEventtemplate()->notify)
 			{
 				$model->sendNotificationEmail($submit_key);
 			}
@@ -269,12 +269,12 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			}
 			else
 			{
-				$link = RedeventHelperRoute::getRegistrationRoute($xref, 'registration.confirm', $submit_key);
+				$link = RedeventHelperRoute::getRegistrationConfirmRoute($xref, $submit_key);
 			}
 		}
 		else
 		{
-			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'registration.review', $submit_key);
+			$link = RedeventHelperRoute::getRegistrationReviewRoute($xref, $submit_key);
 		}
 
 		if ($app->input->getInt('modal', 0))

@@ -68,6 +68,11 @@ final class RedeventEntityTwigSessionpricegroup extends AbstractTwigEntity
 	 */
 	public function __get($name)
 	{
+		if ($name == 'formatted_price')
+		{
+			return RHelperCurrency::getFormattedPrice($this->entity->price, $this->entity->currency);
+		}
+
 		if (isset($this->entity->$name))
 		{
 			return $this->entity->$name;
@@ -85,6 +90,11 @@ final class RedeventEntityTwigSessionpricegroup extends AbstractTwigEntity
 	 */
 	public function __isset($name)
 	{
+		if ($name == 'formatted_price')
+		{
+			return true;
+		}
+
 		return isset($this->entity->$name);
 	}
 }
