@@ -51,7 +51,7 @@ pipeline:
       - mv vendor tests/
       - mv node_modules build
       - mv build/gulp-config.json.dist gulp-config.json
-      - gulp release --skip-version --testsRelease
+      - gulp release --skip-version --testRelease
 
       # Codeception setup
       - cp tests/acceptance.suite.yml.dist.drone tests/acceptance.suite.yml
