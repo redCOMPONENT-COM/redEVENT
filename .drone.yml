@@ -69,7 +69,7 @@ pipeline:
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - cd tests
-      - su www-data -c 'vendor/bin/robo run:tests 1 1'
+      - su www-data -c 'vendor/bin/robo tests:run 1 1'
 
   00-setup-stages:
     group: tests
