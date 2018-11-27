@@ -244,21 +244,15 @@ if (!$shHomePageFlag)
 					break;
 
 				case 'categoryevents':
-					if ($reParams->get('sh404sef_categoryevents_alias', 0) == 1 && $Itemid != null)
+					if ($reParams->get('sh404sef_categoryevents_alias', 0) == 1)
 					{
-						if (!isset($menu))
-						{
-							$menu = $app->getMenu();
-						}
 						unset($title);
-						$title[] = $menu->getItem($Itemid)->get('alias');
 					}
-					else
-					{
-						$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
-						$db->setQuery($q);
-						$title[] = $db->loadResult();
-					}
+
+					$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
+					$db->setQuery($q);
+					$title[] = $db->loadResult();
+
 
 					//$title[] = $id;
 					/* Remove xref so no other course details are added */

@@ -838,7 +838,7 @@
 			   label="COM_REDEVENT_SH404SEF_CATEGORYEVENTS_ALIAS"
 			   description="COM_REDEVENT_SH404SEF_CATEGORYEVENTS_ALIAS_TIP">
 			<option value="0">COM_REDEVENT_DEFAULT</option>
-			<option value="1">COM_REDEVENT_JOOMLA_MENU_ALIAS</option>
+			<option value="1">COM_REDEVENT_CATEGORY_ALIAS</option>
 		</field>
 	</fieldset>
 
