@@ -2189,7 +2189,7 @@ class RedeventTags
 	 */
 	private function getTag_city()
 	{
-		return $this->getSession()->getVenue()->location;
+		return $this->getSession()->getVenue()->city;
 	}
 
 	/**
