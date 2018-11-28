@@ -105,7 +105,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function sendBuildReportErrorSlack($cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL = '')
 	{
-		$directories = glob('./_output/*' , GLOB_ONLYDIR);
+		$directories = glob('_output/*' , GLOB_ONLYDIR);
 
 		foreach ($directories as $directory)
 		{
