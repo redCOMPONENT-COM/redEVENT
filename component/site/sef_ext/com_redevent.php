@@ -255,8 +255,6 @@ if (!$shHomePageFlag)
 					}
 					$db->setQuery($q);
 					$title[] = $db->loadResult();
-
-
 					//$title[] = $id;
 					/* Remove xref so no other course details are added */
 					shRemoveFromGETVarsList('id');
