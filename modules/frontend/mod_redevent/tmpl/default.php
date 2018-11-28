@@ -20,6 +20,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
+<?= $customText ?>
 <ul class="redeventmod">
 <?php foreach ($list as $item) :  ?>
 	<?php $isover = (RedeventHelperDate::isOver($item) ? ' isover' : ''); ?>

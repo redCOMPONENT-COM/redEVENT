@@ -48,4 +48,7 @@ if ($layout == '_:table')
 	$customfields = ModRedEventHelper::getCustomFields();
 }
 
+$customText = $params->get('customtext');
+$customText = JHtml::_('content.prepare', $customText);
+
 require JModuleHelper::getLayoutPath('mod_redevent', $layout);
