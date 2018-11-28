@@ -31,14 +31,19 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 	private static $instances = [];
 
 	/**
-	 * @var RedeventEntitySession[][]
+	 * @var \RedeventEntitySession[]
 	 */
 	private $sessions;
 
 	/**
-	 * @var RedeventEntityVenue[]
+	 * @var \RedeventEntityVenue[]
 	 */
 	private $venues;
+
+	/**
+	 * @var \RedeventEntityCategory[]
+	 */
+	private $categories;
 
 	/**
 	 * Constructor.
@@ -297,6 +302,21 @@ final class RedeventEntityTwigEvent extends AbstractTwigEntity
 		}
 
 		return $this->venues;
+	}
+
+	/**
+	 * Get event cateories
+	 *
+	 * @return \RedeventEntityCategory[]
+	 */
+	public function getCategories()
+	{
+		if (is_null($this->categories))
+		{
+			$this->categories = $this->entity->getCategories();
+		}
+
+		return $this->categories;
 	}
 
 	/**

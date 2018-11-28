@@ -12,6 +12,6 @@ class ViewDetailsCest
 	{
 		$I->wantTo('View an event details in frontend');
 		$I->checkForPhpNoticesOrWarningsOrExceptions('index.php?option=com_redevent&view=details&id=1');
-		$I->see('Event 1', 'h1');
+		$I->see('event 1', '//h1');
 	}
 }

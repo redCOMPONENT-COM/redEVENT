@@ -17,7 +17,9 @@ require_once 'vendor/autoload.php';
 class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
-	use \redcomponent\robo\loadTasks;
+	use Joomla\Testing\Robo\Tasks\LoadTasks;
+	// Load tasks from composer, see composer.json
+	use Joomla\Testing\Robo\Tasks\LoadTasks;
 
 	/**
 	 * Current root folder
@@ -286,9 +288,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+		$this->taskSeleniumStandaloneServer()
+			->setURL("http://localhost:4444")
+			->runSelenium()
+			->waitForSelenium()
 			->run()
 			->stopOnFail();
 
@@ -379,9 +382,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+		$this->taskSeleniumStandaloneServer()
+			->setURL("http://localhost:4444")
+			->runSelenium()
+			->waitForSelenium()
 			->run()
 			->stopOnFail();
 
@@ -389,8 +393,6 @@ class RoboFile extends \Robo\Tasks
 		$this->_exec("vendor/bin/codecept build");
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/install/')
@@ -413,9 +415,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+		$this->taskSeleniumStandaloneServer()
+			->setURL("http://localhost:4444")
+			->runSelenium()
+			->waitForSelenium()
 			->run()
 			->stopOnFail();
 
@@ -423,8 +426,6 @@ class RoboFile extends \Robo\Tasks
 		$this->_exec("vendor/bin/codecept build");
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/install/')
@@ -432,26 +433,22 @@ class RoboFile extends \Robo\Tasks
 			->stopOnFail();
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/administrator/')
 			->run()
 			->stopOnFail();
 
-		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
-			->arg('--tap')
-			->arg('--fail-fast')
-			->arg($this->testsFolder . 'acceptance/frontend/')
-			->run()
-			->stopOnFail();
+//		$this->taskCodecept()
+//			->arg('--steps')
+//			->arg('--debug')
+//			->arg('--tap')
+//			->arg('--fail-fast')
+//			->arg($this->testsFolder . 'acceptance/frontend/')
+//			->run()
+//			->stopOnFail();
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/uninstall/')
@@ -584,28 +581,33 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
-	 * Sends a message to Github with the Error found in tests and a Image attached. Require Github and Cloudinary tokens
+	 * Sends the build report error back to Slack
 	 *
-	 * @param $cloudName
-	 * @param $apiKey
-	 * @param $apiSecret
-	 * @param $GithubToken
-	 * @param $repoOwner
-	 * @param $repo
-	 * @param $pull
+	 * @param   string $cloudinaryName      Cloudinary cloud name
+	 * @param   string $cloudinaryApiKey    Cloudinary API key
+	 * @param   string $cloudinaryApiSecret Cloudinary API secret
+	 * @param   string $githubRepository    GitHub repository (owner/repo)
+	 * @param   string $githubPRNo          GitHub PR #
+	 * @param   string $slackWebhook        Slack Webhook URL
+	 * @param   string $slackChannel        Slack channel
+	 * @param   string $buildURL            Build URL
+	 *
+	 * @return  void
+	 *
+	 * @since   5.1
 	 */
-	public function sendScreenshotFromTravisToGithub($cloudName, $apiKey, $apiSecret, $GithubToken, $repoOwner, $repo, $pull = null)
+	public function sendBuildReportErrorTravisToSlack($cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL)
 	{
 		$errorSelenium = true;
-		$reportError = false;
-		$reportFile = 'selenium.log';
-		$body = 'Selenium log:' . chr(10). chr(10);
+		$reportError   = false;
+		$reportFile    = 'tests/selenium.log';
+		$errorLog      = 'Selenium log:' . chr(10) . chr(10);
 
-		// Loop throught Codeception snapshots
-		if (file_exists(__DIR__ . '/_output') && $handler = opendir(__DIR__ . '/_output'))
+		// Loop through Codeception snapshots
+		if (file_exists('tests/_output') && $handler = opendir('tests/_output'))
 		{
-			$reportFile = __DIR__ . '/_output/report.tap.log';
-			$body = 'Codeception tap log:' . chr(10). chr(10);
+			$reportFile    = 'tests/_output/report.tap.log';
+			$errorLog      = 'Codeception tap log:' . chr(10) . chr(10);
 			$errorSelenium = false;
 		}
 
@@ -613,14 +615,15 @@ class RoboFile extends \Robo\Tasks
 		{
 			if ($reportFile)
 			{
-				$body .= file_get_contents($reportFile, null, null, 15);
+				$errorLog .= file_get_contents($reportFile, null, null, 15);
 			}
 
 			if (!$errorSelenium)
 			{
-				$handler = opendir(__DIR__ . '/_output');
+				$handler    = opendir('tests/_output');
+				$errorImage = '';
 
-				while (false !== ($errorSnapshot = readdir($handler)))
+				while (!$reportError && false !== ($errorSnapshot = readdir($handler)))
 				{
 					// Avoid sending system files or html files
 					if (!('png' === pathinfo($errorSnapshot, PATHINFO_EXTENSION)))
@@ -629,60 +632,38 @@ class RoboFile extends \Robo\Tasks
 					}
 
 					$reportError = true;
-					$this->say("Uploading screenshots: $errorSnapshot");
-
-					Cloudinary::config(
-						array(
-							'cloud_name' => $cloudName,
-							'api_key'    => $apiKey,
-							'api_secret' => $apiSecret
-						)
-					);
-
-					$result = \Cloudinary\Uploader::upload(realpath(__DIR__ . '/_output/' . $errorSnapshot));
-					$this->say($errorSnapshot . 'Image sent');
-					$body .= '![Screenshot](' . $result['secure_url'] . ')';
+					$errorImage  = __DIR__ . '/tests/_output/' . $errorSnapshot;
 				}
 			}
 
-			// If it's a Selenium error log, it prints it in the regular output
-			if ($errorSelenium)
-			{
-				$this->say($body);
-			}
+			echo $errorImage;
 
-			if (!$reportError)
+			if ($reportError || $errorSelenium)
 			{
-				return;
-			}
+				// Sends the error report to Slack
+				$reportingTask = $this->taskReporting()
+					->setCloudinaryCloudName($cloudinaryName)
+					->setCloudinaryApiKey($cloudinaryApiKey)
+					->setCloudinaryApiSecret($cloudinaryApiSecret)
+					->setGithubRepo($githubRepository)
+					->setGithubPR($githubPRNo)
+					->setBuildURL($buildURL)
+					->setSlackWebhook($slackWebhook)
+					->setSlackChannel($slackChannel)
+					->setTapLog($errorLog);
 
-			if (is_numeric($pull))
-			{
-				// Creates the error log in a Github comment
-				$this->say('Creating Github issue');
-				$client = new \Github\Client;
-				$client->authenticate($GithubToken, \Github\Client::AUTH_HTTP_TOKEN);
-				$client
-					->api('issue')
-					->comments()->create(
-						$repoOwner, $repo, $pull,
-						array(
-							'body' => $body
-						)
-					);
+				if (!empty($errorImage))
+				{
+					$reportingTask->setImagesToUpload($errorImage)
+						->publishCloudinaryImages();
+				}
+
+				$reportingTask->publishBuildReportToSlack()
+					->run()
+					->stopOnFail();
 			}
-			else
-			{
-				// Not a pull request, so just output in console
-				$this->say($body);
-			}
-		}
-		else
-		{
-			$this->say("reportFile not found");
 		}
 	}
-
 	/**
 	 * Clone joomla from official repo
 	 *
@@ -696,7 +677,7 @@ class RoboFile extends \Robo\Tasks
 		 * When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
 		 * Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
 		 */
-		$version = '3.6.2';
+		$version = '3.9.0';
 
 		$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms");
 
