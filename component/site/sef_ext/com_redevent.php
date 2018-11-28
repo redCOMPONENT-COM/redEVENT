@@ -246,7 +246,7 @@ if (!$shHomePageFlag)
 				case 'categoryevents':
 					if ($reParams->get('sh404sef_categoryevents_alias', 0) == 1)
 					{
-						unset($title);
+						$title = [];
 						$q = "SELECT alias FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
 					}
 					else
