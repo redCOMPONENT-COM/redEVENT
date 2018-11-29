@@ -17,12 +17,24 @@ require_once 'vendor/autoload.php';
 class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
-	use \redcomponent\robo\loadTasks;
+    use Joomla\Testing\Robo\Tasks\LoadTasks;
+    // Load tasks from composer, see composer.json
+    use Joomla\Testing\Robo\Tasks\LoadTasks;
 
 	/**
 	 * Current root folder
 	 */
 	private $testsFolder = './';
+
+    /**
+     * @var   array
+     * @var   array
+     * @since 5.6.0
+     */
+    private $defaultArgs = [
+        '--tap',
+        '--fail-fast'
+    ];
 
 	/**
 	 * Hello World example task.
@@ -77,7 +89,121 @@ class RoboFile extends \Robo\Tasks
 		return $result;
 	}
 
-	/**
+    /**
+     * Sends the build report error back to Slack
+     *
+     * @param   string  $cloudinaryName       Cloudinary cloud name
+     * @param   string  $cloudinaryApiKey     Cloudinary API key
+     * @param   string  $cloudinaryApiSecret  Cloudinary API secret
+     * @param   string  $githubRepository     GitHub repository (owner/repo)
+     * @param   string  $githubPRNo           GitHub PR #
+     * @param   string  $slackWebhook         Slack Webhook URL
+     * @param   string  $slackChannel         Slack channel
+     * @param   string  $buildURL             Build URL
+     *
+     * @return  void
+     *
+     * @since   5.1
+     */
+    public function sendBuildReportErrorSlack($cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL = '')
+    {
+        $directories = glob('_output/*' , GLOB_ONLYDIR);
+
+        foreach ($directories as $directory)
+        {
+            $this->sendBuildReportErrorSlackDirectory($directory, $cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL);
+        }
+    }
+
+    /**
+     * Sends the build report error back to Slack
+     *
+     * @param   string  $directory            Directory to explore
+     * @param   string  $cloudinaryName       Cloudinary cloud name
+     * @param   string  $cloudinaryApiKey     Cloudinary API key
+     * @param   string  $cloudinaryApiSecret  Cloudinary API secret
+     * @param   string  $githubRepository     GitHub repository (owner/repo)
+     * @param   string  $githubPRNo           GitHub PR #
+     * @param   string  $slackWebhook         Slack Webhook URL
+     * @param   string  $slackChannel         Slack channel
+     * @param   string  $buildURL             Build URL
+     *
+     * @return  void
+     *
+     * @since   5.1
+     */
+    public function sendBuildReportErrorSlackDirectory($directory, $cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL = '')
+    {
+        $errorSelenium = true;
+        $reportError = false;
+        $reportFile = $directory . '/selenium.log';
+        $errorLog = 'Selenium log in ' . $directory . ':' . chr(10). chr(10);
+        $this->say('Starting to Prepare Build Report');
+        $this->say('Exploring folder ' . $directory . ' for error reports');
+
+        // Loop through Codeception snapshots
+        if (file_exists($directory) && $handler = opendir($directory))
+        {
+            $reportFile = $directory . '/report.tap.log';
+            $errorLog = 'Codeception tap log in ' . $directory . ':' . chr(10). chr(10);
+            $errorSelenium = false;
+        }
+
+        if (file_exists($reportFile))
+        {
+            $this->say('Report File Prepared');
+            if ($reportFile)
+            {
+                $errorLog .= file_get_contents($reportFile, null, null, 15);
+            }
+
+            if (!$errorSelenium)
+            {
+                $handler = opendir($directory);
+                $errorImage = '';
+
+                while (!$reportError && false !== ($errorSnapshot = readdir($handler)))
+                {
+                    // Avoid sending system files or html files
+                    if (!('png' === pathinfo($errorSnapshot, PATHINFO_EXTENSION)))
+                    {
+                        continue;
+                    }
+
+                    $reportError = true;
+                    $errorImage = $directory . '/' . $errorSnapshot;
+                }
+            }
+
+            if ($reportError || $errorSelenium)
+            {
+                // Sends the error report to Slack
+                $this->say('Sending Error Report');
+                $reportingTask = $this->taskReporting()
+                    ->setCloudinaryCloudName($cloudinaryName)
+                    ->setCloudinaryApiKey($cloudinaryApiKey)
+                    ->setCloudinaryApiSecret($cloudinaryApiSecret)
+                    ->setGithubRepo($githubRepository)
+                    ->setGithubPR($githubPRNo)
+                    ->setBuildURL($buildURL . 'display/redirect')
+                    ->setSlackWebhook($slackWebhook)
+                    ->setSlackChannel($slackChannel)
+                    ->setTapLog($errorLog);
+
+                if (!empty($errorImage))
+                {
+                    $reportingTask->setImagesToUpload($errorImage)
+                        ->publishCloudinaryImages();
+                }
+
+                $reportingTask->publishBuildReportToSlack()
+                    ->run()
+                    ->stopOnFail();
+            }
+        }
+    }
+
+    /**
 	 * Downloads and prepares a Joomla CMS site for testing
 	 *
 	 * @return mixed
@@ -85,9 +211,9 @@ class RoboFile extends \Robo\Tasks
 	public function prepareSiteForSystemTests()
 	{
 		// Get Joomla Clean Testing sites
-		if (is_dir('joomla-cms3'))
+		if (is_dir('joomla-cms'))
 		{
-			$this->taskDeleteDir('joomla-cms3')->run();
+			$this->taskDeleteDir('joomla-cms')->run();
 		}
 
 		$this->cloneJoomla();
@@ -101,7 +227,7 @@ class RoboFile extends \Robo\Tasks
 	public function prepareSiteForUnitTests()
 	{
 		// Make sure we have joomla
-		if (!is_dir('joomla-cms3'))
+		if (!is_dir('joomla-cms'))
 		{
 			$this->cloneJoomla();
 		}
@@ -109,13 +235,42 @@ class RoboFile extends \Robo\Tasks
 		if (!is_dir('joomla-cms3/libraries/vendor/phpunit'))
 		{
 			$this->getComposer();
-			$this->taskComposerInstall('../composer.phar')->dir('joomla-cms3')->run();
+			$this->taskComposerInstall('../composer.phar')->dir('joomla-cms')->run();
 		}
 
 		// Copy extension. No need to install, as we don't use mysql db for unit tests
-		$joomlaPath = __DIR__ . '/joomla-cms3';
+		$joomlaPath = __DIR__ . '/joomla-cms';
 		$this->_exec("gulp copy --wwwDir=$joomlaPath --gulpfile ../build/gulpfile.js");
 	}
+
+    /**
+     * Downloads and Install redFORM for Integration Testing testing
+     *
+     * @param   integer  $cleanUp  Clean up the directory when present (or skip the cloning process)
+     *
+     * @return  void
+     * @since   1.0.0
+     */
+    protected function getredFORMExtensionForIntegrationTests($cleanUp = 1)
+    {
+        // Get redFORM Clean Testing sites
+        if (is_dir('build/redFORM'))
+        {
+            if (!$cleanUp)
+            {
+                $this->say('Using cached version of redFORM and skipping clone process');
+
+                return;
+            }
+
+            $this->taskDeleteDir('build/redFORM')->run();
+        }
+
+        $version = '3.3.15';
+        $this->_exec("git clone -b $version --single-branch --depth 1 https://travisredweb:travisredweb2013github@github.com/redCOMPONENT-COM/redFORM.git build/redFORM");
+
+        $this->say("redFORM ($version) cloned at build/");
+    }
 
 	/**
 	 * Executes Selenium System Tests in your machine
@@ -133,9 +288,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+        $this->taskSeleniumStandaloneServer()
+            ->setURL("http://localhost:4444")
+            ->runSelenium()
+            ->waitForSelenium()
 			->run()
 			->stopOnFail();
 
@@ -226,9 +382,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+        $this->taskSeleniumStandaloneServer()
+            ->setURL("http://localhost:4444")
+            ->runSelenium()
+            ->waitForSelenium()
 			->run()
 			->stopOnFail();
 
@@ -236,8 +393,6 @@ class RoboFile extends \Robo\Tasks
 		$this->_exec("vendor/bin/codecept build");
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/install/')
@@ -260,9 +415,10 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskComposerInstall()->run();
 
-		$this->runSelenium();
-
-		$this->taskWaitForSeleniumStandaloneServer()
+        $this->taskSeleniumStandaloneServer()
+            ->setURL("http://localhost:4444")
+            ->runSelenium()
+            ->waitForSelenium()
 			->run()
 			->stopOnFail();
 
@@ -270,8 +426,6 @@ class RoboFile extends \Robo\Tasks
 		$this->_exec("vendor/bin/codecept build");
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/install/')
@@ -279,26 +433,22 @@ class RoboFile extends \Robo\Tasks
 			->stopOnFail();
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/administrator/')
 			->run()
 			->stopOnFail();
 
-		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
-			->arg('--tap')
-			->arg('--fail-fast')
-			->arg($this->testsFolder . 'acceptance/frontend/')
-			->run()
-			->stopOnFail();
+//		$this->taskCodecept()
+//			->arg('--steps')
+//			->arg('--debug')
+//			->arg('--tap')
+//			->arg('--fail-fast')
+//			->arg($this->testsFolder . 'acceptance/frontend/')
+//			->run()
+//			->stopOnFail();
 
 		$this->taskCodecept()
-			->arg('--steps')
-			->arg('--debug')
 			->arg('--tap')
 			->arg('--fail-fast')
 			->arg($this->testsFolder . 'acceptance/uninstall/')
@@ -316,11 +466,46 @@ class RoboFile extends \Robo\Tasks
 	public function runUnitTests()
 	{
 		$this->prepareSiteForUnitTests();
-		$this->_exec("joomla-cms3/libraries/vendor/phpunit/phpunit/phpunit")
+		$this->_exec("joomla-cms/libraries/vendor/phpunit/phpunit/phpunit")
 			->stopOnFail();
 	}
 
-	/**
+    public function testsSitePreparation($use_htaccess = 1, $cleanUp = 1)
+    {
+        $skipCleanup = false;
+        // Get Joomla Clean Testing sites
+        if (is_dir('tests/joomla-cms'))
+        {
+            if (!$cleanUp)
+            {
+                $skipCleanup = true;
+                $this->say('Using cached version of Joomla CMS and skipping clone process');
+            }
+            else
+            {
+                $this->taskDeleteDir('tests/joomla-cms')->run();
+            }
+        }
+        if (!$skipCleanup)
+        {
+            $version = 'staging';
+            /*
+            * When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
+            * Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
+            */
+            $version = '3.6.2';
+            $this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms");
+            $this->say("Joomla CMS ($version) site created at tests/joomla-cms");
+        }
+        // Optionally uses Joomla default htaccess file
+        if ($use_htaccess == 1)
+        {
+            $this->_copy('tests/joomla-cms/htaccess.txt', 'tests/joomla-cms/.htaccess');
+            $this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms/,g" --in-place tests/joomla-cms/.htaccess');
+        }
+    }
+
+    /**
 	 * Stops Selenium Standalone Server
 	 *
 	 * @return void
@@ -396,28 +581,33 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
-	 * Sends a message to Github with the Error found in tests and a Image attached. Require Github and Cloudinary tokens
+     * Sends the build report error back to Slack
+     *
+     * @param   string $cloudinaryName      Cloudinary cloud name
+     * @param   string $cloudinaryApiKey    Cloudinary API key
+     * @param   string $cloudinaryApiSecret Cloudinary API secret
+     * @param   string $githubRepository    GitHub repository (owner/repo)
+     * @param   string $githubPRNo          GitHub PR #
+     * @param   string $slackWebhook        Slack Webhook URL
+     * @param   string $slackChannel        Slack channel
+     * @param   string $buildURL            Build URL
 	 *
-	 * @param $cloudName
-	 * @param $apiKey
-	 * @param $apiSecret
-	 * @param $GithubToken
-	 * @param $repoOwner
-	 * @param $repo
-	 * @param $pull
+     * @return  void
+     *
+     * @since   5.1
 	 */
-	public function sendScreenshotFromTravisToGithub($cloudName, $apiKey, $apiSecret, $GithubToken, $repoOwner, $repo, $pull = null)
+    public function sendBuildReportErrorTravisToSlack($cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL)
 	{
-		$errorSelenium = true;
-		$reportError = false;
-		$reportFile = 'selenium.log';
-		$body = 'Selenium log:' . chr(10). chr(10);
+        $errorSelenium = true;
+        $reportError   = false;
+        $reportFile    = 'tests/selenium.log';
+        $errorLog      = 'Selenium log:' . chr(10) . chr(10);
 
-		// Loop throught Codeception snapshots
-		if (file_exists(__DIR__ . '/_output') && $handler = opendir(__DIR__ . '/_output'))
+        // Loop through Codeception snapshots
+        if (file_exists('tests/_output') && $handler = opendir('tests/_output'))
 		{
-			$reportFile = __DIR__ . '/_output/report.tap.log';
-			$body = 'Codeception tap log:' . chr(10). chr(10);
+            $reportFile    = 'tests/_output/report.tap.log';
+            $errorLog      = 'Codeception tap log:' . chr(10) . chr(10);
 			$errorSelenium = false;
 		}
 
@@ -425,14 +615,15 @@ class RoboFile extends \Robo\Tasks
 		{
 			if ($reportFile)
 			{
-				$body .= file_get_contents($reportFile, null, null, 15);
+                $errorLog .= file_get_contents($reportFile, null, null, 15);
 			}
 
 			if (!$errorSelenium)
 			{
-				$handler = opendir(__DIR__ . '/_output');
+                $handler    = opendir('tests/_output');
+                $errorImage = '';
 
-				while (false !== ($errorSnapshot = readdir($handler)))
+				while (!$reportError && false !== ($errorSnapshot = readdir($handler)))
 				{
 					// Avoid sending system files or html files
 					if (!('png' === pathinfo($errorSnapshot, PATHINFO_EXTENSION)))
@@ -441,64 +632,42 @@ class RoboFile extends \Robo\Tasks
 					}
 
 					$reportError = true;
-					$this->say("Uploading screenshots: $errorSnapshot");
-
-					Cloudinary::config(
-						array(
-							'cloud_name' => $cloudName,
-							'api_key'    => $apiKey,
-							'api_secret' => $apiSecret
-						)
-					);
-
-					$result = \Cloudinary\Uploader::upload(realpath(__DIR__ . '/_output/' . $errorSnapshot));
-					$this->say($errorSnapshot . 'Image sent');
-					$body .= '![Screenshot](' . $result['secure_url'] . ')';
+                    $errorImage  = __DIR__ . '/tests/_output/' . $errorSnapshot;
 				}
 			}
 
-			// If it's a Selenium error log, it prints it in the regular output
-			if ($errorSelenium)
-			{
-				$this->say($body);
-			}
+            echo $errorImage;
 
-			if (!$reportError)
+			if (!$reportError || $errorSelenium)
 			{
-				return;
-			}
+                // Sends the error report to Slack
+                $reportingTask = $this->taskReporting()
+                    ->setCloudinaryCloudName($cloudinaryName)
+                    ->setCloudinaryApiKey($cloudinaryApiKey)
+                    ->setCloudinaryApiSecret($cloudinaryApiSecret)
+                    ->setGithubRepo($githubRepository)
+                    ->setGithubPR($githubPRNo)
+                    ->setBuildURL($buildURL)
+                    ->setSlackWebhook($slackWebhook)
+                    ->setSlackChannel($slackChannel)
+                    ->setTapLog($errorLog);
 
-			if (is_numeric($pull))
-			{
-				// Creates the error log in a Github comment
-				$this->say('Creating Github issue');
-				$client = new \Github\Client;
-				$client->authenticate($GithubToken, \Github\Client::AUTH_HTTP_TOKEN);
-				$client
-					->api('issue')
-					->comments()->create(
-						$repoOwner, $repo, $pull,
-						array(
-							'body' => $body
-						)
-					);
+                if (!empty($errorImage))
+                {
+                    $reportingTask->setImagesToUpload($errorImage)
+                        ->publishCloudinaryImages();
+                }
+
+                $reportingTask->publishBuildReportToSlack()
+                    ->run()
+                    ->stopOnFail();
 			}
-			else
-			{
-				// Not a pull request, so just output in console
-				$this->say($body);
-			}
-		}
-		else
-		{
-			$this->say("reportFile not found");
 		}
 	}
-
 	/**
 	 * Clone joomla from official repo
 	 *
-	 * @return void
+     * @return void
 	 */
 	private function cloneJoomla()
 	{
@@ -508,10 +677,110 @@ class RoboFile extends \Robo\Tasks
 		 * When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
 		 * Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
 		 */
-		$version = '3.6.2';
+        $version = '3.9.0';
 
-		$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms3");
+        $this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms");
 
-		$this->say("Joomla CMS ($version) site created at joomla-cms3/");
-	}
+        $this->say("Joomla CMS ($version) site created at joomla-cms");
+    }
+
+    /**
+     * Tests setup
+     *
+     * @param   boolean  $debug   Add debug to the parameters
+     * @param   boolean  $steps   Add steps to the parameters
+     *
+     * @return  void
+     * @since   5.6.0
+     */
+    public function testsSetup($debug = true, $steps = true)
+    {
+        $args = [];
+
+        if ($debug)
+        {
+            $args[] = '--debug';
+        }
+
+        if ($steps)
+        {
+            $args[] = '--steps';
+        }
+
+        $args = array_merge(
+            $args,
+            $this->defaultArgs
+        );
+
+        // Gets redFORM
+        $this->getredFORMExtensionForIntegrationTests(0);
+
+        // Sets the output_append variable in case it's not yet
+        if (getenv('output_append') === false)
+        {
+            $this->say('Setting output_append');
+            putenv('output_append=');
+        }
+
+        // Builds codeception
+        $this->_exec("vendor/bin/codecept build");
+
+        // Executes the initial set up
+        $this->taskCodecept()
+            ->args($args)
+            ->arg('acceptance/install/')
+            ->run()
+            ->stopOnFail();
+    }
+
+    /**
+     * Individual test folder execution
+     *
+     * @param   string   $folder  Folder to execute codecept run to
+     * @param   boolean  $debug   Add debug to the parameters
+     * @param   boolean  $steps   Add steps to the parameters
+     *
+     * @return  void
+     * @since   5.6.0
+     */
+    public function testsRun($folder, $debug = true, $steps = true)
+    {
+        $args = [];
+
+        if ($debug)
+        {
+            $args[] = '--debug';
+        }
+
+        if ($steps)
+        {
+            $args[] = '--steps';
+        }
+
+        $args = array_merge(
+            $args,
+            $this->defaultArgs
+        );
+
+        if (false !== strpos($folder, 'integration'))
+        {
+            $this->getredFORMExtensionForIntegrationTests(0);
+        }
+
+        // Sets the output_append variable in case it's not yet
+        if (getenv('output_append') === false)
+        {
+            putenv('output_append=');
+        }
+
+        // Codeception build
+        $this->_exec("vendor/bin/codecept build");
+
+        // Actual execution of Codeception test
+        $this->taskCodecept()
+            ->args($args)
+            ->arg('tests/' . $folder . '/')
+            ->run()
+            ->stopOnFail();
+    }
 }
