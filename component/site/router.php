@@ -93,11 +93,22 @@ class RedeventRouter extends JComponentRouterBase
 
 				break;
 
+			case 'details':
+				$segments[] = $query['id'];
+				unset($query['id']);
+
+				if (isset($query['xref']))
+				{
+					$segments[] = $query['xref'];
+					unset($query['xref']);
+				}
+
+				break;
+
 			case 'archive':
 			case 'bundle':
 			case 'calendar':
 			case 'categoryevents':
-			case 'details':
 			case 'search':
 			case 'upcomingevents':
 			case 'venuecategory':
@@ -262,15 +273,13 @@ class RedeventRouter extends JComponentRouterBase
 				$vars['view'] = 'details';
 				$count = count($segments);
 
-				if ($count > 1)
-				{
-					$id = explode(':', $segments[1]);
-					$vars['id'] = $id[0];
+				$id = explode(':', $segments[1]);
+				$vars['id'] = $id[0];
 
-					if ($count > 2)
-					{
-						$vars['task'] = $segments[2];
-					}
+				if ($count > 2)
+				{
+					$xref = explode(':', $segments[2]);
+					$vars['xref'] = $xref[0];
 				}
 
 				break;
