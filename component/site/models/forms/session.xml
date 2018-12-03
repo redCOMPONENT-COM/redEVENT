@@ -36,6 +36,7 @@
 				required="true"
 				acl_check="true"
 				create_modal="true"
+				show_lang="true"
 				class="inputbox">
 			<option value="">COM_REDEVENT_SELECT_VENUE</option>
 		</field>

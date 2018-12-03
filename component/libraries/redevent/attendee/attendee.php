@@ -894,20 +894,15 @@ class RedeventAttendee extends JObject
 
 		// Load the mailer
 		$mailer = $this->prepareEmail($subject, $body);
-
-		if ($this->getEmail() && $params->get('allow_email_aliasing', 1))
-		{
-			$sender = array($this->getEmail(), $this->getFullname());
-		}
-		else
-		{
-			// Default to site settings
-			$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
-		}
+		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
 
 		$mailer->setSender($sender);
 		$mailer->ClearReplyTos();
-		$mailer->addReplyTo($sender);
+
+		if ($this->getEmail())
+		{
+			$mailer->addReplyTo($this->getEmail(), $this->getFullname());
+		}
 
 		foreach ($recipients as $r)
 		{
