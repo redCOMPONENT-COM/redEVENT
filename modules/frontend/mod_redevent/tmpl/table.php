@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 $i = 0;
 $class_prefix = 'mre-';
 ?>
+<?= $customText ?>
 <table class="redeventmod">
 	<thead>
 	<tr>
