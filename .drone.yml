@@ -22,7 +22,7 @@ clone:
       - gpg --pinentry-mode loopback --passphrase "6f8f19c330a0f899458e4b0670824deb8cdfe391" -o /opt/cache/redFORM.tgz --decrypt /opt/cache/redFORM.tgz.gpg
       - tar -xzf /opt/cache/redFORM.tgz -C build/redFORM
       - touch tests/.cache.redFORM.tmp
-   00-setup:
+  00-setup:
     group: 00-setup
     image: redwebaps/testbox-chromedriver:2.38
     # pull: true
@@ -67,7 +67,7 @@ clone:
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - su www-data -c 'vendor/bin/robo tests:setup 1 1'
-   00-setup-stages:
+  00-setup-stages:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -107,7 +107,9 @@ clone:
       - sh tests/drone/setup-stages.sh "sessionfilter"    "22-session-filter"
       - sh tests/drone/setup-stages.sh "bundlefilter"     "23-bundle-filter"
       - sh tests/drone/setup-stages.sh "viewdetail"       "24-view-detail"
-   01-warning-notice:
+
+
+  01-warning-notice:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -123,7 +125,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/03-CheckForWarningsAndNoticesCest.php'
-   02-category:
+  02-category:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -139,7 +141,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/04-CreateCategoryCest.php'
-   03-venue-category:
+  03-venue-category:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
