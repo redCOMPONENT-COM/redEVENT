@@ -520,7 +520,7 @@ clone:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_ROOT_HOST=%
-   php:
+  php:
     image: redwebaps/php-apache:7.0
     # pull: true
     environment:
