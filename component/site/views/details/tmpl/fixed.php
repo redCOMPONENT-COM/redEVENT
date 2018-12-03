@@ -117,7 +117,7 @@ if ($this->row->venueid != 0) {
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
-		    <?php echo $this->tags->replaceTags($this->row->datdescription); ?>
+		    <?php echo $this->row->datdescription; ?>
   		</div>
 
   	<?php endif; ?>

@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<!-- Details EVENT -->
 	<?php
-	echo $this->tags->replaceTags($this->row->datdescription);
+	echo $this->row->datdescription;
 
 	if ($this->view_attendees_list) : ?>
 		<!-- Registration -->
