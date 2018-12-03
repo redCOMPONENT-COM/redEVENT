@@ -1,7 +1,8 @@
 pipeline:
   clone:
-    image: plugins/clone
-    grecursive: false
+    default:
+     image: plugins/clone
+     recursive: false
 
   00-cache:
     group: 00-setup
