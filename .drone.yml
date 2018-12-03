@@ -157,7 +157,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/05-CreateVenueCategoryCest.php'
-   04-template:
+  04-template:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -173,7 +173,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/06-CreateTemplateCest.php'
-   05-venue:
+  05-venue:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -189,7 +189,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/06-CreateVenueCest.php'
-   06-event:
+  06-event:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -205,7 +205,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/07-CreateEventCest.php'
-   07-tag:
+  07-tag:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -221,7 +221,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/08-CreateTagCest.php'
-   08-custom-field:
+  08-custom-field:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -237,7 +237,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/09-CreateCustomFieldsCest.php'
-   09-role:
+  09-role:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -253,7 +253,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/10-CreateRoleCest.php'
-   10-pricegroup:
+  10-pricegroup:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -269,7 +269,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/11-CreatePriceGroupCest.php'
-   11-session:
+  11-session:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -285,7 +285,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/12-CreateSessionCest.php'
-   12-bundle:
+  12-bundle:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -301,7 +301,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/13-CreateBundleCest.php'
-   13-categoryfilter:
+  13-categoryfilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -317,7 +317,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/20-CheckCategoryListFilterCest.php'
-   14-venuecategory:
+  14-venuecategory:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -333,7 +333,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/21-CheckVenuecategoryListFilterCest.php'
-   15-templatefilter:
+  15-templatefilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -349,7 +349,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/22-CheckTemplateListFilterCest.php'
-   16-venuefilter:
+  16-venuefilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -365,7 +365,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/23-CheckVenueListFilterCest.php'
-   17-eventfilter:
+  17-eventfilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -381,7 +381,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/24-CheckEventListFilterCest.php'
-   18-tagfilter:
+  18-tagfilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -397,7 +397,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/25-CheckTagListFilterCest.php'
-   19-customfieldfilter:
+  19-customfieldfilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -413,7 +413,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/26-CheckCustomFieldListFilterCest.php'
-   20-rolefilter:
+  20-rolefilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -429,7 +429,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/27-CheckRoleListFilterCest.php'
-   21-pricegroupfilter:
+  21-pricegroupfilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -445,7 +445,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/28-CheckPriceGroupListFilterCest.php'
-   22-sessionfilter:
+  22-sessionfilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -461,7 +461,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/29-CheckSessionListFilterCest.php'
-   23-bundlefilter:
+  23-bundlefilter:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -477,7 +477,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/30-CheckBundleListFilterCest.php'
-   24-viewdetail:
+  24-viewdetail:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
