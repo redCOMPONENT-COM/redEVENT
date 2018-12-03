@@ -32,6 +32,12 @@
 	<config addfieldpath="/libraries/redevent/form/fields">
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="customtext"
+					   label="MOD_REDEVENT_XML_CUSTOMTEXT_LABEL"
+					   description="MOD_REDEVENT_XML_CUSTOMTEXT_DESC"
+					   type="editor"
+					   filter="raw"
+					/>
 				<field name="count" type="text" default="5" label="MOD_REDEVENT_EVENTS_IN_MODULE" description="MOD_REDEVENT_EVENTS_IN_MODULE_DESC" />
 				<field name="type" type="list" default="0" label="MOD_REDEVENT_EVENT_STATE" description="MOD_REDEVENT_EVENT_STATE_DESC">
 					<option value="0">MOD_REDEVENT_EVENT_STATE_PUBLISHED</option>

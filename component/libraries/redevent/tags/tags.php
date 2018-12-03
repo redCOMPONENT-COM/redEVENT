@@ -2189,7 +2189,7 @@ class RedeventTags
 	 */
 	private function getTag_city()
 	{
-		return $this->getSession()->getVenue()->location;
+		return $this->getSession()->getVenue()->city;
 	}
 
 	/**
@@ -2995,7 +2995,7 @@ class RedeventTags
 				$link .= '&lang=' . $lang;
 			}
 
-			$link = $this->absoluteUrls($link, false);
+			$link = JRoute::_(JUri::root() . $link, false);
 		}
 
 		return $link;

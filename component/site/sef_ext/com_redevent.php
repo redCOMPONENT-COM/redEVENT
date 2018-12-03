@@ -244,7 +244,15 @@ if (!$shHomePageFlag)
 					break;
 
 				case 'categoryevents':
-					$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
+					if ($reParams->get('sh404sef_categoryevents_alias', 0) == 1)
+					{
+						$title = [];
+						$q = "SELECT alias FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
+					}
+					else
+					{
+						$q = "SELECT name FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
+					}
 					$db->setQuery($q);
 					$title[] = $db->loadResult();
 					//$title[] = $id;
