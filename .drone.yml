@@ -493,7 +493,7 @@ clone:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/frontend/01-ViewDetailsCest.php'
-   slack:
+  slack:
     image: plugins/slack
     webhook: https://hooks.slack.com/services/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
     channel: redevent
@@ -505,7 +505,7 @@ clone:
       {{else}}
         {{repo.name}} PR #{{build.pull}} failed in {{since build.started}}. Fix me please {{build.author}}!  Here is the build log: {{build.link}}.  Link to the PR: https://github.com/{{repo.owner}}/{{repo.name}}/pull/{{build.pull}}
       {{/success}}
-   error-report:
+  error-report:
     image: redwebaps/testbox-chromedriver:2.38
     commands:
       - if [ -z "${CI_PULL_REQUEST}" ]; then export CI_PULL_REQUEST=1; fi
