@@ -54,7 +54,6 @@ pipeline:
       - cd build
       - gulp release --skip-version testsRelease
       - cd ../tests
-      - cd releases
       - ls
       - pwd
       # Codeception setup
