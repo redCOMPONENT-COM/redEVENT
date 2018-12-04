@@ -232,7 +232,7 @@
 				$this->cloneJoomla();
 			}
 			
-			if (!is_dir('joomla-cms3/libraries/vendor/phpunit'))
+			if (!is_dir('joomla-cms/libraries/vendor/phpunit'))
 			{
 				$this->getComposer();
 				$this->taskComposerInstall('../composer.phar')->dir('joomla-cms')->run();
@@ -672,15 +672,15 @@
 		private function cloneJoomla()
 		{
 			$version = 'staging';
-			
+
 			/*
 			 * When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
 			 * Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
 			 */
 			$version = '3.9.0';
-			
+
 			$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms");
-			
+
 			$this->say("Joomla CMS ($version) site created at joomla-cms");
 		}
 		
