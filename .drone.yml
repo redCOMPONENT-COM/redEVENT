@@ -54,11 +54,14 @@ pipeline:
       - mv build/gulp-config.json.dist build/gulp-config.json
       - cd build
       - gulp release --skip-version testsRelease
-      - cd ../tests
+      - cd ../tests/releases
+      - ls
+      - pwd
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
       #- while [ ! -f tests/.cache.joomla-cms.tmp ]; do sleep 1; done        # Comment if not using Joomla CMS cache
+      - cd ../
       - vendor/bin/robo tests:site-preparation 1 1
       # Ownership for uid 82
       - chown -R www-data:www-data .
