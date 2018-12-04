@@ -2,6 +2,6 @@
 	"wwwDir"           : "/path/to/joomla/root",
 	"browserSyncProxy" : "localhost",
 	"browser"          : "default",
-	"release_dir"   : "../releases/",
+	"release_dir"   : "../tests/releases/",
 	"testrelease_dir": "../tests/releases/"
 }
