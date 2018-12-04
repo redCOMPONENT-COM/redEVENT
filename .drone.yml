@@ -47,7 +47,6 @@ pipeline:
       # - npm install                                                       # Uncomment if not using npm cache
       # redEVENT installer release
       #- while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
-      - ls
       - mv vendor tests/
       - mv node_modules build
       - npm install gulp -g
