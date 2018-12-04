@@ -63,8 +63,11 @@ pipeline:
       # Ownership for uid 82
       - chown -R www-data:www-data .
       # Creating first clone for tests setup
-      - mkdir -p tests/$tests_suite/joomla-cms
-      - rsync -a tests/joomla-cms/ tests/$tests_suite/joomla-cms
+      - mkdir -p $tests_suite/joomla-cms
+      - rsync -a joomla-cms/ $tests_suite/joomla-cms
+      - cd 00-setup
+      - ls
+      - cd ../
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - su www-data -c 'vendor/bin/robo tests:setup 1 1'
