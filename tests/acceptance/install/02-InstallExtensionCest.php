@@ -15,9 +15,12 @@ class InstallExtensionCest
 
 		$path = $I->getConfiguration('packages url');
 
-		$pathredFORM = $I->getConfiguration('packages redFORM');
+		$pathredFORM = $I->getConfiguration('packages redFORM'). 'redFORM';
+		$I->see($pathredFORM);
+//		$pathredFORM = $I->getConfiguration('extension folder') . 'redFORM/build/redCORE/extensions';
 //		$I->installExtensionFromFolder($buildPath . '/redFORM/build/redCORE/extensions');
-		$I->installExtensionFromFolder($pathredFORM . 'redFORM');
+		$I->installExtensionFromFolder($pathredFORM);
 		$I->installExtensionFromUrl($path . 'redevent.zip');
+        $I->installExtensionFromFolder($path);
 	}
 }
