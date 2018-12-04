@@ -55,7 +55,7 @@ pipeline:
       - gulp release --skip-version testsRelease
       - cd ../
       - cd releases
-      - ls
+      - cd ../
       # Codeception setup
       - cp tests/acceptance.suite.yml.dist.drone tests/acceptance.suite.yml
       # Test setup
