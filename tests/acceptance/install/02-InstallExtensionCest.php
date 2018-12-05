@@ -8,15 +8,21 @@
 
 class InstallExtensionCest
 {
-	public function install(\AcceptanceTester $I)
+	public function install(\AcceptanceTester $i)
 	{
-		$I->wantToTest('redEVENT installation in Joomla 3');
-		$I->doAdministratorLogin();
+		$i->wantToTest('redEVENT installation in Joomla 3');
+		$i->doAdministratorLogin();
 
-		$path = $I->getConfiguration('packages url');
+		$i->amOnPage('/administrator/index.php?option=com_installer');
+		$i->waitForText('Extensions: Install', 60, ['css' => 'H1']);
 
-		$I->installExtensionFromUrl($path . '/redFORM/build/redCORE/extensions');
-		$I->installExtensionFromUrl($path . '/redFORM/component');
-		$I->installExtensionFromUrl($path . 'redevent.zip');
+		$i->click(['link' => 'Install from Folder']);
+		$i->comment('I enter the path');
+
+		$path = $i->getConfiguration('extension folder') . 'tests/extension/redFORM';
+		$i->installExtensionFromFolder($path);
+
+		$pathEvent=  $i->getConfiguration('packages url') . 'redevent.zip';
+		$i->installExtensionFromUrl($pathEvent);
 	}
 }
