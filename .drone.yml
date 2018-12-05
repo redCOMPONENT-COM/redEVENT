@@ -55,7 +55,7 @@ pipeline:
       - cd build
       - gulp release --skip-version testsRelease
       - cd ../
-      - cp tests/releases build/redFORM
+      - mv build/redFORM/ tests/releases/
       - ls
       - cd tests/releases/redFORM
       - ls
