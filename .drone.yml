@@ -56,7 +56,6 @@ pipeline:
       - mv build/gulp-config.json.dist build/gulp-config.json
       - cd build
       - gulp release --skip-version testsRelease
-      - ls
       - cd ../
       - cd tests
       # Codeception setup
