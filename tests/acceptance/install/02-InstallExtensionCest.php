@@ -16,12 +16,12 @@ class InstallExtensionCest
 		$I->pauseExecution();
 		$path = $I->getConfiguration('packages url');
 		$I->pauseExecution();
-        $buildPath = dirname(dirname(dirname(__DIR__))) . '/build';
-        $I->pauseExecution();
+		$buildPath = dirname(dirname(dirname(__DIR__))) . '/build';
+		$I->pauseExecution();
 
 		$I->installExtensionFromFolder($buildPath . '/redFORM/build/redCORE/extensions');
-        $I->installExtensionFromFolder($buildPath . '/redFORM/component');
+		$I->installExtensionFromFolder($buildPath . '/redFORM/component');
 //		$I->installExtensionFromUrl($path . 'redevent.zip');
-        $I->installExtensionFromFolder($path . 'redevent.zip');
+		$I->installExtensionFromFolder($path . 'redevent.zip');
 	}
 }
