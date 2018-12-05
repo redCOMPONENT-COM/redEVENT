@@ -54,7 +54,6 @@ pipeline:
       - mv build/gulp-config.json.dist build/gulp-config.json
       - cd build
       - gulp release --skip-version testsRelease
-      - git submodule update --init --recursive
       - mv build/redFORM tests/redFORM
       - cd tests/redFORM
       - ls
