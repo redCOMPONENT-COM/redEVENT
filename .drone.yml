@@ -74,8 +74,8 @@ pipeline:
       - mkdir -p $tests_suite/joomla-cms
       - rsync -a joomla-cms/ $tests_suite/joomla-cms
       - cd 00-setup
-      - ls
       - cd ../
+      - ls
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - su www-data -c 'vendor/bin/robo tests:setup 1 1'
