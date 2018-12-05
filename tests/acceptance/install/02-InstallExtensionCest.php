@@ -13,11 +13,8 @@ class InstallExtensionCest
 		$I->wantToTest('redEVENT installation in Joomla 3');
 		$I->doAdministratorLogin();
 
-		$I->pauseExecution();
 		$path = $I->getConfiguration('packages url');
-		$I->pauseExecution();
 		$buildPath = dirname(dirname(dirname(__DIR__))) . '/build';
-		$I->pauseExecution();
 
 		$I->installExtensionFromFolder($buildPath . '/redFORM/build/redCORE/extensions');
 		$I->installExtensionFromFolder($buildPath . '/redFORM/component');

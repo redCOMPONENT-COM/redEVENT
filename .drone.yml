@@ -25,8 +25,6 @@ pipeline:
       - tar -xzf /opt/cache/redFORM.tgz -C build/redFORM
       - touch tests/.cache.redFORM.tmp
       - cd build
-      - ls
-      - cd ../
 
   00-setup:
     group: 00-setup
@@ -56,7 +54,13 @@ pipeline:
       - mv build/gulp-config.json.dist build/gulp-config.json
       - cd build
       - gulp release --skip-version testsRelease
-      - cd ../tests
+      - git submodule update --init --recursive
+      - mv build/redFORM tests/redFORM
+      - cd tests/redFORM
+      - ls
+      - cd component/libraries/redevent
+      - composer dump-autoload
+      - cd ../../../tests
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       - ls
@@ -73,8 +77,6 @@ pipeline:
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - su www-data -c 'vendor/bin/robo tests:setup 1 1'
-      - cd ../
-      - ls
 
   00-setup-stages:
     group: tests
