@@ -19,13 +19,13 @@ class InstallExtensionCest
 		$i->click(['link' => 'Install from Folder']);
 		$i->comment('I enter the path');
 
-        $path = $i->getConfiguration('extension folder') . 'tests/extension/redCORE';
+        $path = $i->getConfiguration('extension folder') . 'tests/extension/redCORE/extensions';
         $i->installExtensionFromFolder($path);
 
 		$path = $i->getConfiguration('extension folder') . 'tests/extension/redFORM';
 		$i->installExtensionFromFolder($path);
 
-		$pathEvent=  $i->getConfiguration('packages url') . 'redevent.zip';
+		$pathEvent = $i->getConfiguration('packages url' . 'redevent.zip');
 		$i->installExtensionFromUrl($pathEvent);
 	}
 }

@@ -61,8 +61,6 @@ pipeline:
       - gulp release --skip-version testsRelease
       - cd ../
       - mv build/redFORM/ tests/releases/
-      - cd tests/extension
-      - ls
       - cd ../
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
