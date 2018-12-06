@@ -19,7 +19,7 @@ pipeline:
       - mv /opt/cache/joomla-cms tests
       - touch tests/.cache.joomla-cms.tmp
 
-      # redFORM
+      # redCORE
       - mkdir -p tests/extension/redCORE
       - gpg --pinentry-mode loopback --passphrase "6f8f19c330a0f899458e4b0670824deb8cdfe391" -o /opt/cache/redCORE.tgz --decrypt /opt/cache/redCORE.tgz.gpg
       - tar -xzf /opt/cache/redCORE.tgz -C tests/extension/redCORE
@@ -58,6 +58,7 @@ pipeline:
       - npm install gulp -g
       - mv build/gulp-config.json.dist build/gulp-config.json
       - cd build
+      - git submodule update --init --recursive
       - gulp release --skip-version testsRelease
       - cd ../
       - mv build/redFORM/ tests/releases/
