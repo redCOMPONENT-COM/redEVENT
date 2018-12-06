@@ -59,16 +59,16 @@ pipeline:
       - mv build/gulp-config.json.dist build/gulp-config.json
       - cd build
       - gulp release --skip-version testsRelease
-      - pwd
       - cd ../
       - mv build/redFORM/ tests/releases/
-      - cd tests/extension/redCORE/extensions
+      - cd tests/extension
+      - ls
+      - cd redFORM/
+      - pwd
+      - cd redCORE/extensions
       - ls
       - pwd
-      - cd ../redFORM
-      - ls
-      - pwd
-      - cd ../../tests
+      - cd ../../../tests
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
