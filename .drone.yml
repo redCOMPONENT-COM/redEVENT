@@ -59,7 +59,9 @@ pipeline:
       - mv gulp-config.json.dist gulp-config.json
       - npm install gulp -g
       - gulp release --skip-version testsRelease
-      - cd ../tests
+      - cd ../tests/extension/redFORM/build/redCORE/extensions/libraries/redcore/model
+      - ls
+      - cd ../../../../../../../../tests
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
