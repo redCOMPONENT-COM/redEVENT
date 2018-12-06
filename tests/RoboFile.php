@@ -231,18 +231,47 @@
 			{
 				$this->cloneJoomla();
 			}
-			
+
 			if (!is_dir('joomla-cms/libraries/vendor/phpunit'))
 			{
 				$this->getComposer();
 				$this->taskComposerInstall('../composer.phar')->dir('joomla-cms')->run();
 			}
-			
+
 			// Copy extension. No need to install, as we don't use mysql db for unit tests
 			$joomlaPath = __DIR__ . '/joomla-cms';
 			$this->_exec("gulp copy --wwwDir=$joomlaPath --gulpfile ../build/gulpfile.js");
 		}
-		
+
+        /**
+         * Downloads and Install redCORE for Integration Testing testing
+         *
+         * @param   integer  $cleanUp  Clean up the directory when present (or skip the cloning process)
+         *
+         * @return  void
+         * @since   1.0.0
+         */
+        protected function getredCORExtensionForIntegrationTests($cleanUp = 1)
+        {
+            // Get redCORE Clean Testing sites
+            if (is_dir('build/redFORM/build/redCORE'))
+            {
+                if (!$cleanUp)
+                {
+                    $this->say('Using cached version of redCORE and skipping clone process');
+
+                    return;
+                }
+
+                $this->taskDeleteDir('build/redFORM/build/redCORE')->run();
+            }
+
+            $version = '1.10.6';
+            $this->_exec("git clone -b $version --single-branch --depth 1 https://travisredweb:travisredweb2013github@github.com/redCOMPONENT-COM/redCORE.git build/redFORM/build/redCORE");
+
+            $this->say("redCORE ($version) cloned at build/redFORM/build");
+        }
+
 		/**
 		 * Downloads and Install redFORM for Integration Testing testing
 		 *
@@ -711,6 +740,9 @@
 				$args,
 				$this->defaultArgs
 			);
+
+            // Gets redFORM
+            $this->getredCOREExtensionForIntegrationTests(0);
 			
 			// Gets redFORM
 			$this->getredFORMExtensionForIntegrationTests(0);
@@ -761,7 +793,12 @@
 				$args,
 				$this->defaultArgs
 			);
-			
+
+            if (false !== strpos($folder, 'integration'))
+            {
+                $this->getredCOREExtensionForIntegrationTests(0);
+            }
+
 			if (false !== strpos($folder, 'integration'))
 			{
 				$this->getredFORMExtensionForIntegrationTests(0);

@@ -19,6 +19,9 @@ class InstallExtensionCest
 		$i->click(['link' => 'Install from Folder']);
 		$i->comment('I enter the path');
 
+        $path = $i->getConfiguration('extension folder') . 'tests/extension/redCORE';
+        $i->installExtensionFromFolder($path);
+
 		$path = $i->getConfiguration('extension folder') . 'tests/extension/redFORM';
 		$i->installExtensionFromFolder($path);
 
