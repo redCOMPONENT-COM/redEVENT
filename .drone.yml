@@ -56,9 +56,8 @@ pipeline:
       - cd ../
       - mv build/redFORM/ tests/releases/
       - cd tests/releases/redFORM
-      - cd build/redCORE
       - ls
-      - cd ../../../../
+      - cd ../../
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
