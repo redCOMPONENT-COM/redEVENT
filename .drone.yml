@@ -57,8 +57,8 @@ pipeline:
       #- mv vendor tests/
       #- mv node_modules build
       - cd ../build
-      - npm install gulp -g
       - mv gulp-config.json.dist gulp-config.json
+      - npm install gulp -g
       #- cd build
       - gulp release --skip-version testsRelease
       - cd ../tests
