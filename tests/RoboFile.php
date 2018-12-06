@@ -251,7 +251,7 @@
          * @return  void
          * @since   1.0.0
          */
-        protected function getredCORExtensionForIntegrationTests($cleanUp = 1)
+        protected function getredCOREExtensionForIntegrationTests($cleanUp = 1)
         {
             // Get redCORE Clean Testing sites
             if (is_dir('build/redFORM/build/redCORE'))
