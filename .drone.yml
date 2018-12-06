@@ -10,11 +10,11 @@ pipeline:
     pull: true
     commands:
       # redEVENT Composer cache
-      - mv /opt/cache/redEVENT/vendor .
-      - touch tests/.cache.composer.tmp
+      #- mv /opt/cache/redEVENT/vendor .
+      #- touch tests/.cache.composer.tmp
       # redEVENT npm cache
-      - mv /opt/cache/redEVENT/node_modules .
-      - touch tests/.cache.npm.tmp
+      #- mv /opt/cache/redEVENT/node_modules .
+      #- touch tests/.cache.npm.tmp
       # Joomla CMS
       - mv /opt/cache/joomla-cms tests
       - touch tests/.cache.joomla-cms.tmp
@@ -45,30 +45,22 @@ pipeline:
       # Regular entry point
       - /entrypoint.sh &
       # Composer setup
-      - while [ ! -f tests/.cache.composer.tmp ]; do sleep 1; done          # Comment if not using composer cache
+      #- while [ ! -f tests/.cache.composer.tmp ]; do sleep 1; done          # Comment if not using composer cache
       - composer config -g github-oauth.github.com 6f8f19c330a0f899458e4b0670824deb8cdfe391
-      # - composer install --prefer-dist                                    # Uncomment if not using composer cache
+      - cd tests
+      - composer install --prefer-dist                                    # Uncomment if not using composer cache
       # NPM setup
-      - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
+      #- while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
       # - npm install                                                       # Uncomment if not using npm cache
       # redEVENT installer release
       #- while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
-      - mv vendor tests/
-      - mv node_modules build
+      #- mv vendor tests/
+      #- mv node_modules build
       - npm install gulp -g
       - mv build/gulp-config.json.dist build/gulp-config.json
       - cd build
       - gulp release --skip-version testsRelease
-      - cd ../
-      - mv build/redFORM/ tests/releases/
-      - cd tests/extension
-      - ls
-      - cd redFORM/
-      - pwd
-      - cd redCORE/extensions
-      - ls
-      - pwd
-      - cd ../../../tests
+      - cd ../tests
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
@@ -79,8 +71,6 @@ pipeline:
       # Creating first clone for tests setup
       - mkdir -p $tests_suite/joomla-cms
       - rsync -a joomla-cms/ $tests_suite/joomla-cms
-      - cd 00-setup
-      - cd ../
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - su www-data -c 'vendor/bin/robo tests:setup 1 1'
