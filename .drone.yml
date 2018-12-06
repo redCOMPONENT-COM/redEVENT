@@ -56,6 +56,7 @@ pipeline:
       #- while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
       #- mv vendor tests/
       #- mv node_modules build
+
       - cd ../build
       - npm install gulp -g
       - mv build/gulp-config.json.dist build/gulp-config.json
