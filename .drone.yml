@@ -50,7 +50,7 @@ pipeline:
       - cd tests
       - composer install --prefer-dist                                    # Uncomment if not using composer cache
       # NPM setup
-      - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
+      #- while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
       # - npm install                                                       # Uncomment if not using npm cache
       # redEVENT installer release
       #- while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
