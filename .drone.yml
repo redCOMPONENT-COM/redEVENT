@@ -10,11 +10,11 @@ pipeline:
     pull: true
     commands:
       # redEVENT Composer cache
-      #- mv /opt/cache/redEVENT/vendor .
-      #- touch tests/.cache.composer.tmp
+      - mv /opt/cache/redEVENT/vendor .
+      - touch tests/.cache.composer.tmp
       # redEVENT npm cache
-      #- mv /opt/cache/redEVENT/node_modules .
-      #- touch tests/.cache.npm.tmp
+      - mv /opt/cache/redEVENT/node_modules .
+      - touch tests/.cache.npm.tmp
       # Joomla CMS
       - mv /opt/cache/joomla-cms tests
       - touch tests/.cache.joomla-cms.tmp
@@ -45,17 +45,17 @@ pipeline:
       # Regular entry point
       - /entrypoint.sh &
       # Composer setup
-      #- while [ ! -f tests/.cache.composer.tmp ]; do sleep 1; done          # Comment if not using composer cache
+      - while [ ! -f tests/.cache.composer.tmp ]; do sleep 1; done          # Comment if not using composer cache
       - composer config -g github-oauth.github.com 6f8f19c330a0f899458e4b0670824deb8cdfe391
       - cd tests
       - composer install --prefer-dist                                    # Uncomment if not using composer cache
       # NPM setup
-      #- while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
+      - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
       # - npm install                                                       # Uncomment if not using npm cache
       # redEVENT installer release
       #- while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
-      #- mv vendor tests/
-      #- mv node_modules build
+      - mv vendor tests/
+      - mv node_modules build
       - cd ../build
       - mv gulp-config.json.dist gulp-config.json
       - npm install gulp -g
