@@ -59,8 +59,8 @@ pipeline:
 
       - cd ../build
       - npm install gulp -g
-      - mv build/gulp-config.json.dist build/gulp-config.json
-      - cd build
+      - mv gulp-config.json.dist gulp-config.json
+      #- cd build
       - gulp release --skip-version testsRelease
       - cd ../tests
       # Codeception setup
