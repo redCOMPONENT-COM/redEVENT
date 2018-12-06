@@ -47,10 +47,9 @@ pipeline:
       # Composer setup
       - while [ ! -f tests/.cache.composer.tmp ]; do sleep 1; done          # Comment if not using composer cache
       - composer config -g github-oauth.github.com 6f8f19c330a0f899458e4b0670824deb8cdfe391
-      - cd tests
-      - composer install --prefer-dist                                    # Uncomment if not using composer cache
+      #- composer install --prefer-dist                                    # Uncomment if not using composer cache
       # NPM setup
-      #- while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
+      - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done               # Comment if not using npm cache
       # - npm install                                                       # Uncomment if not using npm cache
       # redEVENT installer release
       #- while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
@@ -59,7 +58,6 @@ pipeline:
       - cd ../build
       - mv gulp-config.json.dist gulp-config.json
       - npm install gulp -g
-      #- cd build
       - gulp release --skip-version testsRelease
       - cd ../tests
       # Codeception setup
@@ -72,6 +70,8 @@ pipeline:
       # Creating first clone for tests setup
       - mkdir -p $tests_suite/joomla-cms
       - rsync -a joomla-cms/ $tests_suite/joomla-cms
+      - cd 00-setup
+      - cd ../
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - su www-data -c 'vendor/bin/robo tests:setup 1 1'
