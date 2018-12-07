@@ -61,7 +61,7 @@ pipeline:
       - gulp release --skip-version testsRelease
       - cd ../tests/extension/redCORE/build
       - cp gulp-config.json.dist gulp-config.json
-      - npm install -g gulp
+      - npm install gulp -g
       - gulp releases --skip-version
       - cd ../../../tests
       # Codeception setup
