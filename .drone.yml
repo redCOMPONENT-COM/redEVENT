@@ -143,7 +143,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       - cd tests
       # Performs test
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/03-CheckForWarningsAndNoticesCest.php 1 1'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 1 1'
 
   slack:
     image: plugins/slack
