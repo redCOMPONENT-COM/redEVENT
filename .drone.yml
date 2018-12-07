@@ -65,8 +65,10 @@ pipeline:
       - gulp release --skip-version
       - cd ../../../
       - cp extension/redCORE/tests/releases/redCORE.zip releases/
+      - cd ../releases
       - ls
       # Codeception setup
+      - cd ../tests
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
       #- while [ ! -f tests/.cache.joomla-cms.tmp ]; do sleep 1; done        # Comment if not using Joomla CMS cache
