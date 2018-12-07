@@ -65,10 +65,8 @@ pipeline:
       - gulp release --skip-version
       - cd ../../../
       - cp extension/redCORE/tests/releases/redCORE.zip releases/
-      - cd ../releases
       - ls
       # Codeception setup
-      - cd ../tests
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
       #- while [ ! -f tests/.cache.joomla-cms.tmp ]; do sleep 1; done        # Comment if not using Joomla CMS cache
@@ -83,6 +81,8 @@ pipeline:
       # Creates the database (required because of the Codeception Db module)
       - mysql -u root -proot -h db -e "CREATE DATABASE $tests_db"
       - su www-data -c 'vendor/bin/robo tests:setup 1 1'
+      - cd releases
+      - ls
 
   00-setup-stages:
     group: tests
