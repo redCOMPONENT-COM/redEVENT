@@ -16,11 +16,11 @@ class InstallExtensionCest
 		$i->amOnPage('/administrator/index.php?option=com_installer');
 		$i->waitForText('Extensions: Install', 60, ['css' => 'H1']);
 
-		$i->click(['link' => 'Install from Folder']);
-		$i->comment('I enter the path');
-
         $pathredCORE = $i->getConfiguration('package url') . 'tests/extension/redCORE/tests/releases/redCORE.zip';
         $i->installExtensionFromFolder($pathredCORE);
+
+        $i->click(['link' => 'Install from Folder']);
+        $i->comment('I enter the path');
 
 		$path = $i->getConfiguration('extension folder') . 'tests/extension/redFORM';
 		$i->installExtensionFromFolder($path);
