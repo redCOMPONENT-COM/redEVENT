@@ -16,8 +16,8 @@ class InstallExtensionCest
 		$i->amOnPage('/administrator/index.php?option=com_installer');
 		$i->waitForText('Extensions: Install', 60, ['css' => 'H1']);
 
-        $pathredCORE = $i->getConfiguration('package url ') . 'redCORE.zip';
-        $i->installExtensionFromFolder($pathredCORE);
+        $pathredCORE = $i->getConfiguration('package url') . 'redCORE.zip';
+        $i->installExtensionFromUrl($pathredCORE);
 
         $i->click(['link' => 'Install from Folder']);
         $i->comment('I enter the path');
@@ -25,7 +25,7 @@ class InstallExtensionCest
 		$path = $i->getConfiguration('extension folder') . 'tests/extension/redFORM';
 		$i->installExtensionFromFolder($path);
 
-		$pathEvent = $i->getConfiguration('packages url ') . 'redevent.zip';
+		$pathEvent = $i->getConfiguration('packages url') . 'redevent.zip';
 		$i->installExtensionFromUrl($pathEvent);
 	}
 }
