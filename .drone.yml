@@ -63,9 +63,8 @@ pipeline:
       - cp gulp-config.json.dist gulp-config.json
       - npm install gulp -g
       - gulp release --skip-version
-      - cd ../
-      - cp redCORE/tests/releases/redCORE.zip releases/
-      - cd ../../
+      - cd ../../../
+      - cp extension/redCORE/tests/releases/redCORE.zip releases/
       - ls
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
