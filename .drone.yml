@@ -143,7 +143,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       - cd tests
       # Performs test
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/03-CheckForWarningsAndNoticesCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/03-CheckForWarningsAndNoticesCest.php 1 1'
 
   02-category:
     group: tests
@@ -161,7 +161,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/04-CreateCategoryCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/04-CreateCategoryCest.php 1 1'
 
   03-venue-category:
     group: tests
@@ -179,7 +179,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/05-CreateVenueCategoryCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/05-CreateVenueCategoryCest.php 1 1'
 
   04-template:
     group: tests
@@ -197,7 +197,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/06-CreateTemplateCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/06-CreateTemplateCest.php 1 1'
 
   05-venue:
     group: tests
@@ -215,7 +215,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/06-CreateVenueCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/06-CreateVenueCest.php 1 1'
 
   06-event:
     group: tests
@@ -233,7 +233,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/07-CreateEventCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/07-CreateEventCest.php 1 1'
 
   07-tag:
     group: tests
@@ -251,7 +251,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/08-CreateTagCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/08-CreateTagCest.php 1 1'
 
   08-custom-field:
     group: tests
@@ -269,7 +269,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/09-CreateCustomFieldsCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/09-CreateCustomFieldsCest.php 1 1'
 
   09-role:
     group: tests
@@ -287,7 +287,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/10-CreateRoleCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/10-CreateRoleCest.php 1 1'
 
   10-pricegroup:
     group: tests
@@ -305,7 +305,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/11-CreatePriceGroupCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/11-CreatePriceGroupCest.php 1 1'
 
   11-session:
     group: tests
@@ -323,7 +323,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/12-CreateSessionCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/12-CreateSessionCest.php 1 1'
 
   12-bundle:
     group: tests
@@ -341,7 +341,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/13-CreateBundleCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/13-CreateBundleCest.php 1 1'
 
   13-categoryfilter:
     group: tests
@@ -359,7 +359,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/20-CheckCategoryListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/20-CheckCategoryListFilterCest.php 1 1'
 
   14-venuecategory:
     group: tests
@@ -377,7 +377,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/21-CheckVenuecategoryListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/21-CheckVenuecategoryListFilterCest.php 1 1'
 
   15-templatefilter:
     group: tests
@@ -395,7 +395,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/22-CheckTemplateListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/22-CheckTemplateListFilterCest.php 1 1'
 
   16-venuefilter:
     group: tests
@@ -413,7 +413,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/23-CheckVenueListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/23-CheckVenueListFilterCest.php 1 1'
 
   17-eventfilter:
     group: tests
@@ -431,7 +431,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/24-CheckEventListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/24-CheckEventListFilterCest.php 1 1'
 
   18-tagfilter:
     group: tests
@@ -449,7 +449,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/25-CheckTagListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/25-CheckTagListFilterCest.php 1 1'
 
   19-customfieldfilter:
     group: tests
@@ -467,7 +467,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/26-CheckCustomFieldListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/26-CheckCustomFieldListFilterCest.php 1 1'
 
   20-rolefilter:
     group: tests
@@ -484,7 +484,7 @@ pipeline:
       # Performs test after ensuring that the scenario has been fully set up
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/27-CheckRoleListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/27-CheckRoleListFilterCest.php 1 1'
 
   21-pricegroupfilter:
     group: tests
@@ -502,7 +502,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/28-CheckPriceGroupListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/28-CheckPriceGroupListFilterCest.php 1 1'
 
   22-sessionfilter:
     group: tests
@@ -520,7 +520,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/29-CheckSessionListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/29-CheckSessionListFilterCest.php 1 1'
 
   23-bundlefilter:
     group: tests
@@ -538,7 +538,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/30-CheckBundleListFilterCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/30-CheckBundleListFilterCest.php 1 1'
 
   24-viewdetail:
     group: tests
@@ -556,7 +556,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/frontend/01-ViewDetailsCest.php'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/frontend/01-ViewDetailsCest.php 1 1'
 
   slack:
     image: plugins/slack
