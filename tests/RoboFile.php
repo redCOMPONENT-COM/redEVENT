@@ -794,16 +794,12 @@
 				$this->defaultArgs
 			);
 
-            if (false !== strpos($folder, 'integration'))
-            {
-                $this->getredCOREExtensionForIntegrationTests(0);
-            }
+            //Gets redCORE
+            $this->getredCOREExtensionForIntegrationTests(0);
 
-			if (false !== strpos($folder, 'integration'))
-			{
-				$this->getredFORMExtensionForIntegrationTests(0);
-			}
-			
+            //Gets redFORM
+            $this->getredFORMExtensionForIntegrationTests(0);
+
 			// Sets the output_append variable in case it's not yet
 			if (getenv('output_append') === false)
 			{
@@ -816,7 +812,7 @@
 			// Actual execution of Codeception test
 			$this->taskCodecept()
 				->args($args)
-				->arg('tests/' . $folder . '/')
+				->arg( $folder . '/')
 				->run()
 				->stopOnFail();
 		}

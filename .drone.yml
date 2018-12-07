@@ -132,10 +132,10 @@ pipeline:
     image: redwebaps/testbox-chromedriver:2.38
     environment:
       - tests_user=admin
-      - tests_suite=01-warning-notice
-      - tests_db=warningnotice
+      - tests_suite=01-administrator
+      - tests_db=administrator
       - build_path=/drone/src/github.com/${DRONE_REPO}
-      - output_append=-01-warning-notice
+      - output_append=-01-administrator
     commands:
       # Regular entry point
       - /entrypoint.sh &
@@ -143,7 +143,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       - cd tests
       # Performs test
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 1 1'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 0 0'
 
   slack:
     image: plugins/slack
