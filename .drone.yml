@@ -101,30 +101,30 @@ pipeline:
       - mysqldump -u root -proot -h db $tests_db > tests/dbdump.sql.tmp
 
       # Stages setup
-      - sh tests/drone/setup-stages.sh "warningnotice"    "01-warning-notice"
-      - sh tests/drone/setup-stages.sh "category"         "02-category"
-      - sh tests/drone/setup-stages.sh "venuecategory"    "03-venue-category"
-      - sh tests/drone/setup-stages.sh "template"         "04-template"
-      - sh tests/drone/setup-stages.sh "venue"            "05-venue"
-      - sh tests/drone/setup-stages.sh "event"            "06-event"
-      - sh tests/drone/setup-stages.sh "tag"              "07-tag"
-      - sh tests/drone/setup-stages.sh "customfield"      "08-custom-field"
-      - sh tests/drone/setup-stages.sh "role"             "09-role"
-      - sh tests/drone/setup-stages.sh "pricegroup"       "10-price-group"
-      - sh tests/drone/setup-stages.sh "session"          "11-session"
-      - sh tests/drone/setup-stages.sh "bundle"           "12-bundle"
-      - sh tests/drone/setup-stages.sh "categoryfilter"   "13-categoryfilter"
-      - sh tests/drone/setup-stages.sh "venuecategoryfilter"    "14-venue-category-filter"
-      - sh tests/drone/setup-stages.sh "templatefilter"   "15-template-filter"
-      - sh tests/drone/setup-stages.sh "venuefilter"      "16-venue-filter"
-      - sh tests/drone/setup-stages.sh "eventfilter"      "17-event-filter"
-      - sh tests/drone/setup-stages.sh "tagfilter"        "18-tag-filter"
-      - sh tests/drone/setup-stages.sh "customfieldfilter"      "19-custom-field-filter"
-      - sh tests/drone/setup-stages.sh "rolefilter"       "20-role-filter"
-      - sh tests/drone/setup-stages.sh "pricegroupfilter" "21-price-group-filter"
-      - sh tests/drone/setup-stages.sh "sessionfilter"    "22-session-filter"
-      - sh tests/drone/setup-stages.sh "bundlefilter"     "23-bundle-filter"
-      - sh tests/drone/setup-stages.sh "viewdetail"       "24-view-detail"
+      - sh tests/drone/setup-stages.sh "administrator"    "01-administrator"
+#      - sh tests/drone/setup-stages.sh "category"         "02-category"
+#      - sh tests/drone/setup-stages.sh "venuecategory"    "03-venue-category"
+#      - sh tests/drone/setup-stages.sh "template"         "04-template"
+#      - sh tests/drone/setup-stages.sh "venue"            "05-venue"
+#      - sh tests/drone/setup-stages.sh "event"            "06-event"
+#      - sh tests/drone/setup-stages.sh "tag"              "07-tag"
+#      - sh tests/drone/setup-stages.sh "customfield"      "08-custom-field"
+#      - sh tests/drone/setup-stages.sh "role"             "09-role"
+#      - sh tests/drone/setup-stages.sh "pricegroup"       "10-price-group"
+#      - sh tests/drone/setup-stages.sh "session"          "11-session"
+#      - sh tests/drone/setup-stages.sh "bundle"           "12-bundle"
+#      - sh tests/drone/setup-stages.sh "categoryfilter"   "13-categoryfilter"
+#      - sh tests/drone/setup-stages.sh "venuecategoryfilter"    "14-venue-category-filter"
+#      - sh tests/drone/setup-stages.sh "templatefilter"   "15-template-filter"
+#      - sh tests/drone/setup-stages.sh "venuefilter"      "16-venue-filter"
+#      - sh tests/drone/setup-stages.sh "eventfilter"      "17-event-filter"
+#      - sh tests/drone/setup-stages.sh "tagfilter"        "18-tag-filter"
+#      - sh tests/drone/setup-stages.sh "customfieldfilter"      "19-custom-field-filter"
+#      - sh tests/drone/setup-stages.sh "rolefilter"       "20-role-filter"
+#      - sh tests/drone/setup-stages.sh "pricegroupfilter" "21-price-group-filter"
+#      - sh tests/drone/setup-stages.sh "sessionfilter"    "22-session-filter"
+#      - sh tests/drone/setup-stages.sh "bundlefilter"     "23-bundle-filter"
+#      - sh tests/drone/setup-stages.sh "viewdetail"       "24-view-detail"
 
 
   01-administrator:
@@ -143,7 +143,7 @@ pipeline:
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       - cd tests
       # Performs test
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 0 0'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/03-CheckForWarningsAndNoticesCest.php 1 1'
 
   slack:
     image: plugins/slack
