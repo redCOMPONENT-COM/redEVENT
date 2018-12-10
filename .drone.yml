@@ -66,7 +66,6 @@ pipeline:
       - cd ../../../
       - cp extension/redCORE/tests/releases/redCORE.zip releases/
       - cd releases
-      - ls
       - cd ../
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
@@ -95,9 +94,9 @@ pipeline:
       - output_append=-00-b-setup-stages
     commands:
       # Final DB dump with full Joomla/extension setup
-      - rsync -a --delete tests/$tests_suite/joomla-cms/ $tests_suite/joomla-cms
-      - sed -i "s/db = '$tests_db'/db = 'tests_db'/g" $tests_suite/joomla-cms/configuration.php
-      - sed -i "s,$tests_suite/joomla-cms/,joomla-cms/,g" $tests_suite/joomla-cms/configuration.php
+      - rsync -a --delete tests/$tests_suite/joomla-cms/ tests/joomla-cms
+      - sed -i "s/db = '$tests_db'/db = 'tests_db'/g" tests/joomla-cms/configuration.php
+      - sed -i "s,$tests_suite/joomla-cms/,joomla-cms/,g" tests/joomla-cms/configuration.php
       - mysqldump -u root -proot -h db $tests_db > tests/dbdump.sql.tmp
 
       # Stages setup
@@ -142,6 +141,9 @@ pipeline:
       # Performs test after ensuring that the scenario has been fully set up
       - while [ ! -f tests/.cache.setup.$tests_suite.tmp ]; do sleep 1; done
       - cd tests
+      - cd 01-administrator
+      - ls
+      - pwd
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 1 1'
 
