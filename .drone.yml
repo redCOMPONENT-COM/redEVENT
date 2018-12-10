@@ -144,6 +144,7 @@ pipeline:
       - cd 01-administrator
       - ls
       - pwd
+      - cd ..
       # Performs test
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 1 1'
 
