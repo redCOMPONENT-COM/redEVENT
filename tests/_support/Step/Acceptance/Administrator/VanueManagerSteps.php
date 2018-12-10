@@ -32,7 +32,7 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 		$I->fillField(VanueManagerPage::$fieldName, $nameVanue);
 		$I->waitForElement(VanueManagerPage::$categoryVanueSelect, 30);
 		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$categoryVanueItem, $nameVanueCategory);
-		$I->click(VanueManagerPage::$buttonSave);
+		$I->click(VanueManagerPage::$buttonSaveClose);
 	}
 
 	/**

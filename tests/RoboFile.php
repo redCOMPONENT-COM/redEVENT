@@ -231,18 +231,47 @@
 			{
 				$this->cloneJoomla();
 			}
-			
-			if (!is_dir('joomla-cms3/libraries/vendor/phpunit'))
+
+			if (!is_dir('joomla-cms/libraries/vendor/phpunit'))
 			{
 				$this->getComposer();
 				$this->taskComposerInstall('../composer.phar')->dir('joomla-cms')->run();
 			}
-			
+
 			// Copy extension. No need to install, as we don't use mysql db for unit tests
 			$joomlaPath = __DIR__ . '/joomla-cms';
 			$this->_exec("gulp copy --wwwDir=$joomlaPath --gulpfile ../build/gulpfile.js");
 		}
-		
+
+        /**
+         * Downloads and Install redCORE for Integration Testing testing
+         *
+         * @param   integer  $cleanUp  Clean up the directory when present (or skip the cloning process)
+         *
+         * @return  void
+         * @since   1.0.0
+         */
+        protected function getredCOREExtensionForIntegrationTests($cleanUp = 1)
+        {
+            // Get redCORE Clean Testing sites
+            if (is_dir('build/redFORM/build/redCORE'))
+            {
+                if (!$cleanUp)
+                {
+                    $this->say('Using cached version of redCORE and skipping clone process');
+
+                    return;
+                }
+
+                $this->taskDeleteDir('build/redFORM/build/redCORE')->run();
+            }
+
+            $version = '1.10.6';
+            $this->_exec("git clone -b $version --single-branch --depth 1 https://travisredweb:travisredweb2013github@github.com/redCOMPONENT-COM/redCORE.git build/redFORM/build/redCORE");
+
+            $this->say("redCORE ($version) cloned at build/redFORM/build");
+        }
+
 		/**
 		 * Downloads and Install redFORM for Integration Testing testing
 		 *
@@ -474,7 +503,7 @@
 		{
 			$skipCleanup = false;
 			// Get Joomla Clean Testing sites
-			if (is_dir('tests/joomla-cms'))
+			if (is_dir('/joomla-cms'))
 			{
 				if (!$cleanUp)
 				{
@@ -483,7 +512,7 @@
 				}
 				else
 				{
-					$this->taskDeleteDir('tests/joomla-cms')->run();
+					$this->taskDeleteDir('/joomla-cms')->run();
 				}
 			}
 			if (!$skipCleanup)
@@ -493,15 +522,15 @@
 				* When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
 				* Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
 				*/
-				$version = '3.6.2';
-				$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms");
-				$this->say("Joomla CMS ($version) site created at tests/joomla-cms");
+				$version = '3.9.0';
+				$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms");
+				$this->say("Joomla CMS ($version) site created at joomla-cms");
 			}
 			// Optionally uses Joomla default htaccess file
 			if ($use_htaccess == 1)
 			{
-				$this->_copy('tests/joomla-cms/htaccess.txt', 'tests/joomla-cms/.htaccess');
-				$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms/,g" --in-place tests/joomla-cms/.htaccess');
+				$this->_copy('joomla-cms/htaccess.txt', 'joomla-cms/.htaccess');
+				$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /joomla-cms/,g" --in-place joomla-cms/.htaccess');
 			}
 		}
 		
@@ -672,15 +701,15 @@
 		private function cloneJoomla()
 		{
 			$version = 'staging';
-			
+
 			/*
 			 * When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
 			 * Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
 			 */
 			$version = '3.9.0';
-			
+
 			$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms");
-			
+
 			$this->say("Joomla CMS ($version) site created at joomla-cms");
 		}
 		
@@ -711,6 +740,9 @@
 				$args,
 				$this->defaultArgs
 			);
+
+            // Gets redFORM
+            $this->getredCOREExtensionForIntegrationTests(0);
 			
 			// Gets redFORM
 			$this->getredFORMExtensionForIntegrationTests(0);
@@ -761,12 +793,6 @@
 				$args,
 				$this->defaultArgs
 			);
-			
-			if (false !== strpos($folder, 'integration'))
-			{
-				$this->getredFORMExtensionForIntegrationTests(0);
-			}
-			
 			// Sets the output_append variable in case it's not yet
 			if (getenv('output_append') === false)
 			{
@@ -779,7 +805,7 @@
 			// Actual execution of Codeception test
 			$this->taskCodecept()
 				->args($args)
-				->arg('tests/' . $folder . '/')
+				->arg( $folder . '/')
 				->run()
 				->stopOnFail();
 		}
