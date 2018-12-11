@@ -82,16 +82,13 @@ class RedeventHelperRoute
 	 *
 	 * @return url
 	 */
-	public static function getDetailsRoute($id = 0, $xref = 0, $task = null)
+	public static function getDetailsRoute($id, $xref = 0, $task = null)
 	{
 		$parts = array("option" => "com_redevent",
 			"view"   => "details"
 		);
 
-		if ($id)
-		{
-			$parts['id'] = $id;
-		}
+		$parts['id'] = $id;
 
 		if ($xref)
 		{

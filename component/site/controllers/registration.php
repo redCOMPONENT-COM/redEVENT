@@ -454,17 +454,21 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			return;
 		}
 
+		$session = RedeventEntitySession::load($xref);
+
 		if ($this->input->get('return'))
 		{
 			$this->setRedirect(base64_decode($this->input->get('return')));
 		}
 		elseif ($task == 'managerupdate')
 		{
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)));
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($session->getSlug())));
 		}
 		else
 		{
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)));
+			$this->setRedirect(
+				JRoute::_(RedeventHelperRoute::getDetailsRoute($session->getEvent()->getSlug(), $session->getSlug()))
+			);
 		}
 
 		if ($this->input->get('cancel', '', 'post'))
