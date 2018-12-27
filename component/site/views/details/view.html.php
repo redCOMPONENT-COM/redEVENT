@@ -57,17 +57,6 @@ class RedeventViewDetails extends JViewLegacy
 			JFactory::getApplication()->redirect('index.php', JText::_('COM_REDEVENT_NOT_ALLOWED'), 'error');
 		}
 
-		// Generate Event description
-		if ($row->datdescription == '' || $row->datdescription == '<br />')
-		{
-			$row->datdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION');
-		}
-		else
-		{
-			// Execute Plugins
-			$row->datdescription = JHTML::_('content.prepare', $row->datdescription);
-		}
-
 		// Build the url
 		if (!empty($row->url) && strtolower(substr($row->url, 0, 7)) != "http://")
 		{
@@ -86,6 +75,17 @@ class RedeventViewDetails extends JViewLegacy
 		$this->tags = new RedeventTags;
 		$this->tags->setEventId($row->event_id);
 		$this->tags->setXref($row->xref);
+
+		// Generate Event description
+		if ($row->datdescription == '' || $row->datdescription == '<br />')
+		{
+			$row->datdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION');
+		}
+		else
+		{
+			$row->datdescription = $this->tags->replaceTags($row->datdescription);
+			$row->datdescription = JHTML::_('content.prepare', $row->datdescription);
+		}
 
 		// Get the Venue Dates
 		$this->venuedates = $this->get('VenueDates');

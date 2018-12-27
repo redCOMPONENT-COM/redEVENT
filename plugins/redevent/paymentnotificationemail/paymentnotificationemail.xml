@@ -28,7 +28,7 @@
                 <field name="body" type="editor"
                        label="PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_BODY_LABEL"
                        description="PLG_REDEVENT_PAYMENTNOTIFICATIONEMAIL_XML_BODY_DESC"
-                       filter="safehtml"
+                       filter="JComponentHelper::filterText"
                         />
             </fieldset>
         </fields>
