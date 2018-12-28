@@ -92,6 +92,7 @@ class AdminRedevent extends \AcceptanceTester
 		$I->waitForText($title, 120);
 		$I->Search($URL,$name);
 		$I->see($name, AbstractPage::$tableResult);
+		$I->wait(0.5);
 		$I->click(AbstractPage::$checkAll);
 		$I->click(AbstractPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
