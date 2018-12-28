@@ -100,7 +100,14 @@ class AdminRedevent extends \AcceptanceTester
 		$I->wantTo('Test with delete product then accept');
 		$I->click(AbstractPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(AbstractPage::$messageDeleteProductSuccess, 120, AbstractPage::$message);
+        try{
+            $I->waitForText(AbstractPage::$messageDeleteProductSuccess, 120, AbstractPage::$message);
+        }catch (\Exception $e)
+        {
+            $I->click(AbstractPage::$buttonDelete);
+            $I->acceptPopup();
+            $I->waitForText(AbstractPage::$messageDeleteProductSuccess, 120, AbstractPage::$message);
+        }
 		$I->dontSee($name);
 	}
 }

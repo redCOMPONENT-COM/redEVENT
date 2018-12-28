@@ -66,7 +66,14 @@ class TagManagerSteps extends AdminRedevent
 		$I->wantTo('Test with delete product then accept');
 		$I->click(TagManagerPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(TagManagerPage::$messageDeleteProductSuccess, 60, TagManagerPage::$message);
+        try{
+            $I->waitForText(TagManagerPage::$messageDeleteProductSuccess, 120, TagManagerPage::$message);
+        }catch (\Exception $e)
+        {
+            $I->click(TagManagerPage::$buttonDelete);
+            $I->acceptPopup();
+            $I->waitForText(TagManagerPage::$messageDeleteProductSuccess, 120, TagManagerPage::$message);
+        }
 		$I->dontSee($Tagname);
 	}
 

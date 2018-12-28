@@ -53,7 +53,14 @@ class RoleManagerSteps extends AdminRedevent
 		$I->wantTo('Test with delete Role then accept');
 		$I->click(RoleManagerPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(RoleManagerPage::$messageDeleteProductSuccess, 60, RoleManagerPage::$message);
+        try{
+            $I->waitForText(RoleManagerPage::$messageDeleteProductSuccess, 120, RoleManagerPage::$message);
+        }catch (\Exception $e)
+        {
+            $I->click(RoleManagerPage::$buttonDelete);
+            $I->acceptPopup();
+            $I->waitForText(RoleManagerPage::$messageDeleteProductSuccess, 120, RoleManagerPage::$message);
+        }
 		$I->dontSee($nameRole);
 	}
 }
