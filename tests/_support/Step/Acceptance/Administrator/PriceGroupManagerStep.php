@@ -43,7 +43,7 @@ class PriceGroupManagerStep extends AdminRedevent
 		$I->waitForText(PriceGroupManagerPage::$priceGroupTitle, 30);
 		$I->searchPriceGroup($namePriceGroup);
 		$I->see($namePriceGroup, PriceGroupManagerPage::$tableResult);
-		$I->click(PriceGroupManagerPage::$checkAll);
+		$I->checkAllResults();
 		$I->click(PriceGroupManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();

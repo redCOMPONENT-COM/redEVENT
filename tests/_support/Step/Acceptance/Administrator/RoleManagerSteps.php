@@ -45,7 +45,7 @@ class RoleManagerSteps extends AdminRedevent
 		$I->waitForText(RoleManagerPage::$roleTitle, 30);
 		$I->searchRole($nameRole);
 		$I->see($nameRole, RoleManagerPage::$tableResult);
-		$I->click(RoleManagerPage::$checkAll);
+		$I->checkAllResults();
 		$I->click(RoleManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete Role but then cancel');
 		$I->cancelPopup();

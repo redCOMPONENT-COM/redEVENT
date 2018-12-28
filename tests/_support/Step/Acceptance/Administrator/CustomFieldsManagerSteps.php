@@ -51,7 +51,7 @@ class CustomFieldsManagerSteps extends AdminRedevent
 		$I->waitForText(CustomFieldsManagerPage::$customFieldsTitle, 30);
 		$I->searchCustomField($nameCustomFields);
 		$I->see($nameCustomFields, CustomFieldsManagerPage::$tableResult);
-		$I->click(CustomFieldsManagerPage::$checkAll);
+		$I->checkAllResults();
 		$I->click(CustomFieldsManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();
