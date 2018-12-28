@@ -120,9 +120,9 @@ class SessionManagerCest
 		$I->searchSession($this->SessionName1);
 		$I->dontSee($this->SessionName2);
 		$I->buttonClear($this->SessionName1,$this->SessionName2);
-		$I->wantToTest('delete a session 1 in redEVENT');
-		$I->deleteSession($this->SessionName1);
-		$I->wantToTest('delete a session 2 in redEVENT');
-		$I->deleteSession($this->SessionName2);
+		$I->wantToTest('delete all session 1 in redEVENT');
+		$I->deleteAllSession();
+		$I->dontSee($this->SessionName1);
+		$I->dontSee($this->SessionName2);
 	}
 }
