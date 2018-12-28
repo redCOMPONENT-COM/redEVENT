@@ -58,7 +58,7 @@ class TagManagerSteps extends AdminRedevent
 		$I->waitForText(TagManagerPage::$TagTitle, 30);
 		$I->searchTag($Tagname);
 		$I->see($Tagname, TagManagerPage::$tableResult);
-		$I->click(TagManagerPage::$checkAll);
+		$I->checkAllResults();
 		$I->click(TagManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();

@@ -76,12 +76,6 @@ class AbstractPage
 	public static $buttonUnpublish             = 'Unpublish';
 
 	/**
-	 * Input check all
-	 * @var string
-	 */
-	public static $checkAll                    = '//input[name="checkall-toggle"]';
-
-	/**
 	 * Button Delete
 	 * @var string
 	 */
