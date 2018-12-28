@@ -21,7 +21,7 @@ modules:
         JoomlaBrowser:
             url: 'http://php/tests/%tests_suite%/joomla-cms'     # the url that points to the joomla installation at /tests/system/joomla-cms
             browser: 'chrome'
-            window_size: 1024x768
+            window_size: 1920x1080
             restart: true
             port: 9515
             capabilities:

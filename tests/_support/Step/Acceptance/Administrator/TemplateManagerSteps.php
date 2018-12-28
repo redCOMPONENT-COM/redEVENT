@@ -87,7 +87,7 @@ class TemplateManagerSteps extends redFormManagerSteps
 		$I->waitForText(TemplateManagerPage::$title, 120);
 		$I->searchTemplate($nameTemplate);
 		$I->see($nameTemplate, TemplateManagerPage::$tableResult);
-		$I->click(TemplateManagerPage::$checkAll);
+		$I->checkAllResults();
 		$I->click(TemplateManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();
