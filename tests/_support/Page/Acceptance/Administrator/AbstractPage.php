@@ -79,7 +79,7 @@ class AbstractPage
 	 * Input check all
 	 * @var string
 	 */
-	public static $checkAll                    = 'input[name="checkall-toggle"]';
+	public static $checkAll                    = '//input[name="checkall-toggle"]';
 
 	/**
 	 * Button Delete
