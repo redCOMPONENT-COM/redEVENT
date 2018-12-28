@@ -74,7 +74,7 @@ class SessionManagerSteps extends AdminRedevent
         $client = $this;
         $client->amOnPage(SessionManagerPage::$URL);
         $client->waitForText(SessionManagerPage::$sessionTitle, 30);
-        $client->click(SessionManagerPage::$checkAll);
+        $client->checkAllResults();
         $client->click(SessionManagerPage::$buttonDelete);
         $client->wantTo('Test with delete category but then cancel');
         $client->cancelPopup();
