@@ -52,12 +52,12 @@ pipeline:
       - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done                 # Comment if not using npm cache
       # - npm install                                                         # Uncomment if not using npm cache
       # redEVENT installer release
-      - while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
+      # - while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
       - mv vendor tests/
       - mv node_modules build
       - cd build
       - mv gulp-config.json.dist gulp-config.json
-      - npm install gulp -g
+      # - npm install gulp -g
       - gulp release --skip-version testsRelease
       - cd ../tests/extension/redCORE/build
       - cp gulp-config.json.dist gulp-config.json
