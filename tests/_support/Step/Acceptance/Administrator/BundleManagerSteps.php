@@ -43,7 +43,7 @@ class BundleManagerSteps extends AdminRedevent
 		$I->waitForText(BundleManagerPage::$bundleTitle, 30);
 		$I->searchBundle($bundleName);
 		$I->see($bundleName, BundleManagerPage::$tableResult);
-		$I->click(BundleManagerPage::$checkAll);
+		$I->checkAllResults();
 		$I->click(BundleManagerPage::$buttonDelete);
 		$I->waitForText(BundleManagerPage::$messageDeleteProductSuccess, 60, BundleManagerPage::$message);
 		$I->dontSee($bundleName);
