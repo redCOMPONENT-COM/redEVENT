@@ -132,7 +132,7 @@ $search = $this->state->get('filter.search');
 						<?php endif; ?>
 					</td>
 					<td>
-						<?php $itemTitle = JHTML::_('string.truncate', $row->name, 50, true, false); ?>
+						<?php $itemTitle = JHTML::_('string.truncate', $row->name, 150, true, false); ?>
 						<?php if (($row->checked_out) || (!$this->canEdit)) : ?>
 							<?php echo $itemTitle; ?>
 						<?php else : ?>

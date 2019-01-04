@@ -90,7 +90,7 @@ $action = "index.php?option=com_redevent&view=events&layout=element&tmpl=compone
 					</td>
 					<td>
 						<a href="javascript:void();" class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $row->id; ?>', '<?php echo $this->escape(addslashes($row->title)); ?>');">
-							<?php $itemTitle = JHTML::_('string.truncate', $row->title, 50, true, false); ?>
+							<?php $itemTitle = JHTML::_('string.truncate', $row->title, 150, true, false); ?>
 							<?php echo $itemTitle; ?>
 						</a>
 					</td>

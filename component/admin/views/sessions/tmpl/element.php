@@ -125,7 +125,7 @@ if ($eventid = JFactory::getApplication()->input->getInt('eventid'))
 
 					<td>
 						<a href="javascript:void();" class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $row->id; ?>', '<?php echo $this->escape(addslashes($row->event_title)); ?>', '<?php echo $this->escape(addslashes($fieldId)); ?>');">
-							<?php $itemTitle = JHTML::_('string.truncate', $row->event_title, 50, true, false); ?>
+							<?php $itemTitle = JHTML::_('string.truncate', $row->event_title, 150, true, false); ?>
 							<?php echo $row->event_title; ?>
 						</a>
 					</td>
