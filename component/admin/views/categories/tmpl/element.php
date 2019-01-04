@@ -89,7 +89,7 @@ JHtml::_('rjquery.chosen', 'select');
 					</td>
 					<td>
         <a href="javascript:void()" class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $row->id; ?>', '<?php echo $this->escape(addslashes($row->name)); ?>');">
-						<?php $itemTitle = JHTML::_('string.truncate', $row->name, 50, true, false); ?>
+						<?php $itemTitle = JHTML::_('string.truncate', $row->name, 150, true, false); ?>
 							<?php echo $itemTitle; ?>
 						</a>
 					</td>

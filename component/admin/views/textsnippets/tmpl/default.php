@@ -121,7 +121,7 @@ $search = $this->state->get('filter.search');
 						</td>
 					<?php endif; ?>
 					<td>
-						<?php $itemTitle = JHTML::_('string.truncate', $row->text_name, 50, true, false); ?>
+						<?php $itemTitle = JHTML::_('string.truncate', $row->text_name, 150, true, false); ?>
 						<?php if (($row->checked_out) || (!$this->canEdit)) : ?>
 							<?php echo $itemTitle; ?>
 						<?php else : ?>
@@ -129,7 +129,7 @@ $search = $this->state->get('filter.search');
 						<?php endif; ?>
 					</td>
 					<td>
-						<?php echo JHTML::_('string.truncate', $row->text_description, 50, true, false); ?>
+						<?php echo JHTML::_('string.truncate', $row->text_description, 150, true, false); ?>
 					</td>
 					<td>
 						<?php echo $row->language; ?>

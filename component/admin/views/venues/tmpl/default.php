@@ -174,7 +174,7 @@ if (($saveOrder) && ($this->canEdit))
 						</td>
 					<?php endif; ?>
 					<td>
-						<?php $itemTitle = JHTML::_('string.truncate', $row->venue, 50, true, false); ?>
+						<?php $itemTitle = JHTML::_('string.truncate', $row->venue, 150, true, false); ?>
 						<?php if (($row->checked_out) || (!$this->canEdit)) : ?>
 							<?php echo $itemTitle; ?>
 						<?php else : ?>
