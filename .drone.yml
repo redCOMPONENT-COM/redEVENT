@@ -271,8 +271,8 @@ services:
     # Base installation
     - sh tests/drone/setup-base-install.sh  $tests_db                       $tests_suite                        $php_versions
     # Stages setup
-    #- sh tests/drone/setup-stages.sh        "Uninstall"                     "01-Uninstall"                      $php_versions
-    #- sh tests/drone/setup-stages.sh        "administrator"                 "02-administrator"                  $php_versions
+    - sh tests/drone/setup-stages.sh        "Uninstall"                     "01-Uninstall"                      $php_versions
+    - sh tests/drone/setup-stages.sh        "administrator"                 "02-administrator"                  $php_versions
 
 branches:
   exclude: [ crowdin ]
