@@ -95,6 +95,7 @@ pipeline:
     # Performs the setup and installation routine
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:setup 0 0'
+    - cd ../
     # Touching temp file to start the environment cloning (see setup-stages service)
     - touch tests/.setup$php_version.tmp
 
@@ -126,6 +127,7 @@ pipeline:
     # Performs the setup and installation routine
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:setup 0 0'
+    - cd ../
     # Touching temp file to start the environment cloning (see setup-stages service)
     - touch tests/.setup$php_version.tmp
 
@@ -147,7 +149,6 @@ pipeline:
     # Waits until Chromedriver is up and running
     - while ! nc -z localhost 9515; do sleep 1; done
     - cd tests
-    - cd 01-Uninstall
     # Performs test
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
@@ -169,7 +170,6 @@ pipeline:
     # Waits until Chromedriver is up and running
     - while ! nc -z localhost 9515; do sleep 1; done
     - cd tests
-    - cd 01-Uninstall
     # Performs test
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
@@ -189,7 +189,6 @@ pipeline:
       # Performs test after ensuring that the scenario has been fully set up
       - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
       - cd tests
-      - cd 02-administrator
       - ls
       - pwd
       - cd ..
@@ -212,7 +211,6 @@ pipeline:
     # Performs test after ensuring that the scenario has been fully set up
     - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
     - cd tests
-    - cd 02-administrator
     - ls
     - pwd
     - cd ..
