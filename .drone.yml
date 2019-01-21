@@ -94,7 +94,6 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs the setup and installation routine
     - cd tests
-    - cd  00-setup-56
     - su www-data -c 'vendor/bin/robo tests:setup 0 0'
     # Touching temp file to start the environment cloning (see setup-stages service)
     - touch tests/.setup$php_version.tmp
@@ -126,7 +125,6 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs the setup and installation routine
     - cd tests
-    - cd  00-setup-71
     - su www-data -c 'vendor/bin/robo tests:setup 0 0'
     # Touching temp file to start the environment cloning (see setup-stages service)
     - touch tests/.setup$php_version.tmp
