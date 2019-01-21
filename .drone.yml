@@ -43,9 +43,8 @@ pipeline:
       # NPM setup
       - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done                 # Comment if not using npm cache
       # redEVENT installer release
-      # - while [ ! -f tests/.cache.composer.library.tmp ]; do sleep 1; done  # Comment if not using composer cache for libraries
-      # - mv vendor tests/
-      # - mv node_modules build
+      - mv vendor tests/
+      - mv node_modules build
       - cd build
       - mv gulp-config.json.dist gulp-config.json
       - gulp release --skip-version testsRelease
@@ -59,10 +58,13 @@ pipeline:
       # Codeception setup
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
-      # - while [ ! -f tests/.cache.joomla-cms.tmp ]; do sleep 1; done         # Comment if not using Joomla CMS cache
-      - vendor/bin/robo tests:site-preparation 0 0
+      - while [ ! -f tests/.cache.joomla-cms.tmp ]; do sleep 1; done         # Comment if not using Joomla CMS cache
+      #- vendor/bin/robo tests:site-preparation 0 0
       # Ownership for uid 82
       - chown -R www-data:www-data .
+      - pwd
+      - cd tests
+      - ls
 
       # Touching temp file to start the setup of each installation (in each PHP version - via services)
       - touch tests/.setup.tmp
