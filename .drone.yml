@@ -208,7 +208,7 @@ pipeline:
     - build_path=/drone/src/github.com/${DRONE_REPO}
     - output_append=-02-administrator
     - php_version=71
-      commands:
+    commands:
     # Regular entry point
     - /entrypoint.sh &
     # Performs test after ensuring that the scenario has been fully set up
