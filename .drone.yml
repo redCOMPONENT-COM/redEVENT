@@ -21,13 +21,13 @@ pipeline:
 
       # redCORE
       - mkdir -p tests/extension/redCORE
-      - gpg --pinentry-mode loopback --passphrase "6f8f19c330a0f899458e4b0670824deb8cdfe391" -o /opt/cache/redCORE.tgz --decrypt /opt/cache/redCORE.tgz.gpg
+      - gpg --pinentry-mode loopback --passphrase "4281d0ba7e8f1caded4c8b949a1c115902e30113" -o /opt/cache/redCORE.tgz --decrypt /opt/cache/redCORE.tgz.gpg
       - tar -xzf /opt/cache/redCORE.tgz -C tests/extension/redCORE
       - touch tests/.cache.redCORE.tmp
 
       # redFORM
       - mkdir -p tests/extension/redFORM
-      - gpg --pinentry-mode loopback --passphrase "6f8f19c330a0f899458e4b0670824deb8cdfe391" -o /opt/cache/redFORM.tgz --decrypt /opt/cache/redFORM.tgz.gpg
+      - gpg --pinentry-mode loopback --passphrase "4281d0ba7e8f1caded4c8b949a1c115902e30113" -o /opt/cache/redFORM.tgz --decrypt /opt/cache/redFORM.tgz.gpg
       - tar -xzf /opt/cache/redFORM.tgz -C tests/extension/redFORM
       - touch tests/.cache.redFORM.tmp
 
@@ -38,7 +38,7 @@ pipeline:
     commands:
       # Composer setup
       - while [ ! -f tests/.cache.composer.tmp ]; do sleep 1; done            # Comment if not using composer cache
-      - composer config -g github-oauth.github.com 6f8f19c330a0f899458e4b0670824deb8cdfe391
+      - composer config -g github-oauth.github.com 4281d0ba7e8f1caded4c8b949a1c115902e30113
       # - composer install --prefer-dist                                      # Uncomment if not using composer cache
       # NPM setup
       - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done                 # Comment if not using npm cache
