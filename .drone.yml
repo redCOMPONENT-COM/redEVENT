@@ -60,11 +60,8 @@ pipeline:
       #- vendor/bin/robo tests:site-preparation 0 0
       # Ownership for uid 82
       - chown -R www-data:www-data .
-      - pwd
-      - ls
-      - cd ../
-
       # Touching temp file to start the setup of each installation (in each PHP version - via services)
+      - cd ../
       - touch tests/.setup.tmp
 
   00-setup-56:
@@ -188,10 +185,10 @@ pipeline:
       - /entrypoint.sh &
       # Performs test after ensuring that the scenario has been fully set up
       - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-      - cd tests
-      - ls
-      - pwd
+      # Waits until Chromedriver is up and running
+      - while ! nc -z localhost 9515; do sleep 1; done
       # Performs test
+      - cd tests
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 0 0'
 
   02-administrator-71:
@@ -209,10 +206,10 @@ pipeline:
     - /entrypoint.sh &
     # Performs test after ensuring that the scenario has been fully set up
     - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-    - cd tests
-    - ls
-    - pwd
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
+    - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 0 0'
 
   slack:
