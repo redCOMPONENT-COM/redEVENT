@@ -61,8 +61,8 @@ pipeline:
       # Ownership for uid 82
       - chown -R www-data:www-data .
       - pwd
-      - cd tests
       - ls
+      - cd ../
 
       # Touching temp file to start the setup of each installation (in each PHP version - via services)
       - touch tests/.setup.tmp
