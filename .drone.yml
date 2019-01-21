@@ -17,7 +17,7 @@ pipeline:
       - touch tests/.cache.npm.tmp
       # Joomla CMS
       - mv /opt/cache/joomla-cms tests
-      - touch tests/.cache.tests.joomla-cms.tmp
+      - touch tests/.cache.joomla-cms.tmp
 
       # redCORE
       - mkdir -p tests/extension/redCORE
@@ -57,12 +57,11 @@ pipeline:
       - cp acceptance.suite.yml.dist.drone acceptance.suite.yml
       # Test setup
       - cd ../
-      - while [ ! -f tests/.cache.tests.joomla-cms.tmp ]; do sleep 1; done         # Comment if not using Joomla CMS cache
+      - while [ ! -f tests/.cache.joomla-cms.tmp ]; do sleep 1; done         # Comment if not using Joomla CMS cache
       #- vendor/bin/robo tests:site-preparation 0 0
       # Ownership for uid 82
       - chown -R www-data:www-data .
       # Touching temp file to start the setup of each installation (in each PHP version - via services)
-
       - touch tests/.setup.tmp
 
   00-setup-56:
