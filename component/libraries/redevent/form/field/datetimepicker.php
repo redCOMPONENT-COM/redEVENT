@@ -119,7 +119,8 @@ class RedeventFormFieldDatetimepicker extends JFormField
 				'altDateformat' => $altDateformat,
 				'altTimeformat' => $altTimeformat,
 				'showSecond'    => $showSecond,
-				'value'         => $this->value
+				'value'         => $this->value,
+				'firstDay'      => strtolower(RedeventHelperConfig::get('week_start', 'mo')) == 'mo' ? 1 : 0
 			)
 		);
 	}

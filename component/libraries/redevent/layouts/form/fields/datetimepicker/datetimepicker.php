@@ -33,7 +33,8 @@ $options = json_encode(
 		'timeFormat'    => $timeformat,
 		'altTimeFormat' => $altTimeformat,
 		'showSecond'    => $showSecond,
-		'showWeek' => true
+		'showWeek'      => true,
+		'firstDay'      => $data['firstDay']
 	)
 );
 
