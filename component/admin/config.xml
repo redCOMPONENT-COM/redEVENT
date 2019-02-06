@@ -884,13 +884,6 @@
 			   description="COM_REDEVENT_RECURRENCE_ANTICIPATION_WINDOW_DESC"/>
 		<field name="default_content" type="reeventlist" default="0" label="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT"
 			   description="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT_DESC"/>
-		<field name="allow_email_aliasing" type="radio" default="1"
-			   class="btn-group"
-			   label="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING"
-			   description="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING_TIP">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
 		<field name="csv_export_strip_linebreaks" type="radio" default="0"
 			   class="btn-group"
 			   label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL"
