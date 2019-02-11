@@ -1960,9 +1960,9 @@ class RedeventTags
 	private function getTag_info()
 	{
 		// Check that there is no loop with the tag inclusion
-		if (strpos($this->getEvent()->details, '[info]') === false)
+		if (strpos($this->getSession()->details, '[info]') === false)
 		{
-			$info = $this->replaceTags($this->getEvent()->details);
+			$info = $this->replaceTags($this->getSession()->details);
 		}
 		else
 		{
