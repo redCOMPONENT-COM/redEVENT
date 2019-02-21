@@ -528,7 +528,7 @@ var redb2b = (function() {
 				e.stop();
 				var form = document.id('bookings-search-form');
 				form.filter_order.value = this.getProperty('ordercol');
-				form.filter_order_dir.value = this.getProperty('orderdir');
+				form.filter_order_Dir.value = this.getProperty('orderdir');
 				searchBookings();
 			});
 
@@ -551,7 +551,7 @@ var redb2b = (function() {
 				e.stop();
 				var form = document.id('org-form');
 				form.members_order.value = this.getProperty('ordercol');
-				form.members_order_dir.value = this.getProperty('orderdir');
+				form.members_order_Dir.value = this.getProperty('orderdir');
 				getMembersList();
 			});
 

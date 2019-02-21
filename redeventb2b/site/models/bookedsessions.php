@@ -38,6 +38,7 @@ class Redeventb2bModelBookedsessions extends RedeventModelBasesessionlist
 		{
 			$query = $this->_buildQueryBookings();
 			$pagination = $this->getBookingsPagination();
+//			echo '<pre>'; echo print_r($pagination, true); echo '</pre>'; exit;
 			$this->booked = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			$this->booked = $this->_categories($this->booked);
 			$this->booked = $this->_getPlacesLeft($this->booked);
@@ -59,7 +60,7 @@ class Redeventb2bModelBookedsessions extends RedeventModelBasesessionlist
 		{
 			jimport('joomla.html.pagination');
 			$this->pagination_booked = new RedeventAjaxPagination(
-				$this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit')
+				$this->getTotalBookings(), $this->getState('limitstart'), $this->getState('limit')
 			);
 		}
 
@@ -203,7 +204,7 @@ class Redeventb2bModelBookedsessions extends RedeventModelBasesessionlist
 		$query->where('(r.organisation_id IS NULL OR r.organisation_id = 0 OR r.organisation_id = ' . $this->getState('filter_organization') . ')');
 
 		$filter_order = $this->getState('filter_order');
-		$filter_order_dir = $this->getState('filter_order_dir');
+		$filter_order_dir = $this->getState('filter_order_Dir');
 
 		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
 

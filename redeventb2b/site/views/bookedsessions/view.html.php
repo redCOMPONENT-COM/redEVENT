@@ -29,11 +29,11 @@ class Redeventb2bViewBookedsessions extends RViewAdmin
 		$params = JFactory::getApplication()->getParams('com_redevent');
 		$state = $this->get('state');
 
-		$this->bookings_order_dir = $state->get('bookings_order_dir');
-		$this->bookings_order     = $state->get('bookings_order');
+		$this->order_dir = $state->get('filter_order_Dir');
+		$this->order     = $state->get('filter_order');
 
 		$this->bookings_pagination = $this->get('BookingsPagination');
-		$this->bookings_limitstart = $state->get('bookings_limitstart');
+		$this->limitstart = $state->get('limitstart');
 
 		$this->params  = $params;
 		$this->state   = $state;

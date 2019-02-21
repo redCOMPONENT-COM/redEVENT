@@ -31,13 +31,13 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="table">
 		<thead>
 		<tr>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->bookings_order_dir, $this->bookings_order); ?></th>
+			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_dir, $this->order); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->bookings_order_dir, $this->bookings_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->bookings_order_dir, $this->bookings_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.name', $this->bookings_order_dir, $this->bookings_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'x.session_language', $this->bookings_order_dir, $this->bookings_order); ?></th>
+			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_dir, $this->order); ?></th>
+			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_dir, $this->order); ?></th>
+			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.name', $this->order_dir, $this->order); ?></th>
+			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'x.session_language', $this->order_dir, $this->order); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_B2B_SEATS'); ?></th>
 		</tr>
 		</thead>
