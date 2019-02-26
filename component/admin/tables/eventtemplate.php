@@ -120,4 +120,44 @@ class RedeventTableEventtemplate extends RedeventTable
 
 		return true;
 	}
+
+	/**
+	 * Deletes this row in database (or if provided, the row of key $pk)
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	public function delete($pk = null)
+	{
+		$ids = $pk;
+
+		if ($ids && !is_array($ids))
+		{
+			$ids = array($ids);
+		}
+
+		if (count($ids))
+		{
+			$cids = implode(',', $ids);
+
+			$query = $this->_db->getQuery(true);
+
+			$query->select('e.id')
+				->from('#__redevent_events AS e')
+				->where('e.template_id IN (' . $cids . ')');
+
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadObjectList();
+
+			if ($res || count($res))
+			{
+				$this->setError(Jtext::_('COM_REDEVENT_ERROR_TEMPLATE_REMOVE_HAS_EVENTS'));
+
+				return false;
+			}
+		}
+
+		return parent::delete($pk);
+	}
 }
