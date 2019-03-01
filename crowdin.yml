@@ -1,364 +1,362 @@
-"preserve_hierarchy": true
-
-"files": [
-  {
-    "source": "/component/admin/language/en-GB/en-GB.com_redevent.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.com_redevent.ini"
-  },
-  {
-    "source": "/component/site/language/en-GB/en-GB.com_redevent.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.com_redevent.ini"
-  },
-  {
-    "source": "/component/admin/language/en-GB/en-GB.com_redevent.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.com_redevent.sys.ini"
-  },
-  {
-    "source": "/component/libraries/redevent/language/en-GB/en-GB.lib_redevent.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.lib_redevent.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_bundle/language/en-GB/en-GB.plg_aesir_field_redevent_bundle.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_bundle.ini"
-  },
-  {
-    "source": "/component/plugins/installer/redevent/language/en-GB/en-GB.plg_installer_redevent.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.plg_installer_redevent.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_bundle/language/en-GB/en-GB.plg_aesir_field_redevent_bundle.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_bundle.sys.ini"
-  },
-  {
-    "source": "/component/plugins/installer/redevent/language/en-GB/en-GB.plg_installer_redevent.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.plg_installer_redevent.sys.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_category/language/en-GB/en-GB.plg_aesir_field_redevent_category.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_category.ini"
-  },
-  {
-    "source": "/component/plugins/redform_field/redevent_session/language/en-GB/en-GB.plg_redform_field_redevent_session.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.plg_redform_field_redevent_session.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_category/language/en-GB/en-GB.plg_aesir_field_redevent_category.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_category.sys.ini"
-  },
-  {
-    "source": "/component/plugins/redform_field/redevent_session/language/en-GB/en-GB.plg_redform_field_redevent_session.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.plg_redform_field_redevent_session.sys.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_event/language/en-GB/en-GB.plg_aesir_field_redevent_event.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_event.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_event/language/en-GB/en-GB.plg_aesir_field_redevent_event.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_event.sys.ini"
-  },
-  {
-    "source": "/component/plugins/redform_integration/redevent/language/en-GB/en-GB.plg_redform_integration_redevent.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.plg_redform_integration_redevent.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_session/language/en-GB/en-GB.plg_aesir_field_redevent_session.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_session.ini"
-  },
-  {
-    "source": "/component/plugins/redform_integration/redevent/language/en-GB/en-GB.plg_redform_integration_redevent.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.plg_redform_integration_redevent.sys.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_session/language/en-GB/en-GB.plg_aesir_field_redevent_session.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_session.sys.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_venue/language/en-GB/en-GB.plg_aesir_field_redevent_venue.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_venue.ini"
-  },
-  {
-    "source": "/plugins/aesir_field/redevent_venue/language/en-GB/en-GB.plg_aesir_field_redevent_venue.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_venue.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_rokminievents/en-GB.mod_rokminievents.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_rokminievents.ini"
-  },
-  {
-    "source": "/plugins/content/resimplelist/language/en-GB/en-GB.plg_content_resimplelist.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_content_resimplelist.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent/language/en-GB/en-GB.mod_redevent.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent.ini"
-  },
-  {
-    "source": "/plugins/content/resimplelist/language/en-GB/en-GB.plg_content_resimplelist.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_content_resimplelist.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent/language/en-GB/en-GB.mod_redevent.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent.sys.ini"
-  },
-  {
-    "source": "/plugins/editors-xtd/redevent/language/en-GB/en-GB.plg_editors-xtd_redevent.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_editors-xtd_redevent.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_all_events.ini"
-  },
-  {
-    "source": "/plugins/editors-xtd/redevent/language/en-GB/en-GB.plg_editors-xtd_redevent.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_editors-xtd_redevent.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_all_events.sys.ini"
-  },
-  {
-    "source": "/plugins/finder/re_events/language/en-GB/en-GB.plg_finder_re_events.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_finder_re_events.ini"
-  },
-  {
-    "source": "/plugins/finder/re_events/language/en-GB/en-GB.plg_finder_re_events.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_finder_re_events.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_attending.ini"
-  },
-  {
-    "source": "/plugins/finder/re_venues/language/en-GB/en-GB.plg_finder_re_venues.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_finder_re_venues.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_attending.sys.ini"
-  },
-  {
-    "source": "/plugins/finder/re_venues/language/en-GB/en-GB.plg_finder_re_venues.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_finder_re_venues.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_calendar.ini"
-  },
-  {
-    "source": "/plugins/jomsocial/redevent/language/en-GB/en-GB.plg_jomsocial_redevent.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_jomsocial_redevent.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_calendar.sys.ini"
-  },
-  {
-    "source": "/plugins/jomsocial/redevent/language/en-GB/en-GB.plg_jomsocial_redevent.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_jomsocial_redevent.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_categories.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_categories.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_filters.ini"
-  },
-  {
-    "source": "/plugins/josetta_ext/redeventsession/language/en-GB/en-GB.plg_josetta_ext_redeventsession.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_josetta_ext_redeventsession.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_filters.sys.ini"
-  },
-  {
-    "source": "/plugins/redevent/acymailinglists/language/en-GB/en-GB.plg_redevent_acymailinglists.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_acymailinglists.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_quickbook/language/en-GB/en-GB.mod_redevent_quickbook.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_quickbook.ini"
-  },
-  {
-    "source": "/plugins/redevent/acymailinglists/language/en-GB/en-GB.plg_redevent_acymailinglists.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_acymailinglists.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_quickbook/language/en-GB/en-GB.mod_redevent_quickbook.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_quickbook.sys.ini"
-  },
-  {
-    "source": "/plugins/redevent/aesirtagsreplacement/language/en-GB/en-GB.plg_redevent_aesirtagsreplacement.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_aesirtagsreplacement.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_search.ini"
-  },
-  {
-    "source": "/plugins/redevent/aesirtagsreplacement/language/en-GB/en-GB.plg_redevent_aesirtagsreplacement.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_aesirtagsreplacement.sys.ini"
-  },
-  {
-    "source": "/plugins/redevent/eventnewslettersignup/language/en-GB/en-GB.plg_redevent_eventnewslettersignup.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_eventnewslettersignup.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_search.sys.ini"
-  },
-  {
-    "source": "/plugins/redevent/eventnewslettersignup/language/en-GB/en-GB.plg_redevent_eventnewslettersignup.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_eventnewslettersignup.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_teaser.ini"
-  },
-  {
-    "source": "/plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_jomsocial.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_teaser.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_venues_events.ini"
-  },
-  {
-    "source": "/plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_jomsocial.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.sys.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.mod_redevent_venues_events.sys.ini"
-  },
-  {
-    "source": "/plugins/redevent/paymentnotificationemail/language/en-GB/en-GB.plg_redevent_paymentnotificationemail.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_paymentnotificationemail.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.eventlist.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.eventlist.ini"
-  },
-  {
-    "source": "/plugins/redevent/paymentnotificationemail/language/en-GB/en-GB.plg_redevent_paymentnotificationemail.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_paymentnotificationemail.sys.ini"
-  },
-  {
-    "source": "/plugins/redevent/redmemberlogin/language/en-GB/en-GB.plg_redevent_redmemberlogin.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_redmemberlogin.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.google.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.google.ini"
-  },
-  {
-    "source": "/plugins/redevent/redmemberlogin/language/en-GB/en-GB.plg_redevent_redmemberlogin.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_redmemberlogin.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.jevents.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.jevents.ini"
-  },
-  {
-    "source": "/plugins/redevent_config/aesir/language/en-GB/en-GB.plg_redevent_config_aesir.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_aesir.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.jomsocial.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.jomsocial.ini"
-  },
-  {
-    "source": "/plugins/redevent_config/aesir/language/en-GB/en-GB.plg_redevent_config_aesir.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_aesir.sys.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.redevent.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.redevent.ini"
-  },
-  {
-    "source": "/modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.rsevents.ini",
-    "translation": "/languages/%locale%/site/%locale%/%locale%.rsevents.ini"
-  },
-  {
-    "source": "/plugins/redevent_config/example/language/en-GB/en-GB.plg_redevent_config_example.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_example.ini"
-  },
-  {
-    "source": "/plugins/redevent_config/example/language/en-GB/en-GB.plg_redevent_config_example.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_example.sys.ini"
-  },
-  {
-    "source": "/plugins/redevent_field/aesir_organisation/language/en-GB/en-GB.plg_redevent_field_aesir_organisation.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_field_aesir_organisation.ini"
-  },
-  {
-    "source": "/plugins/redevent_field/aesir_organisation/language/en-GB/en-GB.plg_redevent_field_aesir_organisation.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redevent_field_aesir_organisation.sys.ini"
-  },
-  {
-    "source": "/plugins/redform_field/eventacymailinglists/language/en-GB/en-GB.plg_redform_field_eventacymailinglists.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redform_field_eventacymailinglists.ini"
-  },
-  {
-    "source": "/plugins/redform_field/eventacymailinglists/language/en-GB/en-GB.plg_redform_field_eventacymailinglists.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redform_field_eventacymailinglists.sys.ini"
-  },
-  {
-    "source": "/plugins/redform_payment/filtervenue/language/en-GB/en-GB.plg_redform_payment_filtervenue.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redform_payment_filtervenue.ini"
-  },
-  {
-    "source": "/plugins/redform_payment/filtervenue/language/en-GB/en-GB.plg_redform_payment_filtervenue.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_redform_payment_filtervenue.sys.ini"
-  },
-  {
-    "source": "/plugins/search/redevent/language/en-GB/en-GB.plg_search_redevent.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_search_redevent.ini"
-  },
-  {
-    "source": "/plugins/search/redevent/language/en-GB/en-GB.plg_search_redevent.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_search_redevent.sys.ini"
-  },
-  {
-    "source": "/plugins/system/aesir_redevent_sync/language/en-GB/en-GB.plg_system_aesir_redevent_sync.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_system_aesir_redevent_sync.ini"
-  },
-  {
-    "source": "/plugins/system/aesir_redevent_sync/language/en-GB/en-GB.plg_system_aesir_redevent_sync.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_system_aesir_redevent_sync.sys.ini"
-  },
-  {
-    "source": "/plugins/system/autotweetredevent/language/en-GB/en-GB.plg_system_autotweetredevent.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_system_autotweetredevent.ini"
-  },
-  {
-    "source": "/plugins/system/autotweetredevent/language/en-GB/en-GB.plg_system_autotweetredevent.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_system_autotweetredevent.sys.ini"
-  },
-  {
-    "source": "/plugins/system/redevent_labels/language/en-GB/en-GB.plg_system_redevent_labels.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_system_redevent_labels.ini"
-  },
-  {
-    "source": "/plugins/system/redevent_labels/language/en-GB/en-GB.plg_system_redevent_labels.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_system_redevent_labels.sys.ini"
-  },
-  {
-    "source": "/plugins/xmap/redevent/language/en-GB/en-GB.plg_xmap_redevent.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_xmap_redevent.ini"
-  },
-  {
-    "source": "/plugins/xmap/redevent/language/en-GB/en-GB.plg_xmap_redevent.sys.ini",
-    "translation": "/languages/%locale%/admin/%locale%/%locale%.plg_xmap_redevent.sys.ini"
-  }
-]
+preserve_hierarchy: true
+files:
+  - source: >-
+      /component/admin/language/en-GB/en-GB.com_redevent.ini
+    translation: >-
+      /languages/%locale%/admin/%locale%/%locale%.com_redevent.ini
+  - source: >-
+        /component/admin/language/en-GB/en-GB.com_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.com_redevent.sys.ini
+  - source: >-
+      /component/site/language/en-GB/en-GB.com_redevent.ini
+    translation: >-
+      /languages/%locale%/site/%locale%/%locale%.com_redevent.ini
+  - source: >-
+      /component/libraries/redevent/language/en-GB/en-GB.lib_redevent.ini
+    translation: >-
+      /languages/%locale%/site/%locale%/%locale%.lib_redevent.ini
+  - source: >-
+        /component/plugins/installer/redevent/language/en-GB/en-GB.plg_installer_redevent.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.plg_installer_redevent.ini
+  - source: >-
+        /component/plugins/installer/redevent/language/en-GB/en-GB.plg_installer_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.plg_installer_redevent.sys.ini
+  - source: >-
+        /component/plugins/redform_field/redevent_session/language/en-GB/en-GB.plg_redform_field_redevent_session.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.plg_redform_field_redevent_session.ini
+  - source: >-
+        /component/plugins/redform_field/redevent_session/language/en-GB/en-GB.plg_redform_field_redevent_session.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.plg_redform_field_redevent_session.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent/language/en-GB/en-GB.mod_redevent.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent.ini
+  - source: >-
+        /modules/frontend/mod_redevent/language/en-GB/en-GB.mod_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_all_events.ini
+  - source: >-
+        /modules/frontend/mod_redevent_all_events/language/en-GB/en-GB.mod_redevent_all_events.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_all_events.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_attending.ini
+  - source: >-
+        /modules/frontend/mod_redevent_attending/language/en-GB/en-GB.mod_redevent_attending.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_attending.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_calendar.ini
+  - source: >-
+        /modules/frontend/mod_redevent_calendar/language/en-GB/en-GB.mod_redevent_calendar.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_calendar.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_categories.ini
+  - source: >-
+        /modules/frontend/mod_redevent_categories/language/en-GB/en-GB.mod_redevent_categories.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_categories.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_filters.ini
+  - source: >-
+        /modules/frontend/mod_redevent_filters/language/en-GB/en-GB.mod_redevent_filters.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_filters.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_quickbook/language/en-GB/en-GB.mod_redevent_quickbook.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_quickbook.ini
+  - source: >-
+        /modules/frontend/mod_redevent_quickbook/language/en-GB/en-GB.mod_redevent_quickbook.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_quickbook.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_search.ini
+  - source: >-
+        /modules/frontend/mod_redevent_search/language/en-GB/en-GB.mod_redevent_search.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_search.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_teaser.ini
+  - source: >-
+        /modules/frontend/mod_redevent_teaser/language/en-GB/en-GB.mod_redevent_teaser.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_teaser.sys.ini
+  - source: >-
+        /modules/frontend/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_venues_events.ini
+  - source: >-
+        /modules/frontend/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_redevent_venues_events.sys.ini
+  - source: >-
+        /modules/frontend/mod_rokminievents/en-GB.mod_rokminievents.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.mod_rokminievents.ini
+  - source: >-
+        /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.eventlist.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.eventlist.ini
+  - source: >-
+        /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.google.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.google.ini
+  - source: >-
+        /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.jevents.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.jevents.ini
+  - source: >-
+        /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.jomsocial.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.jomsocial.ini
+  - source: >-
+        /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.redevent.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.redevent.ini
+  - source: >-
+        /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.rsevents.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.rsevents.ini
+  - source: >-
+        /plugins/aesir_field/redevent_bundle/language/en-GB/en-GB.plg_aesir_field_redevent_bundle.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_bundle.ini
+  - source: >-
+        /plugins/aesir_field/redevent_bundle/language/en-GB/en-GB.plg_aesir_field_redevent_bundle.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_bundle.sys.ini
+  - source: >-
+        /plugins/aesir_field/redevent_category/language/en-GB/en-GB.plg_aesir_field_redevent_category.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_category.ini
+  - source: >-
+        /plugins/aesir_field/redevent_category/language/en-GB/en-GB.plg_aesir_field_redevent_category.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_category.sys.ini
+  - source: >-
+        /plugins/aesir_field/redevent_event/language/en-GB/en-GB.plg_aesir_field_redevent_event.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_event.ini
+  - source: >-
+        /plugins/aesir_field/redevent_event/language/en-GB/en-GB.plg_aesir_field_redevent_event.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_event.sys.ini
+  - source: >-
+        /plugins/aesir_field/redevent_session/language/en-GB/en-GB.plg_aesir_field_redevent_session.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_session.ini
+  - source: >-
+        /plugins/aesir_field/redevent_session/language/en-GB/en-GB.plg_aesir_field_redevent_session.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_session.sys.ini
+  - source: >-
+        /plugins/aesir_field/redevent_venue/language/en-GB/en-GB.plg_aesir_field_redevent_venue.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_venue.ini
+  - source: >-
+        /plugins/aesir_field/redevent_venue/language/en-GB/en-GB.plg_aesir_field_redevent_venue.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_venue.sys.ini
+  - source: >-
+        /plugins/content/resimplelist/language/en-GB/en-GB.plg_content_resimplelist.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_content_resimplelist.ini
+  - source: >-
+        /plugins/content/resimplelist/language/en-GB/en-GB.plg_content_resimplelist.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_content_resimplelist.sys.ini
+  - source: >-
+        /plugins/editors-xtd/redevent/language/en-GB/en-GB.plg_editors-xtd_redevent.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_editors-xtd_redevent.ini
+  - source: >-
+        /plugins/editors-xtd/redevent/language/en-GB/en-GB.plg_editors-xtd_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_editors-xtd_redevent.sys.ini
+  - source: >-
+        /plugins/finder/re_events/language/en-GB/en-GB.plg_finder_re_events.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_finder_re_events.ini
+  - source: >-
+        /plugins/finder/re_events/language/en-GB/en-GB.plg_finder_re_events.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_finder_re_events.sys.ini
+  - source: >-
+        /plugins/finder/re_venues/language/en-GB/en-GB.plg_finder_re_venues.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_finder_re_venues.ini
+  - source: >-
+        /plugins/finder/re_venues/language/en-GB/en-GB.plg_finder_re_venues.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_finder_re_venues.sys.ini
+  - source: >-
+        /plugins/jomsocial/redevent/language/en-GB/en-GB.plg_jomsocial_redevent.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_jomsocial_redevent.ini
+  - source: >-
+        /plugins/jomsocial/redevent/language/en-GB/en-GB.plg_jomsocial_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_jomsocial_redevent.sys.ini
+  - source: >-
+        /plugins/josetta_ext/redeventsession/language/en-GB/en-GB.plg_josetta_ext_redeventsession.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_josetta_ext_redeventsession.ini
+  - source: >-
+        /plugins/redevent/acymailinglists/language/en-GB/en-GB.plg_redevent_acymailinglists.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_acymailinglists.ini
+  - source: >-
+        /plugins/redevent/acymailinglists/language/en-GB/en-GB.plg_redevent_acymailinglists.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_acymailinglists.sys.ini
+  - source: >-
+        /plugins/redevent/aesirtagsreplacement/language/en-GB/en-GB.plg_redevent_aesirtagsreplacement.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_aesirtagsreplacement.ini
+  - source: >-
+        /plugins/redevent/aesirtagsreplacement/language/en-GB/en-GB.plg_redevent_aesirtagsreplacement.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_aesirtagsreplacement.sys.ini
+  - source: >-
+        /plugins/redevent/eventnewslettersignup/language/en-GB/en-GB.plg_redevent_eventnewslettersignup.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_eventnewslettersignup.ini
+  - source: >-
+        /plugins/redevent/eventnewslettersignup/language/en-GB/en-GB.plg_redevent_eventnewslettersignup.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_eventnewslettersignup.sys.ini
+  - source: >-
+        /plugins/redevent/paymentnotificationemail/language/en-GB/en-GB.plg_redevent_paymentnotificationemail.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_paymentnotificationemail.ini
+  - source: >-
+        /plugins/redevent/paymentnotificationemail/language/en-GB/en-GB.plg_redevent_paymentnotificationemail.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_paymentnotificationemail.sys.ini
+  - source: >-
+        /plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_jomsocial.ini
+  - source: >-
+        /plugins/redevent/jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_jomsocial.sys.ini
+  - source: >-
+        /plugins/redevent/redmemberlogin/language/en-GB/en-GB.plg_redevent_redmemberlogin.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_redmemberlogin.ini
+  - source: >-
+        /plugins/redevent/redmemberlogin/language/en-GB/en-GB.plg_redevent_redmemberlogin.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_redmemberlogin.sys.ini
+  - source: >-
+        /plugins/redevent_config/aesir/language/en-GB/en-GB.plg_redevent_config_aesir.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_aesir.ini
+  - source: >-
+        /plugins/redevent_config/aesir/language/en-GB/en-GB.plg_redevent_config_aesir.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_aesir.sys.ini
+  - source: >-
+        /plugins/redevent_config/example/language/en-GB/en-GB.plg_redevent_config_example.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_example.ini
+  - source: >-
+        /plugins/redevent_config/example/language/en-GB/en-GB.plg_redevent_config_example.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_config_example.sys.ini
+  - source: >-
+        /plugins/redevent_field/aesir_organisation/language/en-GB/en-GB.plg_redevent_field_aesir_organisation.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_field_aesir_organisation.ini
+  - source: >-
+        /plugins/redevent_field/aesir_organisation/language/en-GB/en-GB.plg_redevent_field_aesir_organisation.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redevent_field_aesir_organisation.sys.ini
+  - source: >-
+        /plugins/redform_field/eventacymailinglists/language/en-GB/en-GB.plg_redform_field_eventacymailinglists.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redform_field_eventacymailinglists.ini
+  - source: >-
+        /plugins/redform_field/eventacymailinglists/language/en-GB/en-GB.plg_redform_field_eventacymailinglists.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redform_field_eventacymailinglists.sys.ini
+  - source: >-
+        /plugins/redform_payment/filtervenue/language/en-GB/en-GB.plg_redform_payment_filtervenue.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redform_payment_filtervenue.ini
+  - source: >-
+        /plugins/redform_payment/filtervenue/language/en-GB/en-GB.plg_redform_payment_filtervenue.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_redform_payment_filtervenue.sys.ini
+  - source: >-
+        /plugins/search/redevent/language/en-GB/en-GB.plg_search_redevent.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_search_redevent.ini
+  - source: >-
+        /plugins/search/redevent/language/en-GB/en-GB.plg_search_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_search_redevent.sys.ini
+  - source: >-
+        /plugins/system/aesir_redevent_sync/language/en-GB/en-GB.plg_system_aesir_redevent_sync.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_system_aesir_redevent_sync.ini
+  - source: >-
+        /plugins/system/aesir_redevent_sync/language/en-GB/en-GB.plg_system_aesir_redevent_sync.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_system_aesir_redevent_sync.sys.ini
+  - source: >-
+        /plugins/system/autotweetredevent/language/en-GB/en-GB.plg_system_autotweetredevent.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_system_autotweetredevent.ini
+  - source: >-
+        /plugins/system/autotweetredevent/language/en-GB/en-GB.plg_system_autotweetredevent.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_system_autotweetredevent.sys.ini
+  - source: >-
+        /plugins/system/redevent_labels/language/en-GB/en-GB.plg_system_redevent_labels.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_system_redevent_labels.ini
+  - source: >-
+        /plugins/system/redevent_labels/language/en-GB/en-GB.plg_system_redevent_labels.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_system_redevent_labels.sys.ini
+  - source: >-
+        /plugins/xmap/redevent/language/en-GB/en-GB.plg_xmap_redevent.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_xmap_redevent.ini
+  - source: >-
+        /plugins/xmap/redevent/language/en-GB/en-GB.plg_xmap_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/admin/%locale%/%locale%.plg_xmap_redevent.sys.ini
+  - source: >-
+        /component/plugins/redform_integration/redevent/language/en-GB/en-GB.plg_redform_integration_redevent.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.plg_redform_integration_redevent.ini
+  - source: >-
+        /component/plugins/redform_integration/redevent/language/en-GB/en-GB.plg_redform_integration_redevent.sys.ini
+    translation: >-
+        /languages/%locale%/site/%locale%/%locale%.plg_redform_integration_redevent.sys.ini
