@@ -101,6 +101,12 @@ class RedeventModelAttendees extends RModelList
 	 */
 	public function getItems()
 	{
+		if ($this->getState('streamOutput') == 'csv')
+		{
+			$this->setState('list.limit', 0);
+			$this->setState('list.limitstart', 0);
+		}
+
 		$items = parent::getItems();
 
 		$items = $this->addPaymentInfo($items);

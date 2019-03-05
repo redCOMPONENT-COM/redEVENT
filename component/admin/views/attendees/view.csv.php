@@ -32,6 +32,7 @@ class RedEventViewAttendees extends RViewCsv
 			'uip' => JText::_('COM_REDEVENT_IP_ADDRESS'),
 			'uniqueid' => JText::_('COM_REDEVENT_UNIQUE_ID'),
 			'username' => JText::_('COM_REDEVENT_USERNAME'),
+			'confirmed' => JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_CONFIRMED'),
 			'confirmdate' => JText::_('COM_REDEVENT_ACTIVATED'),
 			'cancelled' => JText::_('COM_REDEVENT_CANCELLED'),
 			'waitinglist' => JText::_('COM_REDEVENT_WAITINGLIST'),
