@@ -172,11 +172,12 @@ class RedeventModelRegistration extends RModel
 			return false;
 		}
 
-		$submitter = RdfEntitySubmitter::load($sid);
+		$submitter        = RdfEntitySubmitter::load($sid);
+		$confirmOnPayment = redEventHelper::config()->get('payBeforeConfirm', 0);
 
 		if (!$obj->confirmed
 			&& $session->activate == 0 // No activation
-			&& (!$this->confirmOnPayment($obj) || $submitter->isPaid()))
+			&& (!$confirmOnPayment || $submitter->isPaid()))
 		{
 			$doConfirm = true;
 
@@ -217,26 +218,6 @@ class RedeventModelRegistration extends RModel
 		$this->_db->setQuery($query);
 
 		return $this->_db->loadObject();
-	}
-
-	/**
-	 * Check if we should only confirm on payment
-	 *
-	 * @param   object  $registration  registration data
-	 *
-	 * @return boolean
-	 */
-	protected function confirmOnPayment($registration)
-	{
-		if (!$registration->sessionpricegroup_id)
-		{
-			// Session is free
-			return false;
-		}
-
-		$config = redEventHelper::config();
-
-		return $config->get('payBeforeConfirm', 0);
 	}
 
 	/**
