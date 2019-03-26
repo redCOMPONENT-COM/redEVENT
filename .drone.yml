@@ -97,7 +97,7 @@ pipeline:
     - cd ../
     - touch tests/.setup$php_version.tmp
 
-  00-setup-71:
+  00-setup-73:
     group: 00-setup
     image: redwebaps/testbox-chromedriver:2.38
     pull: true
@@ -107,7 +107,7 @@ pipeline:
     - tests_db=setup
     - build_path=/drone/src/github.com/${DRONE_REPO}
     - output_append=-00-setup
-    - php_version=71
+    - php_version=73
     commands:
     # Regular entry point
     - /entrypoint.sh &
@@ -150,7 +150,7 @@ pipeline:
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
-  01-Uninstall-71:
+  01-Uninstall-73:
     group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -158,8 +158,8 @@ pipeline:
     - tests_suite=01-Uninstall
     - tests_db=Uninstall
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-01-Uninstall-71
-    - php_version=71
+    - output_append=-01-Uninstall-73
+    - php_version=73
     commands:
     # Regular entry point
     - /entrypoint.sh &
@@ -192,7 +192,7 @@ pipeline:
       - cd tests
       - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 0 0'
 
-  02-administrator-71:
+  02-administrator-73:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
@@ -201,7 +201,7 @@ pipeline:
     - tests_db=administrator
     - build_path=/drone/src/github.com/${DRONE_REPO}
     - output_append=-02-administrator
-    - php_version=71
+    - php_version=73
     commands:
     # Regular entry point
     - /entrypoint.sh &
@@ -250,8 +250,8 @@ services:
     - WEB_DOCUMENT_ROOT=/drone/src/github.com/${DRONE_REPO}
     - JOOMLA_INSTALLATION_DISABLE_LOCALHOST_CHECK=1
 
-  php71:
-    image: redwebaps/php-apache:7.1
+  php73:
+    image: redwebaps/php-apache:7.3
     pull: true
     environment:
     - WEB_DOCUMENT_ROOT=/drone/src/github.com/${DRONE_REPO}
@@ -262,7 +262,7 @@ services:
     environment:
     - tests_suite=00-setup
     - tests_db=setup
-    - php_versions=56,71
+    - php_versions=56,73
     commands:
     # Base installation
     - sh tests/drone/setup-base-install.sh  $tests_db                       $tests_suite                        $php_versions
