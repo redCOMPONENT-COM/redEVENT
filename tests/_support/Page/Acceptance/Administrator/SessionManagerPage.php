@@ -49,6 +49,20 @@ class SessionManagerPage extends AbstractPage
 	public static $fieldDescription  = '#jform_description';
 
 	/**
+	 * Locator for field Description
+	 * @var array
+	 * @since 1.0.0
+	 */
+	public static $fieldDate = '#jform_dates_v';
+
+	/**
+	 * Locator for field Description
+	 * @var array
+	 * @since 1.0.0
+	 */
+	public static $endDate = '#jform_enddates_v';
+
+	/**
 	 * Locator for select venue
 	 * @var string
 	 * @since 1.0.0
@@ -69,11 +83,11 @@ class SessionManagerPage extends AbstractPage
 	 * @since 1.0.0
 	 */
 	public static $buttonSave       = '//button[contains(@onclick, "session.save")]';
-    /**
-     *
-     * @var string
-     * @since 1.0.0
-     */
+	/**
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
 
-    public static $tableResult      = '//table[@id=\'table-items\']/tbody/tr/td[9]';
+	public static $tableResult      = '//table[@id=\'table-items\']/tbody/tr/td[9]';
 }
