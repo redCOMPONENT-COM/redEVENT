@@ -91,15 +91,15 @@ class UpcomingEventsCest
 		$i->doAdministratorLogin();
 	}
 
-    /**
-     *
-     * @throws Exception
-     */
-    public function createMenuItem(\Step\Acceptance\JoomlaManagerSteps $I)
-    {
-        $I->wantTo("Create Menu item Upcoming events in front end");
-        $I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
-    }
+	/**
+	 *
+	 * @throws Exception
+	 */
+	public function createMenuItem(\Step\Acceptance\JoomlaManagerSteps $I)
+	{
+		$I->wantTo("Create Menu item Upcoming events in front end");
+		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
+	}
 
 	/**
 	 * @param VanueManagerSteps $I
@@ -141,7 +141,7 @@ class UpcomingEventsCest
 	 */
 	public function CheckFrontEnd(UpcomingEventsSteps $I)
 	{
-		$I->wantToTest('Add an open date session in redEVENT');
+		$I->wantToTest('Check upcoming event on front-end');
 		$I->checkEventUpcoming($this->menuItem,$this->SessionName,$this->eventName,$this->VanueName);
 	}
 
@@ -152,11 +152,15 @@ class UpcomingEventsCest
 	 */
 	public function deleteAll(SessionManagerSteps $I, $scenario)
 	{
+		$I->wantToTest('Delete session');
 		$I ->deleteSession($this->SessionName);
 		$I = new EventManagerSteps($scenario);
+		$I->wantToTest('Delete events');
 		$I->deleteEvent($this->eventName);
+		$I->wantToTest('Delete category');
 		$I->deleteCategory($this->categoryName);
 		$I = new VanueManagerSteps($scenario);
+		$I->wantToTest('Delete Venue');
 		$I->deleteVenue($this->categoryVanueName,$this->VanueName);
 	}
 }

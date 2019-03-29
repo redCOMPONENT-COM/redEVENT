@@ -88,7 +88,7 @@ class SessionManagerSteps extends AdminRedevent
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();
-		$I->wantTo('Test with delete product then accept');
+		$I->wantTo('Test with delete session then accept');
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->acceptPopup();
 		$I->waitForText(SessionManagerPage::$messageDeleteProductSuccess, 60, SessionManagerPage::$message);
