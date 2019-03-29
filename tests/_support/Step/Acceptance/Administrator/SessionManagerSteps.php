@@ -9,7 +9,6 @@
 
 namespace Step\Acceptance\Administrator;
 use Page\Acceptance\Administrator\SessionManagerPage;
-use Redevent\Date\Dates;
 use Step\Acceptance\AdminRedevent;
 
 class SessionManagerSteps extends AdminRedevent
@@ -96,21 +95,21 @@ class SessionManagerSteps extends AdminRedevent
 		$I->dontSee($nameSession);
 	}
 
-	/**
-	 * @throws \Exception
-	 */
+    /**
+     * @throws \Exception
+     */
 	public function deleteAllSession()
-	{
-		$client = $this;
-		$client->amOnPage(SessionManagerPage::$URL);
-		$client->waitForText(SessionManagerPage::$sessionTitle, 30);
-		$client->checkAllResults();
-		$client->click(SessionManagerPage::$buttonDelete);
-		$client->wantTo('Test with delete category but then cancel');
-		$client->cancelPopup();
-		$client->wantTo('Test with delete product then accept');
-		$client->click(SessionManagerPage::$buttonDelete);
-		$client->acceptPopup();
-		$client->waitForElement(SessionManagerPage::$message, 30);
-	}
+    {
+        $client = $this;
+        $client->amOnPage(SessionManagerPage::$URL);
+        $client->waitForText(SessionManagerPage::$sessionTitle, 30);
+        $client->checkAllResults();
+        $client->click(SessionManagerPage::$buttonDelete);
+        $client->wantTo('Test with delete category but then cancel');
+        $client->cancelPopup();
+        $client->wantTo('Test with delete product then accept');
+        $client->click(SessionManagerPage::$buttonDelete);
+        $client->acceptPopup();
+        $client->waitForElement(SessionManagerPage::$message, 30);
+    }
 }

@@ -91,15 +91,15 @@ class UpcomingEventsCest
 		$i->doAdministratorLogin();
 	}
 
-//    /**
-//     *
-//     * @throws Exception
-//     */
-//    public function createMenuItem(\Step\Acceptance\JoomlaManagerSteps $I)
-//    {
-//        $I->wantTo("Create Menu item Upcoming events in front end");
-//        $I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
-//    }
+    /**
+     *
+     * @throws Exception
+     */
+    public function createMenuItem(\Step\Acceptance\JoomlaManagerSteps $I)
+    {
+        $I->wantTo("Create Menu item Upcoming events in front end");
+        $I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
+    }
 
 	/**
 	 * @param VanueManagerSteps $I
