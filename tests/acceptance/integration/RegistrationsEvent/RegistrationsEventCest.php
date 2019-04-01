@@ -44,7 +44,7 @@ class RegistrationsEventCest
     public function createTemplate(TemplateManagerSteps $I)
     {
         $I->wantToTest('Add a template 1 in redEVENT');
-//        $I->createMinimalRegistrationForm(['name' => 'Registration']);
+        $I->createMinimalRegistrationForm(['name' => 'Registration']);
         $I->createTemplateRegistration(
             array(
                 'name' =>$this->nameTemplate,
@@ -56,15 +56,15 @@ class RegistrationsEventCest
         $I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
     }
 
-//    /**
-//     * @param EventManagerSteps $I
-//     * @throws Exception
-//     */
-//    public function addEvent(EventManagerSteps $I)
-//    {
-//        $I->wantToTest('Add an event in redEVENT with created template');
-//
-//        $I->createEventRegistrations($this->eventName,$this->categoryName, $this->nameTemplate);
-//        $I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
-//    }
+    /**
+     * @param EventManagerSteps $I
+     * @throws Exception
+     */
+    public function addEvent(EventManagerSteps $I)
+    {
+        $I->wantToTest('Add an event in redEVENT with created template');
+
+        $I->createEventRegistrations($this->eventName,$this->categoryName, $this->nameTemplate);
+        $I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
+    }
 }

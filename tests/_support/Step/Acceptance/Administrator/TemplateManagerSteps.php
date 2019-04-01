@@ -82,12 +82,10 @@ class TemplateManagerSteps extends redFormManagerSteps
             $I->click('Registrations types');
             $I->waitForElement("#submission_type_webform",30);
             $I->click("#submission_type_webform");
-            $I->scrollTo(TemplateManagerPage::$toggleEditor);
-            $I->wait(1);
-            $I->click(TemplateManagerPage::$toggleEditor);
-            $I->waitForElement("#jform_submission_type_webform", 30);
-            $I->fillField("#jform_submission_type_webform", "[redform]");
 
+//            $I->click("//a[@xpath='1']");
+            $I->fillCodeMirror("[redform]");
+//            $I->fillField("#jform_submission_type_webform", "[redform]");
         }
         $I->click(TemplateManagerPage::$buttonSaveClose);
     }
