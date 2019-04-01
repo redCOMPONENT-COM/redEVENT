@@ -45,6 +45,53 @@ class TemplateManagerSteps extends redFormManagerSteps
 
 		$I->click(TemplateManagerPage::$buttonSaveClose);
 	}
+
+    /**
+     * Create a template
+     *
+     * @param   array  $params  parameters
+     *
+     * @return void
+     */
+    public function createTemplateRegistration($params)
+    {
+        $I = $this;
+        $I->amOnPage(TemplateManagerPage::$URL);
+        $I->waitForText(TemplateManagerPage::$title, 30, TemplateManagerPage::$H1);
+        $I->click(TemplateManagerPage::$buttonNew);
+        $I->waitForText(TemplateManagerPage::$titleNew, 30, TemplateManagerPage::$label);
+        $I->fillField(TemplateManagerPage::$fieldName, $params['name']);
+
+        if (!empty($params['meta_description']))
+        {
+            $I->fillField(TemplateManagerPage::$metaDescription, $params['meta_description']);
+        }
+
+        if (!empty($params['meta_keywords']))
+        {
+            $I->fillField(TemplateManagerPage::$metaKeywords, $params['meta_keywords']);
+        }
+
+        if (!empty($params['redform']))
+        {
+            $I->click('Registration');
+            $I->selectOptionInChosenByIdUsingJs(TemplateManagerPage::$redFormId, $params['redform']);
+        }
+        if (!empty($params['redform']))
+        {
+            $I->click('Registrations types');
+            $I->waitForElement("#submission_type_webform",30);
+            $I->click("#submission_type_webform");
+            $I->scrollTo(TemplateManagerPage::$toggleEditor);
+            $I->wait(1);
+            $I->click(TemplateManagerPage::$toggleEditor);
+            $I->waitForElement("#jform_submission_type_webform", 30);
+            $I->fillField("#jform_submission_type_webform", "[redform]");
+
+        }
+        $I->click(TemplateManagerPage::$buttonSaveClose);
+    }
+
 	/**
 	 * Create a template
 	 *

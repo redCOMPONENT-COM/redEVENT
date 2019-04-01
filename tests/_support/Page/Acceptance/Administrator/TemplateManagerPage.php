@@ -49,7 +49,7 @@ class TemplateManagerPage extends AbstractPage
 
 	/**
 	 * Locator for field name
-	 * @var array
+	 * @var string
 	 * @since 1.0.0
 	 */
 	public static $redFormId            = 'jform_redform_id';

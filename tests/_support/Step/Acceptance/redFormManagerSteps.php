@@ -153,7 +153,7 @@ class redFormManagerSteps extends AdminRedevent
 		$I->click(redFormManagerPage::$buttonNew);
 		$I->waitForText(redFormManagerPage::$formTitleNew, 30, redFormManagerPage::$label);
 		$I->fillField(redFormManagerPage::$inputFormName, $params['name']);
-
+        $I->click('//label[@for="jform_formexpires0"]');
 		$I->click(redFormManagerPage::$buttonSaveClose);
 
 		if (!empty($params['fields']))

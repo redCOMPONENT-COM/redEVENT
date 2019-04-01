@@ -49,28 +49,28 @@ class EventManagerPage extends AbstractPage
 
 	/**
 	 * Locator for select category
-	 * @var array
+	 * @var string
 	 * @since 1.0.0
 	 */
 	public static $categorySelect     = "#jform_categories_chzn";
 
 	/**
 	 * Locator for item category
-	 * @var array
+	 * @var string
 	 * @since 1.0.0
 	 */
 	public static $categoryItem       = 'jform_categories';
 
 	/**
 	 * Locator for select template
-	 * @var array
+	 * @var string
 	 * @since 1.0.0
 	 */
 	public static $templateSelect     = "#jform_template_id";
 
 	/**
 	 * Locator for item category
-	 * @var array
+	 * @var string
 	 * @since 1.0.0
 	 */
 	public static $templateItem       = 'jform_template_id';
