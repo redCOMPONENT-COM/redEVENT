@@ -77,6 +77,13 @@ class SessionManagerPage extends AbstractPage
 	public static $eventSelect      = 'jform_eventid';
 
 	/**
+	 * Locator for select featured
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $featuredSelect = "jform_featured";
+
+	/**
 	 * Button Save
 	 *
 	 * @var string
