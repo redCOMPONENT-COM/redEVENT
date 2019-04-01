@@ -1,8 +1,8 @@
 <?php
 /**
- * @package     Redevent
+ * @package     redEVENT
  * @subpackage  Tests
- * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2019 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -22,11 +22,58 @@ class JoomlaManagerPage extends AbstractPage
 	public static $URLUninstall              = '/administrator/index.php?option=com_installer&view=manage';
 
 	/**
+	 * @var string
+	 */
+	public static $menuItemURL = '/administrator/index.php?option=com_menus&view=menus';
+
+	/**
 	 * Title of this page.
 	 * @var   string
 	 * @since 1.0.0
 	 */
 	public static $extensionsTitle            = "Extensions: Manage";
+
+	/**
+	 * @var string
+	 */
+	public static $menuTitle   = 'Menus';
+
+	/**
+	 * @var string
+	 */
+	public static $menuItemsTitle   = 'Menus: Items';
+
+	/**
+	 * @var string
+	 */
+	public static $menuNewItemTitle   = 'Menus: New Item';
+
+	/**
+	 * Menu item title
+	 * @var string
+	 */
+	public static $menItemTitle = "#jform_title";
+
+	/**
+	 * @var   string
+	 */
+	public static $buttonSelect = "Select";
+
+	/**
+	 * Menu Type Modal
+	 * @var string
+	 */
+	public static $menuTypeModal = "#menuTypeModal";
+
+	/**
+	 * @var string
+	 */
+	public static $menuItemType   = 'Menu Item Type';
+
+	/**
+	 * @var string
+	 */
+	public static $labelLanguage = "Language";
 
 	/**
 	 * Locator for table manage
@@ -71,4 +118,35 @@ class JoomlaManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $messageFailed              = '.alert-no-items';
+
+	/**
+	 * @var string
+	 */
+	public static $messageMenuItemSuccess = 'Menu item saved';
+
+	/**
+	 * @var array
+	 */
+	public static $idInstallSuccess =  "#system-message-container";
+
+	/**
+	 * @param $menuCategory
+	 * @return array
+	 */
+	public static function getMenuCategory($menuCategory)
+	{
+		$menuCate = ["link" => $menuCategory];
+
+		return $menuCate;
+	}
+
+	/**
+	 * @param $menuItem
+	 * @return string
+	 */
+	public static function returnMenuItem($menuItem)
+	{
+		$path = "//a[contains(text()[normalize-space()], '$menuItem')]";
+		return $path;
+	}
 }

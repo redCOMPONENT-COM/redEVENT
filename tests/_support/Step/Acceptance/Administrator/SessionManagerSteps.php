@@ -36,6 +36,35 @@ class SessionManagerSteps extends AdminRedevent
 	}
 
 	/**
+	 * @param $event
+	 * @param $venue
+	 * @param $nameSession
+	 * @throws \Exception
+	 */
+	public function createSessionUpcomming($event,$venue,$nameSession)
+	{
+		$I = $this;
+		$I->amOnPage(SessionManagerPage::$URL );
+		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->click(SessionManagerPage::$buttonNew);
+		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+		$dateNow = date('Y-m-d');
+		$date  = date('Y-m-d', strtotime('+1 day', strtotime($dateNow)));
+		$endDate  = date('Y-m-d', strtotime('+2 day', strtotime($dateNow)));
+		$I->waitForElement(SessionManagerPage::$fieldDate,30);
+		$I->fillField(SessionManagerPage::$fieldDate, $date);
+		$I->waitForElement(SessionManagerPage::$endDate,30);
+		$I->fillField(SessionManagerPage::$endDate, $endDate);
+		if (!empty($nameSession))
+		{
+			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
+		}
+		$I->click(SessionManagerPage::$buttonSave);
+	}
+
+	/**
 	 * @param $nameSession
 	 * @throws \Exception
 	 */
@@ -59,7 +88,7 @@ class SessionManagerSteps extends AdminRedevent
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();
-		$I->wantTo('Test with delete product then accept');
+		$I->wantTo('Test with delete session then accept');
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->acceptPopup();
 		$I->waitForText(SessionManagerPage::$messageDeleteProductSuccess, 60, SessionManagerPage::$message);
