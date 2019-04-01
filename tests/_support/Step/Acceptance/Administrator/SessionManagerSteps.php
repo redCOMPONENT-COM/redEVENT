@@ -130,7 +130,7 @@ class SessionManagerSteps extends AdminRedevent
     /**
      * @throws \Exception
      */
-    public function deleteAllSession()
+	public function deleteAllSession()
     {
         $client = $this;
         $client->amOnPage(SessionManagerPage::$URL);
