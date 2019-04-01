@@ -12,6 +12,7 @@ use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
 use Step\Acceptance\Administrator\UpcomingEventsSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
+use Step\Acceptance\JoomlaManagerSteps;
 
 class FeaturedEventsCest
 {
@@ -97,10 +98,10 @@ class FeaturedEventsCest
 	}
 
 	/**
-	 *
+	 * @param JoomlaManagerSteps $I
 	 * @throws Exception
 	 */
-	public function createMenuItem(\Step\Acceptance\JoomlaManagerSteps $I)
+	public function createMenuItem(JoomlaManagerSteps $I)
 	{
 		$I->wantTo("Create Menu item Featured events in front end");
 		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
@@ -123,7 +124,7 @@ class FeaturedEventsCest
 	 */
 	public function addEvent(EventManagerSteps $I)
 	{
-		$I->wantToTest('Add an event in redEVENT with created template');
+		$I->wantToTest('Add an event in redEVENT with default template');
 
 		$I->createEventNew($this->eventName,$this->categoryName, $this->templateName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
