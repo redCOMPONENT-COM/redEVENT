@@ -33,4 +33,28 @@ class UpcomingEventsSteps extends AdminRedevent
 		$I->see($eventName);
 		$I->see($sessionname);
 	}
+
+    /**
+     * @param $menuItem
+     * @param $sessioName
+     * @param $eventName
+     * @param $venues
+     * @throws \Exception
+     */
+    public  function  checkViewEventWithCalendar($menuItem, $sessioName,$eventName,$venues)
+    {
+        $I = $this;
+        $I->doFrontEndLogin("admin","admin");
+        $I->amOnPage(FrontendJoomlaManagerPage::$URL);
+        $I->checkForPhpNoticesOrWarningsOrExceptions();
+        $I->waitForText(FrontendJoomlaManagerPage::$title,30,AbstractPage::$H1);
+        $I->waitForText($menuItem,30);
+        $I->click($menuItem);
+        $I->see($eventName);
+        $I->pauseExecution();
+        $I->click("//a[contains(text(),'".$eventName."')]");
+        $I->pauseExecution();
+        $I->see($sessioName);
+        $I->see($venues);
+    }
 }
