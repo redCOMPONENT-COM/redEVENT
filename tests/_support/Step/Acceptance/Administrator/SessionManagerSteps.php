@@ -65,6 +65,38 @@ class SessionManagerSteps extends AdminRedevent
 	}
 
 	/**
+	 * @param $event
+	 * @param $venue
+	 * @param $nameSession
+	 * @param $featured
+	 * @throws \Exception
+	 */
+	public function createSessionOfFeaturedEvents($event,$venue,$nameSession,$featured)
+	{
+		$I = $this;
+		$I->amOnPage(SessionManagerPage::$URL );
+		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->click(SessionManagerPage::$buttonNew);
+		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+		$dateNow = date('Y-m-d');
+		$date  = date('Y-m-d', strtotime('+1 day', strtotime($dateNow)));
+		$endDate  = date('Y-m-d', strtotime('+2 day', strtotime($dateNow)));
+		$I->waitForElement(SessionManagerPage::$fieldDate,30);
+		$I->fillField(SessionManagerPage::$fieldDate, $date);
+		$I->waitForElement(SessionManagerPage::$endDate,30);
+		$I->fillField(SessionManagerPage::$endDate, $endDate);
+		if (!empty($nameSession))
+		{
+			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
+		}
+
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$featuredSelect, $featured);
+		$I->click(SessionManagerPage::$buttonSave);
+	}
+
+	/**
 	 * @param $nameSession
 	 * @throws \Exception
 	 */
@@ -95,21 +127,21 @@ class SessionManagerSteps extends AdminRedevent
 		$I->dontSee($nameSession);
 	}
 
-    /**
-     * @throws \Exception
-     */
+	/**
+	 * @throws \Exception
+	 */
 	public function deleteAllSession()
-    {
-        $client = $this;
-        $client->amOnPage(SessionManagerPage::$URL);
-        $client->waitForText(SessionManagerPage::$sessionTitle, 30);
-        $client->checkAllResults();
-        $client->click(SessionManagerPage::$buttonDelete);
-        $client->wantTo('Test with delete category but then cancel');
-        $client->cancelPopup();
-        $client->wantTo('Test with delete product then accept');
-        $client->click(SessionManagerPage::$buttonDelete);
-        $client->acceptPopup();
-        $client->waitForElement(SessionManagerPage::$message, 30);
-    }
+	{
+		$client = $this;
+		$client->amOnPage(SessionManagerPage::$URL);
+		$client->waitForText(SessionManagerPage::$sessionTitle, 30);
+		$client->checkAllResults();
+		$client->click(SessionManagerPage::$buttonDelete);
+		$client->wantTo('Test with delete category but then cancel');
+		$client->cancelPopup();
+		$client->wantTo('Test with delete product then accept');
+		$client->click(SessionManagerPage::$buttonDelete);
+		$client->acceptPopup();
+		$client->waitForElement(SessionManagerPage::$message, 30);
+	}
 }
