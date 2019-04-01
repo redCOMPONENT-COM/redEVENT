@@ -127,21 +127,21 @@ class SessionManagerSteps extends AdminRedevent
 		$I->dontSee($nameSession);
 	}
 
-	/**
-	 * @throws \Exception
-	 */
-	public function deleteAllSession()
-	{
-		$client = $this;
-		$client->amOnPage(SessionManagerPage::$URL);
-		$client->waitForText(SessionManagerPage::$sessionTitle, 30);
-		$client->checkAllResults();
-		$client->click(SessionManagerPage::$buttonDelete);
-		$client->wantTo('Test with delete category but then cancel');
-		$client->cancelPopup();
-		$client->wantTo('Test with delete product then accept');
-		$client->click(SessionManagerPage::$buttonDelete);
-		$client->acceptPopup();
-		$client->waitForElement(SessionManagerPage::$message, 30);
-	}
+    /**
+     * @throws \Exception
+     */
+    public function deleteAllSession()
+    {
+        $client = $this;
+        $client->amOnPage(SessionManagerPage::$URL);
+        $client->waitForText(SessionManagerPage::$sessionTitle, 30);
+        $client->checkAllResults();
+        $client->click(SessionManagerPage::$buttonDelete);
+        $client->wantTo('Test with delete category but then cancel');
+        $client->cancelPopup();
+        $client->wantTo('Test with delete product then accept');
+        $client->click(SessionManagerPage::$buttonDelete);
+        $client->acceptPopup();
+        $client->waitForElement(SessionManagerPage::$message, 30);
+    }
 }
