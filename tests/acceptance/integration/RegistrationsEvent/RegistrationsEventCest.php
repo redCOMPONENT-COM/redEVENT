@@ -113,7 +113,6 @@ class RegistrationsEventCest
 		$i->doAdministratorLogin();
 	}
 
-
 	/**
 	 * @param JoomlaManagerSteps $I
 	 * @throws Exception
@@ -177,8 +176,7 @@ class RegistrationsEventCest
 		$I->createSessionUpcomming($this->eventName,$this->VanueName,$this->SessionName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
-
-
+	
 	/**
 	 * @param RegistrationManagerSteps $I
 	 * @throws Exception

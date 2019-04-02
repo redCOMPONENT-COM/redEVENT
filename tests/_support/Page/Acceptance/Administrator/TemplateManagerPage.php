@@ -66,7 +66,6 @@ class TemplateManagerPage extends AbstractPage
 	 */
 	public static $tabRegistrationsTypes       = 'Registrations types';
 
-
 	/**
 	 * Locator for $enabled
 	 * @var string
