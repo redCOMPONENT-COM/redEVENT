@@ -12,6 +12,8 @@ use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
 use Step\Acceptance\Administrator\UpcomingEventsSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
+use Step\Acceptance\JoomlaManagerSteps;
+
 class CalendarViewEventsCest
 {
 	/**
@@ -76,25 +78,30 @@ class CalendarViewEventsCest
 	{
 		$this->faker             = Factory::create();
 		$this->categoryVanueName = $this->faker->bothify("Category Vanue Name ##??");
-		$this->VanueName         = $this->faker->bothify("Vanue Name  ##??");
+		$this->VanueName         = $this->faker->bothify("Vanue Name ##??");
 		$this->categoryName      = $this->faker->bothify("Category Name ##??");
 		$this->eventName         = $this->faker->bothify("Event Name ##??");
 		$this->templateName      =  'default template';
-		$this->SessionName       = $this->faker->bothify("Session Name  ##??");
+		$this->SessionName       = $this->faker->bothify("Session Name ##??");
 
 		$this->menuItem            = 'Calendar view';
 		$this->menuCategory        = 'redEVENT - Component';
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param AcceptanceTester $i
+	 * @throws Exception
+	 */
+	public function _before(AcceptanceTester $i)
 	{
 		$i->doAdministratorLogin();
 	}
 
 	/**
-	 *
+	 * @param JoomlaManagerSteps $I
 	 * @throws Exception
 	 */
-	public function createMenuItem(\Step\Acceptance\JoomlaManagerSteps $I)
+	public function createMenuItem(JoomlaManagerSteps $I)
 	{
 		$I->wantTo("Create Menu item Upcoming events in front end");
 		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);

@@ -397,7 +397,7 @@ services:
     - sh tests/drone/setup-stages.sh        "administrator"                 "02-administrator"                  $php_versions
     - sh tests/drone/setup-stages.sh        "UpcomingEvents"                "03-UpcomingEvents"                 $php_versions
     - sh tests/drone/setup-stages.sh        "FeaturedEvents"                "04-FeaturedEvents"                 $php_versions
-    - sh tests/drone/setup-stages.sh        "CalendarViewEvents"            "05-CalendarViewEvents"                 $php_versions
+    - sh tests/drone/setup-stages.sh        "CalendarViewEvents"            "05-CalendarViewEvents"             $php_versions
 
 branches:
   exclude: [ crowdin ]
