@@ -102,19 +102,5 @@ class AdminRedevent extends \AcceptanceTester
 		$I->waitForText(AbstractPage::$messageDeleteProductSuccess, 120, AbstractPage::$message);
 		$I->dontSee($name);
 	}
-
-    /**
-     * Fills the Code Mirror editor with the given value.
-     *
-     * @param   string  $value  The value
-     *
-     * @return  void
-     * @since   3.0.0
-     */
-    public function fillCodeMirror($value)
-    {
-        $i = $this;
-        $i->executeJS("var editor = $('.CodeMirror')[0].CodeMirror; editor.getDoc().setValue('$value');");
-    }
 }
 

@@ -39,5 +39,4 @@ class RegistrationManagerPage extends AbstractPage
 	 * @since 1.0.0
 	 */
 	public static $xpathAnswers = "//legend[contains(text(),'Answers')]";
-
 }
