@@ -108,7 +108,11 @@ class RegistrationsEventCest
 		$this->menuCategory      = 'redEVENT - Component';
 	}
 
-	public function _before(\AcceptanceTester $i)
+	/**
+	 * @param AcceptanceTester $i
+	 * @throws Exception
+	 */
+	public function _before(AcceptanceTester $i)
 	{
 		$i->doAdministratorLogin();
 	}

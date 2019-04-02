@@ -34,7 +34,6 @@ class RegistrationManagerPage extends AbstractPage
 	public static $titleAttendees = "Attendees - redEVENT";
 
 	/**
-	 * Title of this page.
 	 * @var   string
 	 * @since 1.0.0
 	 */

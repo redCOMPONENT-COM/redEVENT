@@ -72,5 +72,9 @@ class TemplateManagerPage extends AbstractPage
 	 */
 	public static $enabled = "#submission_type_webform";
 
+	/**
+	 *  Locator for editor Type WebForm
+	 * @var string
+	 */
 	public static $editorTypeWebForm = "jform_submission_type_webform";
 }
