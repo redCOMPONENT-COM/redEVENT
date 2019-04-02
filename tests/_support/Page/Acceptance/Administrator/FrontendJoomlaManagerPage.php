@@ -29,7 +29,7 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $imagesRegistration = "//img[@src='http://localhost/redEvent/media/com_redevent/images/form_icon.gif']";
+	public static $imagesRegistration = "//div[@class='registration_method webform']//a";
 
 	/**
 	 * Images of Registration.
