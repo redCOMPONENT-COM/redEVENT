@@ -59,4 +59,19 @@ class TemplateManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $tableResult          = '//table[@id=\'table-items\']/tbody/tr[1]/td[4]';
+
+	/**
+	 * Locator for $tabRegistrationsTypes
+	 * @var string
+	 */
+	public static $tabRegistrationsTypes       = 'Registrations types';
+
+
+	/**
+	 * Locator for $enabled
+	 * @var string
+	 */
+	public static $enabled = "#submission_type_webform";
+
+	public static $editorTypeWebForm = "jform_submission_type_webform";
 }

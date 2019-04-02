@@ -297,6 +297,48 @@ pipeline:
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/FeaturedEvents 0 0'
 
+  05-RegistrationsEvent-56:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_user=admin
+    - tests_suite=05-RegistrationsEvent
+    - tests_db=RegistrationsEvent
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-05-RegistrationsEvent
+    - php_version=56
+    commands:
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
+
+  05-RegistrationsEvent-73:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_user=admin
+    - tests_suite=05-RegistrationsEvent
+    - tests_db=RegistrationsEvent
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-05-RegistrationsEvent
+    - php_version=73
+    commands:
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
+
   slack:
     image: plugins/slack
     webhook: https://hooks.slack.com/services/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
@@ -355,6 +397,7 @@ services:
     - sh tests/drone/setup-stages.sh        "administrator"                 "02-administrator"                  $php_versions
     - sh tests/drone/setup-stages.sh        "UpcomingEvents"                "03-UpcomingEvents"                 $php_versions
     - sh tests/drone/setup-stages.sh        "FeaturedEvents"                "04-FeaturedEvents"                 $php_versions
+    - sh tests/drone/setup-stages.sh        "RegistrationsEvent"            "05-RegistrationsEvent"                 $php_versions
 
 branches:
   exclude: [ crowdin ]

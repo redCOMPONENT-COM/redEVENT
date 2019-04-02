@@ -34,6 +34,16 @@ class EventManagerPage extends AbstractPage
 	public static $eventTitleNew      = "Add/edit event - redEVENT ";
 
 	/**
+	 * @var string
+	 */
+	public static $tabRegistration    = "Registration";
+
+	/**
+	 * @var string
+	 */
+	public static $enableRegistrationYes    = "//label[@for='jform_registra1']";
+
+	/**
 	 * Locator for field name
 	 * @var array
 	 * @since 1.0.0

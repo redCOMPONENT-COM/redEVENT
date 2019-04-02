@@ -151,4 +151,25 @@ class AbstractPage
      * @var string
      */
     public static $toggleEditor = "//div[@id='typewebform']//a[@xpath='1']";
+
+	/**
+	 * @param $event
+	 * @param $session
+	 * @return string
+	 */
+	public static function returnLink($event,$session)
+	{
+		$path = "$event"." - "."$session";
+		return $path;
+	}
+
+	/**
+	 * @param $value
+	 * @return string
+	 */
+	public static function returnValue($value)
+	{
+		$path = "//input[@value='".$value."']";
+		return $path;
+	}
 }

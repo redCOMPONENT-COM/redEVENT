@@ -85,9 +85,10 @@ class redFormManagerSteps extends AdminRedevent
 	/**
 	 * Create a field
 	 *
-	 * @param   array  $params  section fields
+	 * @param   array $params section fields
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function createRedformField($params)
 	{
@@ -113,7 +114,13 @@ class redFormManagerSteps extends AdminRedevent
 		{
 			$I->fillField(redFormManagerPage::$default, $params['default']);
 		}
-
+		if (isset($params['name']))
+		{
+			$I->scrollTo(redFormManagerPage::$fieldPlaceholder);
+			$I->waitForElement(redFormManagerPage::$fieldPlaceholder,30);
+			$I->fillField(redFormManagerPage::$fieldPlaceholder, $params['name']);
+		}
+		$I->scrollTo(redFormManagerPage::$fieldTitleH1);
 		$I->click(redFormManagerPage::$buttonSaveClose);
 	}
 
@@ -153,7 +160,8 @@ class redFormManagerSteps extends AdminRedevent
 		$I->click(redFormManagerPage::$buttonNew);
 		$I->waitForText(redFormManagerPage::$formTitleNew, 30, redFormManagerPage::$label);
 		$I->fillField(redFormManagerPage::$inputFormName, $params['name']);
-        $I->click('//label[@for="jform_formexpires0"]');
+		$I->waitForElement(redFormManagerPage::$formExpiresNo,30);
+		$I->click(redFormManagerPage::$formExpiresNo);
 		$I->click(redFormManagerPage::$buttonSaveClose);
 
 		if (!empty($params['fields']))
@@ -180,10 +188,10 @@ class redFormManagerSteps extends AdminRedevent
 		}
 	}
 
-    /**
-     * @param $params
-     * @return bool
-     */
+	/**
+	 * @param $params
+	 * @return bool
+	 */
 	protected function isElementPresent($params)
 	{
 		$I = $this;
@@ -202,9 +210,10 @@ class redFormManagerSteps extends AdminRedevent
 	/**
 	 * Create a form
 	 *
-	 * @param   array  $params  section fields
+	 * @param   array $params section fields
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function createMinimalRegistrationForm($params)
 	{
