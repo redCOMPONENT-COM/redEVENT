@@ -49,7 +49,7 @@ class TemplateManagerPage extends AbstractPage
 
 	/**
 	 * Locator for field name
-	 * @var array
+	 * @var string
 	 * @since 1.0.0
 	 */
 	public static $redFormId            = 'jform_redform_id';
@@ -59,4 +59,22 @@ class TemplateManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $tableResult          = '//table[@id=\'table-items\']/tbody/tr[1]/td[4]';
+
+	/**
+	 * Locator for $tabRegistrationsTypes
+	 * @var string
+	 */
+	public static $tabRegistrationsTypes       = 'Registrations types';
+
+	/**
+	 * Locator for $enabled
+	 * @var string
+	 */
+	public static $enabled = "#submission_type_webform";
+
+	/**
+	 * Locator for editor Type WebForm
+	 * @var string
+	 */
+	public static $editorTypeWebForm = "jform_submission_type_webform";
 }

@@ -23,4 +23,30 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @since 1.0.0
 	 */
 	public static $title = "Home";
+
+	/**
+	 * Images of Registration.
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $imagesRegistration = "//div[@class='registration_method webform']//a";
+
+	/**
+	 * Images of Registration.
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $submit = "#regularsubmit";
+
+
+	/**
+	 * @param $placeholder
+	 * @return string
+	 */
+	public static function returnInput($placeholder)
+	{
+		$path = "//input[@placeholder='".$placeholder."']";
+		return $path;
+	}
+
 }
