@@ -29,6 +29,62 @@ class RegistrationsEventCest
 	protected $nameTemplate;
 
 	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	protected $categoryVanueName;
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	protected $VanueName;
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	protected $categoryName;
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	protected $eventName;
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	protected $templateName;
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	protected $SessionName;
+
+	/**
+	 * @var string
+	 */
+	protected $menuItem;
+
+	/**
+	 * @var string
+	 */
+	protected  $menuCategory;
+
+	/**
+	 * @var string
+	 */
+	protected  $nameUser;
+
+	/**
+	 * @var string
+	 */
+	protected  $emailUser;
+
+	/**
 	 * 14-TemplateManagerCest constructor.
 	 *
 	 * @since 1.0.0
