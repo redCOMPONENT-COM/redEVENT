@@ -183,4 +183,19 @@ class redFormManagerPage extends AbstractPage
 	 * @return string
 	 */
 	public static $valueForm                   = '//table[@id=\'formList\']/tbody/tr/td[3]';
+
+	/**
+	 * @var string
+	 */
+	public static $formExpiresNo                 = '//label[@for="jform_formexpires0"]';
+
+	/**
+	 * @var string
+	 */
+	public static $fieldPlaceholder = '//input[@id=\'jform_params_placeholder\']';
+
+	/**
+	 * @var string
+	 */
+	public static $fieldTitleH1 ="//h1[contains(text(),'Field')]";
 }

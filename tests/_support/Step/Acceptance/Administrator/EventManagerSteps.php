@@ -38,6 +38,33 @@ class EventManagerSteps  extends CategoryManagerSteps
 
 	/**
 	 * @param $nameEvent
+	 * @param $nameCategory
+	 * @throws \Exception
+	 */
+	public function createEventRegistrations($nameEvent,$nameCategory,$templateName)
+	{
+		$I = $this;
+		$I ->createCategoryNew(array(
+			'name' => $nameCategory,
+			'description' => '<p>The description goes here</p>'
+		));
+		$I->amOnPage(EventManagerPage::$URL);
+		$I->waitForText(EventManagerPage::$eventTitle, 30);
+		$I->click(EventManagerPage::$buttonNew);
+		$I->waitForText(EventManagerPage::$eventTitleNew, 30);
+		$I->fillField(EventManagerPage::$fieldName, $nameEvent);
+		$I->waitForElement(EventManagerPage::$categorySelect, 30);
+		$I->selectOptionInChosenByIdUsingJs(EventManagerPage::$categoryItem, $nameCategory);
+		$I->waitForElement(EventManagerPage::$templateSelect, 30);
+		$I->selectOptionInChosenByIdUsingJs(EventManagerPage::$templateItem, $templateName);
+		$I->click(EventManagerPage::$tabRegistration);
+		$I->waitForElement(EventManagerPage::$enableRegistrationYes,30);
+		$I->click(EventManagerPage::$enableRegistrationYes);
+		$I->click(EventManagerPage::$buttonSaveClose);
+	}
+
+	/**
+	 * @param $nameEvent
 	 * @throws \Exception
 	 */
 	public function searchEvent($nameEvent)
