@@ -87,6 +87,11 @@ class CategoryEventsTableCest
 		$this->menuItem          = 'Category events table layout';
 		$this->menuCategory      = 'redEVENT - Component';
 	}
+
+    /**
+     * @param AcceptanceTester $i
+     * @throws Exception
+     */
 	public function _before(\AcceptanceTester $i)
 	{
 		$i->doAdministratorLogin();
