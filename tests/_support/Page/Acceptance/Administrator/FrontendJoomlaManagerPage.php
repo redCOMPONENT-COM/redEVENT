@@ -38,17 +38,17 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 */
 	public static $submit = "#regularsubmit";
 
-    /**
-     * @var   string
-     * @since 1.0.0
-     */
-    public static $calendar = ".jlcalendar";
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $calendar = ".jlcalendar";
 
-    /**
-     * @var   string
-     * @since 1.0.0
-     */
-    public static $calendarToday = ".today";
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $calendarToday = ".today";
 
 	/**
 	 * @param $placeholder
