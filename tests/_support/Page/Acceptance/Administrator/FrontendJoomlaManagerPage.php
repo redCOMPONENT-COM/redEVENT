@@ -51,6 +51,30 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $calendarToday = ".today";
 
 	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $tableCategoryEvent = ".el_categoryevents";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $titleEvent = "//dd[@class='title']";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $whereEvent ="//dd[@class='where']";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $categoryEvent ="//dd[@class='category']";
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
