@@ -65,33 +65,32 @@ class SessionManagerSteps extends AdminRedevent
 	}
 
 
-    /**
-     * @param $event
-     * @param $venue
-     * @param $nameSession
-     * @throws \Exception
-     */
-    public function createSessionForEvents($event,$venue,$nameSession)
-    {
-        $I = $this;
-        $I->amOnPage(SessionManagerPage::$URL );
-        $I->waitForText(SessionManagerPage:: $sessionTitle, 30);
-        $I->click(SessionManagerPage::$buttonNew);
-        $I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
-        $I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
-        $I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
-        $dateNow = date('Y-m-d');
-        $date  = date('Y-m-d', strtotime('+1 day', strtotime($dateNow)));
-        $I->waitForElement(SessionManagerPage::$fieldDate,30);
-        $I->fillField(SessionManagerPage::$fieldDate, $date);
-        $I->waitForElement(SessionManagerPage::$endDate,30);
-        $I->fillField(SessionManagerPage::$endDate, $date);
-        if (!empty($nameSession))
-        {
-            $I->fillField(SessionManagerPage::$fieldName, $nameSession);
-        }
-        $I->click(SessionManagerPage::$buttonSave);
-    }
+	/**
+	 * @param $event
+	 * @param $venue
+	 * @param $nameSession
+	 * @throws \Exception
+	 */
+	public function createSessionForEvents($event,$venue,$nameSession)
+	{
+		$I = $this;
+		$I->amOnPage(SessionManagerPage::$URL );
+		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->click(SessionManagerPage::$buttonNew);
+		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+		$dateNow = date('Y-m-d');
+		$I->waitForElement(SessionManagerPage::$fieldDate,30);
+		$I->fillField(SessionManagerPage::$fieldDate, $dateNow);
+		$I->waitForElement(SessionManagerPage::$endDate,30);
+		$I->fillField(SessionManagerPage::$endDate, $dateNow);
+		if (!empty($nameSession))
+		{
+			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
+		}
+		$I->click(SessionManagerPage::$buttonSave);
+	}
 
 	/**
 	 * @param $event

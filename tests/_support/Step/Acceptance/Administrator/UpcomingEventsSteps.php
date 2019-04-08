@@ -49,7 +49,8 @@ class UpcomingEventsSteps extends AdminRedevent
 		$I->waitForText(FrontendJoomlaManagerPage::$title,30,AbstractPage::$H1);
 		$I->waitForText($menuItem,30);
 		$I->click($menuItem);
-		$I->waitForText($eventName,30);
+		$I->waitForElement(FrontendJoomlaManagerPage::$calendar,30);
+		$I->waitForText($eventName,30,FrontendJoomlaManagerPage:: $calendarToday);
 		$I->click($eventName);
 		$I->waitForText($sessioName,30);
 		$I->waitForText($venues,30);

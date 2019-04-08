@@ -67,7 +67,7 @@ class CalendarViewEventsCest
 	 * @var string
 	 */
 	protected  $menuCategory;
-	
+
 	/**
 	 * VenueCategoryManagerCest constructor.
 	 *
