@@ -117,6 +117,7 @@ class CalendarViewEventsCest
 		$I->createVenueNew($this->VanueName,$this->categoryVanueName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
+
 	/**
 	 * @param EventManagerSteps $I
 	 * @throws Exception
