@@ -66,13 +66,13 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $whereEvent ="//dd[@class='where']";
+	public static $whereEvent = "//dd[@class='where']";
 
 	/**
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $categoryEvent ="//dd[@class='category']";
+	public static $categoryEvent = "//dd[@class='category']";
 
 	/**
 	 * @param $placeholder
