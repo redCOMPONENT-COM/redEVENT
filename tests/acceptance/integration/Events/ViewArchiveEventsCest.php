@@ -74,7 +74,7 @@ class ViewArchiveEventsCest
 	protected  $status;
 
 	/**
-	 * VenueCategoryManagerCest constructor.
+	 * ViewArchiveEventsCest constructor.
 	 *
 	 * @since 1.0.0
 	 */
