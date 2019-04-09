@@ -68,7 +68,7 @@ class SessionSubmissionCest
 	protected  $menuCategory;
 
 	/**
-	 * VenueCategoryManagerCest constructor.
+	 * SessionSubmissionCest constructor.
 	 *
 	 * @since 1.0.0
 	 */
@@ -135,7 +135,6 @@ class SessionSubmissionCest
 	{
 		$I->wantToTest('Add session in redEVENT');
 		$I->createSessionFrontend($this->menuItem,$this->eventName,$this->VanueName,$this->SessionName);
-
 	}
 
 	/**
