@@ -8,6 +8,7 @@
  */
 
 namespace Step\Acceptance\Administrator;
+use Page\Acceptance\Administrator\AbstractPage;
 use Page\Acceptance\Administrator\SessionManagerPage;
 use Step\Acceptance\AdminRedevent;
 
@@ -198,6 +199,27 @@ class SessionManagerSteps extends AdminRedevent
 		$I->acceptPopup();
 		$I->waitForText(SessionManagerPage::$messageDeleteProductSuccess, 60, SessionManagerPage::$message);
 		$I->dontSee($nameSession);
+	}
+
+	/**
+	 * @param $nameSession
+	 * @throws \Exception
+	 */
+	public function publishSession($nameSession)
+	{
+		$I = $this;
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
+		$I->waitForElementVisible(SessionManagerPage::$searchTools,30);
+		$I->click(SessionManagerPage::$searchTools);
+		$I->waitForElement(SessionManagerPage::$filterPublished,30);
+		$I->selectOptionInChosenById(SessionManagerPage::$filterPublishedID,"All");
+		$I->fillField(AbstractPage::$fieldSearch, $nameSession);
+		$I->click(AbstractPage::$buttonSearch);
+		$I->seeElement(AbstractPage::$tableResult);
+		$I->checkAllResults();
+		$I->click(AbstractPage::$buttonPublish);
+		$I->waitForText(SessionManagerPage::$messagePublishSuccess,30, SessionManagerPage::$message);
 	}
 
     /**

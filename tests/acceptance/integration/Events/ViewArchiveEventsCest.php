@@ -102,15 +102,15 @@ class ViewArchiveEventsCest
 		$i->doAdministratorLogin();
 	}
 
-	/**
-	 * @param JoomlaManagerSteps $I
-	 * @throws Exception
-	 */
-	public function createMenuItem(JoomlaManagerSteps $I)
-	{
-		$I->wantTo("Create Menu item Events archive in front end");
-		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
-	}
+//	/**
+//	 * @param JoomlaManagerSteps $I
+//	 * @throws Exception
+//	 */
+//	public function createMenuItem(JoomlaManagerSteps $I)
+//	{
+//		$I->wantTo("Create Menu item Events archive in front end");
+//		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
+//	}
 
 	/**
 	 * @param VanueManagerSteps $I
@@ -163,6 +163,7 @@ class ViewArchiveEventsCest
 	public function deleteAll(SessionManagerSteps $I, $scenario)
 	{
 		$I->wantToTest('Delete session');
+		$I->publishSession($this->SessionName);
 		$I ->deleteSession($this->SessionName);
 		$I = new EventManagerSteps($scenario);
 		$I->wantToTest('Delete events');

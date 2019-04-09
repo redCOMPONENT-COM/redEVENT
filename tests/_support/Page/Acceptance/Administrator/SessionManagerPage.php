@@ -91,28 +91,46 @@ class SessionManagerPage extends AbstractPage
 	 */
 	public static $buttonSave       = '//button[contains(@onclick, "session.save")]';
 
-    /**
-     *
-     * @var string
-     * @since 1.0.0
-     */
-    public static $tableResult      = '//table[@id=\'table-items\']/tbody/tr/td[9]';
+	/**
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $tableResult      = '//table[@id=\'table-items\']/tbody/tr/td[9]';
 
-    /**
-     * @var string
-     * @since 1.0.0
-     */
-    public static $statusPublished = '//label[@for="jform_published0"]';
+	/**
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $statusPublished = '//label[@for="jform_published0"]';
 
-    /**
-     * @var string
-     * @since 1.0.0
-     */
-    public static $statusUnpublished = '//label[@for="jform_published1"]';
+	/**
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $statusUnpublished = '//label[@for="jform_published1"]';
 
-    /**
-     * @var string
-     * @since 1.0.0
-     */
-    public static $statusArchived = '//label[@for="jform_published2"]';
+	/**
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $statusArchived = '//label[@for="jform_published2"]';
+
+	/**
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $searchTools = "//button[contains(text(),'Search tools')]";
+
+	/**
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $filterPublished = "//select[@id='filter_published']";
+
+	/**
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public static $filterPublishedID = "filter_published";
 }
