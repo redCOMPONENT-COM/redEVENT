@@ -92,6 +92,11 @@ class ViewArchiveEventsCest
 		$this->menuItem          = 'Events archive';
 		$this->menuCategory      = 'redEVENT - Component';
 	}
+
+	/**
+	 * @param AcceptanceTester $i
+	 * @throws Exception
+	 */
 	public function _before(\AcceptanceTester $i)
 	{
 		$i->doAdministratorLogin();
