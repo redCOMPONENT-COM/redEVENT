@@ -105,6 +105,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $titleOnTable = "//td[@class='re_title']";
 
 	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $messageSaveSessionSuccess = "Item submitted.";
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */

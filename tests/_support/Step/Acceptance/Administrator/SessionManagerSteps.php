@@ -8,6 +8,7 @@
  */
 
 namespace Step\Acceptance\Administrator;
+use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 use Page\Acceptance\Administrator\SessionManagerPage;
 use Step\Acceptance\AdminRedevent;
 
@@ -172,4 +173,36 @@ class SessionManagerSteps extends AdminRedevent
         $client->acceptPopup();
         $client->waitForElement(SessionManagerPage::$message, 30);
     }
+
+	/**
+	 * @param $menuItem
+	 * @param $event
+	 * @param $venue
+	 * @param $nameSession
+	 * @throws \Exception
+	 */
+	public function createSessionFrontend($menuItem,$event,$venue,$nameSession)
+	{
+		$I = $this;
+		$I->doFrontEndLogin("admin","admin");
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->checkForPhpNoticesOrWarningsOrExceptions();
+		$I->waitForText(FrontendJoomlaManagerPage::$title,30,FrontendJoomlaManagerPage::$H1);
+		$I->waitForText($menuItem,30);
+		$I->click($menuItem);
+		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+		$dateNow = date('Y-m-d');
+		$I->waitForElement(SessionManagerPage::$fieldDate,30);
+		$I->fillField(SessionManagerPage::$fieldDate, $dateNow);
+		$I->waitForElement(SessionManagerPage::$endDate,30);
+		$I->fillField(SessionManagerPage::$endDate, $dateNow);
+		if (!empty($nameSession))
+		{
+			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
+		}
+		$I->click(SessionManagerPage::$buttonSave);
+		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveSessionSuccess, 30, SessionManagerPage::$message);
+	}
 }
