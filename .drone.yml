@@ -525,7 +525,7 @@ services:
     - sh tests/drone/setup-stages.sh        "RegistrationsEvent"            "05-RegistrationsEvent"             $php_versions
     - sh tests/drone/setup-stages.sh        "CalendarViewEvents"            "06-CalendarViewEvents"             $php_versions
     - sh tests/drone/setup-stages.sh        "CategoryEvents"                "07-CategoryEvents"                 $php_versions
-    - sh tests/drone/setup-stages.sh        "SessionSubmission"             "08-SessionSubmission"                        $php_versions
+    - sh tests/drone/setup-stages.sh        "SessionSubmission"             "08-SessionSubmission"              $php_versions
 
 branches:
   exclude: [ crowdin ]
