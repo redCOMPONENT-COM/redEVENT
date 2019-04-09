@@ -97,4 +97,22 @@ class SessionManagerPage extends AbstractPage
      * @since 1.0.0
      */
     public static $tableResult      = '//table[@id=\'table-items\']/tbody/tr/td[9]';
+
+    /**
+     * @var string
+     * @since 1.0.0
+     */
+    public static $statusPublished = '//label[@for="jform_published0"]';
+
+    /**
+     * @var string
+     * @since 1.0.0
+     */
+    public static $statusUnpublished = '//label[@for="jform_published1"]';
+
+    /**
+     * @var string
+     * @since 1.0.0
+     */
+    public static $statusArchived = '//label[@for="jform_published2"]';
 }

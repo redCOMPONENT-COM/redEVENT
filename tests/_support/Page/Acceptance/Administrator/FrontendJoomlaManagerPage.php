@@ -75,6 +75,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $categoryEvent = "//dd[@class='category']";
 
 	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $eventList = ".el_eventlist";
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
