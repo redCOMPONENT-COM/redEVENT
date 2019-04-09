@@ -130,6 +130,11 @@ class JoomlaManagerPage extends AbstractPage
 	public static $idInstallSuccess =  "#system-message-container";
 
 	/**
+	 * @var string
+	 */
+	public static $idSelectCategory ="jform_request_id";
+
+	/**
 	 * @param $menuCategory
 	 * @return array
 	 */
