@@ -11,7 +11,6 @@ use Faker\Factory;
 use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
-use Step\Acceptance\Administrator\UpcomingEventsSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
 use Step\Acceptance\JoomlaManagerSteps;
 class SessionSubmissionCest
@@ -96,15 +95,15 @@ class SessionSubmissionCest
 		$i->doAdministratorLogin();
 	}
 
-//	/**
-//	 * @param JoomlaManagerSteps $I
-//	 * @throws Exception
-//	 */
-//	public function createMenuItem(JoomlaManagerSteps $I)
-//	{
-//		$I->wantTo("Create Menu item Session submission in front end");
-//		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
-//	}
+	/**
+	 * @param JoomlaManagerSteps $I
+	 * @throws Exception
+	 */
+	public function createMenuItem(JoomlaManagerSteps $I)
+	{
+		$I->wantTo("Create Menu item Session submission in front end");
+		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
+	}
 
 	/**
 	 * @param VanueManagerSteps $I
@@ -140,7 +139,7 @@ class SessionSubmissionCest
 	}
 
 	/**
-	 * @param JoomlaManagerSteps $I
+	 * @param SessionManagerSteps $I
 	 * @throws Exception
 	 */
 	public function checkSession(SessionManagerSteps $I)
