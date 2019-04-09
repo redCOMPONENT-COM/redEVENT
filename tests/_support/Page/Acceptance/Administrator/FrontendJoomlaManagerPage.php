@@ -75,6 +75,36 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $categoryEvent = "//dd[@class='category']";
 
 	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $titleSearchEvent = "Search events";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $tableSearch = ".container-fluid";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $fieldSearchFrontEnd = ".container-fluid";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $buttonSearchFrontEnd = ".container-fluid";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $titleOnTable = "//td[@class='re_title']";
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
