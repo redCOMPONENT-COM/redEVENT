@@ -1,8 +1,12 @@
 <?php
 
-
+/**
+ * @package     redEVENT
+ * @subpackage  Steps
+ * @copyright   Copyright (C) 2008 - 2019 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Step\Acceptance;
-
 
 use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 
@@ -12,6 +16,8 @@ class FrontEndManagerSteps extends AdminRedevent
      * @param $menuitem
      * @param $sessionname
      * @param $eventName
+     * @param $venues
+     * @param $category
      * @throws \Exception
      */
     public  function  checkEventUpcomingOfVenue($menuitem, $sessionname,$eventName,$venues,$category)
