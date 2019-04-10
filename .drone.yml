@@ -591,6 +591,48 @@ pipeline:
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
 
+  12-VenueCategories-56:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_user=admin
+    - tests_suite=12-VenueCategories
+    - tests_db=VenueCategories
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-12-VenueCategories
+    - php_version=56
+    commands:
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
+
+  12-VenueCategories-73:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_user=admin
+    - tests_suite=12-VenueCategories
+    - tests_db=VenueCategories
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-12-VenueCategories
+    - php_version=73
+    commands:
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
+
   slack:
     image: plugins/slack
     webhook: https://hooks.slack.com/services/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
@@ -656,6 +698,7 @@ services:
     - sh tests/drone/setup-stages.sh        "ArchiveEvents"                 "09-ArchiveEvents"                  $php_versions
     - sh tests/drone/setup-stages.sh        "SearchEvents"                  "10-SearchEvents"                   $php_versions
     - sh tests/drone/setup-stages.sh        "UpcomingVenue"                 "11-UpcomingVenue"                  $php_versions
+    - sh tests/drone/setup-stages.sh        "VenueCategories"               "12-VenueCategories"                $php_versions
 
 branches:
   exclude: [ crowdin ]
