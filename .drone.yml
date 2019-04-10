@@ -611,7 +611,7 @@ services:
     - sh tests/drone/setup-stages.sh        "CalendarViewEvents"            "06-CalendarViewEvents"             $php_versions
     - sh tests/drone/setup-stages.sh        "CategoryEvents"                "07-CategoryEvents"                 $php_versions
     - sh tests/drone/setup-stages.sh        "SessionSubmission"             "08-SessionSubmission"              $php_versions
-    - sh tests/drone/setup-stages.sh        "SearchEvents"                  "10-SearchEvents"                   $php_versions
     - sh tests/drone/setup-stages.sh        "ArchiveEvents"                 "09-ArchiveEvents"                  $php_versions
+    - sh tests/drone/setup-stages.sh        "SearchEvents"                  "10-SearchEvents"                   $php_versions
 branches:
   exclude: [ crowdin ]
