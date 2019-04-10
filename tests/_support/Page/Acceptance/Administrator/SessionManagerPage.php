@@ -126,7 +126,7 @@ class SessionManagerPage extends AbstractPage
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public static $filterPublished = "//select[@id='filter_published']";
+	public static $filterPublished = "//div[@id='filter_published_chzn']";
 
 	/**
 	 * @var string
