@@ -90,13 +90,13 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $fieldSearchFrontEnd = ".container-fluid";
+	public static $fieldSearchFrontEnd = "//input[@name='filter']";
 
 	/**
 	 * @var   string
 	 * @since 1.0.0
 	 */
-	public static $buttonSearchFrontEnd = ".container-fluid";
+	public static $buttonSearchFrontEnd = '//button[@onclick="document.getElementById(\'adminForm\').submit();"]';
 
 	/**
 	 * @var   string
