@@ -214,6 +214,7 @@ class SessionManagerSteps extends AdminRedevent
 		$I->waitForElementVisible(SessionManagerPage::$searchTools,30);
 		$I->click(SessionManagerPage::$searchTools);
 		$I->waitForElement(SessionManagerPage::$filterPublished,30);
+		$I->waitForElementVisible(SessionManagerPage::$filterPublished,30);
 		$I->selectOptionInChosenById(SessionManagerPage::$filterPublishedID,"All");
 		$I->fillField(AbstractPage::$fieldSearch, $nameSession);
 		$I->click(AbstractPage::$buttonSearch);
