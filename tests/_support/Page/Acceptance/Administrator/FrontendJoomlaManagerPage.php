@@ -78,6 +78,7 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
+
 	public static $titleSearchEvent = "Search events";
 
 	/**
@@ -103,6 +104,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @since 1.0.0
 	 */
 	public static $titleOnTable = "//td[@class='re_title']";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $eventList = ".el_eventlist";
 
 	/**
 	 * @var   string

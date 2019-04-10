@@ -129,6 +129,12 @@ class AbstractPage
 	 */
 	public static $messageDeleteProductSuccess = '1 item(s) deleted';
 
+    /**
+     * Message delete success
+     * @var string
+     */
+    public static $messagePublishSuccess = '1 item(s) published';
+
 	/**
 	 * Button search
 	 * @var string
