@@ -78,6 +78,37 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
+
+	public static $titleSearchEvent = "Search events";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $tableSearch = ".container-fluid";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $fieldSearchFrontEnd = "//input[@name='filter']";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $buttonSearchFrontEnd = '//button[@onclick="document.getElementById(\'adminForm\').submit();"]';
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
+	public static $titleOnTable = "//td[@class='re_title']";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
 	public static $eventList = ".el_eventlist";
 
 	/**

@@ -12,10 +12,8 @@ use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
 use Step\Acceptance\Administrator\UpcomingEventsSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
-use Step\Acceptance\FrontEndManagerSteps;
 use Step\Acceptance\JoomlaManagerSteps;
-
-class UpcomingVenueCest
+class SearchEventsOnFrontEndCest
 {
 	/**
 	 * @var   Generator
@@ -69,7 +67,6 @@ class UpcomingVenueCest
 	 */
 	protected  $menuCategory;
 
-
 	/**
 	 * VenueCategoryManagerCest constructor.
 	 *
@@ -78,24 +75,24 @@ class UpcomingVenueCest
 	public function __construct()
 	{
 		$this->faker             = Factory::create();
-		$this->categoryVanueName = $this->faker->bothify("Category vanue Name ##??");
+		$this->categoryVanueName = $this->faker->bothify("Category Vanue Name ##??");
 		$this->VanueName         = $this->faker->bothify("Vanue Name ##??");
 		$this->categoryName      = $this->faker->bothify("Category Name ##??");
 		$this->eventName         = $this->faker->bothify("Event Name ##??");
 		$this->templateName      =  'default template';
 		$this->SessionName       = $this->faker->bothify("Session Name ##??");
 
-		$this->menuItem            = 'Upcoming venue events';
-		$this->menuCategory        = 'redEVENT - Component';
+		$this->menuItem          = 'Search default layout';
+		$this->menuCategory      = 'redEVENT - Component';
 	}
 
 	/**
-	 * @param AcceptanceTester $I
+	 * @param AcceptanceTester $i
 	 * @throws Exception
 	 */
-	public function _before(\AcceptanceTester $I)
+	public function _before(\AcceptanceTester $i)
 	{
-		$I->doAdministratorLogin();
+		$i->doAdministratorLogin();
 	}
 
 	/**
@@ -105,17 +102,20 @@ class UpcomingVenueCest
 	public function addVenue(VanueManagerSteps $I)
 	{
 		$I->wantToTest('Add a venue in redEVENT');
-		$I->createVenueNew($this->VanueName, $this->categoryVanueName);
+
+		$I->createVenueNew($this->VanueName,$this->categoryVanueName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
+
 	/**
 	 * @param EventManagerSteps $I
 	 * @throws Exception
 	 */
 	public function addEvent(EventManagerSteps $I)
 	{
-		$I->wantToTest('Add an event in redEVENT with created template');
-		$I->createEventNew($this->eventName, $this->categoryName, $this->templateName);
+		$I->wantToTest('Add an event in redEVENT with default template');
+
+		$I->createEventNew($this->eventName,$this->categoryName, $this->templateName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -126,7 +126,7 @@ class UpcomingVenueCest
 	public function createSession(SessionManagerSteps $I)
 	{
 		$I->wantToTest('Add session in redEVENT');
-		$I->createSessionUpcomming($this->eventName, $this->VanueName, $this->SessionName);
+		$I->createSessionNew($this->eventName,$this->VanueName,$this->SessionName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -136,18 +136,18 @@ class UpcomingVenueCest
 	 */
 	public function createMenuItem(JoomlaManagerSteps $I)
 	{
-		$I->wantTo("Create Menu item Upcoming events in front end");
-		$I->createNewMenuItemHaveCategory($this->menuItem, $this->menuCategory, $this->menuItem, $this->VanueName);
+		$I->wantTo("Create Menu item Featured events in front end");
+		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
 	}
 
 	/**
-	 * @param FrontEndManagerSteps $I
+	 * @param UpcomingEventsSteps $I
 	 * @throws Exception
 	 */
-	public function CheckFrontEnd(FrontEndManagerSteps $I)
+	public function CheckFrontEnd(UpcomingEventsSteps $I)
 	{
-		$I->wantToTest('Check upcoming event on front-end');
-		$I->checkEventUpcomingOfVenue($this->menuItem, $this->SessionName, $this->eventName, $this->VanueName, $this->categoryName);
+		$I->wantToTest('Check featured events on front-end');
+		$I->searchEventOnFrontEnd($this->menuItem,$this->SessionName,$this->eventName,$this->VanueName,$this->categoryName);
 	}
 
 	/***
@@ -166,6 +166,6 @@ class UpcomingVenueCest
 		$I->deleteCategory($this->categoryName);
 		$I = new VanueManagerSteps($scenario);
 		$I->wantToTest('Delete Venue');
-		$I->deleteVenue($this->categoryVanueName, $this->VanueName);
+		$I->deleteVenue($this->categoryVanueName,$this->VanueName);
 	}
 }

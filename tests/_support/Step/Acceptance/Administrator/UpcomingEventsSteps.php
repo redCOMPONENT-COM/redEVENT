@@ -101,4 +101,33 @@ class UpcomingEventsSteps extends AdminRedevent
 		$I->waitForText($venues,30,FrontendJoomlaManagerPage::$whereEvent);
 		$I->waitForText($category,30,FrontendJoomlaManagerPage::$categoryEvent);
 	}
+
+	/**
+	 * @param $menuitem
+	 * @param $sessionname
+	 * @param $eventName
+	 * @param $venues
+	 * @param $category
+	 * @throws \Exception
+	 */
+	public function searchEventOnFrontEnd($menuitem, $sessionname,$eventName,$venues,$category)
+	{
+		$I = $this;
+		$I->doFrontEndLogin("admin","admin");
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->checkForPhpNoticesOrWarningsOrExceptions();
+		$I->waitForText(FrontendJoomlaManagerPage::$title,30,AbstractPage::$H1);
+		$I->waitForText($menuitem,30);
+		$I->click($menuitem);
+		$I->waitForText(FrontendJoomlaManagerPage::$titleSearchEvent,30);
+		$I->waitForElement(FrontendJoomlaManagerPage::$tableSearch,30);
+		$I->waitForElement(FrontendJoomlaManagerPage::$fieldSearchFrontEnd,30);
+		$I->fillField(FrontendJoomlaManagerPage::$fieldSearchFrontEnd,$eventName);
+		$I->click(FrontendJoomlaManagerPage::$buttonSearchFrontEnd);
+		$I->waitForText(FrontendJoomlaManagerPage::returnLink($eventName,$sessionname),30,FrontendJoomlaManagerPage::$titleOnTable);
+		$I->click(FrontendJoomlaManagerPage::returnLink($eventName,$sessionname));
+		$I->waitForText(FrontendJoomlaManagerPage::returnLink($eventName,$sessionname),30,FrontendJoomlaManagerPage:: $titleEvent);
+		$I->waitForText($venues,30,FrontendJoomlaManagerPage::$whereEvent);
+		$I->waitForText($category,30,FrontendJoomlaManagerPage::$categoryEvent);
+	}
 }

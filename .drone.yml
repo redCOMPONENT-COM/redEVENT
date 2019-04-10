@@ -507,6 +507,48 @@ pipeline:
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
 
+  10-SearchEvents-56:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_user=admin
+    - tests_suite=10-SearchEvents
+    - tests_db=SearchEvents
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-10-SearchEvents
+    - php_version=56
+    commands:
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
+
+  10-SearchEvents-73:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_user=admin
+    - tests_suite=10-SearchEvents
+    - tests_db=SearchEvents
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-10-SearchEvents
+    - php_version=73
+    commands:
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
+
   11-UpcomingVenue-56:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
@@ -528,26 +570,26 @@ pipeline:
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
 
-  11-UpcomingVenue-73:
-    group: tests
-    image: redwebaps/testbox-chromedriver:2.38
-    environment:
-    - tests_user=admin
-    - tests_suite=11-UpcomingVenue
-    - tests_db=UpcomingVenue
-    - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-11-UpcomingVenue
-    - php_version=73
-    commands:
-    # Regular entry point
-    - /entrypoint.sh &
-    # Performs test after ensuring that the scenario has been fully set up
-    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-    # Waits until Chromedriver is up and running
-    - while ! nc -z localhost 9515; do sleep 1; done
-    # Performs test
-    - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
+    11-UpcomingVenue-73:
+      group: tests
+      image: redwebaps/testbox-chromedriver:2.38
+      environment:
+      - tests_user=admin
+      - tests_suite=11-UpcomingVenue
+      - tests_db=UpcomingVenue
+      - build_path=/drone/src/github.com/${DRONE_REPO}
+      - output_append=-11-UpcomingVenue
+      - php_version=73
+      commands:
+      # Regular entry point
+      - /entrypoint.sh &
+      # Performs test after ensuring that the scenario has been fully set up
+      - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+      # Waits until Chromedriver is up and running
+      - while ! nc -z localhost 9515; do sleep 1; done
+      # Performs test
+      - cd tests
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
 
   slack:
     image: plugins/slack
@@ -612,6 +654,7 @@ services:
     - sh tests/drone/setup-stages.sh        "CategoryEvents"                "07-CategoryEvents"                 $php_versions
     - sh tests/drone/setup-stages.sh        "SessionSubmission"             "08-SessionSubmission"              $php_versions
     - sh tests/drone/setup-stages.sh        "ArchiveEvents"                 "09-ArchiveEvents"                  $php_versions
+    - sh tests/drone/setup-stages.sh        "SearchEvents"                  "10-SearchEvents"                   $php_versions
     - sh tests/drone/setup-stages.sh        "UpcomingVenue"                 "11-UpcomingVenue"                  $php_versions
 
 branches:
