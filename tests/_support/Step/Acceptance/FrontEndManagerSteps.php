@@ -23,15 +23,16 @@ class FrontEndManagerSteps extends AdminRedevent
     public  function  checkEventUpcomingOfVenue($menuitem, $sessionname, $eventName, $venues, $category)
     {
         $I = $this;
-        $I->amOnPage(FrontendJoomlaManagerPage::$URL);
+        $usepage = new FrontendJoomlaManagerPage();
+        $I->amOnPage($usepage::$URL);
         $I->checkForPhpNoticesOrWarningsOrExceptions();
-        $I->waitForText(FrontendJoomlaManagerPage::$title, 30, FrontendJoomlaManagerPage::$H1);
+        $I->waitForText($usepage::$title, 30, $usepage::$H1);
         $I->waitForText($menuitem, 30);
         $I->click($menuitem);
         $I->waitForText($eventName, 30);
-        $I->click(FrontendJoomlaManagerPage::returnLink($eventName, $sessionname));
-        $I->waitForText(FrontendJoomlaManagerPage::returnLink($eventName, $sessionname), 30, FrontendJoomlaManagerPage:: $titleEvent);
-        $I->waitForText($venues, 30, FrontendJoomlaManagerPage::$whereEvent);
-        $I->waitForText($category, 30, FrontendJoomlaManagerPage::$categoryEvent);
+        $I->click($usepage::returnLink($eventName, $sessionname));
+        $I->waitForText($usepage::returnLink($eventName, $sessionname), 30, $usepage:: $titleEvent);
+        $I->waitForText($venues, 30, $usepage::$whereEvent);
+        $I->waitForText($category, 30, $usepage::$categoryEvent);
     }
 }
