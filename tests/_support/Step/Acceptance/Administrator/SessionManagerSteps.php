@@ -8,6 +8,8 @@
  */
 
 namespace Step\Acceptance\Administrator;
+use Page\Acceptance\Administrator\AbstractPage;
+use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 use Page\Acceptance\Administrator\SessionManagerPage;
 use Step\Acceptance\AdminRedevent;
 
@@ -125,6 +127,51 @@ class SessionManagerSteps extends AdminRedevent
 	}
 
 	/**
+	 * @param $event
+	 * @param $venue
+	 * @param $nameSession
+	 * @param $status
+	 * @throws \Exception
+	 */
+	public function createSessionHaveStatus($event,$venue,$nameSession,$status)
+	{
+		$I = $this;
+		$I->amOnPage(SessionManagerPage::$URL );
+		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->click(SessionManagerPage::$buttonNew);
+		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+		$dateNow = date('Y-m-d');
+		$date  = date('Y-m-d', strtotime('+1 day', strtotime($dateNow)));
+		$endDate  = date('Y-m-d', strtotime('+2 day', strtotime($dateNow)));
+		$I->waitForElement(SessionManagerPage::$fieldDate,30);
+		$I->fillField(SessionManagerPage::$fieldDate, $date);
+		$I->waitForElement(SessionManagerPage::$endDate,30);
+		$I->fillField(SessionManagerPage::$endDate, $endDate);
+		if (!empty($nameSession))
+		{
+			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
+		}
+		switch ($status)
+		{
+			case 'Published':
+				$I->click(SessionManagerPage::$statusPublished);
+				break;
+
+			case 'Unpublished':
+				$I->click(SessionManagerPage::$statusUnpublished);
+				break;
+
+			case 'Archived':
+				$I->click(SessionManagerPage::$statusArchived);
+				break;
+		}
+		$I->click(SessionManagerPage::$buttonSave);
+		$I->waitForText(SessionManagerPage::$messageSaveSuccess, 30, SessionManagerPage::$message);
+	}
+
+	/**
 	 * @param $nameSession
 	 * @throws \Exception
 	 */
@@ -155,6 +202,27 @@ class SessionManagerSteps extends AdminRedevent
 		$I->dontSee($nameSession);
 	}
 
+	/**
+	 * @param $nameSession
+	 * @throws \Exception
+	 */
+	public function publishSession($nameSession)
+	{
+		$I = $this;
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
+		$I->waitForElementVisible(SessionManagerPage::$searchTools,30);
+		$I->click(SessionManagerPage::$searchTools);
+		$I->waitForElement(SessionManagerPage::$filterPublished,30);
+		$I->selectOptionInChosenById(SessionManagerPage::$filterPublishedID,"All");
+		$I->fillField(AbstractPage::$fieldSearch, $nameSession);
+		$I->click(AbstractPage::$buttonSearch);
+		$I->seeElement(AbstractPage::$tableResult);
+		$I->checkAllResults();
+		$I->click(AbstractPage::$buttonPublish);
+		$I->waitForText(SessionManagerPage::$messagePublishSuccess,30, SessionManagerPage::$message);
+	}
+
     /**
      * @throws \Exception
      */
@@ -172,4 +240,36 @@ class SessionManagerSteps extends AdminRedevent
         $client->acceptPopup();
         $client->waitForElement(SessionManagerPage::$message, 30);
     }
+
+	/**
+	 * @param $menuItem
+	 * @param $event
+	 * @param $venue
+	 * @param $nameSession
+	 * @throws \Exception
+	 */
+	public function createSessionFrontend($menuItem,$event,$venue,$nameSession)
+	{
+		$I = $this;
+		$I->doFrontEndLogin("admin","admin");
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->checkForPhpNoticesOrWarningsOrExceptions();
+		$I->waitForText(FrontendJoomlaManagerPage::$title,30,FrontendJoomlaManagerPage::$H1);
+		$I->waitForText($menuItem,30);
+		$I->click($menuItem);
+		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+		$dateNow = date('Y-m-d');
+		$I->waitForElement(SessionManagerPage::$fieldDate,30);
+		$I->fillField(SessionManagerPage::$fieldDate, $dateNow);
+		$I->waitForElement(SessionManagerPage::$endDate,30);
+		$I->fillField(SessionManagerPage::$endDate, $dateNow);
+		if (!empty($nameSession))
+		{
+			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
+		}
+		$I->click(SessionManagerPage::$buttonSave);
+		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveSessionSuccess, 30, SessionManagerPage::$message);
+	}
 }
