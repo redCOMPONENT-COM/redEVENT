@@ -78,6 +78,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
+	public static $eventList = ".el_eventlist";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
 	public static $messageSaveSessionSuccess = "Item submitted.";
 
 	/**
