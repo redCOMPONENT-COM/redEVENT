@@ -82,7 +82,7 @@ class UpcomingVenueCest
 		$this->VanueName         = $this->faker->bothify("Vanue Name ##??");
 		$this->categoryName      = $this->faker->bothify("Category Name ##??");
 		$this->eventName         = $this->faker->bothify("Event Name ##??");
-		$this->templateName      =  'default template';
+		$this->templateName      = 'default template';
 		$this->SessionName       = $this->faker->bothify("Session Name ##??");
 
 		$this->menuItem            = 'Upcoming venue events';
