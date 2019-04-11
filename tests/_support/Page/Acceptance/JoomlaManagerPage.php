@@ -134,6 +134,36 @@ class JoomlaManagerPage extends AbstractPage
 	 */
 	public static $idSelectCategory ="jform_request_id";
 
+
+
+    /**
+     * @var string
+     */
+    public static $selectArticleLbl = "#jform_request_xref_name";
+    /**
+     * @var string
+     */
+    public static $createArticle = "//button[@id='jform_request_id_new']";
+    /**
+     * @var string
+     */
+    public static $selectArticle = "//a[@title='Select session']";
+    /**
+     * @var string
+     */
+    public static $selectChangeArticle = "#sbox-content";
+    /**
+     * @var string
+     */
+    public static $searchArticleId  = "//input[@id='filter_search']";
+
+
+    /**
+     * @var string
+     */
+    public static $searchIcon = "//button[@data-original-title=\"Search\"]";
+
+
 	/**
 	 * @param $menuCategory
 	 * @return array
