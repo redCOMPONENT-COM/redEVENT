@@ -1,45 +1,43 @@
 /**
  * redevent quickbook module javascript
  */
+(function($) {
+	$(function() {
+		$('#xref').change(function() {
+			var xref = $(this).val();
+			var options = [];
 
-document.addEvent('domready', function(){
-	document.id('xref').addEvent('change', function() {
-		var xref = this.get('value');
-		var options = new Array();
-
-		for (var i = 0; i < prices.length; i++) {
-			if (prices[i].xref == xref) {
-				options.push(new Element('option', {'value': prices[i].id, 'price': prices[i].price}).appendText(prices[i].name));
-			}
-		}
-
-		if (options.length) {
-			if (document.id('sessionpricegroup_id'))
-			{
-				document.id('sessionpricegroup_id').dispose();
-			}
-
-			if (options.length > 1)
-			{
-				var sel = new Element('select', {
-					'id': 'sessionpricegroup_id',
-					'name': 'sessionpricegroup_id[]'
-				});
-
-				for (var i = 0; i < options.length; i++) {
-					sel.adopt(options[i]);
+			for (var i = 0; i < prices.length; i++) {
+				if (prices[i].xref == xref) {
+					options.push($('<option>').val(prices[i].id).attr('price', prices[i].price).text(prices[i].name));
 				}
 			}
-			else {
-				var sel = new Element('input', {
-					'id': 'sessionpricegroup_id',
-					'name': 'sessionpricegroup_id[]',
-					'type': 'hidden',
-					'value': options[0].value
-				})
-			}
 
-			sel.inject(this, 'after');
-		}
-	}).fireEvent('change');
-});
+			if (options.length) {
+				if ($('#sessionpricegroup_id'))
+				{
+					$('#sessionpricegroup_id').remove();
+				}
+
+				if (options.length > 1)
+				{
+					var sel = $('<select>').attr('id', 'sessionpricegroup_id')
+						.attr('name', 'sessionpricegroup_id[]');
+
+					for (var i = 0; i < options.length; i++) {
+						sel.append(options[i]);
+					}
+				}
+				else {
+
+					var sel = $('<input>').attr('id', 'sessionpricegroup_id')
+						.attr('name', 'sessionpricegroup_id[]')
+						.type('name', 'hidden')
+						.val(options[0].value);
+				}
+
+				$(this).after(sel);
+			}
+		}).change();
+	});
+})(jQuery);
