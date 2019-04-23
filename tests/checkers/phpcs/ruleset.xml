@@ -37,7 +37,6 @@
 	<exclude-pattern>plugins/**/layouts/*</exclude-pattern>
 	<exclude-pattern>plugins/**/vendor/*</exclude-pattern>
 	<exclude-pattern>plugins/system/redevent_labels/labels.php</exclude-pattern>
-	<exclude-pattern>modules/frontend/mod_rokminievents</exclude-pattern>
 	<exclude-pattern>modules/frontend/mod_redevent_categories/helper.php</exclude-pattern>
 
 </ruleset>
