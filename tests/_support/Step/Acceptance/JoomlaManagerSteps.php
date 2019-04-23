@@ -184,18 +184,21 @@ class JoomlaManagerSteps extends AdminRedevent
 
         $I->waitForElement(JoomlaManagerPage::$selectArticleLbl, 30);
         $I->waitForElementVisible(JoomlaManagerPage::$selectArticle, 30);
-        $I->pauseExecution();
         $I->click(JoomlaManagerPage::$selectArticle);
         $I->wait(3);
-        $I->switchToIFrame();
-//        $I->waitForElement(JoomlaManagerPage::$searchArticleId, 30);
-//        $I->fillField(JoomlaManagerPage::$searchArticleId, $nameCategory);
-//        $I->waitForElement(JoomlaManagerPage::$searchIcon);
-//        $I->click(JoomlaManagerPage::$searchIcon);
-        $I->click("//a[@class='pointer']");
+	    $I->executeJS('jQuery("iframe").attr("name", "session")');
+	    $I->pauseExecution();
+	    $I->switchToIFrame("session");
+        $I->waitForElement(JoomlaManagerPage::$searchArticleId, 30);
+        $I->fillField(JoomlaManagerPage::$searchArticleId, $nameCategory);
+        $I->waitForElement(JoomlaManagerPage::$searchIcon);
+        $I->click(JoomlaManagerPage::$searchIcon);
+        $I->pauseExecution();
+        $I->waitForElementVisible("//td[5]/a", 30);
+        $I->click("//td[5]/a");
         $I->wait(0.5);
         $I->switchToIFrame();
-
+        $I->wait(2);
         $I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
 
         $I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
