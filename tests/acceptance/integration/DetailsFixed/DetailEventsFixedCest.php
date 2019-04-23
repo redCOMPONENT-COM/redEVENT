@@ -174,6 +174,6 @@ class CategoryEventsTableCest
 		$I->deleteCategory($this->categoryName);
 		$I = new VanueManagerSteps($scenario);
 		$I->wantToTest('Delete Venue');
-		$I->deleteVenue($this->categoryVanueName,$this->VanueName);
+		$I->deleteVenue($this->categoryVanueName, $this->VanueName);
 	}
 }

@@ -177,7 +177,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->wantTo("Choose the menu item type: $menuItem");
 		$I->wait(0.5);
 		$usePage = new JoomlaManagerPage();
-		$I->waitForElement($usePage->returnMenuItem($menuItem),5);
+		$I->waitForElement($usePage->returnMenuItem($menuItem), 5);
 		$I->click($usePage->returnMenuItem($menuItem));
 		$I->switchToIFrame();
 
@@ -194,7 +194,6 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->waitForElement(JoomlaManagerPage::$searchIcon);
 		$I->click(JoomlaManagerPage::$searchIcon);
 		$I->waitForElementVisible(JoomlaManagerPage::$locatorEvent, 30);
-		$I->click(JoomlaManagerPage:: $locatorEvent);
 		$I->wait(0.5);
 		$I->switchToIFrame();
 		$I->wait(1);
