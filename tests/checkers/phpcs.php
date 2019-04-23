@@ -45,7 +45,6 @@ $ignored = array(
 	REPO_BASE . '/plugins/jomsocial/*',
 	REPO_BASE . '/plugins/josetta_ext/*',
 	REPO_BASE . '/plugins/**/layouts/*',
-	REPO_BASE . '/modules/frontend/mod_rokminievents',
 	REPO_BASE . '/modules/frontend/mod_redevent_categories/helper.php',
 );
 

@@ -56,20 +56,6 @@ files:
     translation: /languages/%locale%/site/%locale%/%locale%.mod_redevent_venues_events.ini
   - source: /modules/frontend/mod_redevent_venues_events/language/en-GB/en-GB.mod_redevent_venues_events.sys.ini
     translation: /languages/%locale%/site/%locale%/%locale%.mod_redevent_venues_events.sys.ini
-  - source: /modules/frontend/mod_rokminievents/en-GB.mod_rokminievents.ini
-    translation: /languages/%locale%/site/%locale%/%locale%.mod_rokminievents.ini
-  - source: /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.eventlist.ini
-    translation: /languages/%locale%/site/%locale%/%locale%.eventlist.ini
-  - source: /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.google.ini
-    translation: /languages/%locale%/site/%locale%/%locale%.google.ini
-  - source: /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.jevents.ini
-    translation: /languages/%locale%/site/%locale%/%locale%.jevents.ini
-  - source: /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.jomsocial.ini
-    translation: /languages/%locale%/site/%locale%/%locale%.jomsocial.ini
-  - source: /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.redevent.ini
-    translation: /languages/%locale%/site/%locale%/%locale%.redevent.ini
-  - source: /modules/frontend/mod_rokminievents/lib/RokMiniEvents/Source/language/en-GB/en-GB.rsevents.ini
-    translation: /languages/%locale%/site/%locale%/%locale%.rsevents.ini
   - source: /plugins/aesir_field/redevent_bundle/language/en-GB/en-GB.plg_aesir_field_redevent_bundle.ini
     translation: /languages/%locale%/admin/%locale%/%locale%.plg_aesir_field_redevent_bundle.ini
   - source: /plugins/aesir_field/redevent_bundle/language/en-GB/en-GB.plg_aesir_field_redevent_bundle.sys.ini
