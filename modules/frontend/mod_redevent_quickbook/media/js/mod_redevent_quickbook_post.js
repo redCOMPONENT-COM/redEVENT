@@ -1,12 +1,13 @@
 /**
  * redevent quickbook module javascript
  */
-
-document.addEvent('domready', function(){
-	document.id('qbsubmit-btn').addEvent('click', function() {
-		var form = this.getParent('form');
-		if (document.formvalidator.isValid(form)) {
-			form.submit();
-		}
+(function($) {
+	$(function() {
+		$('#qbsubmit-btn').click(function() {
+			var form = $(this).parents('form');
+			if (document.redformvalidator.isValid(form)) {
+				form.submit();
+			}
+		});
 	});
-});
+})(jQuery);
