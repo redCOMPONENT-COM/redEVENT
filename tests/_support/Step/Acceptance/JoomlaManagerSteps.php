@@ -194,6 +194,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->waitForElement(JoomlaManagerPage::$searchIcon);
 		$I->click(JoomlaManagerPage::$searchIcon);
 		$I->waitForElementVisible(JoomlaManagerPage::$locatorEvent, 30);
+		$I->click(JoomlaManagerPage:: $locatorEvent);
 		$I->wait(0.5);
 		$I->switchToIFrame();
 		$I->wait(1);
