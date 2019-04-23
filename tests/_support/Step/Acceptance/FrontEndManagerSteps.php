@@ -75,10 +75,10 @@ class FrontEndManagerSteps extends AdminRedevent
 		$I = $this;
 		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
 		$I->checkForPhpNoticesOrWarningsOrExceptions();
-		$I->waitForText(FrontendJoomlaManagerPage::$title,30,FrontendJoomlaManagerPage::$H1);
-		$I->waitForText($menuItem,30);
+		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, FrontendJoomlaManagerPage::$H1);
+		$I->waitForText($menuItem, 30);
 		$I->click($menuItem);
-		$I->waitForElement(FrontendJoomlaManagerPage::$event,30);
+		$I->waitForElement(FrontendJoomlaManagerPage::$event, 30);
 		$I->waitForText(FrontendJoomlaManagerPage::returnLink($eventName, $sessionName), 30, FrontendJoomlaManagerPage:: $titleEvent);
 		$I->waitForText($venues, 30, FrontendJoomlaManagerPage::$whereEvent);
 		$I->waitForText($category, 30, FrontendJoomlaManagerPage::$categoryEvent);
