@@ -11,8 +11,8 @@ use Faker\Factory;
 use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
-use Step\Acceptance\Administrator\UpcomingEventsSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
+use Step\Acceptance\FrontEndManagerSteps;
 use Step\Acceptance\JoomlaManagerSteps;
 
 class CategoryEventsTableCest
@@ -67,6 +67,11 @@ class CategoryEventsTableCest
 	/**
 	 * @var string
 	 */
+	protected $nameMenuItem;
+
+	/**
+	 * @var string
+	 */
 	protected  $menuCategory;
 
 	/**
@@ -84,6 +89,7 @@ class CategoryEventsTableCest
 		$this->templateName      =  'default template';
 		$this->SessionName       = $this->faker->bothify("Session Name ##??");
 
+		$this->nameMenuItem      = $this->faker->bothify("Menu item Name ##??");
 		$this->menuItem          = 'Details fixed layout';
 		$this->menuCategory      = 'redEVENT - Component';
 	}
@@ -105,7 +111,7 @@ class CategoryEventsTableCest
 	{
 		$I->wantToTest('Add a venue in redEVENT');
 
-		$I->createVenueNew($this->VanueName,$this->categoryVanueName);
+		$I->createVenueNew($this->VanueName,   $this->categoryVanueName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -117,7 +123,7 @@ class CategoryEventsTableCest
 	{
 		$I->wantToTest('Add an event in redEVENT with default template');
 
-		$I->createEventNew($this->eventName,$this->categoryName, $this->templateName);
+		$I->createEventNew($this->eventName, $this->categoryName, $this->templateName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -128,7 +134,7 @@ class CategoryEventsTableCest
 	public function createSession(SessionManagerSteps $I)
 	{
 		$I->wantToTest('Add session in redEVENT');
-		$I->createSessionNew($this->eventName,$this->VanueName,$this->SessionName);
+		$I->createSessionNew($this->eventName, $this->VanueName, $this->SessionName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -139,19 +145,18 @@ class CategoryEventsTableCest
 	public function createMenuItem(JoomlaManagerSteps $I)
 	{
 		$I->wantTo("Create Menu item Featured events in front end");
-		$I->createNewMenuItemHaveSession($this->menuItem, $this->menuCategory, $this->menuItem,$this->eventName);
-		$I->pauseExecution();
+		$I->createNewMenuItemHaveSession($this->nameMenuItem, $this->menuCategory, $this->menuItem, $this->eventName);
 	}
 
-//	/**
-//	 * @param UpcomingEventsSteps $I
-//	 * @throws Exception
-//	 */
-//	public function CheckFrontEndWithFeaturedEvents(UpcomingEventsSteps $I)
-//	{
-//		$I->wantToTest('Check featured events on front-end');
-//		$I->checkEventOnTable($this->menuItem,$this->SessionName,$this->eventName,$this->VanueName,$this->categoryName);
-//	}
+	/**
+	 * @param FrontEndManagerSteps $I
+	 * @throws Exception
+	 */
+	public function CheckFrontEndWithFeaturedEvents(FrontEndManagerSteps $I)
+	{
+		$I->wantToTest('Check featured events on front-end');
+		$I->checkEventOnFrontEnd($this->nameMenuItem, $this->SessionName, $this->eventName, $this->VanueName, $this->categoryName);
+	}
 
 	/***
 	 * @param SessionManagerSteps $I

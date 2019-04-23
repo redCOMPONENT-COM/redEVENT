@@ -115,6 +115,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var   string
 	 * @since 1.0.0
 	 */
+	public static $event = ".redevent";
+
+	/**
+	 * @var   string
+	 * @since 1.0.0
+	 */
 	public static $messageSaveSessionSuccess = "Item submitted.";
 
 	/**
