@@ -23,8 +23,6 @@ JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
-require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-
 /**
  * RedEvent Categories Module helper
  *
@@ -72,7 +70,7 @@ class ModRedeventQuickbookHelper
 		}
 
 		// Get the model to get the sessions of the event
-		$model = JModel::getInstance('Basesessionlist', 'RedeventModel');
+		$model = RModel::getInstance('Basesessionlist', 'RedeventModel');
 		$model->setState('filter_event', $eventId);
 		$model->setState('limit', 0);
 
@@ -99,11 +97,7 @@ class ModRedeventQuickbookHelper
 		}
 
 		$result->form = $rfcore->getForm($formId);
-
-		$result->action = RedeventHelperRoute::getRegistrationRoute(reset($sessions)->xslug, 'register');
-
 		$result->sessionsOptions = self::getSessionsOptions($sessions, $params);
-
 		$result->pricegroupjs = self::jsPriceGroups($sessions);
 
 		return $result;

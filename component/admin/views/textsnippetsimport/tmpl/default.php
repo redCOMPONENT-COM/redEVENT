@@ -25,12 +25,6 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.formvalidation');
 ?>
-<script type="text/javascript">
-	Joomla.submitbutton = function (pressbutton)
-	{
-		submitbutton(pressbutton);
-	}
-</script>
 <div class="well"><?php echo Jtext::_('COM_REDEVENT_TEXTLIBRARY_IMPORT_INTRO'); ?></div>
 <form action="index.php?option=com_redevent&view=textsnippetsimport" class="form-validate form-horizontal" id="adminForm" method="post"
       name="adminForm" enctype="multipart/form-data">

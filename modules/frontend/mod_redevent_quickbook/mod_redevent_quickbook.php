@@ -26,9 +26,6 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 // Get helper
 require_once 'helper.php';
 
-require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-require_once JPATH_SITE . '/components/com_redevent/classes/image.class.php';
-
 $data = modRedEventQuickbookHelper::getData($params);
 
 // Check if any results returned
@@ -40,9 +37,9 @@ if (!$data)
 RHelperAsset::load('mod_redevent_quickbook.css', 'mod_redevent_quickbook');
 RHelperAsset::load('mod_redevent_quickbook.js', 'mod_redevent_quickbook');
 
-$document->addScriptDeclaration($data->pricegroupjs);
+\Joomla\CMS\Factory::getDocument()->addScriptDeclaration($data->pricegroupjs);
 
-$action = "index.php?option=com_redevent&controller=registration&task=register";
+$action = "index.php?option=com_redevent&task=registration.register";
 
 if ($params->get('target', 'post') == 'modal')
 {
@@ -54,5 +51,7 @@ else
 {
 	RHelperAsset::load('mod_redevent_quickbook_post.js', 'mod_redevent_quickbook');
 }
+
+$action = JRoute::_($action);
 
 require JModuleHelper::getLayoutPath('mod_redevent_quickbook');

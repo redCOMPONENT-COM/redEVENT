@@ -12,8 +12,7 @@
 			"mod_redevent_quickbook",
 			"mod_redevent_search",
 			"mod_redevent_teaser",
-			"mod_redevent_venues_events",
-			"mod_rokminievents"
+			"mod_redevent_venues_events"
 		]
 	},
 	"plugins" : {
