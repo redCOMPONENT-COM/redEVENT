@@ -129,8 +129,26 @@ pipeline:
     - cd ../
     - touch tests/.setup$php_version.tmp
 
+  00-setup-stages:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_suite=00-setup
+    - tests_db=setup
+    - php_versions=56,73
+    commands:
+    # Base installation
+    - sh tests/drone/setup-base-install.sh  $tests_db                       $tests_suite                        $php_versions
+    # Stages setup
+    - sh tests/drone/setup-stages.sh        "Uninstall"                     "01-Uninstall"                      $php_versions
+    - sh tests/drone/setup-stages.sh        "administrator"                 "02-administrator"                  $php_versions
+    - sh tests/drone/setup-stages.sh        "UpcomingEvents"                "03-UpcomingEvents"                 $php_versions
+    - sh tests/drone/setup-stages.sh        "FeaturedEvents"                "04-FeaturedEvents"                 $php_versions
+    - sh tests/drone/setup-stages.sh        "RegistrationsEvent"            "05-RegistrationsEvent"             $php_versions
+    - sh tests/drone/setup-stages.sh        "CalendarViewEvents"            "06-CalendarViewEvents"             $php_versions
+
   01-Uninstall-56:
-    group: 01-tests
+    group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -151,7 +169,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
   01-Uninstall-73:
-    group: 01-tests
+    group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -381,8 +399,27 @@ pipeline:
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CalendarViewEvents 0 0'
 
+  01-setup-stages:
+    group: 01-tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_suite=00-setup
+    - tests_db=setup
+    - php_versions=56,73
+    commands:
+    # Base installation
+    - sh tests/drone/setup-base-install.sh  $tests_db                       $tests_suite                        $php_versions
+    # Stages setup
+    - sh tests/drone/setup-stages.sh        "CategoryEvents"                "07-CategoryEvents"                 $php_versions
+    - sh tests/drone/setup-stages.sh        "SessionSubmission"             "08-SessionSubmission"              $php_versions
+    - sh tests/drone/setup-stages.sh        "ArchiveEvents"                 "09-ArchiveEvents"                  $php_versions
+    - sh tests/drone/setup-stages.sh        "SearchEvents"                  "10-SearchEvents"                   $php_versions
+    - sh tests/drone/setup-stages.sh        "UpcomingVenue"                 "11-UpcomingVenue"                  $php_versions
+    - sh tests/drone/setup-stages.sh        "VenueCategories"               "12-VenueCategories"                $php_versions
+    - sh tests/drone/setup-stages.sh        "DetailsFixed"                  "13-DetailsFixed"                   $php_versions
+
   07-CategoryEvents-56:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -403,7 +440,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoryEvents 0 0'
 
   07-CategoryEvents-73:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -424,7 +461,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoryEvents 0 0'
 
   08-SessionSubmission-56:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -445,7 +482,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
 
   08-SessionSubmission:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -466,7 +503,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
 
   09-ArchiveEvents-56:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -487,7 +524,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
 
   09-ArchiveEvents-73:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -508,7 +545,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
 
   10-SearchEvents-56:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -529,7 +566,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
 
   10-SearchEvents-73:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -550,7 +587,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
 
   11-UpcomingVenue-56:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -571,7 +608,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
 
   11-UpcomingVenue-73:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -592,7 +629,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
 
   12-VenueCategories-56:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -613,7 +650,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
 
   12-VenueCategories-73:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -634,7 +671,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
 
   13-DetailsFixed-56:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -655,7 +692,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
 
   13-DetailsFixed-73:
-    group: tests
+    group: 01-tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
     - tests_user=admin
@@ -718,30 +755,6 @@ services:
     environment:
     - WEB_DOCUMENT_ROOT=/drone/src/github.com/${DRONE_REPO}
     - JOOMLA_INSTALLATION_DISABLE_LOCALHOST_CHECK=1
-
-  setup-stages:
-    image: redwebaps/testbox-chromedriver:2.38
-    environment:
-    - tests_suite=00-setup
-    - tests_db=setup
-    - php_versions=56,73
-    commands:
-    # Base installation
-    - sh tests/drone/setup-base-install.sh  $tests_db                       $tests_suite                        $php_versions
-    # Stages setup
-    - sh tests/drone/setup-stages.sh        "Uninstall"                     "01-Uninstall"                      $php_versions
-    - sh tests/drone/setup-stages.sh        "administrator"                 "02-administrator"                  $php_versions
-    - sh tests/drone/setup-stages.sh        "UpcomingEvents"                "03-UpcomingEvents"                 $php_versions
-    - sh tests/drone/setup-stages.sh        "FeaturedEvents"                "04-FeaturedEvents"                 $php_versions
-    - sh tests/drone/setup-stages.sh        "RegistrationsEvent"            "05-RegistrationsEvent"             $php_versions
-    - sh tests/drone/setup-stages.sh        "CalendarViewEvents"            "06-CalendarViewEvents"             $php_versions
-    - sh tests/drone/setup-stages.sh        "CategoryEvents"                "07-CategoryEvents"                 $php_versions
-    - sh tests/drone/setup-stages.sh        "SessionSubmission"             "08-SessionSubmission"              $php_versions
-    - sh tests/drone/setup-stages.sh        "ArchiveEvents"                 "09-ArchiveEvents"                  $php_versions
-    - sh tests/drone/setup-stages.sh        "SearchEvents"                  "10-SearchEvents"                   $php_versions
-    - sh tests/drone/setup-stages.sh        "UpcomingVenue"                 "11-UpcomingVenue"                  $php_versions
-    - sh tests/drone/setup-stages.sh        "VenueCategories"               "12-VenueCategories"                $php_versions
-    - sh tests/drone/setup-stages.sh        "DetailsFixed"                  "13-DetailsFixed"                   $php_versions
 
 branches:
   exclude: [ crowdin ]
