@@ -139,6 +139,11 @@ class RedeventModelDetails extends RModel
 			$query = $this->_buildDetailsWhere($query);
 
 			$query->select('a.id AS did, a.id AS event_id, a.title AS event_title, a.datdescription');
+
+			$query->select('x.id AS xref, x.title as session_title');
+			$query->select('x.*');
+			$query->select('a.published, x.published as session_published');
+
 			$query->select('t.meta_keywords, t.meta_description, a.datimage, a.registra, a.unregistra, a.summary, t.details_layout');
 			$query->select('a.created_by, t.redform_id, t.juser, t.show_names, t.showfields, t.enable_ical');
 			$query->select('t.submission_type_email, t.submission_type_external, t.submission_type_phone, t.review_message');
@@ -146,9 +151,6 @@ class RedeventModelDetails extends RModel
 			$query->select(' t.submission_type_webform, t.submission_type_formal_offer, '
 				. ' t.submission_type_email_pdf, t.submission_type_formal_offer_pdf, t.send_pdf_form, t.pdf_form_data'
 			);
-
-			$query->select('x.id AS xref, x.title as session_title');
-			$query->select('x.*');
 
 			$query->select(
 				'v.venue, v.email AS venue_email, v.id AS venue_id, v.city, v.locimage, '
@@ -177,7 +179,20 @@ class RedeventModelDetails extends RModel
 
 			$query->from('#__redevent_events AS a');
 			$query->innerJoin('#__redevent_event_template AS t ON t.id = a.template_id');
-			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
+
+			if ($this->xref)
+			{
+				$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
+			}
+			else
+			{
+				// If xref is not specified, only join on published sessions
+				$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id AND x.published = 1');
+
+				// And try to get the one with the 'smallest' date
+				$query->order('x.dates > 0 DESC, x.dates ASC');
+			}
+
 			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
 			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 			$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
