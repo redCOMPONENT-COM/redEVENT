@@ -41,7 +41,7 @@ $action = "index.php?option=com_redevent&task=registration.register";
 
 if ($params->get('target', 'post') == 'modal')
 {
-	$action .= "&modal=1";
+	$action .= "&modal=1&tmpl=component";
 	JHtml::_('behavior.modal');
 	RHelperAsset::load('mod_redevent_quickbook_modal.js', 'mod_redevent_quickbook');
 }

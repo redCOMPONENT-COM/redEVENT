@@ -22,11 +22,10 @@ var modRedeventQuickbook = (function($) {
 			}
 
 			if (options.length) {
-
 				if (options.length > 1)
 				{
 					priceElement = $('<select>')
-						.attr('name', 'sessionpricegroup_id[]');
+						.attr('name', 'sessionprice_1');
 
 					for (var i = 0; i < options.length; i++) {
 						priceElement.append(options[i]);
@@ -34,7 +33,7 @@ var modRedeventQuickbook = (function($) {
 				}
 				else {
 					priceElement = $('<input>')
-						.attr('name', 'sessionpricegroup_id[]')
+						.attr('name', 'sessionprice_1')
 						.type('name', 'hidden')
 						.val(options[0].value);
 				}
