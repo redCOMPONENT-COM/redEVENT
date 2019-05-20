@@ -37,8 +37,6 @@ if (!$data)
 RHelperAsset::load('mod_redevent_quickbook.css', 'mod_redevent_quickbook');
 RHelperAsset::load('mod_redevent_quickbook.js', 'mod_redevent_quickbook');
 
-\Joomla\CMS\Factory::getDocument()->addScriptDeclaration($data->pricegroupjs);
-
 $action = "index.php?option=com_redevent&task=registration.register";
 
 if ($params->get('target', 'post') == 'modal')

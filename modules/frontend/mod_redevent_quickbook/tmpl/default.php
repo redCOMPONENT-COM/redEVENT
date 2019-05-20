@@ -21,17 +21,27 @@
 defined('_JEXEC') or die('Restricted access');
 
 $rfcore = RdfCore::getInstance();
+
+$prices = json_encode($data->pricegroups);
+
+$script = <<<JS
+jQuery(function($) {
+	modRedeventQuickbook($('.modRedeventQuickbook form'), $prices);
+})
+JS;
+
+\Joomla\CMS\Factory::getDocument()->addScriptDeclaration($script);
 ?>
 <div class="modRedeventQuickbook">
-<form action="<?= $action; ?>"
-      method="post" name="redform" enctype="multipart/form-data" class="form-validate">
-	<?php echo JHtml::_('select.genericlist', $data->sessionsOptions, 'xref', null, 'value', 'text', JFactory::getApplication()->input->getInt('xref', 0)); ?>
-	<?php echo $rfcore->getFormFields($data->form->id); ?>
+	<form action="<?= $action; ?>"
+		  method="post" name="redform" enctype="multipart/form-data" class="form-validate">
+		<?php echo JHtml::_('select.genericlist', $data->sessionsOptions, 'xref', null, 'value', 'text', JFactory::getApplication()->input->getInt('xref', 0)); ?>
+		<?php echo $rfcore->getFormFields($data->form->id); ?>
 
-	<div id="qbsubmit">
-		<button type="button" id="qbsubmit-btn"><?php echo JText::_('MOD_REDEVENT_QUICKBOOK_BUTTON_BOOK_LABEL'); ?></button>
-	</div>
-	<input type="hidden" name="option" value="com_redevent"/>
-	<input type="hidden" name="task" value="registration.register"/>
-</form>
+		<div id="qbsubmit">
+			<button type="button" id="qbsubmit-btn"><?php echo JText::_('MOD_REDEVENT_QUICKBOOK_BUTTON_BOOK_LABEL'); ?></button>
+		</div>
+		<input type="hidden" name="option" value="com_redevent"/>
+		<input type="hidden" name="task" value="registration.register"/>
+	</form>
 </div>
