@@ -151,43 +151,43 @@ pipeline:
     group: tests
     image: redwebaps/testbox-chromedriver:2.38
     environment:
-      - tests_user=admin
-      - tests_suite=01-Uninstall
-      - tests_db=Uninstall
-      - build_path=/drone/src/github.com/${DRONE_REPO}
-      - output_append=-01-Uninstall-56
-      - php_version=56
+    - tests_user=admin
+    - tests_suite=01-Uninstall
+    - tests_db=Uninstall
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-01-Uninstall-56
+    - php_version=56
     commands:
-      # Regular entry point
-      - /entrypoint.sh &
-      # Performs test after ensuring that the scenario has been fully set up
-      - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-      # Waits until Chromedriver is up and running
-      - while ! nc -z localhost 9515; do sleep 1; done
-      # Performs test
-      - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
-    01-Uninstall-73:
-      group: tests
-      image: redwebaps/testbox-chromedriver:2.38
-      environment:
-        - tests_user=admin
-        - tests_suite=01-Uninstall
-        - tests_db=Uninstall
-        - build_path=/drone/src/github.com/${DRONE_REPO}
-        - output_append=-01-Uninstall-73
-        - php_version=73
-      commands:
-        # Regular entry point
-        - /entrypoint.sh &
-        # Performs test after ensuring that the scenario has been fully set up
-        - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-        # Waits until Chromedriver is up and running
-        - while ! nc -z localhost 9515; do sleep 1; done
-        # Performs test
-        - cd tests
-        - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
+  01-Uninstall-73:
+    group: tests
+    image: redwebaps/testbox-chromedriver:2.38
+    environment:
+    - tests_user=admin
+    - tests_suite=01-Uninstall
+    - tests_db=Uninstall
+    - build_path=/drone/src/github.com/${DRONE_REPO}
+    - output_append=-01-Uninstall-73
+    - php_version=73
+    commands:
+    # Regular entry point
+    - /entrypoint.sh &
+    # Performs test after ensuring that the scenario has been fully set up
+    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
+    # Waits until Chromedriver is up and running
+    - while ! nc -z localhost 9515; do sleep 1; done
+    # Performs test
+    - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
   02-administrator-56:
     group: tests
