@@ -86,40 +86,40 @@ class FrontEndManagerSteps extends AdminRedevent
 		$I->waitForText($category, 30, FrontendJoomlaManagerPage::$categoryEvent);
 	}
 
-    /**
-     * @param $menuitem
-     * @param $venuename
-     * @param $category
-     * @throws \Exception
-     */
+	/**
+	 * @param $menuitem
+	 * @param $venuename
+	 * @param $category
+	 * @throws \Exception
+	 */
 	public function checkVenueSubmission($menuitem, $venuename, $category)
-    {
-        $I = $this;
-        $I->amOnPage(FrontendJoomlaManagerPage::$URL);
-        $I->waitForText(FrontendJoomlaManagerPage::$title, 30, FrontendJoomlaManagerPage::$H1);
-        $I->waitForText($menuitem, 30);
-        $I->click($menuitem);
-        $I->waitForElementVisible(FrontendJoomlaManagerPage::$venueSubmissionTitle, 30);
-        $I->fillField(VanueManagerPage::$fieldName, $venuename);
-        $I->click(VanueManagerPage::$categoryVanueSelect);
-        $I->click(FrontendJoomlaManagerPage::xPathCategoryVenues($category));
-        $I->click(FrontendJoomlaManagerPage::$buttonSave);
-        $I->waitForElementVisible(FrontendJoomlaManagerPage::$messageSuccess, 30);
-    }
+	{
+		$I = $this;
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, FrontendJoomlaManagerPage::$H1);
+		$I->waitForText($menuitem, 30);
+		$I->click($menuitem);
+		$I->waitForElementVisible(FrontendJoomlaManagerPage::$venueSubmissionTitle, 30);
+		$I->fillField(VanueManagerPage::$fieldName, $venuename);
+		$I->click(VanueManagerPage::$categoryVanueSelect);
+		$I->click(FrontendJoomlaManagerPage::xPathCategoryVenues($category));
+		$I->click(FrontendJoomlaManagerPage::$buttonSave);
+		$I->waitForElementVisible(FrontendJoomlaManagerPage::$messageSuccess, 30);
+	}
 
-    /**
-     * @param $username
-     * @param $password
-     * @throws \Exception
-     */
-    public function loginFrontend($username, $password)
-    {
-        $I = $this;
-        $I->amOnPage(FrontendJoomlaManagerPage::$URL);
-        $I->waitForElementVisible(FrontendJoomlaManagerPage::$usernameField, 30);
-        $I->fillField(FrontendJoomlaManagerPage::$usernameField, $username);
-        $I->fillField(FrontendJoomlaManagerPage::$passwordField, $password);
-        $I->click(FrontendJoomlaManagerPage::$loginButton);
-        $I->waitForElementVisible(FrontendJoomlaManagerPage::$homeTitle, 30);
-    }
+	/**
+	 * @param $username
+	 * @param $password
+	 * @throws \Exception
+	 */
+	public function loginFrontend($username, $password)
+	{
+		$I = $this;
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->waitForElementVisible(FrontendJoomlaManagerPage::$usernameField, 30);
+		$I->fillField(FrontendJoomlaManagerPage::$usernameField, $username);
+		$I->fillField(FrontendJoomlaManagerPage::$passwordField, $password);
+		$I->click(FrontendJoomlaManagerPage::$loginButton);
+		$I->waitForElementVisible(FrontendJoomlaManagerPage::$homeTitle, 30);
+	}
 }

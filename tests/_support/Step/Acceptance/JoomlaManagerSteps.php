@@ -41,47 +41,47 @@ class JoomlaManagerSteps extends AdminRedevent
 	 *
 	 *  @throws \Exception
 	 */
-    public function createNewMenuItem($menuTitle, $menuCategory, $menuItem, $menu = 'Main Menu', $language = 'All')
-    {
-        $I = $this;
-        $I->wantTo("I open the menus page");
-        $I->amOnPage(JoomlaManagerPage::$menuItemURL);
-        $I->waitForText(JoomlaManagerPage::$menuTitle, 5, JoomlaManagerPage::$H1);
-        $I->checkForPhpNoticesOrWarnings();
+	public function createNewMenuItem($menuTitle, $menuCategory, $menuItem, $menu = 'Main Menu', $language = 'All')
+	{
+		$I = $this;
+		$I->wantTo("I open the menus page");
+		$I->amOnPage(JoomlaManagerPage::$menuItemURL);
+		$I->waitForText(JoomlaManagerPage::$menuTitle, 5, JoomlaManagerPage::$H1);
+		$I->checkForPhpNoticesOrWarnings();
 
-        $I->wantTo("I click in the menu: $menu");
-        $I->click(array('link' => $menu));
-        $I->waitForText(JoomlaManagerPage::$menuItemsTitle, 5,JoomlaManagerPage::$H1);
-        $I->checkForPhpNoticesOrWarnings();
+		$I->wantTo("I click in the menu: $menu");
+		$I->click(array('link' => $menu));
+		$I->waitForText(JoomlaManagerPage::$menuItemsTitle, 5,JoomlaManagerPage::$H1);
+		$I->checkForPhpNoticesOrWarnings();
 
-        $I->wantTo("I click new");
-        $I->click(JoomlaManagerPage::$buttonNew);
-        $I->waitForText(JoomlaManagerPage::$menuNewItemTitle, 5, JoomlaManagerPage::$H1);
-        $I->checkForPhpNoticesOrWarnings();
-        $I->fillField(JoomlaManagerPage::$menItemTitle, $menuTitle);
+		$I->wantTo("I click new");
+		$I->click(JoomlaManagerPage::$buttonNew);
+		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, 5, JoomlaManagerPage::$H1);
+		$I->checkForPhpNoticesOrWarnings();
+		$I->fillField(JoomlaManagerPage::$menItemTitle, $menuTitle);
 
-        $I->wantTo("Open the menu types iframe");
-        $I->click(JoomlaManagerPage::$buttonSelect);
-        $I->waitForElement(JoomlaManagerPage::$menuTypeModal, 5);
-        $I->switchToIFrame(JoomlaManagerPage::$menuItemType);
+		$I->wantTo("Open the menu types iframe");
+		$I->click(JoomlaManagerPage::$buttonSelect);
+		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 5);
+		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
-        $I->wantTo("Open the menu category: $menuCategory");
-        $I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 5);
-        $I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
+		$I->wantTo("Open the menu category: $menuCategory");
+		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 5);
+		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
-        $I->wantTo("Choose the menu item type: $menuItem");
-        $I->wait(0.5);
-        $I->waitForElement(JoomlaManagerPage::returnMenuItem($menuItem),5);
-        $I->click(JoomlaManagerPage::returnMenuItem($menuItem));
-        $I->wantTo('I switch back to the main window');
-        $I->switchToIFrame();
-        $I->wantTo('I leave time to the iframe to close');
-        $I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
-        $I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
-        $I->wantTo('I save the menu');
-        $I->click(JoomlaManagerPage::$buttonSave);
-        $I->waitForText(JoomlaManagerPage::$messageMenuItemSuccess, 5, JoomlaManagerPage::$idInstallSuccess);
-    }
+		$I->wantTo("Choose the menu item type: $menuItem");
+		$I->wait(0.5);
+		$I->waitForElement(JoomlaManagerPage::returnMenuItem($menuItem),5);
+		$I->click(JoomlaManagerPage::returnMenuItem($menuItem));
+		$I->wantTo('I switch back to the main window');
+		$I->switchToIFrame();
+		$I->wantTo('I leave time to the iframe to close');
+		$I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
+		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
+		$I->wantTo('I save the menu');
+		$I->click(JoomlaManagerPage::$buttonSave);
+		$I->waitForText(JoomlaManagerPage::$messageMenuItemSuccess, 5, JoomlaManagerPage::$idInstallSuccess);
+	}
 
 	/**
 	 * @param $menuTitle
@@ -207,90 +207,90 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->waitForText(JoomlaManagerPage::$messageMenuItemSuccess, 5, JoomlaManagerPage::$idInstallSuccess);
 	}
 
-    /**
-     * @param $name
-     * @param $username
-     * @param $pass
-     * @param $email
-     * @throws \Exception
-     */
+	/**
+	 * @param $name
+	 * @param $username
+	 * @param $pass
+	 * @param $email
+	 * @throws \Exception
+	 */
 	public function createNewSuperuser($name, $username, $pass, $email)
-    {
-        $I = $this;
-        $I->wantTo("I open the user page");
-        $I->amOnPage(JoomlaManagerPage::$userURL);
-        $I->waitForElementVisible(JoomlaManagerPage::$newButton, 30);
-        $I->checkForPhpNoticesOrWarnings();
+	{
+		$I = $this;
+		$I->wantTo("I open the user page");
+		$I->amOnPage(JoomlaManagerPage::$userURL);
+		$I->waitForElementVisible(JoomlaManagerPage::$newButton, 30);
+		$I->checkForPhpNoticesOrWarnings();
 
-        $I->wantTo("I click new");
-        $I->click(JoomlaManagerPage::$newButton);
-        $I->waitForElementVisible(JoomlaManagerPage::$userName, 30);
+		$I->wantTo("I click new");
+		$I->click(JoomlaManagerPage::$newButton);
+		$I->waitForElementVisible(JoomlaManagerPage::$userName, 30);
 
-        $I->wantTo("I create new user");
-        $I->fillField(JoomlaManagerPage::$userName, $name);
-        $I->fillField(JoomlaManagerPage::$loginName, $username);
-        $I->fillField(JoomlaManagerPage::$password, $pass);
-        $I->fillField(JoomlaManagerPage::$confirmPassword, $pass);
-        $I->fillField(JoomlaManagerPage::$email, $email);
+		$I->wantTo("I create new user");
+		$I->fillField(JoomlaManagerPage::$userName, $name);
+		$I->fillField(JoomlaManagerPage::$loginName, $username);
+		$I->fillField(JoomlaManagerPage::$password, $pass);
+		$I->fillField(JoomlaManagerPage::$confirmPassword, $pass);
+		$I->fillField(JoomlaManagerPage::$email, $email);
 
-        $I->wantTo("Assigned user group");
-        $I->click(JoomlaManagerPage::$assignedUser);
-        $I->click(JoomlaManagerPage::$superuserRole);
+		$I->wantTo("Assigned user group");
+		$I->click(JoomlaManagerPage::$assignedUser);
+		$I->click(JoomlaManagerPage::$superuserRole);
 
-        $I->wantTo("I save user");
-        $I->click(JoomlaManagerPage::$saveButton);
-        $I->waitForElementVisible(JoomlaManagerPage::$messageSaveSuccess, 30);
-    }
+		$I->wantTo("I save user");
+		$I->click(JoomlaManagerPage::$saveButton);
+		$I->waitForElementVisible(JoomlaManagerPage::$messageSaveSuccess, 30);
+	}
 
-    /**
-     * @param $menutitle
-     * @throws \Exception
-     */
-    public function delNewMenuItem($menutitle, $menu = 'Main Menu')
-    {
-        $I = $this;
-        $I->wantTo("I open the menus page");
-        $I->amOnPage(JoomlaManagerPage::$menuItemURL);
-        $I->waitForText(JoomlaManagerPage::$menuTitle, 5, JoomlaManagerPage::$H1);
-        $I->checkForPhpNoticesOrWarnings();
+	/**
+	 * @param $menutitle
+	 * @throws \Exception
+	 */
+	public function delNewMenuItem($menutitle, $menu = 'Main Menu')
+	{
+		$I = $this;
+		$I->wantTo("I open the menus page");
+		$I->amOnPage(JoomlaManagerPage::$menuItemURL);
+		$I->waitForText(JoomlaManagerPage::$menuTitle, 5, JoomlaManagerPage::$H1);
+		$I->checkForPhpNoticesOrWarnings();
 
-        $I->wantTo("I click in the menu: $menu");
-        $I->click(array('link' => $menu));
-        $I->waitForText(JoomlaManagerPage::$menuItemsTitle, 5,JoomlaManagerPage::$H1);
-        $I->checkForPhpNoticesOrWarnings();
+		$I->wantTo("I click in the menu: $menu");
+		$I->click(array('link' => $menu));
+		$I->waitForText(JoomlaManagerPage::$menuItemsTitle, 5,JoomlaManagerPage::$H1);
+		$I->checkForPhpNoticesOrWarnings();
 
-        $I->wantTo("I search menu item");
-        $I->fillField(JoomlaManagerPage::$searchField, $menutitle);
-        $I->click(JoomlaManagerPage::$searchIcon);
+		$I->wantTo("I search menu item");
+		$I->fillField(JoomlaManagerPage::$searchField, $menutitle);
+		$I->click(JoomlaManagerPage::$searchIcon);
 
-        $I->wantTo("I choose all menu item");
-        $I->click(JoomlaManagerPage::$checkboxAll);
+		$I->wantTo("I choose all menu item");
+		$I->click(JoomlaManagerPage::$checkboxAll);
 
-        $I->wantTo("I delete menu item");
-        $I->click(JoomlaManagerPage::$buttonTrash);
-        $I->waitForElementVisible(JoomlaManagerPage::$message, 30);
-    }
+		$I->wantTo("I delete menu item");
+		$I->click(JoomlaManagerPage::$buttonTrash);
+		$I->waitForElementVisible(JoomlaManagerPage::$message, 30);
+	}
 
-    /**
-     * @param $name
-     * @throws \Exception
-     */
-    public function delNewSuperUser($name)
-    {
-        $I = $this;
-        $I->wantTo("I open the user page");
-        $I->amOnPage(JoomlaManagerPage::$userURL);
-        $I->waitForElementVisible(JoomlaManagerPage::$newButton, 30);
-        $I->checkForPhpNoticesOrWarnings();
+	/**
+	 * @param $name
+	 * @throws \Exception
+	 */
+	public function delNewSuperUser($name)
+	{
+		$I = $this;
+		$I->wantTo("I open the user page");
+		$I->amOnPage(JoomlaManagerPage::$userURL);
+		$I->waitForElementVisible(JoomlaManagerPage::$newButton, 30);
+		$I->checkForPhpNoticesOrWarnings();
 
-        $I->wantTo("I search user");
-        $I->fillField(JoomlaManagerPage::$searchField, $name);
-        $I->click(JoomlaManagerPage::$searchIcon);
-        $I->waitForElementVisible(JoomlaManagerPage::$buttonUninstall, 30);
-        $I->click(JoomlaManagerPage::$checkboxAll);
-        $I->click(JoomlaManagerPage::$buttonUninstall);
-        $I->acceptPopup();
-        $I->waitForElementVisible(JoomlaManagerPage::$message, 30);
-    }
+		$I->wantTo("I search user");
+		$I->fillField(JoomlaManagerPage::$searchField, $name);
+		$I->click(JoomlaManagerPage::$searchIcon);
+		$I->waitForElementVisible(JoomlaManagerPage::$buttonUninstall, 30);
+		$I->click(JoomlaManagerPage::$checkboxAll);
+		$I->click(JoomlaManagerPage::$buttonUninstall);
+		$I->acceptPopup();
+		$I->waitForElementVisible(JoomlaManagerPage::$message, 30);
+	}
 
 }
