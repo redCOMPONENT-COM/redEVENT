@@ -125,49 +125,49 @@ class FrontendJoomlaManagerPage extends AbstractPage
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $venueSubmissionTitle = '.componentheading';
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $categoryVenue = 'Select Some Options';
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $usernameField = '#modlgn-username';
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $passwordField = '#modlgn-passwd';
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $loginButton = '.login-button';
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $homeTitle = '.blog-featured';
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $saveButton = '//button[@onclick="Joomla.submitbutton(\'editvenue.save\')"]';
 
 	/**
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $messageSuccess = '.alert-success';
 

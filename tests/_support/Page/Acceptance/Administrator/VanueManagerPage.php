@@ -64,7 +64,7 @@ class VanueManagerPage extends AbstractPage
 	/**
 	 * Button Save
 	 * @var string
-     * @since 1.0.0
+	 * @since 1.0.0
 	 */
 	public static $buttonSave         = '//button[contains(@OnClick, "venue.save")]';
 }
