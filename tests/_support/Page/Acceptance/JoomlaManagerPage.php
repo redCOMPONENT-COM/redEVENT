@@ -48,6 +48,11 @@ class JoomlaManagerPage extends AbstractPage
 	 */
 	public static $menuNewItemTitle   = 'Menus: New Item';
 
+    /**
+     * @var string
+     */
+	public static $menuEditItemTittle = 'Menus: Edit Item';
+
 	/**
 	 * Menu item title
 	 * @var string
@@ -94,7 +99,7 @@ class JoomlaManagerPage extends AbstractPage
 	 *
 	 * @var string
 	 */
-	public static $buttonUninstall            = '//div[@id=\'toolbar-delete\']/button';
+	public static $buttonUninstall            = '//div[@id="toolbar-delete"]/button';
 
 	/**
 	 * Message Uninstall component Success
@@ -103,6 +108,9 @@ class JoomlaManagerPage extends AbstractPage
 	 */
 	public static $messageUninstall           = 'Uninstalling the component was successful.';
 
+    /**
+     * @var string
+     */
 	public static $message                    = '.alert-message';
 
 	/**
@@ -160,6 +168,75 @@ class JoomlaManagerPage extends AbstractPage
 	 */
 	public static $locatorEvent = "//td[5]/a";
 
+    /**
+     * @var string
+     */
+    public static $userURL = "/administrator//index.php?option=com_users";
+
+    /**
+     * @var string
+     */
+    public static $newButton = '.button-new';
+
+    /**
+     * @var string
+     */
+    public static $userName = '#jform_name';
+
+    /**
+     * @var string
+     */
+    public static $loginName = '#jform_username';
+
+    /**
+     * @var string
+     */
+    public static $password = '#jform_password';
+
+    /**
+     * @var string
+     */
+    public static $confirmPassword = '#jform_password2';
+
+    /**
+     * @var string
+     */
+    public static $email = '#jform_email';
+
+    /**
+     * @var string
+     */
+    public static $assignedUser = '//a[text()="Assigned User Groups"]';
+
+    /**
+     * @var string
+     */
+    public static $superuserRole = '//input[@id="1group_8"]';
+
+    /**
+     * @var string
+     */
+    public static $saveButton = '.button-apply';
+
+    /**
+     * @var string
+     */
+    public static $messageSaveSuccess = '.alert-success';
+
+    /**
+     * @var string
+     */
+    public static $checkboxAll = '//input[@name="checkall-toggle"]';
+
+    /**
+     * @var string
+     */
+    public static $searchField = '//input[@id="filter_search"]';
+
+    /**
+     * @var string
+     */
+    public static $buttonTrash = '//div[@id="toolbar-trash"]/button';
 
 	/**
 	 * @param $menuCategory

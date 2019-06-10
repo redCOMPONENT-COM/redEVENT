@@ -123,6 +123,46 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 */
 	public static $messageSaveSessionSuccess = "Item submitted.";
 
+    /**
+     * @var string
+     */
+	public static $venueSubmissionTitle = '.componentheading';
+
+    /**
+     * @var string
+     */
+	public static $categoryVenue = 'Select Some Options';
+
+    /**
+     * @var string
+     */
+	public static $usernameField = '#modlgn-username';
+
+    /**
+     * @var string
+     */
+	public static $passwordField = '#modlgn-passwd';
+
+    /**
+     * @var string
+     */
+	public static $loginButton = '.login-button';
+
+    /**
+     * @var string
+     */
+	public static $homeTitle = '.blog-featured';
+
+    /**
+     * @var string
+     */
+	public static $saveButton = '//button[@onclick="Joomla.submitbutton(\'editvenue.save\')"]';
+
+    /**
+     * @var string
+     */
+	public static $messageSuccess = '.alert-success';
+
 	/**
 	 * @param $placeholder
 	 * @return string
@@ -132,5 +172,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 		$path = "//input[@placeholder='".$placeholder."']";
 		return $path;
 	}
+
+	public static function xPathCategoryVenues($t)
+    {
+        $path = "//li[contains(text(), '" . $t . "')]";
+
+        return $path;
+    }
 
 }
