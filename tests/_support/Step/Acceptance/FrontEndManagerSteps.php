@@ -9,7 +9,7 @@
 namespace Step\Acceptance;
 
 use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
-use Page\acceptance\administrator\VanueManagerPage;
+use Page\Acceptance\administrator\VanueManagerPage;
 
 class FrontEndManagerSteps extends AdminRedevent
 {
