@@ -23,45 +23,56 @@ class VenueSubmissionCest
 
 	/**
 	 * @var string
+     * @since 1.0.0
 	 */
 	protected $categoryName;
 
 	/**
 	 * @var string
+     * @since 1.0.0
 	 */
 	protected $venueName;
 
-	/**
-	 * @var
-	 */
+    /**
+     * @var string
+     * @since 1.0.0
+     */
 	protected $menuItem;
 
 	/**
 	 * @var string
+     * @since 1.0.0
 	 */
 	protected $menuCategory;
 
-	/**
-	 * @var
-	 */
+    /**
+     * @var string
+     * @since 1.0.0
+     */
 	protected $menuName;
 
-	/**
-	 * @var
-	 */
+    /**
+     * @var string
+     * @since 1.0.0
+     */
 	protected $username;
 
-	/**
-	 * @var
-	 */
+    /**
+     * @var string
+     * @since 1.0.0
+     */
 	protected $password;
 
-	/**
-	 * @var
-	 */
+    /**
+     * @var string
+     * @since 1.0.0
+     */
 	protected $email;
 
-
+    /**
+     * VenueSubmissionCest constructor.
+     * @since 1.0.0
+     */
 	public function __construct()
 	{
 		$this->faker         = Factory::create();
