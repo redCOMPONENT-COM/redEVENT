@@ -182,7 +182,7 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	}
 
 	/**
-	 * @param $t
+	 * @param $nameCategory
 	 * @return string
 	 * @since 3.2.7
 	 */
