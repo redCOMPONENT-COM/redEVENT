@@ -7,8 +7,8 @@
  */
 
 namespace Step\Acceptance;
-
 use \Page\Acceptance\JoomlaManagerPage;
+
 class JoomlaManagerSteps extends AdminRedevent
 {
 	/**
@@ -292,5 +292,4 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->acceptPopup();
 		$I->waitForElementVisible(JoomlaManagerPage::$message, 30);
 	}
-
 }

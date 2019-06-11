@@ -189,8 +189,6 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static function xPathCategoryVenues($nameCategory)
 	{
 		$path = "//li[contains(text(), '" . $nameCategory . "')]";
-
 		return $path;
 	}
-
 }

@@ -77,8 +77,7 @@ class VenueSubmissionCest
 	 */
 	public function __construct()
 	{
-		$this->faker         = Factory::create();
-
+		$this->faker = Factory::create();
 		$this->email = $this->faker->email;
 		$this->username = $this->faker->bothify("Test##");
 		$this->password = $this->faker->password;
@@ -125,7 +124,6 @@ class VenueSubmissionCest
 				'description' => ''
 			)
 		);
-
 	}
 
 	/**
@@ -158,5 +156,4 @@ class VenueSubmissionCest
 		$I->delNewSuperUser($this->username);
 		$I->delNewMenuItem($this->menuName);
 	}
-
 }
