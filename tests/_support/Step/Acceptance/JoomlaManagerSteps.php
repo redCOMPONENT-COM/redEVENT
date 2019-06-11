@@ -7,8 +7,8 @@
  */
 
 namespace Step\Acceptance;
-use \Page\Acceptance\JoomlaManagerPage;
 
+use \Page\Acceptance\JoomlaManagerPage;
 class JoomlaManagerSteps extends AdminRedevent
 {
 	/**
