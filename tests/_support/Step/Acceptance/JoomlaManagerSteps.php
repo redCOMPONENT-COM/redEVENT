@@ -236,11 +236,12 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("Assigned user group");
 		$I->click(JoomlaManagerPage::$assignedUser);
+		$I->waitForElementVisible(JoomlaManagerPage::$superuserRole, 30);
 		$I->click(JoomlaManagerPage::$superuserRole);
 
 		$I->wantTo("I save user");
 		$I->click(JoomlaManagerPage::$saveButton);
-		$I->waitForElementVisible(JoomlaManagerPage::$messageSaveSuccess, 30);
+        $this->waitForText(JoomlaManagerPage::$messageUserSuccess, 5, JoomlaManagerPage::$messageSaveSuccess);
 	}
 
 	/**
@@ -270,7 +271,7 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("I delete menu item");
 		$I->click(JoomlaManagerPage::$buttonTrash);
-		$I->waitForElementVisible(JoomlaManagerPage::$messageSuccess, 30);
+		$I->waitForText(JoomlaManagerPage::$messageDelMenuItemSuccess, 5, JoomlaManagerPage::$messageSuccess);
 	}
 
 	/**
@@ -293,6 +294,6 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->click(JoomlaManagerPage::$checkboxAll);
 		$I->click(JoomlaManagerPage::$buttonUninstall);
 		$I->acceptPopup();
-		$I->waitForElementVisible(JoomlaManagerPage::$messageSuccess, 30);
+		$I->waitForText(JoomlaManagerPage::$messageDelUserSuccess, 5, JoomlaManagerPage::$messageSuccess);
 	}
 }

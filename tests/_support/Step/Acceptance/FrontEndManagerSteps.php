@@ -8,6 +8,7 @@
  */
 namespace Step\Acceptance;
 
+use Page\acceptance\administrator\EventManagerPage;
 use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 use Page\Acceptance\Administrator\VanueManagerPage;
 
@@ -100,12 +101,13 @@ class FrontEndManagerSteps extends AdminRedevent
 		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, FrontendJoomlaManagerPage::$H1);
 		$I->waitForText($menuitem, 30);
 		$I->click($menuitem);
-		$I->waitForElementVisible(FrontendJoomlaManagerPage::$venueSubmissionTitle, 30);
+		$I->waitForElementVisible(FrontendJoomlaManagerPage::$componentTitle, 30);
 		$I->fillField(VanueManagerPage::$fieldName, $venuename);
 		$I->click(VanueManagerPage::$categoryVanueSelect);
 		$I->click(FrontendJoomlaManagerPage::xPathCategoryVenues($category));
 		$I->click(FrontendJoomlaManagerPage::$buttonSave);
 		$I->waitForElementVisible(FrontendJoomlaManagerPage::$messageSuccess, 30);
+		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveVenueSuccess, 5, FrontendJoomlaManagerPage::$messageSuccess);
 	}
 
 	/**
