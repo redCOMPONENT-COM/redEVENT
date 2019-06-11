@@ -24,7 +24,7 @@ class UpcomingEventsSteps extends AdminRedevent
 	public  function  checkEventUpcoming($menuitem, $sessionname,$eventName,$venues)
 	{
 		$I = $this;
-		$I->doFrontEndLogin("admin","admin");
+		$I->doFrontEndLogin("test","123456");
 		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
 		$I->checkForPhpNoticesOrWarningsOrExceptions();
 		$I->waitForText(FrontendJoomlaManagerPage::$title,30,AbstractPage::$H1);
@@ -130,4 +130,5 @@ class UpcomingEventsSteps extends AdminRedevent
 		$I->waitForText($venues,30,FrontendJoomlaManagerPage::$whereEvent);
 		$I->waitForText($category,30,FrontendJoomlaManagerPage::$categoryEvent);
 	}
+
 }
