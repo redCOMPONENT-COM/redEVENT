@@ -235,12 +235,6 @@ class JoomlaManagerPage extends AbstractPage
 	 * @var string
 	 * @since 3.2.8
 	 */
-	public static $checkboxAll = '//input[@name="checkall-toggle"]';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
 	public static $searchField = '//input[@id="filter_search"]';
 
 	/**

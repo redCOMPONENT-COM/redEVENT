@@ -8,8 +8,10 @@
  */
 namespace Step\Acceptance;
 
+use Page\acceptance\administrator\EventManagerPage;
 use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 use Page\Acceptance\Administrator\VanueManagerPage;
+use Page\Acceptance\JoomlaManagerPage;
 
 class FrontEndManagerSteps extends AdminRedevent
 {
@@ -107,22 +109,5 @@ class FrontEndManagerSteps extends AdminRedevent
 		$I->click(FrontendJoomlaManagerPage::$buttonSave);
 		$I->waitForElementVisible(FrontendJoomlaManagerPage::$messageSuccess, 30);
 		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveSessionSuccess, 5, FrontendJoomlaManagerPage::$messageSuccess);
-	}
-
-	/**
-	 * @param $username
-	 * @param $password
-	 * @throws \Exception
-	 * @since 3.2.7
-	 */
-	public function loginFrontend($username, $password)
-	{
-		$I = $this;
-		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
-		$I->waitForElementVisible(FrontendJoomlaManagerPage::$usernameField, 30);
-		$I->fillField(FrontendJoomlaManagerPage::$usernameField, $username);
-		$I->fillField(FrontendJoomlaManagerPage::$passwordField, $password);
-		$I->click(FrontendJoomlaManagerPage::$loginButton);
-		$I->waitForElementVisible(FrontendJoomlaManagerPage::$homeTitle, 30);
 	}
 }

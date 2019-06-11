@@ -139,30 +139,6 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var string
 	 * @since 3.2.8
 	 */
-	public static $usernameField = '#modlgn-username';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $passwordField = '#modlgn-passwd';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $loginButton = '.login-button';
-
-	/**
-	 * @var string
-	 * @since 3.2.7
-	 */
-	public static $homeTitle = '.blog-featured';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
 	public static $saveButton = '//button[@onclick="Joomla.submitbutton(\'editvenue.save\')"]';
 
 	/**

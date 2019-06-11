@@ -208,43 +208,6 @@ class JoomlaManagerSteps extends AdminRedevent
 	}
 
 	/**
-	 * @param $name
-	 * @param $username
-	 * @param $pass
-	 * @param $email
-	 * @throws \Exception
-	 * @since 3.2.7
-	 */
-	public function createNewSuperuser($name, $username, $pass, $email)
-	{
-		$I = $this;
-		$I->wantTo("I open the user page");
-		$I->amOnPage(JoomlaManagerPage::$userURL);
-		$I->waitForElementVisible(JoomlaManagerPage::$newButton, 30);
-		$I->checkForPhpNoticesOrWarnings();
-
-		$I->wantTo("I click new");
-		$I->click(JoomlaManagerPage::$newButton);
-		$I->waitForElementVisible(JoomlaManagerPage::$fieldName, 30);
-
-		$I->wantTo("I create new user");
-		$I->fillField(JoomlaManagerPage::$fieldName, $name);
-		$I->fillField(JoomlaManagerPage::$loginName, $username);
-		$I->fillField(JoomlaManagerPage::$password, $pass);
-		$I->fillField(JoomlaManagerPage::$confirmPassword, $pass);
-		$I->fillField(JoomlaManagerPage::$email, $email);
-
-		$I->wantTo("Assigned user group");
-		$I->click(JoomlaManagerPage::$assignedUser);
-		$I->waitForElementVisible(JoomlaManagerPage::$superuserRole, 30);
-		$I->click(JoomlaManagerPage::$superuserRole);
-
-		$I->wantTo("I save user");
-		$I->click(JoomlaManagerPage::$saveButton);
-		$this->waitForText(JoomlaManagerPage::$messageUserSuccess, 5, JoomlaManagerPage::$messageSaveSuccess);
-	}
-
-	/**
 	 * @param $menutitle
 	 * @throws \Exception
 	 * @since 3.2.7
@@ -267,7 +230,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->click(JoomlaManagerPage::$searchIcon);
 
 		$I->wantTo("I choose all menu item");
-		$I->click(JoomlaManagerPage::$checkboxAll);
+		$I->checkAllResults();
 
 		$I->wantTo("I delete menu item");
 		$I->click(JoomlaManagerPage::$buttonTrash);
@@ -291,7 +254,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->fillField(JoomlaManagerPage::$searchField, $name);
 		$I->click(JoomlaManagerPage::$searchIcon);
 		$I->waitForElementVisible(JoomlaManagerPage::$buttonUninstall, 30);
-		$I->click(JoomlaManagerPage::$checkboxAll);
+		$I->checkAllResults();
 		$I->click(JoomlaManagerPage::$buttonUninstall);
 		$I->acceptPopup();
 		$I->waitForText(JoomlaManagerPage::$messageDelUserSuccess, 5, JoomlaManagerPage::$messageSuccess);
