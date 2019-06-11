@@ -154,12 +154,14 @@ class JoomlaManagerPage extends AbstractPage
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $searchSessionId  = "//input[@id='filter_search']";
 
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $searchIcon = "//button[@data-original-title=\"Search\"]";
 
@@ -170,71 +172,85 @@ class JoomlaManagerPage extends AbstractPage
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $userURL = "/administrator//index.php?option=com_users";
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $newButton = '.button-new';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $userName = '#jform_name';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $loginName = '#jform_username';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $password = '#jform_password';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $confirmPassword = '#jform_password2';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $email = '#jform_email';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $assignedUser = '//a[text()="Assigned User Groups"]';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $superuserRole = '//input[@id="1group_8"]';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $saveButton = '.button-apply';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $messageSaveSuccess = '.alert-success';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $checkboxAll = '//input[@name="checkall-toggle"]';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $searchField = '//input[@id="filter_search"]';
 
 	/**
 	 * @var string
+     * @since 3.2.7
 	 */
 	public static $buttonTrash = '//div[@id="toolbar-trash"]/button';
 

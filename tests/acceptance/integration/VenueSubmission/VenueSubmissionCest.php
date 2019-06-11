@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 6/10/2019
- * Time: 3:14 PM
+ * @package     redEVENT
+ * @subpackage  Cest
+ * @copyright   Copyright (C) 2008 - 2019 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 use Faker\Generator;
 use Faker\Factory;
 use Step\Acceptance\Administrator\CategoryManagerSteps;
@@ -17,61 +19,61 @@ class VenueSubmissionCest
 {
 	/**
 	 * @var   Generator
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $faker;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $categoryName;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $venueName;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $menuItem;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $menuCategory;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $menuName;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $username;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $password;
 
 	/**
 	 * @var string
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	protected $email;
 
 	/**
 	 * VenueSubmissionCest constructor.
-	 * @since 1.0.0
+	 * @since 3.2.7
 	 */
 	public function __construct()
 	{
@@ -91,6 +93,7 @@ class VenueSubmissionCest
 	/**
 	 * @param AcceptanceTester $i
 	 * @throws Exception
+	 * @since 3.2.7
 	 */
 	public function _before(\AcceptanceTester $i)
 	{
@@ -100,6 +103,7 @@ class VenueSubmissionCest
 	/**
 	 * @param CategoryManagerSteps $I
 	 * @throws Exception
+	 * @since 3.2.7
 	 */
 	public function createMenuItem(JoomlaManagerSteps $I)
 	{
@@ -110,6 +114,7 @@ class VenueSubmissionCest
 	/**
 	 * @param VenueCategoryManagerSteps $I
 	 * @throws Exception
+	 * @since 3.2.7
 	 */
 	public function createCategoryVenue(VenueCategoryManagerSteps $I)
 	{
@@ -126,6 +131,7 @@ class VenueSubmissionCest
 	/**
 	 * @param VanueManagerSteps $I
 	 * @throws Exception
+	 * @since 3.2.7
 	 */
 	public function createVenue(JoomlaManagerSteps $I, $scenario)
 	{
@@ -142,6 +148,7 @@ class VenueSubmissionCest
 	 * @param VanueManagerSteps $I
 	 * @param $scenario
 	 * @throws Exception
+	 * @since 3.2.7
 	 */
 	public function deleteAll(VanueManagerSteps $I, $scenario)
 	{
