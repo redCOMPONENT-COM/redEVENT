@@ -49,11 +49,6 @@ class JoomlaManagerPage extends AbstractPage
 	public static $menuNewItemTitle   = 'Menus: New Item';
 
 	/**
-	 * @var string
-	 */
-	public static $menuEditItemTittle = 'Menus: Edit Item';
-
-	/**
 	 * Menu item title
 	 * @var string
 	 */
@@ -112,7 +107,7 @@ class JoomlaManagerPage extends AbstractPage
 	 * @var string
 	 * @since 3.2.7
 	 */
-	public static $message                    = '.alert-message';
+	public static $messageSuccess                    = '.alert-message';
 
 	/**
 	 * Message not find component

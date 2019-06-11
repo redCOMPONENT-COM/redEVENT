@@ -15,6 +15,10 @@ use Step\Acceptance\FrontEndManagerSteps;
 use Step\Acceptance\Administrator\VenueCategoryManagerSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
 
+/**
+ * Class VenueSubmissionCest
+ * @since 3.2.7
+ */
 class VenueSubmissionCest
 {
 	/**

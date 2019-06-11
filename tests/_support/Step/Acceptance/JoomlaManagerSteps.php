@@ -268,7 +268,7 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("I delete menu item");
 		$I->click(JoomlaManagerPage::$buttonTrash);
-		$I->waitForElementVisible(JoomlaManagerPage::$message, 30);
+		$I->waitForElementVisible(JoomlaManagerPage::$messageSuccess, 30);
 	}
 
 	/**
@@ -290,6 +290,6 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->click(JoomlaManagerPage::$checkboxAll);
 		$I->click(JoomlaManagerPage::$buttonUninstall);
 		$I->acceptPopup();
-		$I->waitForElementVisible(JoomlaManagerPage::$message, 30);
+		$I->waitForElementVisible(JoomlaManagerPage::$messageSuccess, 30);
 	}
 }
