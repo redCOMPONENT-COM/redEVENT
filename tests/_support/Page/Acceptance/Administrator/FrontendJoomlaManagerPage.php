@@ -13,113 +13,113 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * Include url of current page
 	 *
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $URL = '/';
 
 	/**
 	 * Title of this page.
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $title = "Home";
 
 	/**
 	 * Images of Registration.
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $imagesRegistration = "//div[@class='registration_method webform']//a";
 
 	/**
 	 * Images of Registration.
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $submit = "#regularsubmit";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $calendar = ".jlcalendar";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $calendarToday = ".today";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $tableCategoryEvent = ".el_categoryevents";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $titleEvent = "//dd[@class='title']";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $whereEvent = "//dd[@class='where']";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $categoryEvent = "//dd[@class='category']";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 
 	public static $titleSearchEvent = "Search events";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $tableSearch = ".container-fluid";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $fieldSearchFrontEnd = "//input[@name='filter']";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $buttonSearchFrontEnd = '//button[@onclick="document.getElementById(\'adminForm\').submit();"]';
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $titleOnTable = "//td[@class='re_title']";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $eventList = ".el_eventlist";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $event = ".redevent";
 
 	/**
 	 * @var   string
-	 * @since 3.2.7
+	 * @since 1.0.0
 	 */
 	public static $messageSaveSessionSuccess = "Item submitted.";
 
@@ -174,7 +174,6 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	/**
 	 * @param $placeholder
 	 * @return string
-	 * @since 3.2.7
 	 */
 	public static function returnInput($placeholder)
 	{
@@ -187,9 +186,9 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @return string
 	 * @since 3.2.7
 	 */
-	public static function xPathCategoryVenues($t)
+	public static function xPathCategoryVenues($nameCategory)
 	{
-		$path = "//li[contains(text(), '" . $t . "')]";
+		$path = "//li[contains(text(), '" . $nameCategory . "')]";
 
 		return $path;
 	}

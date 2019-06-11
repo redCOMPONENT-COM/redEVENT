@@ -91,6 +91,7 @@ class FrontEndManagerSteps extends AdminRedevent
 	 * @param $venuename
 	 * @param $category
 	 * @throws \Exception
+	 * @since 3.2.7
 	 */
 	public function checkVenueSubmission($menuitem, $venuename, $category)
 	{
@@ -111,6 +112,7 @@ class FrontEndManagerSteps extends AdminRedevent
 	 * @param $username
 	 * @param $password
 	 * @throws \Exception
+	 * @since 3.2.7
 	 */
 	public function loginFrontend($username, $password)
 	{
