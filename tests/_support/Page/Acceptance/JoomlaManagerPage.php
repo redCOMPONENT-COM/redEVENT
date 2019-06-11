@@ -181,7 +181,7 @@ class JoomlaManagerPage extends AbstractPage
 	 * @var string
 	 * @since 3.2.8
 	 */
-	public static $userName = '#jform_name';
+	public static $fieldName = '#jform_name';
 
 	/**
 	 * @var string

@@ -172,12 +172,6 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $messageSuccess = '.alert-success';
 
 	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $messageSaveVenueSuccess = 'Item submitted.';
-
-	/**
 	 * @param $placeholder
 	 * @return string
 	 */

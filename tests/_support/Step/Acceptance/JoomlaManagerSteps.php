@@ -225,10 +225,10 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("I click new");
 		$I->click(JoomlaManagerPage::$newButton);
-		$I->waitForElementVisible(JoomlaManagerPage::$userName, 30);
+		$I->waitForElementVisible(JoomlaManagerPage::$fieldName, 30);
 
 		$I->wantTo("I create new user");
-		$I->fillField(JoomlaManagerPage::$userName, $name);
+		$I->fillField(JoomlaManagerPage::$fieldName, $name);
 		$I->fillField(JoomlaManagerPage::$loginName, $username);
 		$I->fillField(JoomlaManagerPage::$password, $pass);
 		$I->fillField(JoomlaManagerPage::$confirmPassword, $pass);

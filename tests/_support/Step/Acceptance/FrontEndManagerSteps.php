@@ -8,7 +8,6 @@
  */
 namespace Step\Acceptance;
 
-use Page\acceptance\administrator\EventManagerPage;
 use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 use Page\Acceptance\Administrator\VanueManagerPage;
 
@@ -107,7 +106,7 @@ class FrontEndManagerSteps extends AdminRedevent
 		$I->click(FrontendJoomlaManagerPage::xPathCategoryVenues($category));
 		$I->click(FrontendJoomlaManagerPage::$buttonSave);
 		$I->waitForElementVisible(FrontendJoomlaManagerPage::$messageSuccess, 30);
-		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveVenueSuccess, 5, FrontendJoomlaManagerPage::$messageSuccess);
+		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveSessionSuccess, 5, FrontendJoomlaManagerPage::$messageSuccess);
 	}
 
 	/**
