@@ -213,6 +213,7 @@ class JoomlaManagerSteps extends AdminRedevent
 	 * @param $pass
 	 * @param $email
 	 * @throws \Exception
+	 * @since 3.2.7
 	 */
 	public function createNewSuperuser($name, $username, $pass, $email)
 	{
@@ -245,6 +246,7 @@ class JoomlaManagerSteps extends AdminRedevent
 	/**
 	 * @param $menutitle
 	 * @throws \Exception
+	 * @since 3.2.7
 	 */
 	public function delNewMenuItem($menutitle, $menu = 'Main Menu')
 	{
@@ -274,6 +276,7 @@ class JoomlaManagerSteps extends AdminRedevent
 	/**
 	 * @param $name
 	 * @throws \Exception
+	 * @since 3.2.7
 	 */
 	public function delNewSuperUser($name)
 	{
