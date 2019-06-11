@@ -241,7 +241,7 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("I save user");
 		$I->click(JoomlaManagerPage::$saveButton);
-        $this->waitForText(JoomlaManagerPage::$messageUserSuccess, 5, JoomlaManagerPage::$messageSaveSuccess);
+		$this->waitForText(JoomlaManagerPage::$messageUserSuccess, 5, JoomlaManagerPage::$messageSaveSuccess);
 	}
 
 	/**

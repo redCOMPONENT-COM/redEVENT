@@ -249,22 +249,22 @@ class JoomlaManagerPage extends AbstractPage
 	 */
 	public static $buttonTrash = '//div[@id="toolbar-trash"]/button';
 
-    /**
-     * @var string
-     * @since 3.2.8
-     */
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
 	public static $messageUserSuccess = 'User saved.';
 
-    /**
-     * @var string
-     * @since 3.2.8
-     */
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
 	public static $messageDelMenuItemSuccess = '1 menu item trashed.';
 	
-    /**
-     * @var string 
-     * @since 3.2.8
-     */
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
 	public static $messageDelUserSuccess = '1 user deleted.';
 
 	/**
