@@ -136,6 +136,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $categoryVenue = 'Select Some Options';
 
 	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $messageSuccess = '.alert-success';
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
