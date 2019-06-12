@@ -163,6 +163,20 @@ class JoomlaManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $locatorEvent = "//td[5]/a";
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $userURL = "/administrator//index.php?option=com_users";
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 *
+	 */
+	public static $newButton = '.button-new';
+
 	/**
 	 * @var string
 	 * @since 3.2.8
