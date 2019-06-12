@@ -8,10 +8,8 @@
  */
 namespace Step\Acceptance;
 
-use Page\acceptance\administrator\EventManagerPage;
 use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 use Page\Acceptance\Administrator\VanueManagerPage;
-use Page\Acceptance\JoomlaManagerPage;
 
 class FrontEndManagerSteps extends AdminRedevent
 {
