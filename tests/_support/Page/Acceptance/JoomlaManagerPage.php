@@ -163,68 +163,6 @@ class JoomlaManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $locatorEvent = "//td[5]/a";
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $userURL = "/administrator//index.php?option=com_users";
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 *
-	 */
-	public static $newButton = '.button-new';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $fieldName = '#jform_name';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $loginName = '#jform_username';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $password = '#jform_password';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $confirmPassword = '#jform_password2';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $email = '#jform_email';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $assignedUser = '//a[text()="Assigned User Groups"]';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $superuserRole = '//input[@id="1group_8"]';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $saveButton = '.button-apply';
-
 	/**
 	 * @var string
 	 * @since 3.2.8
@@ -242,12 +180,6 @@ class JoomlaManagerPage extends AbstractPage
 	 * @since 3.2.8
 	 */
 	public static $buttonTrash = '//div[@id="toolbar-trash"]/button';
-
-	/**
-	 * @var string
-	 * @since 3.2.8
-	 */
-	public static $messageUserSuccess = 'User saved.';
 
 	/**
 	 * @var string

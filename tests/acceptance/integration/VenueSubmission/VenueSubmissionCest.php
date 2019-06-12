@@ -86,8 +86,8 @@ class VenueSubmissionCest
 		$this->username = $this->faker->bothify("Test##");
 		$this->password = $this->faker->password;
 
-		$this->venueName = "Venue Demo";
-		$this->categoryName = "Category Venue Demo";
+		$this->venueName = $this->faker->bothify("Venue Demo ##");
+		$this->categoryName = $this->faker->bothify("Category Venue Demo ##");
 		$this->menuName = $this->faker->bothify("Venue submission ##");
 		$this->menuCategory      = 'redEVENT - Component';
 		$this->menuItem = "Venue submission";
@@ -138,10 +138,10 @@ class VenueSubmissionCest
 	public function createVenue(JoomlaManagerSteps $I, $scenario)
 	{
 		$I->wantToTest("I want to create venue on frontend");
-        $I->createUser($this->username, $this->username, $this->password, $this->email);
+		$I->createUser($this->username, $this->username, $this->password, $this->email);
 		$I = new FrontEndManagerSteps($scenario);
 		$I->openNewTab();
-        $I->doFrontEndLogin($this->username, $this->password);
+		$I->doFrontEndLogin($this->username, $this->password);
 		$I->checkVenueSubmission($this->menuName, $this->venueName, $this->categoryName);
 		$I->closeTab();
 	}
