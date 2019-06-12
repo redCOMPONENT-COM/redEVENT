@@ -124,6 +124,24 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $messageSaveSessionSuccess = "Item submitted.";
 
 	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $componentTitle = '.componentheading';
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $categoryVenue = 'Select Some Options';
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $messageSuccess = '.alert-success';
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
@@ -133,4 +151,14 @@ class FrontendJoomlaManagerPage extends AbstractPage
 		return $path;
 	}
 
+	/**
+	 * @param $nameCategory
+	 * @return string
+	 * @since 3.2.8
+	 */
+	public static function xPathCategoryVenues($nameCategory)
+	{
+		$path = "//li[contains(text(), '" . $nameCategory . "')]";
+		return $path;
+	}
 }

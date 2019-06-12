@@ -9,6 +9,7 @@
 namespace Step\Acceptance;
 
 use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
+use Page\Acceptance\Administrator\VanueManagerPage;
 
 class FrontEndManagerSteps extends AdminRedevent
 {
@@ -28,6 +29,7 @@ class FrontEndManagerSteps extends AdminRedevent
 		$I->checkForPhpNoticesOrWarningsOrExceptions();
 		$I->waitForText($usepage::$title, 30, $usepage::$H1);
 		$I->waitForText($menuitem, 30);
+
 		$I->click($menuitem);
 		$I->waitForText($eventName, 30);
 		$I->click($usepage::returnLink($eventName, $sessionname));
@@ -82,5 +84,28 @@ class FrontEndManagerSteps extends AdminRedevent
 		$I->waitForText(FrontendJoomlaManagerPage::returnLink($eventName, $sessionName), 30, FrontendJoomlaManagerPage:: $titleEvent);
 		$I->waitForText($venues, 30, FrontendJoomlaManagerPage::$whereEvent);
 		$I->waitForText($category, 30, FrontendJoomlaManagerPage::$categoryEvent);
+	}
+
+	/**
+	 * @param $menuitem
+	 * @param $venuename
+	 * @param $category
+	 * @throws \Exception
+	 * @since 3.2.7
+	 */
+	public function checkVenueSubmission($menuitem, $venuename, $category)
+	{
+		$I = $this;
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, FrontendJoomlaManagerPage::$H1);
+		$I->waitForText($menuitem, 30);
+		$I->click($menuitem);
+		$I->waitForElementVisible(FrontendJoomlaManagerPage::$componentTitle, 30);
+		$I->fillField(VanueManagerPage::$fieldName, $venuename);
+		$I->click(VanueManagerPage::$categoryVanueSelect);
+		$I->click(FrontendJoomlaManagerPage::xPathCategoryVenues($category));
+		$I->click(FrontendJoomlaManagerPage::$buttonSave);
+		$I->waitForElementVisible(FrontendJoomlaManagerPage::$messageSuccess, 30);
+		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveSessionSuccess, 5, FrontendJoomlaManagerPage::$messageSuccess);
 	}
 }

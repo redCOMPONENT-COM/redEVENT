@@ -94,7 +94,7 @@ class JoomlaManagerPage extends AbstractPage
 	 *
 	 * @var string
 	 */
-	public static $buttonUninstall            = '//div[@id=\'toolbar-delete\']/button';
+	public static $buttonUninstall            = '//div[@id="toolbar-delete"]/button';
 
 	/**
 	 * Message Uninstall component Success
@@ -103,7 +103,11 @@ class JoomlaManagerPage extends AbstractPage
 	 */
 	public static $messageUninstall           = 'Uninstalling the component was successful.';
 
-	public static $message                    = '.alert-message';
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $messageSuccess                    = '.alert-message';
 
 	/**
 	 * Message not find component
@@ -160,6 +164,48 @@ class JoomlaManagerPage extends AbstractPage
 	 */
 	public static $locatorEvent = "//td[5]/a";
 
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $userURL = "/administrator//index.php?option=com_users";
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 *
+	 */
+	public static $newButton = '.button-new';
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $messageSaveSuccess = '.alert-success';
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $searchField = '//input[@id="filter_search"]';
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $buttonTrash = '//div[@id="toolbar-trash"]/button';
+
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $messageDelMenuItemSuccess = '1 menu item trashed.';
+	
+	/**
+	 * @var string
+	 * @since 3.2.8
+	 */
+	public static $messageDelUserSuccess = '1 user deleted.';
 
 	/**
 	 * @param $menuCategory
