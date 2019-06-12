@@ -212,7 +212,7 @@ class JoomlaManagerSteps extends AdminRedevent
 	 * @throws \Exception
 	 * @since 3.2.7
 	 */
-	public function delNewMenuItem($menutitle, $menu = 'Main Menu')
+	public function deleteNewMenuItem($menutitle, $menu = 'Main Menu')
 	{
 		$I = $this;
 		$I->wantTo("I open the menus page");
@@ -242,7 +242,7 @@ class JoomlaManagerSteps extends AdminRedevent
 	 * @throws \Exception
 	 * @since 3.2.7
 	 */
-	public function delNewSuperUser($name)
+	public function deleteNewSuperUser($name)
 	{
 		$I = $this;
 		$I->wantTo("I open the user page");

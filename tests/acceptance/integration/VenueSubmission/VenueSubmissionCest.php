@@ -157,7 +157,7 @@ class VenueSubmissionCest
 		$I->wantToTest("I want to delete venue");
 		$I->deleteVenue($this->categoryName, $this->venueName);
 		$I = new JoomlaManagerSteps($scenario);
-		$I->delNewSuperUser($this->username);
-		$I->delNewMenuItem($this->menuName);
+		$I->deleteNewSuperUser($this->username);
+		$I->deleteNewMenuItem($this->menuName);
 	}
 }
