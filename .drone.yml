@@ -145,8 +145,6 @@ pipeline:
     - sh tests/drone/setup-stages.sh        "Group3"                        "03-Group3"                         $php_versions
     - sh tests/drone/setup-stages.sh        "Group4"                        "04-Group4"                         $php_versions
     - sh tests/drone/setup-stages.sh        "Group5"                        "05-Group5"                         $php_versions
-    - sh tests/drone/setup-stages.sh        "Group6"                        "06-Group6"                         $php_versions
-    - sh tests/drone/setup-stages.sh        "Group7"                        "07-Group7"                         $php_versions
 
   01-Group1-56:
     group: tests
@@ -167,8 +165,7 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/g01 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/g02 0 0'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 0 0'
 
   01-Group1-73:
     group: tests
@@ -189,8 +186,7 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/g01 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/g02 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator 0 0'
 
   02-Group2-56:
     group: tests
@@ -211,8 +207,10 @@ pipeline:
       - while ! nc -z localhost 9515; do sleep 1; done
       # Performs test
       - cd tests
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/FeaturedEvents 0 0'
-      - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
+      - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
   02-Group2-73:
     group: tests
@@ -233,8 +231,10 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/FeaturedEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
   03-Group3-56:
     group: tests
@@ -255,8 +255,9 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
 
   03-Group3-73:
     group: tests
@@ -277,8 +278,9 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
 
   04-Group4-56:
     group: tests
@@ -299,8 +301,9 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/FeaturedEvents 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CalendarViewEvents 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
 
   04-Group4-73:
     group: tests
@@ -321,8 +324,9 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/FeaturedEvents 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CalendarViewEvents 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
 
   05-Group5-56:
     group: tests
@@ -344,8 +348,8 @@ pipeline:
     # Performs test
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoryEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
 
   05-Group5-73:
     group: tests
@@ -367,98 +371,8 @@ pipeline:
     # Performs test
     - cd tests
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoryEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
-
-  06-Group6-56:
-    group: tests
-    image: redwebaps/testbox-chromedriver:2.38
-    environment:
-    - tests_user=admin
-    - tests_suite=06-Group6
-    - tests_db=Group6
-    - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-06-Group6
-    - php_version=56
-    commands:
-    # Regular entry point
-    - /entrypoint.sh &
-    # Performs test after ensuring that the scenario has been fully set up
-    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-    # Waits until Chromedriver is up and running
-    - while ! nc -z localhost 9515; do sleep 1; done
-    # Performs test
-    - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CalendarViewEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
-
-  06-Group6-73:
-    group: tests
-    image: redwebaps/testbox-chromedriver:2.38
-    environment:
-    - tests_user=admin
-    - tests_suite=06-Group6
-    - tests_db=Group6
-    - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-06-Group6
-    - php_version=73
-    commands:
-    # Regular entry point
-    - /entrypoint.sh &
-    # Performs test after ensuring that the scenario has been fully set up
-    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-    # Waits until Chromedriver is up and running
-    - while ! nc -z localhost 9515; do sleep 1; done
-    # Performs test
-    - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CalendarViewEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
-
-  07-Group7-56:
-    group: tests
-    image: redwebaps/testbox-chromedriver:2.38
-    environment:
-    - tests_user=admin
-    - tests_suite=07-Group7
-    - tests_db=Group7
-    - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-07-Group7
-    - php_version=56
-    commands:
-    # Regular entry point
-    - /entrypoint.sh &
-    # Performs test after ensuring that the scenario has been fully set up
-    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-    # Waits until Chromedriver is up and running
-    - while ! nc -z localhost 9515; do sleep 1; done
-    # Performs test
-    - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/g03 0 0'
-
-  07-Group7-73:
-    group: tests
-    image: redwebaps/testbox-chromedriver:2.38
-    environment:
-    - tests_user=admin
-    - tests_suite=07-Group7
-    - tests_db=Group7
-    - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-07-Group7
-    - php_version=73
-    commands:
-    # Regular entry point
-    - /entrypoint.sh &
-    # Performs test after ensuring that the scenario has been fully set up
-    - while [ ! -f tests/.cache.setup.$tests_suite$php_version.tmp ]; do sleep 1; done
-    # Waits until Chromedriver is up and running
-    - while ! nc -z localhost 9515; do sleep 1; done
-    # Performs test
-    - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/administrator/g03 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
 
   slack:
     image: plugins/slack
