@@ -1,9 +1,11 @@
 /**
  * redevent quickbook module javascript
  */
-(function($) {
-	$(function() {
-		$('#xref').change(function() {
+var modRedeventQuickbook = (function($) {
+	return function($form, prices, dummy) {
+		var priceElement = null;
+
+		$form.find('[name=xref]').change(function() {
 			var xref = $(this).val();
 			var options = [];
 
@@ -13,31 +15,31 @@
 				}
 			}
 
-			if (options.length) {
-				if ($('#sessionpricegroup_id'))
-				{
-					$('#sessionpricegroup_id').remove();
-				}
+			if (priceElement)
+			{
+				priceElement.remove();
+				priceElement = null;
+			}
 
+			if (options.length) {
 				if (options.length > 1)
 				{
-					var sel = $('<select>').attr('id', 'sessionpricegroup_id')
-						.attr('name', 'sessionpricegroup_id[]');
+					priceElement = $('<select>')
+						.attr('name', 'sessionprice_1');
 
 					for (var i = 0; i < options.length; i++) {
-						sel.append(options[i]);
+						priceElement.append(options[i]);
 					}
 				}
 				else {
-
-					var sel = $('<input>').attr('id', 'sessionpricegroup_id')
-						.attr('name', 'sessionpricegroup_id[]')
+					priceElement = $('<input>')
+						.attr('name', 'sessionprice_1')
 						.type('name', 'hidden')
 						.val(options[0].value);
 				}
 
-				$(this).after(sel);
+				$(this).after(priceElement);
 			}
 		}).change();
-	});
+	};
 })(jQuery);
