@@ -206,4 +206,57 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->waitForText(JoomlaManagerPage::$messageMenuItemSuccess, 5, JoomlaManagerPage::$idInstallSuccess);
 	}
+
+	/**
+	 * @param $menutitle
+	 * @throws \Exception
+	 * @since 3.2.7
+	 */
+	public function deleteNewMenuItem($menutitle, $menu = 'Main Menu')
+	{
+		$I = $this;
+		$I->wantTo("I open the menus page");
+		$I->amOnPage(JoomlaManagerPage::$menuItemURL);
+		$I->waitForText(JoomlaManagerPage::$menuTitle, 5, JoomlaManagerPage::$H1);
+		$I->checkForPhpNoticesOrWarnings();
+
+		$I->wantTo("I click in the menu: $menu");
+		$I->click(array('link' => $menu));
+		$I->waitForText(JoomlaManagerPage::$menuItemsTitle, 5,JoomlaManagerPage::$H1);
+		$I->checkForPhpNoticesOrWarnings();
+
+		$I->wantTo("I search menu item");
+		$I->fillField(JoomlaManagerPage::$searchField, $menutitle);
+		$I->click(JoomlaManagerPage::$searchIcon);
+
+		$I->wantTo("I choose all menu item");
+		$I->checkAllResults();
+
+		$I->wantTo("I delete menu item");
+		$I->click(JoomlaManagerPage::$buttonTrash);
+		$I->waitForText(JoomlaManagerPage::$messageDelMenuItemSuccess, 5, JoomlaManagerPage::$messageSuccess);
+	}
+
+	/**
+	 * @param $name
+	 * @throws \Exception
+	 * @since 3.2.7
+	 */
+	public function deleteNewSuperUser($name)
+	{
+		$I = $this;
+		$I->wantTo("I open the user page");
+		$I->amOnPage(JoomlaManagerPage::$userURL);
+		$I->waitForElementVisible(JoomlaManagerPage::$newButton, 30);
+		$I->checkForPhpNoticesOrWarnings();
+
+		$I->wantTo("I search user");
+		$I->fillField(JoomlaManagerPage::$searchField, $name);
+		$I->click(JoomlaManagerPage::$searchIcon);
+		$I->waitForElementVisible(JoomlaManagerPage::$buttonUninstall, 30);
+		$I->checkAllResults();
+		$I->click(JoomlaManagerPage::$buttonUninstall);
+		$I->acceptPopup();
+		$I->waitForText(JoomlaManagerPage::$messageDelUserSuccess, 5, JoomlaManagerPage::$messageSuccess);
+	}
 }
