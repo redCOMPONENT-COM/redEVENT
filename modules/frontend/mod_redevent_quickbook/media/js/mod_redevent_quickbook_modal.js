@@ -1,27 +1,31 @@
 /**
  * redevent quickbook module javascript
  */
-document.addEvent('domready', function(){
+jQuery(function($) {
+	$('#qbsubmit-btn').click(function() {
+		var form = $(this).parents('form');
 
-	document.id('qbsubmit-btn').addEvent('click', function(){
-		var el = this;
-		var req = new Request({
-			url: el.getParent('form').getProperty('action'),
-			data: el.getParent('form'),
-			onRequest : function(){
-				el.getParent('form').set('spinner').spin();
-				el.removeEvents('click');
-			},
-			onSuccess : function(response) {
-				el.getParent('form').unspin();
-				var resp = new Element('div').set('html', response);
-				SqueezeBox.initialize();
-				SqueezeBox.open(resp, {
-					handler: 'adopt',
-					size: {x: 300, y: 450}
-				});
-			}
-		});
-		req.send();
+		if (!document.redformvalidator.isValid(form)) {
+			return false
+		}
+
+		form.addClass('loading');
+
+		$.ajax({
+			url: form.prop('action'),
+			data: form.serialize(),
+			method : 'POST'
+		})
+		.done(function(response){
+			form.removeClass('loading');
+
+			var $resp = $('<div></div>').html(response);
+
+			SqueezeBox.initialize();
+			SqueezeBox.open($resp[0], {
+				handler: 'adopt',
+				size: {x: 300, y: 450}
+			});
+		})
 	});
 });

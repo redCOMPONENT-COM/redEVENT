@@ -98,7 +98,7 @@ class ModRedeventQuickbookHelper
 
 		$result->form = $rfcore->getForm($formId);
 		$result->sessionsOptions = self::getSessionsOptions($sessions, $params);
-		$result->pricegroupjs = self::jsPriceGroups($sessions);
+		$result->pricegroups = self::getPriceGroups($sessions);
 
 		return $result;
 	}
@@ -117,6 +117,13 @@ class ModRedeventQuickbookHelper
 
 		foreach ($sessions as $s)
 		{
+			$session = RedeventEntitySession::load($s->xref);
+
+			if (!$session->canRegister())
+			{
+				continue;
+			}
+
 			$value = $s->xref;
 
 			if (!RedeventHelperDate::isValidDate($s->dates))
@@ -137,15 +144,15 @@ class ModRedeventQuickbookHelper
 	}
 
 	/**
-	 * Returns js for sessions prices
+	 * Returns sessions prices
 	 *
 	 * @param   array  $sessions  sessions
 	 *
 	 * @return array
 	 */
-	protected static function jsPriceGroups($sessions)
+	protected static function getPriceGroups($sessions)
 	{
-		$js = array('var prices = new Array();');
+		$prices = [];
 
 		foreach ($sessions as $s)
 		{
@@ -153,14 +160,15 @@ class ModRedeventQuickbookHelper
 			{
 				foreach ($s->prices as $p)
 				{
-					$js[] = "prices.push({'xref': '" . $p->xref . "'"
-						. ", 'name': '" . $p->name . "'"
-						. ", 'id': '" . $p->id . "'"
-						. "});";
+					$prices[] = [
+						'xref' => $p->xref,
+						'name' => $p->name,
+						'id' => $p->id,
+					];
 				}
 			}
 		}
 
-		return implode("\n", $js);
+		return $prices;
 	}
 }
