@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
  * redEVENT Component Myevents Controller
  *
  * @package  Redevent.Site
- * @since    __deploy_version__
+ * @since    3.2.9
  */
 class RedeventControllerAttachments extends JControllerLegacy
 {

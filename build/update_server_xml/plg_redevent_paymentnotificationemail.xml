@@ -6,7 +6,7 @@
 		<element>paymentnotificationemail</element>
 		<type>plugin</type>
 		<folder>redevent</folder>
-		<version>3.2.3</version>
+		<version>3.2.9</version>
 		<infourl title="redEVENT">https://www.redcomponent.com/index.php/redcomponent/redevent</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://www.redcomponent.com/index.php/redcomponent/redevent</downloadurl>

@@ -120,7 +120,7 @@ class RedeventModelAttendee extends RModelAdmin
 	 *
 	 * @return  boolean  True if successful, false if an error occurs.
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.9
 	 */
 	public function delete(&$pks)
 	{
@@ -336,7 +336,7 @@ class RedeventModelAttendee extends RModelAdmin
 	 *
 	 * @return mixed
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.9
 	 */
 	private function getAttendeesSessionIds($pks)
 	{
@@ -352,7 +352,7 @@ class RedeventModelAttendee extends RModelAdmin
 	 *
 	 * @return mixed
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.9
 	 */
 	private function getRowsByIds($ids)
 	{
@@ -383,7 +383,7 @@ class RedeventModelAttendee extends RModelAdmin
 	 *
 	 * @return void
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.9
 	 */
 	private function updateWaitingLists($sessionIds)
 	{

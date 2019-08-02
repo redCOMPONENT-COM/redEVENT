@@ -377,7 +377,7 @@ class RedeventRfieldSessionprice extends RdfRfieldRadio
 	 *
 	 * @return mixed
 	 *
-	 * @since __deploy_version__
+	 * @since 3.2.9
 	 *
 	 * @throws RuntimeException
 	 */

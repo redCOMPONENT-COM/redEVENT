@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Routing class for com_redevent
  *
- * @since  __deploy_version__
+ * @since  3.2.9
  */
 class RedeventRouter extends JComponentRouterBase
 {

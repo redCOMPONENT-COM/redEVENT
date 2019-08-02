@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
 	<update>
-		<name>redEVENT plg_redevent_config_aesir</name>
+		<name>redEVENT plg_redform_field_redevent_session</name>
 		<description>redEVENT plugin update</description>
-		<element>aesir</element>
+		<element>redevent_session</element>
 		<type>plugin</type>
-		<folder>redevent_config</folder>
+		<folder>redform_field</folder>
 		<version>3.2.8</version>
 		<infourl title="redEVENT">https://www.redcomponent.com/index.php/redcomponent/redevent</infourl>
 		<downloads>
