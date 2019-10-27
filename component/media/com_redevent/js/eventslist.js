@@ -1,5 +1,4 @@
 /**
- * @version 1.0 $Id: recurrence.js 30 2009-05-08 10:22:21Z roland $
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -20,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// requires mootools
 (function($){
 
 	$(document).ready(function() {
@@ -28,8 +26,6 @@
 			this.form.submit();
 			return true;
 		});
-
-
 
 		// show/hide filters in views
 		if ($('#el-events-filters'))
@@ -60,12 +56,8 @@
 		if ($('#filters-reset'))
 		{
 			$('#filters-reset').click(function(){
-				$('#el-events-filters').find('input').each(function(el){
-					$(el).val('');
-				});
-
-				$('#el-events-filters').find('select').each(function(el){
-					$(el).val('');
+				$('#el-events-filters').find(':input').each(function(el){
+					$(this).val('');
 				});
 
 				this.form.submit();
