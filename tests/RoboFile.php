@@ -8,7 +8,7 @@
 	 * @see  http://robo.li/
 	 */
 	require_once 'vendor/autoload.php';
-	
+
 	/**
 	 * Class RoboFile
 	 *
@@ -20,12 +20,12 @@
 		use Joomla\Testing\Robo\Tasks\LoadTasks;
 		// Load tasks from composer, see composer.json
 		use Joomla\Testing\Robo\Tasks\LoadTasks;
-		
+
 		/**
 		 * Current root folder
 		 */
 		private $testsFolder = './';
-		
+
 		/**
 		 * @var   array
 		 * @var   array
@@ -35,7 +35,7 @@
 			'--tap',
 			'--fail-fast'
 		];
-		
+
 		/**
 		 * Hello World example task.
 		 *
@@ -47,10 +47,10 @@
 		public function sayHelloWorld()
 		{
 			$result = $this->taskHelloWorld()->run();
-			
+
 			return $result;
 		}
-		
+
 		/**
 		 * Sends Codeception errors to Slack
 		 *
@@ -65,19 +65,19 @@
 			if (is_null($slackToken))
 			{
 				$this->say('we are in Travis environment, getting token from ENV');
-				
+
 				// Remind to set the token in repo Travis settings,
 				// see: http://docs.travis-ci.com/user/environment-variables/#Using-Settings
 				$slackToken = getenv('SLACK_ENCRYPTED_TOKEN');
 			}
-			
+
 			if (is_null($codeceptionOutputFolder))
 			{
 				$this->codeceptionOutputFolder = '_output';
 			}
-			
+
 			$this->say($codeceptionOutputFolder);
-			
+
 			$result = $this
 				->taskSendCodeceptionOutputToSlack(
 					$slackChannel,
@@ -85,10 +85,10 @@
 					$codeceptionOutputFolder
 				)
 				->run();
-			
+
 			return $result;
 		}
-		
+
 		/**
 		 * Sends the build report error back to Slack
 		 *
@@ -108,13 +108,13 @@
 		public function sendBuildReportErrorSlack($cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL = '')
 		{
 			$directories = glob('_output/*' , GLOB_ONLYDIR);
-			
+
 			foreach ($directories as $directory)
 			{
 				$this->sendBuildReportErrorSlackDirectory($directory, $cloudinaryName, $cloudinaryApiKey, $cloudinaryApiSecret, $githubRepository, $githubPRNo, $slackWebhook, $slackChannel, $buildURL);
 			}
 		}
-		
+
 		/**
 		 * Sends the build report error back to Slack
 		 *
@@ -140,7 +140,7 @@
 			$errorLog = 'Selenium log in ' . $directory . ':' . chr(10). chr(10);
 			$this->say('Starting to Prepare Build Report');
 			$this->say('Exploring folder ' . $directory . ' for error reports');
-			
+
 			// Loop through Codeception snapshots
 			if (file_exists($directory) && $handler = opendir($directory))
 			{
@@ -148,7 +148,7 @@
 				$errorLog = 'Codeception tap log in ' . $directory . ':' . chr(10). chr(10);
 				$errorSelenium = false;
 			}
-			
+
 			if (file_exists($reportFile))
 			{
 				$this->say('Report File Prepared');
@@ -156,12 +156,12 @@
 				{
 					$errorLog .= file_get_contents($reportFile, null, null, 15);
 				}
-				
+
 				if (!$errorSelenium)
 				{
 					$handler = opendir($directory);
 					$errorImage = '';
-					
+
 					while (!$reportError && false !== ($errorSnapshot = readdir($handler)))
 					{
 						// Avoid sending system files or html files
@@ -169,12 +169,12 @@
 						{
 							continue;
 						}
-						
+
 						$reportError = true;
 						$errorImage = $directory . '/' . $errorSnapshot;
 					}
 				}
-				
+
 				if ($reportError || $errorSelenium)
 				{
 					// Sends the error report to Slack
@@ -189,20 +189,20 @@
 						->setSlackWebhook($slackWebhook)
 						->setSlackChannel($slackChannel)
 						->setTapLog($errorLog);
-					
+
 					if (!empty($errorImage))
 					{
 						$reportingTask->setImagesToUpload($errorImage)
 							->publishCloudinaryImages();
 					}
-					
+
 					$reportingTask->publishBuildReportToSlack()
 						->run()
 						->stopOnFail();
 				}
 			}
 		}
-		
+
 		/**
 		 * Downloads and prepares a Joomla CMS site for testing
 		 *
@@ -215,10 +215,10 @@
 			{
 				$this->taskDeleteDir('joomla-cms')->run();
 			}
-			
+
 			$this->cloneJoomla();
 		}
-		
+
 		/**
 		 * Downloads and prepares a Joomla CMS site for testing
 		 *
@@ -288,19 +288,19 @@
 				if (!$cleanUp)
 				{
 					$this->say('Using cached version of redFORM and skipping clone process');
-					
+
 					return;
 				}
-				
+
 				$this->taskDeleteDir('build/redFORM')->run();
 			}
-			
+
 			$version = '3.3.15';
 			$this->_exec("git clone -b $version --single-branch --depth 1 https://travisredweb:travisredweb2013github@github.com/redCOMPONENT-COM/redFORM.git build/redFORM");
-			
+
 			$this->say("redFORM ($version) cloned at build/");
 		}
-		
+
 		/**
 		 * Executes Selenium System Tests in your machine
 		 *
@@ -314,34 +314,34 @@
 		])
 		{
 			$this->getComposer();
-			
+
 			$this->taskComposerInstall()->run();
-			
+
 			$this->taskSeleniumStandaloneServer()
 				->setURL("http://localhost:4444")
 				->runSelenium()
 				->waitForSelenium()
 				->run()
 				->stopOnFail();
-			
+
 			// Make sure to Run the Build Command to Generate AcceptanceTester
 			$this->_exec("vendor/bin/codecept build");
-			
+
 			if (!$opts['test'])
 			{
 				$this->say('Available tests in the system:');
-				
+
 				$iterator = new RecursiveIteratorIterator(
 					new RecursiveDirectoryIterator(
 						$this->testsFolder . $opts['suite'],
 						RecursiveDirectoryIterator::SKIP_DOTS),
 					RecursiveIteratorIterator::SELF_FIRST);
-				
+
 				$tests = array();
-				
+
 				$iterator->rewind();
 				$i = 1;
-				
+
 				while ($iterator->valid())
 				{
 					if (strripos($iterator->getSubPathName(), 'cept.php')
@@ -351,44 +351,44 @@
 						$tests[$i] = $iterator->getSubPathName();
 						$i++;
 					}
-					
+
 					$iterator->next();
 				}
-				
+
 				$this->say('');
 				$testNumber	= $this->ask('Type the number of the test  in the list that you want to run...');
 				$opts['test'] = $tests[$testNumber];
 			}
-			
+
 			$pathToTestFile = './' . $opts['suite'] . '/' . $opts['test'];
-			
+
 			// loading the class to display the methods in the class
 			require './' . $opts['suite'] . '/' . $opts['test'];
-			
+
 			$classes = Nette\Reflection\AnnotationsParser::parsePhp(file_get_contents($pathToTestFile));
 			$className = array_keys($classes)[0];
-			
+
 			// If test is Cest, give the option to execute individual methods
 			if (strripos($className, 'cest'))
 			{
 				$testFile = new Nette\Reflection\ClassType($className);
 				$testMethods = $testFile->getMethods(ReflectionMethod::IS_PUBLIC);
-				
+
 				foreach ($testMethods as $key => $method)
 				{
 					$this->say('[' . $key . '] ' . $method->name);
 				}
-				
+
 				$this->say('');
 				$methodNumber = $this->askDefault('Choose the method in the test to run (hit ENTER for All)', 'All');
-				
+
 				if($methodNumber != 'All')
 				{
 					$method = $testMethods[$methodNumber]->name;
 					$pathToTestFile = $pathToTestFile . ':' . $method;
 				}
 			}
-			
+
 			$this->taskCodecept()
 				->test($pathToTestFile)
 				->arg('--steps')
@@ -397,7 +397,7 @@
 				->run()
 				->stopOnFail();
 		}
-		
+
 		/**
 		 * Preparation for running manual tests after installing Joomla/Extension and some basic configuration
 		 *
@@ -406,21 +406,21 @@
 		public function runTestPreparation()
 		{
 			$this->prepareSiteForSystemTests();
-			
+
 			$this->getComposer();
-			
+
 			$this->taskComposerInstall()->run();
-			
+
 			$this->taskSeleniumStandaloneServer()
 				->setURL("http://localhost:4444")
 				->runSelenium()
 				->waitForSelenium()
 				->run()
 				->stopOnFail();
-			
+
 			// Make sure to Run the Build Command to Generate AcceptanceTester
 			$this->_exec("vendor/bin/codecept build");
-			
+
 			$this->taskCodecept()
 				->arg('--tap')
 				->arg('--fail-fast')
@@ -428,7 +428,7 @@
 				->run()
 				->stopOnFail();
 		}
-		
+
 		/**
 		 * Function to Run tests in a Group
 		 *
@@ -437,30 +437,30 @@
 		public function runTests()
 		{
 			$this->prepareSiteForSystemTests();
-			
+
 			$this->prepareReleasePackages();
-			
+
 			$this->getComposer();
-			
+
 			$this->taskComposerInstall()->run();
-			
+
 			$this->taskSeleniumStandaloneServer()
 				->setURL("http://localhost:4444")
 				->runSelenium()
 				->waitForSelenium()
 				->run()
 				->stopOnFail();
-			
+
 			// Make sure to Run the Build Command to Generate AcceptanceTester
 			$this->_exec("vendor/bin/codecept build");
-			
+
 			$this->taskCodecept()
 				->arg('--tap')
 				->arg('--fail-fast')
 				->arg($this->testsFolder . 'acceptance/install/')
 				->run()
 				->stopOnFail();
-			
+
 			$this->taskCodecept()
 				->arg('--tap')
 				->arg('--fail-fast')
@@ -476,17 +476,17 @@
 //			->arg($this->testsFolder . 'acceptance/frontend/')
 //			->run()
 //			->stopOnFail();
-			
+
 			$this->taskCodecept()
 				->arg('--tap')
 				->arg('--fail-fast')
 				->arg($this->testsFolder . 'acceptance/uninstall/')
 				->run()
 				->stopOnFail();
-			
+
 			$this->killSelenium();
 		}
-		
+
 		/**
 		 * Function to run unit tests
 		 *
@@ -498,7 +498,7 @@
 			$this->_exec("joomla-cms/libraries/vendor/phpunit/phpunit/phpunit")
 				->stopOnFail();
 		}
-		
+
 		public function testsSitePreparation($use_htaccess = 1, $cleanUp = 1)
 		{
 			$skipCleanup = false;
@@ -522,7 +522,7 @@
 				* When joomla Staging branch has a bug you can uncomment the following line as a tmp fix for the tests layer.
 				* Use as $version value the latest tagged stable version at: https://github.com/joomla/joomla-cms/releases
 				*/
-				$version = '3.9.13';
+				$version = '3.9.14';
 				$this->_exec("git clone -b $version --single-branch --depth 1 https://github.com/joomla/joomla-cms.git joomla-cms");
 				$this->say("Joomla CMS ($version) site created at joomla-cms");
 			}
@@ -533,7 +533,7 @@
 				$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /joomla-cms/,g" --in-place joomla-cms/.htaccess');
 			}
 		}
-		
+
 		/**
 		 * Stops Selenium Standalone Server
 		 *
@@ -543,7 +543,7 @@
 		{
 			$this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
 		}
-		
+
 		/**
 		 * Downloads Composer
 		 *
@@ -557,7 +557,7 @@
 				$this->_exec('curl --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
 			}
 		}
-		
+
 		/**
 		 * Runs Selenium Standalone Server.
 		 *
@@ -567,7 +567,7 @@
 		{
 			$this->_exec("vendor/bin/selenium-server-standalone >> selenium.log 2>&1 &");
 		}
-		
+
 		/**
 		 * Prepares the .zip packages of the extension to be installed in Joomla
 		 */
@@ -575,7 +575,7 @@
 		{
 			$this->_exec("gulp release --skip-version --testRelease --gulpfile ../build/gulpfile.js");
 		}
-		
+
 		/**
 		 * Looks for PHP Parse errors in core
 		 */
@@ -583,7 +583,7 @@
 		{
 			$this->_exec('php checkers/phppec.php ../component/ ../modules/ ../plugins/ ../redeventb2b/ ../redeventsync/');
 		}
-		
+
 		/**
 		 * Looks for missed debug code like var_dump or console.log
 		 */
@@ -591,7 +591,7 @@
 		{
 			$this->_exec('php checkers/misseddebugcodechecker.php');
 		}
-		
+
 		/**
 		 * Check the code style of the project against a passed sniffers
 		 */
@@ -602,13 +602,13 @@
 				$this->say('Downloading Joomla Coding Standards Sniffers');
 				$this->_exec("git clone -b master --single-branch --depth 1 https://github.com/joomla/coding-standards.git checkers/phpcs/Joomla");
 			}
-			
+
 			$this->taskExec('php checkers/phpcs.php')
 				->printed(true)
 				->run()
 				->stopOnFail();
 		}
-		
+
 		/**
 		 * Sends the build report error back to Slack
 		 *
@@ -631,7 +631,7 @@
 			$reportError   = false;
 			$reportFile    = 'tests/selenium.log';
 			$errorLog      = 'Selenium log:' . chr(10) . chr(10);
-			
+
 			// Loop through Codeception snapshots
 			if (file_exists('tests/_output') && $handler = opendir('tests/_output'))
 			{
@@ -639,19 +639,19 @@
 				$errorLog      = 'Codeception tap log:' . chr(10) . chr(10);
 				$errorSelenium = false;
 			}
-			
+
 			if (file_exists($reportFile))
 			{
 				if ($reportFile)
 				{
 					$errorLog .= file_get_contents($reportFile, null, null, 15);
 				}
-				
+
 				if (!$errorSelenium)
 				{
 					$handler    = opendir('tests/_output');
 					$errorImage = '';
-					
+
 					while (!$reportError && false !== ($errorSnapshot = readdir($handler)))
 					{
 						// Avoid sending system files or html files
@@ -659,14 +659,14 @@
 						{
 							continue;
 						}
-						
+
 						$reportError = true;
 						$errorImage  = __DIR__ . '/tests/_output/' . $errorSnapshot;
 					}
 				}
-				
+
 				echo $errorImage;
-				
+
 				if (!$reportError || $errorSelenium)
 				{
 					// Sends the error report to Slack
@@ -680,13 +680,13 @@
 						->setSlackWebhook($slackWebhook)
 						->setSlackChannel($slackChannel)
 						->setTapLog($errorLog);
-					
+
 					if (!empty($errorImage))
 					{
 						$reportingTask->setImagesToUpload($errorImage)
 							->publishCloudinaryImages();
 					}
-					
+
 					$reportingTask->publishBuildReportToSlack()
 						->run()
 						->stopOnFail();
@@ -712,7 +712,7 @@
 
 			$this->say("Joomla CMS ($version) site created at joomla-cms");
 		}
-		
+
 		/**
 		 * Tests setup
 		 *
@@ -725,17 +725,17 @@
 		public function testsSetup($debug = true, $steps = true)
 		{
 			$args = [];
-			
+
 			if ($debug)
 			{
 				$args[] = '--debug';
 			}
-			
+
 			if ($steps)
 			{
 				$args[] = '--steps';
 			}
-			
+
 			$args = array_merge(
 				$args,
 				$this->defaultArgs
@@ -743,20 +743,20 @@
 
             // Gets redFORM
             $this->getredCOREExtensionForIntegrationTests(0);
-			
+
 			// Gets redFORM
 			$this->getredFORMExtensionForIntegrationTests(0);
-			
+
 			// Sets the output_append variable in case it's not yet
 			if (getenv('output_append') === false)
 			{
 				$this->say('Setting output_append');
 				putenv('output_append=');
 			}
-			
+
 			// Builds codeception
 			$this->_exec("vendor/bin/codecept build");
-			
+
 			// Executes the initial set up
 			$this->taskCodecept()
 				->args($args)
@@ -764,7 +764,7 @@
 				->run()
 				->stopOnFail();
 		}
-		
+
 		/**
 		 * Individual test folder execution
 		 *
@@ -778,17 +778,17 @@
 		public function testsRun($folder, $debug = true, $steps = true)
 		{
 			$args = [];
-			
+
 			if ($debug)
 			{
 				$args[] = '--debug';
 			}
-			
+
 			if ($steps)
 			{
 				$args[] = '--steps';
 			}
-			
+
 			$args = array_merge(
 				$args,
 				$this->defaultArgs
@@ -798,10 +798,10 @@
 			{
 				putenv('output_append=');
 			}
-			
+
 			// Codeception build
 			$this->_exec("vendor/bin/codecept build");
-			
+
 			// Actual execution of Codeception test
 			$this->taskCodecept()
 				->args($args)
