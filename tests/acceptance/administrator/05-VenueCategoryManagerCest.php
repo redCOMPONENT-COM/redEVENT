@@ -40,9 +40,15 @@ class VenueCategoryManagerCest
 		$this->categoryVenueName1 = $this->faker->bothify("Venue Category Name 1 ##??");
 		$this->categoryVenueName2 = $this->faker->bothify("Venue Category Name 2 ##??");
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param VenueCategoryManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(VenueCategoryManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

@@ -94,13 +94,13 @@ class VenueSubmissionCest
 	}
 
 	/**
-	 * @param AcceptanceTester $i
+	 * @param JoomlaManagerSteps $i
 	 * @throws Exception
 	 * @since 3.2.7
 	 */
-	public function _before(\AcceptanceTester $i)
+	public function _before(JoomlaManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

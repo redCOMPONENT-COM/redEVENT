@@ -67,9 +67,15 @@ class EventManagerCest
 		$this->templateName  = 'default template';
 		$this->templateName2 = 'template 1';
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param EventManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(EventManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

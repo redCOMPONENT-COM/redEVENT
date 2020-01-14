@@ -1,5 +1,14 @@
 <?php
 /**
+ * @package     redEVENT
+ * @subpackage  Cests
+ * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+use Step\Acceptance\AdminRedevent;
+
+/**
  * @package     Redevent
  * @subpackage  Tests
  * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
@@ -8,10 +17,15 @@
 
 class CheckForWarningsAndNoticesCest
 {
-	public function runChecks(\AcceptanceTester $I)
+	/**
+	 * @param AdminRedevent $I
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function runChecks(AdminRedevent $I)
 	{
 		$I->wantToTest(' that there are no Warnings or Notices in redFORM');
-		$I->doAdministratorLogin();
+		$I->doAdministratorRedEventLogin();
 		$I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent');
 		$I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=categories');
 		$I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=customfields');
@@ -30,10 +44,15 @@ class CheckForWarningsAndNoticesCest
 		$I->checkForPhpNoticesOrWarningsOrExceptions('administrator/index.php?option=com_redevent&view=venuescategories');
 	}
 
-	public function checkDefaultTemplateCest(\AcceptanceTester $I)
+	/**
+	 * @param AdminRedevent $I
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function checkDefaultTemplateCest(AdminRedevent $I)
 	{
 		$I->wantToTest(' that there is a default event template');
-		$I->doAdministratorLogin();
+		$I->doAdministratorRedEventLogin();
 		$I->amOnPage('administrator/index.php?option=com_redevent&view=eventtemplates');
 		$I->seeElement('//*[@id="table-items"]//td//*[contains(., "default template")]');
 	}
