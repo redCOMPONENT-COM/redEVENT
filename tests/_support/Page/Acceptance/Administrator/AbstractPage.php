@@ -129,11 +129,11 @@ class AbstractPage
 	 */
 	public static $messageDeleteProductSuccess = '1 item(s) deleted';
 
-    /**
-     * Message delete success
-     * @var string
-     */
-    public static $messagePublishSuccess = '1 item(s) published';
+	/**
+	 * Message delete success
+	 * @var string
+	 */
+	public static $messagePublishSuccess = '1 item(s) published';
 
 	/**
 	 * Button search
@@ -153,10 +153,16 @@ class AbstractPage
 	 */
 	public static $tableResult                = '//table[@id=\'table-items\']/tbody/tr[1]/td[5]';
 
-    /**
-     * @var string
-     */
-    public static $toggleEditor = "//div[@id='typewebform']//a[@xpath='1']";
+	/**
+	 * @var string
+	 */
+	public static $toggleEditor = "//div[@id='typewebform']//a[@xpath='1']";
+
+	/**
+	 * @var string
+	 * @since 3.2.10
+	 */
+	public static $notificationNoItem = "Nothing to display";
 
 	/**
 	 * @param $event
