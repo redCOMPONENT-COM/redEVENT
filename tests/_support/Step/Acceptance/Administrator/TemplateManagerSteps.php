@@ -136,7 +136,7 @@ class TemplateManagerSteps extends redFormManagerSteps
 		$I->wantTo('Test with delete product then accept');
 		$I->click(TemplateManagerPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(TemplateManagerPage::$messageDeleteProductSuccess, 120, TemplateManagerPage::$message);
+		$I->waitForText(TemplateManagerPage::$notificationNoItem, 120);
 		$I->dontSee($nameTemplate);
 	}
 }
