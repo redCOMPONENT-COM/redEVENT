@@ -78,7 +78,6 @@ pipeline:
     - php_version=56
     commands:
     # Regular entry point
-    - chown -R /entrypoint.sh
     - /entrypoint.sh &
 
     # Waiting for setup to be done
@@ -111,7 +110,6 @@ pipeline:
     - php_version=73
     commands:
     # Regular entry point
-    - chown -R /entrypoint.sh
     - /entrypoint.sh &
 
     # Waiting for setup to be done
