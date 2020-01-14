@@ -33,7 +33,7 @@ pipeline:
 
   00-setup:
     group: 00-setup
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     pull: true
     commands:
       # Composer setup
@@ -67,7 +67,7 @@ pipeline:
 
   00-setup-56:
     group: 00-setup
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     pull: true
     environment:
     - tests_user=admin
@@ -99,7 +99,7 @@ pipeline:
 
   00-setup-73:
     group: 00-setup
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     pull: true
     environment:
     - tests_user=admin
@@ -131,7 +131,7 @@ pipeline:
 
   00-setup-stages:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_suite=00-setup
     - tests_db=setup
@@ -148,7 +148,7 @@ pipeline:
 
   01-Group1-56:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=01-Group1
@@ -169,7 +169,7 @@ pipeline:
 
   01-Group1-73:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=01-Group1
@@ -190,7 +190,7 @@ pipeline:
 
   02-Group2-56:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=02-Group2
@@ -214,7 +214,7 @@ pipeline:
 
   02-Group2-73:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=02-Group2
@@ -238,7 +238,7 @@ pipeline:
 
   03-Group3-56:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=03-Group3
@@ -261,7 +261,7 @@ pipeline:
 
   03-Group3-73:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=03-Group3
@@ -284,7 +284,7 @@ pipeline:
 
   04-Group4-56:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=04-Group4
@@ -307,7 +307,7 @@ pipeline:
 
   04-Group4-73:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=04-Group4
@@ -330,7 +330,7 @@ pipeline:
 
   05-Group5-56:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=05-Group5
@@ -353,7 +353,7 @@ pipeline:
 
   05-Group5-73:
     group: tests
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=05-Group5
@@ -388,7 +388,7 @@ pipeline:
       {{/success}}
 
   error-report:
-    image: redwebaps/testbox-chromedriver:2.38
+    image: redwebaps/chromedriver:79.0
     commands:
       - if [ -z "${CI_PULL_REQUEST}" ]; then export CI_PULL_REQUEST=1; fi
       - cd tests
