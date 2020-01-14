@@ -62,11 +62,12 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("Open the menu types iframe");
 		$I->click(JoomlaManagerPage::$buttonSelect);
-		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 5);
+		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 30);
 		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
 		$I->wantTo("Open the menu category: $menuCategory");
-		$I->waitForElementVisible(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
+		$I->wait(2);
+		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
 		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
 		$I->wantTo("Choose the menu item type: $menuItem");
@@ -113,11 +114,12 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("Open the menu types iframe");
 		$I->click(JoomlaManagerPage::$buttonSelect);
-		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 5);
+		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 30);
 		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
 		$I->wantTo("Open the menu category: $menuCategory");
-		$I->waitForElementVisible(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
+		$I->wait(2);
+		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
 		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
 		$I->wantTo("Choose the menu item type: $menuItem");
