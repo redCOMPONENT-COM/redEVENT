@@ -173,7 +173,8 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
 		$I->wantTo("Open the menu category: $menuCategory");
-		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 5);
+		$I->wait(2);
+		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
 		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
 		$I->wantTo("Choose the menu item type: $menuItem");
