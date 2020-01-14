@@ -15,26 +15,20 @@ class InstallJoomlaCest
 		$I->doAdministratorLogin();
 		$I->disableStatistics();
 		$I->setErrorReportingToDevelopment();
+
+        $I->amOnPage('/administrator/index.php?option=com_installer');
+        $I->waitForText('Extensions: Install', 60, ['css' => 'H1']);
+
+        $pathredCORE = $I->getConfiguration('packages url').'redCORE.zip';
+        $I->installExtensionFromUrl($pathredCORE);
+
+        $I->click(['link' => 'Install from Folder']);
+        $I->comment('I enter the path');
+
+        $path = $I->getConfiguration('extension folder') . 'tests/extension/redFORM';
+        $I->installExtensionFromFolder($path);
+
+        $pathEvent = $I->getConfiguration('packages url').'redevent.zip';
+        $I->installExtensionFromUrl($pathEvent);
 	}
-
-    public function install(\AcceptanceTester $i)
-    {
-        $i->wantToTest('redEVENT installation in Joomla 3');
-        $i->doAdministratorLogin();
-
-        $i->amOnPage('/administrator/index.php?option=com_installer');
-        $i->waitForText('Extensions: Install', 60, ['css' => 'H1']);
-
-        $pathredCORE = $i->getConfiguration('packages url').'redCORE.zip';
-        $i->installExtensionFromUrl($pathredCORE);
-
-        $i->click(['link' => 'Install from Folder']);
-        $i->comment('I enter the path');
-
-        $path = $i->getConfiguration('extension folder') . 'tests/extension/redFORM';
-        $i->installExtensionFromFolder($path);
-
-        $pathEvent = $i->getConfiguration('packages url').'redevent.zip';
-        $i->installExtensionFromUrl($pathEvent);
-    }
 }
