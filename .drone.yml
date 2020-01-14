@@ -33,7 +33,7 @@ pipeline:
 
   00-setup:
     group: 00-setup
-    image: redwebaps/testbox-chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0-dev
     pull: true
     commands:
       # Composer setup
@@ -67,7 +67,7 @@ pipeline:
 
   00-setup-56:
     group: 00-setup
-    image: redwebaps/testbox-chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0-dev
     pull: true
     environment:
     - tests_user=admin
@@ -99,7 +99,7 @@ pipeline:
 
   00-setup-73:
     group: 00-setup
-    image: redwebaps/testbox-chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0-dev
     pull: true
     environment:
     - tests_user=admin
