@@ -87,12 +87,13 @@ class SearchEventsOnFrontEndCest
 	}
 
 	/**
-	 * @param AcceptanceTester $i
+	 * @param VanueManagerSteps $i
 	 * @throws Exception
+	 * @since 3.2.10
 	 */
-	public function _before(\AcceptanceTester $i)
+	public function _before(VanueManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

@@ -42,9 +42,15 @@ class RoleMangerCest
 		$this->roleName1 = $this->faker->bothify("Role 1 ##??");
 		$this->roleName2 = $this->faker->bothify("Role 2 ##??");
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param RoleManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(RoleManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

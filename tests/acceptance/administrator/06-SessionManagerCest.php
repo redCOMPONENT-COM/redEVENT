@@ -77,9 +77,15 @@ class SessionManagerCest
 		$this->SessionName1       = $this->faker->bothify("Session Name  ##??");
 		$this->SessionName2       = $this->faker->bothify("Session Name  ##??");
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param VanueManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(VanueManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**
@@ -123,14 +129,14 @@ class SessionManagerCest
 		$I->wantToTest('delete all session 1 in redEVENT');
 	}
 
-    /**
-     * @param SessionManagerSteps $client
-     * @throws Exception
-     */
+	/**
+	 * @param SessionManagerSteps $client
+	 * @throws Exception
+	 */
 	public function deleteAllSection(SessionManagerSteps $client)
-    {
-        $client->deleteAllSession();
-        $client->dontSee($this->SessionName1);
-        $client->dontSee($this->SessionName2);
-    }
+	{
+		$client->deleteAllSession();
+		$client->dontSee($this->SessionName1);
+		$client->dontSee($this->SessionName2);
+	}
 }

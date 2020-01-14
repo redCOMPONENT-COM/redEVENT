@@ -102,5 +102,15 @@ class AdminRedevent extends \AcceptanceTester
 		$I->waitForText(AbstractPage::$messageDeleteProductSuccess, 120, AbstractPage::$message);
 		$I->dontSee($name);
 	}
+
+	/**
+	 * @throws \Exception
+	 * @since 3.2.10
+	 */
+	public function doAdministratorRedEventLogin()
+	{
+		$I = $this;
+		$I->doAdministratorLogin("admin",  "admin", null);
+	}
 }
 
