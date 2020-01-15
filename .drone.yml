@@ -196,7 +196,7 @@ pipeline:
     - tests_suite=02-Group2
     - tests_db=Group2
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-02-Group2
+    - output_append=-02-Group2-56
     - php_version=56
     commands:
     # Regular entry point
@@ -220,7 +220,7 @@ pipeline:
     - tests_suite=02-Group2
     - tests_db=Group2
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-02-Group2
+    - output_append=-02-Group2-73
     - php_version=73
     commands:
     # Regular entry point
