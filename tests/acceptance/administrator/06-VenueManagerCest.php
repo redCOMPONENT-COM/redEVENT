@@ -54,9 +54,15 @@ class VenueManagerCest
 		$this->categoryVanueName2 = $this->faker->bothify("Category Vanue Name 2 ##??");
 		$this->vanueName2 = $this->faker->bothify("Vanue Name 2 ##??");
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param VanueManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(VanueManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

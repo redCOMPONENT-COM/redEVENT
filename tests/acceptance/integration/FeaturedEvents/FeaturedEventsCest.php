@@ -92,9 +92,15 @@ class FeaturedEventsCest
 		$this->menuItem          = 'Featured events';
 		$this->menuCategory      = 'redEVENT - Component';
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param JoomlaManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(JoomlaManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

@@ -42,12 +42,12 @@ class PriceGroupManagerCest
 	}
 
 	/**
-	 * @param AcceptanceTester $i
+	 * @param PriceGroupManagerStep $i
 	 * @throws Exception
 	 */
-	public function _before(\AcceptanceTester $i)
+	public function _before(PriceGroupManagerStep $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

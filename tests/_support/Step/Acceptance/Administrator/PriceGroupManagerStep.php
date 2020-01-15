@@ -50,7 +50,7 @@ class PriceGroupManagerStep extends AdminRedevent
 		$I->wantTo('Test with delete product then accept');
 		$I->click(PriceGroupManagerPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(PriceGroupManagerPage::$messageDeleteProductSuccess, 60, PriceGroupManagerPage::$message);
+		$I->waitForText(PriceGroupManagerPage::$notificationNoItem, 60);
 		$I->dontSee($namePriceGroup);
 	}
 }

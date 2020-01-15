@@ -62,11 +62,12 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("Open the menu types iframe");
 		$I->click(JoomlaManagerPage::$buttonSelect);
-		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 5);
+		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 30);
 		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
 		$I->wantTo("Open the menu category: $menuCategory");
-		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 5);
+		$I->wait(2);
+		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
 		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
 		$I->wantTo("Choose the menu item type: $menuItem");
@@ -113,11 +114,12 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->wantTo("Open the menu types iframe");
 		$I->click(JoomlaManagerPage::$buttonSelect);
-		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 5);
+		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 30);
 		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
 		$I->wantTo("Open the menu category: $menuCategory");
-		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 5);
+		$I->wait(2);
+		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
 		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
 		$I->wantTo("Choose the menu item type: $menuItem");
@@ -171,7 +173,8 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
 		$I->wantTo("Open the menu category: $menuCategory");
-		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 5);
+		$I->wait(2);
+		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
 		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
 		$I->wantTo("Choose the menu item type: $menuItem");
@@ -191,13 +194,14 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->switchToIFrame("session");
 		$I->waitForElement(JoomlaManagerPage::$searchSessionId, 30);
 		$I->fillField(JoomlaManagerPage::$searchSessionId, $nameCategory);
-		$I->waitForElement(JoomlaManagerPage::$searchIcon);
+		$I->waitForElementVisible(JoomlaManagerPage::$searchIcon, 30);
 		$I->click(JoomlaManagerPage::$searchIcon);
-		$I->waitForElementVisible(JoomlaManagerPage::$locatorEvent, 30);
-		$I->click(JoomlaManagerPage:: $locatorEvent);
+		$I->waitForText($nameCategory, 30);
+		$I->wait(0.5);
+		$I->click(["link" => $nameCategory]);
 		$I->wait(0.5);
 		$I->switchToIFrame();
-		$I->wait(1);
+		$I->wait(0.5);
 		$I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);

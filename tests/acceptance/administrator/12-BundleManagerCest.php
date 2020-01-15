@@ -41,9 +41,14 @@ class BundleManagerCest
 		$this->bundleName2 = $this->faker->bothify("A bundle 2 ##??");
 	}
 
-	public function _before(\AcceptanceTester $i)
+	/**
+	 * @param BundleManagerSteps $i
+	 * @throws Exception
+	 * @since 3.9.10
+	 */
+	public function _before(BundleManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

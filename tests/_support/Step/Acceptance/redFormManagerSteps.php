@@ -176,8 +176,9 @@ class redFormManagerSteps extends AdminRedevent
 
 			foreach ($params['fields'] as $fieldName)
 			{
+				$I->waitForElementVisible(redFormManagerPage::$formTabs, 30);
 				$I->click(redFormManagerPage::$formTabs);
-
+				$I->wait(0.5);
 				$I->click(redFormManagerPage::$buttonNew);
 				$I->waitForText(redFormManagerPage:: $formFields, 30, redFormManagerPage::$H1);
 				$I->selectOptionInChosenByIdUsingJs(redFormManagerPage:: $fieldId, $fieldName);

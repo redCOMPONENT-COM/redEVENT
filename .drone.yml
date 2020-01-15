@@ -33,7 +33,7 @@ pipeline:
 
   00-setup:
     group: 00-setup
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     pull: true
     commands:
       # Composer setup
@@ -67,7 +67,7 @@ pipeline:
 
   00-setup-56:
     group: 00-setup
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     pull: true
     environment:
     - tests_user=admin
@@ -99,7 +99,7 @@ pipeline:
 
   00-setup-73:
     group: 00-setup
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     pull: true
     environment:
     - tests_user=admin
@@ -131,7 +131,7 @@ pipeline:
 
   00-setup-stages:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_suite=00-setup
     - tests_db=setup
@@ -148,13 +148,13 @@ pipeline:
 
   01-Group1-56:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=01-Group1
     - tests_db=Group1
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-01-Group1
+    - output_append=-01-Group1-56
     - php_version=56
     commands:
     # Regular entry point
@@ -169,13 +169,13 @@ pipeline:
 
   01-Group1-73:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=01-Group1
     - tests_db=Group1
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-01-Group1
+    - output_append=-01-Group1-73
     - php_version=73
     commands:
     # Regular entry point
@@ -190,13 +190,13 @@ pipeline:
 
   02-Group2-56:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=02-Group2
     - tests_db=Group2
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-02-Group2
+    - output_append=-02-Group2-56
     - php_version=56
     commands:
     # Regular entry point
@@ -207,20 +207,20 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
   02-Group2-73:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=02-Group2
     - tests_db=Group2
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-02-Group2
+    - output_append=-02-Group2-73
     - php_version=73
     commands:
     # Regular entry point
@@ -231,20 +231,20 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
   03-Group3-56:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=03-Group3
     - tests_db=Group3
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-03-Group3
+    - output_append=-03-Group3-56
     - php_version=56
     commands:
     # Regular entry point
@@ -261,13 +261,13 @@ pipeline:
 
   03-Group3-73:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=03-Group3
     - tests_db=Group3
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-03-Group3
+    - output_append=-03-Group3-73
     - php_version=73
     commands:
     # Regular entry point
@@ -284,13 +284,13 @@ pipeline:
 
   04-Group4-56:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=04-Group4
     - tests_db=Group4
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-04-Group4
+    - output_append=-04-Group4-56
     - php_version=56
     commands:
     # Regular entry point
@@ -307,13 +307,13 @@ pipeline:
 
   04-Group4-73:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=04-Group4
     - tests_db=Group4
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-04-Group4
+    - output_append=-04-Group4-73
     - php_version=73
     commands:
     # Regular entry point
@@ -330,13 +330,13 @@ pipeline:
 
   05-Group5-56:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=05-Group5
     - tests_db=Group5
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-05-Group5
+    - output_append=-05-Group5-56
     - php_version=56
     commands:
     # Regular entry point
@@ -353,13 +353,13 @@ pipeline:
 
   05-Group5-73:
     group: tests
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     environment:
     - tests_user=admin
     - tests_suite=05-Group5
     - tests_db=Group5
     - build_path=/drone/src/github.com/${DRONE_REPO}
-    - output_append=-05-Group5
+    - output_append=-05-Group5-73
     - php_version=73
     commands:
     # Regular entry point
@@ -388,7 +388,7 @@ pipeline:
       {{/success}}
 
   error-report:
-    image: redwebaps/chromedriver:79.0
+    image: redwebaps/testbox-chromedriver:79.0
     commands:
       - if [ -z "${CI_PULL_REQUEST}" ]; then export CI_PULL_REQUEST=1; fi
       - cd tests

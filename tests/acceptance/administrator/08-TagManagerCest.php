@@ -55,9 +55,15 @@ class TagManagerCest
 		$this->description = $this->faker->bothify("Description Category  ##??");
 		$this->content = $this->faker->bothify("<p>the tag content goes here</p>");
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param TagManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(TagManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

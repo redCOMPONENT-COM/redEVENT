@@ -1,14 +1,20 @@
 <?php
 /**
- * @package     Redevent
- * @subpackage  Tests
+ * @package     redEVENT
+ * @subpackage  Cests
  * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 use Faker\Generator;
 use Faker\Factory;
 use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\CategoryManagerSteps;
+
+/**
+ * Class CategoryManagerCest
+ * @since 3.2.10
+ */
 class CategoryManagerCest
 {
 	/**
@@ -40,9 +46,15 @@ class CategoryManagerCest
 		$this->categoryName1 = $this->faker->bothify("Category Name 1 ##??");
 		$this->categoryName2 = $this->faker->bothify("Category Name 2 ##??");
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param CategoryManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(CategoryManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**
