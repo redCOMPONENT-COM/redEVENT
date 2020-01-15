@@ -130,7 +130,7 @@ class VenueSubmissionCest
 	public function createVenue(JoomlaManagerSteps $I, $scenario)
 	{
 		$I->wantToTest("I want to create venue on frontend");
-		$I->createNewUser($this->username, $this->username, $this->password, $this->email);
+		$I->createUser($this->username, $this->username, $this->password, $this->email);
 		$I = new FrontEndManagerSteps($scenario);
 		$I->openNewTab();
 		$I->doFrontEndLogin($this->username, $this->password);
