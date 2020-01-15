@@ -15,7 +15,7 @@ use Step\Acceptance\Administrator\VanueManagerSteps;
 use Step\Acceptance\FrontEndManagerSteps;
 use Step\Acceptance\JoomlaManagerSteps;
 
-class CategoryEventsTableCest
+class DetailEventsFixedCest
 {
 	/**
 	 * @var   Generator
@@ -75,7 +75,7 @@ class CategoryEventsTableCest
 	protected  $menuCategory;
 
 	/**
-	 * VenueCategoryManagerCest constructor.
+	 * DetailEventsFixedCest constructor.
 	 *
 	 * @since 1.0.0
 	 */
@@ -86,7 +86,7 @@ class CategoryEventsTableCest
 		$this->VanueName         = $this->faker->bothify("Vanue Name ##??");
 		$this->categoryName      = $this->faker->bothify("Category Name ##??");
 		$this->eventName         = $this->faker->bothify("Event Name ##??");
-		$this->templateName      =  'default template';
+		$this->templateName      = 'default template';
 		$this->SessionName       = $this->faker->bothify("Session Name ##??");
 
 		$this->nameMenuItem      = $this->faker->bothify("Menu item Name ##??");
