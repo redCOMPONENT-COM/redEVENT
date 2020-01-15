@@ -196,6 +196,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->fillField(JoomlaManagerPage::$searchSessionId, $nameCategory);
 		$I->waitForElement(JoomlaManagerPage::$searchIcon);
 		$I->click(JoomlaManagerPage::$searchIcon);
+		$I->waitForText($nameCategory, 30);
 		$I->waitForElementVisible(JoomlaManagerPage::$locatorEvent, 30);
 		$I->click(JoomlaManagerPage:: $locatorEvent);
 		$I->wait(0.5);
