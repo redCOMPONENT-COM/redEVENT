@@ -207,8 +207,8 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
@@ -231,8 +231,8 @@ pipeline:
     - while ! nc -z localhost 9515; do sleep 1; done
     # Performs test
     - cd tests
-    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailsFixed 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/RegistrationsEvent 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueSubmission 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/uninstall/ 0 0'
 
