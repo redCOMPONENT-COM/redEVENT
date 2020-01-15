@@ -94,22 +94,13 @@ class VenueSubmissionCest
 	}
 
 	/**
-	 * @param JoomlaManagerSteps $i
-	 * @throws Exception
-	 * @since 3.2.7
-	 */
-	public function _before(JoomlaManagerSteps $i)
-	{
-		$i->doAdministratorRedEventLogin();
-	}
-
-	/**
 	 * @param CategoryManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.7
 	 */
 	public function createMenuItem(JoomlaManagerSteps $I)
 	{
+		$I->doAdministratorRedEventLogin();
 		$I->wantToTest("I want to create menu item");
 		$I->createNewMenuItem($this->menuName, $this->menuCategory, $this->menuItem);
 	}
@@ -121,6 +112,7 @@ class VenueSubmissionCest
 	 */
 	public function createCategoryVenue(VenueCategoryManagerSteps $I)
 	{
+		$I->doAdministratorRedEventLogin();
 		$I->wantToTest("I want to create category venue");
 		$I->createVenueCategoryNew(
 			array(
@@ -138,7 +130,7 @@ class VenueSubmissionCest
 	public function createVenue(JoomlaManagerSteps $I, $scenario)
 	{
 		$I->wantToTest("I want to create venue on frontend");
-		$I->createUser($this->username, $this->username, $this->password, $this->email, 'Super Users');
+		$I->createNewUser($this->username, $this->username, $this->password, $this->email);
 		$I = new FrontEndManagerSteps($scenario);
 		$I->openNewTab();
 		$I->doFrontEndLogin($this->username, $this->password);
@@ -154,6 +146,7 @@ class VenueSubmissionCest
 	 */
 	public function deleteAll(VanueManagerSteps $I, $scenario)
 	{
+		$I->doAdministratorRedEventLogin();
 		$I->wantToTest("I want to delete venue");
 		$I->deleteVenue($this->categoryName, $this->venueName);
 		$I = new JoomlaManagerSteps($scenario);
