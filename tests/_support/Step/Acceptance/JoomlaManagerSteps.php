@@ -194,14 +194,14 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->switchToIFrame("session");
 		$I->waitForElement(JoomlaManagerPage::$searchSessionId, 30);
 		$I->fillField(JoomlaManagerPage::$searchSessionId, $nameCategory);
-		$I->waitForElement(JoomlaManagerPage::$searchIcon);
+		$I->waitForElementVisible(JoomlaManagerPage::$searchIcon, 30);
 		$I->click(JoomlaManagerPage::$searchIcon);
 		$I->waitForText($nameCategory, 30);
-		$I->waitForElementVisible(JoomlaManagerPage::$locatorEvent, 30);
-		$I->click(JoomlaManagerPage:: $locatorEvent);
+		$I->waitForElementVisible(["link" => $nameCategory], 30);
+		$I->click(["link" => $nameCategory]);
 		$I->wait(0.5);
 		$I->switchToIFrame();
-		$I->wait(1);
+		$I->wait(0.5);
 		$I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
