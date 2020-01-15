@@ -87,12 +87,12 @@ class SessionSubmissionCest
 	}
 
 	/**
-	 * @param AcceptanceTester $i
+	 * @param JoomlaManagerSteps $i
 	 * @throws Exception
 	 */
-	public function _before(\AcceptanceTester $i)
+	public function _before(JoomlaManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

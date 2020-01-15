@@ -6,6 +6,7 @@ use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
 use Step\Acceptance\Administrator\UpcomingEventsSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
+use Step\Acceptance\JoomlaManagerSteps;
 
 /**
  * @package     redEVENT
@@ -86,16 +87,23 @@ class UpcomingEventsCest
 		$this->menuItem            = 'Upcoming events';
 		$this->menuCategory        = 'redEVENT - Component';
 	}
-	public function _before(\AcceptanceTester $i)
+
+	/**
+	 * @param JoomlaManagerSteps $i
+	 * @throws Exception
+	 * @since 3.2.10
+	 */
+	public function _before(JoomlaManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**
-	 *
+	 * @param JoomlaManagerSteps $I
 	 * @throws Exception
+	 * @since 3.2.10
 	 */
-	public function createMenuItem(\Step\Acceptance\JoomlaManagerSteps $I)
+	public function createMenuItem(JoomlaManagerSteps $I)
 	{
 		$I->wantTo("Create Menu item Upcoming events in front end");
 		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);

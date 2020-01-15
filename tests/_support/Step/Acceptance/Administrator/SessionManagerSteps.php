@@ -198,7 +198,7 @@ class SessionManagerSteps extends AdminRedevent
 		$I->wantTo('Test with delete session then accept');
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(SessionManagerPage::$messageDeleteProductSuccess, 60, SessionManagerPage::$message);
+		$I->waitForText(SessionManagerPage::$notificationNoItem, 60);
 		$I->dontSee($nameSession);
 	}
 

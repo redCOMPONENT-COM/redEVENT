@@ -90,12 +90,12 @@ class UpcomingVenueCest
 	}
 
 	/**
-	 * @param AcceptanceTester $I
+	 * @param VanueManagerSteps $I
 	 * @throws Exception
 	 */
-	public function _before(\AcceptanceTester $I)
+	public function _before(VanueManagerSteps $I)
 	{
-		$I->doAdministratorLogin();
+		$I->doAdministratorRedEventLogin();
 	}
 
 	/**

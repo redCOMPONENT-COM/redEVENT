@@ -42,9 +42,13 @@ class CustomFieldsManagerCest
 		$this->CustomFieldName2 = $this->faker->bothify("some text for session ##??");
 	}
 
-	public function _before(\AcceptanceTester $i)
+	/**
+	 * @param CustomFieldsManagerSteps $i
+	 * @throws Exception
+	 */
+	public function _before(CustomFieldsManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

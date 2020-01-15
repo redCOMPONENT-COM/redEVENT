@@ -123,12 +123,12 @@ class ViewEventOfVenueCategoryCest
 	}
 
 	/**
-	 * @param AcceptanceTester $i
+	 * @param VanueManagerSteps $i
 	 * @throws Exception
 	 */
-	public function _before(\AcceptanceTester $i)
+	public function _before(VanueManagerSteps $i)
 	{
-		$i->doAdministratorLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**
