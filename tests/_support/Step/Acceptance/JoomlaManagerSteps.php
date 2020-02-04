@@ -201,7 +201,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->click(["link" => $nameCategory]);
 		$I->wait(0.5);
 		$I->switchToIFrame();
-		$I->waitForElement(JoomlaManagerPage::$labelLanguage, 30);
+		$I->waitForText(JoomlaManagerPage::$labelLanguage, 30);
 		$I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
