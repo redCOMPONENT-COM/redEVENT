@@ -118,7 +118,6 @@ class ViewEventOfVenueCategoryCest
 		$this->eventName1         = $this->faker->bothify("Event Name ##??");
 		$this->SessionName1       = $this->faker->bothify("Session Name ##??");
 
-		// Menu
 		$this->menuItem          = 'Venue category default layout';
 		$this->menuCategory      = 'redEVENT - Component';
 	}

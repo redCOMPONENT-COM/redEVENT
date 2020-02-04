@@ -99,7 +99,7 @@ class AdminRedevent extends \AcceptanceTester
 		$I->wantTo('Test with delete product then accept');
 		$I->click(AbstractPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(AbstractPage::$notificationNoItem, 120);
+		$I->waitForText(AbstractPage::$notificationNoItem, 180);
 		$I->dontSee($name);
 	}
 
