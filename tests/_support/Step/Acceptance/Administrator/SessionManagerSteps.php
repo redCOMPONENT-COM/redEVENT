@@ -199,6 +199,7 @@ class SessionManagerSteps extends AdminRedevent
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->acceptPopup();
 		$I->waitForText(SessionManagerPage::$notificationNoItem, 60);
+
 		$I->dontSee($nameSession);
 	}
 
