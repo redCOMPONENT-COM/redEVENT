@@ -192,12 +192,13 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->executeJS('jQuery("iframe").attr("name", "session")');
 		$I->wait(1);
 		$I->switchToIFrame("session");
+		$I->wait(0.5);
 		$I->waitForElement(JoomlaManagerPage::$searchSessionId, 30);
 		$I->fillField(JoomlaManagerPage::$searchSessionId, $nameCategory);
 		$I->waitForElementVisible(JoomlaManagerPage::$searchIcon, 30);
 		$I->click(JoomlaManagerPage::$searchIcon);
 		$I->waitForElementVisible(["link" => $nameCategory], 30);
-		$I->wait(0.5);
+		$I->wait(1);
 		$I->click(["link" => $nameCategory]);
 		$I->wait(0.5);
 		$I->switchToIFrame();
