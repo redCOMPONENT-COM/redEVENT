@@ -92,6 +92,7 @@ class AdminRedevent extends \AcceptanceTester
 		$I->waitForText($title, 120);
 		$I->Search($URL,$name);
 		$I->see($name, AbstractPage::$tableResult);
+		$I->waitForJS("return window.jQuery && jQuery.active == 0;", 30);
 		$I->checkAllResults();
 		$I->click(AbstractPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
