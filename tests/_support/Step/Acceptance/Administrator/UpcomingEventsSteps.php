@@ -100,7 +100,6 @@ class UpcomingEventsSteps extends AdminRedevent
 		$I->waitForText(FrontendJoomlaManagerPage::returnLink($eventName,$sessionname),30,FrontendJoomlaManagerPage:: $titleEvent);
 		$I->waitForText($venues,30,FrontendJoomlaManagerPage::$whereEvent);
 		$I->waitForText($category,30,FrontendJoomlaManagerPage::$categoryEvent);
-		$I->click(FrontendJoomlaManagerPage::$buttonSaveClose);
 	}
 
 	/**
