@@ -38,7 +38,7 @@ pipeline:
     commands:
       # Composer setup
       - while [ ! -f tests/.cache.composer.tmp ]; do sleep 1; done            # Comment if not using composer cache
-      - composer config -g github-oauth.github.com 4281d0ba7e8f1caded4c8b949a1c115902e30113
+      - composer config -g github-oauth.github.com 00bb614ad66c2ebadc70e6284e02f8034d514624
       # - composer install --prefer-dist                                      # Uncomment if not using composer cache
       # NPM setup
       - while [ ! -f tests/.cache.npm.tmp ]; do sleep 1; done                 # Comment if not using npm cache
@@ -376,7 +376,7 @@ pipeline:
 
   slack:
     image: plugins/slack
-    webhook: https://hooks.slack.com/services/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
+    webhook: https://hooks.slack.com/services/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
     channel: redevent
     when:
       status: [ success, failure ]
@@ -392,7 +392,7 @@ pipeline:
     commands:
       - if [ -z "${CI_PULL_REQUEST}" ]; then export CI_PULL_REQUEST=1; fi
       - cd tests
-      - vendor/bin/robo send:build-report-error-slack redcomponent 365447364384436 Q94UM5kjZkZIrau8MIL93m0dN6U "$CI_REPO" "$CI_PULL_REQUEST" "https://hooks.slack.com/services/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" "#redevent" "$CI_BUILD_URL"
+      - vendor/bin/robo send:build-report-error-slack redcomponent 365447364384436 Q94UM5kjZkZIrau8MIL93m0dN6U "$CI_REPO" "$CI_PULL_REQUEST" "https://hooks.slack.com/services/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" "#redevent" "$CI_BUILD_URL"
     when:
       status: [ failure ]
 
