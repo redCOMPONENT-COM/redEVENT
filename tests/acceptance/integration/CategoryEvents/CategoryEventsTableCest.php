@@ -139,7 +139,7 @@ class CategoryEventsTableCest
 	public function createMenuItem(JoomlaManagerSteps $I)
 	{
 		$I->wantTo("Create Menu item Featured events in front end");
-		$I->createNewMenuItemHaveCategory($this->menuItem, $this->menuCategory, $this->menuItem,$this->categoryName);
+		$I->createNewMenuItemHaveCategory($this->menuItem, $this->menuCategory, $this->menuItem, $this->categoryName);
 	}
 
 	/**
