@@ -107,7 +107,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->wantTo("I click new");
-		$I->click(JoomlaManagerPage::$buttonNew);
+		$I->click(JoomlaManagerPage::$newButton);
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, 5, JoomlaManagerPage::$H1);
 		$I->checkForPhpNoticesOrWarnings();
 		$I->fillField(JoomlaManagerPage::$menItemTitle, $menuTitle);
@@ -130,7 +130,6 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->switchToIFrame();
 		$I->wantTo('I leave time to the iframe to close');
 		$I->selectOptionInChosenById(JoomlaManagerPage::$idSelectCategory, $nameCategory);
-		$I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
 		$I->wantTo('I save the menu');
