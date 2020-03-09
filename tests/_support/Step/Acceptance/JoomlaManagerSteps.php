@@ -30,7 +30,6 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->fillField(JoomlaManagerPage::$fieldSearch, $nameExtensions);
 		$I->click(JoomlaManagerPage::$buttonSearch);
 		$I->see(JoomlaManagerPage::$messageFailedSearch,JoomlaManagerPage::$messageFailed);
-
 	}
 
 	/**
