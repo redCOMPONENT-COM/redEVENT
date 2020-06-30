@@ -55,7 +55,7 @@ require_once dirname(__FILE__) . '/bootstrap_resync.php';
 class RedeventsyncQueueStats extends JApplicationCli
 {
 	const MAX_RETRY = 20;
-	const RECIPIENTS = 'julien@redweb.dk';
+	const RECIPIENTS = 'ronni@redweb.dk';
 
 	/**
 	 * Entry point for the script
