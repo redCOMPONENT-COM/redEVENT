@@ -350,6 +350,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoryEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoriesLayout 0 0'
 
   05-Group5-73:
     group: tests
@@ -373,6 +374,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoryEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Events 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoriesLayout 0 0'
 
   slack:
     image: plugins/slack
