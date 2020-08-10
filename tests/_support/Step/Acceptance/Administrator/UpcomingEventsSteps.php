@@ -113,7 +113,7 @@ class UpcomingEventsSteps extends AdminRedevent
 	 * @param $category
 	 * @throws \Exception
 	 */
-	public function searchEventOnFrontEnd($menuitem, $sessionName,$eventName,$venues,$category)
+	public function searchEventOnFrontEnd($menuitem, $sessionName, $eventName, $venues, $category)
 	{
 		$I = $this;
 		$I->doFrontEndLogin("admin","admin");

@@ -110,7 +110,7 @@ class CategoriesLayoutCest
 	public function addVenue(VanueManagerSteps $I)
 	{
 		$I->wantToTest('Add a venue in redEVENT');
-		$I->createVenueNew($this->venueName,$this->categoryVenueName);
+		$I->createVenueNew($this->venueName, $this->categoryVenueName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -122,7 +122,7 @@ class CategoriesLayoutCest
 	public function addEvent(EventManagerSteps $I)
 	{
 		$I->wantToTest('Add an event in redEVENT with default template');
-		$I->createEventNew($this->eventName,$this->categoryName, $this->templateName);
+		$I->createEventNew($this->eventName, $this->categoryName, $this->templateName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -134,7 +134,7 @@ class CategoriesLayoutCest
 	public function createSession(SessionManagerSteps $I)
 	{
 		$I->wantToTest('Add session in redEVENT');
-		$I->createSessionNew($this->eventName,$this->venueName,$this->sessionName);
+		$I->createSessionNew($this->eventName, $this->venueName, $this->sessionName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
