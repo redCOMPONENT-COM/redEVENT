@@ -196,9 +196,6 @@ class SessionManagerSteps extends AdminRedevent
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();
 		$I->wantTo('Test with delete session then accept');
-		$I->reloadPage();
-		$I->see($nameSession, SessionManagerPage::$tableResult);
-		$I->checkAllResults();
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->acceptPopup();
 		$I->waitForText(SessionManagerPage::$notificationNoItem, 60);
