@@ -1,9 +1,8 @@
 <?php
-
 /**
  * @package     Redevent
- * @subpackage  Tests
- * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
+ * @subpackage  Steps
+ * @copyright   Copyright (C) 2008 - 2020 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -21,7 +20,7 @@ class SessionManagerSteps extends AdminRedevent
 	 * @param $nameSession
 	 * @throws \Exception
 	 */
-	public function createSessionNew($event,$venue,$nameSession)
+	public function createSessionNew($event, $venue, $nameSession)
 	{
 		$I = $this;
 		$I->amOnPage(SessionManagerPage::$URL );
@@ -43,7 +42,7 @@ class SessionManagerSteps extends AdminRedevent
 	 * @param $nameSession
 	 * @throws \Exception
 	 */
-	public function createSessionUpcomming($event,$venue,$nameSession)
+	public function createSessionUpcomming($event, $venue, $nameSession)
 	{
 		$I = $this;
 		$I->amOnPage(SessionManagerPage::$URL );
@@ -59,13 +58,14 @@ class SessionManagerSteps extends AdminRedevent
 		$I->fillField(SessionManagerPage::$fieldDate, $date);
 		$I->waitForElement(SessionManagerPage::$endDate,30);
 		$I->fillField(SessionManagerPage::$endDate, $endDate);
+
 		if (!empty($nameSession))
 		{
 			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
 		}
+
 		$I->click(SessionManagerPage::$buttonSave);
 	}
-
 
 	/**
 	 * @param $event
@@ -73,7 +73,7 @@ class SessionManagerSteps extends AdminRedevent
 	 * @param $nameSession
 	 * @throws \Exception
 	 */
-	public function createSessionForEvents($event,$venue,$nameSession)
+	public function createSessionForEvents($event, $venue, $nameSession)
 	{
 		$I = $this;
 		$I->amOnPage(SessionManagerPage::$URL );
@@ -87,10 +87,12 @@ class SessionManagerSteps extends AdminRedevent
 		$I->fillField(SessionManagerPage::$fieldDate, $dateNow);
 		$I->waitForElement(SessionManagerPage::$endDate,30);
 		$I->fillField(SessionManagerPage::$endDate, $dateNow);
+
 		if (!empty($nameSession))
 		{
 			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
 		}
+
 		$I->click(SessionManagerPage::$buttonSave);
 	}
 
@@ -101,7 +103,7 @@ class SessionManagerSteps extends AdminRedevent
 	 * @param $featured
 	 * @throws \Exception
 	 */
-	public function createSessionOfFeaturedEvents($event,$venue,$nameSession,$featured)
+	public function createSessionOfFeaturedEvents($event, $venue, $nameSession, $featured)
 	{
 		$I = $this;
 		$I->amOnPage(SessionManagerPage::$URL );
@@ -133,7 +135,7 @@ class SessionManagerSteps extends AdminRedevent
 	 * @param $status
 	 * @throws \Exception
 	 */
-	public function createSessionHaveStatus($event,$venue,$nameSession,$status)
+	public function createSessionHaveStatus($event, $venue, $nameSession, $status)
 	{
 		$I = $this;
 		$I->amOnPage(SessionManagerPage::$URL );
@@ -178,7 +180,7 @@ class SessionManagerSteps extends AdminRedevent
 	public function searchSession($nameSession)
 	{
 		$I = $this;
-		$I->search(SessionManagerPage::$URL,$nameSession);
+		$I->search(SessionManagerPage::$URL, $nameSession);
 	}
 	/**
 	 * @param $nameSession
@@ -224,23 +226,23 @@ class SessionManagerSteps extends AdminRedevent
 		$I->waitForText(SessionManagerPage::$messagePublishSuccess,30, SessionManagerPage::$message);
 	}
 
-    /**
-     * @throws \Exception
-     */
+	/**
+	 * @throws \Exception
+	 */
 	public function deleteAllSession()
-    {
-        $client = $this;
-        $client->amOnPage(SessionManagerPage::$URL);
-        $client->waitForText(SessionManagerPage::$sessionTitle, 30);
-        $client->checkAllResults();
-        $client->click(SessionManagerPage::$buttonDelete);
-        $client->wantTo('Test with delete category but then cancel');
-        $client->cancelPopup();
-        $client->wantTo('Test with delete product then accept');
-        $client->click(SessionManagerPage::$buttonDelete);
-        $client->acceptPopup();
-        $client->waitForElement(SessionManagerPage::$message, 30);
-    }
+	{
+		$client = $this;
+		$client->amOnPage(SessionManagerPage::$URL);
+		$client->waitForText(SessionManagerPage::$sessionTitle, 30);
+		$client->checkAllResults();
+		$client->click(SessionManagerPage::$buttonDelete);
+		$client->wantTo('Test with delete category but then cancel');
+		$client->cancelPopup();
+		$client->wantTo('Test with delete product then accept');
+		$client->click(SessionManagerPage::$buttonDelete);
+		$client->acceptPopup();
+		$client->waitForElement(SessionManagerPage::$message, 30);
+	}
 
 	/**
 	 * @param $menuItem
@@ -249,7 +251,7 @@ class SessionManagerSteps extends AdminRedevent
 	 * @param $nameSession
 	 * @throws \Exception
 	 */
-	public function createSessionFrontend($menuItem,$event,$venue,$nameSession)
+	public function createSessionFrontend($menuItem, $event, $venue, $nameSession)
 	{
 		$I = $this;
 		$I->doFrontEndLogin("admin","admin");
@@ -272,5 +274,37 @@ class SessionManagerSteps extends AdminRedevent
 		}
 		$I->click(SessionManagerPage::$buttonSave);
 		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveSessionSuccess, 30, SessionManagerPage::$message);
+	}
+
+	/**
+	 * @param $event
+	 * @param $venue
+	 * @param $nameSession
+	 * @throws \Exception
+	 * @since 3.2.9
+	 */
+	public function createSessionForDay($event, $venue, $nameSession)
+	{
+		$I = $this;
+		$I->amOnPage(SessionManagerPage::$URL );
+		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->click(SessionManagerPage::$buttonNew);
+		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
+		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+		$dateNow = date('Y-m-d');
+		$date  = date('Y-m-d', strtotime('+0 day', strtotime($dateNow)));
+		$endDate  = date('Y-m-d', strtotime('+1 day', strtotime($dateNow)));
+		$I->waitForElement(SessionManagerPage::$fieldDate,30);
+		$I->fillField(SessionManagerPage::$fieldDate, $date);
+		$I->waitForElement(SessionManagerPage::$endDate,30);
+		$I->fillField(SessionManagerPage::$endDate, $endDate);
+
+		if (!empty($nameSession))
+		{
+			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
+		}
+
+		$I->click(SessionManagerPage::$buttonSave);
 	}
 }
