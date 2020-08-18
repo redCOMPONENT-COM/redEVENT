@@ -23,16 +23,18 @@ class SessionManagerSteps extends AdminRedevent
 	public function createSessionNew($event, $venue, $nameSession)
 	{
 		$I = $this;
-		$I->amOnPage(SessionManagerPage::$URL );
-		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
 		$I->click(SessionManagerPage::$buttonNew);
 		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
 		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
 		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$venueSelect, $venue);
+
 		if (!empty($nameSession))
 		{
 			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
 		}
+
 		$I->click(SessionManagerPage::$buttonSave);
 	}
 
@@ -45,8 +47,8 @@ class SessionManagerSteps extends AdminRedevent
 	public function createSessionUpcomming($event, $venue, $nameSession)
 	{
 		$I = $this;
-		$I->amOnPage(SessionManagerPage::$URL );
-		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
 		$I->click(SessionManagerPage::$buttonNew);
 		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
 		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
@@ -76,8 +78,8 @@ class SessionManagerSteps extends AdminRedevent
 	public function createSessionForEvents($event, $venue, $nameSession)
 	{
 		$I = $this;
-		$I->amOnPage(SessionManagerPage::$URL );
-		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
 		$I->click(SessionManagerPage::$buttonNew);
 		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
 		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
@@ -106,8 +108,8 @@ class SessionManagerSteps extends AdminRedevent
 	public function createSessionOfFeaturedEvents($event, $venue, $nameSession, $featured)
 	{
 		$I = $this;
-		$I->amOnPage(SessionManagerPage::$URL );
-		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
 		$I->click(SessionManagerPage::$buttonNew);
 		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
 		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
@@ -119,6 +121,7 @@ class SessionManagerSteps extends AdminRedevent
 		$I->fillField(SessionManagerPage::$fieldDate, $date);
 		$I->waitForElement(SessionManagerPage::$endDate,30);
 		$I->fillField(SessionManagerPage::$endDate, $endDate);
+
 		if (!empty($nameSession))
 		{
 			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
@@ -138,8 +141,8 @@ class SessionManagerSteps extends AdminRedevent
 	public function createSessionHaveStatus($event, $venue, $nameSession, $status)
 	{
 		$I = $this;
-		$I->amOnPage(SessionManagerPage::$URL );
-		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
 		$I->click(SessionManagerPage::$buttonNew);
 		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
 		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
@@ -151,10 +154,12 @@ class SessionManagerSteps extends AdminRedevent
 		$I->fillField(SessionManagerPage::$fieldDate, $date);
 		$I->waitForElement(SessionManagerPage::$endDate,30);
 		$I->fillField(SessionManagerPage::$endDate, $endDate);
+
 		if (!empty($nameSession))
 		{
 			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
 		}
+
 		switch ($status)
 		{
 			case 'Published':
@@ -169,6 +174,7 @@ class SessionManagerSteps extends AdminRedevent
 				$I->click(SessionManagerPage::$statusArchived);
 				break;
 		}
+
 		$I->click(SessionManagerPage::$buttonSave);
 		$I->waitForText(SessionManagerPage::$messageSaveSuccess, 30, SessionManagerPage::$message);
 	}
@@ -268,10 +274,12 @@ class SessionManagerSteps extends AdminRedevent
 		$I->fillField(SessionManagerPage::$fieldDate, $dateNow);
 		$I->waitForElement(SessionManagerPage::$endDate,30);
 		$I->fillField(SessionManagerPage::$endDate, $dateNow);
+
 		if (!empty($nameSession))
 		{
 			$I->fillField(SessionManagerPage::$fieldName, $nameSession);
 		}
+
 		$I->click(SessionManagerPage::$buttonSave);
 		$I->waitForText(FrontendJoomlaManagerPage::$messageSaveSessionSuccess, 30, SessionManagerPage::$message);
 	}
@@ -286,8 +294,8 @@ class SessionManagerSteps extends AdminRedevent
 	public function createSessionForDay($event, $venue, $nameSession)
 	{
 		$I = $this;
-		$I->amOnPage(SessionManagerPage::$URL );
-		$I->waitForText(SessionManagerPage:: $sessionTitle, 30);
+		$I->amOnPage(SessionManagerPage::$URL);
+		$I->waitForText(SessionManagerPage::$sessionTitle, 30);
 		$I->click(SessionManagerPage::$buttonNew);
 		$I->waitForText(SessionManagerPage::$sessionTitleNew, 30);
 		$I->selectOptionInChosenByIdUsingJs(SessionManagerPage::$eventSelect, $event);
@@ -306,5 +314,6 @@ class SessionManagerSteps extends AdminRedevent
 		}
 
 		$I->click(SessionManagerPage::$buttonSave);
+		$I->waitForText(AbstractPage::$messageSaveSuccess, 30);
 	}
 }

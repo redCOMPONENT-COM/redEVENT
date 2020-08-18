@@ -28,7 +28,7 @@ class DaySteps extends AdminRedevent
 	public function checkDayMissing($menuitem)
 	{
 		$I = $this;
-		$I->doFrontEndLogin("admin","admin");
+		$I->doFrontEndLogin("admin", "admin");
 		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
 		$I->checkForPhpNoticesOrWarningsOrExceptions();
 		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, AbstractPage::$H1);
@@ -48,7 +48,7 @@ class DaySteps extends AdminRedevent
 	public function checkDay($menuitem, $eventName, $venueName, $categoryName)
 	{
 		$I = $this;
-		$I->doFrontEndLogin("admin","admin");
+		$I->doFrontEndLogin("admin", "admin");
 		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
 		$I->checkForPhpNoticesOrWarningsOrExceptions();
 		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, AbstractPage::$H1);
