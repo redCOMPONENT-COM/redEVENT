@@ -148,6 +148,12 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $showEvents = 'Show Events';
 
 	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $dayMissing = 'Currently no events are available';
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
