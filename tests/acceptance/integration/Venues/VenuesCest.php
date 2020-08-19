@@ -11,14 +11,14 @@ use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
-use Step\Acceptance\Administrator\CategoriesLayoutSteps;
+use Step\Acceptance\Administrator\VenuesSteps;
 use Step\Acceptance\JoomlaManagerSteps;
 
 /**
- * Class CategoriesLayoutCest
+ * Class VenuesCest
  * @since 3.2.9
  */
-class CategoriesLayoutCest
+class VenuesCest
 {
 	/**
 	 * @var Generator
@@ -75,7 +75,7 @@ class CategoriesLayoutCest
 	protected  $menuCategory;
 
 	/**
-	 * CategoriesLayoutCest constructor.
+	 * VenuesCest constructor.
 	 * @since 3.2.9
 	 */
 	public function __construct()
@@ -88,16 +88,16 @@ class CategoriesLayoutCest
 		$this->templateName      = 'default template';
 		$this->sessionName       = $this->faker->bothify("Session Name ##??");
 
-		$this->menuItem          = 'Categories Layout';
+		$this->menuItem          = 'Venues';
 		$this->menuCategory      = 'redEVENT - Component';
 	}
 
 	/**
-	 * @param CategoriesLayoutSteps $I
+	 * @param VenuesSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function _before(CategoriesLayoutSteps $I)
+	public function _before(VenuesSteps $I)
 	{
 		$I->doAdministratorRedEventLogin();
 	}
@@ -150,14 +150,14 @@ class CategoriesLayoutCest
 	}
 
 	/**
-	 * @param CategoriesLayoutSteps $I
+	 * @param VenuesSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function checkFrontEndCategoriesLayout(CategoriesLayoutSteps $I)
+	public function checkFrontEndCVenues(VenuesSteps $I)
 	{
-		$I->wantToTest('Check categories layout on front-end');
-		$I->checkCategoriesLayout($this->menuItem, $this->eventName, $this->categoryName);
+		$I->wantToTest('Check Venues on front-end');
+		$I->checkVenues($this->menuItem, $this->categoryName, $this->venueName);
 	}
 
 	/**

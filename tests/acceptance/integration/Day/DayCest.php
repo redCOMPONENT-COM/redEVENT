@@ -93,13 +93,13 @@ class DayCest
 	}
 
 	/**
-	 * @param VanueManagerSteps $i
+	 * @param DaySteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function _before(VanueManagerSteps $i)
+	public function _before(DaySteps $I)
 	{
-		$i->doAdministratorRedEventLogin();
+		$I->doAdministratorRedEventLogin();
 	}
 
 	/**
