@@ -93,13 +93,13 @@ class CategoriesLayoutCest
 	}
 
 	/**
-	 * @param CategoriesLayoutSteps $I
+	 * @param VanueManagerSteps $i
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function _before(CategoriesLayoutSteps $I)
+	public function _before(VanueManagerSteps $i)
 	{
-		$I->doAdministratorRedEventLogin();
+		$i->doAdministratorRedEventLogin();
 	}
 
 	/**

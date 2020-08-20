@@ -30,7 +30,7 @@ class VenuesSteps extends AdminRedevent
 	public function checkVenues($menuitem, $categoryName, $venueName)
 	{
 		$I = $this;
-		$I->doFrontEndLogin("admin","admin");
+		$I->doFrontEndLogin("admin", "admin");
 		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
 		$I->checkForPhpNoticesOrWarningsOrExceptions();
 		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, AbstractPage::$H1);
