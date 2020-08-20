@@ -258,6 +258,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueEventsTableLayout 0 0'
 
   03-Group3-73:
     group: tests
@@ -281,6 +282,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueEventsTableLayout 0 0'
 
   04-Group4-56:
     group: tests
