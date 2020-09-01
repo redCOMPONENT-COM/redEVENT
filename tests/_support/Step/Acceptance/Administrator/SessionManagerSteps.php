@@ -227,6 +227,7 @@ class SessionManagerSteps extends AdminRedevent
 		$I->fillField(AbstractPage::$fieldSearch, $nameSession);
 		$I->click(AbstractPage::$buttonSearch);
 		$I->seeElement(AbstractPage::$tableResult);
+		$I->wait(0.5);
 		$I->checkAllResults();
 		$I->click(AbstractPage::$buttonPublish);
 		$I->waitForText(SessionManagerPage::$messagePublishSuccess,30, SessionManagerPage::$message);
