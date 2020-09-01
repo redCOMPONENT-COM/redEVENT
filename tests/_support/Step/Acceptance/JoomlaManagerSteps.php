@@ -204,6 +204,7 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
 		$I->wantTo('I save the menu');
+		$I->waitForElementVisible(JoomlaManagerPage::$buttonSaveClose, 30);
 		$I->click(JoomlaManagerPage::$buttonSaveClose);
 
 		$I->waitForText(JoomlaManagerPage::$messageMenuItemSuccess, 5, JoomlaManagerPage::$idInstallSuccess);
