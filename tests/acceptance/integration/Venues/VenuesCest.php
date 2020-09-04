@@ -11,7 +11,6 @@ use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
-use Step\Acceptance\Administrator\VenuesSteps;
 use Step\Acceptance\JoomlaManagerSteps;
 
 /**
@@ -93,11 +92,11 @@ class VenuesCest
 	}
 
 	/**
-	 * @param VenuesSteps $I
+	 * @param VanueManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function _before(VenuesSteps $I)
+	public function _before(VanueManagerSteps $I)
 	{
 		$I->doAdministratorRedEventLogin();
 	}
@@ -150,11 +149,11 @@ class VenuesCest
 	}
 
 	/**
-	 * @param VenuesSteps $I
+	 * @param VanueManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function checkFrontEndCVenues(VenuesSteps $I)
+	public function checkFrontEndCVenues(VanueManagerSteps $I)
 	{
 		$I->wantToTest('Check Venues on front-end');
 		$I->checkVenues($this->menuItem, $this->categoryName, $this->venueName);
