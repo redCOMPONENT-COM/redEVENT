@@ -200,13 +200,28 @@ class SessionManagerSteps extends AdminRedevent
 		$I->searchSession($nameSession);
 		$I->see($nameSession, SessionManagerPage::$tableResult);
 		$I->checkAllResults();
+		$I->waitForElementVisible(SessionManagerPage::$buttonDelete);
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->wantTo('Test with delete category but then cancel');
 		$I->cancelPopup();
 		$I->wantTo('Test with delete session then accept');
 		$I->click(SessionManagerPage::$buttonDelete);
 		$I->acceptPopup();
-		$I->waitForText(SessionManagerPage::$notificationNoItem, 60);
+
+		try
+		{
+			$I->waitForText(SessionManagerPage::$notificationNoItem, 30);
+		} catch (\Exception $e)
+		{
+			$I->reloadPage();
+			$I->waitForText($nameSession, 30);
+			$I->checkAllResults();
+			$I->waitForElementVisible(SessionManagerPage::$buttonDelete);
+			$I->click(SessionManagerPage::$buttonDelete);
+			$I->acceptPopup();
+			$I->waitForText(SessionManagerPage::$notificationNoItem, 30);
+		}
+
 		$I->dontSee($nameSession);
 	}
 
