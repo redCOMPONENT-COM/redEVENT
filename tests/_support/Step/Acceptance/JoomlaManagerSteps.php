@@ -200,6 +200,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->click(JoomlaManagerPage::$searchIcon);
 		$I->wait(0.5);
 		$I->waitForText($nameCategory, 30);
+		$I->waitForElementVisible(['link' => $nameCategory], 30);
 		$I->click(['link' => $nameCategory]);
 		$I->wait(0.5);
 		$I->switchToIFrame();
@@ -207,8 +208,9 @@ class JoomlaManagerSteps extends AdminRedevent
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
 		$I->wantTo('I save the menu');
+		$I->executeJS('window.scrollTo(0,0);');
+		$I->waitForText(JoomlaManagerPage::$buttonSaveClose, 10);
 		$I->click(JoomlaManagerPage::$buttonSaveClose);
-
 		$I->waitForText(JoomlaManagerPage::$messageMenuItemSuccess, 5, JoomlaManagerPage::$idInstallSuccess);
 	}
 
