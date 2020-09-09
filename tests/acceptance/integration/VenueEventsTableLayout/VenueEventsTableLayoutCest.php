@@ -11,7 +11,6 @@ use Page\Acceptance\Administrator\AbstractPage;
 use Step\Acceptance\Administrator\EventManagerSteps;
 use Step\Acceptance\Administrator\SessionManagerSteps;
 use Step\Acceptance\Administrator\VanueManagerSteps;
-use Step\Acceptance\Administrator\VenueEventsTableLayoutSteps;
 use Step\Acceptance\JoomlaManagerSteps;
 
 /**
@@ -93,11 +92,11 @@ class VenueEventsTableLayoutCest
 	}
 
 	/**
-	 * @param VenueEventsTableLayoutSteps $I
+	 * @param VanueManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function _before(VenueEventsTableLayoutSteps $I)
+	public function _before(VanueManagerSteps $I)
 	{
 		$I->doAdministratorRedEventLogin();
 	}
@@ -150,11 +149,11 @@ class VenueEventsTableLayoutCest
 	}
 
 	/**
-	 * @param VenueEventsTableLayoutSteps $I
+	 * @param VanueManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function checkFrontEndVenueEventsTableLayout(VenueEventsTableLayoutSteps $I)
+	public function checkFrontEndVenueEventsTableLayout(VanueManagerSteps $I)
 	{
 		$I->wantToTest('Check Venue events table layout on front-end');
 		$I->checkVenueEventsTableLayout($this->menuItem, $this->eventName, $this->venueName, $this->categoryName);
