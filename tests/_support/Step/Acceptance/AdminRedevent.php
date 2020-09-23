@@ -89,6 +89,7 @@ class AdminRedevent extends \AcceptanceTester
 	{
 		$I = $this;
 		$I->amOnPage($URL);
+		$I->checkForPhpNoticesOrWarnings();
 		$I->waitForText($title, 120);
 		$I->Search($URL,$name);
 		$I->see($name, AbstractPage::$tableResult);
@@ -98,8 +99,9 @@ class AdminRedevent extends \AcceptanceTester
 		$I->cancelPopup();
 		$I->wantTo('Test with delete product then accept');
 		$I->click(AbstractPage::$buttonDelete);
+		$I->wait(0.5);
 		$I->acceptPopup();
-		$I->waitForText(AbstractPage::$notificationNoItem, 120);
+		$I->waitForText(AbstractPage::$notificationNoItem, 30);
 		$I->dontSee($name);
 	}
 

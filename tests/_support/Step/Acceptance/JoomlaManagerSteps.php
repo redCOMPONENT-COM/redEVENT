@@ -63,10 +63,12 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->wantTo("Open the menu types iframe");
 		$I->click(JoomlaManagerPage::$buttonSelect);
 		$I->waitForElement(JoomlaManagerPage::$menuTypeModal, 30);
+		$I->executeJS('jQuery(".iframe").attr("name", "Menu Item Type")');
+		$I->wait(1);
 		$I->switchToIFrame(JoomlaManagerPage::$menuItemType);
 
 		$I->wantTo("Open the menu category: $menuCategory");
-		$I->wait(2);
+		$I->wait(1);
 		$I->waitForElement(JoomlaManagerPage::getMenuCategory($menuCategory), 30);
 		$I->click(JoomlaManagerPage::getMenuCategory($menuCategory));
 
@@ -107,7 +109,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->wantTo("I click new");
-		$I->click(JoomlaManagerPage::$buttonNew);
+		$I->click(JoomlaManagerPage::$newButton);
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, 5, JoomlaManagerPage::$H1);
 		$I->checkForPhpNoticesOrWarnings();
 		$I->fillField(JoomlaManagerPage::$menItemTitle, $menuTitle);
@@ -130,7 +132,6 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->switchToIFrame();
 		$I->wantTo('I leave time to the iframe to close');
 		$I->selectOptionInChosenById(JoomlaManagerPage::$idSelectCategory, $nameCategory);
-		$I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
 		$I->wantTo('I save the menu');
@@ -162,7 +163,7 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->wantTo("I click new");
-		$I->click(JoomlaManagerPage::$buttonNew);
+		$I->click(JoomlaManagerPage::$newButton);
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, 5, JoomlaManagerPage::$H1);
 		$I->checkForPhpNoticesOrWarnings();
 		$I->fillField(JoomlaManagerPage::$menItemTitle, $menuTitle);
@@ -194,20 +195,22 @@ class JoomlaManagerSteps extends AdminRedevent
 		$I->switchToIFrame("session");
 		$I->waitForElement(JoomlaManagerPage::$searchSessionId, 30);
 		$I->fillField(JoomlaManagerPage::$searchSessionId, $nameCategory);
+		$I->wait(0.5);
 		$I->waitForElementVisible(JoomlaManagerPage::$searchIcon, 30);
 		$I->click(JoomlaManagerPage::$searchIcon);
-		$I->waitForText($nameCategory, 30);
 		$I->wait(0.5);
-		$I->click(["link" => $nameCategory]);
+		$I->waitForText($nameCategory, 30);
+		$I->waitForElementVisible(['link' => $nameCategory], 30);
+		$I->click(['link' => $nameCategory]);
 		$I->wait(0.5);
 		$I->switchToIFrame();
 		$I->wait(0.5);
-		$I->selectOptionInChosen(JoomlaManagerPage::$labelLanguage, $language);
 
 		$I->waitForText(JoomlaManagerPage::$menuNewItemTitle, '30',JoomlaManagerPage::$H1);
 		$I->wantTo('I save the menu');
-		$I->click(JoomlaManagerPage::$buttonSave);
-
+		$I->executeJS('window.scrollTo(0,0);');
+		$I->waitForText(JoomlaManagerPage::$buttonSaveClose, 10);
+		$I->click(JoomlaManagerPage::$buttonSaveClose);
 		$I->waitForText(JoomlaManagerPage::$messageMenuItemSuccess, 5, JoomlaManagerPage::$idInstallSuccess);
 	}
 
