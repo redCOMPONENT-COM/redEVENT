@@ -97,7 +97,6 @@ class RedeventControllerFront extends JControllerLegacy
 			switch ($filter)
 			{
 				case 'filter_category':
-				case 'filter_multicategory':
 				case 'filter_venuecategory':
 				case 'filter_order':
 				case 'filter_order_Dir':
@@ -105,7 +104,6 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'filter_event':
 				case 'filter_type':
 				case 'filter_venue':
-				case 'filter_multivenue':
 				case 'filter_date':
 				case 'filter_date_from':
 				case 'filter_date_to':
@@ -117,6 +115,21 @@ class RedeventControllerFront extends JControllerLegacy
 					{
 						$myuri->setVar($filter, urlencode($v));
 						$vars++;
+					}
+					break;
+
+				case 'filter_multicategory':
+				case 'filter_multivenue':
+					if (is_array($v) && !empty($v))
+					{
+						foreach ($v AS $k => $val)
+						{
+							if ($val)
+							{
+								$myuri->setVar($filter . "[$k]", urlencode($val));
+								$vars++;
+							}
+						}
 					}
 					break;
 
