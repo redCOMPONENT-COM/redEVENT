@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="component" method="upgrade">
+<extension version="3.9" type="component" method="upgrade">
 	<name>COM_REDEVENTSYNC</name>
-	<author>redWEB Aps</author>
+	<author>redWEB</author>
 	<authorEmail>email@redweb.dk</authorEmail>
-	<authorUrl>www.redcomponent.com</authorUrl>
-	<copyright>(C) 2008 - 2013 redCOMPONENT.com</copyright>
+	<authorUrl>redweb.dk</authorUrl>
+	<copyright>(C) 2008 - 2020 redWEB</copyright>
 	<creationDate>##DATE##</creationDate>
 	<license>GNU GPL v3 or later</license>
-	<version>3.2.3</version>
+	<version>3.4.0</version>
 	<tag>##VERSION##</tag>
-	<redcore version="1.8.9" />
+	<redcore version="2.1.0" />
 	<description>COM_REDEVENTSYNC_XML_DESCRIPTION</description>
 
 	<!-- SQL query files to execute on installation -->
