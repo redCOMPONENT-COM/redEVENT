@@ -40,6 +40,24 @@ class EventManagerPage extends AbstractPage
 
 	/**
 	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $managedSessions = "Managed sessions";
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $managedEvents = "Managed events";
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $managedVenues = "Managed venues";
+
+	/**
+	 * @var string
 	 */
 	public static $enableRegistrationYes    = "//label[@for='jform_registra1']";
 

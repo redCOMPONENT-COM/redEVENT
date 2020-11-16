@@ -1,14 +1,16 @@
 <?php
-
 /**
- * @package     Redevent
- * @subpackage  Tests
- * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
+ * @package     redEVENT
+ * @subpackage  Steps
+ * @copyright   Copyright (C) 2008 - 2020 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Step\Acceptance\Administrator;
+
+use Page\Acceptance\Administrator\AbstractPage;
 use \Page\Acceptance\Administrator\EventManagerPage;
+use Page\Acceptance\Administrator\FrontendJoomlaManagerPage;
 
 class EventManagerSteps  extends CategoryManagerSteps
 {
@@ -61,6 +63,31 @@ class EventManagerSteps  extends CategoryManagerSteps
 		$I->waitForElement(EventManagerPage::$enableRegistrationYes,30);
 		$I->click(EventManagerPage::$enableRegistrationYes);
 		$I->click(EventManagerPage::$buttonSaveClose);
+	}
+
+	/**
+	 * @param $menuitem
+	 * @param $eventName
+	 * @param $categoryName
+	 * @param $venueName
+	 * @throws \Exception
+	 * @since 3.2.9
+	 */
+	public function checkEvents($menuitem, $eventName, $categoryName, $venueName)
+	{
+		$I = $this;
+		$I->doFrontEndLogin("admin", "admin");
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->checkForPhpNoticesOrWarningsOrExceptions();
+		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, AbstractPage::$H1);
+		$I->waitForText($menuitem, 30);
+		$I->click($menuitem);
+		$I->waitForText(EventManagerPage::$managedSessions, 30);
+		$I->waitForText(EventManagerPage::$managedEvents, 30);
+		$I->waitForText(EventManagerPage::$managedVenues, 30);
+		$I->waitForText($eventName, 30);
+		$I->waitForText($categoryName, 30);
+		$I->waitForText($venueName, 30);
 	}
 
 	/**
