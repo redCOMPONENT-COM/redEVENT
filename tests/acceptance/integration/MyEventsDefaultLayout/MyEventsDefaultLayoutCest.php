@@ -14,10 +14,10 @@ use Step\Acceptance\Administrator\VanueManagerSteps;
 use Step\Acceptance\JoomlaManagerSteps;
 
 /**
- * Class VenuesCest
+ * Class MyEventsDefaultLayoutCest
  * @since 3.2.9
  */
-class VenuesCest
+class MyEventsDefaultLayoutCest
 {
 	/**
 	 * @var Generator
@@ -74,8 +74,8 @@ class VenuesCest
 	protected  $menuCategory;
 
 	/**
-	 * VenuesCest constructor.
-	 * @since 3.2.9
+	 * MyEventsDefaultLayoutCest constructor.
+	 * @sicne 3.2.9
 	 */
 	public function __construct()
 	{
@@ -87,7 +87,7 @@ class VenuesCest
 		$this->templateName      = 'default template';
 		$this->sessionName       = $this->faker->bothify("Session Name ##??");
 
-		$this->menuItem          = 'Venues';
+		$this->menuItem          = 'My events default layout';
 		$this->menuCategory      = 'redEVENT - Component';
 	}
 
@@ -149,14 +149,14 @@ class VenuesCest
 	}
 
 	/**
-	 * @param VanueManagerSteps $I
+	 * @param EventManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function checkFrontEndVenues(VanueManagerSteps $I)
+	public function checkFrontEndEvents(EventManagerSteps $I)
 	{
-		$I->wantToTest('Check Venues on front-end');
-		$I->checkVenues($this->menuItem, $this->categoryName, $this->venueName);
+		$I->wantToTest('Check Events on front-end');
+		$I->checkEvents($this->menuItem, $this->eventName, $this->categoryName, $this->venueName);
 	}
 
 	/**
