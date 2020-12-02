@@ -1,15 +1,17 @@
 <?php
-
 /**
- * @package     Redevent
- * @subpackage  Tests
- * @copyright   Copyright (C) 2008 - 2018 redCOMPONENT.com. All rights reserved.
+ * @package     redEVENT
+ * @subpackage  Page
+ * @copyright   Copyright (C) 2008 - 2020 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Page\Acceptance\Administrator;
 
-
+/**
+ * Class SessionManagerPage
+ * @package Page\Acceptance\Administrator
+ */
 class SessionManagerPage extends AbstractPage
 {
 	/**
