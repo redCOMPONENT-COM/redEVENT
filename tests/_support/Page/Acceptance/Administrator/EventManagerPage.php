@@ -104,11 +104,28 @@ class EventManagerPage extends AbstractPage
 	public static $templateItem       = 'jform_template_id';
 
 	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $chooseImage = '//a[@class="btn modalAjax"]';
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $mediaManager = '#modal-jform_datimage';
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $insertButton = '//button[@class="btn btn-success button-save-selected"]';
+
+	/**
 	 * Button Save
 	 *
 	 * @var string
 	 * @since 1.0.0
 	 */
 	public static $buttonSave         = '//button[contains(@OnClick, "event.save")]';
-
 }

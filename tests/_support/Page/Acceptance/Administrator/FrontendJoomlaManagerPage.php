@@ -154,6 +154,24 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	public static $dayMissing = 'Currently no events are available';
 
 	/**
+	 * @var array
+	 * @since 3.2.9
+	 */
+	public static $imageUrlId = "//input[@type='text' and @id='f_url']";
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $eventImageThumbnails = '//a[@class="rf_img"]';
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $joomlaImage = "images/joomla_black.png";
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
