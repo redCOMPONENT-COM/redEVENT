@@ -117,7 +117,7 @@ class UpcomingEventsCest
 	{
 		$I->wantToTest('Add a venue in redEVENT');
 
-		$I->createVenueNew($this->VanueName,$this->categoryVanueName);
+		$I->createVenueNew($this->VanueName, $this->categoryVanueName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 	/**
@@ -128,7 +128,7 @@ class UpcomingEventsCest
 	{
 		$I->wantToTest('Add an event in redEVENT with created template');
 
-		$I->createEventNew($this->eventName,$this->categoryName, $this->templateName);
+		$I->createEventNew($this->eventName, $this->categoryName, $this->templateName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -139,7 +139,7 @@ class UpcomingEventsCest
 	public function createSession(SessionManagerSteps $I)
 	{
 		$I->wantToTest('Add session in redEVENT');
-		$I->createSessionUpcomming($this->eventName,$this->VanueName,$this->SessionName);
+		$I->createSessionUpcomming($this->eventName, $this->VanueName, $this->SessionName);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
@@ -150,7 +150,7 @@ class UpcomingEventsCest
 	public function CheckFrontEnd(UpcomingEventsSteps $I)
 	{
 		$I->wantToTest('Check upcoming event on front-end');
-		$I->checkEventUpcoming($this->menuItem,$this->SessionName,$this->eventName,$this->VanueName);
+		$I->checkEventUpcoming($this->menuItem, $this->SessionName, $this->eventName);
 	}
 
 	/***
@@ -169,6 +169,6 @@ class UpcomingEventsCest
 		$I->deleteCategory($this->categoryName);
 		$I = new VanueManagerSteps($scenario);
 		$I->wantToTest('Delete Venue');
-		$I->deleteVenue($this->categoryVanueName,$this->VanueName);
+		$I->deleteVenue($this->categoryVanueName, $this->VanueName);
 	}
 }
