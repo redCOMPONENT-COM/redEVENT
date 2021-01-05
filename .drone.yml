@@ -307,11 +307,8 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CalendarViewEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Venues 0 0'
-<<<<<<< HEAD
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/MyEventsDefaultLayout 0 0'
-=======
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenuesMap 0 0'
->>>>>>> f4445186d636a8254b1d32944041fe3f683e5a22
 
   04-Group4-73:
     group: tests
@@ -336,11 +333,8 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CalendarViewEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Venues 0 0'
-<<<<<<< HEAD
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/MyEventsDefaultLayout 0 0'
-=======
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenuesMap 0 0'
->>>>>>> f4445186d636a8254b1d32944041fe3f683e5a22
 
   05-Group5-56:
     group: tests
