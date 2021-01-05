@@ -330,4 +330,31 @@ class SessionManagerSteps extends AdminRedevent
 		$I->click(SessionManagerPage::$buttonSave);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30);
 	}
+
+	/**
+	 * @param $menuitem
+	 * @param $eventName
+	 * @param $categoryName
+	 * @param $venueName
+	 * @throws \Exception
+	 * @since 3.2.9
+	 */
+	public function checkWeekView($menuitem, $eventName, $categoryName, $venueName)
+	{
+		$I = $this;
+		$I->doFrontEndLogin("admin", "admin");
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->checkForPhpNoticesOrWarningsOrExceptions();
+		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, AbstractPage::$H1);
+		$I->waitForText($menuitem, 30);
+		$I->click($menuitem);
+		$I->waitForText($eventName, 30);
+		$I->waitForText($categoryName, 30);
+		$I->waitForText($venueName, 30);
+		$dateNow = date('d.m.Y');
+		$date  = date('d.m.Y', strtotime('+1 day', strtotime($dateNow)));
+		$endDate  = date('d.m.Y', strtotime('+2 day', strtotime($dateNow)));
+		$I->waitForText($date, 30);
+		$I->waitForText($endDate, 30);
+	}
 }
