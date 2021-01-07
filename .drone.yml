@@ -259,6 +259,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueEventsTableLayout 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailedCategoriesLayout 0 0'
 
   03-Group3-73:
     group: tests
@@ -283,6 +284,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/UpcomingVenue 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/SearchEvents 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueEventsTableLayout 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/DetailedCategoriesLayout 0 0'
 
   04-Group4-56:
     group: tests
@@ -358,6 +360,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoriesLayout 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Day 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/WeekView 0 0'
 
   05-Group5-73:
     group: tests
@@ -383,6 +386,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenueCategories 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/CategoriesLayout 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Day 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/WeekView 0 0'
 
   slack:
     image: plugins/slack
