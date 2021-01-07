@@ -31,7 +31,19 @@ class VenuesMapCest
 	 * @var string
 	 * @since 3.2.9
 	 */
+	protected $categoryVenueDescription;
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
 	protected $venueName;
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	protected $viewOnMap;
 
 	/**
 	 * @var string
@@ -87,18 +99,20 @@ class VenuesMapCest
 	 */
 	public function __construct()
 	{
-		$this->faker             = Factory::create();
-		$this->categoryVenueName = $this->faker->bothify("Category Venue Name ##??");
-		$this->venueName         = $this->faker->bothify("Venue Name ##??");
-		$this->venueCountryId    = 'DK - Denmark';
-		$this->venueCountry      = 'Denmark';
-		$this->categoryName      = $this->faker->bothify("Category Name ##??");
-		$this->eventName         = $this->faker->bothify("Event Name ##??");
-		$this->templateName      = 'default template';
-		$this->sessionName       = $this->faker->bothify("Session Name ##??");
+		$this->faker                    = Factory::create();
+		$this->categoryVenueName        = $this->faker->bothify("Category Venue Name ##??");
+		$this->categoryVenueDescription = '<p>The description goes here</p>';
+		$this->venueName                = $this->faker->bothify("Venue Name ##??");
+		$this->viewOnMap                = 'Yes';
+		$this->venueCountryId           = 'DK - Denmark';
+		$this->venueCountry             = 'Denmark';
+		$this->categoryName             = $this->faker->bothify("Category Name ##??");
+		$this->eventName                = $this->faker->bothify("Event Name ##??");
+		$this->templateName             = 'default template';
+		$this->sessionName              = $this->faker->bothify("Session Name ##??");
 
-		$this->menuItem          = 'Venues map';
-		$this->menuCategory      = 'redEVENT - Component';
+		$this->menuItem                 = 'Venues map';
+		$this->menuCategory             = 'redEVENT - Component';
 	}
 
 	/**
@@ -119,7 +133,7 @@ class VenuesMapCest
 	public function addVenue(VanueManagerSteps $I)
 	{
 		$I->wantToTest('Add a venue in redEVENT with country');
-		$I->createVenueWithCountry($this->venueName, $this->categoryVenueName, $this->venueCountryId);
+		$I->createVenueWithCountry($this->venueName, $this->categoryVenueName, $this->categoryVenueDescription, $this->venueCountryId, $this->viewOnMap);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 

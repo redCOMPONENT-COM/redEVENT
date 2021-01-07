@@ -41,17 +41,19 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 	/**
 	 * @param $nameVenue
 	 * @param $nameVenueCategory
+	 * @param $descriptionVenueCategory
 	 * @param $country
+	 * @param $viewOnMap
 	 * @throws \Exception
 	 * @since 3.2.9
 	 */
-	public function createVenueWithCountry($nameVenue, $nameVenueCategory, $country)
+	public function createVenueWithCountry($nameVenue, $nameVenueCategory, $descriptionVenueCategory, $country, $viewOnMap)
 	{
 		$I = $this;
 		$I->createVenueCategoryNew(
 			array(
 				'name' => $nameVenueCategory,
-				'description' => '<p>The description goes here</p>'
+				'description' => $descriptionVenueCategory
 			)
 		);
 
@@ -65,7 +67,7 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 		$I->waitForElementVisible(VanueManagerPage::$addressTab, 30);
 		$I->click(VanueManagerPage::$addressTab);
 		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$countryId, $country);
-		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$viewOnMapId, 'Yes');
+		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$viewOnMapId, $viewOnMap);
 		$I->click(VanueManagerPage::$buttonSaveClose);
 	}
 
@@ -132,7 +134,7 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 	public function checkVenuesMap($menuItem, $country)
 	{
 		$I = $this;
-		$I->doFrontEndLogin("admin", "admin");
+		$I->doFrontEndLogin();
 		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
 		$I->checkForPhpNoticesOrWarningsOrExceptions();
 		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, AbstractPage::$H1);
