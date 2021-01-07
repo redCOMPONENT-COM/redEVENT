@@ -40,6 +40,7 @@ class CategoriesLayoutSteps extends AdminRedevent
 		$I->waitForText(FrontendJoomlaManagerPage::$showEvents, 30);
 		$I->click(FrontendJoomlaManagerPage::$showEvents);
 		$I->waitForElement(FrontendJoomlaManagerPage::$tableCategoryEvent, 30);
+		$I->waitForText($categoryName, 30);
 		$I->waitForText($eventName, 30);
 	}
 }
