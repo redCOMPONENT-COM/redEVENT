@@ -2,11 +2,16 @@
 /**
  * @package     Redevent
  * @subpackage  Page
- * @copyright   Copyright (C) 2008 - 2019 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2020 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 namespace Page\Acceptance\Administrator;
 
+/**
+ * Class FrontendJoomlaManagerPage
+ * @package Page\Acceptance\Administrator
+ */
 class FrontendJoomlaManagerPage extends AbstractPage
 {
 	/**
@@ -152,6 +157,23 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @since 3.2.9
 	 */
 	public static $dayMissing = 'Currently no events are available';
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $dismissButton = "button.dismissButton";
+
+	/**
+	 * @param $country
+	 * @return string
+	 * @since 3.2.9
+	 */
+	public static function returnVenuesMap($country)
+	{
+		$path = "//div[@title='".$country."']";
+		return $path;
+	}
 
 	/**
 	 * @param $placeholder
