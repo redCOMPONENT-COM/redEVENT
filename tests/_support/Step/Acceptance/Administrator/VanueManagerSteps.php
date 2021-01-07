@@ -69,6 +69,7 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$countryId, $country);
 		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$viewOnMapId, $viewOnMap);
 		$I->click(VanueManagerPage::$buttonSaveClose);
+		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
 	/**
