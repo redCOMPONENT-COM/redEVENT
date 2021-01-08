@@ -19,7 +19,7 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 	 * @param $nameVanueCategory
 	 * @throws \Exception
 	 */
-	public function createVenueNew($nameVanue,$nameVanueCategory)
+	public function createVenueNew($nameVanue, $nameVanueCategory)
 	{
 		$I = $this;
 		$I->createVenueCategoryNew(
@@ -39,13 +39,47 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 	}
 
 	/**
+	 * @param $nameVenue
+	 * @param $nameVenueCategory
+	 * @param $descriptionVenueCategory
+	 * @param $country
+	 * @param $viewOnMap
+	 * @throws \Exception
+	 * @since 3.2.9
+	 */
+	public function createVenueWithCountry($nameVenue, $nameVenueCategory, $descriptionVenueCategory, $country, $viewOnMap)
+	{
+		$I = $this;
+		$I->createVenueCategoryNew(
+			array(
+				'name' => $nameVenueCategory,
+				'description' => $descriptionVenueCategory
+			)
+		);
+
+		$I->amOnPage(VanueManagerPage::$URL);
+		$I->waitForText(VanueManagerPage::$venueTitle, 30);
+		$I->click(VanueManagerPage::$buttonNew);
+		$I->waitForText(VanueManagerPage::$venueTitleNew, 30);
+		$I->fillField(VanueManagerPage::$fieldName, $nameVenue);
+		$I->waitForElement(VanueManagerPage::$categoryVanueSelect, 30);
+		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$categoryVanueItem, $nameVenueCategory);
+		$I->waitForElementVisible(VanueManagerPage::$addressTab, 30);
+		$I->click(VanueManagerPage::$addressTab);
+		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$countryId, $country);
+		$I->selectOptionInChosenByIdUsingJs(VanueManagerPage::$viewOnMapId, $viewOnMap);
+		$I->click(VanueManagerPage::$buttonSaveClose);
+		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
+	}
+
+	/**
 	 * @param $nameVanue
 	 * @throws \Exception
 	 */
 	public function searchVanue($nameVanue)
 	{
 		$I = $this;
-		$I->search(VanueManagerPage::$URL,$nameVanue);
+		$I->search(VanueManagerPage::$URL, $nameVanue);
 	}
 
 	/**
@@ -93,15 +127,35 @@ class VanueManagerSteps extends VenueCategoryManagerSteps
 	}
 
 	/**
-	 * @param $nameVenueCategory
-	 * @param $nameVanue
+	 * @param $menuItem
+	 * @param $country
 	 * @throws \Exception
+	 * @since 3.2.9
 	 */
-	public function deleteVenue($nameVenueCategory,$nameVanue)
+	public function checkVenuesMap($menuItem, $country)
 	{
 		$I = $this;
-		$I->delete(VanueManagerPage::$URL,VanueManagerPage::$venueTitle,$nameVanue);
-		$I->wantToTest('Delete Vanue  in redEVENT');
+		$I->doFrontEndLogin();
+		$I->amOnPage(FrontendJoomlaManagerPage::$URL);
+		$I->checkForPhpNoticesOrWarningsOrExceptions();
+		$I->waitForText(FrontendJoomlaManagerPage::$title, 30, AbstractPage::$H1);
+		$I->waitForText($menuItem, 30);
+		$I->click($menuItem);
+		$I->waitForElementClickable(FrontendJoomlaManagerPage::$dismissButton, 30);
+		$I->click(FrontendJoomlaManagerPage::$dismissButton);
+		$I->waitForElement(FrontendJoomlaManagerPage::returnVenuesMap($country));
+	}
+
+	/**
+	 * @param $nameVenueCategory
+	 * @param $nameVenue
+	 * @throws \Exception
+	 */
+	public function deleteVenue($nameVenueCategory, $nameVenue)
+	{
+		$I = $this;
+		$I->delete(VanueManagerPage::$URL,VanueManagerPage::$venueTitle, $nameVenue);
+		$I->wantToTest('Delete Venue and Venue Category in redEVENT');
 		$I->deleteVenueCategory($nameVenueCategory);
 	}
 }

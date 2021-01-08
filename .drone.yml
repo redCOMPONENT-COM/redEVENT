@@ -310,6 +310,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Venues 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/MyEventsDefaultLayout 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenuesMap 0 0'
 
   04-Group4-73:
     group: tests
@@ -335,6 +336,7 @@ pipeline:
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Session 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/Venues 0 0'
     - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/MyEventsDefaultLayout 0 0'
+    - su www-data -c 'vendor/bin/robo tests:run acceptance/integration/VenuesMap 0 0'
 
   05-Group5-56:
     group: tests

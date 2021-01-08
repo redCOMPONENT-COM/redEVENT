@@ -66,4 +66,22 @@ class VanueManagerPage extends AbstractPage
 	 * @var string
 	 */
 	public static $buttonSave         = '//button[contains(@OnClick, "venue.save")]';
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $addressTab = "//a[@href='#address']";
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $countryId = "jform_country";
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $viewOnMapId = "jform_map";
 }
