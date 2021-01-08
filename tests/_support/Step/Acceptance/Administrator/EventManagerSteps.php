@@ -42,16 +42,17 @@ class EventManagerSteps  extends CategoryManagerSteps
 	/**
 	 * @param $nameEvent
 	 * @param $nameCategory
+	 * @param $descriptionCategory
 	 * @param $templateName
 	 * @throws \Exception
 	 * @since 3.2.9
 	 */
-	public function createEventWithImage($nameEvent, $nameCategory, $templateName)
+	public function createEventWithImage($nameEvent, $nameCategory, $descriptionCategory, $templateName)
 	{
 		$I = $this;
 		$I ->createCategoryNew(array(
 			'name' => $nameCategory,
-			'description' => '<p>The description goes here</p>'
+			'description' => $descriptionCategory
 		));
 
 		$I->amOnPage(EventManagerPage::$URL);
@@ -64,10 +65,13 @@ class EventManagerSteps  extends CategoryManagerSteps
 		$I->waitForElement(EventManagerPage::$templateSelect, 30);
 		$I->selectOptionInChosenByIdUsingJs(EventManagerPage::$templateItem, $templateName);
 		$I->click(EventManagerPage::$chooseImage);
+		//This is where I have problems.
 		$I->fillField(FrontendJoomlaManagerPage::$imageUrlId, FrontendJoomlaManagerPage::$joomlaImage);
 		$I->click(EventManagerPage::$insertButton);
+		//
 		$I->waitForText(EventManagerPage::$eventTitleNew, 30);
 		$I->click(EventManagerPage::$buttonSaveClose);
+		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
 	}
 
 	/**
