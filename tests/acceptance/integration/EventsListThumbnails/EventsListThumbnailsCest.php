@@ -109,12 +109,12 @@ class EventsListThumbnailsCest
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function addVenue(VanueManagerSteps $I)
-	{
-		$I->wantToTest('Add a venue in redEVENT');
-		$I->createVenueNew($this->venueName, $this->categoryVenueName);
-		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
-	}
+	//public function addVenue(VanueManagerSteps $I)
+	//{
+	//	$I->wantToTest('Add a venue in redEVENT');
+	//	$I->createVenueNew($this->venueName, $this->categoryVenueName);
+	//	$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
+	//}
 
 	/**
 	 * @param EventManagerSteps $I
@@ -132,34 +132,34 @@ class EventsListThumbnailsCest
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function createSession(SessionManagerSteps $I)
-	{
-	   $I->wantToTest('Add session in redEVENT');
-	   $I->createSessionNew($this->eventName, $this->venueName, $this->sessionName);
-	   $I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
-	}
+	//public function createSession(SessionManagerSteps $I)
+	//{
+	//	$I->wantToTest('Add session in redEVENT');
+	//	$I->createSessionNew($this->eventName, $this->venueName, $this->sessionName);
+	//	$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
+	//}
 
 	/**
 	 * @param JoomlaManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function createMenuItem(JoomlaManagerSteps $I)
-	{
-		$I->wantTo("Create menu item featured events in frontend");
-		$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
-	}
+	//public function createMenuItem(JoomlaManagerSteps $I)
+	//{
+	//	$I->wantTo("Create menu item featured events in frontend");
+	//	$I->createNewMenuItem($this->menuItem, $this->menuCategory, $this->menuItem);
+	//}
 
 	/**
 	 * @param EventManagerSteps $I
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function checkFrontEndEventsThumbnails(EventManagerSteps $I)
-	{
-	  $I->wantToTest('Check Events List Thumbnails on front-end');
-	  $I->checkEventsThumbnails($this->menuItem, $this->eventName, $this->venueName);
-	}
+	//public function checkFrontEndEventsThumbnails(EventManagerSteps $I)
+	//{
+	//	$I->wantToTest('Check Events List Thumbnails on front-end');
+	//	$I->checkEventsThumbnails($this->menuItem, $this->eventName, $this->venueName);
+	//}
 
 	/**
 	 * @param SessionManagerSteps $I
@@ -167,17 +167,17 @@ class EventsListThumbnailsCest
 	 * @throws Exception
 	 * @since 3.2.9
 	 */
-	public function deleteAll(SessionManagerSteps $I, $scenario)
-	{
-	  $I->wantToTest('Delete session');
-	  $I ->deleteSession($this->sessionName);
-	  $I = new EventManagerSteps($scenario);
-	  $I->wantToTest('Delete events');
-	  $I->deleteEvent($this->eventName);
-	  $I->wantToTest('Delete category');
-	  $I->deleteCategory($this->categoryName);
-	  $I = new VanueManagerSteps($scenario);
-	  $I->wantToTest('Delete Venue');
-	  $I->deleteVenue($this->categoryVenueName, $this->venueName);
-	}
+	//public function deleteAll(SessionManagerSteps $I, $scenario)
+	//{
+	//	$I->wantToTest('Delete session');
+	//	$I ->deleteSession($this->sessionName);
+	//	$I = new EventManagerSteps($scenario);
+	//	$I->wantToTest('Delete events');
+	//	$I->deleteEvent($this->eventName);
+	//	$I->wantToTest('Delete category');
+	//	$I->deleteCategory($this->categoryName);
+	//	$I = new VanueManagerSteps($scenario);
+	//	$I->wantToTest('Delete Venue');
+	//	$I->deleteVenue($this->categoryVenueName, $this->venueName);
+	//}
 }

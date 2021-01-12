@@ -179,7 +179,7 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	 * @var string
 	 * @since 3.2.9
 	 */
-	public static $imageUrlId = "//input[@type='text' and @id='f_url']";
+	public static $imageUrlId = "#f_url";
 
 	/**
 	 * @var string

@@ -65,10 +65,12 @@ class EventManagerSteps  extends CategoryManagerSteps
 		$I->waitForElement(EventManagerPage::$templateSelect, 30);
 		$I->selectOptionInChosenByIdUsingJs(EventManagerPage::$templateItem, $templateName);
 		$I->click(EventManagerPage::$chooseImage);
+
 		//This is where I have problems.
 		$I->fillField(FrontendJoomlaManagerPage::$imageUrlId, FrontendJoomlaManagerPage::$joomlaImage);
 		$I->click(EventManagerPage::$insertButton);
 		//
+
 		$I->waitForText(EventManagerPage::$eventTitleNew, 30);
 		$I->click(EventManagerPage::$buttonSaveClose);
 		$I->waitForText(AbstractPage::$messageSaveSuccess, 30, AbstractPage::$message);
