@@ -78,11 +78,11 @@ class UpcomingEventsCest
 	{
 		$this->faker             = Factory::create();
 		$this->categoryVanueName = $this->faker->bothify("Category Vanue Name ##??");
-		$this->VanueName         = $this->faker->bothify("Vanue Name  ##??");
+		$this->VanueName         = $this->faker->bothify("Vanue Name ##??");
 		$this->categoryName      = $this->faker->bothify("Category Name ##??");
-		$this->eventName         = $this->faker->bothify("Event Name  ##??");
+		$this->eventName         = $this->faker->bothify("Event Name ##??");
 		$this->templateName      =  'default template';
-		$this->SessionName       = $this->faker->bothify("Session Name  ##??");
+		$this->SessionName       = $this->faker->bothify("Session Name ##??");
 
 		$this->menuItem            = 'Upcoming events';
 		$this->menuCategory        = 'redEVENT - Component';
