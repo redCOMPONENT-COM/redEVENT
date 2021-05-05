@@ -160,6 +160,12 @@ class AbstractPage
 
 	/**
 	 * @var string
+	 * @since 2.3.0
+	 */
+	public static $checkAllItem = '//input[@name="checkall-toggle"]';
+
+	/**
+	 * @var string
 	 * @since 3.2.10
 	 */
 	public static $notificationNoItem = "Nothing to display";
