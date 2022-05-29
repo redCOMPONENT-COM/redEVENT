@@ -41,19 +41,22 @@
 			// First general text search
 			if ($listForm.find('[name=filter_text]') && $listForm.find('#filter')) {
 				$listForm.find('#filter_type').val('event');
-				$listForm.find('#filter').val($filtersDiv.find('[name=filter_text]').val());
+				$listForm.find('#filter').val($filtersDiv.find('[name=filter]').val());
 			}
 
 			if ($listForm.find('#clonedDiv')) {
 				$listForm.find('#clonedDiv').remove();
 			}
 
-			var cloneDiv = $('<div/>').prop('id', 'clonedDiv').css('display', 'none').appendTo($listForm);
+			var cloneDiv = $('<div/>').prop('id', 'clonedDiv').css('display', 'none');
 
-			$filtersDiv.find('input').each(function(index, element) {
-				var $element = $(element);
-				$element.clone().val($element.val()).appendTo(cloneDiv);
+			$filtersDiv.find(':input').each(function() {
+				if (!$listForm.find('[name="' + this.name + '"]').length) {
+					$(this).clone().removeAttr('id').removeAttr('class').appendTo(cloneDiv);
+				}
 			});
+
+			cloneDiv.appendTo($listForm);
 		};
 
 		return {
@@ -66,14 +69,13 @@
 	$(document).ready(function() {
 		modReFilters.syncForm();
 
-		modReFilters.getFiltersDiv().find('input').change(function() {
+		modReFilters.getFiltersDiv().find(':input').change(function() {
 			modReFilters.syncForm();
 			modReFilters.getListForm().submit();
 		});
 
 		modReFilters.getFiltersDiv().find('button').click(function(){
-			var $element = $(this);
-			$element.parents('div').find('input').val('').trigger('change');
+			$(this).parents('div').find(':input').val('').trigger('change');
 		});
 	});
 })(jQuery);

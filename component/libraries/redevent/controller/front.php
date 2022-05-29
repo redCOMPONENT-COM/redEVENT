@@ -83,15 +83,15 @@ class RedeventControllerFront extends JControllerLegacy
 		$myuri = clone $uri;
 		$vars = 0;
 
-		foreach ($post as $filter => $v)
+		foreach ($post as $filter => $value)
 		{
-			if (is_array($v))
+			if (is_array($value))
 			{
-				$v = $filterInput->clean($v, 'array');
+				$value = $filterInput->clean($value, 'array');
 			}
 			else
 			{
-				$v = $filterInput->clean($v, 'string');
+				$value = $filterInput->clean($value, 'string');
 			}
 
 			switch ($filter)
@@ -113,10 +113,24 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'task':
 				case 'layout':
 				case 'showfilters':
-					if ($v)
+					if ($value)
 					{
-						$myuri->setVar($filter, urlencode($v));
-						$vars++;
+						if (is_array($value))
+						{
+							foreach ($value as $n => $v)
+							{
+								if ($v)
+								{
+									$myuri->setVar($filter . "[$n]", urlencode($v));
+									$vars++;
+								}
+							}
+						}
+						else
+						{
+							$myuri->setVar($filter, urlencode($value));
+							$vars++;
+						}
 					}
 					break;
 
@@ -129,7 +143,7 @@ class RedeventControllerFront extends JControllerLegacy
 
 				case 'filtercustom':
 
-					foreach ((array) $v as $n => $val)
+					foreach ((array) $value as $n => $val)
 					{
 						if (is_array($val))
 						{
@@ -154,7 +168,7 @@ class RedeventControllerFront extends JControllerLegacy
 				default:
 					if (strpos($filter, 'filter_') === 0)
 					{
-						if ($v)
+						if ($value)
 						{
 							$myuri->setVar($filter, urlencode($v));
 							$vars++;
