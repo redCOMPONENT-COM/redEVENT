@@ -176,6 +176,24 @@ class FrontendJoomlaManagerPage extends AbstractPage
 	}
 
 	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $imageUrlId = "#f_url";
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $eventImageThumbnails = '//a[@class="rf_img"]';
+
+	/**
+	 * @var string
+	 * @since 3.2.9
+	 */
+	public static $joomlaImage = "images/joomla_black.png";
+
+	/**
 	 * @param $placeholder
 	 * @return string
 	 */
