@@ -72,8 +72,7 @@
 		});
 
 		modReFilters.getFiltersDiv().find('button').click(function(){
-			var $element = $(this);
-			$element.parents('div').find('input').val('').trigger('change');
+			$('#modRedeventFilters').find('input').val('').trigger('change');
 		});
 	});
 })(jQuery);
